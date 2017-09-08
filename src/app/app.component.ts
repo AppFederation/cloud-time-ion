@@ -9,20 +9,44 @@ import {NodesService} from './nodes.service'
 })
 export class AppComponent {
 
-  dragDropTreeOne: UITreeNode[];
+  dragDropTreeOne: UITreeNode[] = [];
+  focusedId = 0
 
   constructor(
     private nodesService: NodesService
   ) {
-    this.nodesService.getTouristPlaces().subscribe(
-      (places: any) => this.dragDropTreeOne = places);
+    this.appendNode()
+    // this.nodesService.getTouristPlaces().subscribe(
+    //   (places: any) => this.dragDropTreeOne = places);
   }
 
   keyDownEnter() {
-    this.dragDropTreeOne.push(<any>{
+    this.appendNode()
+  }
+
+  keyDownArrow() {
+    this.focusNode(this.focusedId + 1)
+  }
+
+  keyUpArrow() {
+    this.focusNode(this.focusedId - 1)
+  }
+
+  private focusNode(id: number) {
+    document.getElementById('node' + id).focus()
+    this.focusedId = id
+  }
+
+  private appendNode() {
+    this.dragDropTreeOne.push(this.createNode())
+  }
+
+  private createNode() {
+    return <any>{
+      'id': this.dragDropTreeOne.length,
       'label': 'Asia',
       'data': 'Documents Folder',
-    })
+    }
   }
 
 }
