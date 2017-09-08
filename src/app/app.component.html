@@ -3,6 +3,13 @@
   draggableNodes="true"
   droppableNodes="true"
 >
+  <ng-template let-node  pTemplate="default">
+    <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
+    <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
+    <input (keydown.enter)="keyDownEnter()">
+    {{node.label}}
+    <button>test</button>
+  </ng-template>
 </p-tree>
-<button>test</button>
+
 

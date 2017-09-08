@@ -18,4 +18,11 @@ export class AppComponent {
       (places: any) => this.dragDropTreeOne = places);
   }
 
+  keyDownEnter() {
+    this.dragDropTreeOne.push(<any>{
+      'label': 'Asia',
+      'data': 'Documents Folder',
+    })
+  }
+
 }
