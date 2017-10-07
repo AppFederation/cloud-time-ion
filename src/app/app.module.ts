@@ -5,10 +5,13 @@ import { AppComponent } from './app.component';
 import {TreeDragDropService, TreeModule} from 'primeng/primeng'
 import {NodesService} from './nodes.service'
 import {HttpModule} from '@angular/http'
+import {DbService} from './db.service';
+import { TestFirestoreComponent } from './test-firestore/test-firestore.component'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestFirestoreComponent
   ],
   imports: [
     BrowserModule,
@@ -18,6 +21,7 @@ import {HttpModule} from '@angular/http'
   providers: [
     NodesService,
     TreeDragDropService,
+    DbService,
   ],
   bootstrap: [AppComponent]
 })
