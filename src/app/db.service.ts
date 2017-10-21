@@ -100,7 +100,7 @@ export class DbService {
   nodesPath(path) {
     return path.map(ref => {
       let segments = ref._key.path.segments
-      return segments[segments.length - 1]
+      return segments[segments.length - 1] // hack: probably replace with change.doc.id
     })
   }
 

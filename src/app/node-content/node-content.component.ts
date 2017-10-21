@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DbService} from '../db.service'
+import {TreeNode} from 'primeng/primeng'
 
 @Component({
   selector: 'app-node-content',
@@ -8,7 +9,7 @@ import {DbService} from '../db.service'
 })
 export class NodeContentComponent implements OnInit, AfterViewInit {
 
-  @Input() node
+  @Input() node: TreeNode & {dbId: string}
   // @Input() node2
   @ViewChild('input') inputEl: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
@@ -32,6 +33,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   delete() {
     this.dbService.delete(this.node.dbId)
+  }
+
+  addChild() {
+    if ( ! this.node.children ) {
+      this.node.children = []
+    }
+    this.node.children.push({
+      label: 'new child'
+    })
   }
 
 }

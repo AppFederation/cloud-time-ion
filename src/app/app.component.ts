@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import {UITreeNode} from 'primeng/primeng'
+import {TreeNode, UITreeNode} from 'primeng/primeng'
 import {NodesService} from './nodes.service'
 import {DbService} from './db.service'
 
@@ -11,7 +11,7 @@ import {DbService} from './db.service'
 })
 export class AppComponent {
 
-  dragDropTreeOne: UITreeNode[] = [];
+  dragDropTreeOne: TreeNode[] = [];
   focusedId = 0
 
   constructor(
@@ -32,6 +32,7 @@ export class AppComponent {
           // this.elements = this.elements.slice(0)
           let node = this.createNode(data)
           node.dbId = change.doc.id
+          console.log('change.doc.id', change.doc.id)
           this.dragDropTreeOne.push(node)
         }
         if (change.type === 'modified') {
@@ -68,7 +69,11 @@ export class AppComponent {
   }
 
   private appendNode() {
-    this.dragDropTreeOne.push(this.createNode())
+    let newNode: TreeNode = this.createNode()
+    newNode.children = [
+      this.createNode('CHILD')
+    ]
+    this.dragDropTreeOne.push(newNode)
   }
 
   private createNode(label?) {
