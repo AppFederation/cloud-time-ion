@@ -36,21 +36,61 @@ const db = firebase.firestore();
 export class DbService {
 
   constructor() {
-    db.enablePersistence().then(() => {
-      // window.alert('persistence enabled')
-    })
+    this.loadNodesTree()
+    // db.enablePersistence().then(() => {
+    //   // window.alert('persistence enabled')
+    // })
     this.listenToChanges(onSnapshotHandler)
   }
 
   addItem() {
     db.collection('test1').add({
-      testField: 'test ' + new Date()
+      testField: 'test ' + new Date(),
+      testField2: new Date(),
+      testField3: 10,
     })
   }
 
   listenToChanges(func) {
     db.collection('test1')
       .onSnapshot(func);
+  }
+
+  delete(id) {
+    db.collection('test1').doc(id).delete()
+  }
+
+  private loadNodesTree() {
+    db.collection('roots').onSnapshot(snapshot => {
+      this.processNodeEvents(0, snapshot)
+    })
+  }
+
+  private processNodeEvents(nestLevel: number, snapshot: any) {
+    const serviceThis = this
+    snapshot.docChanges.forEach(function(change) {
+      let data = change.doc.data()
+      if (change.type === 'added') {
+        console.log('node: ', nestLevel, data);
+        data.node.onSnapshot(targetNodeDoc => {
+          console.log('target node:', nestLevel, targetNodeDoc)
+          console.log('target node title:', nestLevel, targetNodeDoc.data().title)
+
+          const subCollection = targetNodeDoc.ref.collection('subNodes')
+          console.log('subColl:', subCollection)
+          subCollection.onSnapshot(subSnap => {
+            serviceThis.processNodeEvents(nestLevel + 1, subSnap)
+          })
+        })
+        // console.log('root node ref: ', targetNode);
+      }
+      if (change.type === 'modified') {
+        console.log('Modified city: ', data);
+      }
+      if (change.type === 'removed') {
+        console.log('Removed city: ', data);
+      }
+    })
   }
 
 }
