@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import * as firebase from 'firebase/app'
+import QuerySnapshot = firebase.firestore.QuerySnapshot
 
-const firebase = require('firebase');
+const firebase1 = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
 
-firebase.initializeApp({
+firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
   authDomain: 'oryol-app.firebaseapp.com',
   databaseURL: 'https://oryol-app.firebaseio.com',
@@ -30,7 +32,7 @@ function onSnapshotHandler(snapshot) {
 }
 
 // Initialize Cloud Firestore through Firebase
-const db = firebase.firestore();
+const db = firebase1.firestore();
 
 @Injectable()
 export class DbService {
@@ -78,7 +80,7 @@ export class DbService {
 
           const subCollection = targetNodeDoc.ref.collection('subNodes')
           console.log('subColl:', subCollection)
-          subCollection.onSnapshot(subSnap => {
+          subCollection.onSnapshot((subSnap: QuerySnapshot) => {
             const newParents = parents.slice(0)
             newParents.push(targetNodeDoc.ref)
             serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents)
@@ -96,7 +98,10 @@ export class DbService {
   }
 
   nodesPath(path) {
-    return path.map(ref => ref._key)
+    return path.map(ref => {
+      let segments = ref._key.path.segments
+      return segments[segments.length - 1]
+    })
   }
 
 }
