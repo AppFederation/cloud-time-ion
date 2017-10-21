@@ -7,6 +7,8 @@
     let-node
     pTemplate="default"
   >
+    <app-node-content>
+    </app-node-content>
     <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
     <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
     <input
@@ -20,6 +22,8 @@
     <button>test</button>
   </ng-template>
 </p-tree>
+
+<button (click)="appendNode()">Append</button>
 
 <app-test-firestore>
 

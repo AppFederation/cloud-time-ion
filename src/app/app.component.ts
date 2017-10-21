@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {UITreeNode} from 'primeng/primeng'
 import {NodesService} from './nodes.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
 
@@ -33,8 +34,11 @@ export class AppComponent {
   }
 
   private focusNode(id: number) {
-    document.getElementById('node' + id).focus()
-    this.focusedId = id
+    const elementById = document.getElementById('node' + id)
+    if ( elementById ) {
+      elementById.focus()
+      this.focusedId = id
+    }
   }
 
   private appendNode() {
