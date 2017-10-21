@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import {UITreeNode} from 'primeng/primeng'
 import {NodesService} from './nodes.service'
+import {DbService} from './db.service'
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,37 @@ export class AppComponent {
   focusedId = 0
 
   constructor(
-    private nodesService: NodesService
+    private nodesService: NodesService,
+    public dbService: DbService,
   ) {
-    this.appendNode()
+    // this.appendNode()
     // this.nodesService.getTouristPlaces().subscribe(
     //   (places: any) => this.dragDropTreeOne = places);
-  }
+    this.dbService.listenToChanges(s => {
+      s.docChanges.forEach(change => {
+        console.log('change', change)
+        let data = change.doc.data()
+        console.log('change.doc.data()', data)
+        if (change.type === 'added') {
+          console.log('New city: ', data);
+          // this.elements.push(data)
+          // this.elements = this.elements.slice(0)
+          let node = this.createNode(data)
+          node.dbId = change.doc.id
+          this.dragDropTreeOne.push(node)
+        }
+        if (change.type === 'modified') {
+          console.log('Modified city: ', data);
+        }
+        if (change.type === 'removed') {
+          console.log('Removed city: ', data);
+          this.remove(change.doc.id)
+        }
+      });
+
+  })
+
+}
 
   keyDownEnter() {
     this.appendNode()
@@ -45,12 +71,18 @@ export class AppComponent {
     this.dragDropTreeOne.push(this.createNode())
   }
 
-  private createNode() {
+  private createNode(label?) {
     return <any>{
       'id': this.dragDropTreeOne.length,
-      'label': 'Asia',
+      'label': label || 'Asia',
       'data': 'Documents Folder',
     }
   }
 
+  private remove(id) {
+    this.dragDropTreeOne = this.dragDropTreeOne.filter(el => {
+      return (<any>el).dbId !== id
+    })
+
+  }
 }

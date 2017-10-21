@@ -23,6 +23,7 @@ export class TestFirestoreComponent implements OnInit {
     this.dbService.listenToChanges(s => {
       s.docChanges.forEach(change => {
         let data = change.doc.data()
+        console.log('change', change)
         if (change.type === 'added') {
           console.log('New city: ', data);
           this.elements.push(data)
