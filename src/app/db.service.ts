@@ -62,16 +62,16 @@ export class DbService {
 
   private loadNodesTree() {
     db.collection('roots').onSnapshot(snapshot => {
-      this.processNodeEvents(0, snapshot)
+      this.processNodeEvents(0, snapshot, [])
     })
   }
 
-  private processNodeEvents(nestLevel: number, snapshot: any) {
+  private processNodeEvents(nestLevel: number, snapshot: any, parents) {
     const serviceThis = this
     snapshot.docChanges.forEach(function(change) {
       let data = change.doc.data()
       if (change.type === 'added') {
-        console.log('node: ', nestLevel, data);
+        console.log('node: ', nestLevel, serviceThis.nodesPath(parents), data);
         data.node.onSnapshot(targetNodeDoc => {
           console.log('target node:', nestLevel, targetNodeDoc)
           console.log('target node title:', nestLevel, targetNodeDoc.data().title)
@@ -79,7 +79,9 @@ export class DbService {
           const subCollection = targetNodeDoc.ref.collection('subNodes')
           console.log('subColl:', subCollection)
           subCollection.onSnapshot(subSnap => {
-            serviceThis.processNodeEvents(nestLevel + 1, subSnap)
+            const newParents = parents.slice(0)
+            newParents.push(targetNodeDoc.ref)
+            serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents)
           })
         })
         // console.log('root node ref: ', targetNode);
@@ -91,6 +93,10 @@ export class DbService {
         console.log('Removed city: ', data);
       }
     })
+  }
+
+  nodesPath(path) {
+    return path.map(ref => ref._key)
   }
 
 }
