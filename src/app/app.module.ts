@@ -15,7 +15,7 @@ const appRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'profile',
+    redirectTo: 'tree',
   },
   {
     path: 'tree',
@@ -27,7 +27,7 @@ const appRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'tree',
   },
 
 ];
