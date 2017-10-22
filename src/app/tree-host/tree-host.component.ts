@@ -12,6 +12,8 @@ export class TreeHostComponent implements OnInit {
   rootNodes: TreeNode[] = [];
   focusedId = 0
 
+  showTree = false
+
   pendingListeners = 0
 
   mapIdToNode = new Map<string, TreeNode>();
