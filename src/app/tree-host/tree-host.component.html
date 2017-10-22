@@ -1,0 +1,28 @@
+<p-tree
+  [value]="rootNodes"
+  draggableNodes="true"
+  droppableNodes="true"
+>
+  <ng-template
+    let-node
+    pTemplate="default"
+  >
+    <!--{{node | json}}-->
+    <app-node-content
+      [node]="node"
+    ></app-node-content>
+    <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
+    <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
+    <input
+      (keydown.enter)="keyDownEnter()"
+      (keydown.arrowdown)="keyDownArrow()"
+      (keydown.arrowup)="keyUpArrow()"
+      id="node{{node.id}}"
+    >
+    id="{{node.id}}"
+    {{node.label}}
+    <button>test</button>
+  </ng-template>
+</p-tree>
+
+<button (click)="appendNode()">Append</button>

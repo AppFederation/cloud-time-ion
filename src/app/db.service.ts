@@ -34,11 +34,23 @@ function onSnapshotHandler(snapshot) {
 // Initialize Cloud Firestore through Firebase
 const db = firebase1.firestore();
 
+export class NodeAddEvent {
+  constructor (
+    public parents,
+    public immediateParentId,
+    public node,
+    public id,
+  ) {}
+}
+
+export abstract class DbTreeListener {
+  abstract onNodeAdded(NodeAddEvent)
+}
+
 @Injectable()
 export class DbService {
 
   constructor() {
-    this.loadNodesTree()
     // db.enablePersistence().then(() => {
     //   // window.alert('persistence enabled')
     // })
@@ -62,19 +74,21 @@ export class DbService {
     db.collection('test1').doc(id).delete()
   }
 
-  private loadNodesTree() {
+  loadNodesTree(listener: DbTreeListener) {
     db.collection('roots').onSnapshot(snapshot => {
-      this.processNodeEvents(0, snapshot, [])
+      this.processNodeEvents(0, snapshot, [], listener)
     })
   }
 
-  private processNodeEvents(nestLevel: number, snapshot: any, parents) {
+  private processNodeEvents(nestLevel: number, snapshot: any, parents, listener: DbTreeListener) {
     const serviceThis = this
     snapshot.docChanges.forEach(function(change) {
       let data = change.doc.data()
       if (change.type === 'added') {
-        console.log('node: ', nestLevel, serviceThis.nodesPath(parents), data);
+        const parentsPath = serviceThis.nodesPath(parents)
+        console.log('node: ', nestLevel, parentsPath, data);
         data.node.onSnapshot(targetNodeDoc => {
+          listener.onNodeAdded(new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id))
           console.log('target node:', nestLevel, targetNodeDoc)
           console.log('target node title:', nestLevel, targetNodeDoc.data().title)
 
@@ -83,7 +97,7 @@ export class DbService {
           subCollection.onSnapshot((subSnap: QuerySnapshot) => {
             const newParents = parents.slice(0)
             newParents.push(targetNodeDoc.ref)
-            serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents)
+            serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
           })
         })
         // console.log('root node ref: ', targetNode);
