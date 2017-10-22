@@ -116,4 +116,20 @@ export class TreeHostComponent implements OnInit {
 
   }
 
+  expandAll() {
+    this.rootNodes.forEach( (node: any) => {
+      this.expandRecursive(node, true);
+    } );
+  }
+
+  expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach( childNode => {
+        this.expandRecursive(childNode, isExpand);
+      } );
+    }
+  }
+
+
 }
