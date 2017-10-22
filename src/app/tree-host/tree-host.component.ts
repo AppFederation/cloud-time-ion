@@ -12,6 +12,8 @@ export class TreeHostComponent implements OnInit {
   rootNodes: TreeNode[] = [];
   focusedId = 0
 
+  pendingListeners = 0
+
   mapIdToNode = new Map<string, TreeNode>();
 
   constructor(
@@ -47,6 +49,7 @@ export class TreeHostComponent implements OnInit {
 
     // expand
     this.expandRecursive(newNode, true)
+    this.pendingListeners = event.pendingListeners
   }
 
   // this.appendNode()

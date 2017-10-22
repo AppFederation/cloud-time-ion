@@ -40,6 +40,7 @@ export class NodeAddEvent {
     public immediateParentId,
     public node,
     public id,
+    public pendingListeners: number,
   ) {}
 }
 
@@ -50,10 +51,12 @@ export abstract class DbTreeListener {
 @Injectable()
 export class DbService {
 
+  pendingListeners = 0
+
   constructor() {
-    // db.enablePersistence().then(() => {
-    //   // window.alert('persistence enabled')
-    // })
+    db.enablePersistence().then(() => {
+      // window.alert('persistence enabled')
+    })
     this.listenToChanges(onSnapshotHandler)
   }
 
@@ -80,36 +83,40 @@ export class DbService {
     })
   }
 
-  private processNodeEvents(nestLevel: number, snapshot: any, parents, listener: DbTreeListener) {
-    const serviceThis = this
-    snapshot.docChanges.forEach(function(change) {
-      let data = change.doc.data()
-      if (change.type === 'added') {
-        const parentsPath = serviceThis.nodesPath(parents)
-        console.log('node: ', nestLevel, parentsPath, data);
-        data.node.onSnapshot(targetNodeDoc => {
-          listener.onNodeAdded(new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id))
-          console.log('target node:', nestLevel, targetNodeDoc)
-          console.log('target node title:', nestLevel, targetNodeDoc.data().title)
+    private processNodeEvents(nestLevel: number, snapshot: any, parents, listener: DbTreeListener) {
+      const serviceThis = this
+      snapshot.docChanges.forEach(function(change) {
+        let data = change.doc.data()
+        if (change.type === 'added') {
+          const parentsPath = serviceThis.nodesPath(parents)
+          console.log('node: ', nestLevel, parentsPath, data);
+          serviceThis.pendingListeners ++
+          data.node.onSnapshot(targetNodeDoc => {
+            serviceThis.pendingListeners --
+            listener.onNodeAdded(
+              new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
+                serviceThis.pendingListeners))
+            console.log('target node:', nestLevel, targetNodeDoc)
+            console.log('target node title:', nestLevel, targetNodeDoc.data().title)
 
-          const subCollection = targetNodeDoc.ref.collection('subNodes')
-          console.log('subColl:', subCollection)
-          subCollection.onSnapshot((subSnap: QuerySnapshot) => {
-            const newParents = parents.slice(0)
-            newParents.push(targetNodeDoc.ref)
-            serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
+            const subCollection = targetNodeDoc.ref.collection('subNodes')
+            console.log('subColl:', subCollection)
+            subCollection.onSnapshot((subSnap: QuerySnapshot) => {
+              const newParents = parents.slice(0)
+              newParents.push(targetNodeDoc.ref)
+              serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
+            })
           })
-        })
-        // console.log('root node ref: ', targetNode);
-      }
-      if (change.type === 'modified') {
-        console.log('Modified city: ', data);
-      }
-      if (change.type === 'removed') {
-        console.log('Removed city: ', data);
-      }
-    })
-  }
+          // console.log('root node ref: ', targetNode);
+        }
+        if (change.type === 'modified') {
+          console.log('Modified city: ', data);
+        }
+        if (change.type === 'removed') {
+          console.log('Removed city: ', data);
+        }
+      })
+    }
 
   nodesPath(path) {
     return path.map(ref => {
