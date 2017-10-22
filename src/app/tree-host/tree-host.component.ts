@@ -31,6 +31,7 @@ export class TreeHostComponent implements OnInit {
   private onNodeAdded(event: NodeAddEvent) {
     console.log('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
     const newNode = this.createNode('node from event: ' + event.id)
+    newNode.dbId = event.id
     if ( ! event.immediateParentId ) {
       this.rootNodes.push(newNode)
     } else {
@@ -42,7 +43,7 @@ export class TreeHostComponent implements OnInit {
       }
       children.push(newNode)
     }
-    this.mapIdToNode.set(event.id, newNode)
+    this.mapIdToNode.set(event.id, newNode) // NOTE: does not yet support the same node being in multiple places
   }
 
   // this.appendNode()

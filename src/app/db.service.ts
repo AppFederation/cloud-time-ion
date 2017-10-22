@@ -118,4 +118,19 @@ export class DbService {
     })
   }
 
+  addNode(parentId: string) {
+    console.log('add node to parent to db:', parentId)
+    db.collection('nodes').add({
+      title: 'added node title'
+    }).then(result => {
+      const childDoc: firebase.firestore.DocumentReference = result
+      const childId = childDoc.id
+      if ( parentId ) {
+        db.collection('nodes').doc(parentId).collection('subNodes').add({
+          node: db.collection('nodes').doc(childId)
+        })
+      } // FIXME: add to root
+    })
+  }
+
 }

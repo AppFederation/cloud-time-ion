@@ -36,12 +36,17 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   addChild() {
-    if ( ! this.node.children ) {
-      this.node.children = []
-    }
-    this.node.children.push({
-      label: 'new child'
-    })
+    this.addChildToDb()
+    // if ( ! this.node.children ) {
+    //   this.node.children = []
+    // }
+    // this.node.children.push({
+    //   label: 'new child'
+    // })
+  }
+
+  private addChildToDb() {
+    this.dbService.addNode(this.node.dbId)
   }
 
 }
