@@ -44,6 +44,9 @@ export class TreeHostComponent implements OnInit {
       children.push(newNode)
     }
     this.mapIdToNode.set(event.id, newNode) // NOTE: does not yet support the same node being in multiple places
+
+    // expand
+    this.expandRecursive(newNode, true)
   }
 
   // this.appendNode()
