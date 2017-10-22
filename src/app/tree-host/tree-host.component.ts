@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService, NodeAddEvent} from '../db.service'
+import {DbService, debugLog, NodeAddEvent} from '../db.service'
 import {TreeNode} from 'primeng/primeng'
 
 @Component({
@@ -33,7 +33,7 @@ export class TreeHostComponent implements OnInit {
   }
 
   private onNodeAdded(event: NodeAddEvent) {
-    console.log('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
+    debugLog('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
     const newNode = this.createNode('node from event: ' + event.id)
     newNode.dbId = event.id
     if ( ! event.immediateParentId ) {
@@ -59,23 +59,23 @@ export class TreeHostComponent implements OnInit {
   //   (places: any) => this.dragDropTreeOne = places);
   // this.dbService.listenToChanges(s => {
   //   s.docChanges.forEach(change => {
-  //     console.log('change', change)
+  //     debugLog('change', change)
   //     let data = change.doc.data()
-  //     console.log('change.doc.data()', data)
+  //     debugLog('change.doc.data()', data)
   //     if (change.type === 'added') {
-  //       console.log('New city: ', data);
+  //       debugLog('New city: ', data);
   //       // this.elements.push(data)
   //       // this.elements = this.elements.slice(0)
   //       let node = this.createNode(data)
   //       node.dbId = change.doc.id
-  //       console.log('change.doc.id', change.doc.id)
+  //       debugLog('change.doc.id', change.doc.id)
   //       this.dragDropTreeOne.push(node)
   //     }
   //     if (change.type === 'modified') {
-  //       console.log('Modified city: ', data);
+  //       debugLog('Modified city: ', data);
   //     }
   //     if (change.type === 'removed') {
-  //       console.log('Removed city: ', data);
+  //       debugLog('Removed city: ', data);
   //       this.remove(change.doc.id)
   //     }
   //   });
@@ -102,7 +102,7 @@ export class TreeHostComponent implements OnInit {
     }
   }
 
-  private appendNode() {
+  appendNode() {
     let newNode: TreeNode = this.createNode()
     newNode.children = [
       this.createNode('CHILD')

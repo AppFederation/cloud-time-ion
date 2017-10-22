@@ -16,17 +16,24 @@ firebase1.initializeApp({
   messagingSenderId: '970393221829'
 });
 
+const enableLogging = false
+
+export function debugLog(...args) {
+  if ( enableLogging ) {
+    console.log(args)
+  }
+}
 
 function onSnapshotHandler(snapshot) {
   snapshot.docChanges.forEach(function(change) {
     if (change.type === 'added') {
-      console.log('New city: ', change.doc.data());
+      debugLog('New city: ', change.doc.data());
     }
     if (change.type === 'modified') {
-      console.log('Modified city: ', change.doc.data());
+      debugLog('Modified city: ', change.doc.data());
     }
     if (change.type === 'removed') {
-      console.log('Removed city: ', change.doc.data());
+      debugLog('Removed city: ', change.doc.data());
     }
   });
 }
@@ -89,31 +96,31 @@ export class DbService {
         let data = change.doc.data()
         if (change.type === 'added') {
           const parentsPath = serviceThis.nodesPath(parents)
-          console.log('node: ', nestLevel, parentsPath, data);
+          debugLog('node: ', nestLevel, parentsPath, data);
           serviceThis.pendingListeners ++
           data.node.onSnapshot(targetNodeDoc => {
             serviceThis.pendingListeners --
             listener.onNodeAdded(
               new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
                 serviceThis.pendingListeners))
-            console.log('target node:', nestLevel, targetNodeDoc)
-            console.log('target node title:', nestLevel, targetNodeDoc.data().title)
+            debugLog('target node:', nestLevel, targetNodeDoc)
+            debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
 
             const subCollection = targetNodeDoc.ref.collection('subNodes')
-            console.log('subColl:', subCollection)
+            debugLog('subColl:', subCollection)
             subCollection.onSnapshot((subSnap: QuerySnapshot) => {
               const newParents = parents.slice(0)
               newParents.push(targetNodeDoc.ref)
               serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
             })
           })
-          // console.log('root node ref: ', targetNode);
+          // debugLog('root node ref: ', targetNode);
         }
         if (change.type === 'modified') {
-          console.log('Modified city: ', data);
+          debugLog('Modified city: ', data);
         }
         if (change.type === 'removed') {
-          console.log('Removed city: ', data);
+          debugLog('Removed city: ', data);
         }
       })
     }
@@ -126,7 +133,7 @@ export class DbService {
   }
 
   addNode(parentId: string) {
-    console.log('add node to parent to db:', parentId)
+    debugLog('add node to parent to db:', parentId)
     db.collection('nodes').add({
       title: 'added node title'
     }).then(result => {

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {DbService} from '../db.service'
+import {DbService, debugLog} from '../db.service'
 import {TreeNode} from 'primeng/primeng'
 
 @Component({
@@ -19,8 +19,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.node)
-    // console.log('n2', this.node2)
+    debugLog(this.node)
+    // debugLog('n2', this.node2)
   }
 
   focusInput() {

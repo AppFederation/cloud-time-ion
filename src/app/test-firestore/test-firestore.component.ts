@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService} from '../db.service'
+import {DbService, debugLog} from '../db.service'
 
 @Component({
   selector: 'app-test-firestore',
@@ -23,17 +23,17 @@ export class TestFirestoreComponent implements OnInit {
     this.dbService.listenToChanges(s => {
       s.docChanges.forEach(change => {
         let data = change.doc.data()
-        console.log('change', change)
+        debugLog('change', change)
         if (change.type === 'added') {
-          console.log('New city: ', data);
+          debugLog('New city: ', data);
           this.elements.push(data)
           this.elements = this.elements.slice(0)
         }
         if (change.type === 'modified') {
-          console.log('Modified city: ', data);
+          debugLog('Modified city: ', data);
         }
         if (change.type === 'removed') {
-          console.log('Removed city: ', data);
+          debugLog('Removed city: ', data);
         }
       });
 
