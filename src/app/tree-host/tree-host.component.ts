@@ -12,7 +12,7 @@ export class TreeHostComponent implements OnInit {
   rootNodes: TreeNode[] = [];
   focusedId = 0
 
-  showTree = false
+  showTree = true
 
   pendingListeners = 0
 
@@ -103,11 +103,7 @@ export class TreeHostComponent implements OnInit {
   }
 
   appendNode() {
-    let newNode: TreeNode = this.createNode()
-    newNode.children = [
-      this.createNode('CHILD')
-    ]
-    this.rootNodes.push(newNode)
+    this.dbService.addNode(null)
   }
 
   private createNode(label?) {

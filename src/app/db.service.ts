@@ -58,7 +58,13 @@ export abstract class DbTreeListener {
 @Injectable()
 export class DbService {
 
+  static dbPrefix = 'db2'
+
   pendingListeners = 0
+
+
+  private NODES_COLLECTION = DbService.dbPrefix + 'nodes'
+  private ROOTS_COLLECTION = DbService.dbPrefix + 'roots'
 
   constructor() {
     db.enablePersistence().then(() => {
@@ -84,8 +90,9 @@ export class DbService {
     db.collection('test1').doc(id).delete()
   }
 
+
   loadNodesTree(listener: DbTreeListener) {
-    db.collection('roots').onSnapshot(snapshot => {
+    db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
       this.processNodeEvents(0, snapshot, [], listener)
     })
   }
@@ -132,18 +139,23 @@ export class DbService {
     })
   }
 
+
   addNode(parentId: string) {
     debugLog('add node to parent to db:', parentId)
-    db.collection('nodes').add({
+    db.collection(this.NODES_COLLECTION).add({
       title: 'added node title'
     }).then(result => {
       const childDoc: firebase.firestore.DocumentReference = result
       const childId = childDoc.id
       if ( parentId ) {
-        db.collection('nodes').doc(parentId).collection('subNodes').add({
-          node: db.collection('nodes').doc(childId)
+        db.collection(this.NODES_COLLECTION).doc(parentId).collection('subNodes').add({
+          node: db.collection(this.NODES_COLLECTION).doc(childId)
         })
-      } // FIXME: add to root
+      } else {
+        db.collection(this.ROOTS_COLLECTION).add({
+          node: db.collection(this.NODES_COLLECTION).doc(childId)
+        })
+      }
     })
   }
 
