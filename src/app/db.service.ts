@@ -58,7 +58,7 @@ export abstract class DbTreeListener {
 @Injectable()
 export class DbService {
 
-  static dbPrefix = 'db2'
+  static dbPrefix = 'db5'
 
   pendingListeners = 0
 
@@ -148,7 +148,7 @@ export class DbService {
       const childDoc: firebase.firestore.DocumentReference = result
       const childId = childDoc.id
       if ( parentId ) {
-        db.collection(this.NODES_COLLECTION).doc(parentId).collection('subNodes').add({
+        this.nodesCollection().doc(parentId).collection('subNodes').add({
           node: db.collection(this.NODES_COLLECTION).doc(childId)
         })
       } else {
@@ -159,4 +159,18 @@ export class DbService {
     })
   }
 
+  private nodesCollection() {
+    return db.collection(this.NODES_COLLECTION)
+  }
+
+  moveNode(dbId: string, dbId2: string) {
+    this.nodeDocById(dbId2).collection('subNodes').add({
+      node: this.nodeDocById(dbId)
+    })
+    // db.collection(this.node)
+  }
+
+  private nodeDocById(dbId: string) {
+    return this.nodesCollection().doc(dbId)
+  }
 }

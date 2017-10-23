@@ -1,36 +1,47 @@
-<button
-  (click)='expandAll()'>
-  Expand All
-</button>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <button
+        class="btn btn-primary"
+        (click)='expandAll()'>
+        Expand All
+      </button>
 
-Pending listeners: {{pendingListeners}}
-Node count: {{mapIdToNode.size}}
-<p-tree
-  *ngIf="showTree"
-  [value]="rootNodes"
-  draggableNodes="true"
-  droppableNodes="true"
->
-  <ng-template
-    let-node
-    pTemplate="default"
-  >
-    <!--{{node | json}}-->
-    <app-node-content
-      [node]="node"
-    ></app-node-content>
-    <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
-    <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
-    <input
-      (keydown.enter)="keyDownEnter()"
-      (keydown.arrowdown)="keyDownArrow()"
-      (keydown.arrowup)="keyUpArrow()"
-      id="node{{node.id}}"
-    >
-    id="{{node.id}}"
-    {{node.label}}
-    <button>test</button>
-  </ng-template>
-</p-tree>
+      Pending listeners: {{pendingListeners}}
+      Node count: {{mapIdToNode.size}}
+      <p-tree
+        *ngIf="showTree"
+        [value]="rootNodes"
+        draggableNodes="true"
+        droppableNodes="true"
+        (onNodeDrop)="nodeDrop($event)"
+      >
+        <ng-template
+          let-node
+          pTemplate="default"
+        >
+          <!--{{node | json}}-->
+          <app-node-content
+            [node]="node"
+          ></app-node-content>
+          <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
+          <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
+          <input
+            (keydown.enter)="keyDownEnter()"
+            (keydown.arrowdown)="keyDownArrow()"
+            (keydown.arrowup)="keyUpArrow()"
+            id="node{{node.id}}"
+          >
+          id="{{node.id}}"
+          {{node.label}}
+          <button>test</button>
+        </ng-template>
+      </p-tree>
 
-<button (click)="appendNode()">Append</button>
+      <button (click)="appendNode()">Append</button>
+    </div>
+
+  </div>
+
+</div>
+

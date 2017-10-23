@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DbService, debugLog, NodeAddEvent} from '../db.service'
-import {TreeNode} from 'primeng/primeng'
+import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 
 @Component({
   selector: 'app-tree-host',
@@ -12,18 +12,28 @@ export class TreeHostComponent implements OnInit {
   rootNodes: TreeNode[] = [];
   focusedId = 0
 
-  showTree = true
+  showTree = false
 
   pendingListeners = 0
 
   mapIdToNode = new Map<string, TreeNode>();
 
   constructor(
-    public dbService: DbService
-  ) { }
+    public dbService: DbService,
+    public treeDragDropService: TreeDragDropService,
+  ) {
+    treeDragDropService.dragStop$.subscribe((...args) => {
+      console.log('dragStop$', args)
+    })
+    // treeDragDropService.
+
+  }
 
   ngOnInit() {
     const componentThis = this
+    setTimeout(() => {
+      this.showTree = true
+    }, 2000)
     this.dbService.loadNodesTree({
       onNodeAdded(event: NodeAddEvent) {
         componentThis.onNodeAdded(event)
@@ -134,6 +144,12 @@ export class TreeHostComponent implements OnInit {
         this.expandRecursive(childNode, isExpand);
       } );
     }
+  }
+
+  nodeDrop(event) {
+    console.log('nodeDrop', event)
+
+    this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId)
   }
 
 
