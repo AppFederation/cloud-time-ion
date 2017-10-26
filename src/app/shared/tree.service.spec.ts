@@ -15,7 +15,7 @@ function expectNodeIds(actualNodes: OryTreeNode[] | TreeModel, expectedNodeIds: 
 
 }
 
-function addNode(treeModel, nodeInclusionId, orderThisBeforeId, orderThisAfterId, orderNum?: number) {
+function addNode(treeModel, orderThisAfterId, nodeInclusionId, orderThisBeforeId, orderNum?: number) {
   treeModel.onNodeAdded(new NodeAddEvent(null, null, null /* TODO: node content*/, nodeInclusionId,
     null, new NodeInclusion(orderThisBeforeId, orderThisAfterId, orderNum) ))
 }
@@ -45,40 +45,38 @@ describe('TreeService', () => {
 
   it('adds first and only node', () => {
     const treeModel = new TreeModel()
-    addNode(treeModel, 'id1', null, null)
+    addNode(treeModel, null, 'id1', null)
     expectNodeIds(treeModel, 'id1')
   })
 
   it('adds node after', () => {
     const treeModel = new TreeModel()
-    const root = treeModel.root
-    addNode(treeModel, 'id1', null, null, 0)
-    addNode(treeModel, 'id2', null, 'id1', 1)
-    const children = root.children
-    expectNodeIds(children, 'id1,id2')
+    addNode(treeModel, null, 'id1', null, 0)
+    addNode(treeModel, 'id1', 'id2', null, 1)
+    expectNodeIds(treeModel, 'id1,id2')
   })
 
   it('adds node before', () => {
     const treeModel = new TreeModel()
-    addNode(treeModel, 'id2', null, null, 0)
-    addNode(treeModel, 'id1', 'id2', null, 0)
+    addNode(treeModel, null, 'id2', null, 0)
+    addNode(treeModel, null, 'id1', 'id2', 0)
     expectNodeIds(treeModel, 'id1, id2')
   })
 
   it('adds node between', () => {
     const treeModel = new TreeModel()
-    addNode(treeModel, 'id1', null, null)
-    addNode(treeModel, 'id3', null, 'id1')
-    addNode(treeModel, 'id2', 'id3', 'id1')
+    addNode(treeModel, null, 'id1', null)
+    addNode(treeModel, 'id1', 'id3', null)
+    addNode(treeModel, 'id1', 'id2', 'id3')
     expectNodeIds(treeModel, 'id1, id2, id3')
   })
 
   it('adds node between another', () => {
     const treeModel = new TreeModel()
-    addNode(treeModel, 'id1', null, null)
-    addNode(treeModel, 'id3', null, 'id1')
-    addNode(treeModel, 'id2', 'id3', 'id1')
-    addNode(treeModel, 'id2_2', 'id3', 'id2')
+    addNode(treeModel, null, 'id1', null)
+    addNode(treeModel, 'id1', 'id3', null)
+    addNode(treeModel, 'id1', 'id2', 'id3')
+    addNode(treeModel, 'id2', 'id2_2', 'id3')
     expectNodeIds(treeModel, 'id1, id2, id2_2, id3')
   })
 
