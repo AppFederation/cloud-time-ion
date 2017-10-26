@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService, debugLog, NodeAddEvent} from '../db.service'
+import {DbService, debugLog} from '../db.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
+import {NodeAddEvent} from '../shared/tree.service'
 
 @Component({
   selector: 'app-tree-host',

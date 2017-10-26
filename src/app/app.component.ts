@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import {TreeNode, UITreeNode} from 'primeng/primeng'
-import {NodesService} from './nodes.service'
 import {DbService} from './db.service'
 
 @Component({
@@ -13,7 +12,6 @@ export class AppComponent {
 
 
   constructor(
-    private nodesService: NodesService,
     public dbService: DbService,
   ) {
 

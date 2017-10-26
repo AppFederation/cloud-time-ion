@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
+import {DbTreeListener, NodeAddEvent} from './shared/tree.service'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -41,19 +42,6 @@ function onSnapshotHandler(snapshot) {
 // Initialize Cloud Firestore through Firebase
 const db = firebase1.firestore();
 
-export class NodeAddEvent {
-  constructor (
-    public parents,
-    public immediateParentId,
-    public node,
-    public id,
-    public pendingListeners: number,
-  ) {}
-}
-
-export abstract class DbTreeListener {
-  abstract onNodeAdded(NodeAddEvent)
-}
 
 @Injectable()
 export class DbService {
@@ -100,16 +88,16 @@ export class DbService {
     private processNodeEvents(nestLevel: number, snapshot: any, parents, listener: DbTreeListener) {
       const serviceThis = this
       snapshot.docChanges.forEach(function(change) {
-        let data = change.doc.data()
+        const nodeInclusionData = change.doc.data()
         if (change.type === 'added') {
           const parentsPath = serviceThis.nodesPath(parents)
-          debugLog('node: ', nestLevel, parentsPath, data);
+          debugLog('node: ', nestLevel, parentsPath, nodeInclusionData);
           serviceThis.pendingListeners ++
-          data.node.onSnapshot(targetNodeDoc => {
+          nodeInclusionData.node.onSnapshot(targetNodeDoc => {
             serviceThis.pendingListeners --
             listener.onNodeAdded(
               new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
-                serviceThis.pendingListeners))
+                serviceThis.pendingListeners, nodeInclusionData))
             debugLog('target node:', nestLevel, targetNodeDoc)
             debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
 
@@ -124,10 +112,10 @@ export class DbService {
           // debugLog('root node ref: ', targetNode);
         }
         if (change.type === 'modified') {
-          debugLog('Modified city: ', data);
+          debugLog('Modified city: ', nodeInclusionData);
         }
         if (change.type === 'removed') {
-          debugLog('Removed city: ', data);
+          debugLog('Removed city: ', nodeInclusionData);
         }
       })
     }
