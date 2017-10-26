@@ -49,18 +49,34 @@ describe('TreeService', () => {
     expectNodeIds(treeModel, 'id1')
   })
 
-  it('adds node after', () => {
+  it('adds node after as rightmost', () => {
     const treeModel = new TreeModel()
     addNode(treeModel, null, 'id1', null, 0)
     addNode(treeModel, 'id1', 'id2', null, 1)
-    expectNodeIds(treeModel, 'id1,id2')
+    expectNodeIds(treeModel, 'id1, id2')
   })
 
-  it('adds node before', () => {
+  it('adds node after as rightmost again', () => {
+    const treeModel = new TreeModel()
+    addNode(treeModel, null, 'id1', null, 0)
+    addNode(treeModel, 'id1', 'id2', null, 1)
+    addNode(treeModel, 'id2', 'id3', null, 1)
+    expectNodeIds(treeModel, 'id1, id2, id3')
+  })
+
+  it('adds node before as leftmost', () => {
     const treeModel = new TreeModel()
     addNode(treeModel, null, 'id2', null, 0)
     addNode(treeModel, null, 'id1', 'id2', 0)
     expectNodeIds(treeModel, 'id1, id2')
+  })
+
+  it('adds node before as leftmost again', () => {
+    const treeModel = new TreeModel()
+    addNode(treeModel, null, 'id2', null, 0)
+    addNode(treeModel, null, 'id1', 'id2', 0)
+    addNode(treeModel, null, 'id0', 'id1', 0)
+    expectNodeIds(treeModel, 'id0, id1, id2')
   })
 
   it('adds node between', () => {
