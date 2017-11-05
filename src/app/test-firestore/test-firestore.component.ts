@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService, debugLog} from '../db.service'
+import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 
 @Component({
   selector: 'app-test-firestore',
@@ -11,7 +11,7 @@ export class TestFirestoreComponent implements OnInit {
   elements = []
 
   constructor(
-    public dbService: DbService
+    public dbService: FirestoreTreeService
   ) { }
 
   ngOnInit() {

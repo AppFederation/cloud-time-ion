@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import {TreeNode, UITreeNode} from 'primeng/primeng'
-import {DbService} from './db.service'
+import {FirestoreTreeService} from './shared/firestore-tree.service'
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent {
 
 
   constructor(
-    public dbService: DbService,
+    public dbService: FirestoreTreeService,
   ) {
 
   }

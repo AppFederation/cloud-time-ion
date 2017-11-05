@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {DbService, debugLog} from '../db.service'
+import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
-import {NodeAddEvent} from '../shared/tree.service'
+import {TreeService} from '../shared/tree.service'
+import {TreeModel} from '../shared/TreeModel'
 
 @Component({
   selector: 'app-tree-host',
@@ -10,6 +11,8 @@ import {NodeAddEvent} from '../shared/tree.service'
 })
 export class TreeHostComponent implements OnInit {
 
+  treeModel: TreeModel = new TreeModel()
+
   rootNodes: TreeNode[] = [];
   focusedId = 0
 
@@ -17,10 +20,8 @@ export class TreeHostComponent implements OnInit {
 
   pendingListeners = 0
 
-  mapIdToNode = new Map<string, TreeNode>();
-
   constructor(
-    public dbService: DbService,
+    public treeService: TreeService,
     public treeDragDropService: TreeDragDropService,
   ) {
     treeDragDropService.dragStop$.subscribe((...args) => {
@@ -28,42 +29,38 @@ export class TreeHostComponent implements OnInit {
     })
     // treeDragDropService.
 
+    this.treeModel = this.treeService.getRootTreeModel()
+
   }
 
+
   ngOnInit() {
-    const componentThis = this
     setTimeout(() => {
       this.showTree = true
     }, 2000)
-    this.dbService.loadNodesTree({
-      onNodeAdded(event: NodeAddEvent) {
-        componentThis.onNodeAdded(event)
-      }
-    })
-
   }
 
-  private onNodeAdded(event: NodeAddEvent) {
-    debugLog('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
-    const newNode = this.createNode('node from event: ' + event.id)
-    newNode.dbId = event.id
-    if ( ! event.immediateParentId ) {
-      this.rootNodes.push(newNode)
-    } else {
-      const parentNode = this.mapIdToNode.get(event.immediateParentId)
-      let children = parentNode.children
-      if ( ! children ) {
-        children = []
-        parentNode.children = children
-      }
-      children.push(newNode)
-    }
-    this.mapIdToNode.set(event.id, newNode) // NOTE: does not yet support the same node being in multiple places
-
-    // expand
-    this.expandRecursive(newNode, true)
-    this.pendingListeners = event.pendingListeners
-  }
+  // private onNodeAdded(event: NodeAddEvent) {
+  //   debugLog('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
+  //   const newNode = this.createNode('node from event: ' + event.id)
+  //   newNode.dbId = event.id
+  //   if ( ! event.immediateParentId ) {
+  //     this.rootNodes.push(newNode)
+  //   } else {
+  //     const parentNode = this.mapIdToNode.get(event.immediateParentId)
+  //     let children = parentNode.children
+  //     if ( ! children ) {
+  //       children = []
+  //       parentNode.children = children
+  //     }
+  //     children.push(newNode)
+  //   }
+  //   this.mapIdToNode.set(event.id, newNode) // NOTE: does not yet support the same node being in multiple places
+  //
+  //   // expand
+  //   this.expandRecursive(newNode, true)
+  //   this.pendingListeners = event.pendingListeners
+  // }
 
   // this.appendNode()
   // this.nodesService.getTouristPlaces().subscribe(
@@ -114,7 +111,7 @@ export class TreeHostComponent implements OnInit {
   }
 
   appendNode() {
-    this.dbService.addNode(null)
+    this.treeService.addNode(this.treeModel.root.getLastChild(), null)
   }
 
   private createNode(label?) {

@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { FirestoreTreeService } from './firestore-tree.service';
 
-describe('FirestoreTreeService', () => {
+describe('DbService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [FirestoreTreeService]

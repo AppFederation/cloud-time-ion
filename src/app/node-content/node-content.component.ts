@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {DbService, debugLog} from '../db.service'
+import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 import {TreeNode} from 'primeng/primeng'
 
 @Component({
@@ -15,7 +15,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
   constructor(
-    public dbService: DbService,
+    public dbService: FirestoreTreeService,
   ) { }
 
   ngOnInit() {

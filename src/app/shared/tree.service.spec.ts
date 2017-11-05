@@ -1,13 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import {NodeAddEvent, NodeInclusion, OryTreeNode, TreeModel, TreeService} from './tree.service';
+import {TreeService} from './tree.service';
+import {NodeAddEvent, NodeInclusion, OryTreeNode, TreeModel, } from './TreeModel';
 
 function expectNodeIds(actualNodes: OryTreeNode[] | TreeModel, expectedNodeIds: string) {
   if ( actualNodes instanceof TreeModel ) {
     actualNodes = actualNodes.root.children
   }
   const expectedChildrenIdsArr = expectedNodeIds.split(',').map(str => str.trim())
-  const actualChildrenIdsArr = actualNodes.map(child => child.dbId)
+  const actualChildrenIdsArr = actualNodes.map(child => child.nodeInclusion.nodeInclusionId)
   expect(actualChildrenIdsArr).toEqual(expectedChildrenIdsArr)
   // expect(children.length).toBe(expectedChildrenIdsArr.length)
   // expect(children[0].dbId).toBe('id1')
@@ -15,15 +16,17 @@ function expectNodeIds(actualNodes: OryTreeNode[] | TreeModel, expectedNodeIds: 
 
 }
 
+let nodeIdCounter = 0
+
 function addNode(treeModel, orderThisAfterId, nodeInclusionId, orderThisBeforeId, orderNum?: number) {
-  treeModel.onNodeAdded(new NodeAddEvent(null, null, null /* TODO: node content*/, nodeInclusionId,
-    null, new NodeInclusion(orderThisBeforeId, orderThisAfterId, orderNum) ))
+  treeModel.onNodeAdded(new NodeAddEvent(null, null, null /* TODO: node content*/, 'node' + nodeIdCounter++,
+    null, new NodeInclusion(orderThisBeforeId, orderThisAfterId, orderNum, nodeInclusionId) ))
 }
 
 // TODO:
-// - adapt to expectNodeIds
+// - DONE: adapt to expectNodeIds
 // - test adding to non-root
-// - create shorthand function for posting node events
+// - DONE: create shorthand function for posting node events
 // - use TreeModel in TreeHost
 // - change id-s next/previous to be id-s of nodeInclusion, not node id
 // - add button to add node before/after
@@ -39,9 +42,9 @@ describe('TreeService', () => {
     });
   });
 
-  it('should be created', inject([TreeService], (service: TreeService) => {
-    expect(service).toBeTruthy();
-  }));
+  // it('should be created', inject([TreeService], (service: TreeService) => {
+  //   expect(service).toBeTruthy();
+  // }));
 
   it('adds first and only node', () => {
     const treeModel = new TreeModel()
@@ -87,7 +90,7 @@ describe('TreeService', () => {
     expectNodeIds(treeModel, 'id1, id2, id3')
   })
 
-  it('adds node between another', () => {
+  it('adds node between again', () => {
     const treeModel = new TreeModel()
     addNode(treeModel, null, 'id1', null)
     addNode(treeModel, 'id1', 'id3', null)
