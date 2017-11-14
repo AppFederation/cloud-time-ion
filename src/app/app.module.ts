@@ -10,6 +10,7 @@ import { NodeContentComponent } from './node-content/node-content.component'
 import {RouterModule, Routes} from '@angular/router';
 import { TreeHostComponent } from './tree-host/tree-host.component'
 import {TreeService} from './shared/tree.service'
+import {MatIconModule} from '@angular/material'
 
 const appRoutes: Routes = [
   {
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     BrowserModule,
     TreeModule,
     HttpModule,
+    // MatIconModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [
