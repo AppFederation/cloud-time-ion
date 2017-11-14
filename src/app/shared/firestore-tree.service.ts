@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
-import {DbTreeListener, NodeAddEvent} from './TreeModel'
+import {DbTreeListener, NodeAddEvent} from './TreeListener'
 
 const firebase1 = require('firebase');
 // Required for side-effects

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import {TreeNode} from 'primeng/primeng'
 import {FirestoreTreeService} from './firestore-tree.service'
-import {NodeAddEvent, TreeModel} from './TreeModel'
-
-
-
+import {TreeModel} from './TreeModel'
+import {NodeAddEvent} from './TreeListener'
 
 
 @Injectable()

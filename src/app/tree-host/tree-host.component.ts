@@ -111,7 +111,8 @@ export class TreeHostComponent implements OnInit {
   }
 
   appendNode() {
-    this.treeService.addNode(this.treeModel.root.getLastChild(), null)
+    // this.treeService.addNode(this.treeModel.root.getLastChild(), null) // FIXME
+    this.rootNodes.push({}) // FIXME: dummy impl
   }
 
   private createNode(label?) {
@@ -147,7 +148,7 @@ export class TreeHostComponent implements OnInit {
   nodeDrop(event) {
     console.log('nodeDrop', event)
 
-    this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId)
+    // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
 
 

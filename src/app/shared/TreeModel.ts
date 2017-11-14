@@ -6,11 +6,6 @@ import {NodeAddEvent, NodeInclusion} from './TreeListener'
 
 export class OryTreeNode implements TreeNode {
 
-  nodeInclusion: NodeInclusion
-
-
-  dbId
-
   treeModel: TreeModel
 
   // from PrimeNG's TreeNode:
@@ -31,14 +26,19 @@ export class OryTreeNode implements TreeNode {
   droppable?: boolean;
   selectable?: boolean;
 
-  addSiblingAfterThis()
+  constructor(
+    public nodeInclusion: NodeInclusion,
+    public dbId,
+  ) {}
+
+  addSiblingAfterThis() { /* FIXME */}
 
 }
 
 
 export class TreeModel {
 
-  root: OryTreeNode = new OryTreeNode()
+  root: OryTreeNode = new OryTreeNode(null, null)
 
   mapIdToNode = new Map<string, TreeNode>()
 
@@ -70,10 +70,10 @@ export class TreeModel {
         return existingNode.dbId === nodeInclusion.orderThisBeforeId
       })
     }
-    const newNode: OryTreeNode = new OryTreeNode() {
-      nodeInclusion: event.nodeInclusion,
-      dbId: event.id,
-    }
+    const newNode: OryTreeNode = new OryTreeNode(
+      event.nodeInclusion,
+      event.id,
+    )
     children.splice(orderBeforeIndex, 0, newNode)
 
   }
