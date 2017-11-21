@@ -17,12 +17,14 @@
       flex-basis: fit-content;
       width: 3em;
       text-align: right;
+      margin-left: .3em; margin-right: .3em
     "
   >
 
   <input
     style="
       flex-grow: 1;
+      margin-right: .3em
     "
     #input
     (keydown.enter)="keyPressEnter()"
@@ -32,6 +34,7 @@
 
   <button
     (click)="delete()"
+    style="margin-right: .3em"
   >
     Delete
   </button>
