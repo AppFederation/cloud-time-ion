@@ -37,7 +37,10 @@ export class TreeHostComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.showTree = true
-    }, 2000)
+      this.rootNodes.push({})
+      this.rootNodes.push({})
+      this.rootNodes.push({})
+    }, 0 /*2000*/)
   }
 
   // private onNodeAdded(event: NodeAddEvent) {

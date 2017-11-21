@@ -1,23 +1,31 @@
 <!--<mat-icon></mat-icon>-->
 <!--<i class="material-icons">assignment</i>-->
-<i class="material-icons">settings_applications</i>
-<!--<i class="material-icons">work</i>-->
-<!--<i class="material-icons">build</i>-->
-<!--<i class="material-icons">next_week</i>-->
+
+<div style="display: flex; align-items: center;">
+
+  <i class="material-icons">settings_applications</i>
+  <!--<i class="material-icons">work</i>-->
+  <!--<i class="material-icons">build</i>-->
+  <!--<i class="material-icons">next_week</i>-->
 
 
-Input to get focus: <input #input>
+  Input to get focus:
+
+  <input
+    style="flex-grow: 1"
+    #input>
 
 
 
-<button
-  (click)="delete()"
->
-  Delete
-</button>
+  <button
+    (click)="delete()"
+  >
+    Delete
+  </button>
 
-<button
-  (click)="addChild()"
->
-  Add Child
-</button>
+  <button
+    (click)="addChild()"
+  >
+    Add Child
+  </button>
+</div>
