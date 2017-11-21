@@ -6,6 +6,7 @@ import {TreeNode} from 'primeng/primeng'
   selector: 'app-node-content',
   templateUrl: './node-content.component.html',
   styleUrls: ['./node-content.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class NodeContentComponent implements OnInit, AfterViewInit {
 
