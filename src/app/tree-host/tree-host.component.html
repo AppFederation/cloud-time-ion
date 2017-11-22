@@ -11,7 +11,7 @@
       <!--Node count: {{mapIdToNode.size}}-->
       <p-tree
         *ngIf="showTree"
-        [value]="rootNodes"
+        [value]="treeModel.root.children"
         draggableNodes="true"
         droppableNodes="true"
         (onNodeDrop)="nodeDrop($event)"

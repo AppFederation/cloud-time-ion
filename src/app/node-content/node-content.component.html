@@ -13,13 +13,20 @@
   <input
     maxlength="3"
     value="30"
-    style="flex-basis: fit-content; width: 3em"
+    style="
+      flex-basis: fit-content;
+      width: 3em;
+      text-align: right;
+    "
   >
 
   <input
-
-    style="flex-grow: 1;"
-    #input>
+    style="
+      flex-grow: 1;
+    "
+    #input
+    (keydown.enter)="keyPressEnter()"
+  >
 
 
 

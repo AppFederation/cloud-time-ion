@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 import {TreeNode} from 'primeng/primeng'
+import {OryTreeNode} from '../shared/TreeModel'
 
 @Component({
   selector: 'app-node-content',
@@ -10,7 +11,8 @@ import {TreeNode} from 'primeng/primeng'
 })
 export class NodeContentComponent implements OnInit, AfterViewInit {
 
-  @Input() node: TreeNode & {dbId: string}
+  // @Input() node: TreeNode & {dbId: string}
+  @Input() node: OryTreeNode
   // @Input() node2
   @ViewChild('input') inputEl: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
@@ -20,7 +22,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    debugLog(this.node)
+    debugLog('node content node', this.node)
     // debugLog('n2', this.node2)
   }
 
@@ -48,6 +50,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   private addChildToDb() {
     this.dbService.addNode(this.node.dbId)
+  }
+
+  keyPressEnter() {
+    this.addNodeAfterThis()
+    console.log('key press enter; node: ', this.node)
+  }
+
+  private addNodeAfterThis() {
+    this.node.addSiblingAfterThis()
   }
 
 }

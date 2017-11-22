@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../shared/tree.service'
-import {TreeModel} from '../shared/TreeModel'
+import {OryTreeNode, TreeModel} from '../shared/TreeModel'
 
 @Component({
   selector: 'app-tree-host',
@@ -13,8 +13,9 @@ export class TreeHostComponent implements OnInit {
 
   treeModel: TreeModel = new TreeModel()
 
-  rootNodes: TreeNode[] = [];
+  // rootNodes: TreeNode[] = []
   focusedId = 0
+  fakeId = 111
 
   showTree = false
 
@@ -37,9 +38,9 @@ export class TreeHostComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.showTree = true
-      this.rootNodes.push({})
-      this.rootNodes.push({})
-      this.rootNodes.push({})
+      this.appendNode()
+      this.appendNode()
+      this.appendNode()
     }, 0 /*2000*/)
   }
 
@@ -115,26 +116,27 @@ export class TreeHostComponent implements OnInit {
 
   appendNode() {
     // this.treeService.addNode(this.treeModel.root.getLastChild(), null) // FIXME
-    this.rootNodes.push({}) // FIXME: dummy impl
+    const newNode = new OryTreeNode(null, this.fakeId ++)
+    this.treeModel.root.appendChild(newNode) // FIXME: dummy impl
   }
 
   private createNode(label?) {
     return <any>{
-      'id': this.rootNodes.length,
+      'id': this.fakeId ++,
       'label': label || 'Asia',
       'data': 'Documents Folder',
     }
   }
 
   private remove(id) {
-    this.rootNodes = this.rootNodes.filter(el => {
+    this.treeModel.root.children = this.treeModel.root.children.filter(el => {
       return (<any>el).dbId !== id
     })
 
   }
 
   expandAll() {
-    this.rootNodes.forEach( (node: any) => {
+    this.treeModel.root.children.forEach( (node: any) => {
       this.expandRecursive(node, true);
     } );
   }

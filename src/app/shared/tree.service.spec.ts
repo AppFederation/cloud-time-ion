@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import {TreeService} from './tree.service';
-import {NodeAddEvent, NodeInclusion, OryTreeNode, TreeModel, } from './TreeModel';
+import {OryTreeNode, TreeModel, } from './TreeModel';
 
 function expectNodeIds(actualNodes: OryTreeNode[] | TreeModel, expectedNodeIds: string) {
   if ( actualNodes instanceof TreeModel ) {

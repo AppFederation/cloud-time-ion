@@ -17,7 +17,7 @@ firebase1.initializeApp({
   messagingSenderId: '970393221829'
 });
 
-const enableLogging = false
+const enableLogging = true
 
 export function debugLog(...args) {
   if ( enableLogging ) {
@@ -46,7 +46,7 @@ const db = firebase1.firestore();
 @Injectable()
 export class FirestoreTreeService {
 
-  static dbPrefix = 'dbOrder'
+  static dbPrefix = 'dbEmptyZZZ'
 
   pendingListeners = 0
 
