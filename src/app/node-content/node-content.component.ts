@@ -17,6 +17,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   @ViewChild('input') inputEl: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
+  nodeIndex = 0
+
   constructor(
     public dbService: FirestoreTreeService,
   ) { }
@@ -24,7 +26,25 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     debugLog('node content node', this.node)
     // debugLog('n2', this.node2)
+    this.nodeIndex = this.node.getIndexInParent()
   }
+
+  shiftFocusToTime() {
+    document.getElementById('time_' + this.nodeIndex).focus()
+  }
+
+  shiftFocusToDescription() {
+    document.getElementById('description_' + this.nodeIndex).focus()
+  }
+
+  // private getElementByXpath(path) {
+  //   console.log('getElementByXpath')
+  //
+  //   const input: HTMLElement = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
+  //       .singleNodeValue.parentElement;
+  //
+  //   return input
+  // }
 
   focusInput() {
     this.inputEl.nativeElement.focus()

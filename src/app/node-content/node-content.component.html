@@ -11,6 +11,7 @@
 
   Input to get focus:
   <input
+    id="time_{{nodeIndex}}"
     maxlength="3"
     value="30"
     style="
@@ -19,15 +20,18 @@
       text-align: right;
       margin-left: .3em; margin-right: .3em
     "
+    (keydown.shift.arrowright)="shiftFocusToDescription()"
   >
 
   <input
+    id="description_{{nodeIndex}}"
     style="
       flex-grow: 1;
       margin-right: .3em
     "
     #input
     (keydown.enter)="keyPressEnter()"
+    (keydown.shift.arrowleft)="shiftFocusToTime()"
   >
 
 
