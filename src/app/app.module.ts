@@ -6,9 +6,9 @@ import {TreeDragDropService, TreeModule} from 'primeng/primeng'
 import {HttpModule} from '@angular/http'
 import {FirestoreTreeService} from './shared/firestore-tree.service';
 import { TestFirestoreComponent } from './test-firestore/test-firestore.component';
-import { NodeContentComponent } from './node-content/node-content.component'
+import { NodeContentComponent } from './tree/node-content/node-content.component'
 import {RouterModule, Routes} from '@angular/router';
-import { TreeHostComponent } from './tree-host/tree-host.component'
+import { TreeHostComponent } from './tree/tree-host/tree-host.component'
 import {TreeService} from './shared/tree.service'
 import {MatIconModule} from '@angular/material'
 

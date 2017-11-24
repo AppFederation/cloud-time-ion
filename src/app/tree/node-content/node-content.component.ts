@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
+import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.service'
 import {TreeNode} from 'primeng/primeng'
-import {OryTreeNode} from '../shared/TreeModel'
+import {OryTreeNode} from '../../shared/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
 
 @Component({

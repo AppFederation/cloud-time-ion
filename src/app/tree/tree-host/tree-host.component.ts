@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
+import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
-import {TreeService} from '../shared/tree.service'
-import {OryTreeNode, TreeModel} from '../shared/TreeModel'
+import {TreeService} from '../../shared/tree.service'
+import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
 import {NodeContentComponent} from '../node-content/node-content.component'
 
 @Component({
