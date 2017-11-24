@@ -47,9 +47,14 @@ export class OryTreeNode implements TreeNode {
     return this.parent2.children.indexOf(this)
   }
 
-  public getNodeBelowThis() {
-    const children = this.parent2.children
+  getNodeAbove() {
+    const index = this.getIndexInParent()
+    return this.parent2.getChildAtIndexOrNull(index - 1)
+  }
 
+  getNodeBelow() {
+    const index = this.getIndexInParent()
+    return this.parent2.getChildAtIndexOrNull(index + 1)
   }
 
   appendChild(node: OryTreeNode, insertBeforeIndex?: number) {
@@ -65,6 +70,24 @@ export class OryTreeNode implements TreeNode {
     // this.children.push(node)
     this.children.splice(insertBeforeIndex, 0, node)
 
+  }
+
+
+  getChildAtIndexOrNull(index: number): OryTreeNode {
+    if ( this.isIndexPresent(index) ) {
+      return this.children[index]
+    } else {
+      return null
+    }
+  }
+
+  private isIndexPresent(index: number): boolean {
+    const lastIndex = this.children.length - 1
+    if ( index < 0 || index > lastIndex ) {
+      return false
+    } else {
+      return true
+    }
   }
 }
 

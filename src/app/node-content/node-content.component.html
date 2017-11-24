@@ -9,7 +9,6 @@
   <!--<i class="material-icons">next_week</i>-->
 
 
-  Input to get focus:
   <input
     id="time_{{nodeIndex}}"
     maxlength="3"
@@ -32,6 +31,8 @@
     #input
     (keydown.enter)="keyPressEnter()"
     (keydown.shift.arrowleft)="shiftFocusToTime()"
+    (keydown.arrowup)="focusNodeAbove()"
+    (keydown.arrowdown)="focusNodeBelow()"
   >
 
 

@@ -3,6 +3,7 @@ import {FirestoreTreeService, debugLog} from '../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../shared/tree.service'
 import {OryTreeNode, TreeModel} from '../shared/TreeModel'
+import {NodeContentComponent} from '../node-content/node-content.component'
 
 @Component({
   selector: 'app-tree-host',
@@ -20,6 +21,8 @@ export class TreeHostComponent implements OnInit {
   showTree = false
 
   pendingListeners = 0
+
+  mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
 
   constructor(
     public treeService: TreeService,
@@ -99,15 +102,15 @@ export class TreeHostComponent implements OnInit {
   }
 
   keyDownArrow() {
-    this.focusNode(this.focusedId + 1)
+    this.focusNodeById(this.focusedId + 1)
   }
 
   keyUpArrow() {
-    this.focusNode(this.focusedId - 1)
+    this.focusNodeById(this.focusedId - 1)
   }
 
-  private focusNode(id: number) {
-    const elementById = document.getElementById('node' + id)
+  private focusNodeById(id: number) {
+    const elementById: HTMLElement = document.getElementById('node' + id)
     if ( elementById ) {
       elementById.focus()
       this.focusedId = id
@@ -156,5 +159,21 @@ export class TreeHostComponent implements OnInit {
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
 
+
+  registerNodeComponent(nodeComp: NodeContentComponent) {
+    this.mapNodeToComponent.set(nodeComp.node, nodeComp)
+  }
+
+  getComponentForNode(node: OryTreeNode) {
+    return this.mapNodeToComponent.get(node)
+  }
+
+  focusNode(node: OryTreeNode) {
+    if ( ! node ) {
+      return
+    }
+    const component: NodeContentComponent = this.getComponentForNode(node)
+    component.focus()
+  }
 
 }
