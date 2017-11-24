@@ -3,6 +3,12 @@ import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.servic
 import {TreeNode} from 'primeng/primeng'
 import {OryTreeNode} from '../../shared/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
+import {OryColumn} from '../OryColumn'
+
+export class Columns {
+  title = new OryColumn('title')
+  estimatedTime = new OryColumn('estimatedTime')
+}
 
 @Component({
   selector: 'app-node-content',
@@ -12,14 +18,20 @@ import {TreeHostComponent} from '../tree-host/tree-host.component'
 })
 export class NodeContentComponent implements OnInit, AfterViewInit {
 
+  static columnsStatic = new Columns()
+
+  columns: Columns = NodeContentComponent.columnsStatic
+
   // @Input() node: TreeNode & {dbId: string}
   @Input() node: OryTreeNode
   @Input() treeHost: TreeHostComponent
   // @Input() node2
-  @ViewChild('input') inputEl: ElementRef;
+  @ViewChild('inputEstimatedTime') elInputEstimatedTime: ElementRef;
+  @ViewChild('inputTitle')         elInputTitle: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
   nodeIndex = 0
+  private focusedColumn: OryColumn
 
   constructor(
     public dbService: FirestoreTreeService,
@@ -49,12 +61,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   //   return input
   // }
 
-  focusInput() {
-    this.inputEl.nativeElement.focus()
-  }
-
   ngAfterViewInit(): void {
-   this.focusInput()
+   this.focus()
   }
 
   delete() {
@@ -86,16 +94,32 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   public focusNodeAbove() {
     const nodeToFocus = this.node.getNodeAbove()
-    this.treeHost.focusNode(nodeToFocus)
+    this.focusOtherNode(nodeToFocus)
   }
 
   public focusNodeBelow() {
     const nodeToFocus = this.node.getNodeBelow()
-    this.treeHost.focusNode(nodeToFocus)
-
+    this.focusOtherNode(nodeToFocus)
   }
 
-  focus() {
-    this.focusInput()
+  focusOtherNode(nodeToFocus: OryTreeNode) {
+    this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
+  }
+
+  focus(column?: OryColumn) {
+    const toFocus = this.getComponentByColumnOrDefault(column)
+    toFocus.nativeElement.focus()
+  }
+
+  getComponentByColumnOrDefault(column?: OryColumn) {
+    if ( column === this.columns.estimatedTime) {
+      return this.elInputEstimatedTime
+    } else {
+      return this.elInputTitle
+    }
+  }
+
+  onColumnFocused(column) {
+    this.focusedColumn = column
   }
 }

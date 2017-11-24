@@ -4,6 +4,7 @@ import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../shared/tree.service'
 import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
 import {NodeContentComponent} from '../node-content/node-content.component'
+import {OryColumn} from '../OryColumn'
 
 @Component({
   selector: 'app-tree-host',
@@ -168,12 +169,12 @@ export class TreeHostComponent implements OnInit {
     return this.mapNodeToComponent.get(node)
   }
 
-  focusNode(node: OryTreeNode) {
+  focusNode(node: OryTreeNode, column?: OryColumn) {
     if ( ! node ) {
       return
     }
     const component: NodeContentComponent = this.getComponentForNode(node)
-    component.focus()
+    component.focus(column)
   }
 
 }
