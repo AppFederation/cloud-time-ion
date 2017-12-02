@@ -10,7 +10,8 @@ import { NodeContentComponent } from './tree/node-content/node-content.component
 import {RouterModule, Routes} from '@angular/router';
 import { TreeHostComponent } from './tree/tree-host/tree-host.component'
 import {TreeService} from './shared/tree.service'
-import {MatIconModule} from '@angular/material'
+import {MatIconModule} from '@angular/material';
+import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filters/test-permissions-and-filters.component'
 
 const appRoutes: Routes = [
   {
@@ -27,6 +28,10 @@ const appRoutes: Routes = [
     component: TestFirestoreComponent,
   },
   {
+    path: 'test-perm-fil',
+    component: TestPermissionsAndFiltersComponent,
+  },
+  {
     path: '**',
     redirectTo: 'tree',
   },
@@ -39,7 +44,8 @@ const appRoutes: Routes = [
     AppComponent,
     TestFirestoreComponent,
     NodeContentComponent,
-    TreeHostComponent
+    TreeHostComponent,
+    TestPermissionsAndFiltersComponent
   ],
   imports: [
     BrowserModule,

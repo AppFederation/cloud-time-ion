@@ -12,7 +12,7 @@ export class AppComponent {
 
 
   constructor(
-    public dbService: FirestoreTreeService,
+    // public dbService: FirestoreTreeService,
   ) {
 
   }
