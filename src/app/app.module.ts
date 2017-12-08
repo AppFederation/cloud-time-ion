@@ -12,6 +12,7 @@ import { TreeHostComponent } from './tree/tree-host/tree-host.component'
 import {TreeService} from './shared/tree.service'
 import {MatIconModule} from '@angular/material';
 import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filters/test-permissions-and-filters.component'
+import {DbTreeService} from './shared/db-tree-service'
 
 const appRoutes: Routes = [
   {
@@ -56,7 +57,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     TreeDragDropService,
-    FirestoreTreeService,
+    {provide: DbTreeService, useClass: FirestoreTreeService},
     TreeService,
   ],
   bootstrap: [AppComponent]

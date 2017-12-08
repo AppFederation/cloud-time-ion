@@ -5,6 +5,8 @@ import {TreeService} from '../../shared/tree.service'
 import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
 import {NodeContentComponent} from '../node-content/node-content.component'
 import {OryColumn} from '../OryColumn'
+import {FIXME} from '../../shared/utils'
+import {DbTreeService} from '../../shared/db-tree-service'
 
 @Component({
   selector: 'app-tree-host',
@@ -13,7 +15,7 @@ import {OryColumn} from '../OryColumn'
 })
 export class TreeHostComponent implements OnInit {
 
-  treeModel: TreeModel = new TreeModel()
+  treeModel: TreeModel = new TreeModel(this.treeService2)
 
   // rootNodes: TreeNode[] = []
   focusedId = 0
@@ -27,6 +29,7 @@ export class TreeHostComponent implements OnInit {
 
   constructor(
     public treeService: TreeService,
+    public treeService2: DbTreeService,
     public treeDragDropService: TreeDragDropService,
   ) {
     treeDragDropService.dragStop$.subscribe((...args) => {
@@ -43,8 +46,8 @@ export class TreeHostComponent implements OnInit {
     setTimeout(() => {
       this.showTree = true
       this.appendNode()
-      this.appendNode()
-      this.appendNode()
+      // this.appendNode()
+      // this.appendNode()
     }, 0 /*2000*/)
   }
 
@@ -120,8 +123,9 @@ export class TreeHostComponent implements OnInit {
 
   appendNode() {
     // this.treeService.addNode(this.treeModel.root.getLastChild(), null) // FIXME
-    const newNode = new OryTreeNode(null, this.fakeId ++)
-    this.treeModel.root.appendChild(newNode) // FIXME: dummy impl
+    // const newNode = new OryTreeNode(null, this.fakeId ++, this.treeModel)
+    // this.treeModel.root._appendChild(newNode) // FIXME: dummy impl
+    this.treeModel.root.addChild() // FIXME: dummy impl
   }
 
   private createNode(label?) {

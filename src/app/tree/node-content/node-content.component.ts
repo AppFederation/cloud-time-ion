@@ -4,6 +4,7 @@ import {TreeNode} from 'primeng/primeng'
 import {OryTreeNode} from '../../shared/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
+import {DbTreeService} from '../../shared/db-tree-service'
 
 export class Columns {
   title = new OryColumn('title')
@@ -34,7 +35,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   private focusedColumn: OryColumn
 
   constructor(
-    public dbService: FirestoreTreeService,
+    public dbService: DbTreeService,
   ) { }
 
   ngOnInit() {
@@ -66,7 +67,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   delete() {
-    this.dbService.delete(this.node.dbId)
+    // this.dbService.delete(this.node.dbId)
   }
 
   addChild() {
@@ -80,7 +81,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   private addChildToDb() {
-    this.dbService.addNode(this.node.dbId)
+    // this.dbService.addNode(this.node.dbId)
   }
 
   keyPressEnter() {

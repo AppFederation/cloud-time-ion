@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase/app'
+// import * as firebase from 'firebase/app'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
-import {DbTreeListener, NodeAddEvent} from './TreeListener'
+import {DbTreeListener, NodeAddEvent, NodeInclusion} from './TreeListener'
+import {OryTreeNode} from './TreeModel'
+import {FIXME} from './utils'
+import * as firebase from 'firebase'
+import DocumentReference = firebase.firestore.DocumentReference
+import {after} from 'selenium-webdriver/testing'
+import {DbTreeService} from './db-tree-service'
 
 const firebase1 = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
+const uuidv4 = require('uuid/v4');
 
 firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
@@ -39,14 +46,32 @@ function onSnapshotHandler(snapshot) {
   });
 }
 
+function nullOrUndef(x) {
+  // cannot just do !x, because of zero
+  return (x === null) || (x === undefined)
+}
+
+function defined(x) {
+  return ! nullOrUndef(x)
+}
+
 // Initialize Cloud Firestore through Firebase
 const db = firebase1.firestore();
 
+export const ORDER_STEP = 1 * 1000 * 1000
+
+export interface FirestoreNodeInclusion {
+  node    : DocumentReference,
+  orderNum: number,
+}
+
 
 @Injectable()
-export class FirestoreTreeService {
+export class FirestoreTreeService extends DbTreeService {
 
   static dbPrefix = 'dbEmptyZZZ'
+
+
 
   pendingListeners = 0
 
@@ -55,9 +80,10 @@ export class FirestoreTreeService {
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
 
   constructor() {
-    db.enablePersistence().then(() => {
-      // window.alert('persistence enabled')
-    })
+    super()
+    // db.enablePersistence().then(() => {
+    //   // window.alert('persistence enabled')
+    // })
     this.listenToChanges(onSnapshotHandler)
   }
 
@@ -130,19 +156,19 @@ export class FirestoreTreeService {
 
   addNode(parentId: string) {
     debugLog('add node to parent to db:', parentId)
-    db.collection(this.NODES_COLLECTION).add({
+    this.nodesCollection().add({
       title: 'added node title'
     }).then(result => {
       const childDoc: firebase.firestore.DocumentReference = result
       const childId = childDoc.id
+      const nodeInclusion: FirestoreNodeInclusion = {
+        node: db.collection(this.NODES_COLLECTION).doc(childId),
+        orderNum: 9999
+      }
       if ( parentId ) {
-        this.nodesCollection().doc(parentId).collection('subNodes').add({
-          node: db.collection(this.NODES_COLLECTION).doc(childId)
-        })
+        // this.addNodeInclusionToParent(parentId, nodeInclusion)
       } else {
-        db.collection(this.ROOTS_COLLECTION).add({
-          node: db.collection(this.NODES_COLLECTION).doc(childId)
-        })
+        db.collection(this.ROOTS_COLLECTION).add(nodeInclusion)
       }
     })
   }
@@ -160,5 +186,66 @@ export class FirestoreTreeService {
 
   private nodeDocById(dbId: string) {
     return this.nodesCollection().doc(dbId)
+  }
+
+  private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/) {
+    const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
+      node: this.nodeDocById(parentId),
+      orderNum: nodeInclusion.orderNum,
+    }
+    this.nodesCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
+  }
+
+  // TODO:
+// to as little as possible in vendor specific class (FirestoreTreeService)
+// pre-calculate next/previous order in TreeModel
+  addNodeToDb(parent, nodeBefore, odeAfter, orderBefore, orderAfter) {
+
+  }
+
+  addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
+    console.log('addSiblingAfterNode', newNode, afterExistingNode)
+    // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
+    let parentId = 'KarolNodes' // hack to simplify for now
+    // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
+    this.addNodeInclusionToParent(parentId, newNode.nodeInclusion )
+    // add node itself to firestore
+    // add node-inclusion to firestore
+    // ignore parent for now? But then how do we specify node-inclusion / order?
+    // -> make a hardcoded root for my flexagenda tasks
+
+    // For FlexAgenda-Oryol prototype: only use a hardcoded node as a root of the *tree*model*.
+    // on firestore, ignore completely the concept of roots, or adding or listing them
+
+    // design question: order is only specified in node-inclusion?
+    // meaning: if a node is not included in a parent, it has no ordering? Probably.
+
+    // ======
+    // !!!! Idea/Epiphany: for retrieving ALL of user's nodes in one query (for a a MASSIVE speedup), I could try to use Firestore's query,
+    // which CAN supposedly work across even nodes for which we do not have permissions to read, as long as they are
+    // not included in the results (vs "rules are NOT filters" in Firebase realtime DB).
+    // for the query criterion, I could use a special attribute, e.g. User_read_permitted_<USER_ID>=true
+    FIXME()
+
+    // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
+  }
+
+  static calculateNewOrderNumber(previousOrderNumber: number, nextOrderNumber: number) {
+    console.log('calculateNewOrderNumber: ', previousOrderNumber, nextOrderNumber)
+    let newOrderNumber
+    if ( nullOrUndef(previousOrderNumber) && defined(nextOrderNumber) ) {
+      newOrderNumber = nextOrderNumber - ORDER_STEP
+    } else if ( defined(previousOrderNumber) && nullOrUndef(nextOrderNumber) ) {
+      newOrderNumber = previousOrderNumber + ORDER_STEP
+    } else if ( nullOrUndef(previousOrderNumber) && nullOrUndef(nextOrderNumber) ) {
+      newOrderNumber = 0
+    } else { /* both next and previous is defined */
+      newOrderNumber = ( previousOrderNumber + nextOrderNumber ) / 2;
+    }
+
+    if (nextOrderNumber === newOrderNumber || previousOrderNumber === newOrderNumber) {
+      window.alert(`Order number equal: new:${newOrderNumber},previous:${previousOrderNumber},next:${nextOrderNumber}`)
+    }
+    return newOrderNumber
   }
 }
