@@ -16,11 +16,11 @@ export class TreeService {
   getRootTreeModel(): TreeModel {
     // const componentThis = this
     const treeModel = new TreeModel(this.dbTreeService)
-    // this.dbTreeService.loadNodesTree({
-    //   onNodeAdded(event: NodeAddEvent) {
-    //     treeModel.onNodeAdded(event)
-    //   }
-    // })
+    this.dbTreeService.loadNodesTree({
+      onNodeAdded(event: NodeAddEvent) {
+        treeModel.onNodeAdded(event)
+      }
+    })
     return treeModel
 
   }

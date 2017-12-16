@@ -101,4 +101,6 @@ typings/
 # dotenv environment variables file
 .env
 
+node_modules_*
+
 # >>>>>>> origin/master

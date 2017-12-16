@@ -57,12 +57,12 @@ export class OryTreeNode implements TreeNode {
     return this.parent2.children.indexOf(this)
   }
 
-  getNodeAbove() {
+  getNodeAboveThis() {
     const index = this.getIndexInParent()
     return this.parent2.getChildAtIndexOrNull(index - 1)
   }
 
-  getNodeBelow() {
+  getNodeBelowThis() {
     const index = this.getIndexInParent()
     console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
     const childAtIndexOrNull = this.parent2.getChildAtIndexOrNull(index + 1)
@@ -70,7 +70,7 @@ export class OryTreeNode implements TreeNode {
     return childAtIndexOrNull
   }
 
-  private _appendChild(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
+  _appendChild(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
     if ( ! nodeToAppend ) {
       nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel)
     }
@@ -118,7 +118,7 @@ export class OryTreeNode implements TreeNode {
     console.log('addChild, afterExistingNode', afterExistingNode)
     newNode = newNode || new OryTreeNode(null, 'node_' + uuidV4(), this.treeModel)
 
-    const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelow()
+    const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelowThis()
     console.log('addChild: nodeBelow', nodeBelow)
     const previousOrderNumber = afterExistingNode && afterExistingNode.nodeInclusion.orderNum;
     console.log('addChild: previousOrderNumber', previousOrderNumber)
@@ -151,6 +151,8 @@ export class TreeModel {
   ) {}
 
   onNodeAdded(event: NodeAddEvent) {
+    console.log('onNodeAdded', event)
+    this.root._appendChild(new OryTreeNode(event.nodeInclusion, event.id, this), 0)
     // debugLog('onNodeAdded')
     // const root = this.root
     // const nodeInclusion = event.nodeInclusion

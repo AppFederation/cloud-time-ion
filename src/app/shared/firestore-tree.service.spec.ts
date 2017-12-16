@@ -12,6 +12,7 @@ describe('DbService', () => {
   xit('should be created', inject([FirestoreTreeService], (service: FirestoreTreeService) => {
     expect(service).toBeTruthy();
   }));
+
   it('should calculate new order number', inject([], () => {
     expect(FirestoreTreeService.calculateNewOrderNumber(null, 3000000)).toEqual(2000000);
     expect(FirestoreTreeService.calculateNewOrderNumber(3000000, null)).toEqual(4000000);

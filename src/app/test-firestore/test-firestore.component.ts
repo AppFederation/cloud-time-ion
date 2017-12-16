@@ -11,33 +11,34 @@ export class TestFirestoreComponent implements OnInit {
   elements = []
 
   constructor(
-    public dbService: FirestoreTreeService
+    // public dbService: FirestoreTreeService
   ) { }
 
   ngOnInit() {
 
   }
 
-  addItemToFirebase() {
-    this.dbService.addItem()
-    this.dbService.listenToChanges(s => {
-      s.docChanges.forEach(change => {
-        let data = change.doc.data()
-        debugLog('change', change)
-        if (change.type === 'added') {
-          debugLog('New city: ', data);
-          this.elements.push(data)
-          this.elements = this.elements.slice(0)
-        }
-        if (change.type === 'modified') {
-          debugLog('Modified city: ', data);
-        }
-        if (change.type === 'removed') {
-          debugLog('Removed city: ', data);
-        }
-      });
 
-    })
-  }
+  // addItemToFirebase() {
+  //   this.dbService.addItem()
+  //   this.dbService.listenToChanges(s => {
+  //     s.docChanges.forEach(change => {
+  //       let data = change.doc.data()
+  //       debugLog('change', change)
+  //       if (change.type === 'added') {
+  //         debugLog('New city: ', data);
+  //         this.elements.push(data)
+  //         this.elements = this.elements.slice(0)
+  //       }
+  //       if (change.type === 'modified') {
+  //         debugLog('Modified city: ', data);
+  //       }
+  //       if (change.type === 'removed') {
+  //         debugLog('Removed city: ', data);
+  //       }
+  //     });
+  //
+  //   })
+  // }
 
 }

@@ -8,6 +8,7 @@ import * as firebase from 'firebase'
 import DocumentReference = firebase.firestore.DocumentReference
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -32,19 +33,19 @@ export function debugLog(...args) {
   }
 }
 
-function onSnapshotHandler(snapshot) {
-  snapshot.docChanges.forEach(function(change) {
-    if (change.type === 'added') {
-      debugLog('New city: ', change.doc.data());
-    }
-    if (change.type === 'modified') {
-      debugLog('Modified city: ', change.doc.data());
-    }
-    if (change.type === 'removed') {
-      debugLog('Removed city: ', change.doc.data());
-    }
-  });
-}
+// function onSnapshotHandler(snapshot) {
+//   snapshot.docChanges.forEach(function(change) {
+//     if (change.type === 'added') {
+//       debugLog('New city: ', change.doc.data());
+//     }
+//     if (change.type === 'modified') {
+//       debugLog('Modified city: ', change.doc.data());
+//     }
+//     if (change.type === 'removed') {
+//       debugLog('Removed city: ', change.doc.data());
+//     }
+//   });
+// }
 
 function nullOrUndef(x) {
   // cannot just do !x, because of zero
@@ -61,7 +62,7 @@ const db = firebase1.firestore();
 export const ORDER_STEP = 1 * 1000 * 1000
 
 export interface FirestoreNodeInclusion {
-  node    : DocumentReference,
+  childNode    : DocumentReference,
   orderNum: number,
 }
 
@@ -69,7 +70,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ'
+  static dbPrefix = 'dbEmptyZZZ__3'
 
 
 
@@ -79,26 +80,28 @@ export class FirestoreTreeService extends DbTreeService {
   private NODES_COLLECTION = FirestoreTreeService.dbPrefix + 'nodes'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
 
+  private HARDCODED_ROOT_NODE = 'KarolNodesHardcoded'
+
   constructor() {
     super()
     // db.enablePersistence().then(() => {
     //   // window.alert('persistence enabled')
     // })
-    this.listenToChanges(onSnapshotHandler)
+    // this.listenToChanges(onSnapshotHandler)
   }
 
-  addItem() {
-    db.collection('test1').add({
-      testField: 'test ' + new Date(),
-      testField2: new Date(),
-      testField3: 10,
-    })
-  }
+  // addItem() {
+  //   db.collection('test1').add({
+  //     testField: 'test ' + new Date(),
+  //     testField2: new Date(),
+  //     testField3: 10,
+  //   })
+  // }
 
-  listenToChanges(func) {
-    db.collection('test1')
-      .onSnapshot(func);
-  }
+  // listenToChanges(func) {
+  //   db.collection('test1')
+  //     .onSnapshot(func);
+  // }
 
   delete(id) {
     db.collection('test1').doc(id).delete()
@@ -106,34 +109,30 @@ export class FirestoreTreeService extends DbTreeService {
 
 
   loadNodesTree(listener: DbTreeListener) {
+    console.log('loadNodesTree')
     db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
-      this.processNodeEvents(0, snapshot, [], listener)
+      console.log('loadNodesTree onSnapshot()', snapshot)
     })
+    // this.processNodeEvents(0, snapshot, [], listener)
+    this.handleSubNodes(this.nodeDocById(this.HARDCODED_ROOT_NODE), [], 0, listener)
   }
 
-  private processNodeEvents(nestLevel: number, snapshot: any, parents, listener: DbTreeListener) {
+  private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
     snapshot.docChanges.forEach(function(change) {
-      const nodeInclusionData = change.doc.data()
+      const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
-        debugLog('node: ', nestLevel, parentsPath, nodeInclusionData);
+        debugLog('added node event: ', nestLevel, parentsPath, nodeInclusionData);
         serviceThis.pendingListeners ++
-        nodeInclusionData.node.onSnapshot(targetNodeDoc => {
+        nodeInclusionData.childNode.onSnapshot((targetNodeDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           listener.onNodeAdded(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
-              serviceThis.pendingListeners, nodeInclusionData))
+              serviceThis.pendingListeners, <any>nodeInclusionData))
           debugLog('target node:', nestLevel, targetNodeDoc)
-          debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
-
-          const subCollection = targetNodeDoc.ref.collection('subNodes')
-          debugLog('subColl:', subCollection)
-          subCollection.onSnapshot((subSnap: QuerySnapshot) => {
-            const newParents = parents.slice(0)
-            newParents.push(targetNodeDoc.ref)
-            serviceThis.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
-          })
+          // debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
+          serviceThis.handleSubNodes(targetNodeDoc.ref, parents, nestLevel, listener)
         })
         // debugLog('root node ref: ', targetNode);
       }
@@ -143,6 +142,16 @@ export class FirestoreTreeService extends DbTreeService {
       if (change.type === 'removed') {
         debugLog('Removed city: ', nodeInclusionData);
       }
+    })
+  }
+
+  private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
+    const subCollection = targetNodeDocRef.collection('subNodes')
+    debugLog('subColl:', subCollection)
+    subCollection.onSnapshot((subSnap: QuerySnapshot) => {
+      const newParents: DocumentReference[] = parents.slice(0)
+      newParents.push(targetNodeDocRef)
+      this.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
     })
   }
 
@@ -162,7 +171,7 @@ export class FirestoreTreeService extends DbTreeService {
       const childDoc: firebase.firestore.DocumentReference = result
       const childId = childDoc.id
       const nodeInclusion: FirestoreNodeInclusion = {
-        node: db.collection(this.NODES_COLLECTION).doc(childId),
+        childNode: db.collection(this.NODES_COLLECTION).doc(childId),
         orderNum: 9999
       }
       if ( parentId ) {
@@ -184,13 +193,15 @@ export class FirestoreTreeService extends DbTreeService {
     // db.collection(this.node)
   }
 
-  private nodeDocById(dbId: string) {
+  private nodeDocById(dbId: string): DocumentReference {
     return this.nodesCollection().doc(dbId)
   }
 
-  private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/) {
+  private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/,
+                                   childNode: OryTreeNode
+  ) {
     const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
-      node: this.nodeDocById(parentId),
+      childNode: this.nodeDocById(childNode.dbId),
       orderNum: nodeInclusion.orderNum,
     }
     this.nodesCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
@@ -203,13 +214,19 @@ export class FirestoreTreeService extends DbTreeService {
 
   }
 
+
   addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
     console.log('addSiblingAfterNode', newNode, afterExistingNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
-    let parentId = 'KarolNodes' // hack to simplify for now
+    let parentId = this.HARDCODED_ROOT_NODE // hack to simplify for now
     // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
-    this.addNodeInclusionToParent(parentId, newNode.nodeInclusion )
-    // add node itself to firestore
+    // add node itself to firestore (BEFORE inclusion)
+    const newItem = {
+      title: 'added node title ' + new Date()
+    }
+    this.nodesCollection().add(newItem).then(() => {
+      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode)
+    })
     // add node-inclusion to firestore
     // ignore parent for now? But then how do we specify node-inclusion / order?
     // -> make a hardcoded root for my flexagenda tasks
