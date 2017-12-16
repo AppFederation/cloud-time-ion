@@ -56,13 +56,14 @@ export const ORDER_STEP = 1 * 1000 * 1000
 export interface FirestoreNodeInclusion {
   childNode    : DocumentReference,
   orderNum: number,
+  nodeInclusionId: string
 }
 
 
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__3'
+  static dbPrefix = 'dbEmptyZZZ__5'
 
 
 
@@ -119,7 +120,8 @@ export class FirestoreTreeService extends DbTreeService {
         serviceThis.pendingListeners ++
         nodeInclusionData.childNode.onSnapshot((targetNodeDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
-          const nodeInclusionId = change.doc.id
+          // const nodeInclusionId = change.doc.id FIXME()
+          const nodeInclusionId = nodeInclusionData.nodeInclusionId
           console.log('nodeInclusionId', nodeInclusionId)
           const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
           listener.onNodeAdded(
@@ -158,24 +160,24 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
 
-  addNode(parentId: string) {
-    debugLog('add node to parent to db:', parentId)
-    this.nodesCollection().add({
-      title: 'added node title'
-    }).then(result => {
-      const childDoc: firebase.firestore.DocumentReference = result
-      const childId = childDoc.id
-      const nodeInclusion: FirestoreNodeInclusion = {
-        childNode: db.collection(this.NODES_COLLECTION).doc(childId),
-        orderNum: 9999
-      }
-      if ( parentId ) {
-        // this.addNodeInclusionToParent(parentId, nodeInclusion)
-      } else {
-        db.collection(this.ROOTS_COLLECTION).add(nodeInclusion)
-      }
-    })
-  }
+  // addNode(parentId: string) {
+  //   debugLog('add node to parent to db:', parentId)
+  //   this.nodesCollection().add({
+  //     title: 'added node title'
+  //   }).then(result => {
+  //     const childDoc: firebase.firestore.DocumentReference = result
+  //     const childId = childDoc.id
+  //     const nodeInclusion: FirestoreNodeInclusion = {
+  //       childNode: db.collection(this.NODES_COLLECTION).doc(childId),
+  //       orderNum: 9999
+  //     }
+  //     if ( parentId ) {
+  //       // this.addNodeInclusionToParent(parentId, nodeInclusion)
+  //     } else {
+  //       db.collection(this.ROOTS_COLLECTION).add(nodeInclusion)
+  //     }
+  //   })
+  // }
 
   private nodesCollection() {
     return db.collection(this.NODES_COLLECTION)
@@ -198,6 +200,7 @@ export class FirestoreTreeService extends DbTreeService {
     const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
       childNode: this.nodeDocById(childNode.dbId),
       orderNum: nodeInclusion.orderNum,
+      nodeInclusionId: nodeInclusion.nodeInclusionId
     }
     this.nodesCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
   }

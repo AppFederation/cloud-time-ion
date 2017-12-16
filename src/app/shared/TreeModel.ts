@@ -5,7 +5,7 @@ import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
-import {FIXME, nullOrUndef} from './utils'
+import {defined, FIXME, nullOrUndef} from './utils'
 /**
  * Created by kd on 2017-10-27.
  */
@@ -91,6 +91,7 @@ export class OryTreeNode implements TreeNode {
     console.log('push child', nodeToAppend.parent)
     // this.children.push(node)
     this.children.splice(insertBeforeIndex, 0, nodeToAppend)
+    this.treeModel.registerNode(nodeToAppend)
     console.log('afterNode', afterNode)
     // this.treeModel.addSiblingAfterNode(nodeToAppend, afterNode)
 
@@ -121,7 +122,7 @@ export class OryTreeNode implements TreeNode {
   addChild(afterExistingNode?: OryTreeNode, newNode?: OryTreeNode) {
 
     console.log('addChild, afterExistingNode', afterExistingNode)
-    newNode = newNode || new OryTreeNode(null, 'node_' + uuidV4(), this.treeModel)
+    newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel)
 
     const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelowThis()
     console.log('addChild: nodeBelow', nodeBelow)
@@ -162,7 +163,7 @@ export class TreeModel {
 
   root: OryTreeNode = new OryTreeNode(null, null, this)
 
-  mapIdToNode = new Map<string, TreeNode>()
+  mapNodeInclusionIdToNode = new Map<string, TreeNode>()
 
   constructor(
     public treeService: DbTreeService
@@ -170,11 +171,19 @@ export class TreeModel {
 
   onNodeAdded(event: NodeAddEvent) {
     console.log('onNodeAdded', event)
-    const parentNode = this.root; FIXME('Hardcoded parent (root) for now')
-    const newOrderNum = event.nodeInclusion.orderNum
-    let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+    const nodeInclusionId = event.nodeInclusion.nodeInclusionId
+    if ( ! this.nodeInclusionExists(nodeInclusionId) ) {
+      const parentNode = this.root; FIXME('Hardcoded parent (root) for now')
+      const newOrderNum = event.nodeInclusion.orderNum
+      let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
-    parentNode._appendChild(new OryTreeNode(event.nodeInclusion, event.id, this), insertBeforeIndex)
+      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.id, this)
+      parentNode._appendChild(newTreeNode, insertBeforeIndex)
+
+    } else {
+      console.log('node inclusion already exists: ', nodeInclusionId)
+    }
+
     // debugLog('onNodeAdded')
     // const root = this.root
     // const nodeInclusion = event.nodeInclusion
@@ -222,4 +231,17 @@ export class TreeModel {
   //
   // }
 
+  registerNode(nodeToRegister: OryTreeNode) {
+    console.log('mapNodeInclusionIdToNode registerNode', nodeToRegister)
+    // NOTE: does not yet support the same node being in multiple places
+    // NOTE: this should register nodeInclusion id
+
+    this.mapNodeInclusionIdToNode.set(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
+  }
+
+  private nodeInclusionExists(nodeInclusionId: string) {
+    const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
+    console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
+    return defined(existingNode)
+  }
 }
