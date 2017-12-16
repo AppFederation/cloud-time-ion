@@ -9,7 +9,6 @@ import {Injectable} from '@angular/core'
 
 import { TestBed, inject } from '@angular/core/testing';
 
-import { TestService } from './test.service';
 
 import {FirestoreTreeService, ORDER_STEP} from './firestore-tree.service'
 import {TreeModel} from './TreeModel'
