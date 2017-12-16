@@ -123,13 +123,16 @@ export class FirestoreTreeService extends DbTreeService {
       const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
-        debugLog('added node event: ', nestLevel, parentsPath, nodeInclusionData);
+        debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
         serviceThis.pendingListeners ++
         nodeInclusionData.childNode.onSnapshot((targetNodeDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
+          const nodeInclusionId = change.doc.id
+          console.log('nodeInclusionId', nodeInclusionId)
+          const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
           listener.onNodeAdded(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
-              serviceThis.pendingListeners, <any>nodeInclusionData))
+              serviceThis.pendingListeners, nodeInclusion))
           debugLog('target node:', nestLevel, targetNodeDoc)
           // debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
           serviceThis.handleSubNodes(targetNodeDoc.ref, parents, nestLevel, listener)
