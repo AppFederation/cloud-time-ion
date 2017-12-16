@@ -4,6 +4,8 @@ import {debugLog, FirestoreTreeService} from './firestore-tree.service'
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {Injectable} from '@angular/core'
+import {isNullOrUndefined} from 'util'
+import {FIXME, nullOrUndef} from './utils'
 /**
  * Created by kd on 2017-10-27.
  */
@@ -75,9 +77,12 @@ export class OryTreeNode implements TreeNode {
       nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel)
     }
     const afterNode = this.lastChildNode
-    insertBeforeIndex = insertBeforeIndex || this.children.length
+
+    if ( nullOrUndef(insertBeforeIndex) ) {
+      insertBeforeIndex = this.children.length
+    }
     console.log('this', this)
-    if ( ! this.children ) {
+    if ( nullOrUndef(this.children) ) {
       this.children = []
     }
     nodeToAppend.parent = this
@@ -136,6 +141,19 @@ export class OryTreeNode implements TreeNode {
     this._appendChild(newNode, newNodeIndex)
     return newNode
   }
+
+  findInsertionIndexForNewOrderNum(newOrderNum: number): number {
+    let foundIndex = this.children.findIndex((node) => {
+      const existingOrderNum = node.nodeInclusion.orderNum
+      return existingOrderNum > newOrderNum
+    })
+    if ( foundIndex < 0 ) {
+      // newIndex is higher than any existing
+      foundIndex = this.children.length
+    }
+    return foundIndex
+  }
+
 }
 
 
@@ -152,7 +170,11 @@ export class TreeModel {
 
   onNodeAdded(event: NodeAddEvent) {
     console.log('onNodeAdded', event)
-    this.root._appendChild(new OryTreeNode(event.nodeInclusion, event.id, this), 0)
+    const parentNode = this.root; FIXME('Hardcoded parent (root) for now')
+    const newOrderNum = event.nodeInclusion.orderNum
+    let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+
+    parentNode._appendChild(new OryTreeNode(event.nodeInclusion, event.id, this), insertBeforeIndex)
     // debugLog('onNodeAdded')
     // const root = this.root
     // const nodeInclusion = event.nodeInclusion

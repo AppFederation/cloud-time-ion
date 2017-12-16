@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import QuerySnapshot = firebase.firestore.QuerySnapshot
 import {DbTreeListener, NodeAddEvent, NodeInclusion} from './TreeListener'
 import {OryTreeNode} from './TreeModel'
-import {FIXME} from './utils'
+import {defined, FIXME, nullOrUndef} from './utils'
 import * as firebase from 'firebase'
 import DocumentReference = firebase.firestore.DocumentReference
 import {after} from 'selenium-webdriver/testing'
@@ -47,14 +47,6 @@ export function debugLog(...args) {
 //   });
 // }
 
-function nullOrUndef(x) {
-  // cannot just do !x, because of zero
-  return (x === null) || (x === undefined)
-}
-
-function defined(x) {
-  return ! nullOrUndef(x)
-}
 
 // Initialize Cloud Firestore through Firebase
 const db = firebase1.firestore();
