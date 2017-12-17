@@ -63,7 +63,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__6'
+  static dbPrefix = 'dbEmptyZZZ__8'
 
 
 
@@ -107,7 +107,7 @@ export class FirestoreTreeService extends DbTreeService {
       console.log('loadNodesTree onSnapshot()', snapshot)
     })
     // this.processNodeEvents(0, snapshot, [], listener)
-    this.handleSubNodes(this.nodeDocById(this.HARDCODED_ROOT_NODE), [], 0, listener)
+    this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE), [], 0, listener)
   }
 
   private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
@@ -124,7 +124,9 @@ export class FirestoreTreeService extends DbTreeService {
           const nodeInclusionId = nodeInclusionData.nodeInclusionId
           console.log('nodeInclusionId', nodeInclusionId)
           const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
+          console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
+          console.log('itemData:::', itemData)
           listener.onNodeAdded(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
@@ -180,30 +182,31 @@ export class FirestoreTreeService extends DbTreeService {
   //   })
   // }
 
-  private nodesCollection() {
+  private itemsCollection() {
     return db.collection(this.ITEMS_COLLECTION)
   }
 
   moveNode(dbId: string, dbId2: string) {
-    this.nodeDocById(dbId2).collection('subNodes').add({
-      node: this.nodeDocById(dbId)
+    this.itemDocById(dbId2).collection('subNodes').add({
+      node: this.itemDocById(dbId)
     })
     // db.collection(this.node)
   }
 
-  private nodeDocById(dbId: string): DocumentReference {
-    return this.nodesCollection().doc(dbId)
+  private itemDocById(dbId: string): DocumentReference {
+    return this.itemsCollection().doc(dbId)
   }
 
   private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/,
-                                   childNode: OryTreeNode
+                                   childNode: OryTreeNode, itemDocRef: DocumentReference
   ) {
     const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
-      childNode: this.nodeDocById(childNode.dbId),
+      // childNode: this.itemDocById(childNode.dbId),
+      childNode: itemDocRef,
       orderNum: nodeInclusion.orderNum,
       nodeInclusionId: nodeInclusion.nodeInclusionId
     }
-    this.nodesCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
+    this.itemsCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
   }
 
   // TODO:
@@ -223,8 +226,10 @@ export class FirestoreTreeService extends DbTreeService {
     const newItem = {
       title: 'added node title ' + new Date()
     }
-    this.nodesCollection().add(newItem).then(() => {
-      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode)
+
+    this.itemsCollection().add(newItem).then((itemDocRef) => {
+      console.log('itemDocRef', itemDocRef)
+      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
     })
     // add node-inclusion to firestore
     // ignore parent for now? But then how do we specify node-inclusion / order?
@@ -242,6 +247,7 @@ export class FirestoreTreeService extends DbTreeService {
     // not included in the results (vs "rules are NOT filters" in Firebase realtime DB).
     // for the query criterion, I could use a special attribute, e.g. User_read_permitted_<USER_ID>=true
     FIXME()
+    // throw new Error('TESTING')
 
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
   }

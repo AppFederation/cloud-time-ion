@@ -35,6 +35,7 @@ export class OryTreeNode implements TreeNode {
   draggable?: boolean;
   droppable?: boolean;
   selectable?: boolean;
+
   get lastChildNode(): OryTreeNode {
     return this.getChildAtIndexOrNull(this.children && this.children.length - 1)
   }
@@ -43,6 +44,7 @@ export class OryTreeNode implements TreeNode {
     public nodeInclusion: NodeInclusion,
     public dbId,
     public treeModel: TreeModel,
+    public itemData: Object
   ) {}
 
   addSiblingAfterThis(newNode?: OryTreeNode) {
@@ -74,7 +76,7 @@ export class OryTreeNode implements TreeNode {
 
   _appendChild(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
     if ( ! nodeToAppend ) {
-      nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel)
+      nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel, this.newItemData())
     }
     const afterNode = this.lastChildNode
 
@@ -101,6 +103,10 @@ export class OryTreeNode implements TreeNode {
 
   }
 
+  private newItemData() {
+    return {title: 'new node'}
+  }
+
 
   getChildAtIndexOrNull(index: number): OryTreeNode {
     if ( this.isIndexPresent(index) ) {
@@ -120,9 +126,12 @@ export class OryTreeNode implements TreeNode {
   }
 
   addChild(afterExistingNode?: OryTreeNode, newNode?: OryTreeNode) {
+    if ( ! afterExistingNode && this.children.length > 0 ) {
+      afterExistingNode = this.lastChildNode
+    }
 
     console.log('addChild, afterExistingNode', afterExistingNode)
-    newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel)
+    newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel, this.newItemData())
 
     const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelowThis()
     console.log('addChild: nodeBelow', nodeBelow)
@@ -161,7 +170,7 @@ export class OryTreeNode implements TreeNode {
 @Injectable()
 export class TreeModel {
 
-  root: OryTreeNode = new OryTreeNode(null, null, this)
+  root: OryTreeNode = new OryTreeNode(null, null, this, null)
 
   mapNodeInclusionIdToNode = new Map<string, TreeNode>()
 
@@ -177,7 +186,7 @@ export class TreeModel {
       const newOrderNum = event.nodeInclusion.orderNum
       let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
-      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.id, this)
+      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.id, this, event.itemData)
       parentNode._appendChild(newTreeNode, insertBeforeIndex)
 
     } else {

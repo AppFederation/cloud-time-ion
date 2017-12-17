@@ -43,6 +43,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // debugLog('n2', this.node2)
     this.nodeIndex = this.node.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
+    this.elInputTitle.nativeElement.value = 'title: ' + (this.node.itemData as any).title
   }
 
   shiftFocusToTime() {
