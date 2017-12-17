@@ -16,7 +16,7 @@ export class NodeAddEvent {
     public parents,
     public immediateParentId: string,
     public itemData: Object,
-    public id: string,
+    public itemId: string,
     public pendingListeners: number,
     public nodeInclusion: NodeInclusion
   ) {}

@@ -138,7 +138,7 @@ export class TreeHostComponent implements OnInit {
 
   private remove(id) {
     this.treeModel.root.children = this.treeModel.root.children.filter(el => {
-      return (<any>el).dbId !== id
+      return (<any>el).itemId !== id
     })
 
   }
@@ -166,7 +166,7 @@ export class TreeHostComponent implements OnInit {
 
 
   registerNodeComponent(nodeComp: NodeContentComponent) {
-    this.mapNodeToComponent.set(nodeComp.node, nodeComp)
+    this.mapNodeToComponent.set(nodeComp.treeNode, nodeComp)
   }
 
   getComponentForNode(node: OryTreeNode) {

@@ -23,8 +23,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   columns: Columns = NodeContentComponent.columnsStatic
 
+  titleValue
+
   // @Input() node: TreeNode & {dbId: string}
-  @Input() node: OryTreeNode
+  @Input() treeNode: OryTreeNode
   @Input() treeHost: TreeHostComponent
   // @Input() node2
   @ViewChild('inputEstimatedTime') elInputEstimatedTime: ElementRef;
@@ -39,11 +41,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    debugLog('node content node', this.node)
+    debugLog('node content node', this.treeNode)
     // debugLog('n2', this.node2)
-    this.nodeIndex = this.node.getIndexInParent()
+    this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
-    this.elInputTitle.nativeElement.value = 'title: ' + (this.node.itemData as any).title
+    this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
+    this.elInputTitle.nativeElement.addEventListener('input', this.onInputChanged.bind(this));
   }
 
   shiftFocusToTime() {
@@ -87,20 +90,20 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   keyPressEnter() {
     this.addNodeAfterThis()
-    console.log('key press enter; node: ', this.node)
+    console.log('key press enter; node: ', this.treeNode)
   }
 
   private addNodeAfterThis() {
-    this.node.addSiblingAfterThis()
+    this.treeNode.addSiblingAfterThis()
   }
 
   public focusNodeAbove() {
-    const nodeToFocus = this.node.getNodeAboveThis()
+    const nodeToFocus = this.treeNode.getNodeAboveThis()
     this.focusOtherNode(nodeToFocus)
   }
 
   public focusNodeBelow() {
-    const nodeToFocus = this.node.getNodeBelowThis()
+    const nodeToFocus = this.treeNode.getNodeBelowThis()
     this.focusOtherNode(nodeToFocus)
   }
 
@@ -123,5 +126,22 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   onColumnFocused(column) {
     this.focusedColumn = column
+  }
+
+  onChangeEstimatedTime() {
+    console.log('onChangeEstimatedTime')
+  }
+
+  onChange(e) {
+    console.log('onInputChanged onChange', e)
+  }
+
+  onInputChanged(e) {
+    this.onChange(e)
+    const titleVal = this.elInputTitle.nativeElement.value
+    console.log('input val: ' + titleVal)
+    this.treeNode.patchItemData({
+      title: titleVal
+    })
   }
 }

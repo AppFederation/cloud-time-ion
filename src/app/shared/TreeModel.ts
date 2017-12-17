@@ -42,7 +42,7 @@ export class OryTreeNode implements TreeNode {
 
   constructor(
     public nodeInclusion: NodeInclusion,
-    public dbId,
+    public itemId: string,
     public treeModel: TreeModel,
     public itemData: Object
   ) {}
@@ -164,6 +164,9 @@ export class OryTreeNode implements TreeNode {
     return foundIndex
   }
 
+  patchItemData(itemData: any) {
+    this.treeModel.treeService.patchItemData(this.itemId, itemData)
+  }
 }
 
 
@@ -186,7 +189,7 @@ export class TreeModel {
       const newOrderNum = event.nodeInclusion.orderNum
       let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
-      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.id, this, event.itemData)
+      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
       parentNode._appendChild(newTreeNode, insertBeforeIndex)
 
     } else {

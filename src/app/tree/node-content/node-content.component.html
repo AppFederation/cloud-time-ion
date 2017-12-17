@@ -25,6 +25,7 @@
     (keydown.arrowup)="focusNodeAbove()"
     (keydown.arrowdown)="focusNodeBelow()"
     (focus)="onColumnFocused(columns.estimatedTime)"
+    (change)="onChangeEstimatedTime()"
   >
 
   <input
@@ -39,6 +40,8 @@
     (keydown.arrowup)="focusNodeAbove()"
     (keydown.arrowdown)="focusNodeBelow()"
     (focus)="onColumnFocused(columns.title)"
+    (change)="onChangeEstimatedTime()"
+    (ngModelChange)="onChange($event)"
   >
 
 

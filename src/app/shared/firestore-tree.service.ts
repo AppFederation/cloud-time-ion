@@ -63,7 +63,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__8'
+  static dbPrefix = 'dbEmptyZZZ__9'
 
 
 
@@ -269,5 +269,9 @@ export class FirestoreTreeService extends DbTreeService {
       window.alert(`Order number equal: new:${newOrderNumber},previous:${previousOrderNumber},next:${nextOrderNumber}`)
     }
     return newOrderNumber
+  }
+
+  patchItemData(itemId: string, itemData: any) {
+    this.itemDocById(itemId).update(itemData)
   }
 }
