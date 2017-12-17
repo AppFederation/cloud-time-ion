@@ -63,14 +63,14 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__5'
+  static dbPrefix = 'dbEmptyZZZ__6'
 
 
 
   pendingListeners = 0
 
 
-  private NODES_COLLECTION = FirestoreTreeService.dbPrefix + 'nodes'
+  private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
 
   private HARDCODED_ROOT_NODE = 'KarolNodesHardcoded'
@@ -118,18 +118,19 @@ export class FirestoreTreeService extends DbTreeService {
         const parentsPath = serviceThis.nodesPath(parents)
         debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
         serviceThis.pendingListeners ++
-        nodeInclusionData.childNode.onSnapshot((targetNodeDoc: DocumentSnapshot) => {
+        nodeInclusionData.childNode.onSnapshot((includedItemDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           const nodeInclusionId = nodeInclusionData.nodeInclusionId
           console.log('nodeInclusionId', nodeInclusionId)
           const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
+          const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
           listener.onNodeAdded(
-            new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], targetNodeDoc, targetNodeDoc.id,
+            new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
-          debugLog('target node:', nestLevel, targetNodeDoc)
+          debugLog('target node:', nestLevel, includedItemDoc)
           // debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
-          serviceThis.handleSubNodes(targetNodeDoc.ref, parents, nestLevel, listener)
+          serviceThis.handleSubNodes(includedItemDoc.ref, parents, nestLevel, listener)
         })
         // debugLog('root node ref: ', targetNode);
       }
@@ -168,7 +169,7 @@ export class FirestoreTreeService extends DbTreeService {
   //     const childDoc: firebase.firestore.DocumentReference = result
   //     const childId = childDoc.id
   //     const nodeInclusion: FirestoreNodeInclusion = {
-  //       childNode: db.collection(this.NODES_COLLECTION).doc(childId),
+  //       childNode: db.collection(this.ITEMS_COLLECTION).doc(childId),
   //       orderNum: 9999
   //     }
   //     if ( parentId ) {
@@ -180,7 +181,7 @@ export class FirestoreTreeService extends DbTreeService {
   // }
 
   private nodesCollection() {
-    return db.collection(this.NODES_COLLECTION)
+    return db.collection(this.ITEMS_COLLECTION)
   }
 
   moveNode(dbId: string, dbId2: string) {

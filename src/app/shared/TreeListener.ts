@@ -15,7 +15,7 @@ export class NodeAddEvent {
   constructor (
     public parents,
     public immediateParentId,
-    public node,
+    public itemData,
     public id,
     public pendingListeners: number,
     public nodeInclusion: NodeInclusion
