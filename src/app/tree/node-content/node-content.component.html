@@ -42,6 +42,7 @@
     (focus)="onColumnFocused(columns.title)"
     (change)="onChangeEstimatedTime()"
     (ngModelChange)="onChange($event)"
+    [ngModel]="treeNode.itemData.title"
   >
 
 

@@ -13,6 +13,7 @@ import {TreeService} from './shared/tree.service'
 import {MatIconModule} from '@angular/material';
 import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filters/test-permissions-and-filters.component'
 import {DbTreeService} from './shared/db-tree-service'
+import {FormsModule} from '@angular/forms'
 
 const appRoutes: Routes = [
   {
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
     BrowserModule,
     TreeModule,
     HttpModule,
+    FormsModule,
     // MatIconModule,
     RouterModule.forRoot(appRoutes),
   ],

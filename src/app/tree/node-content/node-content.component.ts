@@ -45,7 +45,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // debugLog('n2', this.node2)
     this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
-    this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
+    // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
     this.elInputTitle.nativeElement.addEventListener('input', this.onInputChanged.bind(this));
   }
 

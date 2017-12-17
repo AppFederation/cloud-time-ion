@@ -44,7 +44,7 @@ export class OryTreeNode implements TreeNode {
     public nodeInclusion: NodeInclusion,
     public itemId: string,
     public treeModel: TreeModel,
-    public itemData: Object
+    public itemData: any
   ) {}
 
   addSiblingAfterThis(newNode?: OryTreeNode) {
@@ -175,7 +175,7 @@ export class TreeModel {
 
   root: OryTreeNode = new OryTreeNode(null, null, this, null)
 
-  mapNodeInclusionIdToNode = new Map<string, TreeNode>()
+  mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
 
   constructor(
     public treeService: DbTreeService
@@ -184,7 +184,11 @@ export class TreeModel {
   onNodeAdded(event: NodeAddEvent) {
     console.log('onNodeAdded', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
-    if ( ! this.nodeInclusionExists(nodeInclusionId) ) {
+    const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
+    if ( existingNode ) {
+      console.log('node inclusion already exists: ', nodeInclusionId)
+      existingNode.itemData = event.itemData
+    } else {
       const parentNode = this.root; FIXME('Hardcoded parent (root) for now')
       const newOrderNum = event.nodeInclusion.orderNum
       let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
@@ -192,8 +196,6 @@ export class TreeModel {
       const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
       parentNode._appendChild(newTreeNode, insertBeforeIndex)
 
-    } else {
-      console.log('node inclusion already exists: ', nodeInclusionId)
     }
 
     // debugLog('onNodeAdded')
