@@ -11,7 +11,6 @@
 
   <input
     #inputEstimatedTime
-    id="time_{{nodeIndex}}"
     maxlength="3"
     value="30"
     style="
@@ -21,7 +20,7 @@
       margin-left: .3em; margin-right: .3em
     "
     (keydown.enter)="keyPressEnter()"
-    (keydown.shift.arrowright)="shiftFocusToDescription()"
+    (keydown.arrowright)="focusToDescription()"
     (keydown.arrowup)="focusNodeAbove()"
     (keydown.arrowdown)="focusNodeBelow()"
     (focus)="onColumnFocused(columns.estimatedTime)"
@@ -30,13 +29,12 @@
 
   <input
     #inputTitle
-    id="description_{{nodeIndex}}"
     style="
       flex-grow: 1;
       margin-right: .3em
     "
     (keydown.enter)="keyPressEnter()"
-    (keydown.shift.arrowleft)="shiftFocusToTime()"
+    (keydown.arrowleft)="focusToEstimatedTime()"
     (keydown.arrowup)="focusNodeAbove()"
     (keydown.arrowdown)="focusNodeBelow()"
     (focus)="onColumnFocused(columns.title)"

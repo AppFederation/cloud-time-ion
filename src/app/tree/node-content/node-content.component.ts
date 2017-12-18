@@ -49,23 +49,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     this.elInputTitle.nativeElement.addEventListener('input', this.onInputChanged.bind(this));
   }
 
-  shiftFocusToTime() {
-    document.getElementById('time_' + this.nodeIndex).focus()
-  }
-
-  shiftFocusToDescription() {
-    document.getElementById('description_' + this.nodeIndex).focus()
-  }
-
-  // private getElementByXpath(path) {
-  //   console.log('getElementByXpath')
-  //
-  //   const input: HTMLElement = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
-  //       .singleNodeValue.parentElement;
-  //
-  //   return input
-  // }
-
   ngAfterViewInit(): void {
    this.focus()
   }
@@ -105,6 +88,24 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   public focusNodeBelow() {
     const nodeToFocus = this.treeNode.getNodeBelowThis()
     this.focusOtherNode(nodeToFocus)
+  }
+
+  focusToEstimatedTime() {
+    const element = <HTMLInputElement>document.activeElement
+    const start = element.selectionStart === 0
+
+    if (start) {
+      this.focus(this.columns.estimatedTime)
+    }
+  }
+
+  focusToDescription() {
+    const element = <HTMLInputElement>document.activeElement
+    const end = element.selectionEnd === element.maxLength - 1
+
+    if (end) {
+      this.focus(<HTMLInputElement>this.columns.title)
+    }
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
