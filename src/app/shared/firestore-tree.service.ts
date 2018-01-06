@@ -227,7 +227,8 @@ export class FirestoreTreeService extends DbTreeService {
       title: OryTreeNode.INITIAL_TITLE
     }
 
-    this.itemsCollection().add(newItem).then((itemDocRef) => {
+    this.itemsCollection().doc(newNode.itemId).set(newItem).then((itemDocRef) => {
+      itemDocRef = this.itemDocById(newNode.itemId)
       console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
       this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
