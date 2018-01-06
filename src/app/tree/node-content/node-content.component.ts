@@ -113,7 +113,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   focusToDescription() {
     const element = <HTMLInputElement>document.activeElement
-    const end = element.selectionEnd === element.maxLength - 1
+    const end = element.selectionEnd === ('' + element.value).length
 
     if (end) {
       this.focus(<HTMLInputElement>this.columns.title)
