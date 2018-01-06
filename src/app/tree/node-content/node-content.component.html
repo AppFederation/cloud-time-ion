@@ -11,7 +11,6 @@
 
   <input
     #inputEstimatedTime
-    id="time_{{nodeIndex}}"
     maxlength="3"
     value="30"
     style="
@@ -20,31 +19,51 @@
       text-align: right;
       margin-left: .3em; margin-right: .3em
     "
-    (keydown.enter)="keyPressEnter()"
-    (keydown.shift.arrowright)="shiftFocusToDescription()"
-    (keydown.arrowup)="focusNodeAbove()"
-    (keydown.arrowdown)="focusNodeBelow()"
-    (focus)="onColumnFocused(columns.estimatedTime)"
-    (change)="onChangeEstimatedTime()"
+    (keydown.enter)="keyPressEnter($event)"
+    (keydown.shift.arrowright)="shiftFocusToDescription($event)"
+    (keydown.arrowup)="focusNodeAbove($event)"
+    (keydown.arrowdown)="focusNodeBelow($event)"
+    (focus)="onColumnFocused($event, columns.estimatedTime)"
+    (change)="onChangeEstimatedTime($event)"
   >
 
-  <input
+  <div
     #inputTitle
-    id="description_{{nodeIndex}}"
+    contenteditable
     style="
       flex-grow: 1;
       margin-right: .3em
     "
-    (keydown.enter)="keyPressEnter()"
-    (keydown.shift.arrowleft)="shiftFocusToTime()"
-    (keydown.arrowup)="focusNodeAbove()"
-    (keydown.arrowdown)="focusNodeBelow()"
-    (focus)="onColumnFocused(columns.title)"
-    (change)="onChangeEstimatedTime()"
-    (ngModelChange)="onChange($event)"
-    [ngModel]="treeNode.itemData.title"
+    (keydown.enter)="keyPressEnter($event)"
+    (keydown.shift.arrowright)="shiftFocusToDescription($event)"
+    (keydown.arrowup)="focusNodeAbove($event)"
+    (keydown.arrowdown)="focusNodeBelow($event)"
+    (focus)="onColumnFocused($event, columns.estimatedTime)"
+    (change)="onChangeEstimatedTime($event)"
   >
+    <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->
+  </div>
 
+  <!--&#45;&#45;&#45;&#45;  &#45;&#45;&#45;&#45;-->
+  <!--<input-->
+    <!--#inputTitle-->
+    <!--style="-->
+      <!--flex-grow: 1;-->
+      <!--margin-right: .3em-->
+    <!--"-->
+    <!--(keydown.enter)="keyPressEnter()"-->
+    <!--(keydown.shift.arrowleft)="shiftFocusToTime()"-->
+    <!--(keydown.arrowup)="focusNodeAbove()"-->
+    <!--(keydown.arrowdown)="focusNodeBelow()"-->
+    <!--(focus)="onColumnFocused(columns.title)"-->
+  <!--&gt;-->
+  <!--[ngModel]="treeNode.itemData.title"-->
+  <!--(change)="onChangeEstimatedTime()"-->
+  <!--(ngModelChange)="onChange($event)"-->
+
+
+  <!--     [ngModel]="treeNode"
+  -->
 
 
   <button

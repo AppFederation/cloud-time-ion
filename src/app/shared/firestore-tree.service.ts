@@ -51,7 +51,6 @@ export function debugLog(...args) {
 // Initialize Cloud Firestore through Firebase
 const db = firebase1.firestore();
 
-export const ORDER_STEP = 1 * 1000 * 1000
 
 export interface FirestoreNodeInclusion {
   childNode    : DocumentReference,
@@ -224,11 +223,13 @@ export class FirestoreTreeService extends DbTreeService {
     // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
     // add node itself to firestore (BEFORE inclusion)
     const newItem = {
-      title: 'added node title ' + new Date()
+      // title: 'added node title ' + new Date()
+      title: OryTreeNode.INITIAL_TITLE
     }
 
     this.itemsCollection().add(newItem).then((itemDocRef) => {
       console.log('itemDocRef', itemDocRef)
+      // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
       this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
     })
     // add node-inclusion to firestore
@@ -250,25 +251,6 @@ export class FirestoreTreeService extends DbTreeService {
     // throw new Error('TESTING')
 
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
-  }
-
-  static calculateNewOrderNumber(previousOrderNumber: number, nextOrderNumber: number) {
-    console.log('calculateNewOrderNumber: ', previousOrderNumber, nextOrderNumber)
-    let newOrderNumber
-    if ( nullOrUndef(previousOrderNumber) && defined(nextOrderNumber) ) {
-      newOrderNumber = nextOrderNumber - ORDER_STEP
-    } else if ( defined(previousOrderNumber) && nullOrUndef(nextOrderNumber) ) {
-      newOrderNumber = previousOrderNumber + ORDER_STEP
-    } else if ( nullOrUndef(previousOrderNumber) && nullOrUndef(nextOrderNumber) ) {
-      newOrderNumber = 0
-    } else { /* both next and previous is defined */
-      newOrderNumber = ( previousOrderNumber + nextOrderNumber ) / 2;
-    }
-
-    if (nextOrderNumber === newOrderNumber || previousOrderNumber === newOrderNumber) {
-      window.alert(`Order number equal: new:${newOrderNumber},previous:${previousOrderNumber},next:${nextOrderNumber}`)
-    }
-    return newOrderNumber
   }
 
   patchItemData(itemId: string, itemData: any) {

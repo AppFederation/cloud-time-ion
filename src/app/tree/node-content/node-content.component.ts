@@ -5,6 +5,7 @@ import {OryTreeNode} from '../../shared/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../shared/db-tree-service'
+import {DomSanitizer} from '@angular/platform-browser'
 
 export class Columns {
   title = new OryColumn('title')
@@ -24,6 +25,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   columns: Columns = NodeContentComponent.columnsStatic
 
   titleValue
+  initialTitle: string
 
   // @Input() node: TreeNode & {dbId: string}
   @Input() treeNode: OryTreeNode
@@ -33,28 +35,36 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   @ViewChild('inputTitle')         elInputTitle: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
-  nodeIndex = 0
+  // nodeIndex = 0
   private focusedColumn: OryColumn
+
+  // isApplyingFromDbNow = false
 
   constructor(
     public dbService: DbTreeService,
+    public sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {
     debugLog('node content node', this.treeNode)
     // debugLog('n2', this.node2)
-    this.nodeIndex = this.treeNode.getIndexInParent()
+    // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
     // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
     this.elInputTitle.nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+    this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
+    */
+    // this.elInputTitle.nativeElement.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.initialTitle);
+    this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
+
   }
 
   shiftFocusToTime() {
-    document.getElementById('time_' + this.nodeIndex).focus()
+    // document.getElementById('time_' + this.nodeIndex).focus()
   }
 
   shiftFocusToDescription() {
-    document.getElementById('description_' + this.nodeIndex).focus()
+    // document.getElementById('description_' + this.nodeIndex).focus()
   }
 
   // private getElementByXpath(path) {
@@ -88,7 +98,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // this.dbService.addNode(this.node.dbId)
   }
 
-  keyPressEnter() {
+  keyPressEnter(event) {
+    event.preventDefault()
     this.addNodeAfterThis()
     console.log('key press enter; node: ', this.treeNode)
   }
@@ -138,10 +149,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   onInputChanged(e) {
     this.onChange(e)
-    const titleVal = this.elInputTitle.nativeElement.value
-    console.log('input val: ' + titleVal)
-    this.treeNode.patchItemData({
-      title: titleVal
-    })
+    console.log('onInputChanged isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
+    if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
+      const titleVal = this.elInputTitle.nativeElement.innerHTML
+      console.log('input val: ' + titleVal)
+      this.treeNode.patchItemData({
+        title: titleVal
+      })
+    } // else: no need to react, since it is being applied from Db
   }
 }

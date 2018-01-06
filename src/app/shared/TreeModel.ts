@@ -15,7 +15,7 @@ const uuidV4 = require('uuid/v4');
 
 export class OryTreeNode implements TreeNode {
 
-  // from PrimeNG's TreeNode:
+  // ==== from PrimeNG's TreeNode:
 
   label?: string;
   data?: any;
@@ -35,6 +35,10 @@ export class OryTreeNode implements TreeNode {
   draggable?: boolean;
   droppable?: boolean;
   selectable?: boolean;
+
+  // ==== End of PrimeNG's TreeNode
+
+  static INITIAL_TITLE = ''
 
   get lastChildNode(): OryTreeNode {
     return this.getChildAtIndexOrNull(this.children && this.children.length - 1)
@@ -104,7 +108,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   private newItemData() {
-    return {title: 'new node'}
+    return {title: OryTreeNode.INITIAL_TITLE}
   }
 
 
@@ -139,7 +143,7 @@ export class OryTreeNode implements TreeNode {
     console.log('addChild: previousOrderNumber', previousOrderNumber)
     const nextOrderNumber = nodeBelow && nodeBelow.nodeInclusion.orderNum
     console.log('addChild: nextOrderNumber', nextOrderNumber)
-    const newOrderNumber = FirestoreTreeService.calculateNewOrderNumber(previousOrderNumber, nextOrderNumber)
+    const newOrderNumber = DbTreeService.calculateNewOrderNumber(previousOrderNumber, nextOrderNumber)
     console.log('addChild: newOrderNumber', newOrderNumber)
     const nodeInclusion: NodeInclusion = new NodeInclusion(newOrderNumber, 'inclusion_' + uuidV4())
     newNode.nodeInclusion = nodeInclusion
@@ -176,6 +180,7 @@ export class TreeModel {
   root: OryTreeNode = new OryTreeNode(null, null, this, null)
 
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
+  isApplyingFromDbNow = false
 
   constructor(
     public treeService: DbTreeService
@@ -185,17 +190,29 @@ export class TreeModel {
     console.log('onNodeAdded', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
-    if ( existingNode ) {
-      console.log('node inclusion already exists: ', nodeInclusionId)
-      existingNode.itemData = event.itemData
-    } else {
-      const parentNode = this.root; FIXME('Hardcoded parent (root) for now')
-      const newOrderNum = event.nodeInclusion.orderNum
-      let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+    try {
+      this.isApplyingFromDbNow = true
+      if (existingNode) {
+        console.log('node inclusion already exists: ', nodeInclusionId)
+        // setTimeout(() => {
+        //   setTimeout(() => {
+            // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
+            existingNode.itemData = event.itemData
+          // })
+        // }, 0)
 
-      const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
-      parentNode._appendChild(newTreeNode, insertBeforeIndex)
+      } else {
+        const parentNode = this.root;
+        FIXME('Hardcoded parent (root) for now')
+        const newOrderNum = event.nodeInclusion.orderNum
+        let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
+        const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
+        parentNode._appendChild(newTreeNode, insertBeforeIndex)
+
+      }
+    } finally {
+      this.isApplyingFromDbNow = false
     }
 
     // debugLog('onNodeAdded')
