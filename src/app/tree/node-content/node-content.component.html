@@ -1,7 +1,8 @@
 <!--<mat-icon></mat-icon>-->
 <!--<i class="material-icons">assignment</i>-->
 
-<div style="display: flex; align-items: center;">
+<div style="display: flex; align-items: stretch;">
+<!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
   <!--<i class="material-icons">work</i>-->
@@ -17,14 +18,14 @@
       flex-basis: fit-content;
       width: 3em;
       text-align: right;
-      margin-left: .3em; margin-right: .3em
+      margin-left: .3em; margin-right: .3em;
     "
     (keydown.enter)="keyPressEnter($event)"
-    (keydown.shift.arrowright)="shiftFocusToDescription($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (focus)="onColumnFocused($event, columns.estimatedTime)"
     (change)="onChangeEstimatedTime($event)"
+    (keydown.arrowright)="focusToDescription()"
   >
 
   <div
@@ -32,12 +33,14 @@
     contenteditable
     style="
       flex-grow: 1;
-      margin-right: .3em
+      margin-right: .3em;
+      background-color: #F8F8F8;
+      height: 100%;
     "
     (keydown.enter)="keyPressEnter($event)"
-    (keydown.shift.arrowright)="shiftFocusToDescription($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
+    (keydown.arrowleft)="focusToEstimatedTime()"
     (focus)="onColumnFocused($event, columns.estimatedTime)"
     (change)="onChangeEstimatedTime($event)"
   >
