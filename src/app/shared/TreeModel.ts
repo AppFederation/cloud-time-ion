@@ -3,7 +3,7 @@ import {NodeAddEvent, NodeInclusion} from './TreeListener'
 import {debugLog, FirestoreTreeService} from './firestore-tree.service'
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
-import {Injectable} from '@angular/core'
+import {EventEmitter, Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
 import {defined, FIXME, nullOrUndef} from './utils'
 /**
@@ -35,6 +35,8 @@ export class OryTreeNode implements TreeNode {
   draggable?: boolean;
   droppable?: boolean;
   selectable?: boolean;
+
+  onChangeItemData = new EventEmitter()
 
   // ==== End of PrimeNG's TreeNode
 
@@ -198,6 +200,7 @@ export class TreeModel {
         //   setTimeout(() => {
             // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
             existingNode.itemData = event.itemData
+            existingNode.onChangeItemData.emit(event.itemData)
           // })
         // }, 0)
 
