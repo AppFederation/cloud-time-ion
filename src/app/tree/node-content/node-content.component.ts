@@ -10,6 +10,8 @@ import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 
+/* Consider renamig to "view slots" - more generic than columns, while more view-related than "property".
+ * Or maybe PropertyView ? */
 export class Columns {
   title = new OryColumn('title')
   estimatedTime = new OryColumn('estimatedTime')
@@ -29,6 +31,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   titleValue
   initialTitle: string
+  estimatedTimeModel: number
 
   // @Input() node: TreeNode & {dbId: string}
   @Input() treeNode: OryTreeNode
@@ -64,12 +67,21 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // WHY: 2. it can lead to data loss if I go to another window/device and accidentally edit something that was changed elsewhere
     // this.elInputTitle.nativeElement.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.initialTitle);
     this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
+    this.estimatedTimeModel = this.treeNode.itemData.estimatedTime
 
     this.treeNode.onChangeItemData.subscribe(() => {
+      // estimated time:
+      const newEstimatedTime = this.treeNode.itemData.estimatedTime
+      if ( this.elInputEstimatedTime.nativeElement.value !== newEstimatedTime ) {
+        this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
+      }
+
+      // title:
       const newTitle = this.treeNode.itemData.title
       if ( this.elInputTitle.nativeElement.innerHTML !== newTitle ) {
         this.elInputTitle.nativeElement.innerHTML = newTitle
       }
+
     })
 
   }
@@ -173,14 +185,16 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     console.log('onInputChanged onChange', e)
   }
 
-  onInputChanged(e) {
+  onInputChanged(e, column) {
     this.onChange(e)
     console.log('onInputChanged isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
     if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
       const titleVal = this.elInputTitle.nativeElement.innerHTML
-      console.log('input val: ' + titleVal)
+      const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
+      // console.log('input val: ' + titleVal)
       this.treeNode.patchItemData({
-        title: titleVal
+        title: titleVal,
+        estimatedTime: estimatedTimeVal,
       })
     } // else: no need to react, since it is being applied from Db
   }
