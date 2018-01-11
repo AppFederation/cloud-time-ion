@@ -9,6 +9,7 @@ import {TreeHostComponent} from '../tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
+import { isNullOrUndefined } from 'util'
 
 /* Consider renamig to "view slots" - more generic than columns, while more view-related than "property".
  * Or maybe PropertyView ? */
@@ -30,9 +31,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   columns: Columns = NodeContentComponent.columnsStatic
 
-  titleValue
-  initialTitle: string
-  estimatedTimeModel: number
+  // titleValue
+  // initialTitle: string
+  // estimatedTimeModel: number
 
   isDone: boolean = false
 
@@ -68,36 +69,45 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     this.elInputTitle
       .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
 
-    this.isDone = this.treeNode.itemData.isDone
-    this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
-    */
+    // this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
+    // */
     // NEXT: enable real time updates of title - perhaps check if new value === existing, perhaps use isApplyingFromDbNow
     // WHY: 1. my mind is already in the topic; cementing it would be good
     // WHY: 2. it can lead to data loss if I go to another window/device and accidentally edit something that was changed elsewhere
     // this.elInputTitle.nativeElement.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.initialTitle);
-    this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
-    this.estimatedTimeModel = this.treeNode.itemData.estimatedTime
-    this.elInputEstimatedTime.nativeElement.value = this.estimatedTimeModel;
+    // this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
+    // this.estimatedTimeModel = this.treeNode.itemData.estimatedTime
+    // this.elInputEstimatedTime.nativeElement.value = this.estimatedTimeModel;
 
+    this.applyItemDataValuesToViews()
 
     this.treeNode.onChangeItemData.subscribe(() => {
-      // estimated time:
-      const newEstimatedTime = this.treeNode.itemData.estimatedTime
-      console.log('newEstimatedTime, ', newEstimatedTime)
-      if ( this.elInputEstimatedTime.nativeElement.value !== newEstimatedTime ) {
-        this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
-      }
-
-      // title:
-      const newTitle = this.treeNode.itemData.title
-      if ( this.elInputTitle.nativeElement.innerHTML !== newTitle ) {
-        this.elInputTitle.nativeElement.innerHTML = newTitle
-      }
-
-      this.isDone = this.treeNode.itemData.isDone
-
+      this.applyItemDataValuesToViews()
     })
 
+  }
+
+  private applyItemDataValuesToViews() {
+// estimated time:
+    let newEstimatedTime = this.treeNode.itemData.estimatedTime
+    if (newEstimatedTime === undefined || newEstimatedTime === null) {
+      newEstimatedTime = ''
+    }
+    console.log('newEstimatedTime, ', newEstimatedTime)
+    if (this.elInputEstimatedTime.nativeElement.value !== newEstimatedTime) {
+      this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
+    }
+
+    // title:
+    const newTitle = this.treeNode.itemData.title
+    if (this.elInputTitle.nativeElement.innerHTML !== newTitle) {
+      this.elInputTitle.nativeElement.innerHTML = newTitle
+    }
+
+    this.isDone = this.treeNode.itemData.isDone
+    if ( isNullOrUndefined(this.isDone) ) {
+      this.isDone = false;
+    }
   }
 
   // ngOnChanges(changes: SimpleChanges) {
