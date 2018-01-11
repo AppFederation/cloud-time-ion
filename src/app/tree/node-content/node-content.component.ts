@@ -33,6 +33,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   initialTitle: string
   estimatedTimeModel: number
 
+  isDone: boolean
+
   // @Input() node: TreeNode & {dbId: string}
   @Input() treeNode: OryTreeNode
   @Input() treeHost: TreeHostComponent
@@ -59,7 +61,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
     // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
-    this.elInputTitle.nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+
+    this.elInputEstimatedTime
+      .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+    this.elInputTitle
+      .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+
     this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
     */
     // NEXT: enable real time updates of title - perhaps check if new value === existing, perhaps use isApplyingFromDbNow
@@ -68,10 +75,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // this.elInputTitle.nativeElement.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.initialTitle);
     this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
     this.estimatedTimeModel = this.treeNode.itemData.estimatedTime
+    this.elInputEstimatedTime.nativeElement.value = this.estimatedTimeModel;
+
 
     this.treeNode.onChangeItemData.subscribe(() => {
       // estimated time:
       const newEstimatedTime = this.treeNode.itemData.estimatedTime
+      console.log('newEstimatedTime, ', newEstimatedTime)
       if ( this.elInputEstimatedTime.nativeElement.value !== newEstimatedTime ) {
         this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
       }
@@ -187,7 +197,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   onInputChanged(e, column) {
     this.onChange(e)
-    console.log('onInputChanged isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
+    console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
     if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
       const titleVal = this.elInputTitle.nativeElement.innerHTML
       const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value

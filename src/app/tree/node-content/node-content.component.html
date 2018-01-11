@@ -13,15 +13,12 @@
   <input
     #inputEstimatedTime
     maxlength="3"
-    value="30"
     style="
       flex-basis: fit-content;
       width: 3em;
       text-align: right;
       margin-left: .3em; margin-right: .3em;
     "
-    (ngModelChange)="onInputChanged($event, columns.estimatedTime)"
-    [ngModel]="estimatedTimeModel"
     (keydown.enter)="keyPressEnter($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
@@ -29,6 +26,11 @@
     (change)="onChangeEstimatedTime($event)"
     (keydown.arrowright)="focusToDescription()"
   >
+  <!--
+      value="30"
+      [ngModel]="estimatedTimeModel"
+      (ngModelChange)="onInputChanged($event, columns.estimatedTime)"
+  -->
 
   <div
     #inputTitle
