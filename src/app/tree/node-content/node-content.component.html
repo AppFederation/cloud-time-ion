@@ -4,6 +4,7 @@
 <div
   style="display: flex; align-items: stretch;"
   (keydown.meta.enter)="keyPressMetaEnter($event)"
+  (keydown.control.enter)="keyPressMetaEnter($event)"
   [ngClass]="{'done':isDone}"
 >
 <!--<div style="display: flex; align-items: center;">-->
