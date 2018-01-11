@@ -89,18 +89,18 @@ export class OryTreeNode implements TreeNode {
     if ( nullOrUndef(insertBeforeIndex) ) {
       insertBeforeIndex = this.children.length
     }
-    console.log('this', this)
+    // console.log('this', this)
     if ( nullOrUndef(this.children) ) {
       this.children = []
     }
     nodeToAppend.parent = this
     nodeToAppend.parent2 = this
-    console.log('node.parent', nodeToAppend.parent)
-    console.log('push child', nodeToAppend.parent)
+    // console.log('node.parent', nodeToAppend.parent)
+    // console.log('push child', nodeToAppend.parent)
     // this.children.push(node)
     this.children.splice(insertBeforeIndex, 0, nodeToAppend)
     this.treeModel.registerNode(nodeToAppend)
-    console.log('afterNode', afterNode)
+    // console.log('afterNode', afterNode)
     // this.treeModel.addSiblingAfterNode(nodeToAppend, afterNode)
 
     return nodeToAppend
@@ -136,17 +136,17 @@ export class OryTreeNode implements TreeNode {
       afterExistingNode = this.lastChildNode
     }
 
-    console.log('addChild, afterExistingNode', afterExistingNode)
+    // console.log('addChild, afterExistingNode', afterExistingNode)
     newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel, this.newItemData())
 
     const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelowThis()
-    console.log('addChild: nodeBelow', nodeBelow)
+    // console.log('addChild: nodeBelow', nodeBelow)
     const previousOrderNumber = afterExistingNode && afterExistingNode.nodeInclusion.orderNum;
-    console.log('addChild: previousOrderNumber', previousOrderNumber)
+    // console.log('addChild: previousOrderNumber', previousOrderNumber)
     const nextOrderNumber = nodeBelow && nodeBelow.nodeInclusion.orderNum
-    console.log('addChild: nextOrderNumber', nextOrderNumber)
+    // console.log('addChild: nextOrderNumber', nextOrderNumber)
     const newOrderNumber = DbTreeService.calculateNewOrderNumber(previousOrderNumber, nextOrderNumber)
-    console.log('addChild: newOrderNumber', newOrderNumber)
+    // console.log('addChild: newOrderNumber', newOrderNumber)
     const nodeInclusion: NodeInclusion = new NodeInclusion(newOrderNumber, 'inclusion_' + uuidV4())
     newNode.nodeInclusion = nodeInclusion
 
@@ -189,7 +189,7 @@ export class TreeModel {
   ) {}
 
   onNodeAdded(event: NodeAddEvent) {
-    console.log('onNodeAdded', event)
+    // console.log('onNodeAdded', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     try {
@@ -266,7 +266,7 @@ export class TreeModel {
   // }
 
   registerNode(nodeToRegister: OryTreeNode) {
-    console.log('mapNodeInclusionIdToNode registerNode', nodeToRegister)
+    // console.log('mapNodeInclusionIdToNode registerNode', nodeToRegister)
     // NOTE: does not yet support the same node being in multiple places
     // NOTE: this should register nodeInclusion id
 
@@ -275,7 +275,7 @@ export class TreeModel {
 
   private nodeInclusionExists(nodeInclusionId: string) {
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
-    console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
+    // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
     return defined(existingNode)
   }
 }

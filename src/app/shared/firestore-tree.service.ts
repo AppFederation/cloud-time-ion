@@ -103,7 +103,7 @@ export class FirestoreTreeService extends DbTreeService {
   loadNodesTree(listener: DbTreeListener) {
     console.log('loadNodesTree')
     db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
-      console.log('loadNodesTree onSnapshot()', snapshot)
+      // console.log('loadNodesTree onSnapshot()', snapshot)
     })
     // this.processNodeEvents(0, snapshot, [], listener)
     this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE), [], 0, listener)
@@ -115,21 +115,21 @@ export class FirestoreTreeService extends DbTreeService {
       const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
-        debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
+        // debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
         serviceThis.pendingListeners ++
         nodeInclusionData.childNode.onSnapshot((includedItemDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           const nodeInclusionId = nodeInclusionData.nodeInclusionId
-          console.log('nodeInclusionId', nodeInclusionId)
+          // console.log('nodeInclusionId', nodeInclusionId)
           const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
-          console.log('includedItemDoc', includedItemDoc)
+          // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
-          console.log('itemData:::', itemData)
+          // console.log('itemData:::', itemData)
           listener.onNodeAdded(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
-          debugLog('target node:', nestLevel, includedItemDoc)
+          // debugLog('target node:', nestLevel, includedItemDoc)
           // debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
           serviceThis.handleSubNodes(includedItemDoc.ref, parents, nestLevel, listener)
         })
@@ -146,7 +146,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
     const subCollection = targetNodeDocRef.collection('subNodes')
-    debugLog('subColl:', subCollection)
+    // debugLog('subColl:', subCollection)
     subCollection.onSnapshot((subSnap: QuerySnapshot) => {
       const newParents: DocumentReference[] = parents.slice(0)
       newParents.push(targetNodeDocRef)
@@ -229,7 +229,7 @@ export class FirestoreTreeService extends DbTreeService {
 
     this.itemsCollection().doc(newNode.itemId).set(newItem).then((itemDocRef) => {
       itemDocRef = this.itemDocById(newNode.itemId)
-      console.log('itemDocRef', itemDocRef)
+      // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
       this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
     })

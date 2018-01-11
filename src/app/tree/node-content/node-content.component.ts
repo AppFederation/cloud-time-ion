@@ -54,7 +54,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    debugLog('node content node', this.treeNode)
+    // debugLog('node content node', this.treeNode)
     // debugLog('n2', this.node2)
     // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
