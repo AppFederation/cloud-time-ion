@@ -15,6 +15,7 @@ import {DomSanitizer} from '@angular/platform-browser'
 export class Columns {
   title = new OryColumn('title')
   estimatedTime = new OryColumn('estimatedTime')
+  isDone = new OryColumn('isDone')
 }
 
 @Component({
@@ -33,7 +34,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   initialTitle: string
   estimatedTimeModel: number
 
-  isDone: boolean
+  isDone: boolean = false
 
   // @Input() node: TreeNode & {dbId: string}
   @Input() treeNode: OryTreeNode
@@ -67,6 +68,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     this.elInputTitle
       .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
 
+    this.isDone = this.treeNode.itemData.isDone
     this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
     */
     // NEXT: enable real time updates of title - perhaps check if new value === existing, perhaps use isApplyingFromDbNow
@@ -91,6 +93,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       if ( this.elInputTitle.nativeElement.innerHTML !== newTitle ) {
         this.elInputTitle.nativeElement.innerHTML = newTitle
       }
+
+      this.isDone = this.treeNode.itemData.isDone
 
     })
 
@@ -131,6 +135,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     event.preventDefault()
     this.addNodeAfterThis()
     console.log('key press enter; node: ', this.treeNode)
+  }
+
+  keyPressMetaEnter(event) {
+    console.log('keyPressMetaEnter')
+    this.isDone = ! this.isDone
+    this.onInputChanged(null, this.columns.isDone)
   }
 
   private addNodeAfterThis() {
@@ -205,6 +215,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       this.treeNode.patchItemData({
         title: titleVal,
         estimatedTime: estimatedTimeVal,
+        isDone: this.isDone,
       })
     } // else: no need to react, since it is being applied from Db
   }

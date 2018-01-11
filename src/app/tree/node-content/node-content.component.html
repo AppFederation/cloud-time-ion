@@ -1,7 +1,11 @@
 <!--<mat-icon></mat-icon>-->
 <!--<i class="material-icons">assignment</i>-->
 
-<div style="display: flex; align-items: stretch;">
+<div
+  style="display: flex; align-items: stretch;"
+  (keydown.meta.enter)="keyPressMetaEnter($event)"
+  [ngClass]="{'done':isDone}"
+>
 <!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
