@@ -13,7 +13,8 @@ import {TreeService} from './shared/tree.service'
 import {MatIconModule} from '@angular/material';
 import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filters/test-permissions-and-filters.component'
 import {DbTreeService} from './shared/db-tree-service'
-import {FormsModule} from '@angular/forms'
+import {FormsModule} from '@angular/forms';
+import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
 
 const appRoutes: Routes = [
   {
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     TestFirestoreComponent,
     NodeContentComponent,
     TreeHostComponent,
-    TestPermissionsAndFiltersComponent
+    TestPermissionsAndFiltersComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,
