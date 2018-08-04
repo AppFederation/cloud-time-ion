@@ -50,7 +50,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   // isApplyingFromDbNow = false
 
-
+  editedHere = new Map<OryColumn, boolean>()
 
   constructor(
     public dbService: DbTreeService,
@@ -65,9 +65,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
 
     this.elInputEstimatedTime
-      .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+      .nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev, this.columns.estimatedTime));
     this.elInputTitle
-      .nativeElement.addEventListener('input', this.onInputChanged.bind(this));
+      .nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev, this.columns.title));
 
     // this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
     // */
@@ -82,6 +82,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     this.applyItemDataValuesToViews()
 
     this.treeNode.onChangeItemData.subscribe(() => {
+      const focusedColumn = undefined // this.columns.title
       this.applyItemDataValuesToViews()
     })
 
@@ -94,14 +95,25 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       newEstimatedTime = ''
     }
     console.log('newEstimatedTime, ', newEstimatedTime)
-    if (this.elInputEstimatedTime.nativeElement.value !== newEstimatedTime) {
-      this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
+    if (this.elInputEstimatedTime.nativeElement.value === newEstimatedTime) {
+      this.editedHere.set(this.columns.estimatedTime, false)
+    } else {
+      if ( ! this.editedHere.get(this.columns.estimatedTime) ) {
+        this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
+        // FIXME: note, this should also take focus into account
+      }
     }
 
     // title:
     const newTitle = this.treeNode.itemData.title
-    if (this.elInputTitle.nativeElement.innerHTML !== newTitle) {
-      this.elInputTitle.nativeElement.innerHTML = newTitle
+    if (this.elInputTitle.nativeElement.innerHTML === newTitle) {
+      this.editedHere.set(this.columns.title, false)
+    } else {
+      if ( ! this.editedHere.get(this.columns.title) ) {
+        this.elInputTitle.nativeElement.innerHTML = newTitle
+        // FIXME: note, this should also take focus into account
+      }
+
     }
 
     this.isDone = this.treeNode.itemData.isDone
@@ -216,6 +228,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   onInputChanged(e, column) {
+    this.editedHere.set(column, true)
     this.onChange(e)
     console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
     if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
