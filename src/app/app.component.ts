@@ -1,6 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import {TreeNode, UITreeNode} from 'primeng/primeng'
 import {FirestoreTreeService} from './shared/firestore-tree.service'
+import { DialogService } from './core/dialog.service'
+
+declare var $: any
 
 @Component({
   selector: 'app-root',
@@ -10,10 +13,18 @@ import {FirestoreTreeService} from './shared/firestore-tree.service'
 })
 export class AppComponent {
 
-
   constructor(
+    public dialogService: DialogService,
     // public dbService: FirestoreTreeService,
   ) {
+    dialogService.deleteDialog$.subscribe((val) => {
+      console.log('dialogService.deleteDialog$')
+      $('#confirmDeleteButton').click(function(){
+        window.alert('delete confirmed')
+        val.callback()
+      });
+      $('#confirmDelete').modal('show');
+    })
 
   }
 

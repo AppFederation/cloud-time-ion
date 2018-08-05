@@ -10,6 +10,7 @@ import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 import { isNullOrUndefined } from 'util'
+import { DialogService } from '../../core/dialog.service'
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -81,6 +82,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   constructor(
     public dbService: DbTreeService,
     public sanitizer: DomSanitizer,
+    public dialogService: DialogService,
   ) { }
 
   ngOnInit() {
@@ -162,7 +164,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   delete() {
-    // this.dbService.delete(this.node.dbId)
+    this.dialogService.showDeleteDialog(() => {
+      // TODO: delete node inclusion and the node itself
+      this.dbService.delete(this.node.dbId)
+    })
   }
 
   addChild() {

@@ -15,6 +15,7 @@ import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filte
 import {DbTreeService} from './shared/db-tree-service'
 import {FormsModule} from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
+import { DialogService } from './core/dialog.service'
 
 const appRoutes: Routes = [
   {
@@ -63,6 +64,7 @@ const appRoutes: Routes = [
     TreeDragDropService,
     {provide: DbTreeService, useClass: FirestoreTreeService},
     TreeService,
+    DialogService,
   ],
   bootstrap: [AppComponent]
 })
