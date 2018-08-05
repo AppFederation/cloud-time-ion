@@ -1,7 +1,7 @@
 
 export class OryColumn {
   constructor(
-    name: string
+    public name: string
   ) {}
 }
 
