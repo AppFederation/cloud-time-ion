@@ -27,7 +27,7 @@
     (keydown.enter)="keyPressEnter($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
-    (focus)="onColumnFocused($event, columns.estimatedTime)"
+    (focus)="onColumnFocused(columns.estimatedTime, $event)"
     (change)="onChangeEstimatedTime($event)"
     (keydown.arrowright)="focusToDescription()"
   >
@@ -51,7 +51,7 @@
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (keydown.arrowleft)="focusToEstimatedTime()"
-    (focus)="onColumnFocused($event, columns.estimatedTime)"
+    (focus)="onColumnFocused(columns.title, $event)"
     (change)="onChangeEstimatedTime($event)"
   >
     <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->

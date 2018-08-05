@@ -199,6 +199,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
+    console.log('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
 
@@ -215,7 +216,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onColumnFocused(column) {
+  onColumnFocused(column: OryColumn, event) {
     this.focusedColumn = column
   }
 
