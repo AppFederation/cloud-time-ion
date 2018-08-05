@@ -11,7 +11,33 @@ import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 import { isNullOrUndefined } from 'util'
 
-/* Consider renamig to "view slots" - more generic than columns, while more view-related than "property".
+/** https://stackoverflow.com/a/3976125/170451 */
+function getCaretPosition(editableDiv) {
+  var caretPos = 0,
+    sel, range;
+  if (window.getSelection) {
+    sel = window.getSelection();
+    if (sel.rangeCount) {
+      range = sel.getRangeAt(0);
+      if (range.commonAncestorContainer.parentNode == editableDiv) {
+        caretPos = range.endOffset;
+      }
+    }
+  } // else if (document.selection && document.selection.createRange) {
+  //   range = document.selection.createRange();
+  //   if (range.parentElement() == editableDiv) {
+  //     var tempEl = document.createElement("span");
+  //     editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+  //     var tempRange = range.duplicate();
+  //     tempRange.moveToElementText(tempEl);
+  //     tempRange.setEndPoint("EndToEnd", range);
+  //     caretPos = tempRange.text.length;
+  //   }
+  // }
+  return caretPos;
+}
+
+/* Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
  * Or maybe PropertyView ? */
 export class Columns {
   title = new OryColumn('title')
@@ -181,9 +207,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   focusToEstimatedTime() {
     // Note: it was changed from input to contenteditable, so needs reworking
-    const element = <HTMLInputElement>document.activeElement
-    const start = element.selectionStart === 0
+    // const element = <HTMLInputElement>document.activeElement
+    // const start = element.selectionStart === 0
 
+    const start = getCaretPosition(this.elInputTitle.nativeElement) === 0
     if (start) {
       this.focus(this.columns.estimatedTime)
     }
