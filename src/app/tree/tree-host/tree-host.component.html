@@ -14,7 +14,7 @@
       </button>
 
       Pending listeners: {{pendingListeners}}
-      <!--Node count: {{mapIdToNode.size}}-->
+      Time left: {{timeLeftSum()}}
       <p-tree
         [value]="treeModel.root.children"
         draggableNodes="true"
