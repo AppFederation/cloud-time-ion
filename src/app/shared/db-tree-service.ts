@@ -35,5 +35,6 @@ export abstract class DbTreeService {
     return newOrderNumber
   }
 
+  abstract delete(itemId: string)
 }
 

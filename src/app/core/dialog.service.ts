@@ -9,7 +9,7 @@ export class DialogService {
   constructor() { }
 
   showDeleteDialog(callback) {
-    this.deleteDialog$.next(callback)
+    this.deleteDialog$.next({callback: callback})
   }
 
 }

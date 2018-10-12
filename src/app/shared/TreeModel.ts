@@ -205,14 +205,15 @@ export class TreeModel {
         // }, 0)
 
       } else {
-        const parentNode = this.root;
-        FIXME('Hardcoded parent (root) for now')
-        const newOrderNum = event.nodeInclusion.orderNum
-        let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+        if ( ! event.itemData.deleted ) {
+          const parentNode = this.root;
+          FIXME('Hardcoded parent (root) for now')
+          const newOrderNum = event.nodeInclusion.orderNum
+          let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
-        const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
-        parentNode._appendChild(newTreeNode, insertBeforeIndex)
-
+          const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
+            parentNode._appendChild(newTreeNode, insertBeforeIndex)
+        }
       }
     } finally {
       this.isApplyingFromDbNow = false

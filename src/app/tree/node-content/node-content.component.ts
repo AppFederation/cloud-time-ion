@@ -166,7 +166,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   delete() {
     this.dialogService.showDeleteDialog(() => {
       // TODO: delete node inclusion and the node itself
-      this.dbService.delete(this.node.dbId)
+      this.dbService.delete(this.treeNode.itemId)
     })
   }
 

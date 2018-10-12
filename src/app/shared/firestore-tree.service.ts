@@ -72,13 +72,13 @@ export class FirestoreTreeService extends DbTreeService {
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
 
-  private HARDCODED_ROOT_NODE = 'KarolNodesHardcoded'
+  private HARDCODED_ROOT_NODE = 'KarolNodesHardcoded2'
 
   constructor() {
     super()
-    // db.enablePersistence().then(() => {
-    //   // window.alert('persistence enabled')
-    // })
+    db.enablePersistence().then(() => {
+      // window.alert('persistence enabled')
+    })
     // this.listenToChanges(onSnapshotHandler)
   }
 
@@ -95,10 +95,14 @@ export class FirestoreTreeService extends DbTreeService {
   //     .onSnapshot(func);
   // }
 
-  delete(id) {
-    db.collection('test1').doc(id).delete()
-  }
+  // delete(id) {
+  //   db.collection('test1').doc(id).delete()
+  // }
 
+  delete(itemId: string) {
+    this.itemDocById(itemId).update('deleted', new Date())
+    console.log('deleted ' + itemId)
+  }
 
   loadNodesTree(listener: DbTreeListener) {
     console.log('loadNodesTree')
@@ -257,4 +261,5 @@ export class FirestoreTreeService extends DbTreeService {
   patchItemData(itemId: string, itemData: any) {
     this.itemDocById(itemId).update(itemData)
   }
+
 }
