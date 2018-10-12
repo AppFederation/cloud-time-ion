@@ -186,7 +186,7 @@ export class TreeHostComponent implements OnInit {
   timeLeftSum() {
     const sumBy1 = sumBy(this.treeModel.root.children, item => {
       if ( ! item.itemData.isDone ) {
-        const estimatedTime = parseInt(item.itemData.estimatedTime, 10) || 0
+        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
         // console.log('estimatedTime for sum', estimatedTime)
         return estimatedTime
       } else {
