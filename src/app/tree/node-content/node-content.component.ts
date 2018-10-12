@@ -194,6 +194,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     console.log('keyPressMetaEnter')
     this.isDone = ! this.isDone
     this.onInputChanged(null, this.columns.isDone)
+    this.focusNodeBelow()
   }
 
   private addNodeAfterThis() {
