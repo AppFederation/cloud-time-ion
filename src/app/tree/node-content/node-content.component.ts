@@ -252,6 +252,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   onColumnFocused(column: OryColumn, event) {
     this.focusedColumn = column
+    this.treeHost.lastFocusedColumn = column
+    this.treeHost.lastFocusedNode = this.treeNode
   }
 
   onChangeEstimatedTime() {
