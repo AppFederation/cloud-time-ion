@@ -19,6 +19,9 @@ export class TreeService {
     this.dbTreeService.loadNodesTree({
       onNodeAdded(event: NodeAddEvent) {
         treeModel.onNodeAdded(event)
+      },
+      onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {
+        treeModel.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
       }
     })
     return treeModel

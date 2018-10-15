@@ -62,7 +62,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__11'
+  static dbPrefix = 'dbEmptyZZZ__12'
 
   pendingListeners = 0
 
@@ -115,6 +115,7 @@ export class FirestoreTreeService extends DbTreeService {
 
       debugLog('nodeInclusionData ... change.doc', change.doc)
       const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
+      const nodeInclusionId = nodeInclusionData.nodeInclusionId
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
         // debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
@@ -122,7 +123,6 @@ export class FirestoreTreeService extends DbTreeService {
         nodeInclusionData.childNode.onSnapshot((includedItemDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
-          const nodeInclusionId = nodeInclusionData.nodeInclusionId
           // console.log('nodeInclusionId', nodeInclusionId)
           const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
           // console.log('includedItemDoc', includedItemDoc)
@@ -139,6 +139,8 @@ export class FirestoreTreeService extends DbTreeService {
       }
       if (change.type === 'modified') {
         debugLog('Modified city: ', nodeInclusionData);
+        listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+        FIXME()
       }
       if (change.type === 'removed') {
         debugLog('Removed city: ', nodeInclusionData);

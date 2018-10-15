@@ -24,4 +24,5 @@ export class NodeAddEvent {
 
 export abstract class DbTreeListener {
   abstract onNodeAdded(NodeAddEvent)
+  abstract onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
 }

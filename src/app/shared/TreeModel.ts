@@ -6,6 +6,8 @@ import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
 import {defined, FIXME, nullOrUndef} from './utils'
+import {sortBy} from 'lodash';
+
 /**
  * Created by kd on 2017-10-27.
  */
@@ -291,6 +293,13 @@ export class TreeModel {
 
   }
 
+  onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {
+    // re-sort root
+    const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
+    node.nodeInclusion = nodeInclusionData
+    this.root.children = sortBy(this.root.children, item => item.nodeInclusion.orderNum)
+  }
+
   // addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode) {
   //
   //
@@ -314,4 +323,5 @@ export class TreeModel {
     // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
     return defined(existingNode)
   }
+
 }
