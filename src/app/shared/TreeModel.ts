@@ -180,17 +180,19 @@ export class OryTreeNode implements TreeNode {
       this.getNodeAboveThis().getNodeAboveThis() &&
       this.getNodeAboveThis().getNodeAboveThis().nodeInclusion.orderNum,
       this.getNodeAboveThis() &&
-      this.getNodeAboveThis().nodeInclusion.orderNum)
+      this.getNodeAboveThis().nodeInclusion.orderNum
+    )
     this.reorderToOrderNum(newOrderNum)
   }
 
   reorderDown() {
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
       this.getNodeBelowThis() &&
-      this.getNodeBelowThis().getNodeBelowThis() &&
-      this.getNodeBelowThis().getNodeBelowThis().nodeInclusion.orderNum,
+      this.getNodeBelowThis().nodeInclusion.orderNum,
       this.getNodeBelowThis() &&
-      this.getNodeBelowThis().nodeInclusion.orderNum)
+      this.getNodeBelowThis().getNodeBelowThis() &&
+      this.getNodeBelowThis().getNodeBelowThis().nodeInclusion.orderNum
+    )
     this.reorderToOrderNum(newOrderNum)
   }
 
