@@ -7,6 +7,24 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
+      Start:
+      <input
+        #inputStartTime
+        maxlength="3"
+        style="change
+          flex-basis: fit-content;
+          width: 3em;
+          text-align: right;
+          margin-left: .3em; margin-right: .3em;
+        "
+        (keydown.enter)="keyPressEnter($event)"
+        (keydown.arrowup)="focusNodeAbove($event)"
+        (keydown.arrowdown)="focusNodeBelow($event)"
+        (focus)="onColumnFocused(columns.estimatedTime, $event)"
+        (change)="onChangeEstimatedTime($event)"
+        (keydown.arrowright)="focusToDescription()"
+      >
+      End: {{endTime()}}
       <button
         class="btn btn-primary"
         (click)='expandAll()'>
@@ -14,7 +32,7 @@
       </button>
 
       Pending listeners: {{pendingListeners}}
-      Time left: {{timeLeftSum()}}
+      Time left: {{treeModel.timeLeftSum()}}
       <p-tree
         [value]="treeModel.root.children"
         draggableNodes="true"

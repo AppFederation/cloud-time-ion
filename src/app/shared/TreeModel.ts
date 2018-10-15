@@ -7,6 +7,8 @@ import {EventEmitter, Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
 import {defined, FIXME, nullOrUndef} from './utils'
 import {sortBy} from 'lodash';
+import {sumBy} from 'lodash';
+
 
 /**
  * Created by kd on 2017-10-27.
@@ -328,6 +330,22 @@ export class TreeModel {
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
     return defined(existingNode)
+  }
+
+
+  timeLeftSum() {
+    const sumBy1 = sumBy(this.root.children, item => {
+      if ( ! item.itemData.isDone ) {
+        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
+        // console.log('estimatedTime for sum', estimatedTime)
+        return estimatedTime
+      } else {
+        return 0
+      }
+    })
+    const hours = Math.floor(sumBy1 / 60)
+    const minutes = sumBy1 % 60
+    return `${hours} h ${minutes} mins`
   }
 
 }

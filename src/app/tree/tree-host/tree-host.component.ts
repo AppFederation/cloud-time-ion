@@ -7,7 +7,6 @@ import {NodeContentComponent} from '../node-content/node-content.component'
 import {OryColumn} from '../OryColumn'
 import {FIXME} from '../../shared/utils'
 import {DbTreeService} from '../../shared/db-tree-service'
-import {sumBy} from 'lodash';
 
 
 @Component({
@@ -202,18 +201,7 @@ export class TreeHostComponent implements OnInit {
     this.lastFocusedColumn = column
   }
 
-  timeLeftSum() {
-    const sumBy1 = sumBy(this.treeModel.root.children, item => {
-      if ( ! item.itemData.isDone ) {
-        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
-        // console.log('estimatedTime for sum', estimatedTime)
-        return estimatedTime
-      } else {
-        return 0
-      }
-    })
-    const hours = Math.floor(sumBy1 / 60)
-    const minutes = sumBy1 % 60
-    return `${hours} h ${minutes} mins`
+  endTime() {
+
   }
 }
