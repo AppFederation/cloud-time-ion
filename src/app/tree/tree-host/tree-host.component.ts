@@ -17,7 +17,7 @@ import {sumBy} from 'lodash';
 })
 export class TreeHostComponent implements OnInit {
 
-  treeModel: TreeModel = new TreeModel(this.treeService2)
+  treeModel: TreeModel// = new TreeModel(this.treeService2)
 
   // rootNodes: TreeNode[] = []
   focusedId = 0
@@ -28,6 +28,8 @@ export class TreeHostComponent implements OnInit {
   pendingListeners = 0
 
   mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
+  lastFocusedNode: OryTreeNode
+  lastFocusedColumn: OryColumn
 
   constructor(
     public treeService: TreeService,
@@ -40,7 +42,21 @@ export class TreeHostComponent implements OnInit {
     // treeDragDropService.
 
     this.treeModel = this.treeService.getRootTreeModel()
+    const thisComponent = this
+    this.treeModel.treeListener = {
+      onAfterReorder() {
+        thisComponent.reFocusLastFocused()
+      }
+    }
 
+  }
+
+  reFocusLastFocused() {
+    debugLog('reFocusLastFocused')
+    setTimeout(() => {
+      debugLog('reFocusLastFocused in setTimeout, ', this.lastFocusedNode, this.lastFocusedColumn)
+      this.focusNode(this.lastFocusedNode, this.lastFocusedColumn)
+    })
   }
 
 
@@ -176,11 +192,14 @@ export class TreeHostComponent implements OnInit {
   }
 
   focusNode(node: OryTreeNode, column?: OryColumn) {
+    console.log('focusNode', node, column)
     if ( ! node ) {
       return
     }
     const component: NodeContentComponent = this.getComponentForNode(node)
     component.focus(column)
+    this.lastFocusedNode = node
+    this.lastFocusedColumn = column
   }
 
   timeLeftSum() {

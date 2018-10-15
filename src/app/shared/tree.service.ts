@@ -15,7 +15,11 @@ export class TreeService {
 
   getRootTreeModel(): TreeModel {
     // const componentThis = this
-    const treeModel = new TreeModel(this.dbTreeService)
+    const treeModel = new TreeModel(this.dbTreeService, {
+      onAfterReorder() {
+
+      }
+    })
     this.dbTreeService.loadNodesTree({
       onNodeAdded(event: NodeAddEvent) {
         treeModel.onNodeAdded(event)

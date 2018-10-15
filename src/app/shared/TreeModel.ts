@@ -212,6 +212,10 @@ export class OryTreeNode implements TreeNode {
 
 }
 
+export abstract class OryTreeListener {
+  abstract onAfterReorder()
+}
+
 
 @Injectable()
 export class TreeModel {
@@ -222,7 +226,8 @@ export class TreeModel {
   isApplyingFromDbNow = false
 
   constructor(
-    public treeService: DbTreeService
+    public treeService: DbTreeService,
+    public treeListener: OryTreeListener,
   ) {}
 
   onNodeAdded(event: NodeAddEvent) {
@@ -298,6 +303,7 @@ export class TreeModel {
     const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     node.nodeInclusion = nodeInclusionData
     this.root.children = sortBy(this.root.children, item => item.nodeInclusion.orderNum)
+    this.treeListener.onAfterReorder()
   }
 
   // addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode) {
