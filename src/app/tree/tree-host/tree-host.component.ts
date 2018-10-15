@@ -201,7 +201,4 @@ export class TreeHostComponent implements OnInit {
     this.lastFocusedColumn = column
   }
 
-  endTime() {
-
-  }
 }

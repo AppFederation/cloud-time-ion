@@ -32,7 +32,7 @@ export class OryTreeNode implements TreeNode {
   type?: string;
   parent?: TreeNode;
   /** because `parent` is reset to null by the tree component if the node is top-level.
-   * Possibly rename to parentEvenIfRoot */
+   * Possibly rename to parentEvenIfRoot or parentEvenIfTopLevel */
   parent2?: OryTreeNode;
   partialSelected?: boolean;
   styleClass?: string;
@@ -218,11 +218,13 @@ export abstract class OryTreeListener {
   abstract onAfterReorder()
 }
 
-
+/** =========================================================================== */
 @Injectable()
 export class TreeModel {
 
   root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE, this, null)
+  startTime = new Date()
+
 
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
   isApplyingFromDbNow = false
@@ -333,9 +335,16 @@ export class TreeModel {
   }
 
 
+  timeLeftSumText() {
+    const minutesTotalLeft = this.timeLeftSum()
+    const hours = Math.floor(minutesTotalLeft / 60)
+    const minutesUpTo60 = minutesTotalLeft % 60
+    return `${hours} h ${minutesUpTo60} mins`
+  }
+
   timeLeftSum() {
     const sumBy1 = sumBy(this.root.children, item => {
-      if ( ! item.itemData.isDone ) {
+      if (!item.itemData.isDone) {
         const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
         // console.log('estimatedTime for sum', estimatedTime)
         return estimatedTime
@@ -343,9 +352,11 @@ export class TreeModel {
         return 0
       }
     })
-    const hours = Math.floor(sumBy1 / 60)
-    const minutes = sumBy1 % 60
-    return `${hours} h ${minutes} mins`
+    return sumBy1
+  }
+
+  endTime() {
+    return new Date(this.startTime.getTime() + this.timeLeftSum() * 60 * 1000)
   }
 
 }
