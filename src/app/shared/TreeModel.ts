@@ -12,6 +12,9 @@ import {sumBy} from 'lodash';
 
 /**
  * Created by kd on 2017-10-27.
+ *
+ * NOTE: this file has both TreeModel and TreeNode to avoid a warning about circular dependency between files.
+ * Maybe I will find a better way, perhaps involving refactor...
  */
 
 const uuidV4 = require('uuid/v4');
@@ -179,6 +182,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   reorderUp() {
+    // TODO: if topmost, reorder to last item in this plan or to previous plan
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
       this.getNodeAboveThis() &&
       this.getNodeAboveThis().getNodeAboveThis() &&

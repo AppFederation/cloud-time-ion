@@ -172,7 +172,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   addChild() {
-    this.addChildToDb()
+    this.treeNode.addChild()
+    // this.addChildToDb()
     // if ( ! this.node.children ) {
     //   this.node.children = []
     // }

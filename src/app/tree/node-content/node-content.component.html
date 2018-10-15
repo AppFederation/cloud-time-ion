@@ -53,6 +53,7 @@
       font-size: 20px;
     "
     (keydown.enter)="keyPressEnter($event)"
+    (keydown.alt.enter)="addChild($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (keydown.arrowleft)="focusToEstimatedTime()"
