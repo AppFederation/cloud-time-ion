@@ -29,7 +29,7 @@ const enableLogging = true
 
 export function debugLog(...args) {
   if ( enableLogging ) {
-    console.log(args)
+    console.log('debugLog', ...args)
   }
 }
 
@@ -62,17 +62,12 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__10'
-
-
+  static dbPrefix = 'dbEmptyZZZ__11'
 
   pendingListeners = 0
 
-
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
-
-  private HARDCODED_ROOT_NODE = 'KarolNodesHardcoded2'
 
   constructor() {
     super()
@@ -116,6 +111,9 @@ export class FirestoreTreeService extends DbTreeService {
   private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
     snapshot.docChanges.forEach(function(change) {
+      debugLog('docChanges change.type', change.type);
+
+      debugLog('nodeInclusionData ... change.doc', change.doc)
       const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
@@ -209,10 +207,15 @@ export class FirestoreTreeService extends DbTreeService {
       orderNum: nodeInclusion.orderNum,
       nodeInclusionId: nodeInclusion.nodeInclusionId
     }
-    this.itemsCollection().doc(parentId).collection('subNodes').add(nodeInclusionFirebaseObject)
+    // this.subNodesCollectionForItem(parentId).add(nodeInclusionFirebaseObject)
+    this.subNodesCollectionForItem(parentId).doc(nodeInclusion.nodeInclusionId).set(nodeInclusionFirebaseObject)
   }
 
-  // TODO:
+  private subNodesCollectionForItem(parentId: string) {
+    return this.itemsCollection().doc(parentId).collection('subNodes')
+  }
+
+// TODO:
 // to as little as possible in vendor specific class (FirestoreTreeService)
 // pre-calculate next/previous order in TreeModel
   addNodeToDb(parent, nodeBefore, odeAfter, orderBefore, orderAfter) {
@@ -223,7 +226,7 @@ export class FirestoreTreeService extends DbTreeService {
   addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
     console.log('addSiblingAfterNode', newNode, afterExistingNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
-    let parentId = this.HARDCODED_ROOT_NODE // hack to simplify for now
+    let parentId = this.HARDCODED_ROOT_NODE // HACK to simplify for now
     // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
     // add node itself to firestore (BEFORE inclusion)
     const newItem = {
@@ -259,7 +262,11 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   patchItemData(itemId: string, itemData: any) {
-    this.itemDocById(itemId).update(itemData)
+    return this.itemDocById(itemId).update(itemData)
+  }
+
+  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
+    return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
 }

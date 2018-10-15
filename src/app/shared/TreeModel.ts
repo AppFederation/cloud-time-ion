@@ -173,13 +173,46 @@ export class OryTreeNode implements TreeNode {
   patchItemData(itemData: any) {
     this.treeModel.treeService.patchItemData(this.itemId, itemData)
   }
+
+  reorderUp() {
+    const newOrderNum = DbTreeService.calculateNewOrderNumber(
+      this.getNodeAboveThis() &&
+      this.getNodeAboveThis().getNodeAboveThis() &&
+      this.getNodeAboveThis().getNodeAboveThis().nodeInclusion.orderNum,
+      this.getNodeAboveThis() &&
+      this.getNodeAboveThis().nodeInclusion.orderNum)
+    this.reorderToOrderNum(newOrderNum)
+  }
+
+  reorderDown() {
+    const newOrderNum = DbTreeService.calculateNewOrderNumber(
+      this.getNodeBelowThis() &&
+      this.getNodeBelowThis().getNodeBelowThis() &&
+      this.getNodeBelowThis().getNodeBelowThis().nodeInclusion.orderNum,
+      this.getNodeBelowThis() &&
+      this.getNodeBelowThis().nodeInclusion.orderNum)
+    this.reorderToOrderNum(newOrderNum)
+  }
+
+  private reorderToOrderNum(newOrderNum) {
+    debugLog('newOrderNum', newOrderNum)
+    debugLog('this.parent2', this.parent2)
+    this.treeModel.treeService.patchChildInclusionData(
+      this.parent2.itemId,
+      this.nodeInclusion.nodeInclusionId,
+      {
+        orderNum: newOrderNum,
+      },
+    )
+  }
+
 }
 
 
 @Injectable()
 export class TreeModel {
 
-  root: OryTreeNode = new OryTreeNode(null, null, this, null)
+  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE, this, null)
 
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
   isApplyingFromDbNow = false

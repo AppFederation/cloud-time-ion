@@ -276,4 +276,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       })
     } // else: no need to react, since it is being applied from Db
   }
+
+  reorderUp(event) {
+    this.treeNode.reorderUp()
+  }
+
+  reorderDown(event) {
+    this.treeNode.reorderDown()
+  }
+
 }

@@ -7,11 +7,16 @@ export const ORDER_STEP = 1 * 1000 * 1000
 
 export abstract class DbTreeService {
 
+  HARDCODED_ROOT_NODE = 'KarolNodesHardcoded2'
+
   abstract addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber)
 
   abstract loadNodesTree(listener: DbTreeListener)
 
   abstract patchItemData(itemId: string, itemData: any)
+
+  abstract patchChildInclusionData(itemId: string, itemInclusionId: string, itemInclusionData: any)
+
 
   static calculateNewOrderNumber(
       previousOrderNumber: number,
