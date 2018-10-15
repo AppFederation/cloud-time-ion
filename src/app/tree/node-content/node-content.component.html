@@ -12,7 +12,9 @@
 <!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
-  Deleted {{treeNode.itemData?.deleted}}
+  <ng-container *ngIf="treeNode.itemData?.deleted">
+    Deleted {{treeNode.itemData?.deleted}}
+  </ng-container>
   <!--<i class="material-icons">work</i>-->
   <!--<i class="material-icons">build</i>-->
   <!--<i class="material-icons">next_week</i>-->
