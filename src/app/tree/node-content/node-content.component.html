@@ -41,6 +41,9 @@
     (change)="onChangeEstimatedTime($event)"
     (keydown.arrowright)="focusToDescription()"
   >
+  <ng-container *ngIf="treeNode.showEffectiveDuration()">
+    ∑:{{treeNode.effectiveDurationText()}}&nbsp;
+  </ng-container>
   <!--
       value="30"
       [ngModel]="estimatedTimeModel"

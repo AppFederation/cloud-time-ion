@@ -226,6 +226,11 @@ export class OryTreeNode implements TreeNode {
     )
   }
 
+  // ======================================================
+  // TODO: extract classes like TaskNodeContent, DayPlanNodeContent
+  // since nodes are to allow changing their type, we would just swap an instance of the class mentioned above
+  // the separation first would be mainly to separate generic node-logic from time-planning specific, etc.
+
   timeLeftSumText() {
     const minutesTotalLeft = this.timeLeftSum()
     const hours = Math.floor(minutesTotalLeft / 60)
@@ -247,6 +252,14 @@ export class OryTreeNode implements TreeNode {
       }
     })
     return sumBy1
+  }
+
+  showEffectiveDuration() {
+    return this.timeLeftSum() !== 0
+  }
+
+  effectiveDurationText() {
+    return this.timeLeftSumText()
   }
 
   endTime() {
