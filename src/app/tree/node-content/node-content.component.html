@@ -42,7 +42,7 @@
     (keydown.arrowright)="focusToDescription()"
   >
   <ng-container *ngIf="treeNode.showEffectiveDuration()">
-    ∑:{{treeNode.effectiveDurationText()}}&nbsp;
+    <span style="color: lightgray">∑:</span>{{treeNode.effectiveDurationText()}}&nbsp;
   </ng-container>
   <!--
       value="30"
