@@ -367,10 +367,10 @@ export class TreeModel {
   }
 
   onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {
-    // re-sort root
     const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     node.nodeInclusion = nodeInclusionData
-    this.root.children = sortBy(this.root.children, item => item.nodeInclusion.orderNum)
+    // re-sort:
+    node.parent2.children = sortBy(node.parent2.children, item => item.nodeInclusion.orderNum)
     this.treeListener.onAfterReorder()
   }
 

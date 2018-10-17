@@ -62,7 +62,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__15'
+  static dbPrefix = 'dbEmptyZZZ__16'
 
   pendingListeners = 0
 
@@ -269,6 +269,7 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
+    debugLog('patchChildInclusionData', arguments)
     return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
