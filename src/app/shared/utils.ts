@@ -1,5 +1,6 @@
 
-export function FIXME(meesage?): any {
+export function FIXME(message?): any {
+  console.error('================ FIXME!', message)
 }
 
 export function nullOrUndef(x) {

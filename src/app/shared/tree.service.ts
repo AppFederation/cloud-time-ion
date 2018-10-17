@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {TreeNode} from 'primeng/primeng'
-import {FirestoreTreeService} from './firestore-tree.service'
+import {
+  debugLog,
+  FirestoreTreeService,
+} from './firestore-tree.service'
 import {TreeModel} from './TreeModel'
 import {NodeAddEvent} from './TreeListener'
 import {DbTreeService} from './db-tree-service'
@@ -22,6 +25,7 @@ export class TreeService {
     })
     this.dbTreeService.loadNodesTree({
       onNodeAdded(event: NodeAddEvent) {
+        debugLog('loadNodesTree', event)
         treeModel.onNodeAdded(event)
       },
       onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {

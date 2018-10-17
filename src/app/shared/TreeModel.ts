@@ -20,6 +20,9 @@ import {sumBy} from 'lodash';
 const uuidV4 = require('uuid/v4');
 
 
+/** ======================================================================================= */
+/** ======================================================================================= */
+/** ======================================================================================= */
 export class OryTreeNode implements TreeNode {
 
   // ==== from PrimeNG's TreeNode:
@@ -45,12 +48,19 @@ export class OryTreeNode implements TreeNode {
 
   onChangeItemData = new EventEmitter()
 
+  startTime = new Date()
+
+
   // ==== End of PrimeNG's TreeNode
 
   static INITIAL_TITLE = ''
 
   get lastChildNode(): OryTreeNode {
     return this.getChildAtIndexOrNull(this.children && this.children.length - 1)
+  }
+
+  get isDayPlan() {
+    return ! this.parent // top-level node (our parent is the virtual root)
   }
 
   constructor(
@@ -158,10 +168,10 @@ export class OryTreeNode implements TreeNode {
     newNode.nodeInclusion = nodeInclusion
 
 
-    this.treeModel.treeService.addSiblingAfterNode(newNode, afterExistingNode, previousOrderNumber, newOrderNumber, nextOrderNumber)
+    this.treeModel.treeService.addSiblingAfterNode(this, newNode, afterExistingNode, previousOrderNumber, newOrderNumber, nextOrderNumber)
 
     const newNodeIndex = afterExistingNode ? afterExistingNode.getIndexInParent() + 1 : 0
-    this._appendChild(newNode, newNodeIndex)
+    this._appendChild(newNode, newNodeIndex) // this is to avoid delay caused by Firestore; for UX
     return newNode
   }
 
@@ -216,6 +226,33 @@ export class OryTreeNode implements TreeNode {
     )
   }
 
+  timeLeftSumText() {
+    const minutesTotalLeft = this.timeLeftSum()
+    const hours = Math.floor(minutesTotalLeft / 60)
+    const minutesUpTo60 = minutesTotalLeft % 60
+    return `${hours} h ${minutesUpTo60} mins`
+  }
+
+  timeLeftSum() {
+    if ( this.children.length ) {
+      debugLog('timeLeftSum this.children', this.children)
+    }
+    const sumBy1 = sumBy(this.children, item => {
+      if (!item.itemData.isDone) {
+        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
+        // console.log('estimatedTime for sum', estimatedTime)
+        return estimatedTime
+      } else {
+        return 0
+      }
+    })
+    return sumBy1
+  }
+
+  endTime() {
+    return new Date(this.startTime.getTime() + this.timeLeftSum() * 60 * 1000)
+  }
+
 }
 
 export abstract class OryTreeListener {
@@ -223,14 +260,15 @@ export abstract class OryTreeListener {
 }
 
 /** =========================================================================== */
+/** =========================================================================== */
+/** =========================================================================== */
 @Injectable()
 export class TreeModel {
 
-  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE, this, null)
-  startTime = new Date()
-
+  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
 
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
+  mapItemIdToNode = new Map<string, OryTreeNode>()
   isApplyingFromDbNow = false
 
   constructor(
@@ -239,7 +277,7 @@ export class TreeModel {
   ) {}
 
   onNodeAdded(event: NodeAddEvent) {
-    // console.log('onNodeAdded', event)
+    debugLog('onNodeAdded', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     try {
@@ -250,13 +288,14 @@ export class TreeModel {
         //   setTimeout(() => {
             // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
             existingNode.itemData = event.itemData
+            debugLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
             existingNode.onChangeItemData.emit(event.itemData)
           // })
         // }, 0)
 
       } else {
         if ( ! event.itemData.deleted ) {
-          const parentNode = this.root;
+          const parentNode = event.immediateParentId === this.treeService.HARDCODED_ROOT_NODE_ITEM_ID ? this.root : this.mapItemIdToNode.get(event.immediateParentId)
           FIXME('Hardcoded parent (root) for now')
           const newOrderNum = event.nodeInclusion.orderNum
           let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
@@ -315,13 +354,7 @@ export class TreeModel {
   }
 
   // addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode) {
-  //
-  //
   //   const myIndex = this.getIndexInParent()
-  //
-  //
-  //
-  //
   // }
 
   registerNode(nodeToRegister: OryTreeNode) {
@@ -330,37 +363,13 @@ export class TreeModel {
     // NOTE: this should register nodeInclusion id
 
     this.mapNodeInclusionIdToNode.set(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
+    this.mapItemIdToNode.set(nodeToRegister.itemId, nodeToRegister)
   }
 
   private nodeInclusionExists(nodeInclusionId: string) {
     const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
     return defined(existingNode)
-  }
-
-
-  timeLeftSumText() {
-    const minutesTotalLeft = this.timeLeftSum()
-    const hours = Math.floor(minutesTotalLeft / 60)
-    const minutesUpTo60 = minutesTotalLeft % 60
-    return `${hours} h ${minutesUpTo60} mins`
-  }
-
-  timeLeftSum() {
-    const sumBy1 = sumBy(this.root.children, item => {
-      if (!item.itemData.isDone) {
-        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
-        // console.log('estimatedTime for sum', estimatedTime)
-        return estimatedTime
-      } else {
-        return 0
-      }
-    })
-    return sumBy1
-  }
-
-  endTime() {
-    return new Date(this.startTime.getTime() + this.timeLeftSum() * 60 * 1000)
   }
 
 }

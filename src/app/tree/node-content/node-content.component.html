@@ -3,6 +3,7 @@
 
 <div
   style="display: flex; align-items: stretch;"
+  (keydown.alt.enter)="addChild($event)"
   (keydown.meta.enter)="keyPressMetaEnter($event)"
   (keydown.control.enter)="keyPressMetaEnter($event)"
   (keydown.control.arrowup)="reorderUp($event)"
@@ -12,6 +13,10 @@
 <!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
+  <ng-container *ngIf="treeNode.isDayPlan">
+    End: {{treeNode.endTime()}}
+    Sum: {{treeNode.timeLeftSumText()}}
+  </ng-container>
   <ng-container *ngIf="treeNode.itemData?.deleted">
     Deleted {{treeNode.itemData?.deleted}}
   </ng-container>
@@ -53,7 +58,6 @@
       font-size: 20px;
     "
     (keydown.enter)="keyPressEnter($event)"
-    (keydown.alt.enter)="addChild($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (keydown.arrowleft)="focusToEstimatedTime()"

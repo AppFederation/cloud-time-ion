@@ -62,7 +62,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__12'
+  static dbPrefix = 'dbEmptyZZZ__14'
 
   pendingListeners = 0
 
@@ -105,7 +105,7 @@ export class FirestoreTreeService extends DbTreeService {
       // console.log('loadNodesTree onSnapshot()', snapshot)
     })
     // this.processNodeEvents(0, snapshot, [], listener)
-    this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE), [], 0, listener)
+    this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE_ITEM_ID), [], 0, listener)
   }
 
   private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
@@ -225,10 +225,11 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
 
-  addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
+  addSiblingAfterNode(parentNode: OryTreeNode, newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
     console.log('addSiblingAfterNode', newNode, afterExistingNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
-    let parentId = this.HARDCODED_ROOT_NODE // HACK to simplify for now
+    // let parentId = this.HARDCODED_ROOT_NODE // HACK to simplify for now
+    let parentId = parentNode.itemId // HACK to simplify for now
     // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
     // add node itself to firestore (BEFORE inclusion)
     const newItem = {
