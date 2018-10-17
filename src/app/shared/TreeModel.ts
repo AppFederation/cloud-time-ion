@@ -242,16 +242,24 @@ export class OryTreeNode implements TreeNode {
     if ( this.children.length ) {
       debugLog('timeLeftSum this.children', this.children)
     }
-    const sumBy1 = sumBy(this.children, item => {
-      if (!item.itemData.isDone) {
-        const estimatedTime = parseFloat(item.itemData.estimatedTime) || 0
-        // console.log('estimatedTime for sum', estimatedTime)
-        return estimatedTime
-      } else {
-        return 0
-      }
+    const sumBy1 = sumBy(this.children, childNode => {
+      return childNode.effectiveTimeLeft()
     })
     return sumBy1
+  }
+
+  effectiveTimeLeft() {
+    if ( ! this.itemData.isDone ) {
+      if ( this.showEffectiveDuration() ) {
+        return this.timeLeftSum()
+      }
+      const estimatedTime = parseFloat(this.itemData.estimatedTime) || 0
+      // console.log('estimatedTime for sum', estimatedTime)
+      return estimatedTime
+    } else {
+      return 0
+    }
+
   }
 
   showEffectiveDuration() {
