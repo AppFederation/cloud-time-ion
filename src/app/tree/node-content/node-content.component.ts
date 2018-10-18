@@ -311,7 +311,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        2000, undefined, { leading: true, trailing: true }
+        500 /* 500ms almost real-time feeling without overwhelming firestore.
+        Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
+        where they contrasted the latency with Firebase Realtime DB */,
+        undefined, { leading: true, trailing: true }
       ).subscribe((changeEvent) => {
         console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
