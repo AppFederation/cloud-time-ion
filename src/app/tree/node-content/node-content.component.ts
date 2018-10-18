@@ -1,5 +1,12 @@
 import {
-  AfterViewInit, Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.service'
@@ -11,6 +18,7 @@ import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 import { isNullOrUndefined } from 'util'
 import { DialogService } from '../../core/dialog.service'
+import 'rxjs/add/operator/debounceTime';
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -44,6 +52,11 @@ export class Columns {
   title = new OryColumn('title')
   estimatedTime = new OryColumn('estimatedTime')
   isDone = new OryColumn('isDone')
+  allColumns = [
+    this.title,
+    this.estimatedTime,
+    this.isDone,
+  ]
 }
 
 @Component({
@@ -78,6 +91,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   // isApplyingFromDbNow = false
 
   editedHere = new Map<OryColumn, boolean>()
+  private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
 
   constructor(
     public dbService: DbTreeService,
@@ -114,6 +128,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       const focusedColumn = undefined // this.columns.title
       this.applyItemDataValuesToViews()
     })
+    this.subscribeDebouncedOnChangePerColumns()
 
   }
 
@@ -272,17 +287,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   onInputChanged(e, column) {
     this.editedHere.set(column, true)
     this.onChange(e)
-    console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
-    if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
-      const titleVal = this.elInputTitle.nativeElement.innerHTML
-      const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
-      // console.log('input val: ' + titleVal)
-      this.treeNode.patchItemData({
-        title: titleVal,
-        estimatedTime: estimatedTimeVal,
-        isDone: this.isDone,
-      })
-    } // else: no need to react, since it is being applied from Db
+    this.getEventEmitterOnChangePerColumn(column).emit(column)
   }
 
   reorderUp(event) {
@@ -293,4 +298,30 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     this.treeNode.reorderDown()
   }
 
+  private getEventEmitterOnChangePerColumn(column: OryColumn) {
+    let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
+    if ( ! eventEmitter ) {
+      eventEmitter = new EventEmitter()
+      this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
+    }
+    return eventEmitter
+  }
+
+  private subscribeDebouncedOnChangePerColumns() {
+    for ( const column of this.columns.allColumns ) {
+      this.getEventEmitterOnChangePerColumn(column).debounceTime(1000).subscribe((changeEvent) => {
+        console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
+        if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
+          const titleVal = this.elInputTitle.nativeElement.innerHTML
+          const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
+          // console.log('input val: ' + titleVal)
+          this.treeNode.patchItemData({
+            title: titleVal,
+            estimatedTime: estimatedTimeVal,
+            isDone: this.isDone,
+          })
+        } // else: no need to react, since it is being applied from Db
+      })
+    }
+  }
 }
