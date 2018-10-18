@@ -311,9 +311,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        500 /* 500ms almost real-time feeling without overwhelming firestore.
+        1000 /* 500ms almost real-time feeling without overwhelming firestore.
         Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
-        where they contrasted the latency with Firebase Realtime DB */,
+        where they contrasted the latency with Firebase Realtime DB.
+        At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing */,
         undefined, { leading: true, trailing: true }
       ).subscribe((changeEvent) => {
         console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
