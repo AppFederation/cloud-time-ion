@@ -315,7 +315,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
         Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
         where they contrasted the latency with Firebase Realtime DB.
         At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing */,
-        undefined, { leading: true, trailing: true }
+        undefined, {
+          leading: true /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
+          trailing: true /* ensures last value is not lost;
+            http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
+        }
       ).subscribe((changeEvent) => {
         console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
