@@ -18,7 +18,8 @@ import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 import { isNullOrUndefined } from 'util'
 import { DialogService } from '../../core/dialog.service'
-import 'rxjs/add/operator/debounceTime';
+// import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/throttleTime';
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -309,7 +310,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
-      this.getEventEmitterOnChangePerColumn(column).debounceTime(1000).subscribe((changeEvent) => {
+      this.getEventEmitterOnChangePerColumn(column).throttleTime(
+        2000, undefined, { leading: true, trailing: true }
+      ).subscribe((changeEvent) => {
         console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
           const titleVal = this.elInputTitle.nativeElement.innerHTML
