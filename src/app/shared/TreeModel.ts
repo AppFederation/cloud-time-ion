@@ -105,6 +105,27 @@ export class OryTreeNode implements TreeNode {
     return siblingNodeAboveThis || this.parent2
   }
 
+  getNodeVisuallyBelowThis() {
+    const simple = (
+      this.children
+      && this.children.length
+      && this.children[0]
+      || this.getSiblingNodeBelowThis()
+      // ||
+    )
+    if ( simple ) {
+      return simple
+    } else {
+      let parent = this.parent2
+      while (parent) {
+        if ( parent.getSiblingNodeBelowThis() ) {
+          return parent.getSiblingNodeBelowThis()
+        }
+        parent = parent.parent2
+      }
+    }
+  }
+
   getLastMostNestedNodeRecursively() {
     const lastImmediateChild = this.getLastImmediateChild()
     if ( lastImmediateChild ) {
@@ -116,17 +137,6 @@ export class OryTreeNode implements TreeNode {
 
   public getLastImmediateChild() {
     return this.children && this.children.length > 0 && this.children[this.children.length - 1]
-  }
-
-
-
-  getNodeVisuallyBelowThis() {
-    return (
-         this.children
-      && this.children.length
-      && this.children[0]
-      || this.getSiblingNodeBelowThis()
-    )
   }
 
 
