@@ -208,12 +208,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   }
 
   public focusNodeAbove() {
-    const nodeToFocus = this.treeNode.getNodeAboveThis()
+    const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
     this.focusOtherNode(nodeToFocus)
   }
 
   public focusNodeBelow() {
-    const nodeToFocus = this.treeNode.getNodeBelowThis()
+    const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
     this.focusOtherNode(nodeToFocus)
   }
 

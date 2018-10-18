@@ -84,18 +84,51 @@ export class OryTreeNode implements TreeNode {
     return this.parent2.children.indexOf(this)
   }
 
-  getNodeAboveThis() {
+  getSiblingNodeAboveThis() {
     const index = this.getIndexInParent()
     return this.parent2.getChildAtIndexOrNull(index - 1)
   }
 
-  getNodeBelowThis() {
+  getSiblingNodeBelowThis() {
     const index = this.getIndexInParent()
     console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
     const childAtIndexOrNull = this.parent2.getChildAtIndexOrNull(index + 1)
     console.log('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
     return childAtIndexOrNull
   }
+
+  getNodeVisuallyAboveThis() {
+    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
+    if ( siblingNodeAboveThis ) {
+      return siblingNodeAboveThis.getLastMostNestedNodeRecursively()
+    }
+    return siblingNodeAboveThis || this.parent2
+  }
+
+  getLastMostNestedNodeRecursively() {
+    const lastImmediateChild = this.getLastImmediateChild()
+    if ( lastImmediateChild ) {
+      return lastImmediateChild.getLastMostNestedNodeRecursively()
+    } else {
+      return this
+    }
+  }
+
+  public getLastImmediateChild() {
+    return this.children && this.children.length > 0 && this.children[this.children.length - 1]
+  }
+
+
+
+  getNodeVisuallyBelowThis() {
+    return (
+         this.children
+      && this.children.length
+      && this.children[0]
+      || this.getSiblingNodeBelowThis()
+    )
+  }
+
 
   _appendChild(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
     if ( ! nodeToAppend ) {
@@ -156,7 +189,7 @@ export class OryTreeNode implements TreeNode {
     // console.log('addChild, afterExistingNode', afterExistingNode)
     newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel, this.newItemData())
 
-    const nodeBelow = afterExistingNode && afterExistingNode.getNodeBelowThis()
+    const nodeBelow = afterExistingNode && afterExistingNode.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
     const previousOrderNumber = afterExistingNode && afterExistingNode.nodeInclusion.orderNum;
     // console.log('addChild: previousOrderNumber', previousOrderNumber)
@@ -194,22 +227,22 @@ export class OryTreeNode implements TreeNode {
   reorderUp() {
     // TODO: if topmost, reorder to last item in this plan or to previous plan
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
-      this.getNodeAboveThis() &&
-      this.getNodeAboveThis().getNodeAboveThis() &&
-      this.getNodeAboveThis().getNodeAboveThis().nodeInclusion.orderNum,
-      this.getNodeAboveThis() &&
-      this.getNodeAboveThis().nodeInclusion.orderNum
+      this.getSiblingNodeAboveThis() &&
+      this.getSiblingNodeAboveThis().getSiblingNodeAboveThis() &&
+      this.getSiblingNodeAboveThis().getSiblingNodeAboveThis().nodeInclusion.orderNum,
+      this.getSiblingNodeAboveThis() &&
+      this.getSiblingNodeAboveThis().nodeInclusion.orderNum
     )
     this.reorderToOrderNum(newOrderNum)
   }
 
   reorderDown() {
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
-      this.getNodeBelowThis() &&
-      this.getNodeBelowThis().nodeInclusion.orderNum,
-      this.getNodeBelowThis() &&
-      this.getNodeBelowThis().getNodeBelowThis() &&
-      this.getNodeBelowThis().getNodeBelowThis().nodeInclusion.orderNum
+      this.getSiblingNodeBelowThis() &&
+      this.getSiblingNodeBelowThis().nodeInclusion.orderNum,
+      this.getSiblingNodeBelowThis() &&
+      this.getSiblingNodeBelowThis().getSiblingNodeBelowThis() &&
+      this.getSiblingNodeBelowThis().getSiblingNodeBelowThis().nodeInclusion.orderNum
     )
     this.reorderToOrderNum(newOrderNum)
   }
@@ -240,7 +273,7 @@ export class OryTreeNode implements TreeNode {
 
   timeLeftSum() {
     if ( this.children.length ) {
-      debugLog('timeLeftSum this.children', this.children)
+      // debugLog('timeLeftSum this.children', this.children)
     }
     const sumBy1 = sumBy(this.children, childNode => {
       return childNode.effectiveTimeLeft()
