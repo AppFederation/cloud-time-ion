@@ -8,12 +8,11 @@
   (keydown.control.enter)="keyPressMetaEnter($event)"
   (keydown.control.arrowup)="reorderUp($event)"
   (keydown.control.arrowdown)="reorderDown($event)"
-  [ngClass]="{'done':isDone}"
+  [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused}"
 >
 <!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
-  <ng-container *ngIf="isAncestorOfFocused">X</ng-container>
 
   <ng-container *ngIf="treeNode.isDayPlan">
     End: {{treeNode.endTime()}}
