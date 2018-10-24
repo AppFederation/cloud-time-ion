@@ -27,8 +27,6 @@ export class TreeHostComponent implements OnInit {
   pendingListeners = 0
 
   mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
-  lastFocusedNode: OryTreeNode
-  lastFocusedColumn: OryColumn
 
   constructor(
     public treeService: TreeService,
@@ -53,8 +51,8 @@ export class TreeHostComponent implements OnInit {
   reFocusLastFocused() {
     debugLog('reFocusLastFocused')
     setTimeout(() => {
-      debugLog('reFocusLastFocused in setTimeout, ', this.lastFocusedNode, this.lastFocusedColumn)
-      this.focusNode(this.lastFocusedNode, this.lastFocusedColumn)
+      debugLog('reFocusLastFocused in setTimeout, ', this.treeModel.focus.lastFocusedNode, this.treeModel.focus.lastFocusedColumn)
+      this.focusNode(this.treeModel.focus.lastFocusedNode, this.treeModel.focus.lastFocusedColumn)
     })
   }
 
@@ -160,12 +158,14 @@ export class TreeHostComponent implements OnInit {
 
   }
 
+  /* FIXME: move to TreeModel; expansion is part of TreeNode objects anyway */
   expandAll() {
     this.treeModel.root.children.forEach( (node: any) => {
       this.expandRecursive(node, true);
     } );
   }
 
+  /* FIXME: move to TreeModel; expansion is part of TreeNode objects anyway */
   expandRecursive(node: TreeNode, isExpand: boolean) {
     node.expanded = isExpand;
     if (node.children) {
@@ -197,8 +197,7 @@ export class TreeHostComponent implements OnInit {
     }
     const component: NodeContentComponent = this.getComponentForNode(node)
     component.focus(column)
-    this.lastFocusedNode = node
-    this.lastFocusedColumn = column
+    this.treeModel.focus.setFocused(node, column)
   }
 
 }

@@ -8,6 +8,7 @@ import {isNullOrUndefined} from 'util'
 import {defined, FIXME, nullOrUndef} from './utils'
 import {sortBy} from 'lodash';
 import {sumBy} from 'lodash';
+import { OryColumn } from '../tree/OryColumn'
 
 
 /**
@@ -317,10 +318,54 @@ export class OryTreeNode implements TreeNode {
     return new Date(this.startTime.getTime() + this.timeLeftSum() * 60 * 1000)
   }
 
+  highlight = new class Highlight {
+    constructor(public treeNode: OryTreeNode) {}
+
+    isChildOfFocusedNode() {
+
+    }
+
+    isAncestorOfFocusedNode() {
+      return (
+        this.treeNode.treeModel.focus.lastFocusedNode &&
+        this.treeNode.treeModel.focus.lastFocusedNode.getAncestorsPathArray().some(ancestor => {
+          return this.treeNode === ancestor
+        })
+      )
+    }
+  } (this)
+
+  getAncestorsPathArray(): OryTreeNode[] {
+    const ret = []
+    let node: OryTreeNode = this
+    while (true) {
+      if ( ! node ) {
+        // debugLog('getAncestorsPathArray', ret)
+        return ret
+
+      } else {
+        ret.push(node)
+        node = node.parent2
+      }
+    }
+  }
 }
 
 export abstract class OryTreeListener {
   abstract onAfterReorder()
+}
+
+export class TreeCell {
+  constructor(
+    public node: OryTreeNode,
+    public column: OryColumn,
+  ) {}
+}
+
+export class FocusEvent {
+  constructor(
+    public cell: TreeCell,
+  ) {}
 }
 
 /** =========================================================================== */
@@ -334,6 +379,24 @@ export class TreeModel {
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
   mapItemIdToNode = new Map<string, OryTreeNode>()
   isApplyingFromDbNow = false
+
+  focus = new class Focus {
+    /** could skip the "focused" part */
+    lastFocusedNode: OryTreeNode
+    /** could skip the "focused" part */
+    lastFocusedColumn: OryColumn
+
+    focus$ = new EventEmitter<FocusEvent>()
+    get lastCell() {
+      return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
+    }
+
+    setFocused(treeNode: OryTreeNode, column: OryColumn) {
+      this.lastFocusedNode = treeNode
+      this.lastFocusedColumn = column
+      this.focus$.emit(new FocusEvent(this.lastCell))
+    }
+  }
 
   constructor(
     public treeService: DbTreeService,

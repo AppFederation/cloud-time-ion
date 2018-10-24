@@ -13,6 +13,8 @@
 <!--<div style="display: flex; align-items: center;">-->
 
   <i class="material-icons">settings_applications</i>
+  <ng-container *ngIf="isAncestorOfFocused">X</ng-container>
+
   <ng-container *ngIf="treeNode.isDayPlan">
     End: {{treeNode.endTime()}}
     Sum: {{treeNode.timeLeftSumText()}}

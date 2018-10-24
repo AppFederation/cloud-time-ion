@@ -1,5 +1,7 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -65,10 +67,12 @@ export class Columns {
   templateUrl: './node-content.component.html',
   styleUrls: ['./node-content.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeContentComponent implements OnInit, AfterViewInit {
 
   static columnsStatic = new Columns()
+
 
   columns: Columns = NodeContentComponent.columnsStatic
 
@@ -93,11 +97,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   editedHere = new Map<OryColumn, boolean>()
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
+  isAncestorOfFocused = false
 
   constructor(
     public dbService: DbTreeService,
     public sanitizer: DomSanitizer,
     public dialogService: DialogService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -130,6 +136,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
       this.applyItemDataValuesToViews()
     })
     this.subscribeDebouncedOnChangePerColumns()
+    this.treeNode.treeModel.focus.focus$.subscribe(() => {
+      this.isAncestorOfFocused = this.treeNode.highlight.isAncestorOfFocusedNode()
+      // console.log('isAncestorOfFocused', this.isAncestorOfFocused)
+      this.changeDetectorRef.detectChanges()
+    })
 
   }
 
@@ -273,8 +284,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
 
   onColumnFocused(column: OryColumn, event) {
     this.focusedColumn = column
-    this.treeHost.lastFocusedColumn = column
-    this.treeHost.lastFocusedNode = this.treeNode
+    this.treeHost.treeModel.focus.setFocused(this.treeNode, column)
   }
 
   onChangeEstimatedTime() {
