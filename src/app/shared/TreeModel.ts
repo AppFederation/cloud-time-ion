@@ -61,7 +61,14 @@ export class OryTreeNode implements TreeNode {
 
     setExpansionOnParentsRecursively(expandToSet: boolean) {
       this.treeNode.getAncestorsPathArray().forEach(node => {
-        node.expanded = true
+        node.expanded = expandToSet
+      })
+    }
+
+    areParentsExpandedToMakeThisNodeVisible(): boolean {
+      // return false
+      return this.treeNode.getAncestorsPathArrayExcludingVirtualRoot().every(node => {
+        return node.expanded
       })
     }
 
@@ -117,15 +124,23 @@ export class OryTreeNode implements TreeNode {
   }
 
   getNodeVisuallyAboveThis() {
+    let ret: OryTreeNode
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
       const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedNodeRecursively()
-      return lastMostNestedNodeRecursively
+      ret =  lastMostNestedNodeRecursively
+    } else {
+      ret = siblingNodeAboveThis ||
+        this.parent || /* note this is not parent2 */
+        this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
     }
-
-    return siblingNodeAboveThis ||
-      this.parent || /* note this is not parent2 */
-      this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
+    if ( ret.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
+      debugLog('getNodeVisuallyAboveThis 1')
+      return ret
+    } else {
+      debugLog('getNodeVisuallyAboveThis 2')
+      return ret.getNodeVisuallyAboveThis() // skip this one, as it is not visible via being collapsed
+    }
   }
 
   getNodeVisuallyBelowThis() {
@@ -359,19 +374,28 @@ export class OryTreeNode implements TreeNode {
     }
   } (this)
 
-  getAncestorsPathArray(): OryTreeNode[] {
+  getPathArray(): OryTreeNode[] {
     const ret = []
     let node: OryTreeNode = this
     while (true) {
       if ( ! node ) {
         // debugLog('getAncestorsPathArray', ret)
-        return ret
-
+        return ret.reverse()
       } else {
         ret.push(node)
         node = node.parent2
       }
     }
+  }
+
+  getAncestorsPathArray() {
+    const pathArray = this.getPathArray()
+    return pathArray.slice(0, pathArray.length - 1 /*exclusive - skip last*/)
+  }
+
+  getAncestorsPathArrayExcludingVirtualRoot() {
+    const ancestorsPathArray = this.getAncestorsPathArray()
+    return ancestorsPathArray.slice(1, ancestorsPathArray.length)
   }
 }
 

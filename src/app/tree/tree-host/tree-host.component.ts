@@ -200,7 +200,6 @@ export class TreeHostComponent implements OnInit {
       const component: NodeContentComponent = this.getComponentForNode(node)
       component.focus(column)
       this.treeModel.focus.setFocused(node, column)
-
     })
   }
 
