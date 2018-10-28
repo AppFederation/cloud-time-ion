@@ -108,9 +108,13 @@ export class OryTreeNode implements TreeNode {
   getNodeVisuallyAboveThis() {
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
-      return siblingNodeAboveThis.getLastMostNestedNodeRecursively()
+      const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedNodeRecursively()
+      return lastMostNestedNodeRecursively
     }
-    return siblingNodeAboveThis || this.parent2
+
+    return siblingNodeAboveThis ||
+      this.parent || /* note this is not parent2 */
+      this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
   }
 
   getNodeVisuallyBelowThis() {
