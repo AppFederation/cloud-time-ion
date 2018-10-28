@@ -56,6 +56,17 @@ export class OryTreeNode implements TreeNode {
 
   static INITIAL_TITLE = ''
 
+  expansion = new class Expansion {
+    constructor(public treeNode: OryTreeNode) {}
+
+    setExpansionOnParentsRecursively(expandToSet: boolean) {
+      this.treeNode.getAncestorsPathArray().forEach(node => {
+        node.expanded = true
+      })
+    }
+
+  }(this)
+
   get lastChildNode(): OryTreeNode {
     return this.getChildAtIndexOrNull(this.children && this.children.length - 1)
   }
