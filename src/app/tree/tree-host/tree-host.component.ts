@@ -195,9 +195,13 @@ export class TreeHostComponent implements OnInit {
     if ( ! node ) {
       return
     }
-    const component: NodeContentComponent = this.getComponentForNode(node)
-    component.focus(column)
-    this.treeModel.focus.setFocused(node, column)
+    node.expansion.setExpansionOnParentsRecursively(true)
+    setTimeout(() => {
+      const component: NodeContentComponent = this.getComponentForNode(node)
+      component.focus(column)
+      this.treeModel.focus.setFocused(node, column)
+
+    })
   }
 
 }
