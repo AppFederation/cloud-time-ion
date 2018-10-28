@@ -123,7 +123,7 @@ export class OryTreeNode implements TreeNode {
     return childAtIndexOrNull
   }
 
-  getNodeVisuallyAboveThis() {
+  getNodeVisuallyAboveThis(): OryTreeNode {
     let ret: OryTreeNode
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
@@ -143,7 +143,8 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
-  getNodeVisuallyBelowThis() {
+  getNodeVisuallyBelowThis(): OryTreeNode {
+    let ret: OryTreeNode
     const simple = (
       this.children
       && this.children.length
@@ -152,18 +153,24 @@ export class OryTreeNode implements TreeNode {
       // ||
     )
     if ( simple ) {
-      return simple
+      ret = simple
     } else {
       let parent = this.parent2
       while (parent) {
         if ( parent.getSiblingNodeBelowThis() ) {
-          return parent.getSiblingNodeBelowThis()
+          ret =  parent.getSiblingNodeBelowThis()
+          break
         }
         parent = parent.parent2
       }
     }
     // not found - wrap around to top-most
-    return this.treeModel.root.children[0]
+    ret = ret || this.treeModel.root.children[0]
+    if ( ! ret.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
+      return ret.getNodeVisuallyBelowThis() // recursive call
+    } else {
+      return ret
+    }
   }
 
   getLastMostNestedNodeRecursively() {
