@@ -82,7 +82,11 @@ export class OryTreeNode implements TreeNode {
   }
 
   public getIndexInParent() {
-    return this.parent2.children.indexOf(this)
+    return (
+      this.parent2 &&
+      this.parent2.children &&
+      this.parent2.children.indexOf(this)
+    )
   }
 
   getSiblingNodeAboveThis() {
@@ -92,8 +96,11 @@ export class OryTreeNode implements TreeNode {
 
   getSiblingNodeBelowThis() {
     const index = this.getIndexInParent()
-    console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
-    const childAtIndexOrNull = this.parent2.getChildAtIndexOrNull(index + 1)
+    // console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
+    const childAtIndexOrNull = (
+      this.parent2 &&
+      this.parent2.getChildAtIndexOrNull(index + 1)
+    )
     console.log('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
     return childAtIndexOrNull
   }
@@ -125,6 +132,8 @@ export class OryTreeNode implements TreeNode {
         parent = parent.parent2
       }
     }
+    // not found - wrap around to top-most
+    return this.treeModel.root.children[0]
   }
 
   getLastMostNestedNodeRecursively() {
