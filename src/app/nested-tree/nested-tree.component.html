@@ -1,0 +1,5 @@
+<app-nested-tree-node
+  *ngFor="let childNode of treeModel.root.children"
+  [treeNode]="childNode"
+  [treeHost]="treeHost"
+></app-nested-tree-node>

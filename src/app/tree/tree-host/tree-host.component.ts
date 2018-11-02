@@ -28,6 +28,8 @@ export class TreeHostComponent implements OnInit {
 
   mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
 
+  useNestedTree = true
+
   constructor(
     public treeService: TreeService,
     public treeService2: DbTreeService,

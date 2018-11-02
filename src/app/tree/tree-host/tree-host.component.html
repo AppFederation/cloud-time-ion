@@ -18,6 +18,8 @@
       Pending listeners: {{pendingListeners}}
       <!--Time left: {{treeModel.timeLeftSumText()}}-->
       <p-tree
+        *ngIf="! useNestedTree"
+
         [value]="treeModel.root.children"
         draggableNodes="true"
         droppableNodes="true"
@@ -36,6 +38,25 @@
           <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
         </ng-template>
       </p-tree>
+
+      <app-nested-tree
+        *ngIf="useNestedTree"
+        [treeModel]="treeModel"
+        [treeHost]="this"
+      >
+        <!--<ng-template-->
+          <!--let-node-->
+          <!--pTemplate="default"-->
+        <!--&gt;-->
+          <!--&lt;!&ndash;{{node | json}}&ndash;&gt;-->
+          <!--<app-node-content-->
+            <!--[treeNode]="node"-->
+            <!--[treeHost]="this"-->
+          <!--&gt;</app-node-content>-->
+          <!--&lt;!&ndash; https://www.primefaces.org/primeng/#/tree : Templating &ndash;&gt;-->
+          <!--&lt;!&ndash;<input [(ngModel)]="node.label" type="text" style="width:100%">&ndash;&gt;-->
+        <!--</ng-template>-->
+      </app-nested-tree>
 
       <button (click)="appendNode()">Append</button>
     </div>

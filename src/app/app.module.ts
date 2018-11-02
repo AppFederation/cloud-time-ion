@@ -15,7 +15,9 @@ import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filte
 import {DbTreeService} from './shared/db-tree-service'
 import {FormsModule} from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
-import { DialogService } from './core/dialog.service'
+import { DialogService } from './core/dialog.service';
+import { NestedTreeComponent } from './nested-tree/nested-tree.component';
+import { NestedTreeNodeComponent } from './nested-tree-node/nested-tree-node.component'
 
 const appRoutes: Routes = [
   {
@@ -50,7 +52,9 @@ const appRoutes: Routes = [
     NodeContentComponent,
     TreeHostComponent,
     TestPermissionsAndFiltersComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    NestedTreeComponent,
+    NestedTreeNodeComponent
   ],
   imports: [
     BrowserModule,

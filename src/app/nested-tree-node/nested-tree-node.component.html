@@ -1,0 +1,21 @@
+<div
+  style="margin: 5px; border-left: 3px solid red"
+>
+
+  <app-node-content
+    [treeNode]="treeNode"
+    [treeHost]="treeHost"
+  ></app-node-content>
+
+  <div style="margin-left: 10px">
+    <app-nested-tree-node
+      *ngFor="let childNode of treeNode.children"
+      [treeNode]="childNode"
+      [treeHost]="treeHost"
+    ></app-nested-tree-node>
+
+  </div>
+
+</div>
+
+
