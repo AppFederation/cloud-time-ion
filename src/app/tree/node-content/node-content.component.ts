@@ -6,6 +6,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
@@ -22,6 +23,7 @@ import { isNullOrUndefined } from 'util'
 import { DialogService } from '../../core/dialog.service'
 // import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
+import { takeUntil } from 'rxjs/operators';
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -69,7 +71,7 @@ export class Columns {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NodeContentComponent implements OnInit, AfterViewInit {
+export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   static columnsStatic = new Columns()
 
@@ -98,6 +100,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
   editedHere = new Map<OryColumn, boolean>()
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
+  isDestroyed = false
 
   constructor(
     public dbService: DbTreeService,
@@ -137,9 +140,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
     })
     this.subscribeDebouncedOnChangePerColumns()
     this.treeNode.treeModel.focus.focus$.subscribe(() => {
-      this.isAncestorOfFocused = this.treeNode.highlight.isAncestorOfFocusedNode()
-      // console.log('isAncestorOfFocused', this.isAncestorOfFocused)
-      this.changeDetectorRef.detectChanges()
+      if ( ! this.isDestroyed ) {
+        this.isAncestorOfFocused = this.treeNode.highlight.isAncestorOfFocusedNode()
+        // console.log('isAncestorOfFocused', this.isAncestorOfFocused)
+        this.changeDetectorRef.detectChanges()
+      }
     })
 
   }
@@ -344,5 +349,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit {
         } // else: no need to react, since it is being applied from Db
       })
     }
+  }
+
+  ngOnDestroy(): void {
+    this.isDestroyed = true
+  }
+
+  formatEndTime() {
+    const date = this.treeNode.endTime()
+    return '' + date.getHours() + ':' + _.padStart(''+date.getMinutes(), 2, '0')
   }
 }
