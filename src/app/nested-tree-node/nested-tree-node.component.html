@@ -1,5 +1,6 @@
 <div
   style="margin: 5px; border-left: 3px solid red"
+  class="node-and-children"
 >
 
   <app-node-content
@@ -7,7 +8,7 @@
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div style="margin-left: 10px">
+  <div style="margin-left: 10px" class="children">
     <app-nested-tree-node
       *ngFor="let childNode of treeNode.children"
       [treeNode]="childNode"
