@@ -1,7 +1,10 @@
 <div
   style="margin: 5px; border-left: 3px solid red"
   class="node-and-children"
+  [ngClass]="{'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode()}"
 >
+
+  <!--{{treeNode.highlight.isAncestorOfFocusedNode()}}-->
 
   <app-node-content
     [treeNode]="treeNode"

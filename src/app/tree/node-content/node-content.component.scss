@@ -7,7 +7,15 @@
   opacity: 0.2;
 }
 
+$border-left: 3px;
+
+
+.node-content-container {
+  border-left-width: $border-left
+}
+
+
 .ancestor-of-focused {
-  border-left: dodgerblue 3px solid;
+  border-left: dodgerblue $border-left solid;
 }
 
