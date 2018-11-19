@@ -128,17 +128,17 @@ export class OryTreeNode implements TreeNode {
 
   getNodeVisuallyAboveThis(): OryTreeNode {
     if ( this.isRoot() ) {
-      return this.treeModel.root.getLastMostNestedNodeRecursively()
+      return this.treeModel.root.getLastMostNestedVisibleNodeRecursively()
     }
     let ret: OryTreeNode
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
-      const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedNodeRecursively()
+      const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedVisibleNodeRecursively()
       ret =  lastMostNestedNodeRecursively
     } else {
       ret = siblingNodeAboveThis ||
         this.parent2 || /* note this IS parent2 - should go to the root of all (if it is shown...) */
-        this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
+        this.treeModel.root.getLastMostNestedVisibleNodeRecursively() // not found -- wrap around to bottom-most
     }
     if ( ret.expansion.areParentsExpandedToMakeThisNodeVisible()
         /* TODO: might need smth like && isVisible to handle the isRootVisible case. Later also think about filtering */
@@ -182,10 +182,13 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
-  getLastMostNestedNodeRecursively() {
+  getLastMostNestedVisibleNodeRecursively() {
     const lastImmediateChild = this.getLastImmediateChild()
+    if ( lastImmediateChild && ! lastImmediateChild.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
+      return this // we stop at this because deeper one is not visible
+    }
     if ( lastImmediateChild ) {
-      return lastImmediateChild.getLastMostNestedNodeRecursively()
+      return lastImmediateChild.getLastMostNestedVisibleNodeRecursively()
     } else {
       return this
     }
