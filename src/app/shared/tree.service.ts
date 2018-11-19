@@ -16,14 +16,14 @@ export class TreeService {
     public dbTreeService: DbTreeService,
   ) { }
 
-  getRootTreeModel(): TreeModel {
+  getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeModel {
     // const componentThis = this
     const treeModel = new TreeModel(this.dbTreeService, {
       onAfterReorder() {
 
       }
     })
-    this.dbTreeService.loadNodesTree({
+    this.dbTreeService.loadNodesTree(/* TODO: specify root node(s) ID(s) */{
       onNodeAdded(event: NodeAddEvent) {
         debugLog('loadNodesTree', event)
         treeModel.onNodeAdded(event)

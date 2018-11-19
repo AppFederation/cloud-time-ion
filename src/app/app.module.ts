@@ -41,7 +41,10 @@ const appRoutes: Routes = [
     path: '**',
     redirectTo: 'tree',
   },
-
+  {
+    path: 'tree/:rootNodeId',
+    component: TreeHostComponent,
+  },
 ];
 
 

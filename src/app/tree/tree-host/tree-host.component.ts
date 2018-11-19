@@ -7,6 +7,10 @@ import {NodeContentComponent} from '../node-content/node-content.component'
 import {OryColumn} from '../OryColumn'
 import {FIXME} from '../../shared/utils'
 import {DbTreeService} from '../../shared/db-tree-service'
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+} from '@angular/router'
 
 
 @Component({
@@ -34,7 +38,9 @@ export class TreeHostComponent implements OnInit {
     public treeService: TreeService,
     public treeService2: DbTreeService,
     public treeDragDropService: TreeDragDropService,
+    private activatedRoute : ActivatedRoute
   ) {
+    this.activatedRoute.snapshot.params['rootNodeId']
     treeDragDropService.dragStop$.subscribe((...args) => {
       console.log('dragStop$', args)
     })
