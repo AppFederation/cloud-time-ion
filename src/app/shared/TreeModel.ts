@@ -79,7 +79,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   get isDayPlan() {
-    return ! this.parent // top-level node (our parent is the virtual root)
+    return ! (this.parent2 && this.parent2.parent2) // top-level node (our parent is the virtual root)
   }
 
   constructor(
@@ -131,7 +131,7 @@ export class OryTreeNode implements TreeNode {
       ret =  lastMostNestedNodeRecursively
     } else {
       ret = siblingNodeAboveThis ||
-        this.parent || /* note this is not parent2 */
+        this.parent2 || /* note this IS parent2 - should go to the root of all (if it is shown...) */
         this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
     }
     if ( ret.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
@@ -453,6 +453,9 @@ export class TreeModel {
     }
   }
 
+  /* Workaround for now, as there were some non-deleted children of a deleted parent */
+  public showDeleted: boolean = true
+
   constructor(
     public treeService: DbTreeService,
     public treeListener: OryTreeListener,
@@ -476,14 +479,18 @@ export class TreeModel {
         // }, 0)
 
       } else {
-        if ( ! event.itemData.deleted ) {
+        if ( ! event.itemData.deleted || this.showDeleted ) {
           const parentNode = event.immediateParentId === this.treeService.HARDCODED_ROOT_NODE_ITEM_ID ? this.root : this.mapItemIdToNode.get(event.immediateParentId)
-          FIXME('Hardcoded parent (root) for now')
-          const newOrderNum = event.nodeInclusion.orderNum
-          let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+          if ( ! parentNode ) {
+            console.error('onNodeAdded: no parent', event.immediateParentId)
+          } else {
+            // FIXME('Hardcoded parent (root) for now')
+            const newOrderNum = event.nodeInclusion.orderNum
+            let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
-          const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
+            const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
             parentNode._appendChild(newTreeNode, insertBeforeIndex)
+          }
         }
       }
     } finally {
