@@ -25,6 +25,9 @@ import { DialogService } from '../../core/dialog.service'
 import 'rxjs/add/operator/throttleTime';
 import { takeUntil } from 'rxjs/operators';
 
+import {padStart} from 'lodash';
+
+
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
   var caretPos = 0,
@@ -193,7 +196,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   ngAfterViewInit(): void {
-   this.focus()
+   // this.focus()
   }
 
   delete() {
@@ -357,6 +360,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formatEndTime() {
     const date = this.treeNode.endTime()
-    return '' + date.getHours() + ':' + _.padStart(''+date.getMinutes(), 2, '0')
+    return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 }
