@@ -224,7 +224,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   }
 
-
+  /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
   addSiblingAfterNode(parentNode: OryTreeNode, newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
     console.log('addSiblingAfterNode', newNode, afterExistingNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"

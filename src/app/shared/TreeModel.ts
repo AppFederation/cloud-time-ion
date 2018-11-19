@@ -238,6 +238,7 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
+  /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
   addChild(afterExistingNode?: OryTreeNode, newNode?: OryTreeNode) {
     if ( ! afterExistingNode && this.children.length > 0 ) {
       afterExistingNode = this.lastChildNode
@@ -425,7 +426,11 @@ export class FocusEvent {
 
 /** =========================================================================== */
 /** =========================================================================== */
-/** =========================================================================== */
+/** ===========================================================================
+ * Idea: have a class that would contain all other classes, e.g. Focus and
+ * extract content-specific (what is currently TreeModel),
+ * to TreeContents or TreeNodes class for better separation of concerns
+ */
 @Injectable()
 export class TreeModel {
 
@@ -441,7 +446,10 @@ export class TreeModel {
     /** could skip the "focused" part */
     lastFocusedColumn: OryColumn
 
+    // expectedNewNodeToFocus:  = null
+
     focus$ = new EventEmitter<FocusEvent>()
+
     get lastCell() {
       return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
     }

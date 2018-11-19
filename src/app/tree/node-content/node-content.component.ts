@@ -209,9 +209,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   addChild() {
     const newTreeNode = this.treeNode.addChild()
     this.treeNode.expanded = true
-    setTimeout(() => {
-      this.treeHost.focusNode(newTreeNode)
-    })
+    this.focusNewlyCreatedNode(newTreeNode)
     // this.addChildToDb()
     // if ( ! this.node.children ) {
     //   this.node.children = []
@@ -221,14 +219,17 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // })
   }
 
-  private addChildToDb() {
-    // this.dbService.addNode(this.node.dbId)
+  private focusNewlyCreatedNode(newTreeNode) {
+    setTimeout(() => {
+      this.treeHost.focusNode(newTreeNode)
+    })
   }
 
   keyPressEnter(event) {
-    event.preventDefault()
-    this.addNodeAfterThis()
     console.log('key press enter; node: ', this.treeNode)
+    event.preventDefault()
+    const newTreeNode = this.addNodeAfterThis()
+    this.focusNewlyCreatedNode(newTreeNode)
   }
 
   keyPressMetaEnter(event) {
@@ -238,8 +239,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.focusNodeBelow()
   }
 
-  private addNodeAfterThis() {
-    this.treeNode.addSiblingAfterThis()
+  addNodeAfterThis() {
+    return this.treeNode.addSiblingAfterThis()
   }
 
   public focusNodeAbove() {
@@ -303,6 +304,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('onInputChanged onChange', e)
   }
 
+  /* TODO: rename reactToInputChangedAndSave */
   onInputChanged(e, column) {
     this.editedHere.set(column, true)
     this.onChange(e)
