@@ -66,6 +66,9 @@ export class OryTreeNode implements TreeNode {
     }
 
     areParentsExpandedToMakeThisNodeVisible(): boolean {
+      if ( this.treeNode.isRoot() ) {
+        return this.treeNode.treeModel.isRootShown
+      }
       // return false
       return this.treeNode.getAncestorsPathArrayExcludingVirtualRoot().every(node => {
         return node.expanded
@@ -124,6 +127,9 @@ export class OryTreeNode implements TreeNode {
   }
 
   getNodeVisuallyAboveThis(): OryTreeNode {
+    if ( this.isRoot() ) {
+      return this.treeModel.root.getLastMostNestedNodeRecursively()
+    }
     let ret: OryTreeNode
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
@@ -134,11 +140,14 @@ export class OryTreeNode implements TreeNode {
         this.parent2 || /* note this IS parent2 - should go to the root of all (if it is shown...) */
         this.treeModel.root.getLastMostNestedNodeRecursively() // not found -- wrap around to bottom-most
     }
-    if ( ret.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
+    if ( ret.expansion.areParentsExpandedToMakeThisNodeVisible()
+        /* TODO: might need smth like && isVisible to handle the isRootVisible case. Later also think about filtering */
+    ) {
       debugLog('getNodeVisuallyAboveThis 1')
       return ret
     } else {
       debugLog('getNodeVisuallyAboveThis 2')
+      // recursive call:
       return ret.getNodeVisuallyAboveThis() // skip this one, as it is not visible via being collapsed
     }
   }
@@ -405,6 +414,10 @@ export class OryTreeNode implements TreeNode {
     const ancestorsPathArray = this.getAncestorsPathArray()
     return ancestorsPathArray.slice(1, ancestorsPathArray.length)
   }
+
+  isRoot() {
+    return this.treeModel.root === this;
+  }
 }
 
 export abstract class OryTreeListener {
@@ -463,6 +476,9 @@ export class TreeModel {
 
   /* Workaround for now, as there were some non-deleted children of a deleted parent */
   public showDeleted: boolean = true
+
+  /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
+  isRootShown = false
 
   constructor(
     public treeService: DbTreeService,
