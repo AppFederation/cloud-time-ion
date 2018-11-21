@@ -11,6 +11,7 @@ import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
 } from '@angular/router'
+import { DebugService } from '../../core/debug.service'
 
 
 @Component({
@@ -32,13 +33,14 @@ export class TreeHostComponent implements OnInit {
 
   mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
 
-  useNestedTree = true
+  useNestedTree = false
 
   constructor(
     public treeService: TreeService,
     public treeService2: DbTreeService,
     public treeDragDropService: TreeDragDropService,
-    private activatedRoute : ActivatedRoute
+    private activatedRoute : ActivatedRoute,
+    private debugService: DebugService,
   ) {
     this.activatedRoute.snapshot.params['rootNodeId']
     treeDragDropService.dragStop$.subscribe((...args) => {
@@ -166,7 +168,6 @@ export class TreeHostComponent implements OnInit {
 
   }
 
-  /* FIXME: move to TreeModel; expansion is part of TreeNode objects anyway */
   expandAll() {
     this.treeModel.root.expansion.setExpansion(true, true)
   }
@@ -175,7 +176,6 @@ export class TreeHostComponent implements OnInit {
     console.log('nodeDrop', event)
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
-
 
   registerNodeComponent(nodeComp: NodeContentComponent) {
     this.mapNodeToComponent.set(nodeComp.treeNode, nodeComp)
@@ -186,7 +186,7 @@ export class TreeHostComponent implements OnInit {
   }
 
   focusNode(node: OryTreeNode, column?: OryColumn) {
-    console.log('focusNode', node, column)
+    debugLog('focusNode', node, column)
     if ( ! node ) {
       return
     }
@@ -196,6 +196,11 @@ export class TreeHostComponent implements OnInit {
       component.focus(column)
       this.treeModel.focus.setFocused(node, column)
     })
+  }
+
+  onDebugChange($event) {
+    debugLog('$event', $event)
+    this.debugService.isDebug$.next($event.target.checked)
   }
 
 }

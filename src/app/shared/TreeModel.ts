@@ -135,7 +135,7 @@ export class OryTreeNode implements TreeNode {
       this.parent2 &&
       this.parent2.getChildAtIndexOrNull(index + 1)
     )
-    console.log('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
+    debugLog('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
     return childAtIndexOrNull
   }
 

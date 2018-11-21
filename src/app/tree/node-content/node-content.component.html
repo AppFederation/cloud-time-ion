@@ -96,7 +96,7 @@
   <!--     [ngModel]="treeNode"
   -->
 
-  {{treeNode.itemId}}
+  <ng-container *ngIf="debugService.isDebug$ | async">{{treeNode.itemId}}</ng-container>
 
   <button
     (click)="delete()"

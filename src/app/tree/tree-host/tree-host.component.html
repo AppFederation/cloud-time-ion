@@ -15,7 +15,14 @@
         Expand All
       </button>
 
-      Pending listeners: {{pendingListeners}}
+      <label class="checkbox-inline" style="user-select: none">
+        <input type="checkbox" [checked]="debugService.isDebug$ | async" (change)="onDebugChange($event)">
+        Debug
+      </label>
+
+      <ng-container *ngIf="debugService.isDebug$ | async">
+        Pending listeners: {{pendingListeners}}
+      </ng-container>
       <!--Time left: {{treeModel.timeLeftSumText()}}-->
       <p-tree
         *ngIf="! useNestedTree"

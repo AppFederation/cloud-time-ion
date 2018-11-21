@@ -26,6 +26,7 @@ import 'rxjs/add/operator/throttleTime';
 import { takeUntil } from 'rxjs/operators';
 
 import {padStart} from 'lodash';
+import { DebugService } from '../../core/debug.service'
 
 
 /** https://stackoverflow.com/a/3976125/170451 */
@@ -109,7 +110,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public dbService: DbTreeService,
     public sanitizer: DomSanitizer,
     public dialogService: DialogService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    public debugService: DebugService,
   ) { }
 
   ngOnInit() {
@@ -158,7 +160,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     if (newEstimatedTime === undefined || newEstimatedTime === null) {
       newEstimatedTime = ''
     }
-    console.log('newEstimatedTime, ', newEstimatedTime)
+    debugLog('newEstimatedTime, ', newEstimatedTime)
     if (this.elInputEstimatedTime.nativeElement.value === newEstimatedTime) {
       this.editedHere.set(this.columns.estimatedTime, false)
     } else {
@@ -274,7 +276,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
-    console.log('focusOtherNode this.focusedColumn', this.focusedColumn)
+    debugLog('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
 

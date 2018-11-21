@@ -18,6 +18,7 @@ import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.comp
 import { DialogService } from './core/dialog.service';
 import { NestedTreeComponent } from './nested-tree/nested-tree.component';
 import { NestedTreeNodeComponent } from './nested-tree-node/nested-tree-node.component'
+import { CoreModule } from './core/core.module'
 
 const appRoutes: Routes = [
   {
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     FormsModule,
     // MatIconModule,
     RouterModule.forRoot(appRoutes),
+    CoreModule
   ],
   providers: [
     TreeDragDropService,

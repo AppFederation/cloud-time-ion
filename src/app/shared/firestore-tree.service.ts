@@ -9,6 +9,7 @@ import DocumentReference = firebase.firestore.DocumentReference
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
+import { DebugService } from '../core/debug.service'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -28,7 +29,7 @@ firebase1.initializeApp({
 const enableLogging = true
 
 export function debugLog(...args) {
-  if ( enableLogging ) {
+  if ( enableLogging && DebugService.isDebug) {
     console.log('debugLog', ...args)
   }
 }
@@ -100,7 +101,7 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   loadNodesTree(listener: DbTreeListener) {
-    console.log('loadNodesTree')
+    debugLog('loadNodesTree')
     db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
       // console.log('loadNodesTree onSnapshot()', snapshot)
     })
