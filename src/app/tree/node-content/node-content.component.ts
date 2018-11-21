@@ -364,4 +364,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     const date = this.treeNode.endTime()
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
+
+  toggleExpand(event) {
+    debugLog('expand', event)
+    this.treeNode.expansion.toggleExpansion(event.altKey)
+  }
 }

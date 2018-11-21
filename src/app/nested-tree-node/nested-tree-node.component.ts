@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { OryTreeNode } from '../shared/TreeModel'
 import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
+import { debugLog } from '../shared/firestore-tree.service'
 
 @Component({
   selector: 'app-nested-tree-node',
@@ -22,6 +23,11 @@ export class NestedTreeNodeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  toggleExpand(event) {
+    debugLog('expand', event)
+    this.treeNode.expansion.toggleExpansion(event.altKey)
   }
 
 }

@@ -75,6 +75,19 @@ export class OryTreeNode implements TreeNode {
       })
     }
 
+    setExpansion(expansionState: boolean, recursive: boolean) {
+      this.treeNode.expanded = expansionState
+      if ( recursive ) {
+        this.treeNode.children.forEach( (node: OryTreeNode) => {
+          node.expansion.setExpansion(expansionState, recursive);
+        });
+      }
+    }
+
+    toggleExpansion(recursive: boolean) {
+      this.setExpansion(! this.treeNode.expanded, recursive)
+    }
+
   }(this)
 
   get lastChildNode(): OryTreeNode {

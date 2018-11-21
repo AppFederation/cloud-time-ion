@@ -19,9 +19,12 @@
     ></app-nested-tree-node>
   </div>
 
-  <div *ngIf="! treeNode.expanded">collapsed</div>
+  <div
+    style="cursor: pointer; user-select: none"
+    (click)="toggleExpand($event)"
+    *ngIf="! treeNode.expanded && treeNode.children.length > 0"
+  >...</div>
 
-
-  </div>
+</div>
 
 

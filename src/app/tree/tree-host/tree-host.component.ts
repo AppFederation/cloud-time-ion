@@ -168,24 +168,11 @@ export class TreeHostComponent implements OnInit {
 
   /* FIXME: move to TreeModel; expansion is part of TreeNode objects anyway */
   expandAll() {
-    this.treeModel.root.children.forEach( (node: any) => {
-      this.expandRecursive(node, true);
-    } );
-  }
-
-  /* FIXME: move to TreeModel; expansion is part of TreeNode objects anyway */
-  expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach( childNode => {
-        this.expandRecursive(childNode, isExpand);
-      } );
-    }
+    this.treeModel.root.expansion.setExpansion(true, true)
   }
 
   nodeDrop(event) {
     console.log('nodeDrop', event)
-
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
 

@@ -13,7 +13,10 @@
 >
 <!--<div style="display: flex; align-items: center;">-->
 
-  <i class="material-icons">settings_applications</i>
+  <i style="cursor: pointer; user-select: none"
+     (click)="toggleExpand($event)"
+     class="material-icons"
+  >settings_applications</i>
 
   <ng-container *ngIf="treeNode.isDayPlan">
     End: {{formatEndTime()}}
@@ -93,7 +96,7 @@
   <!--     [ngModel]="treeNode"
   -->
 
-  <!--{{treeNode.itemId}}-->
+  {{treeNode.itemId}}
 
   <button
     (click)="delete()"
