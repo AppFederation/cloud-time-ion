@@ -228,14 +228,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   keyPressEnter(event) {
-    console.log('key press enter; node: ', this.treeNode)
+    debugLog('key press enter; node: ', this.treeNode)
     event.preventDefault()
     const newTreeNode = this.addNodeAfterThis()
     this.focusNewlyCreatedNode(newTreeNode)
   }
 
   keyPressMetaEnter(event) {
-    console.log('keyPressMetaEnter')
+    debugLog('keyPressMetaEnter')
     this.isDone = ! this.isDone
     this.onInputChanged(null, this.columns.isDone)
     this.focusNodeBelow()
@@ -343,7 +343,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
             http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
         }
       ).subscribe((changeEvent) => {
-        console.log('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
+        debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
           const titleVal = this.elInputTitle.nativeElement.innerHTML
           const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value

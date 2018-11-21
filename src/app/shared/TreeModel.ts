@@ -508,7 +508,7 @@ export class TreeModel {
     try {
       this.isApplyingFromDbNow = true
       if (existingNode) {
-        console.log('node inclusion already exists: ', nodeInclusionId)
+        debugLog('node inclusion already exists: ', nodeInclusionId)
         // setTimeout(() => {
         //   setTimeout(() => {
             // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
