@@ -111,7 +111,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
-    snapshot.docChanges.forEach(function(change) {
+    snapshot.docChanges().forEach(function(change) {
       debugLog('docChanges change.type', change.type);
 
       debugLog('nodeInclusionData ... change.doc', change.doc)

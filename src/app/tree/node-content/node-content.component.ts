@@ -299,11 +299,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onChangeEstimatedTime() {
-    console.log('onChangeEstimatedTime')
+    debugLog('onChangeEstimatedTime')
   }
 
   onChange(e) {
-    console.log('onInputChanged onChange', e)
+    debugLog('onInputChanged onChange', e)
   }
 
   /* TODO: rename reactToInputChangedAndSave */
