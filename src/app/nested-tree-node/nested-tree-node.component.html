@@ -11,15 +11,17 @@
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div style="margin-left: 10px" class="children">
+  <div *ngIf="treeNode.expanded" style="margin-left: 10px" class="children">
     <app-nested-tree-node
       *ngFor="let childNode of treeNode.children"
       [treeNode]="childNode"
       [treeHost]="treeHost"
     ></app-nested-tree-node>
-
   </div>
 
-</div>
+  <div *ngIf="! treeNode.expanded">collapsed</div>
+
+
+  </div>
 
 
