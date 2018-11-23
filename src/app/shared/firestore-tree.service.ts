@@ -14,6 +14,7 @@ import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { DebugService } from '../core/debug.service'
 import { FirestoreIndividualItemsLoader } from './firestore-individual-items-loader'
 import { FirestoreItemsLoader } from './firestore-items-loader'
+import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -73,11 +74,13 @@ export class FirestoreTreeService extends DbTreeService {
 
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
-  private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
+  // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
+  private dbItemsLoader: FirestoreItemsLoader
 
   constructor() {
     super()
     db.enablePersistence().then(() => {
+      this.dbItemsLoader = new FirestoreAllItemsLoader(this.itemsCollection())
       // window.alert('persistence enabled')
     })
     // this.listenToChanges(onSnapshotHandler)
@@ -155,7 +158,7 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
-    const subCollection = targetNodeDocRef.collection('subNodes')
+    const subCollection = targetNodeDocRef.collection('subNodes' /* note: those are really inclusions of sub nodes */)
     // debugLog('subColl:', subCollection)
     subCollection.onSnapshot((subSnap: QuerySnapshot) => {
       const newParents: DocumentReference[] = parents.slice(0)
@@ -191,7 +194,7 @@ export class FirestoreTreeService extends DbTreeService {
   //   })
   // }
 
-  private itemsCollection() {
+  private itemsCollection(): firebase.firestore.CollectionReference {
     return db.collection(this.ITEMS_COLLECTION)
   }
 
