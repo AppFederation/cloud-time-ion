@@ -5,7 +5,6 @@ import { debugLog } from './firestore-tree.service'
 
 export const ORDER_STEP = 1 * 1000 * 1000
 
-
 export abstract class DbTreeService {
 
   // HARDCODED_ROOT_NODE_ITEM_ID = 'KarolNodesHardcoded2'

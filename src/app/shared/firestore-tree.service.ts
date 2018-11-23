@@ -7,9 +7,13 @@ import {defined, FIXME, nullOrUndef} from './utils'
 import * as firebase from 'firebase'
 import DocumentReference = firebase.firestore.DocumentReference
 import {after} from 'selenium-webdriver/testing'
-import {DbTreeService} from './db-tree-service'
+import {
+  DbTreeService,
+} from './db-tree-service'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { DebugService } from '../core/debug.service'
+import { FirestoreIndividualItemsLoader } from './firestore-individual-items-loader'
+import { FirestoreItemsLoader } from './firestore-items-loader'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -69,6 +73,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
+  private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
 
   constructor() {
     super()
@@ -121,7 +126,7 @@ export class FirestoreTreeService extends DbTreeService {
         const parentsPath = serviceThis.nodesPath(parents)
         // debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
         serviceThis.pendingListeners ++
-        nodeInclusionData.childNode.onSnapshot((includedItemDoc: DocumentSnapshot) => {
+        serviceThis.dbItemsLoader.getItem$ByRef(nodeInclusionData.childNode, (includedItemDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           // console.log('nodeInclusionId', nodeInclusionId)
