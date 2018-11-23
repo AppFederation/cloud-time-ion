@@ -19,11 +19,15 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
   mapItemIdToDescriptor = new Map<string, ItemValueAndCallbacks>()
   // mapItemIdToCallbacks = new Map()
 
-  constructor(
-    public itemsCollection: firebase.firestore.CollectionReference,
-  ) {
+  constructor() {
     super()
-    this.itemsCollection.onSnapshot((snapshot: QuerySnapshot) => {
+  }
+
+  startQuery(
+    /* this will have to be filter to only what the user has read permission for */
+    itemsCollection: firebase.firestore.CollectionReference
+  ) {
+    itemsCollection.onSnapshot((snapshot: QuerySnapshot) => {
       snapshot.docChanges().forEach((change: DocumentChange) => {
         const documentSnapshot = change.doc
         if (change.type === 'added' || change.type === 'modified') {
@@ -41,6 +45,7 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
 
     })
   }
+
 
   /* refactor to return observable */
   getItem$ByRef(itemRef: DocumentReference, callback) {

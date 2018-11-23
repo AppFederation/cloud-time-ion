@@ -75,12 +75,12 @@ export class FirestoreTreeService extends DbTreeService {
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
-  private dbItemsLoader: FirestoreItemsLoader
+  dbItemsLoader = new FirestoreAllItemsLoader()
 
   constructor() {
     super()
     db.enablePersistence().then(() => {
-      this.dbItemsLoader = new FirestoreAllItemsLoader(this.itemsCollection())
+      this.dbItemsLoader.startQuery(this.itemsCollection())
       // window.alert('persistence enabled')
     })
     // this.listenToChanges(onSnapshotHandler)
@@ -246,8 +246,8 @@ export class FirestoreTreeService extends DbTreeService {
       title: OryTreeNode.INITIAL_TITLE
     }
 
-    this.itemsCollection().doc(newNode.itemId).set(newItem).then((itemDocRef) => {
-      itemDocRef = this.itemDocById(newNode.itemId)
+    this.itemsCollection().doc(newNode.itemId).set(newItem).then(() => {
+      const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
       this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
