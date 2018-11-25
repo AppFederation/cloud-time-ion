@@ -375,7 +375,6 @@ export class OryTreeNode implements TreeNode {
     } else {
       return 0
     }
-
   }
 
   showEffectiveDuration() {
@@ -400,8 +399,8 @@ export class OryTreeNode implements TreeNode {
     isAncestorOfFocusedNode() {
       return (
         this.treeNode.treeModel.focus.lastFocusedNode &&
-        this.treeNode.treeModel.focus.lastFocusedNode.getAncestorsPathArray().some(ancestor => {
-          return this.treeNode === ancestor
+        this.treeNode.treeModel.focus.lastFocusedNode.getPathArray().some(ancestorOfFocused => {
+          return this.treeNode === ancestorOfFocused
         })
       )
     }
