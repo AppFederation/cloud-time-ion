@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { OryTreeNode } from '../shared/TreeModel'
 import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
-import { debugLog } from '../shared/firestore-tree.service'
+import { debugLog } from '../shared/log'
 
 @Component({
   selector: 'app-nested-tree-node',

@@ -1,26 +1,27 @@
 import { Injectable } from '@angular/core';
+import {
+  DbTreeListener,
+  NodeAddEvent,
+  NodeInclusion,
+} from './TreeListener'
+import { OryTreeNode } from './TreeModel'
+import {
+  debugLog,
+  } from './log'
+import * as firebase from 'firebase'
+import { DbTreeService } from './db-tree-service'
+import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
 // import * as firebase from 'firebase/app'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
-import {DbTreeListener, NodeAddEvent, NodeInclusion} from './TreeListener'
-import {OryTreeNode} from './TreeModel'
-import {defined, FIXME, nullOrUndef} from './utils'
-import * as firebase from 'firebase'
 import DocumentReference = firebase.firestore.DocumentReference
-import {after} from 'selenium-webdriver/testing'
-import {
-  DbTreeService,
-} from './db-tree-service'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
-import { DebugService } from '../core/debug.service'
-import { FirestoreIndividualItemsLoader } from './firestore-individual-items-loader'
-import { FirestoreItemsLoader } from './firestore-items-loader'
-import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
+import { FIXME } from './log'
 
 const firebase1 = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
-const uuidv4 = require('uuid/v4');
+
 
 firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
@@ -31,13 +32,7 @@ firebase1.initializeApp({
   messagingSenderId: '970393221829'
 });
 
-const enableLogging = true
 
-export function debugLog(...args) {
-  if ( enableLogging && DebugService.isDebug) {
-    console.log('debugLog', ...args)
-  }
-}
 
 // function onSnapshotHandler(snapshot) {
 //   snapshot.docChanges.forEach(function(change) {

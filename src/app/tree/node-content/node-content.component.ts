@@ -12,7 +12,6 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.service'
 import {TreeNode} from 'primeng/primeng'
 import {OryTreeNode} from '../../shared/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
@@ -29,6 +28,7 @@ import {padStart} from 'lodash';
 import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';
+import { debugLog } from '../../shared/log'
 
 
 /** https://stackoverflow.com/a/3976125/170451 */

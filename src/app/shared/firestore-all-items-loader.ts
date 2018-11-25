@@ -5,7 +5,7 @@ import DocumentReference = firebase.firestore.DocumentReference
 import QuerySnapshot = firebase.firestore.QuerySnapshot
 import DocumentChange = firebase.firestore.DocumentChange
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
-import { debugLog } from './firestore-tree.service'
+import { debugLog } from './log'
 
 export class ItemValueAndCallbacks {
   constructor(

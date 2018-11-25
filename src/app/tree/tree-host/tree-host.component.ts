@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FirestoreTreeService, debugLog} from '../../shared/firestore-tree.service'
+import {FirestoreTreeService} from '../../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../shared/tree.service'
 import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
 import {NodeContentComponent} from '../node-content/node-content.component'
 import {OryColumn} from '../OryColumn'
-import {FIXME} from '../../shared/utils'
+import {
+  debugLog,
+  } from '../../shared/log'
 import {DbTreeService} from '../../shared/db-tree-service'
 import {
   ActivatedRoute,
@@ -13,6 +15,7 @@ import {
 } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import { CommandsService } from '../../core/commands.service'
+import { FIXME } from '../../shared/log'
 
 
 @Component({
@@ -47,14 +50,12 @@ export class TreeHostComponent implements OnInit {
     this.activatedRoute.snapshot.params['rootNodeId']
 
     commandsService.commands$.subscribe(command => {
-      if ( command === 'reorderUp' ) {
-        const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+      const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+      /*  */ if ( command === 'reorderUp' ) {
         if ( lastFocusedNode ) {
           lastFocusedNode.reorderUp()
         }
-      }
-      if ( command === 'reorderDown' ) {
-        const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+      } else if ( command === 'reorderDown' ) {
         if ( lastFocusedNode ) {
           lastFocusedNode.reorderDown()
         }

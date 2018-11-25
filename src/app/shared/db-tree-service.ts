@@ -1,7 +1,7 @@
 import {OryTreeNode} from './TreeModel'
 import {DbTreeListener} from './TreeListener'
 import {defined, nullOrUndef} from './utils'
-import { debugLog } from './firestore-tree.service'
+import { debugLog } from './log'
 
 export const ORDER_STEP = 1 * 1000 * 1000
 

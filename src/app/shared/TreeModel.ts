@@ -1,14 +1,15 @@
 import {TreeNode} from 'primeng/primeng'
 import {NodeAddEvent, NodeInclusion} from './TreeListener'
-import {debugLog, FirestoreTreeService} from './firestore-tree.service'
+import {debugLog} from './log'
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
-import {defined, FIXME, nullOrUndef} from './utils'
+import {defined, nullOrUndef} from './utils'
 import {sortBy} from 'lodash';
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree/OryColumn'
+import { FIXME } from './log'
 
 
 /**
