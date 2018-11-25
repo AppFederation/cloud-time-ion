@@ -375,6 +375,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPress(event) {
-    window.alert('onPress')
+    // window.alert('onPress')
+    console.log('onPress')
+    this.treeNode.expansion.toggleExpansion(true)
   }
 }
