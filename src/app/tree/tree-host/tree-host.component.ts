@@ -12,6 +12,7 @@ import {
   ActivatedRouteSnapshot,
 } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
+import { CommandsService } from '../../core/commands.service'
 
 
 @Component({
@@ -41,8 +42,24 @@ export class TreeHostComponent implements OnInit {
     public treeDragDropService: TreeDragDropService,
     private activatedRoute : ActivatedRoute,
     private debugService: DebugService,
+    private commandsService: CommandsService,
   ) {
     this.activatedRoute.snapshot.params['rootNodeId']
+
+    commandsService.commands$.subscribe(command => {
+      if ( command === 'reorderUp' ) {
+        const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+        if ( lastFocusedNode ) {
+          lastFocusedNode.reorderUp()
+        }
+      }
+      if ( command === 'reorderDown' ) {
+        const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+        if ( lastFocusedNode ) {
+          lastFocusedNode.reorderDown()
+        }
+      }
+    })
     treeDragDropService.dragStop$.subscribe((...args) => {
       console.log('dragStop$', args)
     })

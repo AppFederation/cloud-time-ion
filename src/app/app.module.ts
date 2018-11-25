@@ -18,7 +18,8 @@ import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.comp
 import { DialogService } from './core/dialog.service';
 import { NestedTreeComponent } from './nested-tree/nested-tree.component';
 import { NestedTreeNodeComponent } from './nested-tree-node/nested-tree-node.component'
-import { CoreModule } from './core/core.module'
+import { CoreModule } from './core/core.module';
+import { CommandsOverlayComponent } from './tree/commands-overlay/commands-overlay.component'
 
 const appRoutes: Routes = [
   {
@@ -58,7 +59,8 @@ const appRoutes: Routes = [
     TestPermissionsAndFiltersComponent,
     ConfirmModalComponent,
     NestedTreeComponent,
-    NestedTreeNodeComponent
+    NestedTreeNodeComponent,
+    CommandsOverlayComponent
   ],
   imports: [
     BrowserModule,
