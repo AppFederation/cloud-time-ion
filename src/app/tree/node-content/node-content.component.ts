@@ -188,6 +188,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     if ( isNullOrUndefined(this.isDone) ) {
       this.isDone = false;
     }
+
+    this.changeDetectorRef.detectChanges()
   }
 
   // ngOnChanges(changes: SimpleChanges) {
