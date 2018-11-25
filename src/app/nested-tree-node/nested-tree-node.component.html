@@ -1,7 +1,6 @@
 <div
-  style="margin: 5px; border-left: 3px solid red"
-  class="node-and-children"
-  [ngClass]="{'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode()}"
+  class="nested-tree-node node-and-children"
+  [ngClass]="{'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode(), 'node-content-container': true}"
 >
 
   <!--{{treeNode.highlight.isAncestorOfFocusedNode()}}-->
@@ -11,7 +10,7 @@
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div *ngIf="treeNode.expanded" style="margin-left: 10px" class="children">
+  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 1px" class="children">
     <app-nested-tree-node
       *ngFor="let childNode of treeNode.children"
       [treeNode]="childNode"
@@ -19,12 +18,22 @@
     ></app-nested-tree-node>
   </div>
 
+
   <div
     style="cursor: pointer; user-select: none"
     (click)="toggleExpand($event)"
-    *ngIf="! treeNode.expanded && treeNode.children.length > 0"
+    *ngIf="! (treeNode.expanded || alwaysExpanded ) && treeNode.children.length > 0"
   >...</div>
 
+</div>
+
+<div style="height:1px">
+  <!-- spacer between bottom shadows to give more space between disjoint subtrees;
+    I had problem doing this using margins; as if all the margins collapsed into one instead of adding up;
+    Note: if height: 0px, this still causes the "margins collapsing into one" effect apparently;
+    so between 0px and 1px there is like 3 logical pixels visual difference.
+    This could be related to app-node-content component which has no vertical size apparently when inspecting.
+  -->
 </div>
 
 

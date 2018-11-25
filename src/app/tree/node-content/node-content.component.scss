@@ -3,19 +3,23 @@
 }
 
 .done {
-  /*text-decoration: overline;*/
   opacity: 0.2;
 }
 
-$border-left: 3px;
+.done-title {
+  text-decoration: line-through;
+}
+
+
+$border-left: 2px;
 
 
 .node-content-container {
-  border-left-width: $border-left
+  border-left: transparent $border-left solid;
 }
 
 
 .ancestor-of-focused {
-  border-left: dodgerblue $border-left solid;
+  border-left: #CCF $border-left solid;
 }
 

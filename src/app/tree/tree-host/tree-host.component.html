@@ -4,9 +4,9 @@
   <!--role="dialog"-->
 <!--&gt;</app-confirm-modal>-->
 
-<div class="container-fluid">
+<div class="container-fluid" >
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12" >
       Start:
       <!--End: {{treeModel.endTime()}}-->
       <button
@@ -24,33 +24,39 @@
         Pending listeners: {{pendingListeners}}
       </ng-container>
       <!--Time left: {{treeModel.timeLeftSumText()}}-->
-      <p-tree
-        *ngIf="! useNestedTree"
+      <div class="tree-container">
+        <p-tree
+          class="tree-component"
+          *ngIf="! useNestedTree"
 
-        [value]="treeModel.root.children"
-        draggableNodes="true"
-        droppableNodes="true"
-        (onNodeDrop)="nodeDrop($event)"
-      >
-        <ng-template
-          let-node
-          pTemplate="default"
+          [value]="treeModel.root.children"
+          draggableNodes="true"
+          droppableNodes="true"
+          (onNodeDrop)="nodeDrop($event)"
         >
-          <!--{{node | json}}-->
-          <app-node-content
-            [treeNode]="node"
-            [treeHost]="this"
-          ></app-node-content>
-          <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
-          <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
-        </ng-template>
-      </p-tree>
+          <ng-template
+            let-node
+            pTemplate="default"
+          >
+            <!--{{node | json}}-->
+            <app-node-content
+              [treeNode]="node"
+              [treeHost]="this"
+            ></app-node-content>
+            <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
+            <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
+          </ng-template>
+        </p-tree>
 
-      <app-nested-tree
-        *ngIf="useNestedTree"
-        [treeModel]="treeModel"
-        [treeHost]="this"
-      >
+        <app-nested-tree
+          class="tree-component"
+
+          *ngIf="useNestedTree"
+          [treeModel]="treeModel"
+          [treeHost]="this"
+        ></app-nested-tree>
+      </div>
+
         <!--<ng-template-->
           <!--let-node-->
           <!--pTemplate="default"-->
@@ -63,7 +69,6 @@
           <!--&lt;!&ndash; https://www.primefaces.org/primeng/#/tree : Templating &ndash;&gt;-->
           <!--&lt;!&ndash;<input [(ngModel)]="node.label" type="text" style="width:100%">&ndash;&gt;-->
         <!--</ng-template>-->
-      </app-nested-tree>
 
       <button (click)="appendNode()">Append</button>
     </div>

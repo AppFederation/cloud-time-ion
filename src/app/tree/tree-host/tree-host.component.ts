@@ -33,7 +33,7 @@ export class TreeHostComponent implements OnInit {
 
   mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
 
-  useNestedTree = false
+  useNestedTree = true
 
   constructor(
     public treeService: TreeService,

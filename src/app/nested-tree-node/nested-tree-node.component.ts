@@ -14,6 +14,8 @@ import { debugLog } from '../shared/firestore-tree.service'
 })
 export class NestedTreeNodeComponent implements OnInit {
 
+  alwaysExpanded = false
+
   @Input()
   treeNode: OryTreeNode
 

@@ -351,7 +351,7 @@ export class OryTreeNode implements TreeNode {
     const minutesTotalLeft = this.timeLeftSum()
     const hours = Math.floor(minutesTotalLeft / 60)
     const minutesUpTo60 = minutesTotalLeft % 60
-    return `${hours} h ${minutesUpTo60} mins`
+    return `${hours}h ${minutesUpTo60}m`
   }
 
   timeLeftSum() {

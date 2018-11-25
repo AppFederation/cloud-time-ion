@@ -2,18 +2,17 @@
 <!--<i class="material-icons">assignment</i>-->
 
 <div
-  class="node-content-container"
-  style="display: flex; align-items: stretch;"
+  style="display: flex; align-items: stretch; font-size: 11px"
   (keydown.alt.enter)="addChild($event)"
   (keydown.meta.enter)="keyPressMetaEnter($event)"
   (keydown.control.enter)="keyPressMetaEnter($event)"
   (keydown.control.arrowup)="reorderUp($event)"
   (keydown.control.arrowdown)="reorderDown($event)"
-  [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused}"
+  [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
 >
 <!--<div style="display: flex; align-items: center;">-->
 
-  <i style="cursor: pointer; user-select: none"
+  <i style="cursor: pointer; user-select: none; color: #777"
      (click)="toggleExpand($event)"
      class="material-icons"
   >settings_applications</i>
@@ -34,17 +33,25 @@
     #inputEstimatedTime
     maxlength="3"
     style="
-      flex-basis: fit-content;
-      width: 3em;
+      flex-basis: auto;
+      width: 2.4em;
       text-align: right;
-      margin-left: .3em; margin-right: .3em;
+      margin: .3em;
+      border-radius: 2px;
+      background: #f5f5f5;
+      border: none;
+      padding: 2px;
     "
+    [ngClass]="{'done-title': isDone}"
     (keydown.enter)="keyPressEnter($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (focus)="onColumnFocused(columns.estimatedTime, $event)"
     (change)="onChangeEstimatedTime($event)"
     (keydown.arrowright)="focusToDescription()"
+    (keydown.alt.arrowright)="focusToDescription()"
+    (keydown.meta.arrowright)="focusToDescription()"
+    (keydown.control.arrowright)="focusToDescription()"
   >
   <ng-container *ngIf="treeNode.showEffectiveDuration()">
     <span style="color: lightgray">∑:</span>{{treeNode.effectiveDurationText()}}&nbsp;
@@ -59,16 +66,22 @@
     #inputTitle
     contenteditable
     style="
+      flex-basis: fill;
       flex-grow: 1;
-      margin-right: .3em;
-      background-color: #F8F8F8;
-      height: 100%;
-      font-size: 20px;
+      background-color: #FFFFFF;
+      margin-right: 0.3em;
+      font-size: 11px;
+      /*display: table-cell;
+      vertical-align: middle; */
     "
+    [ngClass]="{'done-title': isDone}"
     (keydown.enter)="keyPressEnter($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
     (keydown.arrowleft)="focusToEstimatedTime()"
+    (keydown.alt.arrowleft)="focusToEstimatedTime()"
+    (keydown.control.arrowleft)="focusToEstimatedTime()"
+    (keydown.meta.arrowleft)="focusToEstimatedTime()"
     (focus)="onColumnFocused(columns.title, $event)"
     (change)="onChangeEstimatedTime($event)"
   >
@@ -100,15 +113,15 @@
 
   <button
     (click)="delete()"
-    style="margin-right: .3em"
+    style="margin-right: .2em"
   >
-    Delete
+    D
   </button>
 
   <button
     (click)="addChild()"
   >
-    Add Child
+    +
   </button>
 
   <!--<input-->

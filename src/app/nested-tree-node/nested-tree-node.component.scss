@@ -1,7 +1,18 @@
 .node-and-children:hover {
-  background: greenyellow;
+  //background: greenyellow;
 }
 
 .ancestor-of-focused {
-  background: antiquewhite;
+  //background: antiquewhite;
+}
+
+$nested-tree-node-margin: 5px;
+
+.nested-tree-node {
+  //border-left: 3px solid red;
+  //border-bottom: 2px solid #F8F8F8;
+  margin: 2px 0 2px $nested-tree-node-margin;
+  box-shadow: -2px 2px 3px #EEE;
+  //margin-bottom: 20px;
+  border-radius: 3px;
 }
