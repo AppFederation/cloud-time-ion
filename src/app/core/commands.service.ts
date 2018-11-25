@@ -18,4 +18,8 @@ export class CommandsService {
     this.commands$.next('reorderDown')
   }
 
+  toggleDone() {
+    this.commands$.next('toggleDone')
+  }
+
 }

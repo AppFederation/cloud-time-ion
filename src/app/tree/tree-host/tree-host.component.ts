@@ -59,6 +59,10 @@ export class TreeHostComponent implements OnInit {
         if ( lastFocusedNode ) {
           lastFocusedNode.reorderDown()
         }
+      } else if ( command === 'toggleDone' ) {
+        if ( lastFocusedNode ) {
+          lastFocusedNode.toggleDone()
+        }
       }
     })
     treeDragDropService.dragStop$.subscribe((...args) => {

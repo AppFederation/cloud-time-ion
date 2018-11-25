@@ -436,6 +436,13 @@ export class OryTreeNode implements TreeNode {
   isRoot() {
     return this.treeModel.root === this;
   }
+
+  toggleDone() {
+    this.patchItemData({
+      isDone: ! this.itemData.isDone,
+    })
+    // TODO: focus node below, but too tied to UI
+  }
 }
 
 export abstract class OryTreeListener {
