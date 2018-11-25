@@ -308,6 +308,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   reorderUp() {
+    // TODO: if topmost, reorder to last
     // TODO: if topmost, reorder to last item in this plan or to previous plan
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
       this.getSiblingNodeAboveThis() &&
@@ -320,6 +321,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   reorderDown() {
+    // TODO: if bottommost, reorder to topmost
     const newOrderNum = DbTreeService.calculateNewOrderNumber(
       this.getSiblingNodeBelowThis() &&
       this.getSiblingNodeBelowThis().nodeInclusion.orderNum,

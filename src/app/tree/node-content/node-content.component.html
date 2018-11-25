@@ -15,6 +15,7 @@
   <i style="cursor: pointer; user-select: none; color: #777"
      (click)="toggleExpand($event)"
      class="material-icons"
+     (press)="onPress($event)"
   >settings_applications</i>
 
   <ng-container *ngIf="treeNode.isDayPlan">

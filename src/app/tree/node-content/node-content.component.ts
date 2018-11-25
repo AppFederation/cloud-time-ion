@@ -28,6 +28,8 @@ import { takeUntil } from 'rxjs/operators';
 import {padStart} from 'lodash';
 import { DebugService } from '../../core/debug.service'
 
+import 'hammerjs';
+
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -370,5 +372,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleExpand(event) {
     debugLog('expand', event)
     this.treeNode.expansion.toggleExpansion(event.altKey)
+  }
+
+  onPress(event) {
+    window.alert('onPress')
   }
 }
