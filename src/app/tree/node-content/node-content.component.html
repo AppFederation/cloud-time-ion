@@ -20,10 +20,10 @@
 
   <ng-container *ngIf="treeNode.isDayPlan">
     End: {{formatEndTime()}}
-    Sum: {{treeNode.timeLeftSumText()}}
+    <!--Sum: {{treeNode.timeLeftSumText()}}-->
   </ng-container>
   <ng-container *ngIf="treeNode.itemData?.deleted">
-    Deleted {{treeNode.itemData?.deleted}}
+    Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
   <!--<i class="material-icons">work</i>-->
   <!--<i class="material-icons">build</i>-->
@@ -110,7 +110,11 @@
   <!--     [ngModel]="treeNode"
   -->
 
-  <ng-container *ngIf="debugService.isDebug$ | async">{{treeNode.itemId}}</ng-container>
+  <ng-container *ngIf="debugService.isDebug$ | async">
+    {{treeNode.itemId}}
+    order:
+    {{treeNode.nodeInclusion.orderNum}}
+  </ng-container>
 
   <button
     (click)="delete()"
