@@ -16,7 +16,9 @@
      (tap)="toggleExpand($event)"
      class="material-icons"
      (press)="onPress($event)"
-  >settings_applications</i>
+  >
+    {{treeNode.isDayPlan ? 'calendar_today' : 'settings_applications'}}
+  </i>
 
   <ng-container *ngIf="treeNode.isDayPlan">
     End: {{formatEndTime()}}
@@ -27,8 +29,6 @@
   </ng-container>
   <!--<i class="material-icons">work</i>-->
   <!--<i class="material-icons">build</i>-->
-  <!--<i class="material-icons">next_week</i>-->
-
 
   <input
     #inputEstimatedTime
@@ -57,11 +57,6 @@
   <ng-container *ngIf="treeNode.showEffectiveDuration()">
     <span style="color: lightgray">∑:</span>{{treeNode.effectiveDurationText()}}&nbsp;
   </ng-container>
-  <!--
-      value="30"
-      [ngModel]="estimatedTimeModel"
-      (ngModelChange)="onInputChanged($event, columns.estimatedTime)"
-  -->
 
   <div
     #inputTitle
@@ -71,6 +66,7 @@
       flex-grow: 1;
       background-color: #FFFFFF;
       margin-right: 0.3em;
+      margin-left: 0.3em;
       font-size: 11px;
       /*display: table-cell;
       vertical-align: middle; */
@@ -88,27 +84,6 @@
   >
     <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->
   </div>
-
-  <!--&#45;&#45;&#45;&#45;  &#45;&#45;&#45;&#45;-->
-  <!--<input-->
-    <!--#inputTitle-->
-    <!--style="-->
-      <!--flex-grow: 1;-->
-      <!--margin-right: .3em-->
-    <!--"-->
-    <!--(keydown.enter)="keyPressEnter()"-->
-    <!--(keydown.shift.arrowleft)="shiftFocusToTime()"-->
-    <!--(keydown.arrowup)="focusNodeAbove()"-->
-    <!--(keydown.arrowdown)="focusNodeBelow()"-->
-    <!--(focus)="onColumnFocused(columns.title)"-->
-  <!--&gt;-->
-  <!--[ngModel]="treeNode.itemData.title"-->
-  <!--(change)="onChangeEstimatedTime()"-->
-  <!--(ngModelChange)="onChange($event)"-->
-
-
-  <!--     [ngModel]="treeNode"
-  -->
 
   <ng-container *ngIf="debugService.isDebug$ | async">
     {{treeNode.itemId}}
@@ -128,15 +103,5 @@
   >
     +
   </button>
-
-  <!--<input-->
-    <!--(keydown.enter)="keyDownEnter()"-->
-    <!--(keydown.arrowdown)="keyDownArrow()"-->
-    <!--(keydown.arrowup)="keyUpArrow()"-->
-    <!--id="node{{node.id}}"-->
-  <!--&gt;-->
-  <!--id="{{node.id}}"-->
-  <!--{{node.label}}-->
-  <!--<button>test</button>-->
 
 </div>
