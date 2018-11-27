@@ -141,10 +141,16 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.applyItemDataValuesToViews()
 
-    this.treeNode.onChangeItemData.subscribe(() => {
+    // here also react to child nodes to recalculate sum
+    const onChangeItemDataOrChildHandler = () => {
       const focusedColumn = undefined // this.columns.title
-      this.applyItemDataValuesToViews()
-    })
+      if ( ! this.isDestroyed ) {
+        this.applyItemDataValuesToViews()
+      }
+    }
+    this.treeNode.onChangeItemData.subscribe(onChangeItemDataOrChildHandler)
+    this.treeNode.onChangeItemDataOfChild.subscribe(onChangeItemDataOrChildHandler)
+
     this.subscribeDebouncedOnChangePerColumns()
     this.treeNode.treeModel.focus.focus$.subscribe(() => {
       if ( ! this.isDestroyed ) {
@@ -315,6 +321,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editedHere.set(column, true)
     this.onChange(e)
     this.getEventEmitterOnChangePerColumn(column).emit(column)
+    // TODO: investigating time recalculation
   }
 
   reorderUp(event) {

@@ -132,7 +132,8 @@ export class FirestoreTreeService extends DbTreeService {
           // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
           // console.log('itemData:::', itemData)
-          listener.onNodeAdded(
+          debugLog('listener.onNodeAddedOrModified')
+          listener.onNodeAddedOrModified(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
           // debugLog('target node:', nestLevel, includedItemDoc)

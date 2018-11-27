@@ -24,8 +24,8 @@ export class TreeService {
       }
     })
     this.dbTreeService.loadNodesTree(/* TODO: specify root node(s) ID(s) */{
-      onNodeAdded(event: NodeAddEvent) {
-        debugLog('loadNodesTree', event)
+      onNodeAddedOrModified(event: NodeAddEvent) {
+        debugLog('loadNodesTree onNodeAddedOrModified', event)
         treeModel.onNodeAdded(event)
       },
       onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {

@@ -49,6 +49,7 @@ export class OryTreeNode implements TreeNode {
   selectable?: boolean;
 
   onChangeItemData = new EventEmitter()
+  onChangeItemDataOfChild = new EventEmitter()
 
   startTime = new Date()
 
@@ -402,14 +403,14 @@ export class OryTreeNode implements TreeNode {
     isAncestorOfFocusedNode() {
       return (
         this.treeNode.treeModel.focus.lastFocusedNode &&
-        this.treeNode.treeModel.focus.lastFocusedNode.getPathArray().some(ancestorOfFocused => {
+        this.treeNode.treeModel.focus.lastFocusedNode.getParentsPathArray().some(ancestorOfFocused => {
           return this.treeNode === ancestorOfFocused
         })
       )
     }
   } (this)
 
-  getPathArray(): OryTreeNode[] {
+  getParentsPathArray(): OryTreeNode[] {
     const ret = []
     let node: OryTreeNode = this
     while (true) {
@@ -424,7 +425,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   getAncestorsPathArray() {
-    const pathArray = this.getPathArray()
+    const pathArray = this.getParentsPathArray()
     return pathArray.slice(0, pathArray.length - 1 /*exclusive - skip last*/)
   }
 
@@ -500,7 +501,7 @@ export class TreeModel {
   }
 
   /* Workaround for now, as there were some non-deleted children of a deleted parent */
-  public showDeleted: boolean = true
+  public showDeleted: boolean = false
 
   /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
   isRootShown = false
@@ -524,6 +525,10 @@ export class TreeModel {
             existingNode.itemData = event.itemData
             debugLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
             existingNode.onChangeItemData.emit(event.itemData)
+        for (let parent of existingNode.getParentsPathArray()) {
+          parent.onChangeItemDataOfChild.emit()
+        }
+
           // })
         // }, 0)
 
