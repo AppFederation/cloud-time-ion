@@ -35,7 +35,7 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     $('#confirmDeleteButton').click(() => {
-      window.alert('delete confirmed')
+      // window.alert('delete confirmed')
       this.deleteCallback()
     });
   }
