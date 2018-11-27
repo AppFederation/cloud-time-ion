@@ -30,6 +30,13 @@ import { DebugService } from '../../core/debug.service'
 import 'hammerjs';
 import { debugLog } from '../../shared/log'
 
+/* ==== Note there are those sources of truth kind-of (for justified reasons) :
+* - UI state
+* - tree model: treeNode.itemData & treeNode's nodeInclusionData
+* - tree model / view-model events, e.g. fireOnChangeItemDataOfChildOnParents()
+* (those above could probably be always 100% in sync; although might be throttleTime-d eg. 100ms if complex calculations and updating dependent nodes)
+* - firestore (sent-to-firestore, received-from-firestore)
+*/
 
 /** https://stackoverflow.com/a/3976125/170451 */
 function getCaretPosition(editableDiv) {
@@ -143,6 +150,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
+      debugLog('onChangeItemDataOrChildHandler')
       const focusedColumn = undefined // this.columns.title
       if ( ! this.isDestroyed ) {
         this.applyItemDataValuesToViews()
@@ -223,12 +231,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeNode.expanded = true
     this.focusNewlyCreatedNode(newTreeNode)
     // this.addChildToDb()
-    // if ( ! this.node.children ) {
-    //   this.node.children = []
-    // }
-    // this.node.children.push({
-    //   label: 'new child'
-    // })
   }
 
   private focusNewlyCreatedNode(newTreeNode) {
@@ -318,9 +320,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* TODO: rename reactToInputChangedAndSave */
   onInputChanged(e, column) {
+    debugLog('onInputChanged, column')
     this.editedHere.set(column, true)
+    this.setTreeNodeItemDataFromUi()
     this.onChange(e)
     this.getEventEmitterOnChangePerColumn(column).emit(column)
+    // this.treeNode.itemData.buildItemDataFromUi
+    // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
+    this.treeNode.fireOnChangeItemDataOfChildOnParents()
+    this.treeNode.onChangeItemData.emit()
     // TODO: investigating time recalculation
   }
 
@@ -356,17 +364,27 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       ).subscribe((changeEvent) => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
-          const titleVal = this.elInputTitle.nativeElement.innerHTML
-          const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
-          // console.log('input val: ' + titleVal)
-          this.treeNode.patchItemData({
-            title: titleVal,
-            estimatedTime: estimatedTimeVal,
-            isDone: this.isDone,
-          })
+          const itemData = this.buildItemDataFromUi()
+          this.treeNode.patchItemData(itemData)
         } // else: no need to react, since it is being applied from Db
       })
     }
+  }
+
+  private setTreeNodeItemDataFromUi() {
+    this.treeNode.itemData = this.buildItemDataFromUi()
+  }
+
+  private buildItemDataFromUi() {
+    const titleVal = this.elInputTitle.nativeElement.innerHTML
+    const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
+    // console.log('input val: ' + titleVal)
+    const itemData = {
+      title: titleVal,
+      estimatedTime: estimatedTimeVal,
+      isDone: this.isDone,
+    }
+    return itemData
   }
 
   ngOnDestroy(): void {
