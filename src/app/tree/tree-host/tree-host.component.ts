@@ -194,6 +194,10 @@ export class TreeHostComponent implements OnInit {
     this.treeModel.root.expansion.setExpansion(true, true)
   }
 
+  collapseAll() {
+    this.treeModel.root.expansion.setExpansion(false, true)
+  }
+
   nodeDrop(event) {
     console.log('nodeDrop', event)
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
