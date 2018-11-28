@@ -22,7 +22,6 @@ const firebase1 = require('firebase');
 require('firebase/firestore');
 
 
-
 firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
   authDomain: 'oryol-app.firebaseapp.com',
@@ -31,22 +30,6 @@ firebase1.initializeApp({
   storageBucket: 'oryol-app.appspot.com',
   messagingSenderId: '970393221829'
 });
-
-
-
-// function onSnapshotHandler(snapshot) {
-//   snapshot.docChanges.forEach(function(change) {
-//     if (change.type === 'added') {
-//       debugLog('New city: ', change.doc.data());
-//     }
-//     if (change.type === 'modified') {
-//       debugLog('Modified city: ', change.doc.data());
-//     }
-//     if (change.type === 'removed') {
-//       debugLog('Removed city: ', change.doc.data());
-//     }
-//   });
-// }
 
 
 // Initialize Cloud Firestore through Firebase
@@ -80,19 +63,6 @@ export class FirestoreTreeService extends DbTreeService {
     })
     // this.listenToChanges(onSnapshotHandler)
   }
-
-  // addItem() {
-  //   db.collection('test1').add({
-  //     testField: 'test ' + new Date(),
-  //     testField2: new Date(),
-  //     testField3: 10,
-  //   })
-  // }
-
-  // listenToChanges(func) {
-  //   db.collection('test1')
-  //     .onSnapshot(func);
-  // }
 
   // delete(id) {
   //   db.collection('test1').doc(id).delete()

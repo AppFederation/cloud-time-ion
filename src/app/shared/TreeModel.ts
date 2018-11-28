@@ -238,15 +238,11 @@ export class OryTreeNode implements TreeNode {
     // this.treeModel.addSiblingAfterNode(nodeToAppend, afterNode)
 
     return nodeToAppend
-
-    /// ======
-
   }
 
   private newItemData() {
     return {title: OryTreeNode.INITIAL_TITLE}
   }
-
 
   getChildAtIndexOrNull(index: number): OryTreeNode {
     if ( this.isIndexPresent(index) ) {
@@ -284,7 +280,6 @@ export class OryTreeNode implements TreeNode {
     // console.log('addChild: newOrderNumber', newOrderNumber)
     const nodeInclusion: NodeInclusion = new NodeInclusion(newOrderNumber, 'inclusion_' + uuidV4())
     newNode.nodeInclusion = nodeInclusion
-
 
     this.treeModel.treeService.addSiblingAfterNode(this, newNode, afterExistingNode, previousOrderNumber, newOrderNumber, nextOrderNumber)
 
@@ -442,7 +437,16 @@ export class OryTreeNode implements TreeNode {
     this.patchItemData({
       isDone: ! this.itemData.isDone,
     })
-    // TODO: focus node below, but too tied to UI
+    // FIXME: fireOnChangeItemDataOfChildOnParents and on this
+
+    // TODO: focus node below, but too tied to UI; has to know about column too
+  }
+
+  fireOnChangeItemDataOfChildOnParents() {
+    debugLog('fireOnChangeItemDataOfChildOnParents')
+    for (let parent of this.getParentsPathArray()) {
+      parent.onChangeItemDataOfChild.emit()
+    }
   }
 }
 
@@ -524,11 +528,10 @@ export class TreeModel {
             // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
             existingNode.itemData = event.itemData
             debugLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
-            existingNode.onChangeItemData.emit(event.itemData)
-        for (let parent of existingNode.getParentsPathArray()) {
-          parent.onChangeItemDataOfChild.emit()
-        }
 
+        existingNode.onChangeItemData.emit(event.itemData)
+        existingNode.fireOnChangeItemDataOfChildOnParents()
+        // TODO: unify with the else branch and emit onChangeItemData* stars there too
           // })
         // }, 0)
 
@@ -538,7 +541,6 @@ export class TreeModel {
           if ( ! parentNode ) {
             console.error('onNodeAdded: no parent', event.immediateParentId)
           } else {
-            // FIXME('Hardcoded parent (root) for now')
             const newOrderNum = event.nodeInclusion.orderNum
             let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
 
@@ -550,42 +552,6 @@ export class TreeModel {
     } finally {
       this.isApplyingFromDbNow = false
     }
-
-    // debugLog('onNodeAdded')
-    // const root = this.root
-    // const nodeInclusion = event.nodeInclusion
-    // let parentNode
-    // if ( ! event.immediateParentId ) {
-    //   parentNode = root
-    // } else {
-    //   throw new Error('not yet implemented: adding node to non-root')
-    // }
-    // let children = root.children
-    // if ( ! children ) {
-    //   children = []
-    //   root.children = children
-    // }
-    // let orderBeforeIndex: number
-    // const orderThisAfterId = nodeInclusion.orderThisAfterId
-    // const orderThisBeforeId = nodeInclusion.orderThisBeforeId
-    // if ( ! orderThisAfterId ) {
-    //   // zero-th
-    //   orderBeforeIndex = 0
-    // } else if ( ! orderThisBeforeId ) {
-    //   // zero-th
-    //   orderBeforeIndex = children.length
-    // } else {
-    //   orderBeforeIndex = children.findIndex((existingNode) => {
-    //     return existingNode.dbId === nodeInclusion.orderThisBeforeId
-    //   })
-    // }
-    // const newNode: OryTreeNode = new OryTreeNode(
-    //   event.nodeInclusion,
-    //   event.id,
-    //   this,
-    // )
-    // children.splice(orderBeforeIndex, 0, newNode)
-
   }
 
   onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {

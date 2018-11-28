@@ -102,7 +102,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() treeHost: TreeHostComponent
   // @Input() node2
   @ViewChild('inputEstimatedTime') elInputEstimatedTime: ElementRef;
-  @ViewChild('inputTitle')         elInputTitle: ElementRef;
+  @ViewChild('inputTitle') elInputTitle: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
   // nodeIndex = 0
@@ -111,6 +111,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   // isApplyingFromDbNow = false
 
   editedHere = new Map<OryColumn, boolean>()
+  lastEditedLocallyByColumn = new Map<OryColumn, Date>()
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
   isDestroyed = false
@@ -121,7 +122,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialogService: DialogService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
@@ -152,7 +154,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     const onChangeItemDataOrChildHandler = () => {
       debugLog('onChangeItemDataOrChildHandler')
       const focusedColumn = undefined // this.columns.title
-      if ( ! this.isDestroyed ) {
+      if (!this.isDestroyed) {
         this.applyItemDataValuesToViews()
       }
     }
@@ -161,7 +163,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscribeDebouncedOnChangePerColumns()
     this.treeNode.treeModel.focus.focus$.subscribe(() => {
-      if ( ! this.isDestroyed ) {
+      if (!this.isDestroyed) {
         this.isAncestorOfFocused = this.treeNode.highlight.isAncestorOfFocusedNode()
         // console.log('isAncestorOfFocused', this.isAncestorOfFocused)
         this.changeDetectorRef.detectChanges()
@@ -171,35 +173,43 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyItemDataValuesToViews() {
-// estimated time:
-    let newEstimatedTime = this.treeNode.itemData.estimatedTime
-    if (newEstimatedTime === undefined || newEstimatedTime === null) {
-      newEstimatedTime = ''
-    }
-    debugLog('newEstimatedTime, ', newEstimatedTime)
-    if (this.elInputEstimatedTime.nativeElement.value === newEstimatedTime) {
-      this.editedHere.set(this.columns.estimatedTime, false)
-    } else {
-      if ( ! this.editedHere.get(this.columns.estimatedTime) ) {
-        this.elInputEstimatedTime.nativeElement.value = newEstimatedTime
-        // FIXME: note, this should also take focus into account
+    { // estimated time:
+      let newValue = this.treeNode.itemData.estimatedTime
+      if (newValue === undefined || newValue === null) {
+        newValue = ''
+      }
+      debugLog('newEstimatedTime, ', newValue)
+
+      const column = this.columns.estimatedTime
+      if (this.elInputEstimatedTime.nativeElement.value === newValue) {
+        this.editedHere.set(column, false)
+      } else {
+        if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
+          this.elInputEstimatedTime.nativeElement.value = newValue
+          // FIXME: note, this should also take focus into account
+          // --> evolved to the when-last-edited idea
+        }
       }
     }
 
-    // title:
-    const newTitle = this.treeNode.itemData.title
-    if (this.elInputTitle.nativeElement.innerHTML === newTitle) {
-      this.editedHere.set(this.columns.title, false)
-    } else {
-      if ( ! this.editedHere.get(this.columns.title) ) {
-        this.elInputTitle.nativeElement.innerHTML = newTitle
-        // FIXME: note, this should also take focus into account
-      }
+    { // title:
+      const column = this.columns.title
 
+      const newValue = this.treeNode.itemData.title
+      if (this.elInputTitle.nativeElement.innerHTML === newValue) {
+        this.editedHere.set(column, false)
+      } else {
+        if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
+          this.elInputTitle.nativeElement.innerHTML = newValue
+          // FIXME: note, this should also take focus into account
+          // --> evolved to the when-last-edited idea
+        }
+      }
     }
+
 
     this.isDone = this.treeNode.itemData.isDone
-    if ( isNullOrUndefined(this.isDone) ) {
+    if (isNullOrUndefined(this.isDone)) {
       this.isDone = false;
     }
 
@@ -216,7 +226,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   ngAfterViewInit(): void {
-   // this.focus()
+    // focus if expecting to focus
+    // this.focus()
   }
 
   delete() {
@@ -248,7 +259,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   keyPressMetaEnter(event) {
     debugLog('keyPressMetaEnter')
-    this.isDone = ! this.isDone
+    this.isDone = !this.isDone
     this.onInputChanged(null, this.columns.isDone)
     this.focusNodeBelow()
   }
@@ -298,7 +309,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getComponentByColumnOrDefault(column?: OryColumn) {
-    if ( column === this.columns.estimatedTime) {
+    if (column === this.columns.estimatedTime) {
       return this.elInputEstimatedTime
     } else {
       return this.elInputTitle
@@ -322,6 +333,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   onInputChanged(e, column) {
     debugLog('onInputChanged, column')
     this.editedHere.set(column, true)
+    this.lastEditedLocallyByColumn.set(column, new Date())
     this.setTreeNodeItemDataFromUi()
     this.onChange(e)
     this.getEventEmitterOnChangePerColumn(column).emit(column)
@@ -352,18 +364,21 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        1000 /* 500ms almost real-time feeling without overwhelming firestore.
+        4000 /* 500ms almost real-time feeling without overwhelming firestore.
         Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
         where they contrasted the latency with Firebase Realtime DB.
-        At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing */,
+        At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing.
+        2018-11-27 23:14 Increased from 1000 to 4000ms after problem with cursor position reset returned */,
         undefined, {
           leading: true /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
+            /* think about false; usually single character; but what if someone pastes something, then it will be fast;
+            plus a single character can give good indication that someone started writing */
           trailing: true /* ensures last value is not lost;
             http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
         }
       ).subscribe((changeEvent) => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
-        if ( ! this.treeNode.treeModel.isApplyingFromDbNow ) {
+        if (!this.treeNode.treeModel.isApplyingFromDbNow) {
           const itemData = this.buildItemDataFromUi()
           this.treeNode.patchItemData(itemData)
         } // else: no need to react, since it is being applied from Db
@@ -376,6 +391,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private buildItemDataFromUi() {
+    // TODO: later this will be incremental diff in NodeContentViewSyncer /
     const titleVal = this.elInputTitle.nativeElement.innerHTML
     const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
     // console.log('input val: ' + titleVal)
@@ -405,5 +421,21 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // window.alert('onPress')
     console.log('onPress')
     this.treeNode.expansion.toggleExpansion(true)
+  }
+
+  private canApplyDataToViewGivenColumnLocalEdits(column: OryColumn) {
+    return !this.editedHere.get(column)
+      && this.canApplyDataToViewGivenColumnLastLocalEdit(column)
+  }
+
+  private canApplyDataToViewGivenColumnLastLocalEdit(column: OryColumn) {
+    const lastEditedByColumn = this.lastEditedLocallyByColumn.get(column)
+    if ( ! lastEditedByColumn ) {
+      return true
+    } else {
+      const timeNow = new Date().getTime() /* milliseconds since 1970/01/01 */
+      // can only apply incoming changes to view if at least N seconds passed since last local edit
+      return (timeNow - lastEditedByColumn.getTime()) > 5000
+    }
   }
 }
