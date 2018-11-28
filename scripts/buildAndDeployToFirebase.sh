@@ -13,3 +13,6 @@ scriptDir="`dirname $0`"
 #ng build \
 ng build \
   && firebase deploy
+
+
+Echo Finished `date`
