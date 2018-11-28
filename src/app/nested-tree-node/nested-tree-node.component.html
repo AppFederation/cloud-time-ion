@@ -10,7 +10,7 @@
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 1px" class="children">
+  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 5px" class="children">
     <app-nested-tree-node
       *ngFor="let childNode of treeNode.children"
       [treeNode]="childNode"
@@ -27,7 +27,7 @@
 
 </div>
 
-<div style="height:1px">
+<div style="height:5px">
   <!-- spacer between bottom shadows to give more space between disjoint subtrees;
     I had problem doing this using margins; as if all the margins collapsed into one instead of adding up;
     Note: if height: 0px, this still causes the "margins collapsing into one" effect apparently;
