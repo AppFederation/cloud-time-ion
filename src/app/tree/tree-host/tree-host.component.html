@@ -31,6 +31,7 @@
       <ng-container *ngIf="debugService.isDebug$ | async">
         Pending listeners: {{pendingListeners}}
       </ng-container>
+      Nodes: {{treeModel.mapItemIdToNode.size}}
       <!--Time left: {{treeModel.timeLeftSumText()}}-->
       <div class="tree-container">
         <p-tree

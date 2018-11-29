@@ -64,10 +64,6 @@ export class FirestoreTreeService extends DbTreeService {
     // this.listenToChanges(onSnapshotHandler)
   }
 
-  // delete(id) {
-  //   db.collection('test1').doc(id).delete()
-  // }
-
   delete(itemId: string) {
     this.itemDocById(itemId).update('deleted', new Date())
     console.log('deleted ' + itemId)
@@ -92,8 +88,11 @@ export class FirestoreTreeService extends DbTreeService {
       const nodeInclusionId = nodeInclusionData.nodeInclusionId
       if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
-        // debugLog('added node inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
+        // FIXME: why is this called when parent node is EDITED ???
+        debugLog('added-node-inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
+        debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + nodeInclusionData.childNode.id, change)
         serviceThis.pendingListeners ++
+        // ==== per-item callback:
         serviceThis.dbItemsLoader.getItem$ByRef(nodeInclusionData.childNode, (includedItemDoc: DocumentSnapshot) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
@@ -102,14 +101,16 @@ export class FirestoreTreeService extends DbTreeService {
           // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
           // console.log('itemData:::', itemData)
-          debugLog('listener.onNodeAddedOrModified')
+          debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + includedItemDoc.id, change)
           listener.onNodeAddedOrModified(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
           // debugLog('target node:', nestLevel, includedItemDoc)
           // debugLog('target node title:', nestLevel, targetNodeDoc.data().title)
-          serviceThis.handleSubNodes(includedItemDoc.ref, parents, nestLevel, listener)
         })
+        // ==== end per-item callback
+        serviceThis.handleSubNodes(nodeInclusionData.childNode, parents, nestLevel, listener) // why is this inside per-item callback?
+
         // debugLog('root node ref: ', targetNode);
       }
       if (change.type === 'modified') {

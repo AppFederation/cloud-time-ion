@@ -211,7 +211,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-
     this.isDone = this.treeNode.itemData.isDone
     if (isNullOrUndefined(this.isDone)) {
       this.isDone = false;
