@@ -89,8 +89,10 @@
 
   <ng-container *ngIf="debugService.isDebug$ | async">
     {{treeNode.itemId}}
+    {{treeNode.nodeInclusion.nodeInclusionId}}
     order:
     {{treeNode.nodeInclusion.orderNum}}
+    view updates: {{debug.countApplyItemDataValuesToViews}}
   </ng-container>
 
   <button

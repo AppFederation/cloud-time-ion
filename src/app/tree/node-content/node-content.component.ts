@@ -115,6 +115,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
   isDestroyed = false
+  debug = new class Debug {
+    countApplyItemDataValuesToViews = 0
+  } ()
 
   constructor(
     public dbService: DbTreeService,
@@ -152,9 +155,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
-      debugLog('onChangeItemDataOrChildHandler')
-      const focusedColumn = undefined // this.columns.title
-      if (!this.isDestroyed) {
+      console.log('onChangeItemDataOrChildHandler')
+      if ( ! this.isDestroyed ) {
         this.applyItemDataValuesToViews()
       }
     }
@@ -173,6 +175,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyItemDataValuesToViews() {
+    this.debug.countApplyItemDataValuesToViews ++
+    console.log('applyItemDataValuesToViews this.treeNode', this.treeNode)
     { // estimated time:
       let newValue = this.treeNode.itemData.estimatedTime
       if (newValue === undefined || newValue === null) {

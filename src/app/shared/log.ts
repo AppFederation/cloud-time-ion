@@ -1,7 +1,7 @@
 import { DebugService } from '../core/debug.service'
 
-export function FIXME(message?): any {
-  console.error('================ FIXME!', message)
+export function FIXME(...args): any {
+  console.error('================ FIXME!', ...args)
 }
 
 const enableLogging = true
