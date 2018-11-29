@@ -493,14 +493,14 @@ export class TreeModel {
 
     focus$ = new EventEmitter<FocusEvent>()
 
-    get lastCell() {
+    get lastFocusedCell() {
       return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
     }
 
     setFocused(treeNode: OryTreeNode, column: OryColumn) {
       this.lastFocusedNode = treeNode
       this.lastFocusedColumn = column
-      this.focus$.emit(new FocusEvent(this.lastCell))
+      this.focus$.emit(new FocusEvent(this.lastFocusedCell))
     }
   }
 
