@@ -8,9 +8,14 @@
   ></app-nested-tree-node>
 </ng-container>
 
+<ng-container *ngIf="treeModel.isRootShown">
+  <app-nested-tree-node
+    *ngFor="let treeNodeWrapperHack of wrapperHackArray"
+    [treeNodeWrapperHack]="treeNodeWrapperHack"
+    [treeHost]="treeHost"
+  ></app-nested-tree-node>
+</ng-container>
 
-<app-nested-tree-node
-  *ngIf="treeModel.isRootShown"
-  [treeNode]="treeModel.navigation.visualRoot"
-  [treeHost]="treeHost"
-></app-nested-tree-node>
+<!--<app-test-component-instance-changing-on-input-value-change-->
+  <!--[treeNode]="treeModel.navigation.visualRoot"-->
+<!--&gt;</app-test-component-instance-changing-on-input-value-change>-->

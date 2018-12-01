@@ -19,7 +19,8 @@ import { DialogService } from './core/dialog.service';
 import { NestedTreeComponent } from './nested-tree/nested-tree.component';
 import { NestedTreeNodeComponent } from './nested-tree-node/nested-tree-node.component'
 import { CoreModule } from './core/core.module';
-import { CommandsOverlayComponent } from './tree/commands-overlay/commands-overlay.component'
+import { CommandsOverlayComponent } from './tree/commands-overlay/commands-overlay.component';
+import { TestComponentInstanceChangingOnInputValueChangeComponent } from './experiments/test-component-instance-changing-on-input-value-change/test-component-instance-changing-on-input-value-change.component'
 
 const appRoutes: Routes = [
   {
@@ -60,7 +61,8 @@ const appRoutes: Routes = [
     ConfirmModalComponent,
     NestedTreeComponent,
     NestedTreeNodeComponent,
-    CommandsOverlayComponent
+    CommandsOverlayComponent,
+    TestComponentInstanceChangingOnInputValueChangeComponent
   ],
   imports: [
     BrowserModule,

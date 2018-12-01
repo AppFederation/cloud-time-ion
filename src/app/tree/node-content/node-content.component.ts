@@ -88,19 +88,22 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   static columnsStatic = new Columns()
 
-
   columns: Columns = NodeContentComponent.columnsStatic
-
-  // titleValue
-  // initialTitle: string
-  // estimatedTimeModel: number
 
   isDone: boolean = false
 
-  // @Input() node: TreeNode & {dbId: string}
   @Input() treeNode: OryTreeNode
+
+  // @Input() set treeNode(treeNode) {
+  //   this._treeNode = treeNode
+  //   this.changeDetectorRef.detectChanges()
+  //   this.applyItemDataValuesToViews()
+  // }
+  //
+  // get treeNode() {return this._treeNode}
+
   @Input() treeHost: TreeHostComponent
-  // @Input() node2
+
   @ViewChild('inputEstimatedTime') elInputEstimatedTime: ElementRef;
   @ViewChild('inputTitle') elInputTitle: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
@@ -126,6 +129,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
   ) {
+
   }
 
   ngOnInit() {

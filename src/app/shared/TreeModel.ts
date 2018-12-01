@@ -10,6 +10,7 @@ import {sortBy} from 'lodash';
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree/OryColumn'
 import { FIXME } from './log'
+import { ReplaySubject } from 'rxjs/ReplaySubject'
 
 
 /**
@@ -487,13 +488,20 @@ export class TreeModel {
   isRootShown = false
 
   navigation = new class Navigation {
-    constructor(public treeModel: TreeModel) {}
     visualRoot: OryTreeNode = this.treeModel.root
+    visualRoot$ = new ReplaySubject<OryTreeNode>(1)
+
+    constructor(public treeModel: TreeModel) {
+      this.navigateToRoot()
+    }
 
     navigateInto(node: OryTreeNode) {
       this.visualRoot = node
       this.treeModel.isRootShown = node !== this.treeModel.root
       node.expanded = true
+      //this.treeModel.focus.setFocused(node, )
+      // TODO: set focused
+      this.visualRoot$.next(this.visualRoot)
     }
 
     navigateToParent() {

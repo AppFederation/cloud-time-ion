@@ -19,12 +19,21 @@ export class NestedTreeNodeComponent implements OnInit {
   @Input()
   treeNode: OryTreeNode
 
+  /* Hack to force new instance of component for input changes*/
+  @Input()
+  treeNodeWrapperHack: {wrapperHack: OryTreeNode}
+
+
   @Input()
   treeHost: TreeHostComponent
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    if (this.treeNodeWrapperHack) {
+      this.treeNode = this.treeNodeWrapperHack.wrapperHack
+    }
   }
 
   toggleExpand(event) {

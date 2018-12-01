@@ -3,7 +3,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { TreeModel } from '../shared/TreeModel'
+import {
+  OryTreeNode,
+  TreeModel,
+} from '../shared/TreeModel'
 import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
 
 @Component({
@@ -19,9 +22,27 @@ export class NestedTreeComponent implements OnInit {
   @Input()
   treeHost: TreeHostComponent
 
-  constructor() { }
+  wrapperHackArrayWasForNode: OryTreeNode
+  /* For forcing new component instance every time visualRoot changes */
+  wrapperHackArray
 
-  ngOnInit() {
+  constructor() {
   }
 
+  ngOnInit() {
+    this.treeModel.navigation.visualRoot$.subscribe(() => {
+      this.createTreeNodeWrapperHackArrayIfNecessary()
+    })
+  }
+
+  /* For forcing new component instance every time visualRoot changes */
+  createTreeNodeWrapperHackArrayIfNecessary() {
+    const visualRoot = this.treeModel.navigation.visualRoot
+    if ( this.wrapperHackArrayWasForNode !== visualRoot ) {
+      this.wrapperHackArray = [
+        {wrapperHack: visualRoot}
+      ]
+    }
+    return this.wrapperHackArray
+  }
 }
