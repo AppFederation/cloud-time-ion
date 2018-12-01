@@ -15,4 +15,16 @@ $nested-tree-node-margin: 5px;
   box-shadow: -2px 2px 3px #EEE;
   //margin-bottom: 20px;
   border-radius: 3px;
+  animation: nested-tree-node-animation 1s;
+}
+
+@keyframes nested-tree-node-animation {
+  0% {
+    //padding-left: 100px;
+    opacity: 0.0;
+  }
+  100% {
+    //padding-left: 0px;
+    opacity: 1.0;
+  }
 }
