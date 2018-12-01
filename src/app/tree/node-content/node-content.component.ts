@@ -441,4 +441,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       return (timeNow - lastEditedByColumn.getTime()) > 5000
     }
   }
+
+  navigateInto() {
+    this.treeNode.navigateInto()
+  }
 }

@@ -229,4 +229,11 @@ export class TreeHostComponent implements OnInit {
     this.debugService.isDebug$.next($event.target.checked)
   }
 
+  navigateUp($event) {
+    this.treeModel.navigation.navigateToParent()
+  }
+
+  navigateToRoot($event) {
+    this.treeModel.navigation.navigateToRoot()
+  }
 }

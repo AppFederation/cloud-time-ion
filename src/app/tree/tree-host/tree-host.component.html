@@ -7,8 +7,15 @@
 
 <div class="container-fluid" >
   <div class="row">
-    <div class="col-xs-12" >
-      Start:
+    <div class="col-xs-12">
+      <i style="cursor: pointer; user-select: none; color: #777"
+         (tap)="navigateUp($event)"
+         (window:keydown.meta.arrowup)="navigateUp($event)"
+         (press)="navigateToRoot($event)"
+         class="material-icons"
+      >arrow_upward</i>
+
+      <!--Start:-->
       <!--End: {{treeModel.endTime()}}-->
       <button
         class="btn btn-primary"

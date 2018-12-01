@@ -448,6 +448,10 @@ export class OryTreeNode implements TreeNode {
       parent.onChangeItemDataOfChild.emit()
     }
   }
+
+  navigateInto() {
+    this.treeModel.navigation.navigateInto(this)
+  }
 }
 
 export abstract class OryTreeListener {
@@ -479,6 +483,32 @@ export class TreeModel {
 
   root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
 
+  /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
+  isRootShown = false
+
+  navigation = new class Navigation {
+    constructor(public treeModel: TreeModel) {}
+    visualRoot: OryTreeNode = this.treeModel.root
+
+    navigateInto(node: OryTreeNode) {
+      this.visualRoot = node
+      this.treeModel.isRootShown = node !== this.treeModel.root
+      node.expanded = true
+    }
+
+    navigateToParent() {
+      const node = this.visualRoot.parent2
+      if ( node ) {
+        this.navigateInto(node)
+      }
+    }
+
+    navigateToRoot() {
+      this.navigateInto(this.treeModel.root)
+    }
+
+  }(this)
+
   mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
   mapItemIdToNode = new Map<string, OryTreeNode>()
   isApplyingFromDbNow = false
@@ -507,8 +537,6 @@ export class TreeModel {
   /* Workaround for now, as there were some non-deleted children of a deleted parent */
   public showDeleted: boolean = false
 
-  /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
-  isRootShown = false
 
   constructor(
     public treeService: DbTreeService,

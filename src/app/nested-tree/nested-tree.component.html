@@ -1,10 +1,16 @@
+<ng-container
+  *ngIf="! treeModel.isRootShown"
+>
+  <app-nested-tree-node
+    *ngFor="let childNode of treeModel.navigation.visualRoot.children"
+    [treeNode]="childNode"
+    [treeHost]="treeHost"
+  ></app-nested-tree-node>
+</ng-container>
+
+
 <app-nested-tree-node
-  *ngFor="let childNode of treeModel.root.children"
-  [treeNode]="childNode"
+  *ngIf="treeModel.isRootShown"
+  [treeNode]="treeModel.navigation.visualRoot"
   [treeHost]="treeHost"
 ></app-nested-tree-node>
-
-<!--<app-nested-tree-node-->
-  <!--[treeNode]="treeModel.root"-->
-  <!--[treeHost]="treeHost"-->
-<!--&gt;</app-nested-tree-node>-->
