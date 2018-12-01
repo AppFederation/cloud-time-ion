@@ -258,10 +258,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   keyPressEnter(event) {
-    debugLog('key press enter; node: ', this.treeNode)
-    event.preventDefault()
-    const newTreeNode = this.addNodeAfterThis()
-    this.focusNewlyCreatedNode(newTreeNode)
+    if ( this.treeNode.isVisualRoot ) {
+      this.addChild()
+    } else {
+      debugLog('key press enter; node: ', this.treeNode)
+      event.preventDefault()
+      const newTreeNode = this.addNodeAfterThis()
+      this.focusNewlyCreatedNode(newTreeNode)
+    }
   }
 
   keyPressMetaEnter(event) {

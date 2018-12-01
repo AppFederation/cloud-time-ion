@@ -93,6 +93,10 @@ export class OryTreeNode implements TreeNode {
 
   }(this)
 
+  get isVisualRoot() {
+    return this === this.treeModel.navigation.visualRoot
+  }
+
   get lastChildNode(): OryTreeNode {
     return this.getChildAtIndexOrNull(this.children && this.children.length - 1)
   }
