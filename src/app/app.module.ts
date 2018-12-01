@@ -5,13 +5,13 @@ import { AppComponent } from './app.component';
 import {TreeDragDropService, TreeModule} from 'primeng/primeng'
 import {HttpModule} from '@angular/http'
 import {FirestoreTreeService} from './shared/firestore-tree.service';
-import { TestFirestoreComponent } from './test-firestore/test-firestore.component';
+import { TestFirestoreComponent } from './experiments/test-firestore/test-firestore.component';
 import { NodeContentComponent } from './tree/node-content/node-content.component'
 import {RouterModule, Routes} from '@angular/router';
 import { TreeHostComponent } from './tree/tree-host/tree-host.component'
 import {TreeService} from './shared/tree.service'
 import {MatIconModule} from '@angular/material';
-import { TestPermissionsAndFiltersComponent } from './test-permissions-and-filters/test-permissions-and-filters.component'
+import { TestPermissionsAndFiltersComponent } from './experiments/test-permissions-and-filters/test-permissions-and-filters.component'
 import {DbTreeService} from './shared/db-tree-service'
 import {FormsModule} from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
