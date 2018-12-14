@@ -164,7 +164,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
-      console.log('onChangeItemDataOrChildHandler')
+      debugLog('onChangeItemDataOrChildHandler')
       if ( ! this.isDestroyed ) {
         this.applyItemDataValuesToViews()
       }
@@ -185,7 +185,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private applyItemDataValuesToViews() {
     this.debug.countApplyItemDataValuesToViews ++
-    console.log('applyItemDataValuesToViews this.treeNode', this.treeNode)
+    debugLog('applyItemDataValuesToViews this.treeNode', this.treeNode)
     { // estimated time:
       let newValue = this.treeNode.itemData.estimatedTime
       if (newValue === undefined || newValue === null) {
