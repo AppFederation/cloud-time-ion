@@ -20,7 +20,7 @@ export class ConfirmDeleteTreeNodeComponent implements OnInit {
 
   deleteNode() {
     this.activeModal.close('Ok click')
-    window.alert('confirmed delete node itemId ' + this.treeNode.itemId)
+    console.log('confirmed delete node itemId ' + this.treeNode.itemId)
     this.treeNode.deleteWithoutConfirmation()
   }
 

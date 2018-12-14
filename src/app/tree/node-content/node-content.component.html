@@ -8,6 +8,7 @@
   <app-tree-node-menu
     [treeNode]="treeNode"
     [treeHost]="treeHost"
+    [popOver]="popOver"
     [nodeContentComponent]="this"
   ></app-tree-node-menu>
 </ng-template>
@@ -40,6 +41,7 @@
      class="material-icons"
      (press)='treeNode.navigateInto()'
      [ngbPopover]="popContent"
+     #popOver="ngbPopover"
      [autoClose]="'outside'"
   >
     {{treeNode.isDayPlan ? 'calendar_today' : 'settings_applications'}}
