@@ -90,6 +90,13 @@ export class TreeHostComponent implements OnInit {
 
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe(params => {
+      const rootNodeInclusionId = params['rootNodeId']
+      console.log('activatedRoute.params.subscribe rootNodeId', rootNodeInclusionId)
+      const node = this.treeModel.mapNodeInclusionIdToNode.get(rootNodeInclusionId)
+      node && node.navigateInto()
+    })
+
     setTimeout(() => {
       this.showTree = true
       // this.appendNode()

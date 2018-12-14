@@ -13,6 +13,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import { NodeContentComponent } from '../node-content/node-content.component'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-tree-node-menu',
@@ -33,6 +34,7 @@ export class TreeNodeMenuComponent implements OnInit {
     public dialogService: DialogService,
     private modalService: NgbModal,
     public dbService: DbTreeService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -53,6 +55,12 @@ export class TreeNodeMenuComponent implements OnInit {
   addChild() {
     this.popOver.close()
     this.nodeContentComponent.addChild()
+  }
+
+  navigateInto() {
+    console.log('navigateInto')
+    this.router.navigate(['/tree', this.treeNode.nodeInclusion.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
+    this.treeNode.navigateInto()
   }
 
 }

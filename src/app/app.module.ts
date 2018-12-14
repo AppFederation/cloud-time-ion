@@ -29,6 +29,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ItemClassIconComponent } from './tree/item-class-icon/item-class-icon.component';
 import { ConfirmDeleteTreeNodeComponent } from './tree/confirm-delete-tree-node/confirm-delete-tree-node.component';
+import { TreePageComponent } from './tree/tree-page/tree-page.component';
 library.add(fas);
 
 const appRoutes: Routes = [
@@ -36,6 +37,10 @@ const appRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'tree',
+  },
+  {
+    path: 'tree/:rootNodeId',
+    component: TreeHostComponent,
   },
   {
     path: 'tree',
@@ -53,13 +58,7 @@ const appRoutes: Routes = [
     path: '**',
     redirectTo: 'tree',
   },
-  {
-    path: 'tree/:rootNodeId',
-    component: TreeHostComponent,
-  },
 ];
-
-
 
 
 @NgModule({
@@ -77,6 +76,7 @@ const appRoutes: Routes = [
     TreeNodeMenuComponent,
     ItemClassIconComponent,
     ConfirmDeleteTreeNodeComponent,
+    TreePageComponent,
   ],
   imports: [
     BrowserModule,
