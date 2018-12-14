@@ -16,6 +16,7 @@ import QuerySnapshot = firebase.firestore.QuerySnapshot
 import DocumentReference = firebase.firestore.DocumentReference
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { FIXME } from './log'
+import { FirestoreInclusionsSyncer } from './FirestoreInclusionsSyncer'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -33,8 +34,11 @@ firebase1.initializeApp({
 
 
 // Initialize Cloud Firestore through Firebase
-const db = firebase1.firestore();
-
+const firestore = firebase1.firestore();
+const db = firestore;
+firestore.settings({
+  timestampsInSnapshots: true,
+})
 
 export interface FirestoreNodeInclusion {
   childNode    : DocumentReference,
@@ -117,7 +121,6 @@ export class FirestoreTreeService extends DbTreeService {
       if (change.type === 'modified') {
         debugLog('Modified city: ', nodeInclusionData);
         listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
-        FIXME()
       }
       if (change.type === 'removed') {
         debugLog('Removed city: ', nodeInclusionData);
@@ -235,7 +238,7 @@ export class FirestoreTreeService extends DbTreeService {
     // which CAN supposedly work across even nodes for which we do not have permissions to read, as long as they are
     // not included in the results (vs "rules are NOT filters" in Firebase realtime DB).
     // for the query criterion, I could use a special attribute, e.g. User_read_permitted_<USER_ID>=true
-    FIXME()
+    // FIXME()
     // throw new Error('TESTING')
 
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
