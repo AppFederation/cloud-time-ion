@@ -21,6 +21,15 @@ import { NestedTreeNodeComponent } from './nested-tree-node/nested-tree-node.com
 import { CoreModule } from './core/core.module';
 import { CommandsOverlayComponent } from './tree/commands-overlay/commands-overlay.component';
 import { TestComponentInstanceChangingOnInputValueChangeComponent } from './experiments/test-component-instance-changing-on-input-value-change/test-component-instance-changing-on-input-value-change.component'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TreeNodeMenuComponent } from './tree/tree-node-menu/tree-node-menu.component'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { ItemClassIconComponent } from './tree/item-class-icon/item-class-icon.component';
+import { ConfirmDeleteTreeNodeComponent } from './tree/confirm-delete-tree-node/confirm-delete-tree-node.component';
+library.add(fas);
 
 const appRoutes: Routes = [
   {
@@ -51,6 +60,8 @@ const appRoutes: Routes = [
 ];
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +73,10 @@ const appRoutes: Routes = [
     NestedTreeComponent,
     NestedTreeNodeComponent,
     CommandsOverlayComponent,
-    TestComponentInstanceChangingOnInputValueChangeComponent
+    TestComponentInstanceChangingOnInputValueChangeComponent,
+    TreeNodeMenuComponent,
+    ItemClassIconComponent,
+    ConfirmDeleteTreeNodeComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,13 +85,18 @@ const appRoutes: Routes = [
     FormsModule,
     // MatIconModule,
     RouterModule.forRoot(appRoutes),
-    CoreModule
+    CoreModule,
+    NgbModule,
+    FontAwesomeModule,
   ],
   providers: [
     TreeDragDropService,
     {provide: DbTreeService, useClass: FirestoreTreeService},
     TreeService,
     DialogService,
+  ],
+  entryComponents: [
+    ConfirmDeleteTreeNodeComponent,
   ],
   bootstrap: [AppComponent]
 })

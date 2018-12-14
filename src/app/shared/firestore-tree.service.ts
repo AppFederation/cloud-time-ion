@@ -54,6 +54,7 @@ export class FirestoreTreeService extends DbTreeService {
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
   dbItemsLoader = new FirestoreAllItemsLoader()
+  dbInclusionsSyncer = new FirestoreInclusionsSyncer()
 
   constructor() {
     super()
@@ -64,7 +65,7 @@ export class FirestoreTreeService extends DbTreeService {
     // this.listenToChanges(onSnapshotHandler)
   }
 
-  delete(itemId: string) {
+  deleteWithoutConfirmation(itemId: string) {
     this.itemDocById(itemId).update('deleted', new Date())
     console.log('deleted ' + itemId)
   }

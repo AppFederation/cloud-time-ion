@@ -293,6 +293,10 @@ export class OryTreeNode implements TreeNode {
     return newNode
   }
 
+  deleteWithoutConfirmation() {
+    this.treeModel.treeService.deleteWithoutConfirmation(this.itemId)
+  }
+
   findInsertionIndexForNewOrderNum(newOrderNum: number): number {
     let foundIndex = this.children.findIndex((node) => {
       const existingOrderNum = node.nodeInclusion.orderNum
@@ -579,7 +583,7 @@ export class TreeModel {
         if ( ! event.itemData.deleted || this.showDeleted ) {
           const parentNode = event.immediateParentId === this.treeService.HARDCODED_ROOT_NODE_ITEM_ID ? this.root : this.mapItemIdToNode.get(event.immediateParentId)
           if ( ! parentNode ) {
-            console.error('onNodeAdded: no parent', event.immediateParentId)
+            console.log('onNodeAdded: no parent', event.immediateParentId)
           } else {
             const newOrderNum = event.nodeInclusion.orderNum
             let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)

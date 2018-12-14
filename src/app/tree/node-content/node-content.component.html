@@ -1,4 +1,23 @@
 
+<!--<p>-->
+  <!--Popovers can contain any arbitrary HTML, Angular bindings and even directives!-->
+  <!--Simply enclose desired content or title in a <code>&lt;ng-template&gt;</code> element.-->
+<!--</p>-->
+
+<ng-template #popContent>
+  <app-tree-node-menu
+    [treeNode]="treeNode"
+    [treeHost]="treeHost"
+    [nodeContentComponent]="this"
+  ></app-tree-node-menu>
+</ng-template>
+<!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
+
+<ng-template #popTitle>Fancy <b>content!!</b></ng-template>
+<!--<button type="button" class="btn btn-outline-secondary" [ngbPopover]="popContent" [popoverTitle]="popTitle">-->
+  <!--I've got markup and bindings in my popover!-->
+<!--</button>-->
+
 <div
   style="display: flex; align-items: stretch; font-size: 11px"
   (keydown.alt.enter)="addChild($event)"
@@ -12,8 +31,16 @@
 
   <i style="cursor: pointer; user-select: none; color: #777"
      (tap)="toggleExpand($event)"
-     class="material-icons"
      (press)="onPress($event)"
+     (press)="navigateToRoot($event)"
+     class="material-icons"
+  >expand_more</i>
+
+  <i style="cursor: pointer; user-select: none; color: #777"
+     class="material-icons"
+     (press)='treeNode.navigateInto()'
+     [ngbPopover]="popContent"
+     [autoClose]="'outside'"
   >
     {{treeNode.isDayPlan ? 'calendar_today' : 'settings_applications'}}
   </i>
@@ -95,20 +122,6 @@
     {{treeNode.nodeInclusion.orderNum}}
     view updates: {{debug.countApplyItemDataValuesToViews}}
   </ng-container>
-
-  <button
-    (click)="delete()"
-    style="margin-right: .2em"
-  >
-    D
-  </button>
-
-  <button
-    (click)="navigateInto()"
-    style="margin-right: .2em"
-  >
-    E
-  </button>
 
   <button
     (click)="addChild()"

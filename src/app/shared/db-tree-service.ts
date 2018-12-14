@@ -43,6 +43,6 @@ export abstract class DbTreeService {
     return newOrderNumber
   }
 
-  abstract delete(itemId: string)
+  abstract deleteWithoutConfirmation(itemId: string)
 }
 

@@ -29,6 +29,7 @@ import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';
 import { debugLog } from '../../shared/log'
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -82,7 +83,8 @@ export class Columns {
   templateUrl: './node-content.component.html',
   styleUrls: ['./node-content.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NgbPopoverConfig],
 })
 export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -128,8 +130,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialogService: DialogService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
+    config: NgbPopoverConfig,
   ) {
-
+    // config.placement = 'right';
+    config.placement = 'auto';
+    // config.triggers = 'hover';
   }
 
   ngOnInit() {
@@ -235,13 +240,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // focus if expecting to focus
     // this.focus()
-  }
-
-  delete() {
-    this.dialogService.showDeleteDialog(() => {
-      // TODO: delete node inclusion and the node itself
-      this.dbService.delete(this.treeNode.itemId)
-    })
   }
 
   addChild() {
