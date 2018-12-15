@@ -1,4 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HAMMER_GESTURE_CONFIG,
+} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -30,6 +33,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ItemClassIconComponent } from './tree/item-class-icon/item-class-icon.component';
 import { ConfirmDeleteTreeNodeComponent } from './tree/confirm-delete-tree-node/confirm-delete-tree-node.component';
 import { TreePageComponent } from './tree/tree-page/tree-page.component';
+import { MyHammerConfig } from './my-hammer-config'
 library.add(fas);
 
 const appRoutes: Routes = [
@@ -94,6 +98,10 @@ const appRoutes: Routes = [
     {provide: DbTreeService, useClass: FirestoreTreeService},
     TreeService,
     DialogService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }
   ],
   entryComponents: [
     ConfirmDeleteTreeNodeComponent,
