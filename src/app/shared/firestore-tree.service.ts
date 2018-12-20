@@ -17,6 +17,7 @@ import DocumentReference = firebase.firestore.DocumentReference
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { FIXME } from './log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
+import { ChildrenChangesEvent } from './children-changes-event'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -67,7 +68,7 @@ export class FirestoreTreeService extends DbTreeService {
     db.enablePersistence().then(() => {
       // window.alert('persistence enabled')
       this.dbItemsLoader.startQuery(this.itemsCollection())
-      this.dbInclusionsSyncer.startQuery(this.itemsCollection())
+      this.dbInclusionsSyncer.startQuery()
     })
     // this.listenToChanges(onSnapshotHandler)
   }
@@ -86,19 +87,19 @@ export class FirestoreTreeService extends DbTreeService {
     this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE_ITEM_ID), [], 0, listener)
   }
 
-  private processNodeEvents(nestLevel: number, snapshot: QuerySnapshot, parents: DocumentReference[], listener: DbTreeListener) {
+  private processNodeEvents(nestLevel: number, childrenChangesEvent: ChildrenChangesEvent, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
-    snapshot.docChanges().forEach(function(change) {
-      debugLog('docChanges change.type', change.type);
+    childrenChangesEvent.inclusionsAdded.forEach(inclusionAdded => {
+      // debugLog('docChanges change.type', change.type);
 
-      debugLog('nodeInclusionData ... change.doc', change.doc)
-      const nodeInclusionData = change.doc.data() as FirestoreNodeInclusion
+      // debugLog('nodeInclusionData ... change.doc', change.doc)
+      const nodeInclusionData = inclusionAdded.data() as FirestoreNodeInclusion
       const nodeInclusionId = nodeInclusionData.nodeInclusionId
-      if (change.type === 'added') {
+      // if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
         // FIXME: why is this called when parent node is EDITED ???
         debugLog('added-node-inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
-        debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + nodeInclusionData.childNode.id, change)
+        debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + nodeInclusionData.childNode.id, childrenChangesEvent)
         serviceThis.pendingListeners ++
         // ==== per-item callback:
         serviceThis.dbItemsLoader.getItem$ByRef(nodeInclusionData.childNode, (includedItemDoc: DocumentSnapshot) => {
@@ -109,7 +110,7 @@ export class FirestoreTreeService extends DbTreeService {
           // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
           // console.log('itemData:::', itemData)
-          debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + includedItemDoc.id, change)
+          debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + includedItemDoc.id, childrenChangesEvent)
           listener.onNodeAddedOrModified(
             new NodeAddEvent(parentsPath, parentsPath[parentsPath.length - 1], itemData, includedItemDoc.id,
               serviceThis.pendingListeners, nodeInclusion))
@@ -120,27 +121,31 @@ export class FirestoreTreeService extends DbTreeService {
         serviceThis.handleSubNodes(nodeInclusionData.childNode, parents, nestLevel, listener) // why is this inside per-item callback?
 
         // debugLog('root node ref: ', targetNode);
-      }
-      if (change.type === 'modified') {
-        debugLog('Modified city: ', nodeInclusionData);
-        listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
-      }
-      if (change.type === 'removed') {
-        debugLog('Removed city: ', nodeInclusionData);
-      }
+      // }
+      // if (change.type === 'modified') {
+      //   debugLog('Modified city: ', nodeInclusionData);
+      //   listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+      // }
+      // if (change.type === 'removed') {
+      //   debugLog('Removed city: ', nodeInclusionData);
+      // }
     })
   }
 
   private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
     // TODO: do not use subCollection for FirestoreAllInclusionsSyncer - all inclusions are in a single collection
-    // this.dbInclusionsSyncer.getChildInclusionsForParentItem$(targetNodeDocRef.id).subscribe()
-    const subCollection = targetNodeDocRef.collection('subNodes' /* note: those are really inclusions of sub nodes */)
-    // debugLog('subColl:', subCollection)
-    subCollection.onSnapshot((subSnap: QuerySnapshot) => {
+    this.dbInclusionsSyncer.getChildInclusionsForParentItem$(targetNodeDocRef.id).subscribe(event => {
       const newParents: DocumentReference[] = parents.slice(0)
       newParents.push(targetNodeDocRef)
-      this.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
+      this.processNodeEvents(nestLevel + 1, event, newParents, listener)
     })
+    // const subCollection = targetNodeDocRef.collection('subNodes' /* note: those are really inclusions of sub nodes */)
+    // debugLog('subColl:', subCollection)
+    // subCollection.onSnapshot((subSnap: QuerySnapshot) => {
+    //   const newParents: DocumentReference[] = parents.slice(0)
+    //   newParents.push(targetNodeDocRef)
+    //   this.processNodeEvents(nestLevel + 1, subSnap, newParents, listener)
+    // })
   }
 
   nodesPath(path: DocumentReference[]) {
@@ -232,6 +237,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
     debugLog('patchChildInclusionData', arguments)
+    this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, itemInclusionData)
     // return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
