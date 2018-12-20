@@ -27,6 +27,8 @@ class InclusionsValueAndCallbacks {
   observables: Subject<ChildrenChangesEvent>[] = []
 }
 
+const EMPTY_MAP = new Map<any, any>()
+
 export class FirestoreAllInclusionsSyncer {
 
   mapParentIdToChildInclusions = new Map<string, InclusionsValueAndCallbacks>()
@@ -46,17 +48,18 @@ export class FirestoreAllInclusionsSyncer {
 
   startQuery() {
     this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot) => {
-      const mapParentIdToDocs = new MultiMap<string, DocumentSnapshot>()
+      const mapParentIdToDocsModified = new MultiMap<string, DocumentSnapshot>()
+      const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
       // NOTE: for now treating adding and modifying as same event (as in tree event add-or-modify)
       snapshot.docChanges().forEach((change: DocumentChange) => {
         const documentSnapshot = change.doc
         const docData = documentSnapshot.data() as FirestoreNodeInclusion
         debugLog('FirestoreAllInclusionsSyncer onSnapshot id', change.doc.id, 'DocumentChange', change)
-        if (change.type === 'added' || change.type === 'modified') {
-
-          mapParentIdToDocs.add(docData.parentNode.id, documentSnapshot)
-
+        if (change.type === 'added') {
+          mapParentIdToDocsAdded.add(docData.parentNode.id, documentSnapshot)
           // this.putItemAndFireCallbacks(documentSnapshot)
+        } else if ( change.type === 'modified') {
+          mapParentIdToDocsModified.add(docData.parentNode.id, documentSnapshot)
         }
         // if (change.type === 'modified') {
         //   debugLog('FirestoreAllItemsLoader modified: ', nodeInclusionData);
@@ -67,8 +70,12 @@ export class FirestoreAllInclusionsSyncer {
           // debugLog('Removed city: ', nodeInclusionData);
         }
       })
-      mapParentIdToDocs.map.forEach((inclusions, parent) => {
-        this.putInclusionsForParentAndFireEvent(parent, inclusions)
+      // in the future I might wanna fire added and modified in single event
+      mapParentIdToDocsAdded.map.forEach((inclusions, parentId) => {
+        this.putInclusionsForParentAndFireEvent(parentId, inclusions, 'added')
+      })
+      mapParentIdToDocsModified.map.forEach((inclusions, parentId) => {
+        this.putInclusionsForParentAndFireEvent(parentId, inclusions, 'modified')
       })
     })
   }
@@ -79,7 +86,7 @@ export class FirestoreAllInclusionsSyncer {
      * instead I should investigate if it is possible to make a custom observable which emits something (initial value of inclusions map) to the new subscriber only while not emitting it to others.
      * Current impl. makes it so that, you should only subscribe once to a given observable returned (second subscriber will not get the initial value) */
     inclusionsEntry.observables.push(newObs)
-    newObs.next(new ChildrenChangesEvent(inclusionsEntry.mapByInclusionId))
+    newObs.next(new ChildrenChangesEvent(inclusionsEntry.mapByInclusionId, EMPTY_MAP))
     return newObs
     FIXME('getChildInclusionsForParentItem$')
   }
@@ -99,14 +106,17 @@ export class FirestoreAllInclusionsSyncer {
     return this.inclusionsCollection().doc(nodeInclusionId)
   }
 
-  private putInclusionsForParentAndFireEvent(parentId: string, inclusions: DocumentSnapshot[]) {
+  private putInclusionsForParentAndFireEvent(parentId: string, inclusions: DocumentSnapshot[], eventType: 'added' | 'modified') {
     const addedOrModifiedInclusionsMap = this.arrayToMapById(inclusions)
     let inclusionsValueAndCallbacks = this.obtainInclusionsEntryForParentId(parentId)
     inclusions.forEach(inclusion => {
       inclusionsValueAndCallbacks.mapByInclusionId.set(inclusion.id, inclusion)
     })
     inclusionsValueAndCallbacks.observables.forEach(subject => {
-      subject.next(new ChildrenChangesEvent(addedOrModifiedInclusionsMap /* note: only fire with the currently modified, not all already present!*/))
+      subject.next(new ChildrenChangesEvent(
+        eventType === 'added' ? addedOrModifiedInclusionsMap : EMPTY_MAP, /* note: only fire with the currently modified, not all already present!*/
+        eventType === 'modified' ? addedOrModifiedInclusionsMap : EMPTY_MAP,
+      ))
     })
   }
 

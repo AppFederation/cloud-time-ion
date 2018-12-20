@@ -27,7 +27,7 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
   }
 
   startQuery(
-    /* this will have to be filter to only what the user has read permission for */
+    /* this will have to be filtered to only what the user has read permission for */
     itemsCollection: firebase.firestore.CollectionReference
   ) {
     itemsCollection.onSnapshot((snapshot: QuerySnapshot) => {

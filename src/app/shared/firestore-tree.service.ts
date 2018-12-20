@@ -53,7 +53,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'DbWithAllInclusionsSyncer'
+  static dbPrefix = 'DbWithAllInclusionsSyncer2'
 
   pendingListeners = 0
 
@@ -130,6 +130,13 @@ export class FirestoreTreeService extends DbTreeService {
       //   debugLog('Removed city: ', nodeInclusionData);
       // }
     })
+    childrenChangesEvent.inclusionsModified.forEach(inclusionModified => {
+      const nodeInclusionData = inclusionModified.data() as FirestoreNodeInclusion
+      const nodeInclusionId = nodeInclusionData.nodeInclusionId
+
+      listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+    })
+
   }
 
   private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
