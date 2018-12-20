@@ -16,7 +16,7 @@ import QuerySnapshot = firebase.firestore.QuerySnapshot
 import DocumentReference = firebase.firestore.DocumentReference
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { FIXME } from './log'
-import { FirestoreInclusionsSyncer } from './FirestoreInclusionsSyncer'
+import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -41,30 +41,33 @@ firestore.settings({
 })
 
 export interface FirestoreNodeInclusion {
-  childNode    : DocumentReference,
+  childNode: DocumentReference,
   orderNum: number,
   nodeInclusionId: string
+  /** only in AllItemsSyncer; should really be called parentItem ? */
+  parentNode?: DocumentReference,
 }
 
 
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'dbEmptyZZZ__16'
+  static dbPrefix = 'DbWithAllInclusionsSyncer'
 
   pendingListeners = 0
 
-  private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + 'items'
-  private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + 'roots'
+  private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + '_items'
+  private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + '_roots'
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
   dbItemsLoader = new FirestoreAllItemsLoader()
-  dbInclusionsSyncer = new FirestoreInclusionsSyncer()
+  dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(db, FirestoreTreeService.dbPrefix)
 
   constructor() {
     super()
     db.enablePersistence().then(() => {
-      this.dbItemsLoader.startQuery(this.itemsCollection())
       // window.alert('persistence enabled')
+      this.dbItemsLoader.startQuery(this.itemsCollection())
+      this.dbInclusionsSyncer.startQuery(this.itemsCollection())
     })
     // this.listenToChanges(onSnapshotHandler)
   }
@@ -129,6 +132,8 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   private handleSubNodes(targetNodeDocRef: DocumentReference, parents: DocumentReference[], nestLevel: number, listener: DbTreeListener) {
+    // TODO: do not use subCollection for FirestoreAllInclusionsSyncer - all inclusions are in a single collection
+    // this.dbInclusionsSyncer.getChildInclusionsForParentItem$(targetNodeDocRef.id).subscribe()
     const subCollection = targetNodeDocRef.collection('subNodes' /* note: those are really inclusions of sub nodes */)
     // debugLog('subColl:', subCollection)
     subCollection.onSnapshot((subSnap: QuerySnapshot) => {
@@ -138,32 +143,12 @@ export class FirestoreTreeService extends DbTreeService {
     })
   }
 
-  nodesPath(path) {
+  nodesPath(path: DocumentReference[]) {
     return path.map(ref => {
-      let segments = ref._key.path.segments
-      return segments[segments.length - 1] // hack: probably replace with change.doc.id
+      // let segments = ref.id.path.segments
+      return ref.id // hack: probably replace with change.doc.id
     })
   }
-
-
-  // addNode(parentId: string) {
-  //   debugLog('add node to parent to db:', parentId)
-  //   this.nodesCollection().add({
-  //     title: 'added node title'
-  //   }).then(result => {
-  //     const childDoc: firebase.firestore.DocumentReference = result
-  //     const childId = childDoc.id
-  //     const nodeInclusion: FirestoreNodeInclusion = {
-  //       childNode: db.collection(this.ITEMS_COLLECTION).doc(childId),
-  //       orderNum: 9999
-  //     }
-  //     if ( parentId ) {
-  //       // this.addNodeInclusionToParent(parentId, nodeInclusion)
-  //     } else {
-  //       db.collection(this.ROOTS_COLLECTION).add(nodeInclusion)
-  //     }
-  //   })
-  // }
 
   private itemsCollection(): firebase.firestore.CollectionReference {
     return db.collection(this.ITEMS_COLLECTION)
@@ -181,20 +166,17 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/,
-                                   childNode: OryTreeNode, itemDocRef: DocumentReference
+                                   childNode: OryTreeNode, childItemDocRef: DocumentReference
   ) {
     const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
       // childNode: this.itemDocById(childNode.dbId),
-      childNode: itemDocRef,
+      childNode: childItemDocRef,
       orderNum: nodeInclusion.orderNum,
       nodeInclusionId: nodeInclusion.nodeInclusionId
     }
     // this.subNodesCollectionForItem(parentId).add(nodeInclusionFirebaseObject)
-    this.subNodesCollectionForItem(parentId).doc(nodeInclusion.nodeInclusionId).set(nodeInclusionFirebaseObject)
-  }
-
-  private subNodesCollectionForItem(parentId: string) {
-    return this.itemsCollection().doc(parentId).collection('subNodes')
+    // this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion.nodeInclusionId, parentId, nodeInclusionFirebaseObject)
+    this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion, parentId, this.itemDocById(parentId), nodeInclusionFirebaseObject)
   }
 
 // TODO:
@@ -250,7 +232,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
     debugLog('patchChildInclusionData', arguments)
-    return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
+    // return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
 }
