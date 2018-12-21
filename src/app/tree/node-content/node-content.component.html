@@ -20,7 +20,7 @@
 <!--</button>-->
 
 <div
-  style="display: flex; align-items: stretch; font-size: 11px"
+  style="display: flex; align-items: stretch; font-size: 13px"
   (keydown.alt.enter)="addChild($event)"
   (keydown.meta.enter)="keyPressMetaEnter($event)"
   (keydown.control.enter)="keyPressMetaEnter($event)"
@@ -30,18 +30,18 @@
 >
 <!--<div style="display: flex; align-items: center;">-->
 
-  <i style="cursor: pointer; user-select: none; color: #777"
-     (tap)="toggleExpand($event)"
-     (press)="onPress($event)"
-     class="material-icons"
+  <i
+    class="material-icons tappable-icon"
+    (tap)="toggleExpand($event)"
+    (press)="onPress($event)"
   >expand_more</i>
 
-  <i style="cursor: pointer; user-select: none; color: #777"
-     class="material-icons"
-     (press)='treeNode.navigateInto()'
-     [ngbPopover]="popContent"
-     #popOver="ngbPopover"
-     [autoClose]="'outside'"
+  <i
+    class="material-icons tappable-icon"
+    (press)='treeNode.navigateInto()'
+    [ngbPopover]="popContent"
+    #popOver="ngbPopover"
+    [autoClose]="'outside'"
   >
     {{treeNode.isDayPlan ? 'calendar_today' : 'settings_applications'}}
   </i>
@@ -50,10 +50,10 @@
   <!--<i class="material-icons">assignment</i>-->
   <!--<mat-icon></mat-icon>-->
 
-  <ng-container *ngIf="treeNode.isDayPlan">
+  <span *ngIf="treeNode.isDayPlan" style="user-select: none">
     End: {{formatEndTime()}}
     <!--Sum: {{treeNode.timeLeftSumText()}}-->
-  </ng-container>
+  </span>
   <ng-container *ngIf="treeNode.itemData?.deleted">
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
@@ -96,7 +96,7 @@
       margin-right: 0.3em;
       margin-left: 0.3em;
       margin-top: 2px; /* help not overlap input focus outline and hackish help centering text a bit vertically */
-      font-size: 11px;
+      font-size: 13px;
       /*treeNode.isDayPlan ? "13px" : "11px"*/
       /*display: table-cell;
       vertical-align: middle; */
@@ -124,10 +124,10 @@
     view updates: {{debug.countApplyItemDataValuesToViews}}
   </ng-container>
 
-  <button
-    (click)="addChild()"
-  >
-    +
-  </button>
+  <!--<button-->
+    <!--(click)="addChild()"-->
+  <!--&gt;-->
+    <!--+-->
+  <!--</button>-->
 
 </div>

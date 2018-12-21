@@ -422,7 +422,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleExpand(event) {
-    debugLog('expand', event)
+    debugLog('toggleExpand', event)
     this.treeNode.expansion.toggleExpansion(event.altKey)
   }
 
