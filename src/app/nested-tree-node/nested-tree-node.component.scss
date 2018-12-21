@@ -12,7 +12,7 @@ $nested-tree-node-margin: 5px;
   //border-left: 3px solid red;
   //border-bottom: 2px solid #F8F8F8;
   margin: 2px 0 2px $nested-tree-node-margin;
-  box-shadow: -2px 2px 3px #EEE;
+  box-shadow: 0px 1px 3px 1px #EEE;
   //margin-bottom: 20px;
   border-radius: 3px;
   animation: nested-tree-node-animation 0.7s;
@@ -27,4 +27,8 @@ $nested-tree-node-margin: 5px;
     //padding-left: 0px;
     opacity: 1.0;
   }
+}
+
+hr {
+  margin: 5px;
 }

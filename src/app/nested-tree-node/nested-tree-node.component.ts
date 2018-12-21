@@ -16,6 +16,8 @@ export class NestedTreeNodeComponent implements OnInit {
 
   alwaysExpanded = false
 
+  isVisualRoot: boolean
+
   @Input()
   treeNode: OryTreeNode
 
@@ -34,6 +36,7 @@ export class NestedTreeNodeComponent implements OnInit {
     if (this.treeNodeWrapperHack) {
       this.treeNode = this.treeNodeWrapperHack.wrapperHack
     }
+    this.isVisualRoot = this.treeNode.isVisualRoot
   }
 
   toggleExpand(event) {

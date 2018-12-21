@@ -16,7 +16,7 @@
         [treeNode]="childNode"
         [treeHost]="treeHost"
       ></app-nested-tree-node>
-      <hr/>
+      <hr *ngIf="isVisualRoot"/>
     </ng-container>
   </div>
 
