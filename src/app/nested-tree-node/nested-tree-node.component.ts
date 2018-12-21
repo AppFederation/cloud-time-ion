@@ -37,6 +37,8 @@ export class NestedTreeNodeComponent implements OnInit {
       this.treeNode = this.treeNodeWrapperHack.wrapperHack
     }
     this.isVisualRoot = this.treeNode.isVisualRoot
+    this.alwaysExpanded = this.isVisualRoot
+    debugLog('NestedTreeNodeComponent treeNode', this.treeNode, this.treeNode.treeModel.root, this.treeNode.treeModel.navigation.visualRoot)
   }
 
   toggleExpand(event) {

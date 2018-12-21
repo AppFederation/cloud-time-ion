@@ -69,7 +69,7 @@ export class OryTreeNode implements TreeNode {
     }
 
     areParentsExpandedToMakeThisNodeVisible(): boolean {
-      if ( this.treeNode.isRoot() ) {
+      if ( this.treeNode.isRoot ) {
         return this.treeNode.treeModel.isRootShown
       }
       // return false
@@ -95,6 +95,10 @@ export class OryTreeNode implements TreeNode {
 
   removeChild(nodeToRemove: OryTreeNode) {
     this.children = this.children.filter(node => node !== nodeToRemove)
+  }
+
+  get isRoot() {
+    return this.treeModel.root === this;
   }
 
   get isVisualRoot() {
@@ -151,7 +155,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   getNodeVisuallyAboveThis(): OryTreeNode {
-    if ( this.isRoot() ) {
+    if ( this.isRoot ) {
       return this.treeModel.root.getLastMostNestedVisibleNodeRecursively()
     }
     let ret: OryTreeNode
@@ -441,10 +445,6 @@ export class OryTreeNode implements TreeNode {
   getAncestorsPathArrayExcludingVirtualRoot() {
     const ancestorsPathArray = this.getAncestorsPathArray()
     return ancestorsPathArray.slice(1, ancestorsPathArray.length)
-  }
-
-  isRoot() {
-    return this.treeModel.root === this;
   }
 
   toggleDone() {

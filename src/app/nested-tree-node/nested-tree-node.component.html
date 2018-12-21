@@ -1,16 +1,21 @@
 <div
-  class="nested-tree-node node-and-children"
-  [ngClass]="{'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode(), 'node-content-container': true}"
+  class="node-and-children"
+  [ngClass]="{
+    'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode(),
+    'node-content-container': true,
+    'nested-tree-node': ! treeNode.isVisualRoot
+  }"
 >
 
   <!--{{treeNode.highlight.isAncestorOfFocusedNode()}}-->
 
   <app-node-content
+    *ngIf="! treeNode.isRoot"
     [treeNode]="treeNode"
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 5px" class="children">
+  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 5px">
     <ng-container *ngFor="let childNode of treeNode.children">
       <app-nested-tree-node
         [treeNode]="childNode"
