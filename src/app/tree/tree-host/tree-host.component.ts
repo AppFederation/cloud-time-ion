@@ -179,7 +179,7 @@ export class TreeHostComponent implements OnInit {
     // this.treeService.addNode(this.treeModel.root.getLastChild(), null) // FIXME
     // const newNode = new OryTreeNode(null, this.fakeId ++, this.treeModel)
     // this.treeModel.root._appendChild(newNode) // FIXME: dummy impl
-    this.treeModel.root.addChild() // FIXME: dummy impl
+    this.treeModel.navigation.visualRoot.addChild()
   }
 
   private createNode(label?) {
@@ -198,11 +198,11 @@ export class TreeHostComponent implements OnInit {
   }
 
   expandAll() {
-    this.treeModel.root.expansion.setExpansion(true, true)
+    this.treeModel.navigation.visualRoot.expansion.setExpansion(true, true)
   }
 
   collapseAll() {
-    this.treeModel.root.expansion.setExpansion(false, true)
+    this.treeModel.navigation.visualRoot.expansion.setExpansion(false, true)
   }
 
   nodeDrop(event) {
