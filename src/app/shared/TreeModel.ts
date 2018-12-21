@@ -93,6 +93,10 @@ export class OryTreeNode implements TreeNode {
 
   }(this)
 
+  removeChild(nodeToRemove: OryTreeNode) {
+    this.children = this.children.filter(node => node !== nodeToRemove)
+  }
+
   get isVisualRoot() {
     return this === this.treeModel.navigation.visualRoot
   }
@@ -295,6 +299,7 @@ export class OryTreeNode implements TreeNode {
 
   deleteWithoutConfirmation() {
     this.treeModel.treeService.deleteWithoutConfirmation(this.itemId)
+    this.parent2.removeChild(this)
   }
 
   findInsertionIndexForNewOrderNum(newOrderNum: number): number {

@@ -11,11 +11,13 @@
   ></app-node-content>
 
   <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 5px" class="children">
-    <app-nested-tree-node
-      *ngFor="let childNode of treeNode.children"
-      [treeNode]="childNode"
-      [treeHost]="treeHost"
-    ></app-nested-tree-node>
+    <ng-container *ngFor="let childNode of treeNode.children">
+      <app-nested-tree-node
+        [treeNode]="childNode"
+        [treeHost]="treeHost"
+      ></app-nested-tree-node>
+      <hr/>
+    </ng-container>
   </div>
 
 

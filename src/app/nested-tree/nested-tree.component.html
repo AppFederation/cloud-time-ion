@@ -1,19 +1,24 @@
 <ng-container
   *ngIf="! treeModel.isRootShown"
 >
-  <app-nested-tree-node
-    *ngFor="let childNode of treeModel.navigation.visualRoot.children"
-    [treeNode]="childNode"
-    [treeHost]="treeHost"
-  ></app-nested-tree-node>
+  <ng-container *ngFor="let childNode of treeModel.navigation.visualRoot.children">
+    <app-nested-tree-node
+      [treeNode]="childNode"
+      [treeHost]="treeHost"
+    ></app-nested-tree-node>
+    <hr/>
+  </ng-container>
 </ng-container>
 
 <ng-container *ngIf="treeModel.isRootShown">
-  <app-nested-tree-node
-    *ngFor="let treeNodeWrapperHack of wrapperHackArray"
-    [treeNodeWrapperHack]="treeNodeWrapperHack"
-    [treeHost]="treeHost"
-  ></app-nested-tree-node>
+  <ng-container *ngFor="let treeNodeWrapperHack of wrapperHackArray">
+    <!--<ng-container *ngIf="treeNodeWrapperHack.">-->
+
+    <app-nested-tree-node
+      [treeNodeWrapperHack]="treeNodeWrapperHack"
+      [treeHost]="treeHost"
+    ></app-nested-tree-node>
+  </ng-container>
 </ng-container>
 
 <!--<app-test-component-instance-changing-on-input-value-change-->
