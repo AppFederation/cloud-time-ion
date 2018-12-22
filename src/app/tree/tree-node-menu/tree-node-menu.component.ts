@@ -14,6 +14,7 @@ import {
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import { NodeContentComponent } from '../node-content/node-content.component'
 import { Router } from '@angular/router'
+import { ClipboardService } from '../../core/clipboard.service'
 
 @Component({
   selector: 'app-tree-node-menu',
@@ -34,7 +35,8 @@ export class TreeNodeMenuComponent implements OnInit {
     public dialogService: DialogService,
     private modalService: NgbModal,
     public dbService: DbTreeService,
-    public router: Router
+    public router: Router,
+    public clipboardService: ClipboardService,
   ) { }
 
   ngOnInit() {
@@ -63,4 +65,16 @@ export class TreeNodeMenuComponent implements OnInit {
     this.treeNode.navigateInto()
   }
 
+  toClipboard() {
+    this.clipboardService.setNodesInClipboard([this.treeNode])
+    this.popOver.close()
+  }
+
+  pasteCopyHereFromClipboard() {
+    this.treeNode.addAssociationsHere(this.clipboardService.nodesInClipboard)
+  }
+
+  pasteMoveHereFromClipboard() {
+    this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard)
+  }
 }

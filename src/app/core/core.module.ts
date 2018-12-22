@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DebugService } from './debug.service'
 import { CommandsService } from './commands.service'
+import { ClipboardService } from './clipboard.service'
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { CommandsService } from './commands.service'
   providers: [
     DebugService,
     CommandsService,
+    ClipboardService,
   ]
 })
 export class CoreModule { }

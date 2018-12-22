@@ -134,7 +134,7 @@ export class FirestoreTreeService extends DbTreeService {
       const nodeInclusionData = inclusionModified.data() as FirestoreNodeInclusion
       const nodeInclusionId = nodeInclusionData.nodeInclusionId
 
-      listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+      listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData, nodeInclusionData.parentNode.id)
     })
 
   }
@@ -246,6 +246,12 @@ export class FirestoreTreeService extends DbTreeService {
     debugLog('patchChildInclusionData', arguments)
     this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, itemInclusionData)
     // return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
+  }
+
+  patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode) {
+    this.dbInclusionsSyncer.patchChildInclusionDataWithNewParent(
+      nodeInclusionId, this.itemDocById(newParentNode.itemId)
+    )
   }
 
 }

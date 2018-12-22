@@ -28,8 +28,9 @@ export class TreeService {
         debugLog('loadNodesTree onNodeAddedOrModified', event)
         treeModel.onNodeAdded(event)
       },
-      onNodeInclusionModified(nodeInclusionId, nodeInclusionData) {
-        treeModel.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+      onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
+        // TODO: entry point for moving node to different parent?
+        treeModel.onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId)
       }
     })
     return treeModel

@@ -8,13 +8,33 @@
 <button
   class="btn btn-primary"
   (click)='navigateInto()'>
-  Navigate Into (long-press menu icon)
+  Navigate Into
 </button>
 
 <button
   class="btn btn-primary"
   (click)='addChild()'>
   Add Sub-task
+</button>
+
+<button
+  class="btn btn-primary"
+  (click)='toClipboard()'>
+  To Clipboard
+</button>
+
+<button
+  *ngIf="clipboardService.hasContent"
+  class="btn btn-primary"
+  (click)='pasteCopyHereFromClipboard()'>
+  Copy here from clipboard
+</button>
+
+<button
+  *ngIf="clipboardService.hasContent"
+  class="btn btn-primary"
+  (click)='pasteMoveHereFromClipboard()'>
+  Move here from clipboard
 </button>
 
 Classes:
@@ -33,7 +53,7 @@ Classes:
 
 <p>
   <fa-icon [icon]="['fas', 'pen-nib']" [mask]="['fas', 'circle']"></fa-icon>
-  Journal Entry (same as a loose note? -- Journal entry is more like self-introspection can have more info like mood, geolocation)
+  Journal Entry <!--(same as a loose note? &#45;&#45; Journal entry is more like self-introspection can have more info like mood, geolocation)-->
 </p>
 
 

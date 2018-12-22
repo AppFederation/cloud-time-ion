@@ -20,6 +20,7 @@ export abstract class DbTreeService {
 
   abstract patchChildInclusionData(itemId: string, itemInclusionId: string, itemInclusionData: any)
 
+  abstract patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode)
 
   static calculateNewOrderNumber(
       previousOrderNumber: number,
@@ -44,5 +45,6 @@ export abstract class DbTreeService {
   }
 
   abstract deleteWithoutConfirmation(itemId: string)
+
 }
 

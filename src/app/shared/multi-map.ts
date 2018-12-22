@@ -9,4 +9,8 @@ export class MultiMap<K, V> {
     }
     coll.push(val)
   }
+
+  get(key: K) {
+    return this.map.get(key);
+  }
 }
