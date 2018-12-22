@@ -31,4 +31,12 @@ $nested-tree-node-margin: 5px;
 
 hr {
   margin: 5px;
+  margin-left: 1px;
+  height: 4px;
+  display: block;
+  //height: 1px;
+  border: 0;
+  border-top: 2px solid #DDD;
+  //margin: 1em 0;
+  padding: 0;
 }
