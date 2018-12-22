@@ -451,4 +451,20 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   navigateInto() {
     this.treeNode.navigateInto()
   }
+
+  indentDecrease($event) {
+    const newParent = this.treeNode.parent2.parent2
+    if ( newParent ) {
+      newParent.moveInclusionsHere([this.treeNode])
+      this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
+    }
+  }
+
+  indentIncrease($event) {
+    const siblingNodeAboveThis = this.treeNode.getSiblingNodeAboveThis()
+    if ( siblingNodeAboveThis ) {
+      siblingNodeAboveThis.moveInclusionsHere([this.treeNode])
+      this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
+    }
+  }
 }

@@ -26,6 +26,8 @@
   (keydown.control.enter)="keyPressMetaEnter($event)"
   (keydown.control.arrowup)="reorderUp($event)"
   (keydown.control.arrowdown)="reorderDown($event)"
+  (keydown.shift.tab)="indentDecrease($event)"
+  (keydown.tab)="indentIncrease($event)"
   [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
 >
 <!--<div style="display: flex; align-items: center;">-->
