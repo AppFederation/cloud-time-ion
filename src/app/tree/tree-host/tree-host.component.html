@@ -39,7 +39,7 @@
     <ng-container *ngIf="debugService.isDebug$ | async">
       Pending listeners: {{pendingListeners}}
     </ng-container>
-    Nodes: {{treeModel.mapItemIdToNode.size}}
+    Items: {{treeModel.mapItemIdToNode.keyCount}}
   </div>
 
       <!--Time left: {{treeModel.timeLeftSumText()}}-->

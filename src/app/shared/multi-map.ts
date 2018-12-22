@@ -13,4 +13,8 @@ export class MultiMap<K, V> {
   get(key: K) {
     return this.map.get(key);
   }
+
+  get keyCount() {
+    return this.map.size
+  }
 }
