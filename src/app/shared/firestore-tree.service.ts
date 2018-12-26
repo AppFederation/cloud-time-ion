@@ -18,6 +18,7 @@ import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { FIXME } from './log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from './children-changes-event'
+import { NodeOrderer } from './node-orderer'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -43,7 +44,7 @@ firestore.settings({
 
 export interface FirestoreNodeInclusion {
   childNode: DocumentReference,
-  orderNum: number,
+  // orderNum: number,
   nodeInclusionId: string
   /** only in AllItemsSyncer; should really be called parentItem ? */
   parentNode?: DocumentReference,
@@ -62,6 +63,7 @@ export class FirestoreTreeService extends DbTreeService {
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
   dbItemsLoader = new FirestoreAllItemsLoader()
   dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(db, FirestoreTreeService.dbPrefix)
+  nodeOrderer = new NodeOrderer()
 
   constructor() {
     super()
@@ -98,7 +100,7 @@ export class FirestoreTreeService extends DbTreeService {
       // if (change.type === 'added') {
         const parentsPath = serviceThis.nodesPath(parents)
         // FIXME: why is this called when parent node is EDITED ???
-        debugLog('added-node-inclusion event: ', nestLevel, parentsPath, nodeInclusionData);
+        debugLog('added-node-inclusion event: ', nestLevel, parentsPath, 'nodeInclusionData: ', nodeInclusionData);
         debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + nodeInclusionData.childNode.id, childrenChangesEvent)
         serviceThis.pendingListeners ++
         // ==== per-item callback:
@@ -106,7 +108,8 @@ export class FirestoreTreeService extends DbTreeService {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           // console.log('nodeInclusionId', nodeInclusionId)
-          const nodeInclusion = new NodeInclusion(nodeInclusionData.orderNum, nodeInclusionId)
+          const nodeInclusion = new NodeInclusion(nodeInclusionId)
+          Object.assign(nodeInclusion, nodeInclusionData) // NOTE: this should assign orderNum
           // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
           // console.log('itemData:::', itemData)
@@ -183,9 +186,10 @@ export class FirestoreTreeService extends DbTreeService {
     const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
       // childNode: this.itemDocById(childNode.dbId),
       childNode: childItemDocRef,
-      orderNum: nodeInclusion.orderNum,
-      nodeInclusionId: nodeInclusion.nodeInclusionId
+      // orderNum: nodeInclusion.orderNum,
+      nodeInclusionId: nodeInclusion.nodeInclusionId /* this can be removed later before serializing, to save space; this can be inferred from firestore document id; it's a bit like $key */
     }
+    Object.assign(nodeInclusionFirebaseObject, nodeInclusion) // note: this will set orderNum
     // this.subNodesCollectionForItem(parentId).add(nodeInclusionFirebaseObject)
     // this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion.nodeInclusionId, parentId, nodeInclusionFirebaseObject)
     this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion, parentId, this.itemDocById(parentId), nodeInclusionFirebaseObject)
@@ -199,8 +203,8 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  addSiblingAfterNode(parentNode: OryTreeNode, newNode: OryTreeNode, afterExistingNode: OryTreeNode, previousOrderNumber, newOrderNumber, nextOrderNumber) {
-    debugLog('addSiblingAfterNode', newNode, afterExistingNode)
+  addChildNode(parentNode: OryTreeNode, newNode: OryTreeNode) {
+    debugLog('addSiblingAfterNode', newNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
     // let parentId = this.HARDCODED_ROOT_NODE // HACK to simplify for now
     let parentId = parentNode.itemId // HACK to simplify for now
@@ -244,13 +248,27 @@ export class FirestoreTreeService extends DbTreeService {
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
     debugLog('patchChildInclusionData', arguments)
-    this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, itemInclusionData)
+    const inclusionRawObject = {} // Firestore wants object
+    Object.assign(inclusionRawObject, itemInclusionData)
+
+    this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, inclusionRawObject)
     // return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
-  patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode) {
+  patchChildInclusionDataWithNewParent(
+    nodeInclusionId: string,
+    newParentNode: OryTreeNode,
+    // beforeNode: { beforeNode: OryTreeNode },
+    // order: {
+    //   inclusionBefore ? : NodeInclusion,
+    //   inclusionAfter ? : NodeInclusion,
+    // }
+  ) {
+    // NOTE: this needs to be done in TreeModel/OryTreeNode anyway, because we add to UI immediately, not waiting for DB:
+    // this.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
+
     this.dbInclusionsSyncer.patchChildInclusionDataWithNewParent(
-      nodeInclusionId, this.itemDocById(newParentNode.itemId)
+      nodeInclusionId, this.itemDocById(newParentNode.itemId),
     )
   }
 

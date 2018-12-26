@@ -12,6 +12,10 @@ import { OryColumn } from '../tree/OryColumn'
 import { FIXME } from './log'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
 import { MultiMap } from './multi-map'
+import {
+  NodeOrderer,
+  NodeOrderInfo,
+} from './node-orderer'
 
 
 /**
@@ -41,7 +45,7 @@ export class OryTreeNode implements TreeNode {
   icon?: any;
   expandedIcon?: any;
   collapsedIcon?: any;
-  children?: OryTreeNode[] = [];
+  children: OryTreeNode[] = [];
   leaf?: boolean;
   expanded?: boolean;
   type?: string;
@@ -263,7 +267,7 @@ export class OryTreeNode implements TreeNode {
     return {title: OryTreeNode.INITIAL_TITLE}
   }
 
-  getChildAtIndexOrNull(index: number): OryTreeNode {
+  getChildAtIndexOrNull(index: number): OryTreeNode | null {
     if ( this.isIndexPresent(index) ) {
       return this.children[index]
     } else {
@@ -291,40 +295,47 @@ export class OryTreeNode implements TreeNode {
 
     const nodeBelow = afterExistingNode && afterExistingNode.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
-    const previousOrderNumber = afterExistingNode && afterExistingNode.nodeInclusion.orderNum;
-    // console.log('addChild: previousOrderNumber', previousOrderNumber)
-    const nextOrderNumber = nodeBelow && nodeBelow.nodeInclusion.orderNum
-    // console.log('addChild: nextOrderNumber', nextOrderNumber)
-    const newOrderNumber = DbTreeService.calculateNewOrderNumber(previousOrderNumber, nextOrderNumber) /* FIXME: this is implementation detail that should be delegated to DB impl; but there should be util func independent from Firestore */
-    // console.log('addChild: newOrderNumber', newOrderNumber)
-    const nodeInclusion: NodeInclusion = new NodeInclusion(newOrderNumber, generateNewInclusionId())
+    const nodeInclusion: NodeInclusion = new NodeInclusion(generateNewInclusionId())
+
+    this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
+      {
+        inclusionBefore: afterExistingNode && afterExistingNode.nodeInclusion,
+        inclusionAfter: nodeBelow && nodeBelow.nodeInclusion,
+      },
+      nodeInclusion,
+    )
     newNode.nodeInclusion = nodeInclusion
 
-    this.treeModel.treeService.addSiblingAfterNode(this, newNode, afterExistingNode, previousOrderNumber, newOrderNumber, nextOrderNumber)
+    this.treeModel.treeService.addChildNode(this, newNode)
 
     const newNodeIndex = afterExistingNode ? afterExistingNode.getIndexInParent() + 1 : 0
     this._appendChildAndSetThisAsParent(newNode, newNodeIndex) // this is to avoid delay caused by Firestore; for UX
     return newNode
   }
 
-  addAssociationsHere(nodes: OryTreeNode[]) {
+  addAssociationsHere(nodes: OryTreeNode[], beforeNode: OryTreeNode | undefined) {
+    // TODO: use beforeNode
     FIXME('addAssociationsHere not impl')
     for ( const nodeToAssociate of nodes ) {
-      const newInclusion = new NodeInclusion(99999/*FIXME*/, generateNewInclusionId())
+      const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId())
       const newNode = new OryTreeNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData)
       // this.treeModel.treeService.addSiblingAfterNode(this.lastChildNode, )
     }
   }
 
-  moveInclusionsHere(nodes: OryTreeNode[]) {
+  moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode }) {
     FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
     for ( const nodeToAssociate of nodes ) {
+      // this.
       this.treeModel.treeService.patchChildInclusionDataWithNewParent(
         nodeToAssociate.nodeInclusion.nodeInclusionId,
-        this
+        this,
+        beforeNode
+        // TODO: use beforeNode
         /* FIXME: new order num; need to pass beforeNode to this func (in case of drag&drop), but optional and its absence meaning last child */
 
       )
+      this._appendChildAndSetThisAsParent(nodeToAssociate, beforeNode.beforeNode /* FIXME: check for undefined*/.getIndexInParent())
     }
   }
 
@@ -333,17 +344,6 @@ export class OryTreeNode implements TreeNode {
     this.parent2.removeChild(this)
   }
 
-  findInsertionIndexForNewOrderNum(newOrderNum: number): number {
-    let foundIndex = this.children.findIndex((node) => {
-      const existingOrderNum = node.nodeInclusion.orderNum
-      return existingOrderNum > newOrderNum
-    })
-    if ( foundIndex < 0 ) {
-      // newIndex is higher than any existing
-      foundIndex = this.children.length
-    }
-    return foundIndex
-  }
 
   patchItemData(itemData: any) {
     this.treeModel.treeService.patchItemData(this.itemId, itemData)
@@ -352,37 +352,40 @@ export class OryTreeNode implements TreeNode {
   reorderUp() {
     // TODO: if topmost, reorder to last
     // TODO: if topmost, reorder to last item in this plan or to previous plan
-    const newOrderNum = DbTreeService.calculateNewOrderNumber(
-      this.getSiblingNodeAboveThis() &&
-      this.getSiblingNodeAboveThis().getSiblingNodeAboveThis() &&
-      this.getSiblingNodeAboveThis().getSiblingNodeAboveThis().nodeInclusion.orderNum,
-      this.getSiblingNodeAboveThis() &&
-      this.getSiblingNodeAboveThis().nodeInclusion.orderNum
-    )
-    this.reorderToOrderNum(newOrderNum)
+    this.reorder({
+      inclusionBefore:
+        this.getSiblingNodeAboveThis() &&
+        this.getSiblingNodeAboveThis().getSiblingNodeAboveThis() &&
+        this.getSiblingNodeAboveThis().getSiblingNodeAboveThis().nodeInclusion,
+      inclusionAfter:
+        this.getSiblingNodeAboveThis() &&
+        this.getSiblingNodeAboveThis().nodeInclusion
+    })
   }
 
   reorderDown() {
     // TODO: if bottommost, reorder to topmost
-    const newOrderNum = DbTreeService.calculateNewOrderNumber(
-      this.getSiblingNodeBelowThis() &&
-      this.getSiblingNodeBelowThis().nodeInclusion.orderNum,
-      this.getSiblingNodeBelowThis() &&
-      this.getSiblingNodeBelowThis().getSiblingNodeBelowThis() &&
-      this.getSiblingNodeBelowThis().getSiblingNodeBelowThis().nodeInclusion.orderNum
-    )
-    this.reorderToOrderNum(newOrderNum)
+    this.reorder({
+      inclusionBefore:
+        this.getSiblingNodeBelowThis() &&
+        this.getSiblingNodeBelowThis().nodeInclusion,
+      inclusionAfter:
+        this.getSiblingNodeBelowThis() &&
+        this.getSiblingNodeBelowThis().getSiblingNodeBelowThis() &&
+        this.getSiblingNodeBelowThis().getSiblingNodeBelowThis().nodeInclusion
+    })
   }
 
-  private reorderToOrderNum(newOrderNum) {
-    debugLog('newOrderNum', newOrderNum)
-    debugLog('this.parent2', this.parent2)
+  reorder(order: NodeOrderInfo) {
+    debugLog('reorder order, this.parent2', order, this.parent2)
+    // TODO: replace patch with set due to problems with "no document to set" after quickly reordering after creating
+    const inclusion = this.nodeInclusion
+    this.treeModel.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
+    // TODO: reorder locally to avoid UI lag
     this.treeModel.treeService.patchChildInclusionData(
       this.parent2.itemId,
       this.nodeInclusion.nodeInclusionId,
-      {
-        orderNum: newOrderNum,
-      },
+      inclusion,
     )
   }
 
@@ -494,6 +497,11 @@ export class OryTreeNode implements TreeNode {
     this.treeModel.navigation.navigateInto(this)
   }
 
+  findInsertionIndexForNewInclusion(newInclusion: NodeInclusion): number {
+    return this.treeModel.nodeOrderer.findInsertionIndexForNewInclusion<OryTreeNode>(this.children, newInclusion, node => {
+      return node.nodeInclusion
+    })
+  }
 }
 
 export abstract class OryTreeListener {
@@ -525,6 +533,8 @@ export class TreeModel {
 
   root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
 
+  nodeOrderer = new NodeOrderer()
+
   /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
   isRootShown = false
 
@@ -540,7 +550,7 @@ export class TreeModel {
       this.visualRoot = node
       this.treeModel.isRootShown = node !== this.treeModel.root
       node.expanded = true
-      //this.treeModel.focus.setFocused(node, )
+      // this.treeModel.focus.setFocused(node, )
       // TODO: set focused
       this.visualRoot$.next(this.visualRoot)
     }
@@ -620,8 +630,7 @@ export class TreeModel {
             console.log('onNodeAdded: no parent', event.immediateParentId)
           } else {
             for (const parentNode of parentNodes) {
-              const newOrderNum = event.nodeInclusion.orderNum
-              let insertBeforeIndex = parentNode.findInsertionIndexForNewOrderNum(newOrderNum)
+              let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
 
               const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
@@ -642,7 +651,7 @@ export class TreeModel {
       node.parent2.removeChild(node)
       const newParents = this.mapItemIdToNode.get(newParentItemId)
       // FIXME: need to create new node instead of moving existing
-      if ( newParents.length > 1 ) {
+      if ( newParents && newParents.length > 1 ) {
         window.alert('FIXME: moving node and there are multiple new parents - not yet impl.!')
       }
       for ( const newParent of newParents ) {
@@ -651,6 +660,7 @@ export class TreeModel {
     } else {
       node.nodeInclusion = nodeInclusionData
       // re-sort:
+      // TODO: delegate to NodeOrderer; could use findInsertionIndexForNewInclusion after removing the child
       node.parent2.children = sortBy(node.parent2.children, item => item.nodeInclusion.orderNum)
       this.treeListener.onAfterReorder()
     }

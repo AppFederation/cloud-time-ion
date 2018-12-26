@@ -354,10 +354,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   reorderUp(event) {
+    event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
     this.treeNode.reorderUp()
   }
 
   reorderDown(event) {
+    event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
     this.treeNode.reorderDown()
   }
 
@@ -455,7 +457,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   indentDecrease($event) {
     const newParent = this.treeNode.parent2.parent2
     if ( newParent ) {
-      newParent.moveInclusionsHere([this.treeNode])
+      newParent.moveInclusionsHere([this.treeNode], {beforeNode: this.treeNode.parent2.getSiblingNodeBelowThis()})
       this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
     }
   }
@@ -463,7 +465,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   indentIncrease($event) {
     const siblingNodeAboveThis = this.treeNode.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
-      siblingNodeAboveThis.moveInclusionsHere([this.treeNode])
+      siblingNodeAboveThis.moveInclusionsHere([this.treeNode], {beforeNode: undefined})
       this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
     }
   }

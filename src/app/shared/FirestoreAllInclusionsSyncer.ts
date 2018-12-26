@@ -143,7 +143,8 @@ export class FirestoreAllInclusionsSyncer {
 
   patchChildInclusionDataWithNewParent(itemInclusionId: string, newParentItem: DocumentReference) {
     this.docByInclusionId(itemInclusionId).update({
-      parentNode: newParentItem
+      parentNode: newParentItem,
+      orderNum: 0 /*FIXME for changing parent */
     })
   }
 }

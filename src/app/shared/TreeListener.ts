@@ -6,7 +6,6 @@ export class NodeInclusion {
   constructor(
     // public orderThisBeforeId,
     // public orderThisAfterId,
-    public orderNum: number,
     public nodeInclusionId: string,
   ) {}
 }

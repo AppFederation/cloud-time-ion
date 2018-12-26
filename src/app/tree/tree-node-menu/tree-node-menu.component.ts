@@ -71,10 +71,10 @@ export class TreeNodeMenuComponent implements OnInit {
   }
 
   pasteCopyHereFromClipboard() {
-    this.treeNode.addAssociationsHere(this.clipboardService.nodesInClipboard)
+    this.treeNode.addAssociationsHere(this.clipboardService.nodesInClipboard, undefined)
   }
 
   pasteMoveHereFromClipboard() {
-    this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard)
+    this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard, {beforeNode: undefined})
   }
 }
