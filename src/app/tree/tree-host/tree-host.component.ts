@@ -73,7 +73,7 @@ export class TreeHostComponent implements OnInit {
     this.treeModel = this.treeService.getRootTreeModel()
     const thisComponent = this
     this.treeModel.treeListener = {
-      onAfterReorder() {
+      onAfterNodeMoved() {
         thisComponent.reFocusLastFocused()
       }
     }

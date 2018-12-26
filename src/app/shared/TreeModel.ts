@@ -6,7 +6,6 @@ import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'
 import {isNullOrUndefined} from 'util'
 import {defined, nullOrUndef} from './utils'
-import {sortBy} from 'lodash';
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree/OryColumn'
 import { FIXME } from './log'
@@ -505,7 +504,7 @@ export class OryTreeNode implements TreeNode {
 }
 
 export abstract class OryTreeListener {
-  abstract onAfterReorder()
+  abstract onAfterNodeMoved()
 }
 
 export class TreeCell {
@@ -646,7 +645,7 @@ export class TreeModel {
   onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
     // if ( nodeInclusionData.parentNode)
     const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
-    if ( node.parent2.itemId !== newParentItemId ) {
+    // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
       node.parent2.removeChild(node)
       const newParents = this.mapItemIdToNode.get(newParentItemId)
@@ -655,15 +654,19 @@ export class TreeModel {
         window.alert('FIXME: moving node and there are multiple new parents - not yet impl.!')
       }
       for ( const newParent of newParents ) {
-        newParent._appendChildAndSetThisAsParent(node)
+        const insertionIndex = node.parent2.findInsertionIndexForNewInclusion(nodeInclusionData)
+
+        newParent._appendChildAndSetThisAsParent(node, insertionIndex)
       }
-    } else {
       node.nodeInclusion = nodeInclusionData
-      // re-sort:
-      // TODO: delegate to NodeOrderer; could use findInsertionIndexForNewInclusion after removing the child
-      node.parent2.children = sortBy(node.parent2.children, item => item.nodeInclusion.orderNum)
-      this.treeListener.onAfterReorder()
-    }
+
+    // } else { /* same parent */
+    //   node.nodeInclusion = nodeInclusionData
+    //   const insertionIndex = node.parent2.findInsertionIndexForNewInclusion(node.nodeInclusion)
+    //   node.parent2.children.splice(insertionIndex, 0, node)
+    //   // node.parent2.children = sortBy(node.parent2.children, item => item.nodeInclusion.orderNum)
+      this.treeListener.onAfterNodeMoved()
+    // }
   }
 
   // addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode) {

@@ -19,7 +19,7 @@ export class TreeService {
   getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeModel {
     // const componentThis = this
     const treeModel = new TreeModel(this.dbTreeService, {
-      onAfterReorder() {
+      onAfterNodeMoved() {
 
       }
     })
