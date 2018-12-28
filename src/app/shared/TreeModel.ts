@@ -628,7 +628,9 @@ export class TreeModel {
     /* TODO Rename to dbTreeService */
     public treeService: DbTreeService,
     public treeListener: OryTreeListener,
-  ) {}
+  ) {
+    this.addNodeToMapByItemId(this.root)
+  }
 
   onNodeAdded(event: NodeAddEvent) {
     debugLog('onNodeAdded', event)
@@ -652,7 +654,7 @@ export class TreeModel {
 
       } else {
         if ( ! event.itemData.deleted || this.showDeleted ) {
-          const parentNodes = event.immediateParentId === this.treeService.HARDCODED_ROOT_NODE_ITEM_ID ? [this.root] : this.mapItemIdToNode.get(event.immediateParentId)
+          const parentNodes = this.mapItemIdToNode.get(event.immediateParentId)
           if ( ! parentNodes ) {
             console.log('onNodeAdded: no parent', event.immediateParentId)
           } else {
@@ -711,6 +713,10 @@ export class TreeModel {
     // NOTE: this should register nodeInclusion id
 
     this.mapNodeInclusionIdToNode.set(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
+    this.addNodeToMapByItemId(nodeToRegister)
+  }
+
+  private addNodeToMapByItemId(nodeToRegister: OryTreeNode) {
     this.mapItemIdToNode.add(nodeToRegister.itemId, nodeToRegister)
   }
 
