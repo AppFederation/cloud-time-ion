@@ -324,10 +324,14 @@ export class OryTreeNode implements TreeNode {
 
   /* This could/should probably be unified with reorder code */
   moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode }) {
-    FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
+    // FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
     for ( const nodeToAssociate of nodes ) {
       const nodeAfter = beforeNode && beforeNode.beforeNode
-      const nodeBefore = nodeAfter && nodeAfter.getSiblingNodeAboveThis()
+      let nodeBefore = nodeAfter && nodeAfter.getSiblingNodeAboveThis()
+      if ( ! nodeAfter && ! nodeBefore ) {
+        // both nodeAfter and nodeBefore can become falsy, causing order == 0
+        nodeBefore = this.lastChildNode
+      }
       const inclusionToModify = nodeToAssociate.nodeInclusion
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
@@ -342,7 +346,7 @@ export class OryTreeNode implements TreeNode {
         inclusionToModify
       )
       nodeToAssociate.parent2._removeChild(nodeToAssociate)
-      const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : 0
+      const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : this.children.length
       this._appendChildAndSetThisAsParent(nodeToAssociate, insertionIndex)
     }
   }
