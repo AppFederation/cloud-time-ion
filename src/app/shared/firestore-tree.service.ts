@@ -174,18 +174,23 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/,
-                                   childNode: OryTreeNode, childItemDocRef: DocumentReference
+                                   childItemDocRef: DocumentReference
   ) {
-    const nodeInclusionFirebaseObject: FirestoreNodeInclusion = {
-      // childNode: this.itemDocById(childNode.dbId),
-      childNode: childItemDocRef,
-      // orderNum: nodeInclusion.orderNum,
-      nodeInclusionId: nodeInclusion.nodeInclusionId /* this can be removed later before serializing, to save space; this can be inferred from firestore document id; it's a bit like $key */
-    }
-    Object.assign(nodeInclusionFirebaseObject, nodeInclusion) // note: this will set orderNum
+    const nodeInclusionFirebaseObject = this.buildNodeInclusionFirebaseObject(childItemDocRef, nodeInclusion)
     // this.subNodesCollectionForItem(parentId).add(nodeInclusionFirebaseObject)
     // this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion.nodeInclusionId, parentId, nodeInclusionFirebaseObject)
     this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion, parentId, this.itemDocById(parentId), nodeInclusionFirebaseObject)
+  }
+
+  private buildNodeInclusionFirebaseObject(childItemDocRef: DocumentReference, nodeInclusion: NodeInclusion) {
+    const nodeInclusionFirebasePart: FirestoreNodeInclusion = {
+      // childNode: this.itemDocById(childNode.dbId),
+      childNode: childItemDocRef,
+      // orderNum: nodeInclusion.orderNum,
+      nodeInclusionId: nodeInclusion.nodeInclusionId, /* this can be removed later before serializing, to save space; this can be inferred from firestore document id; it's a bit like $key */
+    }
+    const nodeInclusionFirebaseObject = Object.assign({}, nodeInclusion, nodeInclusionFirebasePart) // note: this will set orderNum
+    return nodeInclusionFirebaseObject
   }
 
 // TODO:
@@ -212,7 +217,7 @@ export class FirestoreTreeService extends DbTreeService {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
-      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, newNode, itemDocRef)
+      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, itemDocRef)
     })
     // add node-inclusion to firestore
     // ignore parent for now? But then how do we specify node-inclusion / order?
@@ -239,12 +244,15 @@ export class FirestoreTreeService extends DbTreeService {
     return this.itemDocById(itemId).update(itemData)
   }
 
-  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
+  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any, childItemId: string) {
+    // FIXME: this should build the whole inclusion object and use .set instead of .update
     debugLog('patchChildInclusionData', arguments)
-    const inclusionRawObject = {} as any // Firestore wants object, does not accept instance of NodeInclusion
-    Object.assign(inclusionRawObject, itemInclusionData)
-    inclusionRawObject.parentNode = this.itemDocById(parentItemId)
-    this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, inclusionRawObject)
+    // in order to work around the "no document to update" issue, we use the same function as for adding new inclusions:
+    this.addNodeInclusionToParent(parentItemId, itemInclusionData, this.itemDocById(childItemId))
+    // const inclusionRawObject = {} as any // Firestore wants object, does not accept instance of NodeInclusion
+    // Object.assign(inclusionRawObject, itemInclusionData)
+    // inclusionRawObject.parentNode = this.itemDocById(parentItemId)
+    // this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, inclusionRawObject)
   }
 
 //   patchChildInclusionDataWithNewParent(

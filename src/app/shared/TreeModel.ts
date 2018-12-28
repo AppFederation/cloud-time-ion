@@ -325,14 +325,14 @@ export class OryTreeNode implements TreeNode {
   /* This could/should probably be unified with reorder code */
   moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode }) {
     // FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
-    for ( const nodeToAssociate of nodes ) {
+    for ( const childNodeToAssociate of nodes ) {
       const nodeAfter = beforeNode && beforeNode.beforeNode
       let nodeBefore = nodeAfter && nodeAfter.getSiblingNodeAboveThis()
       if ( ! nodeAfter && ! nodeBefore ) {
         // both nodeAfter and nodeBefore can become falsy, causing order == 0
         nodeBefore = this.lastChildNode
       }
-      const inclusionToModify = nodeToAssociate.nodeInclusion
+      const inclusionToModify = childNodeToAssociate.nodeInclusion
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
           inclusionBefore: nodeBefore && nodeBefore.nodeInclusion,
@@ -343,11 +343,12 @@ export class OryTreeNode implements TreeNode {
       this.treeModel.treeService.patchChildInclusionData(
         /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
         inclusionToModify.nodeInclusionId,
-        inclusionToModify
+        inclusionToModify,
+        childNodeToAssociate.itemId
       )
-      nodeToAssociate.parent2._removeChild(nodeToAssociate)
+      childNodeToAssociate.parent2._removeChild(childNodeToAssociate)
       const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : this.children.length
-      this._appendChildAndSetThisAsParent(nodeToAssociate, insertionIndex)
+      this._appendChildAndSetThisAsParent(childNodeToAssociate, insertionIndex)
     }
   }
 
@@ -389,14 +390,15 @@ export class OryTreeNode implements TreeNode {
 
   reorder(order: NodeOrderInfo) {
     debugLog('reorder order, this.parent2', order, this.parent2)
-    // TODO: replace patch with set due to problems with "no document to set" after quickly reordering after creating
+    // TODO: replace patch with set due to problems with "no document to update" after quickly reordering/indenting after creating
     const inclusion = this.nodeInclusion
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
-    // TODO: reorder locally to avoid UI lag
+    // TODO: reorder locally to avoid UI lag, e.g. when quickly reordering up/down and perhaps will remove keyboard appearing/disappearing on android
     this.treeModel.treeService.patchChildInclusionData(
       this.parent2.itemId,
       this.nodeInclusion.nodeInclusionId,
       inclusion,
+      this.itemId
     )
   }
 
@@ -631,6 +633,9 @@ export class TreeModel {
   ) {
     this.addNodeToMapByItemId(this.root)
   }
+
+  /* TODO: unify onNodeAdded, onNodeInclusionModified; from OryTreeNode: moveInclusionsHere, addAssociationsHere, addChild, _appendChildAndSetThisAsParent,
+   * reorder(). In general unify reordering with moving/copying inclusions and adding nodes */
 
   onNodeAdded(event: NodeAddEvent) {
     debugLog('onNodeAdded', event)
