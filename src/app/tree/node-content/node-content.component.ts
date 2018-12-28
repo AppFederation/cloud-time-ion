@@ -249,7 +249,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.addChildToDb()
   }
 
-  private focusNewlyCreatedNode(newTreeNode) {
+  private focusNewlyCreatedNode(newTreeNode: OryTreeNode) {
     setTimeout(() => {
       this.treeHost.focusNode(newTreeNode)
     })
@@ -327,7 +327,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onColumnFocused(column: OryColumn, event) {
     this.focusedColumn = column
-    this.treeHost.treeModel.focus.setFocused(this.treeNode, column)
+    this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }
 
   onChangeEstimatedTime() {
@@ -455,18 +455,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   indentDecrease($event) {
-    const newParent = this.treeNode.parent2.parent2
-    if ( newParent ) {
-      newParent.moveInclusionsHere([this.treeNode], {beforeNode: this.treeNode.parent2.getSiblingNodeBelowThis()})
-      this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
-    }
+    $event.preventDefault()
+    this.treeNode.indentDecrease()
+    this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 
   indentIncrease($event) {
-    const siblingNodeAboveThis = this.treeNode.getSiblingNodeAboveThis()
-    if ( siblingNodeAboveThis ) {
-      siblingNodeAboveThis.moveInclusionsHere([this.treeNode], {beforeNode: undefined})
-      this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
-    }
+    $event.preventDefault()
+    this.treeNode.indentIncrease()
+    this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 }

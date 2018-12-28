@@ -17,9 +17,9 @@ export abstract class DbTreeService {
 
   abstract patchItemData(itemId: string, itemData: any)
 
-  abstract patchChildInclusionData(itemId: string, itemInclusionId: string, itemInclusionData: any)
+  abstract patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any)
 
-  abstract patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode, beforeNode: { beforeNode: OryTreeNode })
+  // abstract patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode)
 
   abstract deleteWithoutConfirmation(itemId: string)
 

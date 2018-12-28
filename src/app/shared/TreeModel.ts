@@ -102,7 +102,7 @@ export class OryTreeNode implements TreeNode {
 
   }(this)
 
-  removeChild(nodeToRemove: OryTreeNode) {
+  _removeChild(nodeToRemove: OryTreeNode) {
     this.children = this.children.filter(node => node !== nodeToRemove)
   }
 
@@ -294,7 +294,7 @@ export class OryTreeNode implements TreeNode {
 
     const nodeBelow = afterExistingNode && afterExistingNode.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
-    const nodeInclusion: NodeInclusion = new NodeInclusion(generateNewInclusionId())
+    const nodeInclusion: NodeInclusion = newNode.nodeInclusion || new NodeInclusion(generateNewInclusionId())
 
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
       {
@@ -322,27 +322,35 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
+  /* This could/should probably be unified with reorder code */
   moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode }) {
     FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
     for ( const nodeToAssociate of nodes ) {
-      // this.
-      this.treeModel.treeService.patchChildInclusionDataWithNewParent(
-        nodeToAssociate.nodeInclusion.nodeInclusionId,
-        this,
-        beforeNode
-        // TODO: use beforeNode
-        /* FIXME: new order num; need to pass beforeNode to this func (in case of drag&drop), but optional and its absence meaning last child */
-
+      const nodeAfter = beforeNode && beforeNode.beforeNode
+      const nodeBefore = nodeAfter && nodeAfter.getSiblingNodeAboveThis()
+      const inclusionToModify = nodeToAssociate.nodeInclusion
+      this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
+        {
+          inclusionBefore: nodeBefore && nodeBefore.nodeInclusion,
+          inclusionAfter: nodeAfter && nodeAfter.nodeInclusion,
+        },
+        inclusionToModify
       )
-      this._appendChildAndSetThisAsParent(nodeToAssociate, beforeNode.beforeNode /* FIXME: check for undefined*/.getIndexInParent())
+      this.treeModel.treeService.patchChildInclusionData(
+        /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
+        inclusionToModify.nodeInclusionId,
+        inclusionToModify
+      )
+      nodeToAssociate.parent2._removeChild(nodeToAssociate)
+      const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : 0
+      this._appendChildAndSetThisAsParent(nodeToAssociate, insertionIndex)
     }
   }
 
   deleteWithoutConfirmation() {
     this.treeModel.treeService.deleteWithoutConfirmation(this.itemId)
-    this.parent2.removeChild(this)
+    this.parent2._removeChild(this)
   }
-
 
   patchItemData(itemData: any) {
     this.treeModel.treeService.patchItemData(this.itemId, itemData)
@@ -501,6 +509,20 @@ export class OryTreeNode implements TreeNode {
       return node.nodeInclusion
     })
   }
+
+  indentDecrease() {
+    const newParent = this.parent2.parent2
+    if ( newParent ) {
+      newParent.moveInclusionsHere([this], {beforeNode: this.parent2.getSiblingNodeBelowThis()})
+    }
+  }
+
+  indentIncrease() {
+    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
+    if ( siblingNodeAboveThis ) {
+      siblingNodeAboveThis.moveInclusionsHere([this], {beforeNode: undefined})
+    }
+  }
 }
 
 export abstract class OryTreeListener {
@@ -586,9 +608,10 @@ export class TreeModel {
       return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
     }
 
-    setFocused(treeNode: OryTreeNode, column: OryColumn) {
+    ensureNodeVisibleAndFocusIt(treeNode: OryTreeNode, column: OryColumn) {
       this.lastFocusedNode = treeNode
       this.lastFocusedColumn = column
+      treeNode.expansion.setExpansionOnParentsRecursively(true)
       this.focus$.emit(new FocusEvent(this.lastFocusedCell))
     }
   }
@@ -598,6 +621,7 @@ export class TreeModel {
 
 
   constructor(
+    /* TODO Rename to dbTreeService */
     public treeService: DbTreeService,
     public treeListener: OryTreeListener,
   ) {}
@@ -642,19 +666,23 @@ export class TreeModel {
     }
   }
 
+  /* Can unify this with moveInclusionsHere() */
   onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
+    // TODO: ensure this same code is executed locally immediately after reorder/move, without waiting for DB
     // if ( nodeInclusionData.parentNode)
     const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
     // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
-      node.parent2.removeChild(node)
+      node.parent2._removeChild(node)
       const newParents = this.mapItemIdToNode.get(newParentItemId)
       // FIXME: need to create new node instead of moving existing
+      debugLog('onNodeInclusionModified newParents.length', newParents.length)
       if ( newParents && newParents.length > 1 ) {
-        window.alert('FIXME: moving node and there are multiple new parents - not yet impl.!')
+        debugLog('FIXME: onNodeInclusionModified moving node and there are multiple new parents - not yet impl.! newParents', newParents, 'length', newParents.length)
+        window.alert('FIXME: onNodeInclusionModified moving node and there are multiple new parents - not yet impl.!')
       }
       for ( const newParent of newParents ) {
-        const insertionIndex = node.parent2.findInsertionIndexForNewInclusion(nodeInclusionData)
+        const insertionIndex = newParent.findInsertionIndexForNewInclusion(nodeInclusionData)
 
         newParent._appendChildAndSetThisAsParent(node, insertionIndex)
       }

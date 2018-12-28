@@ -169,13 +169,6 @@ export class FirestoreTreeService extends DbTreeService {
     return db.collection(this.ITEMS_COLLECTION)
   }
 
-  moveNode(dbId: string, dbId2: string) {
-    this.itemDocById(dbId2).collection('subNodes').add({
-      node: this.itemDocById(dbId)
-    })
-    // db.collection(this.node)
-  }
-
   private itemDocById(dbId: string): DocumentReference {
     return this.itemsCollection().doc(dbId)
   }
@@ -248,28 +241,27 @@ export class FirestoreTreeService extends DbTreeService {
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
     debugLog('patchChildInclusionData', arguments)
-    const inclusionRawObject = {} // Firestore wants object
+    const inclusionRawObject = {} as any // Firestore wants object, does not accept instance of NodeInclusion
     Object.assign(inclusionRawObject, itemInclusionData)
-
+    inclusionRawObject.parentNode = this.itemDocById(parentItemId)
     this.dbInclusionsSyncer.patchChildInclusionData(parentItemId, itemInclusionId, inclusionRawObject)
-    // return this.subNodesCollectionForItem(parentItemId).doc(itemInclusionId).update(itemInclusionData)
   }
 
-  patchChildInclusionDataWithNewParent(
-    nodeInclusionId: string,
-    newParentNode: OryTreeNode,
-    // beforeNode: { beforeNode: OryTreeNode },
-    // order: {
-    //   inclusionBefore ? : NodeInclusion,
-    //   inclusionAfter ? : NodeInclusion,
-    // }
-  ) {
-    // NOTE: this needs to be done in TreeModel/OryTreeNode anyway, because we add to UI immediately, not waiting for DB:
-    // this.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
-
-    this.dbInclusionsSyncer.patchChildInclusionDataWithNewParent(
-      nodeInclusionId, this.itemDocById(newParentNode.itemId),
-    )
-  }
-
+//   patchChildInclusionDataWithNewParent(
+//     nodeInclusionId: string,
+//     newParentNode: OryTreeNode,
+//     // beforeNode: { beforeNode: OryTreeNode },
+//     // order: {
+//     //   inclusionBefore ? : NodeInclusion,
+//     //   inclusionAfter ? : NodeInclusion,
+//     // }
+//   ) {
+//     // NOTE: this needs to be done in TreeModel/OryTreeNode anyway, because we add to UI immediately, not waiting for DB:
+//     // this.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
+//
+//     this.dbInclusionsSyncer.patchChildInclusionDataWithNewParent(
+//       nodeInclusionId, this.itemDocById(newParentNode.itemId),
+//     )
+//   }
+//
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FirestoreTreeService} from '../../shared/firestore-tree.service'
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../shared/tree.service'
 import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
@@ -227,7 +226,7 @@ export class TreeHostComponent implements OnInit {
     setTimeout(() => {
       const component: NodeContentComponent = this.getComponentForNode(node)
       component.focus(column)
-      this.treeModel.focus.setFocused(node, column)
+      this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column)
     })
   }
 
