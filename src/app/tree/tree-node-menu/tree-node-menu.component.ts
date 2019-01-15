@@ -77,4 +77,12 @@ export class TreeNodeMenuComponent implements OnInit {
   pasteMoveHereFromClipboard() {
     this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard, {beforeNode: undefined})
   }
+
+  getWhenCreated() {
+    let whenCreated = this.treeNode.itemData.whenCreated
+    if ( whenCreated ) {
+      whenCreated = whenCreated.toDate() // TODO: move this to FirestoreTimeStamper::onAfterLoadFromDb
+    }
+    return whenCreated
+  }
 }
