@@ -362,30 +362,38 @@ export class OryTreeNode implements TreeNode {
   }
 
   reorderUp() {
-    // TODO: if topmost, reorder to last
     // TODO: if topmost, reorder to last item in this plan or to previous plan
-    this.reorder({
+    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
+    const order = siblingNodeAboveThis ? {
       inclusionBefore:
-        this.getSiblingNodeAboveThis() &&
-        this.getSiblingNodeAboveThis().getSiblingNodeAboveThis() &&
-        this.getSiblingNodeAboveThis().getSiblingNodeAboveThis().nodeInclusion,
+        siblingNodeAboveThis &&
+        siblingNodeAboveThis.getSiblingNodeAboveThis() &&
+        siblingNodeAboveThis.getSiblingNodeAboveThis().nodeInclusion,
       inclusionAfter:
-        this.getSiblingNodeAboveThis() &&
-        this.getSiblingNodeAboveThis().nodeInclusion
-    })
+        siblingNodeAboveThis &&
+        siblingNodeAboveThis.nodeInclusion
+    } : { // wrap-around to last
+      inclusionBefore: this.parent2.lastChildNode.nodeInclusion,
+      inclusionAfter: null
+    }
+    this.reorder(order)
   }
 
   reorderDown() {
-    // TODO: if bottommost, reorder to topmost
-    this.reorder({
+    const siblingNodeBelowThis = this.getSiblingNodeBelowThis()
+    const order = siblingNodeBelowThis ? {
       inclusionBefore:
-        this.getSiblingNodeBelowThis() &&
-        this.getSiblingNodeBelowThis().nodeInclusion,
+        siblingNodeBelowThis &&
+        siblingNodeBelowThis.nodeInclusion,
       inclusionAfter:
-        this.getSiblingNodeBelowThis() &&
-        this.getSiblingNodeBelowThis().getSiblingNodeBelowThis() &&
-        this.getSiblingNodeBelowThis().getSiblingNodeBelowThis().nodeInclusion
-    })
+        siblingNodeBelowThis &&
+        siblingNodeBelowThis.getSiblingNodeBelowThis() &&
+        siblingNodeBelowThis.getSiblingNodeBelowThis().nodeInclusion
+    } : { // wrap-around to first
+      inclusionBefore: null,
+      inclusionAfter: this.parent2.children[0].nodeInclusion
+    }
+    this.reorder(order)
   }
 
   reorder(order: NodeOrderInfo) {
