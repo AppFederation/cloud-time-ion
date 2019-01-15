@@ -1,6 +1,9 @@
 import {TreeNode} from 'primeng/primeng'
 import {NodeAddEvent, NodeInclusion} from './TreeListener'
-import {debugLog} from './log'
+import {
+  debugLog,
+  errorAlert,
+} from './log'
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'

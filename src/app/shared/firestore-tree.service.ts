@@ -19,6 +19,7 @@ import { FIXME } from './log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from './children-changes-event'
 import { NodeOrderer } from './node-orderer'
+import { TimeStamper } from './TimeStamper'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -54,7 +55,7 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'DbWithAllInclusionsSyncer2'
+  static dbPrefix = 'DbWithAllInclusionsSyncer2_test_'
 
   pendingListeners = 0
 
@@ -64,6 +65,7 @@ export class FirestoreTreeService extends DbTreeService {
   dbItemsLoader = new FirestoreAllItemsLoader()
   dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(db, FirestoreTreeService.dbPrefix)
   nodeOrderer = new NodeOrderer()
+  private timeStamper = new TimeStamper()
 
   constructor() {
     super()
@@ -212,7 +214,8 @@ export class FirestoreTreeService extends DbTreeService {
       // title: 'added node title ' + new Date()
       title: OryTreeNode.INITIAL_TITLE
     }
-
+    newNode.itemData = newItem // this was added while adding timestamps; FIXME: overwriting whatever might be there
+    this.timeStamper.onAfterCreated(newNode.itemData)
     this.itemsCollection().doc(newNode.itemId).set(newItem).then(() => {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
@@ -241,6 +244,8 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   patchItemData(itemId: string, itemData: any) {
+    this.timeStamper.onBeforeSaveToDb(itemData)
+
     return this.itemDocById(itemId).update(itemData)
   }
 
