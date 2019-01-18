@@ -242,4 +242,9 @@ export class TreeHostComponent implements OnInit {
   navigateToRoot($event) {
     this.treeModel.navigation.navigateToRoot()
   }
+
+  newNodeAtVisualRoot() {
+    const newTreeNode = this.treeModel.navigation.visualRoot.addChild()
+    this.focusNode(newTreeNode)
+  }
 }
