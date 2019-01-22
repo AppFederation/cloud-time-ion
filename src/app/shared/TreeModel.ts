@@ -453,7 +453,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   showEffectiveDuration() {
-    return this.timeLeftSum() !== 0
+    return this.timeLeftSum() !== 0 && ! this.isChildOfRoot
   }
 
   effectiveDurationText() {
