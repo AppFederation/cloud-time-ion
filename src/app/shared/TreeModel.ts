@@ -122,6 +122,10 @@ export class OryTreeNode implements TreeNode {
   }
 
   get isDayPlan() {
+    return this.parent2 && this.parent2.itemId === 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
+  }
+
+  get isChildOfRoot() {
     return ! (this.parent2 && this.parent2.parent2) // top-level node (our parent is the virtual root)
   }
 
