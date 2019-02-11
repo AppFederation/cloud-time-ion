@@ -247,4 +247,11 @@ export class TreeHostComponent implements OnInit {
     const newTreeNode = this.treeModel.navigation.visualRoot.addChild()
     this.focusNode(newTreeNode)
   }
+
+  planToday() {
+    this.commandsService.planToday()
+    const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
+    lastPlanNode.expansion.setExpansion(true, {recursive: false})
+    this.focusNode(lastPlanNode)
+  }
 }

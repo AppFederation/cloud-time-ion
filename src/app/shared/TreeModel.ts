@@ -7,7 +7,10 @@ import {
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'
-import {isNullOrUndefined} from 'util'
+import {
+  isNull,
+  isNullOrUndefined,
+} from 'util'
 import {defined, nullOrUndef} from './utils'
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree/OryColumn'
@@ -90,7 +93,12 @@ export class OryTreeNode implements TreeNode {
       })
     }
 
-    setExpansion(expansionState: boolean, recursive: boolean) {
+    setExpansion(expansionState: boolean, recursive: boolean | {recursive: boolean}) {
+      const recursiveAsOptions = (recursive as {recursive: boolean})
+      if ( recursiveAsOptions && ! isNullOrUndefined(recursiveAsOptions.recursive) ) {
+        recursive = recursiveAsOptions.recursive
+      }
+
       this.treeNode.expanded = expansionState
       if ( recursive ) {
         this.treeNode.children.forEach( (node: OryTreeNode) => {
@@ -746,4 +754,8 @@ export class TreeModel {
     return defined(existingNode)
   }
 
+  getNodesByItemId(itemId: string) {
+    const nodes: OryTreeNode[] = this.mapItemIdToNode.get(itemId)
+    return nodes
+  }
 }

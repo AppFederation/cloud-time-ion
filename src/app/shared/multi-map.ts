@@ -10,7 +10,8 @@ export class MultiMap<K, V> {
       coll = []
       this.map.set(key, coll)
     }
-    if ( ! coll.includes(val) ) {
+    if ( ! coll.includes(val) /* TODO: performance: this check has O(n) complexity,
+        therefore this function's usage could explode complexity to e.g O(n^2) or O(n*m) */ ) {
       coll.push(val)
     }
   }
