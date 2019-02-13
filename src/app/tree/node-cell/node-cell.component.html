@@ -1,17 +1,26 @@
-<input
-  #cellInput
-  maxlength="3"
+<div
   style="
+      border-radius: 3px;
+      background: #fbfbfb;
+      margin: .3em;
+  "
+>
+  <input
+    #cellInput
+    maxlength="3"
+    style="
       flex-basis: auto;
       width: 2.4em;
       text-align: right;
-      margin: .3em;
-      border-radius: 2px;
+      margin: 0;
+      border-radius: 3px;
       background: #f5f5f5;
       border: none;
       padding: 2px;
     "
->
-<ng-container *ngIf="showCalculatedValue">
-  <span style="color: lightgray">∑:</span>{{calculatedValue}}&nbsp;
-</ng-container>
+  >
+  <ng-container *ngIf="showCalculatedValue">
+    <span style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
+  </ng-container>
+
+</div>
