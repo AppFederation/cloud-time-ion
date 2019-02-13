@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 
@@ -19,10 +20,13 @@ export class NodeCellComponent implements OnInit {
   showCalculatedValue: boolean
 
   @Input()
-  cellInputChanged = new EventEmitter()
+  calculatedValue = ''
 
   @ViewChild('cellInput')
   cellInput: ElementRef
+
+  @Output()
+  cellInputChanged = new EventEmitter()
 
   /* for interim compatibility after extracting this component */
   nativeElement: any

@@ -62,8 +62,8 @@
 
   <app-node-cell
     #inputEstimatedTime
-    (cellInputChanged)="onInputChanged($event, columns.estimatedTime)"
     [hidden]="treeNode.isChildOfRoot"
+    (cellInputChanged)="onInputChanged($event, columns.estimatedTime)"
 
     [ngClass]="{'done-title': isDone}"
     (keydown.enter)="keyPressEnter($event)"
@@ -77,6 +77,7 @@
     (keydown.control.arrowright)="focusToDescription()"
 
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
+    [calculatedValue]="treeNode.effectiveDurationText()"
 
   ></app-node-cell> <!-- TODO: rename to #cellEstimatedTime-->
 
