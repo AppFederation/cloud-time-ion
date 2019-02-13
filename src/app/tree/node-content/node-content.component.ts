@@ -18,7 +18,10 @@ import {TreeHostComponent} from '../tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../shared/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
-import { isNullOrUndefined } from 'util'
+import {
+  debug,
+  isNullOrUndefined,
+} from 'util'
 import { DialogService } from '../../core/dialog.service'
 // import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
@@ -30,6 +33,7 @@ import { DebugService } from '../../core/debug.service'
 import 'hammerjs';
 import { debugLog } from '../../shared/log'
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
+import { NodeCellComponent } from '../node-cell/node-cell.component'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -106,7 +110,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() treeHost: TreeHostComponent
 
-  @ViewChild('inputEstimatedTime') elInputEstimatedTime: ElementRef;
+  @ViewChild('inputEstimatedTime') elInputEstimatedTime: NodeCellComponent
   @ViewChild('inputTitle') elInputTitle: ElementRef;
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
@@ -145,8 +149,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.registerNodeComponent(this)
     // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
 
-    this.elInputEstimatedTime
-      .nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev, this.columns.estimatedTime));
     this.elInputTitle
       .nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev, this.columns.title));
 
@@ -194,11 +196,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       debugLog('newEstimatedTime, ', newValue)
 
       const column = this.columns.estimatedTime
-      if (this.elInputEstimatedTime.nativeElement.value === newValue) {
+      if (this.elInputEstimatedTime.inputValueEquals(newValue)) {
         this.editedHere.set(column, false)
       } else {
         if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
-          this.elInputEstimatedTime.nativeElement.value = newValue
+          this.elInputEstimatedTime.setInputValue(newValue)
           // FIXME: note, this should also take focus into account
           // --> evolved to the when-last-edited idea
         }
@@ -326,6 +328,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onColumnFocused(column: OryColumn, event) {
+    debugLog('onColumnFocused', column)
     this.focusedColumn = column
     this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }

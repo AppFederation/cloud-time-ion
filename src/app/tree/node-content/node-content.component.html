@@ -60,34 +60,26 @@
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
 
-  <input
+  <app-node-cell
     #inputEstimatedTime
+    (cellInputChanged)="onInputChanged($event, columns.estimatedTime)"
     [hidden]="treeNode.isChildOfRoot"
-    maxlength="3"
-    style="
-      flex-basis: auto;
-      width: 2.4em;
-      text-align: right;
-      margin: .3em;
-      border-radius: 2px;
-      background: #f5f5f5;
-      border: none;
-      padding: 2px;
-    "
+
     [ngClass]="{'done-title': isDone}"
     (keydown.enter)="keyPressEnter($event)"
     (keydown.arrowup)="focusNodeAbove($event)"
     (keydown.arrowdown)="focusNodeBelow($event)"
-    (focus)="onColumnFocused(columns.estimatedTime, $event)"
+    (focusin)="onColumnFocused(columns.estimatedTime, $event)"
     (change)="onChangeEstimatedTime($event)"
     (keydown.arrowright)="focusToDescription()"
     (keydown.alt.arrowright)="focusToDescription()"
     (keydown.meta.arrowright)="focusToDescription()"
     (keydown.control.arrowright)="focusToDescription()"
-  >
-  <ng-container *ngIf="treeNode.showEffectiveDuration()">
-    <span style="color: lightgray">∑:</span>{{treeNode.effectiveDurationText()}}&nbsp;
-  </ng-container>
+
+    [showCalculatedValue]="treeNode.showEffectiveDuration()"
+
+  ></app-node-cell> <!-- TODO: rename to #cellEstimatedTime-->
+
 
   <div
     #inputTitle

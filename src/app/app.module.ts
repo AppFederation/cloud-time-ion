@@ -33,7 +33,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ItemClassIconComponent } from './tree/item-class-icon/item-class-icon.component';
 import { ConfirmDeleteTreeNodeComponent } from './tree/confirm-delete-tree-node/confirm-delete-tree-node.component';
 import { TreePageComponent } from './tree/tree-page/tree-page.component';
-import { MyHammerConfig } from './my-hammer-config'
+import { MyHammerConfig } from './my-hammer-config';
+import { NodeCellComponent } from './tree/node-cell/node-cell.component'
 library.add(fas);
 
 const appRoutes: Routes = [
@@ -81,6 +82,7 @@ const appRoutes: Routes = [
     ItemClassIconComponent,
     ConfirmDeleteTreeNodeComponent,
     TreePageComponent,
+    NodeCellComponent,
   ],
   imports: [
     BrowserModule,
