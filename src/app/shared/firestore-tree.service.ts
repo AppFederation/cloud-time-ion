@@ -64,7 +64,6 @@ export class FirestoreTreeService extends DbTreeService {
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
   dbItemsLoader = new FirestoreAllItemsLoader()
   dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(db, FirestoreTreeService.dbPrefix)
-  nodeOrderer = new NodeOrderer()
   private timeStamper = new TimeStamper()
 
   constructor() {
