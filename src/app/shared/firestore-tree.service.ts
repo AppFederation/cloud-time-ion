@@ -6,8 +6,8 @@ import {
 } from './TreeListener'
 import { OryTreeNode } from './TreeModel'
 import {
-  debugLog,
-  } from './log'
+  debugLog, errorAlert,
+} from './log'
 import * as firebase from 'firebase'
 import { DbTreeService } from './db-tree-service'
 import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
@@ -73,6 +73,8 @@ export class FirestoreTreeService extends DbTreeService {
       // window.alert('persistence enabled')
       this.dbItemsLoader.startQuery(this.itemsCollection())
       this.dbInclusionsSyncer.startQuery()
+    }).catch(() => {
+      errorAlert('enablePersistence error')
     })
     // this.listenToChanges(onSnapshotHandler)
   }
