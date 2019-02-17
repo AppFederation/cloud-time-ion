@@ -26,6 +26,7 @@ export class DbTreeMockService implements DbTreeService {
   addChildNode() {}
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
+    console.log('DbTreeMockService patchChildInclusionData', arguments)
     this.dbTreeListener.onNodeInclusionModified(itemInclusionId, itemInclusionData, parentItemId) /* ! WARNING: this causes browser to hang !*/
   }
 
@@ -77,14 +78,16 @@ fdescribe('OryTreeModel', () => {
           title: 'title_itemId_' + currentChild.itemId
         }
       )
-      parent.addChild(null, newNode)
+      parent.addChild(null, newNode) //  TODO: consider going via onNodeAdded() as if it was all added from DB at the beginning, to be more realistic
       expect(parent.children[index].itemId).toEqual(currentChild.itemId)
       expect(parent.children[index].nodeInclusion.nodeInclusionId).toEqual(currentChild.inclusionId)
+      expect(treeModel.mapItemIdToNode.get(currentChild.itemId).length).toEqual(1)
+      // addNodeToParent()
     }
   }
 
   describe('onNodeInclusionModified(...)', () => {
-    it('handles indented node', () => {
+    it('handles node becoming indented', () => {
       givenTreeModelChildrenOfRoot([
         { itemId: 'n1', inclusionId: 'inc1'},
         { itemId: 'n2', inclusionId: 'inc2'},
@@ -104,7 +107,36 @@ fdescribe('OryTreeModel', () => {
     expect(treeModel.root.children[0].children[0].nodeInclusion.nodeInclusionId).toEqual('inc2')
   })
 
+  xit('handles indentDecrease()', () => {
+    givenTreeModelChildrenOfRoot([
+      { itemId: 'n1', inclusionId: 'inc1', children: [
+          { itemId: 'n2', inclusionId: 'inc2'}
+        ]
+      },
+    ])
+    treeModel.root.children[0].children[0].indentDecrease() /* ! WARNING: this causes browser to hang !*/
+    expect(treeModel.root.children[0].children[0].itemId).toEqual('n2')
+    expect(treeModel.root.children[0].children[0].nodeInclusion.nodeInclusionId).toEqual('inc2')
+  })
+
+  // test outdentDecrease()
+
   // TODO: test reorder up/down - it creates triple duplicates
+
+  it('reorders down', () => {
+    givenTreeModelChildrenOfRoot([
+      { itemId: 'n1', inclusionId: 'inc1'},
+      { itemId: 'n2', inclusionId: 'inc2'},
+    ])
+    expect(treeModel.mapItemIdToNode.get('n1').length).toEqual(1)
+    treeModel.root.children[0].reorderDown()
+    expect(treeModel.mapItemIdToNode.get('n1').length).toEqual(1) // this assertion fails; but to really fix it, I should do multi-parent and unify add/reorder/move/copy
+
+
+  })
+
+  // TODO: test indent after multiple reorders - looks like the map gets filled with multiple copies of the same node?
+  // TODO: assert there is only one copy of the node in the map id->node
 
   // it('adds first node to root, via as child of root', inject([TreeModel], (treeModel: TreeModel) => {
     // const newNode = treeModel.root.addChild()
