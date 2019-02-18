@@ -1,6 +1,8 @@
 
 set -x
 
+echo Starting build and deploy `date`
+
 scriptDir="`dirname $0`"
 # $scriptDir/compileFirebaseRules.sh
 
@@ -10,9 +12,11 @@ scriptDir="`dirname $0`"
 
 #   && cp -r assets dist \
 
+#git tag test_`date --utc +%Y-%m-%d_%H.%M.%SZ`
 #ng build \
 ng build \
-  && firebase deploy
-
+  && firebase deploy \
+  && git tag deploy_`date --utc +%Y-%m-%d__%H.%M.%SZ` \
+  && git push --tags
 
 Echo Finished `date`
