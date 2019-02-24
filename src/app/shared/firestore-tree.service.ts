@@ -3,13 +3,13 @@ import {
   DbTreeListener,
   NodeAddEvent,
   NodeInclusion,
-} from './TreeListener'
-import { OryTreeNode } from './TreeModel'
+} from '../tree-model/TreeListener'
+import { OryTreeNode } from '../tree-model/TreeModel'
 import {
   debugLog, errorAlert,
 } from './log'
 import * as firebase from 'firebase'
-import { DbTreeService } from './db-tree-service'
+import { DbTreeService } from '../tree-model/db-tree-service'
 import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
 // import * as firebase from 'firebase/app'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
@@ -17,9 +17,9 @@ import DocumentReference = firebase.firestore.DocumentReference
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { FIXME } from './log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
-import { ChildrenChangesEvent } from './children-changes-event'
-import { NodeOrderer } from './node-orderer'
-import { TimeStamper } from './TimeStamper'
+import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
+import { NodeOrderer } from '../tree-model/node-orderer'
+import { TimeStamper } from '../tree-model/TimeStamper'
 
 const firebase1 = require('firebase');
 // Required for side-effects
@@ -55,7 +55,8 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  static dbPrefix = 'DbWithAllInclusionsSyncer2_test_'
+  static dbPrefix = 'DbWithAllInclusionsSyncer2'
+  // static dbPrefix = 'DbWithAllInclusionsSyncer2_test_'
 
   pendingListeners = 0
 

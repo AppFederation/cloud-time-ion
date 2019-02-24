@@ -3,10 +3,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../../shared/TreeModel'
+import { OryTreeNode } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../tree-host/tree-host.component'
 import { DialogService } from '../../core/dialog.service'
-import { DbTreeService } from '../../shared/db-tree-service'
+import { DbTreeService } from '../../tree-model/db-tree-service'
 import {
   NgbModal,
   NgbPopover,

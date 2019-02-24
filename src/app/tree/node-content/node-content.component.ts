@@ -13,10 +13,10 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {TreeNode} from 'primeng/primeng'
-import {OryTreeNode} from '../../shared/TreeModel'
+import {OryTreeNode} from '../../tree-model/TreeModel'
 import {TreeHostComponent} from '../tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
-import {DbTreeService} from '../../shared/db-tree-service'
+import {DbTreeService} from '../../tree-model/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
 import {
   debug,

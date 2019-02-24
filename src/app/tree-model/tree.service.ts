@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import {TreeModel} from './TreeModel'
 import {NodeAddEvent} from './TreeListener'
 import {DbTreeService} from './db-tree-service'
-import { debugLog } from './log'
+import { debugLog } from '../shared/log'
 
 
 @Injectable()

@@ -5,13 +5,13 @@ import {
   FIXME,
 } from './log'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
-import { NodeInclusion } from './TreeListener'
+import { NodeInclusion } from '../tree-model/TreeListener'
 import {
   FirestoreNodeInclusion,
   FirestoreTreeService,
 } from './firestore-tree.service'
 import DocumentReference = firebase.firestore.DocumentReference
-import { ChildrenChangesEvent } from './children-changes-event'
+import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import {
   observable,
   Observable,

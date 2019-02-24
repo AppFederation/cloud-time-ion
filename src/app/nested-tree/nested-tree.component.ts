@@ -6,7 +6,7 @@ import {
 import {
   OryTreeNode,
   TreeModel,
-} from '../shared/TreeModel'
+} from '../tree-model/TreeModel'
 import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { OryTreeNode } from '../../shared/TreeModel'
+import { OryTreeNode } from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-confirm-delete-tree-node',

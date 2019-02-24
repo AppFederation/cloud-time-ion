@@ -3,7 +3,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../shared/TreeModel'
+import { OryTreeNode } from '../tree-model/TreeModel'
 import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
 import { debugLog } from '../shared/log'
 

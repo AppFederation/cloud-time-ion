@@ -3,7 +3,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../../shared/TreeModel'
+import { OryTreeNode } from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-test-component-instance-changing-on-input-value-change',

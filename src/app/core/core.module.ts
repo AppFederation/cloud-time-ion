@@ -13,6 +13,8 @@ import { ClipboardService } from './clipboard.service'
     DebugService,
     CommandsService,
     ClipboardService,
+    // navigation service
+    // dialog service
   ]
 })
 export class CoreModule { }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
-import {TreeService} from '../../shared/tree.service'
-import {OryTreeNode, TreeModel} from '../../shared/TreeModel'
+import {TreeService} from '../../tree-model/tree.service'
+import {OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
 import {NodeContentComponent} from '../node-content/node-content.component'
 import {OryColumn} from '../OryColumn'
 import {
   debugLog,
   } from '../../shared/log'
-import {DbTreeService} from '../../shared/db-tree-service'
+import {DbTreeService} from '../../tree-model/db-tree-service'
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,

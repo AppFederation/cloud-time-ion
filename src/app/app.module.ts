@@ -12,10 +12,10 @@ import { TestFirestoreComponent } from './experiments/test-firestore/test-firest
 import { NodeContentComponent } from './tree/node-content/node-content.component'
 import {RouterModule, Routes} from '@angular/router';
 import { TreeHostComponent } from './tree/tree-host/tree-host.component'
-import {TreeService} from './shared/tree.service'
+import {TreeService} from './tree-model/tree.service'
 import {MatIconModule} from '@angular/material';
 import { TestPermissionsAndFiltersComponent } from './experiments/test-permissions-and-filters/test-permissions-and-filters.component'
-import {DbTreeService} from './shared/db-tree-service'
+import {DbTreeService} from './tree-model/db-tree-service'
 import {FormsModule} from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
 import { DialogService } from './core/dialog.service';
@@ -98,7 +98,6 @@ const appRoutes: Routes = [
   providers: [
     TreeDragDropService,
     {provide: DbTreeService, useClass: FirestoreTreeService},
-    TreeService,
     DialogService,
     {
       provide: HAMMER_GESTURE_CONFIG,
