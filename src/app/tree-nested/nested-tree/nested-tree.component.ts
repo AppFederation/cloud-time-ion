@@ -6,8 +6,8 @@ import {
 import {
   OryTreeNode,
   TreeModel,
-} from '../tree-model/TreeModel'
-import { TreeHostComponent } from '../tree/tree-host/tree-host.component'
+} from '../../tree-model/TreeModel'
+import { TreeHostComponent } from '../../tree-page/tree-host/tree-host.component'
 
 @Component({
   selector: 'app-nested-tree',

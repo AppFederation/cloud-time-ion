@@ -3,7 +3,7 @@ import DocumentChange = firebase.firestore.DocumentChange
 import {
   debugLog,
   FIXME,
-} from './log'
+} from '../utils/log'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
 import { NodeInclusion } from '../tree-model/TreeListener'
 import {
@@ -19,7 +19,7 @@ import {
   Subject,
 } from 'rxjs'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
-import { MultiMap } from './multi-map'
+import { MultiMap } from '../utils/multi-map'
 
 class InclusionsValueAndCallbacks {
   /* Used as initial value if someone subscribes */

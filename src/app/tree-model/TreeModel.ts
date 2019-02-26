@@ -3,7 +3,7 @@ import {NodeAddEvent, NodeInclusion} from './TreeListener'
 import {
   debugLog,
   errorAlert,
-} from '../shared/log'
+} from '../utils/log'
 import {after} from 'selenium-webdriver/testing'
 import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable} from '@angular/core'
@@ -11,12 +11,12 @@ import {
   isNull,
   isNullOrUndefined,
 } from 'util'
-import {defined, nullOrUndef} from '../shared/utils'
+import {defined, nullOrUndef} from '../utils/utils'
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree/OryColumn'
-import { FIXME } from '../shared/log'
+import { FIXME } from '../utils/log'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
-import { MultiMap } from '../shared/multi-map'
+import { MultiMap } from '../utils/multi-map'
 import {
   NodeOrderer,
   NodeOrderInfo,

@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import {TreeNode} from 'primeng/primeng'
 import {OryTreeNode} from '../../tree-model/TreeModel'
-import {TreeHostComponent} from '../tree-host/tree-host.component'
+import {TreeHostComponent} from '../../tree-page/tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../tree-model/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
@@ -31,7 +31,7 @@ import {padStart} from 'lodash';
 import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';
-import { debugLog } from '../../shared/log'
+import { debugLog } from '../../utils/log'
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 import { NodeCellComponent } from '../node-cell/node-cell.component'
 

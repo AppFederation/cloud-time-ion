@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FirestoreTreeService} from '../../shared/firestore-tree.service'
-import { debugLog } from '../../shared/log'
+import {FirestoreTreeService} from '../../db-firestore/firestore-tree.service'
+import { debugLog } from '../../utils/log'
 
 @Component({
   selector: 'app-test-firestore',

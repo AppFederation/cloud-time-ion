@@ -7,7 +7,7 @@ import {
 import { OryTreeNode } from '../tree-model/TreeModel'
 import {
   debugLog, errorAlert,
-} from './log'
+} from '../utils/log'
 import * as firebase from 'firebase'
 import { DbTreeService } from '../tree-model/db-tree-service'
 import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
@@ -15,7 +15,7 @@ import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
 import DocumentReference = firebase.firestore.DocumentReference
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
-import { FIXME } from './log'
+import { FIXME } from '../utils/log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'

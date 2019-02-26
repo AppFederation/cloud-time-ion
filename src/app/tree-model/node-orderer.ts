@@ -1,11 +1,11 @@
 import {
   debugLog,
   FIXME,
-} from '../shared/log'
+} from '../utils/log'
 import {
   defined,
   nullOrUndef,
-} from '../shared/utils'
+} from '../utils/utils'
 import { NodeInclusion } from './TreeListener'
 
 

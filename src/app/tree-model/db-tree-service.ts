@@ -1,7 +1,7 @@
 import {OryTreeNode} from './TreeModel'
 import {DbTreeListener} from './TreeListener'
-import {defined, nullOrUndef} from '../shared/utils'
-import { debugLog } from '../shared/log'
+import {defined, nullOrUndef} from '../utils/utils'
+import { debugLog } from '../utils/log'
 
 
 export abstract class DbTreeService {

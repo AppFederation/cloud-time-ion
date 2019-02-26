@@ -55,32 +55,14 @@
 
       <!--Time left: {{treeModel.timeLeftSumText()}}-->
       <div class="tree-container">
-        <p-tree
-          class="tree-component"
+        <app-prime-ng-tree
           *ngIf="! useNestedTree"
-
-          [value]="treeModel.root.children"
-          draggableNodes="true"
-          droppableNodes="true"
-          (onNodeDrop)="nodeDrop($event)"
-        >
-          <ng-template
-            let-node
-            pTemplate="default"
-          >
-            <!--{{node | json}}-->
-            <app-node-content
-              [treeNode]="node"
-              [treeHost]="this"
-            ></app-node-content>
-            <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
-            <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
-          </ng-template>
-        </p-tree>
+          [treeModel]="treeModel"
+          [treeHost]="this"
+        ></app-prime-ng-tree>
 
         <app-nested-tree
           class="tree-component"
-
           *ngIf="useNestedTree"
           [treeModel]="treeModel"
           [treeHost]="this"

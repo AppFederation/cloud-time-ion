@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../tree-model/tree.service'
 import {OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
-import {NodeContentComponent} from '../node-content/node-content.component'
-import {OryColumn} from '../OryColumn'
+import {NodeContentComponent} from '../../tree/node-content/node-content.component'
+import {OryColumn} from '../../tree/OryColumn'
 import {
   debugLog,
-  } from '../../shared/log'
+  } from '../../utils/log'
 import {DbTreeService} from '../../tree-model/db-tree-service'
 import {
   ActivatedRoute,
@@ -14,7 +14,7 @@ import {
 } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import { CommandsService } from '../../core/commands.service'
-import { FIXME } from '../../shared/log'
+import { FIXME } from '../../utils/log'
 
 
 @Component({
@@ -202,11 +202,6 @@ export class TreeHostComponent implements OnInit {
 
   collapseAll() {
     this.treeModel.navigation.visualRoot.expansion.setExpansion(false, true)
-  }
-
-  nodeDrop(event) {
-    console.log('nodeDrop', event)
-    // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
 
   registerNodeComponent(nodeComp: NodeContentComponent) {

@@ -1,4 +1,4 @@
-import { errorAlert } from '../shared/log'
+import { errorAlert } from '../utils/log'
 
 export class TimeStamper {
 

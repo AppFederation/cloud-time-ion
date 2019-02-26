@@ -4,7 +4,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {TreeNode, UITreeNode} from 'primeng/primeng'
-import {FirestoreTreeService} from './shared/firestore-tree.service'
+import {FirestoreTreeService} from './db-firestore/firestore-tree.service'
 import { DialogService } from './core/dialog.service'
 
 declare var $: any

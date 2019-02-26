@@ -8,7 +8,7 @@ import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import {
   debugLog,
   FIXME,
-} from './log'
+} from '../utils/log'
 
 export class ItemValueAndCallbacks {
   constructor(
