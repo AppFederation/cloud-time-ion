@@ -246,6 +246,7 @@ export class TreeHostComponent implements OnInit {
   planToday() {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
+    lastPlanNode.parent2.navigateInto()
     lastPlanNode.expansion.setExpansion(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }
