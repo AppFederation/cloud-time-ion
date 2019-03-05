@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TreeModel} from '../../tree-model/TreeModel'
-import {TreeHostComponent} from '../../tree-page/tree-host/tree-host.component'
+import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
 
 @Component({
   selector: 'app-prime-ng-tree',

@@ -4,7 +4,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { OryTreeNode } from '../../tree-model/TreeModel'
-import { TreeHostComponent } from '../../tree-page/tree-host/tree-host.component'
+import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
 
 @Component({
