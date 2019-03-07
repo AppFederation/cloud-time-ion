@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../tree-model/tree.service'
-import {OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
+import {NodeFocusOptions, OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
 import {NodeContentComponent} from '../../tree-shared/node-content/node-content.component'
 import {OryColumn} from '../../tree-shared/OryColumn'
 import {
@@ -212,16 +212,16 @@ export class TreeHostComponent implements OnInit {
     return this.mapNodeToComponent.get(node)
   }
 
-  focusNode(node: OryTreeNode, column?: OryColumn) {
-    debugLog('focusNode', node, column)
+  focusNode(node: OryTreeNode, column?: OryColumn, options?: NodeFocusOptions) {
+    debugLog('focusNode', arguments)
     if ( ! node ) {
       return
     }
     node.expansion.setExpansionOnParentsRecursively(true)
     setTimeout(() => {
       const component: NodeContentComponent = this.getComponentForNode(node)
-      component.focus(column)
-      this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column)
+      component.focus(column, options)
+      this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column, options)
     })
   }
 

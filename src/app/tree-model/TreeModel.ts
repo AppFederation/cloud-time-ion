@@ -568,7 +568,12 @@ export class TreeCell {
 export class FocusEvent {
   constructor(
     public cell: TreeCell,
+    public options: NodeFocusOptions,
   ) {}
+}
+
+export class NodeFocusOptions {
+  cursorPosition: number
 }
 
 /** =========================================================================== */
@@ -624,6 +629,7 @@ export class TreeModel {
   isApplyingFromDbNow = false
 
   focus = new class Focus {
+
     /** could skip the "focused" part */
     lastFocusedNode: OryTreeNode
     /** could skip the "focused" part */
@@ -637,11 +643,11 @@ export class TreeModel {
       return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
     }
 
-    ensureNodeVisibleAndFocusIt(treeNode: OryTreeNode, column: OryColumn) {
+    ensureNodeVisibleAndFocusIt(treeNode: OryTreeNode, column: OryColumn, options?: NodeFocusOptions) {
       this.lastFocusedNode = treeNode
       this.lastFocusedColumn = column
       treeNode.expansion.setExpansionOnParentsRecursively(true)
-      this.focus$.emit(new FocusEvent(this.lastFocusedCell))
+      this.focus$.emit(new FocusEvent(this.lastFocusedCell, options))
     }
   }
 

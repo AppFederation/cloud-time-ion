@@ -71,6 +71,7 @@
     (keydown.arrowdown)="focusNodeBelow($event)"
     (focusin)="onColumnFocused(columns.estimatedTime, $event)"
     (change)="onChangeEstimatedTime($event)"
+    (keydown.arrowleft)="onArrowLeftOnLeftMostCell()"
     (keydown.arrowright)="focusToDescription()"
     (keydown.alt.arrowright)="focusToDescription()"
     (keydown.meta.arrowright)="focusToDescription()"

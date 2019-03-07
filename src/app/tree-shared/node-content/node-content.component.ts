@@ -13,7 +13,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {TreeNode} from 'primeng/primeng'
-import {OryTreeNode} from '../../tree-model/TreeModel'
+import {NodeFocusOptions, OryTreeNode} from '../../tree-model/TreeModel'
 import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../tree-model/db-tree-service'
@@ -34,6 +34,8 @@ import 'hammerjs';
 import { debugLog } from '../../utils/log'
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 import { NodeCellComponent } from '../node-cell/node-cell.component'
+import {setCaretOnContentEditable, setCaretPosition, setCaretPositionInContentEditable} from '../../utils/utils'
+import {getCaretPosition} from '../../utils/caret-utils'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -42,32 +44,6 @@ import { NodeCellComponent } from '../node-cell/node-cell.component'
 * (those above could probably be always 100% in sync; although might be throttleTime-d eg. 100ms if complex calculations and updating dependent nodes)
 * - firestore (sent-to-firestore, received-from-firestore)
 */
-
-/** https://stackoverflow.com/a/3976125/170451 */
-function getCaretPosition(editableDiv) {
-  var caretPos = 0,
-    sel, range;
-  if (window.getSelection) {
-    sel = window.getSelection();
-    if (sel.rangeCount) {
-      range = sel.getRangeAt(0);
-      if (range.commonAncestorContainer.parentNode == editableDiv) {
-        caretPos = range.endOffset;
-      }
-    }
-  } // else if (document.selection && document.selection.createRange) {
-  //   range = document.selection.createRange();
-  //   if (range.parentElement() == editableDiv) {
-  //     var tempEl = document.createElement("span");
-  //     editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-  //     var tempRange = range.duplicate();
-  //     tempRange.moveToElementText(tempEl);
-  //     tempRange.setEndPoint("EndToEnd", range);
-  //     caretPos = tempRange.text.length;
-  //   }
-  // }
-  return caretPos;
-}
 
 /* Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
  * Or maybe PropertyView ? */
@@ -80,6 +56,7 @@ export class Columns {
     this.estimatedTime,
     this.isDone,
   ]
+  lastColumn = this.title
 }
 
 @Component({
@@ -124,6 +101,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
   isDestroyed = false
+
   debug = new class Debug {
     countApplyItemDataValuesToViews = 0
   } ()
@@ -279,6 +257,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.treeNode.addSiblingAfterThis()
   }
 
+  focusNodeAboveAtEnd() {
+    const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
+    this.treeHost.focusNode(nodeToFocus, this.columns.lastColumn, {cursorPosition: -1})
+  }
+
   public focusNodeAbove() {
     const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
     this.focusOtherNode(nodeToFocus)
@@ -314,9 +297,24 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
 
-  focus(column?: OryColumn) {
-    const toFocus = this.getComponentByColumnOrDefault(column)
+  focus(column?: OryColumn, options?: NodeFocusOptions) {
+    let toFocus = this.getComponentByColumnOrDefault(column)
+    let isContentEditable
+    if ( (toFocus as NodeCellComponent).cellInput ) {
+      toFocus = (toFocus as NodeCellComponent).cellInput
+      isContentEditable = false
+    } else {
+      isContentEditable = true
+    }
     toFocus.nativeElement.focus()
+    if ( options ) {
+      if (isContentEditable) {
+        setCaretOnContentEditable(toFocus.nativeElement, options.cursorPosition >= 0 /* simplification of start vs end*/)
+      } else {
+        // not tested yet
+        setCaretPosition(toFocus.nativeElement, options.cursorPosition)
+      }
+    }
   }
 
   getComponentByColumnOrDefault(column?: OryColumn) {
@@ -467,5 +465,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     $event.preventDefault()
     this.treeNode.indentIncrease()
     this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
+  }
+
+  onArrowLeftOnLeftMostCell() {
+    // FIXME: if ( cursor on the left)
+    this.focusNodeAboveAtEnd()
   }
 }

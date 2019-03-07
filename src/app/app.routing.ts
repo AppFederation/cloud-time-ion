@@ -16,7 +16,7 @@ const appRoutes: Routes = [
 export const routingModule = RouterModule.forRoot(
   appRoutes,
   {
-    preloadingStrategy: PreloadAllModules, // causes "TypeError: undefined is not a function"
+    // preloadingStrategy: PreloadAllModules, // causes "TypeError: undefined is not a function"
     // useHash: true,
   }
 );
