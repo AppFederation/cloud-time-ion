@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TreePageComponent implements OnInit {
 
+  // TODO: route handling should be here, not in TreeHostComponent
+
   constructor() { }
 
   ngOnInit() {

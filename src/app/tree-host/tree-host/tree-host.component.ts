@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {TreeDragDropService, TreeNode} from 'primeng/primeng'
 import {TreeService} from '../../tree-model/tree.service'
 import {OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
-import {NodeContentComponent} from '../../tree/node-content/node-content.component'
-import {OryColumn} from '../../tree/OryColumn'
+import {NodeContentComponent} from '../../tree-shared/node-content/node-content.component'
+import {OryColumn} from '../../tree-shared/OryColumn'
 import {
   debugLog,
   } from '../../utils/log'

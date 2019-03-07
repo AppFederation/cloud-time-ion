@@ -14,18 +14,18 @@ import {FormsModule} from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
 import { DialogService } from './core/dialog.service';
 import { CoreModule } from './core/core.module';
-import { CommandsOverlayComponent } from './tree/commands-overlay/commands-overlay.component';
+import { CommandsOverlayComponent } from './tree-shared/commands-overlay/commands-overlay.component';
 import { TestComponentInstanceChangingOnInputValueChangeComponent } from './experiments/test-component-instance-changing-on-input-value-change/test-component-instance-changing-on-input-value-change.component'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { ConfirmDeleteTreeNodeComponent } from './tree/confirm-delete-tree-node/confirm-delete-tree-node.component';
+import { ConfirmDeleteTreeNodeComponent } from './tree-shared/confirm-delete-tree-node/confirm-delete-tree-node.component';
 import { TreePageComponent } from './tree-page/tree-page/tree-page.component';
 import { MyHammerConfig } from './my-hammer-config';
-import { NodeCellComponent } from './tree/node-cell/node-cell.component'
+import { NodeCellComponent } from './tree-shared/node-cell/node-cell.component'
 import {TreeModelModule} from './tree-model/tree-model.module'
 import {DbFirestoreModule} from './db-firestore/db-firestore.module'
-import {TreeSharedModule} from './tree/tree-shared.module'
+import {TreeSharedModule} from './tree-shared/tree-shared.module'
 import {SharedModule} from './shared/shared.module'
 import {TreePageModule} from './tree-page/tree-page.module'
 import {routingModule} from './app.routing'

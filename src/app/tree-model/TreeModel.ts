@@ -13,7 +13,7 @@ import {
 } from 'util'
 import {defined, nullOrUndef} from '../utils/utils'
 import {sumBy} from 'lodash';
-import { OryColumn } from '../tree/OryColumn'
+import { OryColumn } from '../tree-shared/OryColumn'
 import { FIXME } from '../utils/log'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
 import { MultiMap } from '../utils/multi-map'
