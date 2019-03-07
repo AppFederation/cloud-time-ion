@@ -8,34 +8,28 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {TreeNode} from 'primeng/primeng'
 import {NodeFocusOptions, OryTreeNode} from '../../tree-model/TreeModel'
 import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
 import {OryColumn} from '../OryColumn'
 import {DbTreeService} from '../../tree-model/db-tree-service'
 import {DomSanitizer} from '@angular/platform-browser'
-import {
-  debug,
-  isNullOrUndefined,
-} from 'util'
-import { DialogService } from '../../core/dialog.service'
+import {isNullOrUndefined} from 'util'
+import {DialogService} from '../../core/dialog.service'
 // import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
-import { takeUntil } from 'rxjs/operators';
 
 import {padStart} from 'lodash';
-import { DebugService } from '../../core/debug.service'
+import {DebugService} from '../../core/debug.service'
 
 import 'hammerjs';
-import { debugLog } from '../../utils/log'
-import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
-import { NodeCellComponent } from '../node-cell/node-cell.component'
-import {setCaretOnContentEditable, setCaretPosition, setCaretPositionInContentEditable} from '../../utils/utils'
-import {getCaretPosition} from '../../utils/caret-utils'
+import {debugLog} from '../../utils/log'
+import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap'
+import {NodeCellComponent} from '../node-cell/node-cell.component'
+import {setCaretOnContentEditable, setCaretPosition} from '../../utils/utils'
+import {getActiveElementCaretPos, getCaretPosition, isCaretAtEndOfActiveElement} from '../../utils/caret-utils'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -89,6 +83,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('inputEstimatedTime') elInputEstimatedTime: NodeCellComponent
   @ViewChild('inputTitle') elInputTitle: ElementRef;
+
   // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
 
   // nodeIndex = 0
@@ -273,21 +268,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusToEstimatedTime() {
-    // Note: it was changed from input to contenteditable, so needs reworking
-    // const element = <HTMLInputElement>document.activeElement
-    // const start = element.selectionStart === 0
-
-    const start = getCaretPosition(this.elInputTitle.nativeElement) === 0
-    if (start) {
+    const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
+    if (isStart) {
       this.focus(this.columns.estimatedTime)
     }
   }
 
   focusToDescription() {
-    const element = <HTMLInputElement>document.activeElement
-    const end = element.selectionEnd === ('' + element.value).length
-
-    if (end) {
+    if (isCaretAtEndOfActiveElement()) {
       this.focus(<HTMLInputElement>this.columns.title)
     }
   }
@@ -468,7 +456,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onArrowLeftOnLeftMostCell() {
-    // FIXME: if ( cursor on the left)
-    this.focusNodeAboveAtEnd()
+    if ( getActiveElementCaretPos() === 0 ) {
+      this.focusNodeAboveAtEnd()
+    }
   }
 }
