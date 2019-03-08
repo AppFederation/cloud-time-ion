@@ -26,10 +26,11 @@ import {DebugService} from '../../core/debug.service'
 
 import 'hammerjs';
 import {debugLog} from '../../utils/log'
-import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap'
+import {NgbModal, NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap'
 import {NodeCellComponent} from '../node-cell/node-cell.component'
 import {setCaretOnContentEditable, setCaretPosition} from '../../utils/utils'
 import {getActiveElementCaretPos, getCaretPosition, isCaretAtEndOfActiveElement} from '../../utils/caret-utils'
+import {ConfirmDeleteTreeNodeComponent} from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -107,6 +108,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialogService: DialogService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
+    private modalService: NgbModal,
     config: NgbPopoverConfig,
   ) {
     // config.placement = 'right';
@@ -460,4 +462,27 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.focusNodeAboveAtEnd()
     }
   }
+
+  onKeyDownBackspaceOnEstimatedTime() {
+    if ( getActiveElementCaretPos() === 0
+      && this.treeNode.itemData.estimatedTime === ''
+    ) {
+      this.openDeleteDialog()
+    }
+  }
+
+  onKeyDownBackspaceOnTitle() {
+    if (getCaretPosition(this.elInputTitle.nativeElement) === 0
+      && this.treeNode.itemData.title === ''
+    ) {
+      this.openDeleteDialog()
+    }
+  }
+
+  private openDeleteDialog() {
+    const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
+    const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
+    component.treeNode = this.treeNode;
+  }
+
 }

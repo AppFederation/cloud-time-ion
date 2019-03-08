@@ -76,6 +76,7 @@
     (keydown.alt.arrowright)="focusToDescription()"
     (keydown.meta.arrowright)="focusToDescription()"
     (keydown.control.arrowright)="focusToDescription()"
+    (keydown.backspace)="onKeyDownBackspaceOnEstimatedTime()"
 
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
     [calculatedValue]="treeNode.effectiveDurationText()"
@@ -106,20 +107,21 @@
     (keydown.alt.arrowleft)="focusToEstimatedTime()"
     (keydown.control.arrowleft)="focusToEstimatedTime()"
     (keydown.meta.arrowleft)="focusToEstimatedTime()"
+    (keydown.backspace)="onKeyDownBackspaceOnTitle()"
     (focus)="onColumnFocused(columns.title, $event)"
     (change)="onChangeEstimatedTime($event)"
   >
     <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->
   </div>
 
-  <ng-container *ngIf="debugService.isDebug$ | async">
+  <span style="font-size: 7px" *ngIf="debugService.isDebug$ | async">
     {{treeNode.itemId}}
     -
     {{treeNode.nodeInclusion.nodeInclusionId}}
     order:
     {{treeNode.nodeInclusion.orderNum}}
     view updates: {{debug.countApplyItemDataValuesToViews}}
-  </ng-container>
+  </span>
 
   <!--<button-->
     <!--(click)="addChild()"-->

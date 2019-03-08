@@ -1,4 +1,6 @@
 /** https://stackoverflow.com/a/3976125/170451 */
+import {debugLog} from './log'
+
 export function getCaretPosition(el) {
   var caretPos = 0,
     sel, range;
@@ -31,6 +33,7 @@ export function getCaretPosition(el) {
 export function getElementCaretPos(activeElement) {
   const element = <HTMLInputElement>activeElement
   const end = element.selectionEnd
+  debugLog('getElementCaretPos', end)
   return end
 }
 
