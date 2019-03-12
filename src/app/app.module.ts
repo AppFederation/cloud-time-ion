@@ -31,34 +31,6 @@ import {TreePageModule} from './tree-page/tree-page.module'
 import {routingModule} from './app.routing'
 library.add(fas);
 
-const appRoutes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'tree',
-  },
-  {
-    path: 'tree/:rootNodeId',
-    component: TreeHostComponent,
-  },
-  {
-    path: 'tree',
-    component: TreeHostComponent,
-  },
-  {
-    path: 'test-firestore',
-    component: TestFirestoreComponent,
-  },
-  // {
-  //   path: 'test-perm-fil',
-    // component: TestPermissionsAndFiltersComponent,
-  // },
-  {
-    path: '**',
-    redirectTo: 'tree',
-  },
-];
-
 
 @NgModule({
   declarations: [
@@ -74,11 +46,9 @@ const appRoutes: Routes = [
     HttpModule,
     FormsModule,
     // MatIconModule,
-    RouterModule.forRoot(appRoutes),
     CoreModule,
     routingModule,
     SharedModule,
-    TreePageModule /* TODO: lazy-loading */,
   ],
   providers: [
     // TreeDragDropService,
@@ -87,9 +57,6 @@ const appRoutes: Routes = [
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
     }
-  ],
-  entryComponents: [
-    ConfirmDeleteTreeNodeComponent,
   ],
   bootstrap: [AppComponent]
 })
