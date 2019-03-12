@@ -40,7 +40,7 @@ firebase1.initializeApp({
 const firestore = firebase1.firestore();
 const db = firestore;
 firestore.settings({
-  timestampsInSnapshots: true,
+  // timestampsInSnapshots: true,
 })
 
 export interface FirestoreNodeInclusion {
