@@ -3,6 +3,8 @@ import {DbTreeListener} from './TreeListener'
 import {defined, nullOrUndef} from '../utils/utils'
 import { debugLog } from '../utils/log'
 
+/* TODO: write new db code in such a way to not depend on tree-model stuff (e.g. pass ItemId (==string) instead of OryTreeNode) */
+/* TODO: use ItemData and ItemInclusionData (== any) placeholder types instead of `any` */
 
 export abstract class DbTreeService {
 
