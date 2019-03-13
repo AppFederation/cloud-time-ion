@@ -6,6 +6,7 @@ import {TreeModel} from './TreeModel'
 import {NodeAddEvent} from './TreeListener'
 import {DbTreeService} from './db-tree-service'
 import { debugLog } from '../utils/log'
+import { AuthService } from '../core/auth.service'
 
 
 @Injectable()
@@ -13,11 +14,12 @@ export class TreeService {
 
   constructor(
     public dbTreeService: DbTreeService,
+    public authService: AuthService,
   ) { }
 
   getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeModel {
     // const componentThis = this
-    const treeModel = new TreeModel(this.dbTreeService, {
+    const treeModel = new TreeModel(this.dbTreeService, this.authService, {
       onAfterNodeMoved() {
 
       }

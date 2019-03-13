@@ -73,8 +73,8 @@ export class FirestoreTreeService extends DbTreeService {
       // window.alert('persistence enabled')
       this.dbItemsLoader.startQuery(this.itemsCollection())
       this.dbInclusionsSyncer.startQuery()
-    }).catch(() => {
-      errorAlert('enablePersistence error')
+    }).catch((caught) => {
+      errorAlert('enablePersistence error', caught)
     })
     // this.listenToChanges(onSnapshotHandler)
   }
@@ -212,13 +212,13 @@ export class FirestoreTreeService extends DbTreeService {
     let parentId = parentNode.itemId // HACK to simplify for now
     // console.log('addSiblingAfterNode nodeBelow', nodeBelow)
     // add node itself to firestore (BEFORE inclusion)
-    const newItem = {
-      // title: 'added node title ' + new Date()
-      title: OryTreeNode.INITIAL_TITLE
-    }
-    newNode.itemData = newItem // this was added while adding timestamps; FIXME: overwriting whatever might be there
+    // const newItem = {
+    //   // title: 'added node title ' + new Date()
+    //   title: OryTreeNode.INITIAL_TITLE
+    // }
+    // newNode.itemData = newItem // this was added while adding timestamps; FIXME: overwriting whatever might be there
     this.timeStamper.onAfterCreated(newNode.itemData)
-    this.itemsCollection().doc(newNode.itemId).set(newItem).then(() => {
+    this.itemsCollection().doc(newNode.itemId).set(newNode.itemData).then(() => {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */

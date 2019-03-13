@@ -3,8 +3,6 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import {TreeNode, UITreeNode} from 'primeng/primeng'
-import {FirestoreTreeService} from './db-firestore/firestore-tree.service'
 import { DialogService } from './core/dialog.service'
 
 declare var $: any
@@ -23,7 +21,6 @@ export class AppComponent implements AfterViewInit {
     public dialogService: DialogService,
     // public dbService: FirestoreTreeService,
   ) {
-
 
     dialogService.deleteDialog$.subscribe((val) => {
       this.deleteCallback = val.callback

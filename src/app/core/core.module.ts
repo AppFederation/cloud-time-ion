@@ -5,6 +5,7 @@ import { CommandsService } from './commands.service'
 import { ClipboardService } from './clipboard.service'
 import {DbFirestoreModule} from '../db-firestore/db-firestore.module'
 import {TreeModelModule} from '../tree-model/tree-model.module'
+import { AuthService } from './auth.service'
 // import { AngularFireModule } from '@angular/fire'
 
 @NgModule({
@@ -19,6 +20,7 @@ import {TreeModelModule} from '../tree-model/tree-model.module'
     DebugService,
     CommandsService,
     ClipboardService,
+    AuthService,
     // navigation service
     // dialog service
   ]

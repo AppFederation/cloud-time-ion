@@ -21,6 +21,8 @@ import {
   NodeOrderer,
   NodeOrderInfo,
 } from './node-orderer'
+import { AuthService } from '../core/auth.service'
+import { PermissionsManager } from './PermissionsManager'
 
 
 /**
@@ -319,6 +321,8 @@ export class OryTreeNode implements TreeNode {
       nodeInclusion,
     )
     newNode.nodeInclusion = nodeInclusion
+
+    this.treeModel.permissionsManager.onAfterCreated(newNode)
 
     this.treeModel.treeService.addChildNode(this, newNode)
 
@@ -654,13 +658,16 @@ export class TreeModel {
   /* Workaround for now, as there were some non-deleted children of a deleted parent */
   public showDeleted: boolean = false
 
+  permissionsManager: PermissionsManager
 
   constructor(
     /* TODO Rename to dbTreeService */
     public treeService: DbTreeService,
+    public authService: AuthService,
     public treeListener: OryTreeListener,
   ) {
     this.addNodeToMapByItemId(this.root)
+    this.permissionsManager = new PermissionsManager(this.authService.userId)
   }
 
   /* TODO: unify onNodeAdded, onNodeInclusionModified; from OryTreeNode: moveInclusionsHere, addAssociationsHere, addChild, _appendChildAndSetThisAsParent,
