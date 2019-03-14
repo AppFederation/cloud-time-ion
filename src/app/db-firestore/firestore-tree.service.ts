@@ -86,9 +86,9 @@ export class FirestoreTreeService extends DbTreeService {
 
   loadNodesTree(listener: DbTreeListener) {
     debugLog('loadNodesTree')
-    db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
+    // db.collection(this.ROOTS_COLLECTION).onSnapshot(snapshot => {
       // console.log('loadNodesTree onSnapshot()', snapshot)
-    })
+    // })
     // this.processNodeEvents(0, snapshot, [], listener)
     this.handleSubNodes(this.itemDocById(this.HARDCODED_ROOT_NODE_ITEM_ID), [], 0, listener)
   }

@@ -21,7 +21,7 @@ export class ItemValueAndCallbacks {
 export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
 
   /* FIXME: use shared */
-  permissionsManager = new PermissionsManager()
+  permissionsManager = new PermissionsManager('FIXME')
 
   mapItemIdToDescriptor = new Map<string, ItemValueAndCallbacks>()
   // mapItemIdToCallbacks = new Map()
