@@ -34,7 +34,10 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
     /* this will have to be filtered to only what the user has read permission for */
     itemsCollection: firebase.firestore.CollectionReference
   ) {
-    itemsCollection.where('perms.read.' + this.permissionsManager.userId, '>', new Date(0)).onSnapshot((snapshot: QuerySnapshot) => {
+    itemsCollection
+      .where('perms.read.' + this.permissionsManager.userId, '>', new Date(0))
+      .onSnapshot((snapshot: QuerySnapshot) =>
+    {
       snapshot.docChanges().forEach((change: DocumentChange) => {
         const documentSnapshot = change.doc
         debugLog('FirestoreAllItemsLoader onSnapshot id', change.doc.id, 'DocumentChange', change)
