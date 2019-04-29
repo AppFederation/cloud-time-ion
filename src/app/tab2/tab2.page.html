@@ -8,6 +8,10 @@
 
 <ion-content>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onAddTimer()">+</ion-fab-button>
+  </ion-fab>
+
   <ion-list>
     <ion-item *ngFor="let timer of timersService.timers$ | async">
       <ion-label>{{timer.title}}</ion-label>

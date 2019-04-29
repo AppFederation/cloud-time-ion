@@ -56,4 +56,8 @@ export class Tab2Page {
       }
     });
   }
+
+  onAddTimer() {
+    this.timersService.add(new Timer('' + new Date(), undefined, 99, 'new timer'))
+  }
 }

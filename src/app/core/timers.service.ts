@@ -8,15 +8,26 @@ import { Timer } from './Timer';
 export class TimersService {
 
   timers$ = new ReplaySubject<Timer[]>(1)
+  timers = []
 
   constructor() {
-    this.timers$.next([
-        new Timer('timerId1', undefined, 10, 'Laundry'),
-        new Timer('timerId2', undefined, 2, 'Timer 2')
+    this.emitTimers([
+      new Timer('timerId1', undefined, 10, 'Laundry'),
+      new Timer('timerId2', undefined, 2, 'Timer 2')
     ])
   }
 
   updateTimer(timer: Timer) {
 
+  }
+
+  add(timer: Timer) {
+    this.timers.push(timer);
+    this.emitTimers(this.timers)
+  }
+
+  private emitTimers(timers: Timer[]) {
+    this.timers = timers
+    this.timers$.next(timers)
   }
 }
