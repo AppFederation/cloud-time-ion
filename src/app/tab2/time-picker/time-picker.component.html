@@ -1,3 +1,13 @@
-<p>
-  time-picker works!
-</p>
+
+<!--<ion-picker></ion-picker>-->
+<!--<ion-picker-column></ion-picker-column>-->
+
+Title: {{timer.title}}
+
+<ion-button (click)="durationSecondsPlus()">+</ion-button>
+<ion-button (click)="durationSecondsMinus()">-</ion-button>
+
+{{timer.durationSeconds}} seconds
+
+End: {{endTime | amLocal}}
+

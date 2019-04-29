@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Timer } from '../core/Timer';
+import { TimersService } from '../core/timers.service';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { OverlayEventDetail } from '@ionic/core';
 
@@ -15,6 +17,7 @@ export class Tab2Page {
 
   constructor(
       private modalController: ModalController,
+      private timersService: TimersService,
   ) {
 
   }
@@ -32,15 +35,16 @@ export class Tab2Page {
     }, 1000)
   }
 
-  async onSetDuration() {
-    console.log('onSetDuration before')
+  async onSetDuration(timer: Timer) {
+    console.log('onSetDuration before', timer)
 
     const modal: HTMLIonModalElement =
         await this.modalController.create({
           component: TimePickerComponent,
           componentProps: {
             aParameter: true,
-            otherParameter: new Date()
+            otherParameter: new Date(),
+            timer: timer,
           }
         });
     console.log('onSetDuration', modal)
