@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
+import { NotificationsService } from './notifications.service';
 import { Timer } from './Timer';
 
 @Injectable({
@@ -10,7 +11,9 @@ export class TimersService {
   timers$ = new ReplaySubject<Timer[]>(1)
   timers = []
 
-  constructor() {
+  constructor(
+      public notificationsService: NotificationsService,
+  ) {
     this.emitTimers([
       new Timer('timerId1', undefined, 10, 'Laundry'),
       new Timer('timerId2', undefined, 2, 'Timer 2')
