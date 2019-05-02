@@ -29,6 +29,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.1.0",
     "@ionic/pro": "2.0.4",
+    "cordova-plugin-zip": "3.1.0",
     "core-js": "^2.5.4",
     "moment": "^2.24.0",
     "ngx-moment": "^3.4.0",
@@ -64,6 +65,8 @@
   },
   "description": "An Ionic project",
   "cordova": {
-    "plugins": {}
+    "plugins": {
+      "cordova-plugin-zip": {}
+    }
   }
 }
