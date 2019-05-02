@@ -21,6 +21,9 @@ export class TimersService {
   }
 
   updateTimer(timer: Timer) {
+    if ( timer.durationSeconds ) {
+      timer.endTime = new Date(Date.now() + timer.durationSeconds * 1000)
+    }
     if ( timer.timeoutSubscription ) {
       clearTimeout(timer.timeoutSubscription)
     }
