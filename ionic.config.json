@@ -1,5 +1,7 @@
 {
   "name": "cloud-time-ion",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
