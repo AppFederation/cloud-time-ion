@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Timers
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,20 +11,7 @@
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="onAddTimer()">+</ion-fab-button>
   </ion-fab>
+  <app-timers-list></app-timers-list>
 
-  <ion-list>
-    <ion-item *ngFor="let timer of timersService.timers$ | async">
-      <ion-label>{{timer.title}}</ion-label>
-<!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
-<!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->
-
-      Left: {{endTime }}
-      Left2: {{timeLeft}} s
-      Left3: {{timeLeft | amDuration: 'seconds'}} s
-      END: {{endTime |  amDateFormat }}
-
-      <ion-button (click)="onSetDuration(timer)">duration</ion-button>
-    </ion-item>
-  </ion-list>
 
 </ion-content>

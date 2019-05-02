@@ -35,27 +35,6 @@ export class Tab2Page {
     }, 1000)
   }
 
-  async onSetDuration(timer: Timer) {
-    console.log('onSetDuration before', timer)
-
-    const modal: HTMLIonModalElement =
-        await this.modalController.create({
-          component: TimePickerComponent,
-          componentProps: {
-            aParameter: true,
-            otherParameter: new Date(),
-            timer: timer,
-          }
-        });
-    console.log('onSetDuration', modal)
-    await modal.present()
-
-    modal.onDidDismiss().then((detail: OverlayEventDetail) => {
-      if (detail !== null) {
-        console.log('The result:', detail.data);
-      }
-    });
-  }
 
   onAddTimer() {
     this.timersService.add(new Timer('' + new Date(), undefined, 99, 'new timer'))

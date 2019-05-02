@@ -1,0 +1,15 @@
+Timer item comp
+<ion-item (click)="onSetDuration(timer)">
+
+    <ion-label>{{timer.title}}</ion-label>
+    <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
+    <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->
+
+    Left: {{endTime }}
+    Left2: {{timeLeft}} s
+    Left3: {{timeLeft | amDuration: 'seconds'}} s
+    END: {{endTime |  amDateFormat }}
+    LEFT: {{timer.secondsLeftInt}}
+
+    <ion-button (click)="onSetDuration(timer)">duration</ion-button>
+</ion-item>

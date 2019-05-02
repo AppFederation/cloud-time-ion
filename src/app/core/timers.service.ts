@@ -21,7 +21,17 @@ export class TimersService {
   }
 
   updateTimer(timer: Timer) {
+    if ( timer.timeoutSubscription ) {
+      clearTimeout(timer.timeoutSubscription)
+    }
+    timer.timeoutSubscription = setTimeout(() => {
+      this.notifyTimerEnd(timer);
+    }, timer.durationSeconds * 1000)
+  }
 
+  private notifyTimerEnd(timer: Timer) {
+    alert('timeout for timer ' + timer.title)
+    this.notificationsService.notifyMe('timeout for timer ' + timer.title)
   }
 
   add(timer: Timer) {

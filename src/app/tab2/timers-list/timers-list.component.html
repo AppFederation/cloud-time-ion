@@ -1,0 +1,4 @@
+<ion-list>
+  <app-timer-item *ngFor="let timer of timersService.timers$ | async"
+                  [timer]="timer"></app-timer-item>
+</ion-list>

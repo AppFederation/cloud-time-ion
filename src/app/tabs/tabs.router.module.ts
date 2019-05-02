@@ -17,7 +17,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'tab2',
+        path: 'timers',
         children: [
           {
             path: '',
@@ -36,14 +36,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/timers',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/timers',
     pathMatch: 'full'
   }
 ];
