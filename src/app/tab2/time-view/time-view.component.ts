@@ -19,7 +19,7 @@ export class TimeViewComponent implements OnInit {
   }
 
   get minutes() {
-    return Math.floor(this.timeSecs / 60)
+    return Math.floor((this.timeSecs / 60) % 60)
   }
 
   get hours() {
