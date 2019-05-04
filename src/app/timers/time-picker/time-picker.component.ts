@@ -3,7 +3,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Timer } from '../../core/Timer';
+import { TimerItem } from '../../core/TimerItem';
 import { TimersService } from '../../core/timers.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { TimersService } from '../../core/timers.service';
 export class TimePickerComponent implements OnInit {
 
   @Input()
-  timer: Timer
+  timer: TimerItem
 
   // durationSeconds = 0
 

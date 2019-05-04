@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Timer} from "../../core/Timer";
+import {TimerItem} from "../../core/TimerItem";
 import {TimePickerComponent} from "../time-picker/time-picker.component";
 import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
@@ -13,7 +13,7 @@ import {OverlayEventDetail} from '@ionic/core';
 export class TimerItemComponent implements OnInit {
 
   @Input()
-  timer: Timer
+  timer: TimerItem
 
   constructor(
       private modalController: ModalController,
@@ -23,7 +23,7 @@ export class TimerItemComponent implements OnInit {
   ngOnInit() {}
 
 
-  async onSetDuration(timer: Timer) {
+  async onSetDuration(timer: TimerItem) {
     console.log('onSetDuration before', timer)
 
     const modal: HTMLIonModalElement =

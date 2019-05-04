@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Timer} from "../../core/Timer";
+import {TimerItem} from "../../core/TimerItem";
 
 @Component({
   selector: 'app-timer-ended',
@@ -8,7 +8,7 @@ import {Timer} from "../../core/Timer";
 })
 export class TimerEndedComponent implements OnInit {
 
-  @Input() timer: Timer
+  @Input() timer: TimerItem
 
   constructor() { }
 

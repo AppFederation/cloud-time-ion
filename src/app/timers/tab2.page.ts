@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Timer } from '../core/Timer';
+import { TimerItem } from '../core/TimerItem';
 import { TimersService } from '../core/timers.service';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { OverlayEventDetail } from '@ionic/core';
@@ -37,6 +37,6 @@ export class Tab2Page {
 
 
   onAddTimer() {
-    this.timersService.add(new Timer('' + new Date(), undefined, 99, 'new timer'))
+    this.timersService.add(new TimerItem('' + new Date(), undefined, 99, 'new timer'))
   }
 }

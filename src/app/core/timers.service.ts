@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
-import { Timer } from './Timer';
+import { TimerItem } from './TimerItem';
 import {AngularFirestore} from "@angular/fire/firestore";
 
 @Injectable({
@@ -9,24 +9,52 @@ import {AngularFirestore} from "@angular/fire/firestore";
 })
 export class TimersService {
 
-  timers$ = new ReplaySubject<Timer[]>(1)
+  timers$ = new ReplaySubject<TimerItem[]>(1)
   timers = []
 
   constructor(
       public notificationsService: NotificationsService,
       public angularFirestore: AngularFirestore,
   ) {
-    this.angularFirestore.collection('testCol').valueChanges().subscribe((col) => {
-      console.log('collection sub', col)
+    this.timersCollection().valueChanges().subscribe((col) => {
+      this.emitTimers(col as any)
     })
-    this.emitTimers([
-      new Timer('timerId1', undefined, 3607, 'Laundry'),
-      new Timer('timerId2', undefined, 300, 'Cooking'),
-      new Timer('timerId2', undefined, 2, 'Quick timer test'),
-    ])
+    // this.emitTimers([
+    //   new TimerItem('timerId1', undefined, 3607, 'Laundry'),
+    //   new TimerItem('timerId2', undefined, 300, 'Cooking'),
+    //   new TimerItem('timerId2', undefined, 2, 'Quick timer test'),
+    // ])
   }
 
-  updateTimer(timer: Timer) {
+  private timersCollection() {
+    return this.angularFirestore.collection('Timers');
+  }
+
+  private timerDoc(timerId: string) {
+    return this.timersCollection().doc(timerId)
+  }
+
+  updateTimer(timer: TimerItem) {
+    this.save(timer)
+  }
+
+  private notifyTimerEnd(timer: TimerItem) {
+    alert('timeout for timer ' + timer.title)
+    this.notificationsService.notifyMe('timeout for timer ' + timer.title)
+  }
+
+  add(timer: TimerItem) {
+    // this.timers.push(timer);
+    // this.emitTimers(this.timers)
+    this.save(timer)
+  }
+
+  private emitTimers(timers: TimerItem[]) {
+    this.timers = timers
+    this.timers$.next(timers)
+  }
+
+  public save(timer: TimerItem) {
     if ( timer.durationSeconds ) {
       timer.endTime = new Date(Date.now() + timer.durationSeconds * 1000)
     }
@@ -36,20 +64,6 @@ export class TimersService {
     timer.timeoutSubscription = setTimeout(() => {
       this.notifyTimerEnd(timer);
     }, timer.durationSeconds * 1000)
-  }
-
-  private notifyTimerEnd(timer: Timer) {
-    alert('timeout for timer ' + timer.title)
-    this.notificationsService.notifyMe('timeout for timer ' + timer.title)
-  }
-
-  add(timer: Timer) {
-    this.timers.push(timer);
-    this.emitTimers(this.timers)
-  }
-
-  private emitTimers(timers: Timer[]) {
-    this.timers = timers
-    this.timers$.next(timers)
+    this.timerDoc(timer.id).set(Object.assign({}, timer))
   }
 }
