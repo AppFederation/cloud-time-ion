@@ -11,6 +11,7 @@ import {TimersListComponent} from "./timers-list/timers-list.component";
 import {TimeViewComponent} from "./time-view/time-view.component";
 import {TimerEndedComponent} from "./timer-ended/timer-ended.component";
 import {TimerDetailsComponent} from "./timer-details/timer-details.component";
+import {NumberPickerComponent} from "./number-picker/number-picker.component";
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import {TimerDetailsComponent} from "./timer-details/timer-details.component";
   ],
   declarations: [
     Tab2Page, TimePickerComponent, TimerItemComponent, TimersListComponent, TimeViewComponent, TimerEndedComponent,
-    TimerDetailsComponent
+    TimerDetailsComponent, NumberPickerComponent,
   ],
   entryComponents: [
     TimePickerComponent,

@@ -2,13 +2,26 @@
 <!--<ion-picker></ion-picker>-->
 <!--<ion-picker-column></ion-picker-column>-->
 
-Title: {{timer.title}}
-<ion-input clearInput placeholder="Timer Title" value="{{timer.title}}"></ion-input>
 
-<ion-button (click)="durationSecondsPlus()">+</ion-button>
-<ion-button (click)="durationSecondsMinus()">-</ion-button>
+
+<!--<ion-button (click)="durationSecondsPlus()">+</ion-button>-->
+<!--<ion-button (click)="durationSecondsMinus()">-</ion-button>-->
 
 {{timer.durationSeconds}} seconds
 
 End: {{endTime | amLocal}}
 
+<div style="display: flex">
+    <app-number-picker
+
+    ></app-number-picker>
+
+    <app-number-picker
+
+    ></app-number-picker>
+
+    <app-number-picker
+
+    ></app-number-picker>
+
+</div>
