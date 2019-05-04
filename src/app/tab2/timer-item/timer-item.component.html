@@ -1,10 +1,13 @@
-<ion-item (click)="onSetDuration(timer)">
+<ion-item
+    (click)="onSetDuration(timer)"
+>
 
     LEFT:
     <div class="timeLeftCounter">
         {{timer.secondsLeftInt}}
     </div>
-
+    <app-time-view [timeMs]="timer.secondsLeftInt * 1000"></app-time-view>
+    &nbsp;
     <ion-label>{{timer.title}}</ion-label>
     <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
     <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->

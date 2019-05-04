@@ -15,8 +15,9 @@ export class TimersService {
       public notificationsService: NotificationsService,
   ) {
     this.emitTimers([
-      new Timer('timerId1', undefined, 10, 'Laundry'),
-      new Timer('timerId2', undefined, 2, 'Timer 2')
+      new Timer('timerId1', undefined, 3607, 'Laundry'),
+      new Timer('timerId2', undefined, 300, 'Cooking'),
+      new Timer('timerId2', undefined, 2, 'Quick timer test'),
     ])
   }
 
