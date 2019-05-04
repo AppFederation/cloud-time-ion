@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import {AngularFireModule} from "@angular/fire";
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {firebaseConfig} from "./firebase.config";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
 
 @NgModule({
 
@@ -18,7 +19,8 @@ import {firebaseConfig} from "./firebase.config";
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
   ],
   providers: [
     StatusBar,
