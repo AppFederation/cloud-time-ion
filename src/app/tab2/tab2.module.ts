@@ -9,6 +9,7 @@ import { Tab2Page } from './tab2.page';
 import {TimerItemComponent} from "./timer-item/timer-item.component";
 import {TimersListComponent} from "./timers-list/timers-list.component";
 import {TimeViewComponent} from "./time-view/time-view.component";
+import {TimerEndedComponent} from "./timer-ended/timer-ended.component";
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import {TimeViewComponent} from "./time-view/time-view.component";
     RouterModule.forChild([{ path: '', component: Tab2Page }])
   ],
   declarations: [
-      Tab2Page, TimePickerComponent, TimerItemComponent, TimersListComponent, TimeViewComponent
+      Tab2Page, TimePickerComponent, TimerItemComponent, TimersListComponent, TimeViewComponent, TimerEndedComponent
   ],
   entryComponents: [
     TimePickerComponent,

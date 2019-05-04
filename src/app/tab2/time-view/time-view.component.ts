@@ -30,6 +30,4 @@ export class TimeViewComponent implements OnInit {
 
   ngOnInit() {}
 
-
-
 }
