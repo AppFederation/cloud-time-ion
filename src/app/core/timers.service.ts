@@ -17,7 +17,12 @@ export class TimersService {
       public angularFirestore: AngularFirestore,
   ) {
     this.timersCollection().valueChanges().subscribe((col) => {
-      this.emitTimers(col as any)
+      this.emitTimers(col.map(timer => {
+        const timerInstance = Object.assign(Object.create(TimerItem.prototype), timer as any);
+        console.log('timerInstance', timerInstance)
+        timerInstance.endTime = timerInstance.endTime.toDate()
+        return timerInstance
+      }))
     })
     // this.emitTimers([
     //   new TimerItem('timerId1', undefined, 3607, 'Laundry'),
