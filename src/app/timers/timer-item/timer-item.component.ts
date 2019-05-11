@@ -4,6 +4,7 @@ import {TimePickerComponent} from "../time-picker/time-picker.component";
 import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {OverlayEventDetail} from '@ionic/core';
+import {TimerDetailsComponent} from "../timer-details/timer-details.component";
 
 @Component({
   selector: 'app-timer-item',
@@ -28,10 +29,8 @@ export class TimerItemComponent implements OnInit {
 
     const modal: HTMLIonModalElement =
         await this.modalController.create({
-          component: TimePickerComponent,
+          component: TimerDetailsComponent,
           componentProps: {
-            aParameter: true,
-            otherParameter: new Date(),
             timer: timer,
           }
         });
@@ -40,7 +39,7 @@ export class TimerItemComponent implements OnInit {
 
     modal.onDidDismiss().then((detail: OverlayEventDetail) => {
       if (detail !== null) {
-        console.log('The result:', detail.data);
+        // console.log('modal result:', detail.data);
       }
     });
   }

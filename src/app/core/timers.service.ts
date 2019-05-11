@@ -22,7 +22,7 @@ export class TimersService {
       this.timersCollection().valueChanges().subscribe((col) => {
         this.emitTimers(col.map(timer => {
           const timerInstance = Object.assign(Object.create(TimerItem.prototype), timer as any);
-          console.log('timerInstance', timerInstance)
+          // console.log('timerInstance', timerInstance)
           timerInstance.endTime = timerInstance.endTime.toDate()
           return timerInstance
         }))
@@ -79,5 +79,9 @@ export class TimersService {
       this.notifyTimerEnd(timer);
     }, timer.durationSeconds * 1000)
     this.timerDoc(timer.id).set(Object.assign({}, timer))
+  }
+
+  public delete(timer: TimerItem) {
+    this.timerDoc(timer.id).delete()
   }
 }

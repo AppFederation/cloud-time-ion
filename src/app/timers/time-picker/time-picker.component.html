@@ -3,24 +3,19 @@
 <!--<ion-picker-column></ion-picker-column>-->
 
 
+<!--{{timer.durationSeconds}} seconds-->
 
-<ion-button (click)="durationSecondsPlus()">+</ion-button>
-<ion-button (click)="durationSecondsMinus()">-</ion-button>
-
-{{timer.durationSeconds}} seconds
-
-End: {{endTime | amLocal}}
 
 <div style="display: flex">
-    <app-number-picker
+    <app-number-picker [value]="pickerHours" (change)="pickerHours = $event; onChangeTime()"
 
     ></app-number-picker>
 
-    <app-number-picker
+    <app-number-picker [value]="pickerMinutes" (change)="pickerMinutes = $event; onChangeTime()"
 
     ></app-number-picker>
 
-    <app-number-picker
+    <app-number-picker [value]="pickerSeconds" (change)="pickerSeconds = $event; onChangeTime()"
 
     ></app-number-picker>
 

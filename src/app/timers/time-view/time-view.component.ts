@@ -15,7 +15,7 @@ export class TimeViewComponent implements OnInit {
   }
 
   get seconds() {
-    return ("" + this.timeSecs % 60).padStart(2, '0')
+    return ("" + Math.floor(this.timeSecs % 60)).padStart(2, '0')
   }
 
   get minutes() {

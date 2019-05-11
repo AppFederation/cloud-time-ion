@@ -2,11 +2,11 @@
     (click)="onSetDuration(timer)"
 >
 
-    LEFT:
+    LEFT: &nbsp;
 <!--    <div class="timeLeftCounter">-->
 <!--        {{timer.secondsLeftInt}}-->
 <!--    </div>-->
-    <app-time-view [timeMs]="timer.secondsLeftInt * 1000"></app-time-view>
+    <app-time-left-view [endTime]="timer.endTime"></app-time-left-view>
     &nbsp;
     <ion-label>{{timer.title}}</ion-label>
     <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
@@ -17,5 +17,4 @@
 <!--    Left3: {{timeLeft | amDuration: 'seconds'}} s-->
 <!--    END: {{endTime |  amDateFormat }}-->
 
-    <ion-button (click)="onSetDuration(timer)">duration</ion-button>
 </ion-item>

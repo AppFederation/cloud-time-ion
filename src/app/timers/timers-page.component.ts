@@ -7,10 +7,10 @@ import { OverlayEventDetail } from '@ionic/core';
 
 @Component({
   selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  templateUrl: 'timers-page.component.html',
+  styleUrls: ['timers-page.component.scss']
 })
-export class Tab2Page {
+export class TimersPageComponent {
 
   endTime
   private timeLeft: number;

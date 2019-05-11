@@ -1,10 +1,8 @@
 import {
-  Component,
+  Component, EventEmitter,
   Input,
-  OnInit,
+  OnInit, Output,
 } from '@angular/core';
-import { TimerItem } from '../../core/TimerItem';
-import { TimersService } from '../../core/timers.service';
 
 @Component({
   selector: 'app-time-picker',
@@ -13,29 +11,29 @@ import { TimersService } from '../../core/timers.service';
 })
 export class TimePickerComponent implements OnInit {
 
-  @Input()
-  timer: TimerItem
+  @Output()
+  durationSecondsChanged = new EventEmitter<number>()
 
   // durationSeconds = 0
+  pickerSeconds = 0
+  pickerMinutes = 0
+  pickerHours = 0
 
-  get endTime() {
-    return new Date(Date.now() + this.timer.durationSeconds * 1000)
-  }
+  @Input()
+  totalTimeSeconds: number
 
   constructor(
-      public timersService: TimersService,
+      // public timersService: TimersService,
   ) { }
 
-  ngOnInit() {}
-
-  durationSecondsPlus() {
-    this.timer.durationSeconds ++
-    this.timersService.updateTimer(this.timer)
+  ngOnInit() {
+    this.pickerHours = Math.floor(this.totalTimeSeconds / 3600)
+    this.pickerMinutes = Math.floor((this.totalTimeSeconds / 60) % 60)
+    this.pickerSeconds = this.totalTimeSeconds % 60
   }
 
-  durationSecondsMinus() {
-    this.timer.durationSeconds --
-    this.timersService.updateTimer(this.timer)
-
+  onChangeTime() {
+    this.totalTimeSeconds = this.pickerSeconds + 60 * this.pickerMinutes + 3600 * this.pickerHours
+    this.durationSecondsChanged.emit(this.totalTimeSeconds)
   }
 }
