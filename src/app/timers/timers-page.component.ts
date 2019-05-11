@@ -4,6 +4,7 @@ import { TimerItem } from '../core/TimerItem';
 import { TimersService } from '../core/timers.service';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { OverlayEventDetail } from '@ionic/core';
+import {TimerDetailsComponent} from "./timer-details/timer-details.component";
 
 @Component({
   selector: 'app-tab2',
@@ -36,7 +37,16 @@ export class TimersPageComponent {
   }
 
 
-  onAddTimer() {
-    this.timersService.add(new TimerItem('' + new Date(), undefined, 99, 'new timer'))
+  async onAddTimer() {
+    let timerItem = new TimerItem('' + new Date(), undefined, 99, 'new timer');
+    this.timersService.add(timerItem)
+    const modal: HTMLIonModalElement =
+        await this.modalController.create({
+          component: TimerDetailsComponent,
+          componentProps: {
+            timer: timerItem,
+          }
+        });
+    await modal.present()
   }
 }
