@@ -3,6 +3,7 @@ import { ReplaySubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
 import { TimerItem } from './TimerItem';
 import {AngularFirestore} from "@angular/fire/firestore";
+import {errorAlert} from "../utils/log";
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,27 @@ export class TimersService {
       public notificationsService: NotificationsService,
       public angularFirestore: AngularFirestore,
   ) {
-    this.timersCollection().valueChanges().subscribe((col) => {
-      this.emitTimers(col.map(timer => {
-        const timerInstance = Object.assign(Object.create(TimerItem.prototype), timer as any);
-        console.log('timerInstance', timerInstance)
-        timerInstance.endTime = timerInstance.endTime.toDate()
-        return timerInstance
-      }))
+    angularFirestore.firestore.enablePersistence().then(() => {
+      // window.alert('persistence enabled')
+      this.timersCollection().valueChanges().subscribe((col) => {
+        this.emitTimers(col.map(timer => {
+          const timerInstance = Object.assign(Object.create(TimerItem.prototype), timer as any);
+          console.log('timerInstance', timerInstance)
+          timerInstance.endTime = timerInstance.endTime.toDate()
+          return timerInstance
+        }))
+      })
+      // this.emitTimers([
+      //   new TimerItem('timerId1', undefined, 3607, 'Laundry'),
+      //   new TimerItem('timerId2', undefined, 300, 'Cooking'),
+      //   new TimerItem('timerId2', undefined, 2, 'Quick timer test'),
+      // ])
+
+    }).catch((caught) => {
+      errorAlert('enablePersistence error', caught)
     })
-    // this.emitTimers([
-    //   new TimerItem('timerId1', undefined, 3607, 'Laundry'),
-    //   new TimerItem('timerId2', undefined, 300, 'Cooking'),
-    //   new TimerItem('timerId2', undefined, 2, 'Quick timer test'),
-    // ])
+
+
   }
 
   private timersCollection() {
