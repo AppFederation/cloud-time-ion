@@ -1,0 +1,6 @@
+
+ts_out/
+dist/
+# TestCafe
+reports
+screenshots

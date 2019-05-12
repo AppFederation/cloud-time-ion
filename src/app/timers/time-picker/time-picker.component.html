@@ -7,15 +7,15 @@
 
 
 <div style="display: flex">
-    <app-number-picker [value]="pickerHours" (change)="pickerHours = $event; onChangeTime()"
+    <app-number-picker id=hoursPicker [value]="pickerHours" (change)="pickerHours = $event; onChangeTime()"
 
     ></app-number-picker>
 
-    <app-number-picker [value]="pickerMinutes" (change)="pickerMinutes = $event; onChangeTime()"
+    <app-number-picker id=minutesPicker [value]="pickerMinutes" (change)="pickerMinutes = $event; onChangeTime()"
 
     ></app-number-picker>
 
-    <app-number-picker [value]="pickerSeconds" (change)="pickerSeconds = $event; onChangeTime()"
+    <app-number-picker id=secondsPicker [value]="pickerSeconds" (change)="pickerSeconds = $event; onChangeTime()"
 
     ></app-number-picker>
 
