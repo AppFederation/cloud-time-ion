@@ -20,10 +20,18 @@
     ></app-number-picker>
 
 </div>
-<ion-picker-column [col]="_pickerColumn"
-></ion-picker-column>
 <ion-button
   (click)="openTimePicker()"
 >
   Pick
 </ion-button>
+
+
+<div class="picker-wrapper sc-ion-picker-md" style="height: 300px; width: 300px">
+  <ion-picker-column [col]="_pickerColumn"
+  ></ion-picker-column>
+</div>
+IonPicker:
+<!--<ion-picker-->
+<!--  [columns]="[_pickerColumn]"-->
+<!--&gt;</ion-picker>-->
