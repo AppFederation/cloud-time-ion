@@ -39,29 +39,32 @@ export class TimePickerComponent implements OnInit {
     this.durationSecondsChanged.emit(this.totalTimeSeconds)
   }
 
+  private _pickerColumn = {
+    name: 'days',
+    options: [
+      {
+        text: '1',
+        value: 1
+      },
+      {
+        text: '2',
+        value: 2
+      },
+      {
+        text: '3',
+        value: 3
+      },
+    ]
+  };
+
   async openTimePicker() {
+    let pickerColumn = this._pickerColumn;
     let pickerElement = await this.pickerController.create({
       buttons: [{
         text: 'Done',
       }],
       columns: [
-        {
-          name: 'days',
-          options: [
-            {
-              text: '1',
-              value: 1
-            },
-            {
-              text: '2',
-              value: 2
-            },
-            {
-              text: '3',
-              value: 3
-            },
-          ]
-        },
+        pickerColumn,
         {
           name: 'years',
           options: [
