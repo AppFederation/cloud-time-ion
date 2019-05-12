@@ -38,7 +38,7 @@ export class TimersPageComponent {
 
 
   async onAddTimer() {
-    let timerItem = new TimerItem('' + new Date(), undefined, 99, 'new timer');
+    let timerItem = new TimerItem('' + new Date(), undefined, 5, 'new timer');
     this.timersService.add(timerItem)
     const modal: HTMLIonModalElement =
         await this.modalController.create({

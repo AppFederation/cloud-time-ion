@@ -27,7 +27,12 @@ export class NotificationsService {
   }
 
   notifyMe(text: string) {
-    // Let's check if the browser supports notifications
+    this.playAudio();
+    this.showNotification(text);
+  }
+
+  private showNotification(text: string) {
+// Let's check if the browser supports notifications
     if (!("Notification" in window)) {
       alert("This browser does not support desktop notification");
     }
@@ -50,7 +55,9 @@ export class NotificationsService {
 
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
+  }
 
+  private playAudio() {
     var audio = new Audio('assets/cartoon-telephone_daniel_simion.mp3');
     // audio.loop = true
     // IDEA: gradually increase volume, so as not to bother other people in the vicinity

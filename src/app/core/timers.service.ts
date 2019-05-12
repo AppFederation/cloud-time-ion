@@ -11,7 +11,7 @@ import {errorAlert} from "../utils/log";
 export class TimersService {
 
   timers$ = new ReplaySubject<TimerItem[]>(1)
-  timers = []
+  timers: Array<TimerItem> = []
 
   constructor(
       public notificationsService: NotificationsService,
@@ -19,11 +19,14 @@ export class TimersService {
   ) {
     angularFirestore.firestore.enablePersistence().then(() => {
       // window.alert('persistence enabled')
+      this.clearTimeouts()
       this.timersCollection().valueChanges().subscribe((col) => {
         this.emitTimers(col.map(timer => {
           const timerInstance = Object.assign(Object.create(TimerItem.prototype), timer as any);
           // console.log('timerInstance', timerInstance)
           timerInstance.endTime = timerInstance.endTime.toDate()
+          this.setTimeout(timerInstance);
+
           return timerInstance
         }))
       })
@@ -75,13 +78,25 @@ export class TimersService {
     if ( timer.timeoutSubscription ) {
       clearTimeout(timer.timeoutSubscription)
     }
+    this.setTimeout(timer);
+    this.timerDoc(timer.id).set(Object.assign({}, timer))
+  }
+
+  private setTimeout(timer: TimerItem) {
     timer.timeoutSubscription = setTimeout(() => {
       this.notifyTimerEnd(timer);
     }, timer.durationSeconds * 1000)
-    this.timerDoc(timer.id).set(Object.assign({}, timer))
   }
 
   public delete(timer: TimerItem) {
     this.timerDoc(timer.id).delete()
+  }
+
+  private clearTimeouts() {
+    for ( const timer of this.timers ) {
+      if ( timer.timeoutSubscription ) {
+        clearTimeout(timer.timeoutSubscription)
+      }
+    }
   }
 }
