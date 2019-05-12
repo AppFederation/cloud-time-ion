@@ -4,9 +4,10 @@ import { NotificationsService } from './notifications.service';
 import { TimerItem } from './TimerItem';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {errorAlert} from "../utils/log";
+import {CoreModule} from "./core.module";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: CoreModule,
 })
 export class TimersService {
 

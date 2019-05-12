@@ -13,6 +13,7 @@ import {TimerEndedComponent} from "./timer-ended/timer-ended.component";
 import {TimerDetailsComponent} from "./timer-details/timer-details.component";
 import {NumberPickerComponent} from "./number-picker/number-picker.component";
 import {TimeLeftViewComponent} from "./time-left-view/time-left-view.component";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {TimeLeftViewComponent} from "./time-left-view/time-left-view.component";
     CommonModule,
     FormsModule,
     MomentModule,
-    RouterModule.forChild([{ path: '', component: TimersPageComponent }])
+    RouterModule.forChild([{ path: '', component: TimersPageComponent }]),
+    SharedModule,
   ],
   declarations: [
     TimersPageComponent, TimePickerComponent, TimerItemComponent, TimersListComponent, TimeViewComponent, TimerEndedComponent,
