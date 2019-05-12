@@ -1,4 +1,7 @@
-<ion-input clearInput placeholder="Timer Title" value="{{timer.title}}"></ion-input>
+<ion-input
+        [formControl]="timerTitleControl"
+
+        clearInput placeholder="Timer Title" value="{{timer.title}}"></ion-input>
 End: {{endTime | amLocal}}
 
 <app-time-picker
@@ -6,4 +9,4 @@ End: {{endTime | amLocal}}
         (durationSecondsChanged)="onDurationSecondsChanged($event)"
 ></app-time-picker>
 
-<ion-button (click)="confirmDelete()">Delete</ion-button>
+<ion-button id="buttonDeleteTimer" (click)="confirmDelete()">Delete</ion-button>

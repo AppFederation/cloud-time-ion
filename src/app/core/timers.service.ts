@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
 import { TimerItem } from './TimerItem';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {errorAlert} from "../utils/log";
 import {CoreModule} from "./core.module";
+import {ignorePromise} from "../utils/promiseUtils";
+import {CachedSubject} from "../utils/CachedSubject";
+
 
 @Injectable({
   providedIn: CoreModule,
 })
 export class TimersService {
 
-  timers$ = new ReplaySubject<TimerItem[]>(1)
-  timers: Array<TimerItem> = []
+  timers$ = new CachedSubject<TimerItem[]>([])
 
   constructor(
       public notificationsService: NotificationsService,
@@ -68,7 +69,6 @@ export class TimersService {
   }
 
   private emitTimers(timers: TimerItem[]) {
-    this.timers = timers
     this.timers$.next(timers)
   }
 
@@ -80,7 +80,7 @@ export class TimersService {
       clearTimeout(timer.timeoutSubscription)
     }
     this.setTimeout(timer);
-    this.timerDoc(timer.id).set(Object.assign({}, timer))
+    ignorePromise(this.timerDoc(timer.id).set(Object.assign({}, timer)))
   }
 
   private setTimeout(timer: TimerItem) {
@@ -90,14 +90,18 @@ export class TimersService {
   }
 
   public delete(timer: TimerItem) {
-    this.timerDoc(timer.id).delete()
+    ignorePromise(this.timerDoc(timer.id).delete())
   }
 
   private clearTimeouts() {
-    for ( const timer of this.timers ) {
+    for ( const timer of this.timers$.last ) {
       if ( timer.timeoutSubscription ) {
         clearTimeout(timer.timeoutSubscription)
       }
     }
+  }
+
+  patch(timer: TimerItem, patchVal: Partial<TimerItem>) {
+    ignorePromise(this.timerDoc(timer.id).update(patchVal))
   }
 }

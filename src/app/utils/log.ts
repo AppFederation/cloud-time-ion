@@ -15,5 +15,5 @@ export function debugLog(...args) {
 export function errorAlert(...args) {
   const prefix = 'ERROR: errorAlert: '
   window.alert(prefix + '(see console for details) ' + args.join(', '))
-  console.log(prefix, ...args)
+  console.error(prefix, ...args)
 }
