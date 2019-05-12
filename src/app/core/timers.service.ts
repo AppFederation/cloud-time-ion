@@ -56,7 +56,7 @@ export class TimersService {
   }
 
   private notifyTimerEnd(timer: TimerItem) {
-    alert('timeout for timer ' + timer.title)
+    // alert('timeout for timer ' + timer.title)
     this.notificationsService.notifyMe('timeout for timer ' + timer.title)
   }
 

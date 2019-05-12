@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Plugins } from '@capacitor/core';
-const { LocalNotifications } = Plugins;
+import {Platform} from "@ionic/angular";
+// const { LocalNotifications } = Plugins;
+// import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 // LocalNotifications.schedule({
 //   notifications: [
@@ -23,7 +26,15 @@ const { LocalNotifications } = Plugins;
 })
 export class NotificationsService {
 
-  constructor() {
+  constructor(
+      public platform: Platform,
+      // private localNotifications: LocalNotifications
+  ) {
+    (cordova.plugins as any).notification.local.schedule({
+      title: 'CloudTime first notification',
+      text: 'Notif text',
+      foreground: true
+    });
   }
 
   notifyMe(text: string) {
@@ -32,6 +43,9 @@ export class NotificationsService {
   }
 
   private showNotification(text: string) {
+    if ( this.platform.is('android') ) {
+      return
+    }
 // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
       alert("This browser does not support desktop notification");
