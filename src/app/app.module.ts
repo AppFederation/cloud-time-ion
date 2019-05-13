@@ -8,10 +8,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AngularFireModule} from "@angular/fire";
-import {AngularFireDatabaseModule} from "@angular/fire/database";
-import {firebaseConfig} from "./firebase.config";
-import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {SharedModule} from "./shared/shared.module";
 import {CoreModule} from "./core/core.module";
 
@@ -19,8 +15,14 @@ import {CoreModule} from "./core/core.module";
 
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
     SharedModule,
+    CoreModule,
+  ],
+  exports: [
     CoreModule,
   ],
   providers: [

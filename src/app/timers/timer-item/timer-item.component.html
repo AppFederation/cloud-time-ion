@@ -1,20 +1,31 @@
 <ion-item
-    (click)="onSetDuration(timer)"
+  (click)="onSetDuration(timer)"
 >
 
+  <ng-container *ngIf="timer.isRunning">
     LEFT: &nbsp;
-<!--    <div class="timeLeftCounter">-->
-<!--        {{timer.secondsLeftInt}}-->
-<!--    </div>-->
-    <app-time-left-view [endTime]="timer.endTime"></app-time-left-view>
-    &nbsp;
-    <ion-label>{{timer.title}}</ion-label>
-    <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
-    <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->
+    <!--    <div class="timeLeftCounter">-->
+    <!--        {{timer.secondsLeftInt}}-->
+    <!--    </div>-->
+    <app-time-left-view
+      [endTime]="timer.endTime"
+    ></app-time-left-view>
+  </ng-container>
 
-<!--    Left: {{endTime }}-->
-<!--    Left2: {{timeLeft}} s-->
-<!--    Left3: {{timeLeft | amDuration: 'seconds'}} s-->
-<!--    END: {{endTime |  amDateFormat }}-->
+  &nbsp;
+  <app-time-view
+    *ngIf="! timer.isRunning"
+    [timeMs]="timer.durationSeconds * 1000"
+  ></app-time-view>
+
+  &nbsp;
+  <ion-label>{{timer.title}}</ion-label>
+  <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
+  <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->
+
+  <!--    Left: {{endTime }}-->
+  <!--    Left2: {{timeLeft}} s-->
+  <!--    Left3: {{timeLeft | amDuration: 'seconds'}} s-->
+  <!--    END: {{endTime |  amDateFormat }}-->
 
 </ion-item>

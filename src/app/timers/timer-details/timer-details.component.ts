@@ -3,9 +3,7 @@ import {TimerItem} from "../../core/TimerItem";
 import {AlertController, ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {FormControl} from "@angular/forms";
-import {throttleTime} from "rxjs/operators";
 import {ignorePromise} from "../../utils/promiseUtils";
-import {throttleTimeWithLeadingTrailing} from "../../utils/rxUtils";
 
 @Component({
   selector: 'app-timer-details',
@@ -31,16 +29,17 @@ export class TimerDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.timerTitleControl.setValue(this.timer.title)
-    this.timerTitleControl.valueChanges.pipe(throttleTimeWithLeadingTrailing(1000)).subscribe(titleValue => {
-      this.timersService.patch(this.timer, {
+    this.timerTitleControl.valueChanges.subscribe(titleValue => {
+      this.timer.patchThrottled({
         title: titleValue
       })
     })
   }
 
   onDurationSecondsChanged($event: number) {
-    this.timer.durationSeconds = $event
-    this.timersService.save(this.timer)
+    this.timer.patchThrottled({
+      durationSeconds: $event
+    })
   }
 
   async confirmDelete() {
@@ -55,7 +54,7 @@ export class TimerDetailsComponent implements OnInit {
         }, {
           text: 'DELETE',
           handler: () => {
-            this.timersService.delete(this.timer)
+            this.timer.deleteWithoutConfirmation()
             ignorePromise(this.modalController.dismiss())
           }
         }

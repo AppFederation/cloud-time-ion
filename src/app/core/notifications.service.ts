@@ -22,9 +22,7 @@ import {CoreModule} from "./core.module";
 //   ]
 // });
 
-@Injectable({
-  providedIn: CoreModule,
-})
+@Injectable()
 export class NotificationsService {
 
   constructor(
