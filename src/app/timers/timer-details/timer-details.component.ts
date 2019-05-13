@@ -44,7 +44,7 @@ export class TimerDetailsComponent implements OnInit {
 
   async confirmDelete() {
     const alert = await this.alertController.create({
-      header: 'Delete timer? ' + this.timer.title + "?",
+      header: 'Delete timer ' + this.timer.title + "?",
       // message: 'Delete <strong>text</strong>!!!',
       buttons: [
         {
