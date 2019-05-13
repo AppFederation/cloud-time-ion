@@ -4,6 +4,7 @@ export function testTimers() {
   test(`Timers`, async t => {
     await t
       .click('#fabAddTimer')
+      .typeText("#timerTitle input", "TestCafe Timer " + new Date())
       .click('#hoursPicker #buttonPlus')
       .click('#minutesPicker #buttonPlus')
       .click('#secondsPicker #buttonPlus')
@@ -16,5 +17,7 @@ export function testTimers() {
       .click('app-timer-details #buttonDeleteTimer')
       .click(Selector('.alert-button').withExactText("DELETE"))
       .click('#fabAddTimer') // another one
+      .click('app-timer-details #buttonDeleteTimer')
+      .click(Selector('.alert-button').withExactText("DELETE"))
   })
 }
