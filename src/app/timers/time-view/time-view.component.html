@@ -7,7 +7,7 @@
 
 </ng-container>
 
-<span>{{minutes}}</span>
+<span>{{(""+minutes).padStart(2, '0')}}</span>
 <span class="timeUnit">m</span>
-<span>{{seconds}}</span>
+<span>{{(""+seconds).padStart(2, '0')}}</span>
 <span class="timeUnit">s</span>
