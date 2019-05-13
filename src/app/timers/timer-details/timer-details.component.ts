@@ -44,7 +44,7 @@ export class TimerDetailsComponent implements OnInit {
 
   async confirmDelete() {
     const alert = await this.alertController.create({
-      header: 'Delete timer?',
+      header: 'Delete timer? ' + this.timer.title + "?",
       // message: 'Delete <strong>text</strong>!!!',
       buttons: [
         {
@@ -63,7 +63,23 @@ export class TimerDetailsComponent implements OnInit {
     await alert.present()
   }
 
-  stopTimer() {
-    this.timer.stopTimer()
+  async confirmStopTimer() {
+    const alert = await this.alertController.create({
+      header: 'STOP timer ' + this.timer.title + "?",
+      // message: 'Delete <strong>text</strong>!!!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'STOP',
+          handler: () => {
+            this.timer.stopTimer()
+          }
+        }
+      ]
+    })
+    await alert.present()
   }
 }
