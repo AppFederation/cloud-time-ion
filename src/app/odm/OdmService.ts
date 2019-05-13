@@ -2,7 +2,6 @@ import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
 import {OdmItem} from "./OdmItem";
 import {CachedSubject} from "../utils/CachedSubject";
-import {TimerItem} from "../core/TimerItem";
 import {debugLog} from "../utils/log";
 
 export abstract class OdmService<T extends OdmItem<T>> {
@@ -12,7 +11,7 @@ export abstract class OdmService<T extends OdmItem<T>> {
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
 
-  localItems$ = new CachedSubject([])
+  localItems$ = new CachedSubject<T[]>([])
 
   protected constructor(
     protected injector: Injector,
@@ -22,13 +21,10 @@ export abstract class OdmService<T extends OdmItem<T>> {
       let convertedCol = dbCol.map(dbItem => {
         return this.convertFromDbFormat(dbItem)
       });
+      debugLog('localItems$.next')
       this.localItems$.next(convertedCol)
     })
   }
-
-  // patchThrottled(item: T, patch: Partial<T>) {
-  //   // this.odmBackend.sa
-  // }
 
   deleteWithoutConfirmation(item: T) {
     this.odmCollectionBackend.deleteWithoutConfirmation(item.id)

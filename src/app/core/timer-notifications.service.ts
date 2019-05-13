@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {NotificationsService} from "./notifications.service";
 import {TimerId, TimerItem} from "./TimerItem";
 import {TimersService} from "./timers.service";
-import {FIXME} from "../utils/log";
+import {debugLog, FIXME} from "../utils/log";
+import {debuglog} from "util";
 
 class TimerNotifMeta {
   timeoutSubscription: any
@@ -17,9 +18,18 @@ export class TimerNotificationsService {
     public notificationsService: NotificationsService,
     public timersService: TimersService,
   ) {
+    debugLog('TimerNotificationsService ctor')
     this.timersService.localItems$.subscribe(timers => {
+      debugLog('TimerNotificationsService localItems$.subscribe')
       this.clearTimeouts()
-      FIXME('set alert notifs for timers', timers)
+      for ( const timer of timers ) {
+        if ( timer.isRunning ) {
+          this.mapIdToMeta.set(timer.id, {
+            timeoutSubscription: this.setTimeout(timer)
+          })
+        }
+      }
+      // FIXME('set alert notifs for timers', timers)
     })
   }
 
@@ -34,13 +44,13 @@ export class TimerNotificationsService {
 
   private notifyTimerEnd(timer: TimerItem) {
     // alert('timeout for timer ' + timer.title)
-    this.notificationsService.notifyMe('timeout for timer ' + timer.title)
+    this.notificationsService.notify('Timer ended: ' + timer.title)
   }
 
   private setTimeout(timer: TimerItem) {
-    // timer.timeoutSubscription = setTimeout(() => {
-    //   this.notifyTimerEnd(timer);
-    // }, timer.durationSeconds * 1000)
+    return setTimeout(() => {
+      this.notifyTimerEnd(timer);
+    }, timer.msLeft)
   }
 
 }

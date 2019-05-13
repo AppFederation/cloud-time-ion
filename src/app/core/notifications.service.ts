@@ -38,18 +38,14 @@ export class NotificationsService {
     }, false);
   }
 
-  notifyMe(text: string) {
+  notify(text: string) {
     this.playAudio();
     this.showNotification(text);
   }
 
   private showNotification(text: string) {
     if ( this.platform.is('android') ) {
-      (cordova.plugins as any).notification.local.schedule({
-        title: text,
-        text: 'Notif text',
-        foreground: true
-      });
+      this.androidNotification(text);
 
       return
     }
@@ -76,6 +72,14 @@ export class NotificationsService {
 
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
+  }
+
+  private androidNotification(text: string) {
+    (cordova.plugins as any).notification.local.schedule({
+      title: text,
+      text: 'Notif text',
+      foreground: true
+    });
   }
 
   private playAudio() {
