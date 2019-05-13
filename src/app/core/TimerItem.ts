@@ -47,9 +47,18 @@ export class TimerItem extends OdmItem<TimerItem> {
 
   onModified() {
     super.onModified()
-    if ( this.durationSeconds ) {
-      this.endTime = new Date(Date.now() + this.durationSeconds * 1000)
-    }
+  }
+
+  stopTimer() {
+    this.patchNow({
+      endTime: null,
+    })
+  }
+
+  startTimer() {
+    this.patchNow({
+      endTime: this.durationSeconds && new Date(Date.now() + this.durationSeconds * 1000)
+    })
   }
 
 }

@@ -10,3 +10,6 @@ End: {{endTime | amLocal}}
 ></app-time-picker>
 
 <ion-button id="buttonDeleteTimer" (click)="confirmDelete()">Delete</ion-button>
+
+<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="stopTimer()">Stop</ion-button>
+<ion-button *ngIf="! timer.isRunning" id="buttonStartTimer" (click)="timer.startTimer()">Start</ion-button>

@@ -62,4 +62,8 @@ export class TimerDetailsComponent implements OnInit {
     })
     await alert.present()
   }
+
+  stopTimer() {
+    this.timer.stopTimer()
+  }
 }

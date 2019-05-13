@@ -31,6 +31,10 @@ export class OdmItem<T extends OdmItem<T>> {
     this.localChanges$.next(this.asT) // other code listens to this and throttles - saves
   }
 
+  patchNow(patch: Partial<T>) {
+    this.patchThrottled(patch) // TODO: make it really instant
+  }
+
   deleteWithoutConfirmation() {
     this.odmService.deleteWithoutConfirmation(this.asT)
   }
