@@ -23,7 +23,7 @@ export class NumberPickerComponent implements OnInit {
   }
 
   subtract() {
-    this.value --
+    this.value = Math.max(0, this.value - 1)
     this.notifyChange()
   }
 

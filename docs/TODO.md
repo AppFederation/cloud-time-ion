@@ -4,10 +4,15 @@
 Prepare for Sunday
 
 * V set timer names
-* start/stop timer (allows templates like laundry)
+* V start/stop timer (allows templates like laundry)
 * schedule notifs via cordova, with sound
   * test after killing app
   * button "+1 min"
 * open ionic inertial picker
 * timer-details layout
+
+* schedule notifs via TS service, instead of notifying immediately
+* login via google
+* timer ended dialog
+* separate running timers from non-running (templates)
 

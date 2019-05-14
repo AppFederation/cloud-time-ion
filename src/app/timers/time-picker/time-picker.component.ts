@@ -1,8 +1,4 @@
-import {
-  Component, EventEmitter,
-  Input,
-  OnInit, Output,
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {PickerController} from "@ionic/angular";
 
 @Component({
@@ -39,51 +35,49 @@ export class TimePickerComponent implements OnInit {
     this.durationSecondsChanged.emit(this.totalTimeSeconds)
   }
 
-  private _pickerColumn = {
-    name: 'days',
-    options: [
-      {
-        text: '1',
-        value: 1
-      },
-      {
-        text: '2',
-        value: 2
-      },
-      {
-        text: '3',
-        value: 3
-      },
-    ]
-  };
+  private colHours() { return {
+    name: 'hours',
+    options: this.getOptions(24),
+    refresh: () => {
+      console.log('colHours refresh test')
+    },
+    selectedIndex: this.pickerHours,
+  }}
 
   async openTimePicker() {
-    let pickerColumn = this._pickerColumn;
     let pickerElement = await this.pickerController.create({
       buttons: [{
         text: 'Done',
+        handler: (value) => {
+          this.pickerHours = value.hours.value
+          this.pickerMinutes = value.minutes.value
+          this.pickerSeconds= value.seconds.value
+          this.onChangeTime()
+        }
       }],
       columns: [
-        pickerColumn,
+        this.colHours(),
         {
-          name: 'years',
-          options: [
-            {
-              text: '1992',
-              value: 1992
-            },
-            {
-              text: '1993',
-              value: 1993
-            },
-            {
-              text: '1994',
-              value: 1994
-            },
-          ]
+          name: 'minutes',
+          options: this.getOptions(60),
+          selectedIndex: this.pickerMinutes,
+        },
+        {
+          name: 'seconds',
+          options: this.getOptions(60),
+          selectedIndex: this.pickerSeconds,
         },
       ]
     });
-    await pickerElement.present()
+    let ret = await pickerElement.present();
+  }
+
+  private getOptions(count) {
+    return Array.from(new Array(count).keys()).map(k => {
+      return {
+        text: '' + k,
+        value: k,
+      }
+    });
   }
 }

@@ -7,7 +7,6 @@ import {ignorePromise} from "../utils/promiseUtils";
 import {OdmBackend} from "../odm/OdmBackend";
 import {CachedSubject} from "../utils/CachedSubject";
 
-@Injectable()
 export class FirestoreOdmCollectionBackend<T extends OdmItem<T>> extends OdmCollectionBackend<T> {
 
   protected angularFirestore = this.injector.get(AngularFirestore)
