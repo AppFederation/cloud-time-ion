@@ -15,4 +15,13 @@ Prepare for Sunday
 * login via google
 * timer ended dialog
 * separate running timers from non-running (templates)
-
+  * 2/3 times bigger font for running timers
+* Logo
+  * top-left
+  * app icon
+* theme(s) (green / orange)
+* preferences page (lazy loading)
+  * as a tab
+* fix negative times modulo being -1 instead of 0 (do math.abs if negative)
+* better icon for plus FAB
+* icon for running timers

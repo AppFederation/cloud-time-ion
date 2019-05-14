@@ -1,9 +1,10 @@
 <ion-item
+  [ngClass]="{runningTimer: timer.isRunning}"
   (click)="onSetDuration(timer)"
 >
 
   <ng-container *ngIf="timer.isRunning">
-    LEFT: &nbsp;
+<!--    LEFT: &nbsp;-->
     <!--    <div class="timeLeftCounter">-->
     <!--        {{timer.secondsLeftInt}}-->
     <!--    </div>-->

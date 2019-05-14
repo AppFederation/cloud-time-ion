@@ -9,7 +9,7 @@ import {TimerDetailsComponent} from "../timer-details/timer-details.component";
 @Component({
   selector: 'app-timer-item',
   templateUrl: './timer-item.component.html',
-  styleUrls: ['./timer-item.component.scss'],
+  styleUrls: ['./timer-item.component.sass'],
 })
 export class TimerItemComponent implements OnInit {
 
