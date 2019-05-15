@@ -1,10 +1,13 @@
 <ion-item
-  [ngClass]="{runningTimer: timer.isRunning}"
+  [ngClass]="{runningTimer: isRunning}"
   (click)="onSetDuration(timer)"
+
 >
 
-  <ng-container *ngIf="timer.isRunning">
-<!--    LEFT: &nbsp;-->
+  <ng-container *ngIf="isRunning">
+    <ion-icon name="play-circle"></ion-icon>
+    &nbsp;
+    <!--    LEFT: &nbsp;-->
     <!--    <div class="timeLeftCounter">-->
     <!--        {{timer.secondsLeftInt}}-->
     <!--    </div>-->
@@ -15,7 +18,7 @@
 
   &nbsp;
   <app-time-view
-    *ngIf="! timer.isRunning"
+    *ngIf="! isRunning"
     [timeMs]="timer.durationSeconds * 1000"
   ></app-time-view>
 

@@ -9,7 +9,9 @@
 <ion-content>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button id=fabAddTimer (click)="onAddTimer()">+</ion-fab-button>
+    <ion-fab-button id=fabAddTimer (click)="onAddTimer()">
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
   <app-timers-list></app-timers-list>
 

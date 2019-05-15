@@ -16,6 +16,8 @@ export class TimerItemComponent implements OnInit {
   @Input()
   timer: TimerItem
 
+  get isRunning() { return this.timer.isRunning }
+
   constructor(
       private modalController: ModalController,
       private timersService: TimersService,

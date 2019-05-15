@@ -35,7 +35,7 @@ export class TimePickerComponent implements OnInit {
     this.durationSecondsChanged.emit(this.totalTimeSeconds)
   }
 
-  private colHours() { return {
+  colHours() { return {
     name: 'hours',
     options: this.getOptions(24),
     refresh: () => {

@@ -11,7 +11,22 @@ End: {{endTime | amLocal}}
   (durationSecondsChanged)="onDurationSecondsChanged($event)"
 ></app-time-picker>
 
-<ion-button id="buttonDeleteTimer" (click)="confirmDelete()">Delete</ion-button>
+<ion-button id="buttonDeleteTimer" (click)="confirmDelete()">
+  <ion-icon name="trash"></ion-icon>
+  &nbsp;Delete
+</ion-button>
 
-<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="confirmStopTimer()">Stop</ion-button>
-<ion-button *ngIf="! timer.isRunning" id="buttonStartTimer" (click)="timer.startTimer()">Start</ion-button>
+<ion-button *ngIf="! timer.isRunning" id="buttonStartTimer" (click)="timer.startTimer()">
+  <ion-icon name="play-circle"></ion-icon>
+  &nbsp;Start
+</ion-button>
+<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="confirmStopTimer()">
+  <ion-icon name="square"></ion-icon>
+  &nbsp;Stop
+</ion-button>
+<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="confirmStopTimer()">
+  <ion-icon name="pause"></ion-icon>
+  &nbsp;Pause
+</ion-button>
+
+
