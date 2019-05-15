@@ -1,13 +1,20 @@
 
 <ng-container
-  *ngIf="timeMs >= 3600 * 1000"
+  *ngIf="hasHrs"
 >
-  <span>{{hours}}</span>
+  <span id="hrsVal">
+    {{hrsTxt}}
+  </span>
   <span class="timeUnit">h</span>
 
 </ng-container>
 
-<span>{{(""+minutes).padStart(2, '0')}}</span>
+<span id="minsVal">
+  {{minsTxt}}
+</span>
 <span class="timeUnit">m</span>
-<span>{{(""+seconds).padStart(2, '0')}}</span>
+
+<span id="secsVal">
+  {{secsTxt}}
+</span>
 <span class="timeUnit">s</span>

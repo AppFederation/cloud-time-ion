@@ -11,7 +11,8 @@ export class TimeLeftViewComponent implements OnInit, OnDestroy {
   endTime: Date
 
   msLeft = 0
-  private readonly intervalHandle: number
+
+  private readonly intervalHandle: any
 
   constructor(
       private changeDetectorRef: ChangeDetectorRef

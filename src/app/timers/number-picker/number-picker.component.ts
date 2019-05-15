@@ -13,6 +13,8 @@ export class NumberPickerComponent implements OnInit {
   @Output()
   change = new EventEmitter<number>()
 
+  private allowNegative = true
+
   constructor() { }
 
   ngOnInit() {}
@@ -23,7 +25,10 @@ export class NumberPickerComponent implements OnInit {
   }
 
   subtract() {
-    this.value = Math.max(0, this.value - 1)
+    this.value --
+    if ( ! this.allowNegative ) {
+      this.value = Math.max(0, this.value)
+    }
     this.notifyChange()
   }
 
