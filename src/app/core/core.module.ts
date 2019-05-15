@@ -4,12 +4,14 @@ import {OdmFirestoreModule} from "../odm-firestore/odm-firestore.module";
 import {TimerNotificationsService} from "./timer-notifications.service";
 import {TimersService} from "./timers.service";
 import {NotificationsService} from "./notifications.service";
+import {AngularFireAuthModule} from "@angular/fire/auth";
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     OdmFirestoreModule,
+    AngularFireAuthModule,
   ],
   providers: [
     NotificationsService,
