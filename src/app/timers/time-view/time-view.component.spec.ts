@@ -31,7 +31,7 @@ describe('TimeViewComponent', () => {
     if ( ! debugElement ) {
       return null
     } else {
-      return debugElement.nativeElement.textContent.trim()
+      return debugElement.nativeElement.textContent //.trim()
     }
   }
 
