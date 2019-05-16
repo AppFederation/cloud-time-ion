@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimeViewComponent } from './time-view.component';
 import {By} from "@angular/platform-browser";
 
-fdescribe('TimeViewComponent', () => {
+describe('TimeViewComponent', () => {
   let component: TimeViewComponent;
   let fixture: ComponentFixture<TimeViewComponent>;
 

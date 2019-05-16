@@ -18,6 +18,7 @@ describe('TimeLeftViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TimeLeftViewComponent);
     component = fixture.componentInstance;
+    component.endTime = new Date()
     fixture.detectChanges();
   });
 
