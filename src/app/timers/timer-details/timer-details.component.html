@@ -1,3 +1,7 @@
+<ion-button (click)="onClickDismiss()">
+  < Dismiss
+</ion-button>
+
 <ion-input
   [formControl]="timerTitleControl"
   id="timerTitle"
@@ -5,6 +9,7 @@
   clearInput placeholder="Timer Title" value="{{timer.title}}"
 ></ion-input>
 End: {{endTime | amLocal}}
+
 
 <app-time-picker
   [totalTimeSeconds]="timer.durationSeconds"

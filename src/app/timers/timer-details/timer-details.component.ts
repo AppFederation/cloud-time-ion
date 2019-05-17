@@ -55,12 +55,16 @@ export class TimerDetailsComponent implements OnInit {
           text: 'DELETE',
           handler: () => {
             this.timer.deleteWithoutConfirmation()
-            ignorePromise(this.modalController.dismiss())
+            this.dismissModal()
           }
         }
       ]
     })
     await alert.present()
+  }
+
+  private dismissModal() {
+    return ignorePromise(this.modalController.dismiss())
   }
 
   async confirmStopTimer() {
@@ -81,5 +85,9 @@ export class TimerDetailsComponent implements OnInit {
       ]
     })
     await alert.present()
+  }
+
+  onClickDismiss() {
+    this.dismissModal()
   }
 }
