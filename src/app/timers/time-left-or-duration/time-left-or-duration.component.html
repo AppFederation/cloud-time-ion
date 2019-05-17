@@ -1,0 +1,14 @@
+
+<ng-container *ngIf="timer">
+
+  <app-time-left-view
+    *ngIf="timer.isRunning"
+    [endTime]="timer.endTime"
+  ></app-time-left-view>
+
+  <app-time-view
+    *ngIf="! timer.isRunning"
+    [timeMs]="timer.durationSeconds * 1000"
+  ></app-time-view>
+
+</ng-container>

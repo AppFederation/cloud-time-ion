@@ -2,30 +2,18 @@
   [ngClass]="{runningTimer: isRunning}"
   (click)="onClickTimerItem(timer)"
 >
-
   <ng-container *ngIf="isRunning">
     <ion-icon name="play-circle"></ion-icon>
-    &nbsp;
-    <!--    LEFT: &nbsp;-->
-    <!--    <div class="timeLeftCounter">-->
-    <!--        {{timer.secondsLeftInt}}-->
-    <!--    </div>-->
-    <app-time-left-view
-      [endTime]="timer.endTime"
-    ></app-time-left-view>
   </ng-container>
 
-  <app-time-view
-    *ngIf="! isRunning"
-    [timeMs]="timer.durationSeconds * 1000"
-  ></app-time-view>
+  <app-time-left-or-duration
+    [timer]="timer"
+  ></app-time-left-or-duration>
 
   <ion-label>{{timer.title}}</ion-label>
   <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
   <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->
 
-  <!--    Left: {{endTime }}-->
-  <!--    Left2: {{timeLeft}} s-->
   <!--    Left3: {{timeLeft | amDuration: 'seconds'}} s-->
   <!--    END: {{endTime |  amDateFormat }}-->
 

@@ -6,11 +6,10 @@
 
 </div>
 
-<app-time-left-view
+<app-time-left-or-duration
   style="font-size: 3rem"
-  [endTime]="timer.endTime"
-></app-time-left-view>
-
+  [timer]="timer"
+></app-time-left-or-duration>
 
 <ion-button
   (click)="onClickDismiss()"

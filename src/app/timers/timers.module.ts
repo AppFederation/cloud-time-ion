@@ -14,6 +14,7 @@ import {TimerDetailsComponent} from "./timer-details/timer-details.component";
 import {NumberPickerComponent} from "./number-picker/number-picker.component";
 import {TimeLeftViewComponent} from "./time-left-view/time-left-view.component";
 import {SharedModule} from "../shared/shared.module";
+import {TimeLeftOrDurationComponent} from "./time-left-or-duration/time-left-or-duration.component";
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import {SharedModule} from "../shared/shared.module";
   ],
   declarations: [
     TimersPageComponent, TimePickerComponent, TimerItemComponent, TimersListComponent, TimeViewComponent, TimerEndedComponent,
-    TimerDetailsComponent, NumberPickerComponent, TimeLeftViewComponent
+    TimerDetailsComponent, NumberPickerComponent, TimeLeftViewComponent, TimeLeftOrDurationComponent
   ],
   entryComponents: [
     TimerDetailsComponent,
