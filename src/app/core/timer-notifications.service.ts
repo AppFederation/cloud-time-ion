@@ -4,9 +4,20 @@ import {TimersService} from "./timers.service";
 import {debugLog, FIXME} from "../utils/log";
 import {NotificationHandle, NotificationInfo} from "../notifications/PlatformNotificationsService";
 import {NotificationsService} from "../notifications/notifications.service";
+import {SchedulerHandle, SchedulerService} from "../scheduler/scheduler.service";
 
 class TimerNotifMeta {
-  notificationHandle: NotificationHandle
+  constructor(
+    public timerNotificationsService: TimerNotificationsService,
+    public notificationHandle: NotificationHandle,
+    public schedulerHandle: SchedulerHandle,
+  ) {}
+
+  cancel() {
+    if ( this.notificationHandle ) {
+      this.notificationHandle.cancel()
+    }
+  }
 }
 
 @Injectable()
@@ -17,6 +28,7 @@ export class TimerNotificationsService {
   constructor(
     public notificationsService: NotificationsService,
     public timersService: TimersService,
+    public schedulerService: SchedulerService,
   ) {
     debugLog('TimerNotificationsService ctor')
     this.timersService.localItems$.subscribe(timers => {
@@ -24,9 +36,14 @@ export class TimerNotificationsService {
       this.clearTimeouts()
       for ( const timer of timers ) {
         if ( timer.isRunning ) {
-          this.mapIdToMeta.set(timer.id, {
-            notificationHandle: this.scheduleNotification(timer)
-          })
+          this.mapIdToMeta.set(
+            timer.id,
+            new TimerNotifMeta(
+              this,
+              this.scheduleNotification(timer),
+              this.scheduleTimerEnded(timer),
+            )
+          )
         }
       }
     })
@@ -35,9 +52,7 @@ export class TimerNotificationsService {
   public clearTimeouts() {
     debugLog('clearTimeouts()')
     for ( const notifMeta of this.mapIdToMeta.values() ) {
-      if ( notifMeta.notificationHandle ) {
-        this.notificationsService.cancelNotification(notifMeta.notificationHandle)
-      }
+      notifMeta.cancel()
     }
     this.mapIdToMeta.clear()
   }
@@ -47,5 +62,11 @@ export class TimerNotificationsService {
     return this.notificationsService.scheduleNotification(
       new NotificationInfo(`Timer finished: ${timer.title}`, timer.endTime)
     )
+  }
+
+  private scheduleTimerEnded(timer: TimerItem) {
+    return this.schedulerService.schedule(timer.endTime, () => {
+
+    })
   }
 }

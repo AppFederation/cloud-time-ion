@@ -11,6 +11,8 @@ export abstract class NotificationHandle {
   protected constructor(
     public notificationInfo: NotificationInfo,
   ) {}
+
+  abstract cancel()
 }
 
 
@@ -20,6 +22,6 @@ export abstract class PlatformNotificationsService <THandle extends Notification
   }
 
   abstract scheduleNotificationImpl(notifInfo: NotificationInfo): THandle
-  abstract cancelNotificationImpl(notifHandle: THandle)
+  // abstract cancelNotificationImpl(notifHandle: THandle)
 }
 

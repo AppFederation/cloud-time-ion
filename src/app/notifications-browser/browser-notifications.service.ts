@@ -7,9 +7,14 @@ import {AudioService} from "../audio/audio.service";
 class BrowserNotifHandle extends NotificationHandle {
   constructor(
     notificationInfo: NotificationInfo,
+    public browserNotificationsService: BrowserNotificationsService,
     public schedulerHandle: SchedulerHandle,
   ) {
     super(notificationInfo)
+  }
+
+  cancel() {
+    this.schedulerHandle.unSchedule()
   }
 }
 
@@ -31,7 +36,7 @@ export class BrowserNotificationsService extends PlatformNotificationsService<Br
     const schedulerHandle = this.schedulerService.schedule(notifInfo.when, () => {
       this.checkAndShowNotification(notifInfo);
     })
-    return new BrowserNotifHandle(notifInfo, schedulerHandle)
+    return new BrowserNotifHandle(notifInfo, this, schedulerHandle)
   }
 
   private checkAndShowNotification(notifInfo: NotificationInfo) {
@@ -67,7 +72,4 @@ export class BrowserNotificationsService extends PlatformNotificationsService<Br
     this.audioService.playAudio('assets/audio/cartoon-telephone_daniel_simion.mp3')
   }
 
-  cancelNotificationImpl(notifHandle: BrowserNotifHandle) {
-    notifHandle.schedulerHandle.unSchedule()
-  }
 }

@@ -60,8 +60,4 @@ export class NotificationsService {
     return this.notificationsService.scheduleNotificationImpl(notifInfo)
   }
 
-
-  cancelNotification(notificationHandle: NotificationHandle) {
-    return this.notificationsService.cancelNotificationImpl(notificationHandle)
-  }
 }
