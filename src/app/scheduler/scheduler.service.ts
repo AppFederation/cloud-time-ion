@@ -7,6 +7,10 @@ export class SchedulerHandle {
     public _timeOutHandle
   ) {}
 
+  unSchedule() {
+    clearTimeout(this._timeOutHandle)
+  }
+
 }
 
 @Injectable({
@@ -23,7 +27,4 @@ export class SchedulerService {
     return new SchedulerHandle(timeoutHandle)
   }
 
-  unSchedule(schedulerHandle: SchedulerHandle) {
-    clearInterval(schedulerHandle._timeOutHandle)
-  }
 }

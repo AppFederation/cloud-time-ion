@@ -68,6 +68,6 @@ export class BrowserNotificationsService extends PlatformNotificationsService<Br
   }
 
   cancelNotificationImpl(notifHandle: BrowserNotifHandle) {
-    this.schedulerService.unSchedule(notifHandle.schedulerHandle)
+    notifHandle.schedulerHandle.unSchedule()
   }
 }
