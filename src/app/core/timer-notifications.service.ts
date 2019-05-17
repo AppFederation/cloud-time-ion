@@ -29,7 +29,6 @@ export class TimerNotificationsService {
           })
         }
       }
-      // FIXME('set alert notifs for timers', timers)
     })
   }
 
@@ -42,17 +41,6 @@ export class TimerNotificationsService {
     }
     this.mapIdToMeta.clear()
   }
-
-  // private notifyTimerEnd(timer: TimerItem) {
-  //   // alert('timeout for timer ' + timer.title)
-  //   this.notificationsService.notify('Timer ended: ' + timer.title)
-  // }
-  //
-  // private setTimeout(timer: TimerItem) {
-  //   return setTimeout(() => {
-  //     this.notifyTimerEnd(timer);
-  //   }, timer.msLeft)
-  // }
 
   private scheduleNotification(timer: TimerItem) {
     debugLog('scheduleNotification', timer)
