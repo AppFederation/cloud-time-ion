@@ -61,4 +61,8 @@ export class TimerItem extends OdmItem<TimerItem> {
     })
   }
 
+  restartTimer() {
+    this.stopTimer()
+    this.startTimer()
+  }
 }

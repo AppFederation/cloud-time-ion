@@ -5,6 +5,7 @@ import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {OverlayEventDetail} from '@ionic/core';
 import {TimerDetailsComponent} from "../timer-details/timer-details.component";
+import {debugLog} from "../../utils/log";
 
 @Component({
   selector: 'app-timer-item',
@@ -26,8 +27,8 @@ export class TimerItemComponent implements OnInit {
   ngOnInit() {}
 
 
-  async onSetDuration(timer: TimerItem) {
-    console.log('onSetDuration before', timer)
+  async onClickTimerItem(timer: TimerItem) {
+    debugLog('onSetDuration before', timer)
 
     const modal: HTMLIonModalElement =
         await this.modalController.create({

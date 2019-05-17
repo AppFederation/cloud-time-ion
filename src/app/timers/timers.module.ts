@@ -30,6 +30,7 @@ import {SharedModule} from "../shared/shared.module";
   ],
   entryComponents: [
     TimerDetailsComponent,
+    TimerEndedComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -5,6 +5,10 @@ import {debugLog, FIXME} from "../utils/log";
 import {NotificationHandle, NotificationInfo} from "../notifications/PlatformNotificationsService";
 import {NotificationsService} from "../notifications/notifications.service";
 import {SchedulerHandle, SchedulerService} from "../scheduler/scheduler.service";
+import {ModalController} from "@ionic/angular";
+import {TimerDetailsComponent} from "../timers/timer-details/timer-details.component";
+import {TimerEndedComponent} from "../timers/timer-ended/timer-ended.component";
+import {TimerEndedService} from "../timers/timer-ended.service";
 
 class TimerNotifMeta {
   constructor(
@@ -20,6 +24,7 @@ class TimerNotifMeta {
   }
 }
 
+/* =============== SERVICE */
 @Injectable()
 export class TimerNotificationsService {
 
@@ -29,6 +34,8 @@ export class TimerNotificationsService {
     public notificationsService: NotificationsService,
     public timersService: TimersService,
     public schedulerService: SchedulerService,
+    private modalController: ModalController,
+    private timerEndedService: TimerEndedService,
   ) {
     debugLog('TimerNotificationsService ctor')
     this.timersService.localItems$.subscribe(timers => {
@@ -65,8 +72,8 @@ export class TimerNotificationsService {
   }
 
   private scheduleTimerEnded(timer: TimerItem) {
-    return this.schedulerService.schedule(timer.endTime, () => {
-
+    return this.schedulerService.schedule(timer.endTime, async () => {
+      await this.timerEndedService.showTimerEnded(timer)
     })
   }
 }

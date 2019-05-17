@@ -1,7 +1,6 @@
 <ion-item
   [ngClass]="{runningTimer: isRunning}"
-  (click)="onSetDuration(timer)"
-
+  (click)="onClickTimerItem(timer)"
 >
 
   <ng-container *ngIf="isRunning">
@@ -16,13 +15,11 @@
     ></app-time-left-view>
   </ng-container>
 
-  &nbsp;
   <app-time-view
     *ngIf="! isRunning"
     [timeMs]="timer.durationSeconds * 1000"
   ></app-time-view>
 
-  &nbsp;
   <ion-label>{{timer.title}}</ion-label>
   <!--            <ion-datetime display-format="MM/YYYY" picker-format="MMMM YYYY"></ion-datetime>-->
   <!--      <ion-datetime (ionChange)="onChangeTime($event)" displayFormat="HH:mm"></ion-datetime>-->

@@ -6,6 +6,7 @@ import {TimersService} from "./timers.service";
 import {NotificationsService} from "../notifications/notifications.service";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {NotificationsModule} from "../notifications/notifications.module";
+import {TimersPageModule} from "../timers/timers.module";
 
 @NgModule({
   declarations: [],
@@ -14,6 +15,7 @@ import {NotificationsModule} from "../notifications/notifications.module";
     OdmFirestoreModule,
     AngularFireAuthModule,
     NotificationsModule,
+    TimersPageModule /* for TimerEndedService; not circular dep? */,
   ],
   providers: [
     NotificationsService,

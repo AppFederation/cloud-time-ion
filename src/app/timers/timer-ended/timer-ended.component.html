@@ -1,3 +1,27 @@
-Timer Ended !
 
-{{timer.title}}
+<div style="font-size: 3rem;">
+  Timer Ended !
+  <!-- TODO: blink (maybe even background) to be well visible-->
+  {{timer.title}}
+
+</div>
+
+<app-time-left-view
+  style="font-size: 3rem"
+  [endTime]="timer.endTime"
+></app-time-left-view>
+
+
+<ion-button
+  (click)="onClickDismiss()"
+>Stop and Dismiss</ion-button>
+
+<ion-button
+  (click)="onClickRestart()"
+>Restart
+</ion-button>
+
+<ion-button
+  (click)="onClickPostponeOneMinute()"
+>Postpone 1 minute
+</ion-button>

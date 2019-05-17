@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
+import {ignorePromise} from "../../utils/promiseUtils";
+import {ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-timer-ended',
@@ -10,8 +12,26 @@ export class TimerEndedComponent implements OnInit {
 
   @Input() timer: TimerItem
 
-  constructor() { }
+  constructor(
+    public modalController: ModalController,
+  ) { }
 
   ngOnInit() {}
+
+  onClickDismiss() {
+    this.timer.stopTimer()
+    this.dismiss();
+  }
+
+  onClickRestart() {
+    this.timer.restartTimer()
+    this.dismiss();
+  }
+
+  // TODO: dismiss automatically if dismissed/stopped on another device
+
+  private dismiss() {
+    return ignorePromise(this.modalController.dismiss())
+  }
 
 }
