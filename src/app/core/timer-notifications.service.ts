@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {NotificationsService} from "./notifications.service";
 import {TimerId, TimerItem} from "./TimerItem";
 import {TimersService} from "./timers.service";
 import {debugLog, FIXME} from "../utils/log";
-import {debuglog} from "util";
+import {NotificationHandle, NotificationInfo} from "../notifications/PlatformNotificationsService";
+import {NotificationsService} from "../notifications/notifications.service";
 
 class TimerNotifMeta {
-  timeoutSubscription: any
+  notificationHandle: NotificationHandle
 }
 
 @Injectable()
@@ -25,7 +25,7 @@ export class TimerNotificationsService {
       for ( const timer of timers ) {
         if ( timer.isRunning ) {
           this.mapIdToMeta.set(timer.id, {
-            timeoutSubscription: this.setTimeout(timer)
+            notificationHandle: this.scheduleNotification(timer)
           })
         }
       }
@@ -34,23 +34,30 @@ export class TimerNotificationsService {
   }
 
   public clearTimeouts() {
+    debugLog('clearTimeouts()')
     for ( const notifMeta of this.mapIdToMeta.values() ) {
-      if ( notifMeta.timeoutSubscription ) {
-        clearTimeout(notifMeta.timeoutSubscription)
+      if ( notifMeta.notificationHandle ) {
+        this.notificationsService.cancelNotification(notifMeta.notificationHandle)
       }
     }
     this.mapIdToMeta.clear()
   }
 
-  private notifyTimerEnd(timer: TimerItem) {
-    // alert('timeout for timer ' + timer.title)
-    this.notificationsService.notify('Timer ended: ' + timer.title)
-  }
+  // private notifyTimerEnd(timer: TimerItem) {
+  //   // alert('timeout for timer ' + timer.title)
+  //   this.notificationsService.notify('Timer ended: ' + timer.title)
+  // }
+  //
+  // private setTimeout(timer: TimerItem) {
+  //   return setTimeout(() => {
+  //     this.notifyTimerEnd(timer);
+  //   }, timer.msLeft)
+  // }
 
-  private setTimeout(timer: TimerItem) {
-    return setTimeout(() => {
-      this.notifyTimerEnd(timer);
-    }, timer.msLeft)
+  private scheduleNotification(timer: TimerItem) {
+    debugLog('scheduleNotification', timer)
+    return this.notificationsService.scheduleNotification(
+      new NotificationInfo(`Timer finished: ${timer.title}`, timer.endTime)
+    )
   }
-
 }

@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import {OdmFirestoreModule} from "../odm-firestore/odm-firestore.module";
 import {TimerNotificationsService} from "./timer-notifications.service";
 import {TimersService} from "./timers.service";
-import {NotificationsService} from "./notifications.service";
+import {NotificationsService} from "../notifications/notifications.service";
 import {AngularFireAuthModule} from "@angular/fire/auth";
+import {NotificationsModule} from "../notifications/notifications.module";
 
 @NgModule({
   declarations: [],
@@ -12,6 +13,7 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
     CommonModule,
     OdmFirestoreModule,
     AngularFireAuthModule,
+    NotificationsModule,
   ],
   providers: [
     NotificationsService,
