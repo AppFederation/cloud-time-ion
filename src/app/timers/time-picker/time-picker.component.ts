@@ -8,6 +8,8 @@ import {PickerController} from "@ionic/angular";
 })
 export class TimePickerComponent implements OnInit {
 
+  showTimePicker = false
+
   @Output()
   durationSecondsChanged = new EventEmitter<number>()
 
