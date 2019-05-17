@@ -8,7 +8,7 @@ class CordovaNotifHandle extends NotificationHandle {
   constructor(
     notificationInfo: NotificationInfo,
     public intId: number,
-    public schedulerHandle?: SchedulerHandle,
+    public schedulerHandle: SchedulerHandle,
   ) {
     super(notificationInfo)
   }
@@ -46,11 +46,15 @@ export class CordovaNotificationsService extends PlatformNotificationsService<Co
       sound: 'content://media/internal/audio/media/1',
     });
     console.log('scheduleNotification-d' + schedule +  JSON.stringify(schedule))
-    return new CordovaNotifHandle(notifInfo, newIntId) // TODO: schedule playing sound
+    let schedulerHandle = this.schedulerService.schedule(notifInfo.when, () => {
+      this.audioService.playAudio('assets/audio/ali-a_intro.mp3')
+    });
+    return new CordovaNotifHandle(notifInfo, newIntId, schedulerHandle)
   }
 
   cancelNotificationImpl(notifHandle: CordovaNotifHandle) {
     this.cordovaLocalNotifs.cancel( [ notifHandle.intId ] )
+    notifHandle.schedulerHandle.unSchedule()
     // TODO: un-schedule playing sound
   }
 

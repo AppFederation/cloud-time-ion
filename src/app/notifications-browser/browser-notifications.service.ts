@@ -64,7 +64,7 @@ export class BrowserNotificationsService extends PlatformNotificationsService<Br
 
   private showNotificationNow(notifInfo: NotificationInfo) {
     var notification = new Notification(notifInfo.title);
-    this.audioService.playAudio()
+    this.audioService.playAudio('assets/audio/cartoon-telephone_daniel_simion.mp3')
   }
 
   cancelNotificationImpl(notifHandle: BrowserNotifHandle) {

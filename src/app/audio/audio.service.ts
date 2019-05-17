@@ -8,8 +8,8 @@ export class AudioService {
 
   constructor() { }
 
-  playAudio() {
-    var audio = new Audio('assets/cartoon-telephone_daniel_simion.mp3');
+  playAudio(file: string) {
+    var audio = new Audio(file);
     // audio.loop = true
     // IDEA: gradually increase volume, so as not to bother other people in the vicinity
     // IDEA: exponential back-off

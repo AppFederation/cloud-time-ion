@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SchedulerService } from './scheduler.service';
 import {AudioService} from "./audio.service";
 
 describe('AudioService', () => {
