@@ -67,7 +67,7 @@ export class TimerDetailsComponent implements OnInit {
     return ignorePromise(this.modalController.dismiss())
   }
 
-  async confirmStopTimer() {
+  async askStopTimer() {
     const alert = await this.alertController.create({
       header: 'STOP timer ' + this.timer.title + "?",
       // message: 'Delete <strong>text</strong>!!!',
@@ -89,5 +89,9 @@ export class TimerDetailsComponent implements OnInit {
 
   onClickDismiss() {
     this.dismissModal()
+  }
+
+  askPauseTimer() {
+    // FIXME
   }
 }

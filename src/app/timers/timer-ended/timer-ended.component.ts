@@ -21,6 +21,9 @@ export class TimerEndedComponent implements OnInit {
   onClickDismiss() {
     this.timer.stopTimer()
     this.dismiss();
+
+    // TODO: stop sounds when dismissed
+
   }
 
   onClickRestart() {
@@ -34,4 +37,7 @@ export class TimerEndedComponent implements OnInit {
     return ignorePromise(this.modalController.dismiss())
   }
 
+  onClickPostponeOneMinute() {
+    // TODO
+  }
 }

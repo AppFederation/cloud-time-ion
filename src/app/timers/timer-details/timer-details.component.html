@@ -1,4 +1,4 @@
-<ion-button (click)="onClickDismiss()">
+<ion-button id="buttonDismissTimerDetails" (click)="onClickDismiss()">
   < Dismiss
 </ion-button>
 
@@ -25,11 +25,11 @@ End: {{endTime | amLocal}}
   <ion-icon name="play-circle"></ion-icon>
   &nbsp;Start
 </ion-button>
-<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="confirmStopTimer()">
+<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="askStopTimer()">
   <ion-icon name="square"></ion-icon>
   &nbsp;Stop
 </ion-button>
-<ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="confirmStopTimer()">
+<ion-button *ngIf="timer.isRunning" id="buttonPauseTimer" (click)="askPauseTimer()">
   <ion-icon name="pause"></ion-icon>
   &nbsp;Pause
 </ion-button>

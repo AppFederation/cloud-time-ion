@@ -6,22 +6,24 @@
 
 </div>
 
-
 <app-time-left-or-duration
   style="font-size: 3rem"
   [timer]="timer"
 ></app-time-left-or-duration>
 
 <ion-button
+  id="buttonStopTimerAndDismiss"
   (click)="onClickDismiss()"
 >Stop and Dismiss</ion-button>
 
 <ion-button
+  id="buttonRestartTimer"
   (click)="onClickRestart()"
 >Restart
 </ion-button>
 
 <ion-button
+  id="buttonPostponeTimerOneMinute"
   (click)="onClickPostponeOneMinute()"
 >Postpone 1 minute
 </ion-button>

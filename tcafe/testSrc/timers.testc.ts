@@ -29,8 +29,23 @@ export function testTimers() {
       .click(Selector('.alert-button').withExactText("STOP"))
       .click('app-timer-details #buttonDeleteTimer')
       .click(Selector('.alert-button').withExactText("DELETE"))
+
+      // set short timer to get to timer-end dialog
+      .click('#fabAddTimer')
+      .click('#secondsPicker #buttonPlus')
+      // .click('#secondsPicker #buttonPlus')
+      // .click('#secondsPicker #buttonPlus')
+      .click('#buttonRestartTimer')
+      .click('#buttonStopTimerAndDismiss')
+      .click('#buttonDismissTimerDetails') // NOTE: this might be auto-dismissed in the future
+
+      // .click('app-timer-details #buttonDeleteTimer')
+      // .click(Selector('.alert-button').withExactText("DELETE"))
+
+
       .click('#fabAddTimer') // another timer
       .click('app-timer-details #buttonDeleteTimer')
       .click(Selector('.alert-button').withExactText("DELETE"))
+
   })
 }
