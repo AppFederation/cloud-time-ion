@@ -14,7 +14,8 @@ export class OdmItem<T extends OdmItem<T>> {
 
   constructor(
     public odmService: OdmService<T>,
-    public id?: OdmItemId,
+    public id?: OdmItemId<T>,
+    public isDeleted?: Date,
   ) {
     if ( !id ) {
       this.id = '' + this.odmService.className + new Date() // hack
@@ -36,6 +37,7 @@ export class OdmItem<T extends OdmItem<T>> {
   }
 
   deleteWithoutConfirmation() {
+    this.isDeleted = new Date()
     this.odmService.deleteWithoutConfirmation(this.asT)
   }
 
@@ -43,6 +45,9 @@ export class OdmItem<T extends OdmItem<T>> {
     let dbFormat = Object.assign({}, this);
     delete dbFormat.odmService
     delete dbFormat.localChanges$
+    if ( !dbFormat.isDeleted ) {
+      delete dbFormat.isDeleted // For Firestore to avoid undefined
+    }
     return dbFormat
   }
 

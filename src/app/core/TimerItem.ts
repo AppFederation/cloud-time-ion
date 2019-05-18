@@ -19,7 +19,7 @@ export class TimerItem extends OdmItem<TimerItem> {
   }
 
   get isRunning() {
-    return !! this.endTime
+    return ! this.isDeleted && !! this.endTime
   }
 
   constructor(
