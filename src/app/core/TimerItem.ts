@@ -22,6 +22,10 @@ export class TimerItem extends OdmItem<TimerItem> {
     return ! this.isDeleted && !! this.endTime
   }
 
+  get isRunningAndOverdue() {
+    return this.isRunning && this.msLeft < 0
+  }
+
   constructor(
     timersService: TimersService,
     public id?,

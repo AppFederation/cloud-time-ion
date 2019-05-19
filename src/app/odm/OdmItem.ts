@@ -3,10 +3,13 @@ import {OdmService} from "./OdmService";
 import {CachedSubject} from "../utils/CachedSubject";
 import {throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
+import {debugLog} from "../utils/log";
 
 export class OdmItem<T extends OdmItem<T>> {
 
-  public localChanges$ = new CachedSubject<T>(this.asT)
+  public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
+  public locallyVisibleChangesThrottled$ = new CachedSubject<T>(this.asT)
+  public localUserSavesToThrottle$ = new CachedSubject<T>(this.asT)
 
   public get asT() { return this as unknown as T}
 
@@ -20,20 +23,35 @@ export class OdmItem<T extends OdmItem<T>> {
     if ( !id ) {
       this.id = '' + this.odmService.className + new Date() // hack
     }
-    this.localChanges$.pipe(throttleTimeWithLeadingTrailing(this.throttleIntervalMs)).subscribe(value => {
-      this.odmService.saveNow(this.asT)
+    this.localUserSavesToThrottle$.pipe(
+      throttleTimeWithLeadingTrailing(this.odmService.throttleSaveToDbMs)
+    ).subscribe(value => {
+      /* why this works only once?
+       * Causes saveNowToDb to receive old value
+      // this.odmService.saveNowToDb(this as unknown as T)
+      this.odmService.saveNowToDb(this.asT)
+      */
+      this.odmService.saveNowToDb(value as T)
     })
     this.onModified()
   }
 
   patchThrottled(patch: Partial<T>) {
+    debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
-    this.localChanges$.next(this.asT) // other code listens to this and throttles - saves
+    // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
+    this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
+    this.locallyVisibleChanges$.next(this.asT) // other code listens to this and throttles - saves
+    this.odmService.emitLocalItems()
   }
 
   patchNow(patch: Partial<T>) {
-    this.patchThrottled(patch) // TODO: make it really instant
+    Object.assign(this, patch)
+    this.onModified()
+    this.odmService.saveNowToDb(this.asT)
+    this.locallyVisibleChanges$.next(this.asT) // other code listens to this and throttles - saves
+    this.odmService.emitLocalItems()
   }
 
   deleteWithoutConfirmation() {
@@ -44,7 +62,9 @@ export class OdmItem<T extends OdmItem<T>> {
   toDbFormat() {
     let dbFormat = Object.assign({}, this);
     delete dbFormat.odmService
-    delete dbFormat.localChanges$
+    delete dbFormat.locallyVisibleChanges$
+    delete dbFormat.locallyVisibleChangesThrottled$
+    delete dbFormat.localUserSavesToThrottle$
     if ( !dbFormat.isDeleted ) {
       delete dbFormat.isDeleted // For Firestore to avoid undefined
     }
@@ -53,5 +73,10 @@ export class OdmItem<T extends OdmItem<T>> {
 
   onModified() {
 
+  }
+
+  applyDataFromDbAndEmit(incomingConverted: T) {
+    Object.assign(this, incomingConverted)
+    this.locallyVisibleChanges$.next(incomingConverted)
   }
 }

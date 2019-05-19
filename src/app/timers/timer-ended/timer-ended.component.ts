@@ -18,14 +18,16 @@ export class TimerEndedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.timer.localChanges$.subscribe(val => {
-      if ( ! val.isRunning ) {
+    this.timer.locallyVisibleChanges$.subscribe(timerItem => {
+      // TODO: should be throttled
+      debugLog('TimerEndedComponent: locallyVisibleChanges$', timerItem)
+      if ( ! timerItem.isRunning ) {
         this.dismiss()
       }
     })
   }
 
-  onClickDismiss() {
+  onClickStopTimerAndDismiss() {
     this.timer.stopTimer()
     this.dismiss();
 
