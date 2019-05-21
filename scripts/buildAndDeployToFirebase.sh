@@ -1,3 +1,4 @@
+#!/bin/bash
 
 set -x
 
@@ -16,7 +17,7 @@ scriptDir="`dirname $0`"
 #ng build \
 ng build \
   && firebase deploy \
-  && git tag deploy_`date --utc +%Y-%m-%d__%H.%M.%SZ` \
+  && git tag deploy_`date -u +%Y-%m-%d__%H.%M.%SZ` \
   && git push --tags
 
 Echo Finished `date`
