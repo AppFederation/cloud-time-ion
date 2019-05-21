@@ -59,15 +59,12 @@ export class FirestoreAllInclusionsSyncer {
           mapParentIdToDocsAdded.add(docData.parentNode.id, documentSnapshot)
           // this.putItemAndFireCallbacks(documentSnapshot)
         } else if ( change.type === 'modified') {
+          debugLog('FirestoreAllItemsLoader modified: ', docData.parentNode.id);
           mapParentIdToDocsModified.add(docData.parentNode.id, documentSnapshot)
-        }
-        // if (change.type === 'modified') {
-        //   debugLog('FirestoreAllItemsLoader modified: ', nodeInclusionData);
-        //   // listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
-        // }
-        if (change.type === 'removed') {
+          // listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
+        } else if (change.type === 'removed') {
           FIXME('FirestoreAllItemsLoader change.type === \'removed\'', change)
-          // debugLog('Removed city: ', nodeInclusionData);
+          // debugLog('Removed, nodeInclusionData: ', nodeInclusionData);
         }
       })
       // in the future I might wanna fire added and modified in single event
