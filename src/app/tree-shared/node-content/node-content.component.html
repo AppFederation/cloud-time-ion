@@ -45,7 +45,7 @@
     #popOver="ngbPopover"
     [autoClose]="'outside'"
   >
-    {{treeNode.isDayPlan ? 'calendar_today' : 'settings_applications'}}
+    {{getIconName()}}
   </i>
   <!--<i class="material-icons">work</i>-->
   <!--<i class="material-icons">build</i>-->
@@ -62,7 +62,7 @@
 
   <app-node-cell
     #inputEstimatedTime
-    [hidden]="treeNode.isChildOfRoot"
+    [hidden]="! isEstimatedTimeShown"
     (cellInputChanged)="onInputChanged($event, columns.estimatedTime)"
 
     [ngClass]="{'done-title': isDone}"
@@ -110,7 +110,7 @@
     (keydown.backspace)="onKeyDownBackspaceOnTitle()"
     (focus)="onColumnFocused(columns.title, $event)"
     (change)="onChangeEstimatedTime($event)"
-  >
+  > <!-- FIXME: why onChangeEstimatedTime() ? -->
     <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->
   </div>
 

@@ -98,9 +98,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   isAncestorOfFocused = false
   isDestroyed = false
 
+  get isEstimatedTimeShown() {
+    return ! this.treeNode.isChildOfRoot // FIXME
+    // return this.treeNode.hasField(this.columns.estimatedTime)
+  }
+
   debug = new class Debug {
     countApplyItemDataValuesToViews = 0
   } ()
+
 
   constructor(
     public dbService: DbTreeService,
@@ -401,6 +407,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       title: titleVal,
       estimatedTime: estimatedTimeVal,
       isDone: this.isDone,
+      itemClass: 'task' /* FIXME */,
     }
     return itemData
   }
@@ -485,4 +492,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     component.treeNode = this.treeNode;
   }
 
+  getIconName() {
+    // return this.treeNode.dbItem.itemClass.iconName
+    if ( this.treeNode.parent2.isDayPlan) {
+      return 'settings_applications'
+    }
+    if ( this.treeNode.isDayPlan ) {
+      return 'calendar_today'
+    } else {
+      return 'note'
+    }
+  }
 }

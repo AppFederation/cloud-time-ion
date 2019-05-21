@@ -23,6 +23,8 @@ import {
 } from './node-orderer'
 import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
+import { ITEM_CLASSES } from '../tree-model-oryol/OryolItemClasses'
+import { DbItem } from '../db/DbItem'
 
 
 /**
@@ -71,6 +73,7 @@ export class OryTreeNode implements TreeNode {
 
   startTime = new Date()
 
+  dbItem: DbItem
 
   // ==== End of PrimeNG's TreeNode
 
@@ -554,6 +557,13 @@ export class OryTreeNode implements TreeNode {
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
       siblingNodeAboveThis.moveInclusionsHere([this], {beforeNode: undefined})
+    }
+  }
+
+  hasField(attribute: OryColumn) {
+    // return this.dbItem.hasField
+    if ( this.parent2.isDayPlan) {
+      return 'settings_applications'
     }
   }
 }
