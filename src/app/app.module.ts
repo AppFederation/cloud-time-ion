@@ -28,7 +28,9 @@ import {DbFirestoreModule} from './db-firestore/db-firestore.module'
 import {TreeSharedModule} from './tree-shared/tree-shared.module'
 import {SharedModule} from './shared/shared.module'
 import {TreePageModule} from './tree-page/tree-page.module'
-import {routingModule} from './app.routing'
+import {routingModule} from './app.routing';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment'
 library.add(fas);
 
 
@@ -49,6 +51,7 @@ library.add(fas);
     CoreModule,
     routingModule,
     SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     // TreeDragDropService,
