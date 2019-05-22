@@ -12,5 +12,19 @@
   >
     stop
   </i>
+  <i *ngIf="! isPaused"
+     style="vertical-align: middle"
+     class="material-icons actionable"
+     (click)="onPauseClicked()"
+  >
+    pause
+  </i>
+  <i *ngIf="isPaused"
+     style="vertical-align: middle"
+     class="material-icons actionable"
+     (click)="onPlayClicked()"
+  >
+    play_arrow
+  </i>
 
 </div>
