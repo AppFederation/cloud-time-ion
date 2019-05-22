@@ -8,3 +8,9 @@
 $popover-max-width: 500px;
 
 .popover { max-width: 100% !important; }
+
+.actionable {
+  cursor: pointer;
+  user-select: none;
+  color: #777
+}

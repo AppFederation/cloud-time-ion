@@ -2,12 +2,15 @@
   *ngIf="timeTrackedEntry"
 >
   <app-time-passing
+    style="font-family: 'Lucida Console', monospace"
     [referenceTime]="timeTrackedEntry?.startTime"
     [isCountDown]="false"
   ></app-time-passing>
-  <button class="btn btn-primary"
-          (click)="onStopClicked()"
+  <i style="vertical-align: middle"
+     class="material-icons actionable"
+     (click)="onStopClicked()"
   >
-    Stop
-  </button>
+    stop
+  </i>
+
 </div>

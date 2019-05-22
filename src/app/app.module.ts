@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http'
-import { TestFirestoreComponent } from './experiments/test-firestore/test-firestore.component';
 // import { TestPermissionsAndFiltersComponent } from './experiments/test-permissions-and-filters/test-permissions-and-filters.component'
 import { FormsModule } from '@angular/forms';
 import { ConfirmModalComponent } from './shared/confirm-modal/confirm-modal.component'
@@ -29,7 +28,6 @@ library.add(fas);
 @NgModule({
   declarations: [
     AppComponent,
-    TestFirestoreComponent,
     // TestPermissionsAndFiltersComponent,
     ConfirmModalComponent,
     CommandsOverlayComponent,

@@ -40,45 +40,41 @@
 
 Created: {{getWhenCreated()}}
 
-Classes:
+<div *ngIf="false">
+  Classes:
 
-<p>
-  Milestone
-</p>
+  <p>
+    Milestone
+  </p>
 
-<p>
-  <i style="cursor: pointer; user-select: none; color: #777"
-     class="material-icons"
-  >note</i>
-  Note
-</p>
+  <p>
+    <i
+       class="material-icons actionable"
+    >note</i>
+    Note
+  </p>
 
+  <p>
+    <fa-icon [icon]="['fas', 'pen-nib']" [mask]="['fas', 'circle']"></fa-icon>
+    Journal Entry <!--(same as a loose note? &#45;&#45; Journal entry is more like self-introspection can have more info like mood, geolocation)-->
+  </p>
 
-<p>
-  <fa-icon [icon]="['fas', 'pen-nib']" [mask]="['fas', 'circle']"></fa-icon>
-  Journal Entry <!--(same as a loose note? &#45;&#45; Journal entry is more like self-introspection can have more info like mood, geolocation)-->
-</p>
+  <p>
+    <fa-icon icon="project-diagram"></fa-icon>
+    Project
+  </p>
 
+  <p>
+    <i
+       class="material-icons actionable"
+    >settings_applications</i>
+    Task
+  </p>
 
-<p>
-  <fa-icon icon="project-diagram"></fa-icon>
-  Project
-</p>
-
-<p>
-  <i style="cursor: pointer; user-select: none; color: #777"
-     class="material-icons"
-  >settings_applications</i>
-  Task
-</p>
-
-<p>
-  <i style="cursor: pointer; user-select: none; color: #777"
-     class="material-icons"
-  >calendar_today</i>
-  Day-Plan
-</p>
-
-
-
-
+  <p>
+    <i
+       class="material-icons actionable"
+    >today</i>
+    Day-Plan
+  </p>
+</div>
