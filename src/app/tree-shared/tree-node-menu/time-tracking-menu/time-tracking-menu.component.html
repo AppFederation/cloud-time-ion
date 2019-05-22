@@ -1,0 +1,13 @@
+<button
+  *ngIf="! isTimeTrackingThis"
+  class="btn btn-primary"
+  (click)="startTimeTracking()">
+  Start TT
+</button>
+
+<button
+  *ngIf="isTimeTrackingThis"
+  class="btn btn-primary"
+  (click)="stopTimeTracking()">
+  Stop TT
+</button>

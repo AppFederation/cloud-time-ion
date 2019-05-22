@@ -5,7 +5,8 @@ import {NodeCellComponent} from './node-cell/node-cell.component'
 import {TreeNodeMenuComponent} from './tree-node-menu/tree-node-menu.component'
 import {ItemClassIconComponent} from './item-class-icon/item-class-icon.component'
 import {ConfirmDeleteTreeNodeComponent} from './confirm-delete-tree-node/confirm-delete-tree-node.component'
-import {SharedModule} from '../shared/shared.module'
+import {SharedModule} from '../shared/shared.module';
+import { TimeTrackingMenuComponent } from './tree-node-menu/time-tracking-menu/time-tracking-menu.component'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
@@ -16,6 +17,7 @@ import {SharedModule} from '../shared/shared.module'
     NodeContentComponent,
     ItemClassIconComponent,
     ConfirmDeleteTreeNodeComponent,
+    TimeTrackingMenuComponent,
   ],
   imports: [
     CommonModule,

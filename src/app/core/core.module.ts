@@ -6,6 +6,7 @@ import { ClipboardService } from './clipboard.service'
 import {DbFirestoreModule} from '../db-firestore/db-firestore.module'
 import {TreeModelModule} from '../tree-model/tree-model.module'
 import { AuthService } from './auth.service'
+import { TimeTrackingModule } from '../time-tracking/time-tracking.module'
 // import { AngularFireModule } from '@angular/fire'
 
 @NgModule({
@@ -14,6 +15,7 @@ import { AuthService } from './auth.service'
     TreeModelModule,
     DbFirestoreModule,
     // AngularFireModule, // AngularFireModule.initializeApp(environment.firebase)
+    TimeTrackingModule,
   ],
   declarations: [],
   providers: [
