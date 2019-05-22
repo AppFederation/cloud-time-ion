@@ -99,7 +99,7 @@ export class OryTreeNode implements TreeNode {
       })
     }
 
-    setExpansion(expansionState: boolean, recursive: boolean | {recursive: boolean}) {
+    setExpanded(expansionState: boolean, recursive: boolean | {recursive: boolean}) {
       const recursiveAsOptions = (recursive as {recursive: boolean})
       if ( recursiveAsOptions && ! isNullOrUndefined(recursiveAsOptions.recursive) ) {
         recursive = recursiveAsOptions.recursive
@@ -108,13 +108,13 @@ export class OryTreeNode implements TreeNode {
       this.treeNode.expanded = expansionState
       if ( recursive ) {
         this.treeNode.children.forEach( (node: OryTreeNode) => {
-          node.expansion.setExpansion(expansionState, recursive);
+          node.expansion.setExpanded(expansionState, recursive);
         });
       }
     }
 
     toggleExpansion(recursive: boolean) {
-      this.setExpansion(! this.treeNode.expanded, recursive)
+      this.setExpanded(! this.treeNode.expanded, recursive)
     }
 
   }(this)

@@ -26,8 +26,6 @@ export class TreeHostComponent implements OnInit {
 
   treeModel: TreeModel// = new TreeModel(this.treeService2)
 
-  focusedId = 0
-
   showTree = false
 
   pendingListeners = 0
@@ -38,7 +36,6 @@ export class TreeHostComponent implements OnInit {
 
   constructor(
     public treeService: TreeService,
-    public treeService2: DbTreeService,
     public treeDragDropService: TreeDragDropService,
     private activatedRoute : ActivatedRoute,
     private debugService: DebugService,
@@ -96,52 +93,19 @@ export class TreeHostComponent implements OnInit {
 
     setTimeout(() => {
       this.showTree = true
-      // this.appendNode()
-      // this.appendNode()
-      // this.appendNode()
     }, 0 /*2000*/)
   }
 
-  keyDownEnter() {
-    this.appendNode()
-  }
-
-  keyDownArrow() {
-    this.focusNodeById(this.focusedId + 1)
-  }
-
-  keyUpArrow() {
-    this.focusNodeById(this.focusedId - 1)
-  }
-
-  private focusNodeById(id: number) {
-    const elementById: HTMLElement = document.getElementById('node' + id)
-    if ( elementById ) {
-      elementById.focus()
-      this.focusedId = id
-    }
-  }
-
   appendNode() {
-    // this.treeService.addNode(this.treeModel.root.getLastChild(), null) // FIXME
-    // const newNode = new OryTreeNode(null, this.fakeId ++, this.treeModel)
-    // this.treeModel.root._appendChild(newNode) // FIXME: dummy impl
     this.treeModel.navigation.visualRoot.addChild()
   }
 
-  private remove(id) {
-    this.treeModel.root.children = this.treeModel.root.children.filter(el => {
-      return (<any>el).itemId !== id
-    })
-
-  }
-
   expandAll() {
-    this.treeModel.navigation.visualRoot.expansion.setExpansion(true, true)
+    this.treeModel.navigation.visualRoot.expansion.setExpanded(true, true)
   }
 
   collapseAll() {
-    this.treeModel.navigation.visualRoot.expansion.setExpansion(false, true)
+    this.treeModel.navigation.visualRoot.expansion.setExpanded(false, true)
   }
 
   registerNodeComponent(nodeComp: NodeContentComponent) {
@@ -187,7 +151,7 @@ export class TreeHostComponent implements OnInit {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
     lastPlanNode.parent2.navigateInto()
-    lastPlanNode.expansion.setExpansion(true, {recursive: false})
+    lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }
 }
