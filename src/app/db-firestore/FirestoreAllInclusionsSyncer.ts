@@ -1,16 +1,19 @@
-import * as firebase from 'firebase'
-import DocumentChange = firebase.firestore.DocumentChange
+// import * as firebase from 'firebase'
+import { firestore } from 'firebase'
+import DocumentReference = firestore.DocumentReference
+import DocumentSnapshot = firestore.DocumentSnapshot
+
+import DocumentChange = firestore.DocumentChange
 import {
   debugLog,
   FIXME,
 } from '../utils/log'
-import QuerySnapshot = firebase.firestore.QuerySnapshot
+import QuerySnapshot = firestore.QuerySnapshot
 import { NodeInclusion } from '../tree-model/TreeListener'
 import {
   FirestoreNodeInclusion,
   FirestoreTreeService,
 } from './firestore-tree.service'
-import DocumentReference = firebase.firestore.DocumentReference
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import {
   observable,
@@ -18,7 +21,6 @@ import {
   ReplaySubject,
   Subject,
 } from 'rxjs'
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { MultiMap } from '../utils/multi-map'
 
 class InclusionsValueAndCallbacks {

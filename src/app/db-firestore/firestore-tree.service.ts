@@ -8,38 +8,45 @@ import { OryTreeNode } from '../tree-model/TreeModel'
 import {
   debugLog, errorAlert,
 } from '../utils/log'
-import * as firebase from 'firebase'
 import { DbTreeService } from '../tree-model/db-tree-service'
 import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
-// import * as firebase from 'firebase/app'
-import QuerySnapshot = firebase.firestore.QuerySnapshot
-import DocumentReference = firebase.firestore.DocumentReference
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot
+
 import { FIXME } from '../utils/log'
 import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'
 import { TimeStamper } from '../tree-model/TimeStamper'
+import { firestore } from 'firebase'
+import DocumentReference = firestore.DocumentReference
+import DocumentSnapshot = firestore.DocumentSnapshot
 
-const firebase1 = require('firebase');
+// const firebase1 = require('firebase');
+import * as firebase1 from 'firebase/app'
+import 'firebase/firestore';
 // Required for side-effects
-require('firebase/firestore');
+// require('firebase/firestore');
 
 
-firebase1.initializeApp({
+console.log('firebase1', firebase1)
+
+const firebaseApp = firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
   authDomain: 'oryol-app.firebaseapp.com',
   databaseURL: 'https://oryol-app.firebaseio.com',
   projectId: 'oryol-app',
   storageBucket: 'oryol-app.appspot.com',
   messagingSenderId: '970393221829'
-});
+})
+
+console.log('firebase1', firebase1)
+console.log('firebaseApp', firebaseApp)
 
 
 // Initialize Cloud Firestore through Firebase
-const firestore = firebase1.firestore();
-const db = firestore;
-firestore.settings({
+// const firestore1 = firebase1.firestore();
+const firestore1 = firebaseApp.firestore();
+const db = firestore1;
+firestore1.settings({
   // timestampsInSnapshots: true,
 })
 
@@ -169,7 +176,7 @@ export class FirestoreTreeService extends DbTreeService {
     })
   }
 
-  private itemsCollection(): firebase.firestore.CollectionReference {
+  private itemsCollection(): firestore.CollectionReference {
     return db.collection(this.ITEMS_COLLECTION)
   }
 

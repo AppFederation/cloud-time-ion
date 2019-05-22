@@ -1,7 +1,10 @@
-import * as firebase from 'firebase'
+// import 'firebase/firestore';
 
-import DocumentReference = firebase.firestore.DocumentReference
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot
+// import firestore from 'firebase/firestore';
+import { firestore } from 'firebase'
+import DocumentReference = firestore.DocumentReference
+import DocumentSnapshot = firestore.DocumentSnapshot
+
 
 export abstract class FirestoreItemsLoader {
 

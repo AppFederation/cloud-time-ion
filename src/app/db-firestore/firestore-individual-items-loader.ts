@@ -1,8 +1,9 @@
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
+import { firestore } from 'firebase'
+import DocumentReference = firestore.DocumentReference
+import DocumentSnapshot = firestore.DocumentSnapshot
 
 import { FirestoreItemsLoader } from './firestore-items-loader'
-import DocumentReference = firebase.firestore.DocumentReference
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 
 export class FirestoreIndividualItemsLoader extends FirestoreItemsLoader {
   /* refactor to return observable */

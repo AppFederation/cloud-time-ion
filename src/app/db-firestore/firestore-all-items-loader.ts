@@ -1,10 +1,12 @@
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
+import { firestore } from 'firebase'
+import DocumentReference = firestore.DocumentReference
+import DocumentSnapshot = firestore.DocumentSnapshot
 
 import { FirestoreItemsLoader } from './firestore-items-loader'
-import DocumentReference = firebase.firestore.DocumentReference
-import QuerySnapshot = firebase.firestore.QuerySnapshot
-import DocumentChange = firebase.firestore.DocumentChange
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot
+import QuerySnapshot = firestore.QuerySnapshot
+import DocumentChange = firestore.DocumentChange
+
 import {
   debugLog,
   FIXME,
@@ -35,7 +37,7 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
     itemsCollection: firebase.firestore.CollectionReference
   ) {
     itemsCollection
-      .where('perms.read.' + this.permissionsManager.userId, '>', new Date(0))
+      // .where('perms.read.' + this.permissionsManager.userId, '>', new Date(0))
       .onSnapshot((snapshot: QuerySnapshot) =>
     {
       snapshot.docChanges().forEach((change: DocumentChange) => {
