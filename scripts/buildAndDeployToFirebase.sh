@@ -1,23 +1,28 @@
 #!/bin/bash
 
-set -x
-
 echo Starting build and deploy `date`
 
-scriptDir="`dirname $0`"
-# $scriptDir/compileFirebaseRules.sh
 
-# TODO: add protractor.sh &&, once tests are reliable
+doAll () {
+  set -x
 
-# To initialize, run: firebase use --add
+  scriptDir="`dirname $0`"
+  # $scriptDir/compileFirebaseRules.sh
 
-#   && cp -r assets dist \
+  # TODO: add protractor.sh &&, once tests are reliable
 
-#git tag test_`date --utc +%Y-%m-%d_%H.%M.%SZ`
-#ng build \
-ng build \
-  && firebase deploy \
-  && git tag deploy_`date -u +%Y-%m-%d__%H.%M.%SZ` \
-  && git push --tags
+  # To initialize, run: firebase use --add
 
-Echo Finished `date`
+  #   && cp -r assets dist \
+
+  #git tag test_`date --utc +%Y-%m-%d_%H.%M.%SZ`
+  #ng build \
+  ng build \
+    && firebase deploy \
+    && git tag deploy_`date -u +%Y-%m-%d__%H.%M.%SZ` \
+    && git push --tags
+
+  Echo Finished build and deploy `date`
+}
+
+time doAll
