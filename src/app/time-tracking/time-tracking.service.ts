@@ -24,6 +24,8 @@ export class TimeTrackerEntry {
     return this.totalMsIncludingPauses - this.totalMsPaused
   }
 
+  get isPaused() { return !! this.whenLastPaused }
+
   constructor(
     public timeTrackable: TimeTrackable,
     public startTime: Date,

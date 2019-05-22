@@ -7,8 +7,9 @@ import { TimeTrackingService } from '../time-tracking.service'
   styleUrls: ['./time-tracking-toolbar.component.scss']
 })
 export class TimeTrackingToolbarComponent implements OnInit {
-  private isPaused = false
+
   get timeTrackedEntry() { return this.timeTrackingService.timeTracked$.lastVal }
+
 
   constructor(
     public timeTrackingService: TimeTrackingService
@@ -22,12 +23,10 @@ export class TimeTrackingToolbarComponent implements OnInit {
   }
 
   onPlayClicked() {
-    this.isPaused = false
     this.timeTrackingService.resume()
   }
 
   onPauseClicked() {
-    this.isPaused = true
     this.timeTrackingService.pause()
   }
 }
