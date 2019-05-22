@@ -23,9 +23,11 @@ export class TimeTrackingToolbarComponent implements OnInit {
 
   onPlayClicked() {
     this.isPaused = false
+    this.timeTrackingService.resume()
   }
 
   onPauseClicked() {
     this.isPaused = true
+    this.timeTrackingService.pause()
   }
 }

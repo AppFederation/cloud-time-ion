@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { TimeTrackerEntry } from '../../../time-tracking/time-tracking.service'
 
 @Component({
   selector: 'app-time-passing',
@@ -12,6 +13,9 @@ export class TimePassingComponent implements OnInit, OnDestroy {
 
   @Input()
   isCountDown: boolean = true
+
+  @Input()
+  pausableEntry: TimeTrackerEntry
 
   msDiff = 0
 
@@ -31,6 +35,9 @@ export class TimePassingComponent implements OnInit, OnDestroy {
       this.msDiff = this.referenceTime.getTime() - Date.now()
     } else {
       this.msDiff = Date.now() - this.referenceTime.getTime()
+    }
+    if ( this.pausableEntry ) {
+      this.msDiff -= this.pausableEntry.totalMsPaused
     }
     // this.changeDetectorRef.detectChanges()
     this.changeDetectorRef.markForCheck()
