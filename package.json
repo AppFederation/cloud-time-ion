@@ -33,7 +33,7 @@
     "@ionic/pro": "2.0.4",
     "a": "2.1.2",
     "cordova-android": "8.0.0",
-    "cordova-ios": "5.0.1",
+    "cordova-ios": "^5.0.1",
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
@@ -43,6 +43,7 @@
     "moment": "^2.24.0",
     "ngx-moment": "^3.4.0",
     "rxjs": "~6.5.1",
+    "tar": "^4.4.2",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"
   },
@@ -76,7 +77,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~8.1.0",
     "tslint": "~5.16.0",
-    "typescript": "~3.1.6"
+    "typescript": "~3.1.6",
+    "cordova-plugin-camera": "~4.0.3"
   },
   "description": "CloudTime",
   "cordova": {
@@ -90,7 +92,8 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android",
