@@ -16,3 +16,11 @@
     //visibility: hidden;
   }
 }
+
+ion-button ion-icon {
+  margin-right: 0.25rem
+}
+
+.flip-horiz {
+  transform: scaleX(-1)
+}

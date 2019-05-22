@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
-import {ignorePromise} from "../../utils/promiseUtils";
+import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {ModalController} from "@ionic/angular";
-import {debugLog} from "../../utils/log";
+import {debugLog} from "../../AppFedShared/utils/log";
 
 @Component({
   selector: 'app-timer-ended',
@@ -30,9 +30,7 @@ export class TimerEndedComponent implements OnInit {
   onClickStopTimerAndDismiss() {
     this.timer.stopTimer()
     this.dismiss();
-
     // TODO: stop sounds when dismissed
-
   }
 
   onClickRestart() {

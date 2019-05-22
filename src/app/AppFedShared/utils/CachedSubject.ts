@@ -10,9 +10,17 @@ export class CachedSubject<T> extends ReplaySubject<T> {
   constructor(initialVal?: T) {
     super(1)
     this.lastVal = initialVal
+    /* !!! HACK because .next apparently cannot be overridden via TypeScript class method */
+    this.next = (val: T) => { this.nextWithCache(val) }
   }
 
   public next(val: T) {
+    this.lastVal = val
+    super.next(val)
+    this.hasEmitted = true
+  }
+
+  public nextWithCache(val: T) {
     this.lastVal = val
     super.next(val)
     this.hasEmitted = true

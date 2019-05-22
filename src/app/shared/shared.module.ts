@@ -1,16 +1,21 @@
 import {NgModule} from "@angular/core";
 import {AppComponent} from "../app.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {IonicModule} from "@ionic/angular";
 
 let imports = [
-    ReactiveFormsModule,
+  ReactiveFormsModule,
+  FormsModule,
 ];
 
 @NgModule({
-    entryComponents: [],
-    imports: imports,
-    exports: imports,
-    providers: [
-    ],
+  entryComponents: [],
+  imports: [
+    IonicModule.forRoot(),
+    ...imports,
+  ],
+  exports: imports,
+  providers: [],
 })
-export class SharedModule {}
+export class SharedModule {
+}

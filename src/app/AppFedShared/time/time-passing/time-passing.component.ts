@@ -1,16 +1,19 @@
 import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-time-left-view',
-  templateUrl: './time-left-view.component.html',
-  styleUrls: ['./time-left-view.component.scss'],
+  selector: 'app-time-passing',
+  templateUrl: './time-passing.component.html',
+  styleUrls: ['./time-passing.component.scss'],
 })
-export class TimeLeftViewComponent implements OnInit, OnDestroy {
+export class TimePassingComponent implements OnInit, OnDestroy {
 
   @Input()
-  endTime: Date
+  referenceTime: Date
 
-  msLeft = 0
+  @Input()
+  isCountDown = true
+
+  msDiff = 0
 
   private readonly intervalHandle: any
 
@@ -23,7 +26,12 @@ export class TimeLeftViewComponent implements OnInit, OnDestroy {
   }
 
   private update() {
-    this.msLeft = this.endTime.getTime() - Date.now()
+    // FIXME: Cannot read property 'getTime' of null
+    if ( this.isCountDown ) {
+      this.msDiff = this.referenceTime.getTime() - Date.now()
+    } else {
+      this.msDiff = Date.now() - this.referenceTime.getTime()
+    }
     // this.changeDetectorRef.detectChanges()
     this.changeDetectorRef.markForCheck()
   }

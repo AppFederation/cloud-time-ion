@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
-import {TimePickerComponent} from "../time-picker/time-picker.component";
+import {TimePickerComponent} from "../../AppFedSharedIonic/time/time-picker/time-picker.component";
 import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {OverlayEventDetail} from '@ionic/core';
 import {TimerDetailsComponent} from "../timer-details/timer-details.component";
-import {debugLog} from "../../utils/log";
+import {debugLog} from "../../AppFedShared/utils/log";
 
 @Component({
   selector: 'app-timer-item',

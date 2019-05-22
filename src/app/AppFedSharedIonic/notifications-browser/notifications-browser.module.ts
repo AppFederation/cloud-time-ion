@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {SchedulerModule} from "../scheduler/scheduler.module";
-import {AudioModule} from "../audio/audio.module";
+import {SchedulerModule} from "../../AppFedShared/scheduler/scheduler.module";
+import {AudioModule} from "../../AppFedShared/audio/audio.module";
 
 @NgModule({
   declarations: [],
@@ -11,4 +11,4 @@ import {AudioModule} from "../audio/audio.module";
     AudioModule,
   ]
 })
-export class NotificationsCordovaModule { }
+export class NotificationsBrowserModule { }

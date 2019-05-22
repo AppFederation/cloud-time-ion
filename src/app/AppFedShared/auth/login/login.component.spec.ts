@@ -1,24 +1,23 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeLeftViewComponent } from './time-left-view.component';
+import { LoginComponent } from './login.component';
 
-describe('TimeLeftViewComponent', () => {
-  let component: TimeLeftViewComponent;
-  let fixture: ComponentFixture<TimeLeftViewComponent>;
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimeLeftViewComponent ],
+      declarations: [ LoginComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimeLeftViewComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    component.endTime = new Date()
     fixture.detectChanges();
   });
 

@@ -1,9 +1,9 @@
-import {OdmBackend} from "../odm/OdmBackend";
+import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {FirestoreOdmCollectionBackend} from "./FirestoreOdmCollectionBackend";
 import {Injectable, Injector} from "@angular/core";
-import {debugLog, errorAlert} from "../utils/log";
+import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 import {AngularFirestore} from "@angular/fire/firestore";
-import {OdmItem} from "../odm/OdmItem";
+import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 
 @Injectable()
 export class FirestoreOdmBackend extends OdmBackend {
@@ -24,7 +24,7 @@ export class FirestoreOdmBackend extends OdmBackend {
     this.angularFirestore.firestore.enablePersistence().then(() => {
       // window.alert('persistence enabled')
       debugLog('Firestore persistence enabled')
-      this.backendReady$.next(true)
+      this.backendReady$.nextWithCache(true)
     }).catch((caught) => {
       errorAlert('Firestore enablePersistence error', caught)
     })

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { TimerItem } from '../core/TimerItem';
-import { TimersService } from '../core/timers.service';
+import {Component} from '@angular/core';
+import {ModalController} from '@ionic/angular';
+import {TimerItem} from '../core/TimerItem';
+import {TimersService} from '../core/timers.service';
 import {TimerDetailsComponent} from "./timer-details/timer-details.component";
-import {debugLog} from "../utils/log";
+import {debugLog} from "../AppFedShared/utils/log";
 
 @Component({
   selector: 'app-tab2',
@@ -13,22 +13,22 @@ import {debugLog} from "../utils/log";
 export class TimersPageComponent {
 
   constructor(
-      private modalController: ModalController,
-      private timersService: TimersService,
+    private modalController: ModalController,
+    private timersService: TimersService,
   ) {
   }
 
   async onAddTimer() {
     debugLog('onAddTimer')
-    let timerItem = new TimerItem(this.timersService,'' + new Date(), undefined, 5, 'new timer')
+    let timerItem = new TimerItem(this.timersService, '' + new Date(), undefined, 5, 'new timer')
     // timerItem
     const modal: HTMLIonModalElement =
-        await this.modalController.create({
-          component: TimerDetailsComponent,
-          componentProps: {
-            timer: timerItem,
-          }
-        });
+      await this.modalController.create({
+        component: TimerDetailsComponent,
+        componentProps: {
+          timer: timerItem,
+        }
+      });
     await modal.present()
   }
 }

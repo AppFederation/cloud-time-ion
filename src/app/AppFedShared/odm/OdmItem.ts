@@ -5,7 +5,21 @@ import {throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
 import {debugLog} from "../utils/log";
 
-export class OdmItem<T extends OdmItem<T>> {
+/** A specific version of the ODM item.
+ * OdmItemVersion ... */
+export abstract class OdmItemData<TData> {
+  /* domain-specific methods here too; so we operate from a particular version of an item, for handling conflicts
+  * examples:
+  * this.timerHandle.current.restart()
+  * this.timer.current.restart()
+  * hTimer -> storing in this.timer
+  *
+  * could also forward methods via Proxy to .current.*()
+  *
+  */
+}
+
+export class OdmItem<T extends OdmItem<T>, TData = T> {
 
   public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
   public locallyVisibleChangesThrottled$ = new CachedSubject<T>(this.asT)
@@ -36,7 +50,7 @@ export class OdmItem<T extends OdmItem<T>> {
     this.onModified()
   }
 
-  patchThrottled(patch: Partial<T>) {
+  patchThrottled(patch: Partial<TData>) {
     debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
@@ -46,7 +60,7 @@ export class OdmItem<T extends OdmItem<T>> {
     this.odmService.emitLocalItems()
   }
 
-  patchNow(patch: Partial<T>) {
+  patchNow(patch: Partial<TData>) {
     Object.assign(this, patch)
     this.onModified()
     this.odmService.saveNowToDb(this.asT)

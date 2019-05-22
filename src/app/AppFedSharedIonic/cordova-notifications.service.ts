@@ -1,8 +1,8 @@
 import {Injectable, Injector} from '@angular/core';
-import {NotificationsCordovaModule} from "./notifications-cordova.module";
-import {NotificationHandle, NotificationInfo, PlatformNotificationsService} from "../notifications/PlatformNotificationsService";
-import {SchedulerHandle, SchedulerService} from "../scheduler/scheduler.service";
-import {AudioService} from "../audio/audio.service";
+import {NotificationsCordovaModule} from "./notifications-cordova/notifications-cordova.module";
+import {NotificationHandle, NotificationInfo, PlatformNotificationsService} from "./notifications/PlatformNotificationsService";
+import {SchedulerHandle, SchedulerService} from "../AppFedShared/scheduler/scheduler.service";
+import {AudioService} from "../AppFedShared/audio/audio.service";
 
 class CordovaNotifHandle extends NotificationHandle {
   constructor(

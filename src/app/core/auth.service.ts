@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {CachedSubject} from "../utils/CachedSubject";
+import {CachedSubject} from "../AppFedShared/utils/CachedSubject";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {AngularFireAuth} from "@angular/fire/auth";
-import {ignorePromise} from "../utils/promiseUtils";
+import {ignorePromise} from "../AppFedShared/utils/promiseUtils";
 import {CoreModule} from "./core.module";
 
 @Injectable({

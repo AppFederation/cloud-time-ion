@@ -17,18 +17,23 @@
   <ion-button
     id="buttonStopTimerAndDismiss"
     (click)="onClickStopTimerAndDismiss()"
-  >Stop and Dismiss</ion-button>
+  >
+    <ion-icon name="square"></ion-icon>
+    Stop and Dismiss
+  </ion-button>
 
   <ion-button
     id="buttonRestartTimer"
     (click)="onClickRestart()"
-  >Restart
+  >
+    <ion-icon name="refresh" class="flip-horiz"></ion-icon>
+    Restart
   </ion-button>
 
   <ion-button
     id="buttonPostponeTimerOneMinute"
     (click)="onClickPostponeOneMinute()"
-  >Postpone 1 minute
+  >Postpone +1 minute
   </ion-button>
 </div>
 

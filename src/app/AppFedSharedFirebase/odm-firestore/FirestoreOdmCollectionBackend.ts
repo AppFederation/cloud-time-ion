@@ -1,12 +1,12 @@
-import {OdmCollectionBackend} from "../odm/OdmCollectionBackend";
+import {OdmCollectionBackend} from "../../AppFedShared/odm/OdmCollectionBackend";
 import {Injectable, Injector} from "@angular/core";
 import {AngularFirestore, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
-import {OdmItemId} from "../odm/OdmItemId";
-import {OdmItem} from "../odm/OdmItem";
-import {ignorePromise} from "../utils/promiseUtils";
-import {OdmBackend} from "../odm/OdmBackend";
-import {CachedSubject} from "../utils/CachedSubject";
-import {debugLog} from "../utils/log";
+import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
+import {OdmItem} from "../../AppFedShared/odm/OdmItem";
+import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
+import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
+import {CachedSubject} from "../../AppFedShared/utils/CachedSubject";
+import {debugLog} from "../../AppFedShared/utils/log";
 
 
 export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> extends OdmCollectionBackend<T> {
@@ -35,7 +35,7 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
 
       })
       this.collection().valueChanges().subscribe(coll => {
-        this.dbCollection$.next(coll as T[])
+        this.dbCollection$.nextWithCache(coll as T[])
       })
     })
   }

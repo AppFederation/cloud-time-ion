@@ -1,8 +1,8 @@
 import {Injectable, Injector} from '@angular/core';
 import {NotificationsBrowserModule} from "./notifications-browser.module";
 import {NotificationHandle, NotificationInfo, PlatformNotificationsService} from "../notifications/PlatformNotificationsService";
-import {SchedulerHandle, SchedulerService} from "../scheduler/scheduler.service";
-import {AudioService} from "../audio/audio.service";
+import {SchedulerHandle, SchedulerService} from "../../AppFedShared/scheduler/scheduler.service";
+import {AudioService} from "../../AppFedShared/audio/audio.service";
 
 class BrowserNotifHandle extends NotificationHandle {
   constructor(

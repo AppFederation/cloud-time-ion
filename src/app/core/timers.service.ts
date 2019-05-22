@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import { TimerItem } from './TimerItem';
-import {OdmService} from "../odm/OdmService";
+import {OdmService} from "../AppFedShared/odm/OdmService";
 
 @Injectable()
 export class TimersService extends OdmService<TimerItem> {
