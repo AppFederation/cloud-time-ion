@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import {TreeDragDropService, TreeNode} from 'primeng/primeng'
-import {TreeService} from '../../tree-model/tree.service'
-import {NodeFocusOptions, OryTreeNode, TreeModel} from '../../tree-model/TreeModel'
-import {NodeContentComponent} from '../../tree-shared/node-content/node-content.component'
-import {OryColumn} from '../../tree-shared/OryColumn'
 import {
-  debugLog,
-  } from '../../utils/log'
-import {DbTreeService} from '../../tree-model/db-tree-service'
+  Component,
+  OnInit,
+} from '@angular/core';
+import { TreeDragDropService } from 'primeng/primeng'
+import { TreeService } from '../../tree-model/tree.service'
 import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-} from '@angular/router'
+  NodeFocusOptions,
+  OryTreeNode,
+  TreeModel,
+} from '../../tree-model/TreeModel'
+import { NodeContentComponent } from '../../tree-shared/node-content/node-content.component'
+import { OryColumn } from '../../tree-shared/OryColumn'
+import { debugLog } from '../../utils/log'
+import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import { CommandsService } from '../../core/commands.service'
-import { FIXME } from '../../utils/log'
 
 
 @Component({

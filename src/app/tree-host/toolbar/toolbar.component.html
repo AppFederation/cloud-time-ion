@@ -28,6 +28,8 @@
     <!-- Idea: collapse all apart from currently focused node; for better focus; quick way to implement: just refocus/expand after collapsing -->
   </button>
 
+  <app-time-tracking-toolbar></app-time-tracking-toolbar>
+
   <label class="checkbox-inline" style="user-select: none">
     <input type="checkbox" [checked]="debugService.isDebug$ | async" (change)="treeHost.onDebugChange($event)">
     Debug
