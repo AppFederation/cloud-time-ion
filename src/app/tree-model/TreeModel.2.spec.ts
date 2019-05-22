@@ -12,6 +12,7 @@ import {
   NodeInclusion,
 } from './TreeListener'
 import { TreeService } from './tree.service'
+import { AuthService } from '../core/auth.service'
 
 
 @Injectable()
@@ -43,7 +44,7 @@ export class DbTreeMockService implements DbTreeService {
 }
 
 ///////
-fdescribe('OryTreeModel', () => {
+describe('OryTreeModel', () => {
   let treeModel: TreeModel
   let treeService: TreeService
   let dbTreeService: DbTreeService
@@ -53,6 +54,7 @@ fdescribe('OryTreeModel', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: DbTreeService, useClass: DbTreeMockService },
+        { provide: AuthService, useClass: AuthService },
         TreeService,
       ]
     });

@@ -3,7 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { ClipboardService } from './clipboard.service';
 
 describe('ClipboardService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [ClipboardService]
+  }));
 
   it('should be created', () => {
     const service: ClipboardService = TestBed.get(ClipboardService);

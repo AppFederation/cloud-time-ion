@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NestedTreeNodeComponent } from './nested-tree-node.component';
 
-describe('NestedTreeNodeComponent', () => {
+xdescribe('NestedTreeNodeComponent', () => {
   let component: NestedTreeNodeComponent;
   let fixture: ComponentFixture<NestedTreeNodeComponent>;
 
