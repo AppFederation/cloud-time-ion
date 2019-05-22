@@ -1,0 +1,40 @@
+<div style="display: flex; align-items: center; justify-content: space-between">
+  <i style="cursor: pointer; user-select: none; color: #777; font-size: 35px; padding: 0.5rem"
+     (tap)="treeHost.navigateUp($event)"
+     (window:keydown.meta.arrowup)="treeHost.navigateUp($event)"
+     (press)="treeHost.navigateToRoot($event)"
+     class="material-icons"
+  >arrow_upward</i>
+
+  <!--Start:-->
+  <!--End: {{treeModel.endTime()}}-->
+  <button
+    class="btn btn-primary"
+    (click)='treeHost.expandAll()'>
+    Expand
+  </button>
+
+  <button
+    class="btn btn-primary"
+    (click)='treeHost.collapseAll()'>
+    Collapse
+    <!-- Idea: collapse all apart from currently focused node; for better focus; quick way to implement: just refocus/expand after collapsing -->
+  </button>
+
+  <button
+    class="btn btn-primary"
+    (click)='treeHost.planToday()'>
+    PT
+    <!-- Idea: collapse all apart from currently focused node; for better focus; quick way to implement: just refocus/expand after collapsing -->
+  </button>
+
+  <label class="checkbox-inline" style="user-select: none">
+    <input type="checkbox" [checked]="debugService.isDebug$ | async" (change)="treeHost.onDebugChange($event)">
+    Debug
+  </label>
+
+  <ng-container *ngIf="debugService.isDebug$ | async">
+    Pending listeners: {{treeHost.pendingListeners}}
+  </ng-container>
+  Items: {{treeHost.treeModel.mapItemIdToNode.keyCount}}
+</div>

@@ -26,9 +26,7 @@ export class TreeHostComponent implements OnInit {
 
   treeModel: TreeModel// = new TreeModel(this.treeService2)
 
-  // rootNodes: TreeNode[] = []
   focusedId = 0
-  fakeId = 111
 
   showTree = false
 
@@ -104,56 +102,6 @@ export class TreeHostComponent implements OnInit {
     }, 0 /*2000*/)
   }
 
-  // private onNodeAdded(event: NodeAddEvent) {
-  //   debugLog('onNodeAdded: event.immediateParentId: ', event.immediateParentId)
-  //   const newNode = this.createNode('node from event: ' + event.id)
-  //   newNode.dbId = event.id
-  //   if ( ! event.immediateParentId ) {
-  //     this.rootNodes.push(newNode)
-  //   } else {
-  //     const parentNode = this.mapIdToNode.get(event.immediateParentId)
-  //     let children = parentNode.children
-  //     if ( ! children ) {
-  //       children = []
-  //       parentNode.children = children
-  //     }
-  //     children.push(newNode)
-  //   }
-  //   this.mapIdToNode.set(event.id, newNode) // NOTE: does not yet support the same node being in multiple places
-  //
-  //   // expand
-  //   this.expandRecursive(newNode, true)
-  //   this.pendingListeners = event.pendingListeners
-  // }
-
-  // this.appendNode()
-  // this.nodesService.getTouristPlaces().subscribe(
-  //   (places: any) => this.dragDropTreeOne = places);
-  // this.dbService.listenToChanges(s => {
-  //   s.docChanges.forEach(change => {
-  //     debugLog('change', change)
-  //     let data = change.doc.data()
-  //     debugLog('change.doc.data()', data)
-  //     if (change.type === 'added') {
-  //       debugLog('New city: ', data);
-  //       // this.elements.push(data)
-  //       // this.elements = this.elements.slice(0)
-  //       let node = this.createNode(data)
-  //       node.dbId = change.doc.id
-  //       debugLog('change.doc.id', change.doc.id)
-  //       this.dragDropTreeOne.push(node)
-  //     }
-  //     if (change.type === 'modified') {
-  //       debugLog('Modified city: ', data);
-  //     }
-  //     if (change.type === 'removed') {
-  //       debugLog('Removed city: ', data);
-  //       this.remove(change.doc.id)
-  //     }
-  //   });
-  // })
-
-
   keyDownEnter() {
     this.appendNode()
   }
@@ -179,14 +127,6 @@ export class TreeHostComponent implements OnInit {
     // const newNode = new OryTreeNode(null, this.fakeId ++, this.treeModel)
     // this.treeModel.root._appendChild(newNode) // FIXME: dummy impl
     this.treeModel.navigation.visualRoot.addChild()
-  }
-
-  private createNode(label?) {
-    return <any>{
-      'id': this.fakeId ++,
-      'label': label || 'Asia',
-      'data': 'Documents Folder',
-    }
   }
 
   private remove(id) {
