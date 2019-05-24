@@ -8,7 +8,7 @@ import { TimeTrackingService } from '../time-tracking.service'
 })
 export class TimeTrackingToolbarComponent implements OnInit {
 
-  get timeTrackedEntry() { return this.timeTrackingService.timeTracked$.lastVal }
+  get timeTrackedEntry() { return this.timeTrackingService.timeTrackedEntry$.lastVal }
 
 
   constructor(

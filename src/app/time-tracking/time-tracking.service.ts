@@ -38,8 +38,8 @@ export class TimeTrackerEntry {
 export class TimeTrackingService {
 
   timeTrackingOf$ = new CachedSubject<TimeTrackable>()
-  timeTracked$ = new CachedSubject<TimeTrackerEntry>()
-  get currentEntry() { return this.timeTracked$.lastVal }
+  timeTrackedEntry$ = new CachedSubject<TimeTrackerEntry>()
+  get currentEntry() { return this.timeTrackedEntry$.lastVal }
 
   constructor() { }
 
@@ -61,7 +61,7 @@ export class TimeTrackingService {
 
   private emitTimeTrackedEntry(entry: TimeTrackerEntry) {
     this.timeTrackingOf$.next(entry && entry.timeTrackable)
-    this.timeTracked$.next(entry)
+    this.timeTrackedEntry$.next(entry)
   }
 
   /* TODO: move to entry class for being able to track multiple things */

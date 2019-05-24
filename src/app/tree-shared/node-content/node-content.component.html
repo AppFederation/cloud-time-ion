@@ -60,6 +60,11 @@
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
 
+  <app-node-content-time-tracking
+    [treeNode]="treeNode"
+    style="margin-left: 0.5em; vertical-align: middle "
+  ></app-node-content-time-tracking>
+
   <app-node-cell
     #inputEstimatedTime
     [hidden]="! isEstimatedTimeShown"
