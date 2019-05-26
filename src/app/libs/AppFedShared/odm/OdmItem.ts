@@ -93,4 +93,8 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     Object.assign(this, incomingConverted)
     this.locallyVisibleChanges$.next(incomingConverted)
   }
+
+  saveNowToDb() {
+    this.odmService.saveNowToDb(this.asT)
+  }
 }

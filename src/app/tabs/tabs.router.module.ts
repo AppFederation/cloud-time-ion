@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.module";
 import {ShoppingListsPageComponent} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.component";
+import {RecipesPageComponent} from "../apps/CookBook/recipes-page/recipes-page/recipes-page.component";
 
 const routes: Routes = [
   {
@@ -20,7 +21,17 @@ const routes: Routes = [
       {
         path: '',
         component: ShoppingListsPageComponent
-        // loadChildren: '../ShopNext/shopping-lists-page/shopping-lists-page.module#ShoppingListsPageModule'
+        // loadChildren: '../ShopNext/shopping-lists-page/shopping-lists-page.module#ShoppingListsPageModule' /* FIXME: call stack size exceeded */
+      }
+    ]
+  },
+  {
+    path: 'recipes',
+    children: [
+      {
+        path: '',
+        component: RecipesPageComponent
+        // loadChildren: '../apps/ShopNext/shopping-lists-page/shopping-lists-page.module#ShoppingListsPageModule'
       }
     ]
   },
@@ -35,7 +46,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/shopping',
+    redirectTo: '/recipes',
     pathMatch: 'full'
   }
 ]

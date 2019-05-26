@@ -9,7 +9,4 @@ export class ShoppingList extends OdmItem<ShoppingList> {
     super(odmService)
   }
 
-  saveNowToDb() {
-    this.odmService.saveNowToDb(this)
-  }
 }

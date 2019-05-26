@@ -12,7 +12,6 @@ type TItem = OdmItem<any>
 })
 export class OdmListComponent implements OnInit /* could extend non-ionic OdmListComponent */{
 
-
   /** https://alligator.io/angular/reusable-components-ngtemplateoutlet/ */
   @ContentChild(OdmListItemDirective, {read: TemplateRef}) itemTemplate
 

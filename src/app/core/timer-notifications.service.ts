@@ -39,7 +39,7 @@ export class TimerNotificationsService {
   ) {
     debugLog('TimerNotificationsService ctor')
     this.timersService.localItems$.subscribe(timers => {
-      debugLog('TimerNotificationsService localItems$.subscribe')
+      // debugLog('TimerNotificationsService localItems$.subscribe')
       this.clearTimeouts()
       for ( const timer of timers ) {
         if ( timer.isRunning ) {

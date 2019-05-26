@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="pizza"></ion-icon>
+      Cooking Recipes
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-odm-list-page
+    [parentItem]="recipesService"
+    [creatItemFunc]="createItemFunc"
+  >
+    <app-odm-list
+      [parentItem]="recipesService"
+    >
+      CONTENT
+      <app-recipe-item
+        *appOdmListItem="let item"
+        [item]="item"
+      ></app-recipe-item>
+
+      <!--        <ng-container-->
+      <!--          *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"-->
+      <!--        ></ng-container>-->
+    </app-odm-list>
+  </app-odm-list-page>
+</ion-content>

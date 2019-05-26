@@ -1,11 +1,10 @@
-<!-- TODO: ng-content ;; check how PrimeNG is passing tree node into ng-content. $item or smth? -->
-parentItem: {{parentItem}}
-<div
-  *ngFor="let item of sortItems(parentItem?.localItems$ | async); trackBy: trackById"
->
-<!--  ODM-list-item-->
-<!--  <ng-content></ng-content>-->
-  <ng-container
-    *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"
-  ></ng-container>
-</div>
+<ion-list>
+  <div
+    *ngFor="let item of sortItems(parentItem?.localItems$ | async); trackBy: trackById"
+  >
+    <ng-container
+      *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"
+    ></ng-container>
+  </div>
+</ion-list>
+END OF ITEMS

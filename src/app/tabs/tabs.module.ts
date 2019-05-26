@@ -7,6 +7,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
 import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.module";
+import {RecipesPageModule} from "../apps/CookBook/recipes-page/recipes-page.module";
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shop
     FormsModule,
     TabsPageRoutingModule,
     ShoppingListsPageModule,
+    RecipesPageModule,
   ],
   declarations: [TabsPage]
 })

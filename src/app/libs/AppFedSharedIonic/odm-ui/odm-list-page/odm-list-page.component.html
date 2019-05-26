@@ -1,2 +1,23 @@
-<app-odm-list
-></app-odm-list>
+
+<!--<ng-content-->
+<!--  select="ion-header"-->
+<!--&gt;</ng-content>-->
+<!--<ion-content>-->
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id='fabAddItem' (click)="onAddItem()">
+      <ion-icon name="pizza"></ion-icon><!--      +-->
+      <!--      <ion-icon name="add-circle"></ion-icon>-->
+    </ion-fab-button>
+  </ion-fab>
+  <ion-input
+    id="itemSearch"
+
+    clearInput placeholder="Search" value=""
+  ></ion-input>
+
+  <ng-content>
+  </ng-content>
+  <!-- TODO: selector for item-list for ng-content -->
+
+<!--</ion-content>-->
