@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {TimerId, TimerItem} from "./TimerItem";
 import {TimersService} from "./timers.service";
-import {debugLog, FIXME} from "../AppFedShared/utils/log";
-import {NotificationHandle, NotificationInfo} from "../AppFedSharedIonic/notifications/PlatformNotificationsService";
-import {NotificationsService} from "../AppFedSharedIonic/notifications/notifications.service";
-import {SchedulerHandle, SchedulerService} from "../AppFedShared/scheduler/scheduler.service";
+import {debugLog, FIXME} from "../libs/AppFedShared/utils/log";
+import {NotificationHandle, NotificationInfo} from "../libs/AppFedSharedIonic/notifications/PlatformNotificationsService";
+import {NotificationsService} from "../libs/AppFedSharedIonic/notifications/notifications.service";
+import {SchedulerHandle, SchedulerService} from "../libs/AppFedShared/scheduler/scheduler.service";
 import {ModalController} from "@ionic/angular";
 import {TimerDetailsComponent} from "../timers/timer-details/timer-details.component";
 import {TimerEndedComponent} from "../timers/timer-ended/timer-ended.component";

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
-import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
+import {ignorePromise} from "../../libs/AppFedShared/utils/promiseUtils";
 import {ModalController} from "@ionic/angular";
-import {debugLog} from "../../AppFedShared/utils/log";
+import {debugLog} from "../../libs/AppFedShared/utils/log";
 
 @Component({
   selector: 'app-timer-ended',

@@ -11,8 +11,8 @@ import {TimerEndedComponent} from "./timer-ended/timer-ended.component";
 import {TimerDetailsComponent} from "./timer-details/timer-details.component";
 import {SharedModule} from "../shared/shared.module";
 import {TimeLeftOrDurationComponent} from "./time-left-or-duration/time-left-or-duration.component";
-import {TimeModule} from "../AppFedShared/time/time.module";
-import {TimeIonicModule} from "../AppFedSharedIonic/time/time-ionic.module";
+import {TimeModule} from "../libs/AppFedShared/time/time.module";
+import {TimeIonicModule} from "../libs/AppFedSharedIonic/time/time-ionic.module";
 
 @NgModule({
   imports: [

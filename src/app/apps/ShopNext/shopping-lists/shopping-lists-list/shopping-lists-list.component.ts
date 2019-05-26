@@ -1,6 +1,6 @@
 import {Component, ContentChild, OnInit, TemplateRef} from '@angular/core';
 import {ShoppingListsService} from "../shopping-lists.service";
-import {debugLog} from "../../../AppFedShared/utils/log";
+import {debugLog} from "../../../libs/AppFedShared/utils/log";
 
 @Component({
   selector: 'app-shopping-lists-list',

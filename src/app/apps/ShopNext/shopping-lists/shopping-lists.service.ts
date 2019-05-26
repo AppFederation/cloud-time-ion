@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {ShoppingListsModule} from "./shopping-lists.module";
-import {OdmService} from "../../AppFedShared/odm/OdmService";
+import {OdmService} from "../../libs/AppFedShared/odm/OdmService";
 import {ShoppingList} from "./ShoppingList";
 
 @Injectable(/*{

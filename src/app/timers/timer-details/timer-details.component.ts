@@ -3,7 +3,7 @@ import {TimerItem} from "../../core/TimerItem";
 import {AlertController, ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {FormControl} from "@angular/forms";
-import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
+import {ignorePromise} from "../../libs/AppFedShared/utils/promiseUtils";
 
 @Component({
   selector: 'app-timer-details',

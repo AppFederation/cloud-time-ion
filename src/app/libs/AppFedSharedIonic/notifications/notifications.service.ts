@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 
 import { Plugins } from '@capacitor/core';
 import {Platform} from "@ionic/angular";
-import {CoreModule} from "../../core/core.module";
+import {CoreModule} from "../../../core/core.module";
 import {BrowserNotificationsService} from "../notifications-browser/browser-notifications.service";
 import {CordovaNotificationsService} from "../cordova-notifications.service";
 import {NotificationHandle, NotificationInfo, PlatformNotificationsService} from "./PlatformNotificationsService";

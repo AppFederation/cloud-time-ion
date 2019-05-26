@@ -1,7 +1,7 @@
-import {OdmItem} from "../AppFedShared/odm/OdmItem";
+import {OdmItem} from "../libs/AppFedShared/odm/OdmItem";
 import {TimersService} from "./timers.service";
-import {OdmItemId} from "../AppFedShared/odm/OdmItemId";
-import {FIXME} from "../AppFedShared/utils/log";
+import {OdmItemId} from "../libs/AppFedShared/odm/OdmItemId";
+import {FIXME} from "../libs/AppFedShared/utils/log";
 
 export type TimerId = OdmItemId
 

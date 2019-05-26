@@ -4,7 +4,7 @@ import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {OverlayEventDetail} from '@ionic/core';
 import {TimerDetailsComponent} from "../timer-details/timer-details.component";
-import {debugLog} from "../../AppFedShared/utils/log";
+import {debugLog} from "../../libs/AppFedShared/utils/log";
 
 @Component({
   selector: 'app-timer-item',

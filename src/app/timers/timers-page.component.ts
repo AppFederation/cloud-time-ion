@@ -3,7 +3,7 @@ import {ModalController} from '@ionic/angular';
 import {TimerItem} from '../core/TimerItem';
 import {TimersService} from '../core/timers.service';
 import {TimerDetailsComponent} from "./timer-details/timer-details.component";
-import {debugLog} from "../AppFedShared/utils/log";
+import {debugLog} from "../libs/AppFedShared/utils/log";
 
 @Component({
   selector: 'app-tab2',
