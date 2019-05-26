@@ -9,6 +9,11 @@ import {ShoppingList} from "../ShoppingList";
 export class ShoppingListItemComponent implements OnInit {
 
   @Input() item: ShoppingList
+  shoppingList = this.item
+
+  get routerLink() {
+    return `list/${this.item.id}`
+  }
 
   constructor() { }
 

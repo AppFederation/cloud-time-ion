@@ -5,6 +5,7 @@ import {OdmUiModule} from "../../../libs/AppFedSharedIonic/odm-ui/odm-ui.module"
 import {ShoppingListsListComponent} from "./shopping-lists-list/shopping-lists-list.component";
 import {ShoppingListsService} from "./shopping-lists.service";
 import {ShoppingListItemComponent} from "./shopping-list-item/shopping-list-item.component";
+import {RouterModule} from "@angular/router";
 
 const exports = [
   ShoppingListsListComponent,
@@ -22,6 +23,7 @@ const exports = [
     CommonModule,
     IonicModule.forRoot(),
     OdmUiModule,
+    RouterModule,
   ],
   exports: exports
 })

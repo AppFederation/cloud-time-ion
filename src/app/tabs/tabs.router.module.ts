@@ -4,6 +4,7 @@ import { TabsPage } from './tabs.page';
 import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.module";
 import {ShoppingListsPageComponent} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.component";
 import {RecipesPageComponent} from "../apps/CookBook/recipes-page/recipes-page/recipes-page.component";
+import {ShoppingListDetailsPageComponent} from "../apps/ShopNext/shopping-list-details-page/shopping-list-details-page.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
         path: '',
         component: ShoppingListsPageComponent
         // loadChildren: '../ShopNext/shopping-lists-page/shopping-lists-page.module#ShoppingListsPageModule' /* FIXME: call stack size exceeded */
+      },
+      {
+        path: 'list/:listId',
+        component: ShoppingListDetailsPageComponent,
       }
     ]
   },
@@ -46,7 +51,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/recipes',
+    redirectTo: '/shopping',
     pathMatch: 'full'
   }
 ]

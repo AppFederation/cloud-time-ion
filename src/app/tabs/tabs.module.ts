@@ -8,6 +8,8 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 import { TabsPage } from './tabs.page';
 import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.module";
 import {RecipesPageModule} from "../apps/CookBook/recipes-page/recipes-page.module";
+import {ShoppingListDetailsPageComponent} from "../apps/ShopNext/shopping-list-details-page/shopping-list-details-page.component";
+import {ShoppingListDetailsPageModule} from "../apps/ShopNext/shopping-list-details-page/shopping-list-details-page.module";
 
 @NgModule({
   imports: [
@@ -16,6 +18,7 @@ import {RecipesPageModule} from "../apps/CookBook/recipes-page/recipes-page.modu
     FormsModule,
     TabsPageRoutingModule,
     ShoppingListsPageModule,
+    ShoppingListDetailsPageModule,
     RecipesPageModule,
   ],
   declarations: [TabsPage]
