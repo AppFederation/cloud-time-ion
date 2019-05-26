@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {SharedModule} from "./shared/shared.module";
 import {CoreModule} from "./core/core.module";
-import {ShoppingListsModule} from "./ShopNext/shopping-lists/shopping-lists.module";
+import {ShoppingListsModule} from "./apps/ShopNext/shopping-lists/shopping-lists.module";
 
 @NgModule({
 

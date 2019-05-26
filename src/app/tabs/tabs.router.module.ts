@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-import {ShoppingListsPageModule} from "../ShopNext/shopping-lists-page/shopping-lists-page.module";
-import {ShoppingListsPageComponent} from "../ShopNext/shopping-lists-page/shopping-lists-page.component";
+import {ShoppingListsPageModule} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.module";
+import {ShoppingListsPageComponent} from "../apps/ShopNext/shopping-lists-page/shopping-lists-page.component";
 
 const routes: Routes = [
   {
