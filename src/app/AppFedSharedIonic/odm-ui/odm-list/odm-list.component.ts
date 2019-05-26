@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
 import {OdmService} from "../../../AppFedShared/odm/OdmService";
 import {OdmItem} from "../../../AppFedShared/odm/OdmItem";
+import {OdmListItemDirective} from "./odm-list-item.directive";
 
 type TItem = OdmItem<any>
 
@@ -10,6 +11,10 @@ type TItem = OdmItem<any>
   styleUrls: ['./odm-list.component.sass'],
 })
 export class OdmListComponent implements OnInit /* could extend non-ionic OdmListComponent */{
+
+
+  /** https://alligator.io/angular/reusable-components-ngtemplateoutlet/ */
+  @ContentChild(OdmListItemDirective, {read: TemplateRef}) itemTemplate
 
   /** TODO: allow parent items (e.g. shopping lists) */
   @Input() parentItem: OdmService<TItem>

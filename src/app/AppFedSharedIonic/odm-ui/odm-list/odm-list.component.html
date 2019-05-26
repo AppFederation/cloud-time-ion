@@ -3,7 +3,9 @@ parentItem: {{parentItem}}
 <div
   *ngFor="let item of sortItems(parentItem?.localItems$ | async); trackBy: trackById"
 >
-  Shopping list item
-  <ng-content></ng-content>
-  {{(item).title}}
-></div>
+<!--  ODM-list-item-->
+<!--  <ng-content></ng-content>-->
+  <ng-container
+    *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"
+  ></ng-container>
+</div>

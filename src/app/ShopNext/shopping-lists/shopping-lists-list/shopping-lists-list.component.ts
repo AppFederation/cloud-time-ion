@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ContentChild, OnInit, TemplateRef} from '@angular/core';
 import {ShoppingListsService} from "../shopping-lists.service";
 import {debugLog} from "../../../AppFedShared/utils/log";
 
@@ -8,6 +8,7 @@ import {debugLog} from "../../../AppFedShared/utils/log";
   styleUrls: ['./shopping-lists-list.component.sass'],
 })
 export class ShoppingListsListComponent implements OnInit {
+
 
   constructor(
     public shoppingListsService: ShoppingListsService,

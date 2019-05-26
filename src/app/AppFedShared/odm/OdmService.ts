@@ -82,7 +82,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
     const service = this
     this.odmCollectionBackend.setListener({
       onAdded(addedItemId: OdmItemId<T>, newItemRawData: TRaw) {
-        debugLog('setBackendListener onAdded', ...arguments)
+        // debugLog('setBackendListener onAdded', ...arguments)
         let existingItem = service.getItemById(addedItemId)
         let items = service.localItems$.lastVal;
         if ( ! existingItem ) {

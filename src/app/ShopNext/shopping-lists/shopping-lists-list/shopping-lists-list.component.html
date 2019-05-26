@@ -2,5 +2,13 @@ Shopping lists list...
 <app-odm-list
   [parentItem]="shoppingListsService"
 >
-  Shopping list Item content here:
+<!--  <ng-template-->
+<!--    let-item-->
+<!--  >-->
+
+<!--  </ng-template>-->
+  <app-shopping-list-item
+    *appOdmListItem="let item"
+    [item]="item"
+  ></app-shopping-list-item>
 </app-odm-list>
