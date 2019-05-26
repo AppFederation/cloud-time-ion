@@ -1,0 +1,24 @@
+SHOPPING LISTS PAGE
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="cart"></ion-icon>
+      Shopping Lists
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-icon name="cart"></ion-icon>
+    <ion-fab-button id='fabItem' (click)="onAddItem()">
+<!--      +-->
+      <!--      <ion-icon name="add-circle"></ion-icon>-->
+    </ion-fab-button>
+  </ion-fab>
+  <app-shopping-lists-list
+  ></app-shopping-lists-list>
+
+</ion-content>

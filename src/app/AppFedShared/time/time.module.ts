@@ -7,20 +7,21 @@ import {NumberPickerComponent} from "./number-picker/number-picker.component";
 import {SharedModule} from "../../shared/shared.module";
 import {IonicModule} from "@ionic/angular";
 
-let declarations = [
+let exports = [
   NumberPickerComponent,
-  TimePickerComponent,
   TimePassingComponent,
   TimeViewComponent,
 ]
 
 @NgModule({
-  declarations: declarations,
+  declarations: [
+    ...exports,
+  ],
   imports: [
     CommonModule,
     SharedModule,
     IonicModule.forRoot(),
   ],
-  exports: declarations,
+  exports: exports,
 })
 export class TimeModule { }

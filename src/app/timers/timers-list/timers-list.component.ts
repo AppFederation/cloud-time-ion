@@ -19,7 +19,6 @@ export class TimersListComponent implements OnInit {
     return item.id
   }
 
-
   sortTimers(timers: TimerItem[]) {
     if ( timers == null ) {
       return timers

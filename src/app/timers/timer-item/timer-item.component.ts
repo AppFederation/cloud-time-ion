@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
-import {TimePickerComponent} from "../../AppFedSharedIonic/time/time-picker/time-picker.component";
 import {ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
 import {OverlayEventDetail} from '@ionic/core';

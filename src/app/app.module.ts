@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {SharedModule} from "./shared/shared.module";
 import {CoreModule} from "./core/core.module";
+import {ShoppingListsModule} from "./ShopNext/shopping-lists/shopping-lists.module";
 
 @NgModule({
 
@@ -21,6 +22,7 @@ import {CoreModule} from "./core/core.module";
     AppRoutingModule,
     SharedModule,
     CoreModule,
+    ShoppingListsModule, /* HACK as a kind of core, for shopping list service*/
   ],
   exports: [
     CoreModule,

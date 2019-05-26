@@ -1,4 +1,6 @@
 <ion-list>
-  <app-timer-item *ngFor="let timer of sortTimers(timersService.timers$ | async); trackBy: trackById"
-                  [timer]="timer"></app-timer-item>
+  <app-timer-item
+    *ngFor="let timer of sortTimers(timersService.timers$ | async); trackBy: trackById"
+    [timer]="timer"
+  ></app-timer-item>
 </ion-list>

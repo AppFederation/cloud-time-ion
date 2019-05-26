@@ -1,0 +1,9 @@
+<!-- TODO: ng-content ;; check how PrimeNG is passing tree node into ng-content. $item or smth? -->
+parentItem: {{parentItem}}
+<div
+  *ngFor="let item of sortItems(parentItem?.localItems$ | async); trackBy: trackById"
+>
+  Shopping list item
+  <ng-content></ng-content>
+  {{(item).title}}
+></div>

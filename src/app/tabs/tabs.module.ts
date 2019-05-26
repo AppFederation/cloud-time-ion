@@ -6,13 +6,15 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
+import {ShoppingListsPageModule} from "../ShopNext/shopping-lists-page/shopping-lists-page.module";
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    TabsPageRoutingModule,
+    ShoppingListsPageModule,
   ],
   declarations: [TabsPage]
 })
