@@ -51,7 +51,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/shopping',
+    redirectTo: '/timers',
     pathMatch: 'full'
   }
 ]
