@@ -33,13 +33,13 @@
 <!--<div style="display: flex; align-items: center;">-->
 
   <i
-    class="material-icons tappable-icon"
+    class="material-icons tappable-icon actionable"
     (tap)="toggleExpand($event)"
     (press)="onPress($event)"
   >expand_more</i>
 
   <i
-    class="material-icons tappable-icon"
+    class="material-icons tappable-icon actionable"
     (press)='treeNode.navigateInto()'
     [ngbPopover]="popContent"
     #popOver="ngbPopover"
@@ -52,17 +52,19 @@
   <!--<i class="material-icons">assignment</i>-->
   <!--<mat-icon></mat-icon>-->
 
-  <span *ngIf="treeNode.isDayPlan" style="user-select: none">
-    End: {{formatEndTime()}}
+  <div *ngIf="treeNode.isDayPlan"
+       style="user-select: none; vertical-align: middle; display: table-cell; align-self: center"
+  >
+    <span class="faded">End</span> {{formatEndTime()}}
     <!--Sum: {{treeNode.timeLeftSumText()}}-->
-  </span>
+  </div>
   <ng-container *ngIf="treeNode.itemData?.deleted">
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
 
   <app-node-content-time-tracking
     [treeNode]="treeNode"
-    style="margin-left: 0.5em; vertical-align: middle "
+    style="margin-left: 0.5em; vertical-align: middle; align-self: center"
   ></app-node-content-time-tracking>
 
   <app-node-cell

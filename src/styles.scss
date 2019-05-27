@@ -12,5 +12,13 @@ $popover-max-width: 500px;
 .actionable {
   cursor: pointer;
   user-select: none;
-  color: #777
+  color: var(--primary)
+}
+
+.faded {
+  color: gray;
+}
+
+:root {
+  --primary: orange;
 }
