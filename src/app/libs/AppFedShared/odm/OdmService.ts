@@ -4,6 +4,10 @@ import {OdmItem} from "./OdmItem";
 import {CachedSubject} from "../utils/CachedSubject";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
+import {OdmItemHandle} from "./OdmItemHandle";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs/internal/Observable";
+import {of} from "rxjs/internal/observable/of";
 
 export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> = T> {
 
@@ -15,6 +19,8 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
 
   localItems$ = new CachedSubject<T[]>([])
+
+  private mapIdToItemHandle = new Map<OdmItemId<T>, OdmItemHandle<T>>()
 
   protected constructor(
     protected injector: Injector,
@@ -63,6 +69,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
 
   saveNowToDb(itemToSave: T) {
     debugLog('saveNowToDb', itemToSave)
+    // TODO: also save items affected by many-to-many (parent <-> child)
     this.odmCollectionBackend.saveNowToDb(itemToSave)
   }
 
@@ -70,12 +77,33 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
     return dbItem as unknown as T // default impl
   }
 
-  public getItemById(id: OdmItemId<T>) {
+  public getItemById(id: OdmItemId<T>): T {
     // this.getById()
     return (
       this.localItems$.lastVal &&
       this.localItems$.lastVal.find(_ => _.id === id)
     )
+  }
+
+  public getItemById$(id: OdmItemId<T>): Observable<T> {
+    // return of('LJFSLK' as any)
+    const mapped = this.localItems$.pipe(map(items => {
+      const ret = items.find(item => item.id === id);
+      debugLog('getItemById$, ret', ret, items)
+      return ret
+    }));
+    // mapped.subscribe(val => console.log('mapped:: ', val));
+    return mapped
+  }
+
+  public getItemHandleById(id: OdmItemId<T>) {
+    let odmItemHandle = this.mapIdToItemHandle.get(id)
+    if ( ! odmItemHandle ) {
+      odmItemHandle = new OdmItemHandle<T>(this, id);
+      this.mapIdToItemHandle.set(id, odmItemHandle)
+    }
+    return odmItemHandle
+    // TODO: update handles observables when items updated/added/deleted in setBackendListener() listener
   }
 
   private setBackendListener() {

@@ -22,7 +22,10 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
   ) {
     super(injector, className, odmBackend)
     this.collectionBackendReady$.subscribe(() => {
-      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<T>) => {
+      const collectionReference: firebase.firestore.CollectionReference = this.angularFirestore.firestore.collection(this.collectionName);
+      // const query: firebase.firestore.Query = collectionReference.where('x', '==', 'xx');
+      collectionReference.onSnapshot((snapshot: QuerySnapshot<T>) => {
+        // FIXME: trigger listener once per snapshot, with lists of added, removed, modified items
         for ( let change of snapshot.docChanges() ) {
           if ( change.type === 'added' ) {
             this.listener.onAdded(change.doc.id, change.doc.data() as T)
@@ -47,6 +50,7 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
   saveNowToDb(item: T) {
     debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
     ignorePromise(this.itemDoc(item.id).set(item.toDbFormat()))
+    // TODO: also save items affected by many-to-many (parent <-> child)
   }
 
   private collection() {

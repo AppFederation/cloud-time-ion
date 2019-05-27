@@ -1,5 +1,8 @@
 import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
 import {OdmListItemDirective} from "../odm-list/odm-list-item.directive";
+import {OdmList} from "../../../AppFedShared/odm/OdmList";
+
+type TItem = any
 
 @Component({
   selector: 'app-odm-list-page',
@@ -8,9 +11,9 @@ import {OdmListItemDirective} from "../odm-list/odm-list-item.directive";
 })
 export class OdmListPageComponent implements OnInit {
 
-  @Input() parentItem
+  @Input() parentList: OdmList<TItem>
 
-  @Input() creatItemFunc
+  @Input() createItemFunc
 
   /** https://alligator.io/angular/reusable-components-ngtemplateoutlet/ */
   @ContentChild(OdmListItemDirective, {read: TemplateRef}) itemTemplate
@@ -20,6 +23,12 @@ export class OdmListPageComponent implements OnInit {
   ngOnInit() {}
 
   onAddItem() {
-    this.creatItemFunc().saveNowToDb()
+    const newItem = this.createItemFunc();
+    this.parentList.add(newItem)
+    // TODO: open details dialog, allowing to add to multiple lists (many-to-many)
+    // draft gets saved automatically
+
+    // when User is happy, saves non-draft in details dialog
+    newItem.saveNowToDb()
   }
 }

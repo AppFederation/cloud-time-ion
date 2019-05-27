@@ -1,6 +1,6 @@
 <ion-list>
   <div
-    *ngFor="let item of sortItems(parentItem?.localItems$ | async); trackBy: trackById"
+    *ngFor="let item of sortItems(parentItem?.items$ | async); trackBy: trackById"
   >
     <ng-container
       *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"

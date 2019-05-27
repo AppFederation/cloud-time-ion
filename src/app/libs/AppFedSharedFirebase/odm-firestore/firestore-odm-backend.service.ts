@@ -4,6 +4,9 @@ import {Injectable, Injector} from "@angular/core";
 import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
+import {OdmChildListDefinition} from "../../AppFedShared/odm/OdmChildListDefinition";
+import {OdmChildListBackend} from "../../AppFedShared/odm/OdmChildListBackend";
+import {OdmFirestoreManyToManyChildListBackend} from "./OdmFirestoreManyToManyChildListBackend";
 
 @Injectable()
 export class FirestoreOdmBackend extends OdmBackend {
@@ -28,5 +31,9 @@ export class FirestoreOdmBackend extends OdmBackend {
     }).catch((caught) => {
       errorAlert('Firestore enablePersistence error', caught)
     })
+  }
+
+  createManyToManyBackend(manyToManyDefinition: OdmChildListDefinition<any, any>) {
+    return new OdmFirestoreManyToManyChildListBackend(manyToManyDefinition)
   }
 }

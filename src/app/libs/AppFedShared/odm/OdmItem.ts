@@ -35,7 +35,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     public isDeleted?: Date,
   ) {
     if ( !id ) {
-      this.id = '' + this.odmService.className + new Date() // hack
+      this.id = '' + this.odmService.className + "_" + Date.now() + "_"  // new Date() // hack
     }
     this.localUserSavesToThrottle$.pipe(
       throttleTimeWithLeadingTrailing(this.odmService.throttleSaveToDbMs)

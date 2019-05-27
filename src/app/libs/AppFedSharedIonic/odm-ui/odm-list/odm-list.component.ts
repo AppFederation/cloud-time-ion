@@ -2,6 +2,7 @@ import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core
 import {OdmService} from "../../../AppFedShared/odm/OdmService";
 import {OdmItem} from "../../../AppFedShared/odm/OdmItem";
 import {OdmListItemDirective} from "./odm-list-item.directive";
+import {OdmList} from "../../../AppFedShared/odm/OdmList";
 
 type TItem = OdmItem<any>
 
@@ -16,7 +17,7 @@ export class OdmListComponent implements OnInit /* could extend non-ionic OdmLis
   @ContentChild(OdmListItemDirective, {read: TemplateRef}) itemTemplate
 
   /** TODO: allow parent items (e.g. shopping lists) */
-  @Input() parentItem: OdmService<TItem>
+  @Input() parentItem: OdmList<TItem>
 
   @Input() sortCompareFunction
 

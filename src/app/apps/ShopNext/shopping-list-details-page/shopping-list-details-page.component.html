@@ -1,4 +1,26 @@
 <p>
-  shopping-list-details-page works!
-  list id: {{routeSnapshot.params['listId']}}
+  shopping-list-details-page works! 2
+  list id: {{itemId}}
 </p>
+
+lst:
+<p
+  *ngIf="(shoppingListsService.getItemById$(itemId) | async); let item"
+
+>ITEM P: {{item}}</p>
+
+<div>
+  ITEM DIRECTLY {{shoppingListsService.getItemById$(itemId) | async}}
+</div>
+
+<div>
+  ITEM DIRECTLY {{shoppingListsService.getItemById(itemId)}}
+  ITEM DIRECTLY list:: {{shoppingListsService.getItemById(itemId)?.itemsList}} ===
+</div>
+<!--*ngIf="(shoppingListsService.getItemById$(itemId) | async); let item"-->
+<app-odm-list-page
+  *ngIf="shoppingListsService.getItemById(itemId); let item"
+  [parentList]="item.itemsList"
+  [createItemFunc]="createItemFunc"
+></app-odm-list-page>
+end shopping items list
