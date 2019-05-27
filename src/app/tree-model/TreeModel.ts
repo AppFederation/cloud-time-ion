@@ -449,10 +449,11 @@ export class OryTreeNode implements TreeNode {
     if ( this.children.length ) {
       // debugLog('timeLeftSum this.children', this.children)
     }
-    const sumBy1 = sumBy(this.children, childNode => {
+    const selfTimeLeft = ( this.itemData.estimatedTime && parseFloat(this.itemData.estimatedTime)) || 0
+    const childrenTimeLeftSum = sumBy(this.children, childNode => {
       return childNode.effectiveTimeLeft()
     })
-    return sumBy1
+    return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
   effectiveTimeLeft() {
@@ -469,7 +470,8 @@ export class OryTreeNode implements TreeNode {
   }
 
   showEffectiveDuration() {
-    return this.timeLeftSum() !== 0 && ! this.isChildOfRoot
+    return ! this.isChildOfRoot &&
+      ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */this.timeLeftSum() !== 0 || this.itemData.estimatedTime >= 60)
   }
 
   effectiveDurationText() {
