@@ -11,7 +11,11 @@ import {
   isNull,
   isNullOrUndefined,
 } from 'util'
-import {defined, nullOrUndef} from '../utils/utils'
+import {
+  defined,
+  isEmpty,
+  nullOrUndef,
+} from '../utils/utils'
 import {sumBy} from 'lodash';
 import { OryColumn } from '../tree-shared/OryColumn'
 import { FIXME } from '../utils/log'
@@ -471,11 +475,20 @@ export class OryTreeNode implements TreeNode {
 
   showEffectiveDuration() {
     return ! this.isChildOfRoot &&
-      ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */this.timeLeftSum() !== 0 || this.itemData.estimatedTime >= 60)
+      ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
+        this.timeLeftSum() !== 0 ||
+        this.itemData.estimatedTime >= 60
+      )
   }
 
   effectiveDurationText() {
     return this.timeLeftSumText()
+  }
+
+  get isChildrenEstimationExceedingOwn() {
+    return ! isEmpty(this.itemData.estimatedTime) &&
+      this.timeLeftSum() >
+      ( this.itemData.estimatedTime && parseFloat(this.itemData.estimatedTime)) || 0
   }
 
   endTime() {

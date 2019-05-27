@@ -22,6 +22,9 @@ export class NodeCellComponent implements OnInit {
   @Input()
   calculatedValue = ''
 
+  @Input()
+  isDanger = false
+
   @ViewChild('cellInput')
   cellInput: ElementRef
 

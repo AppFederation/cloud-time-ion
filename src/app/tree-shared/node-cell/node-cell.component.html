@@ -14,10 +14,10 @@
       text-align: right;
       margin: 0;
       border-radius: 3px;
-      background: #f5f5f5;
       border: none;
       padding: 2px;
     "
+    [ngClass]="{'danger' : isDanger}"
   >
   <ng-container *ngIf="showCalculatedValue">
     <span style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;

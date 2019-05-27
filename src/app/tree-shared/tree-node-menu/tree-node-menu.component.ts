@@ -15,7 +15,6 @@ import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/conf
 import { NodeContentComponent } from '../node-content/node-content.component'
 import { Router } from '@angular/router'
 import { ClipboardService } from '../../core/clipboard.service'
-import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 
 @Component({
   selector: 'app-tree-node-menu',

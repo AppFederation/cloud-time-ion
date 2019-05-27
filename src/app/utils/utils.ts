@@ -1,4 +1,5 @@
 import {debugLog} from './log'
+import { isNullOrUndefined } from 'util'
 
 export function nullOrUndef(x) {
   // cannot just do !x, because of zero
@@ -73,4 +74,11 @@ export function setCaretOnContentEditable(target, isStart) {
   if ( target.select ) {
     target.select();
   }
+}
+
+export function isEmpty(val) {
+  if ( typeof val === 'string' ) {
+    return val.trim() === ''
+  }
+  return isNullOrUndefined(val)
 }
