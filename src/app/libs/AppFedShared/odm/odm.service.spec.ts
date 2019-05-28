@@ -44,7 +44,7 @@ class FakeBackendCollection<T extends OdmItem<T>> extends OdmCollectionBackend<T
   }
 }
 
-describe('OdmService', () => {
+describe('OdmService: ', () => {
   let service: SutOdmService
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -59,7 +59,7 @@ describe('OdmService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('reaction to local saves by user', () => {
+  describe('reaction to local saves by user: ', () => {
     it('saves new item', () => {
       let sutItem = new SutItem(service, 'newItemId1');
       sutItem.patchNow({}) // TODO: save?
@@ -68,7 +68,7 @@ describe('OdmService', () => {
     })
   })
 
-  describe('reaction to changes incoming from db', () => {
+  describe('reaction to changes incoming from db: ', () => {
     let newItem = {
       stringField: 'str',
       numberField: 100,
@@ -103,7 +103,7 @@ describe('OdmService', () => {
       expect(service.localItems$.lastVal).toEqual([null])
     }
 
-    it('reacts to item added from db', () => {
+    xit('reacts to item added from db', () => {
       testAdded()
     })
 
