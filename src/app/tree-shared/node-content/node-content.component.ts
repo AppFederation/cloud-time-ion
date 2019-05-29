@@ -52,6 +52,44 @@ export class Columns {
     this.isDone,
   ]
   lastColumn = this.title
+  leftMostColumn = this.estimatedTime
+}
+
+function getSelectionCursorState() {
+  const el = this.elInputTitle.nativeElement
+  var atStart = true, atEnd = false;
+  var selRange, testRange;
+  const selection = (document as any).selection
+  if (window.getSelection) {
+    var sel = window.getSelection();
+    if (sel.rangeCount) {
+      selRange = sel.getRangeAt(0);
+      testRange = selRange.cloneRange();
+
+      testRange.selectNodeContents(el);
+      testRange.setEnd(selRange.startContainer, selRange.startOffset);
+      atStart = (testRange.toString() == "");
+
+      testRange.selectNodeContents(el);
+      testRange.setStart(selRange.endContainer, selRange.endOffset);
+      atEnd = (testRange.toString() == "");
+    }
+  } else if (selection && selection.type != "Control") {
+    selRange = selection.createRange();
+    testRange = selRange.duplicate();
+
+    testRange.moveToElementText(el);
+    testRange.setEndPoint("EndToStart", selRange);
+    atStart = (testRange.text == "");
+
+    testRange.moveToElementText(el);
+    testRange.setEndPoint("StartToEnd", selRange);
+    atEnd = (testRange.text == "");
+  }
+
+  const ret = {atStart: atStart, atEnd: atEnd}
+  console.log('start/end', ret)
+  return ret
 }
 
 @Component({
@@ -269,6 +307,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.focusNode(nodeToFocus, this.columns.lastColumn, {cursorPosition: -1})
   }
 
+  focusNodeBelowAtBeginningOfLine() {
+    const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
+    this.treeHost.focusNode(nodeToFocus, this.columns.leftMostColumn, {cursorPosition: 0})
+  }
+
   public focusNodeAbove() {
     const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
     this.focusOtherNode(nodeToFocus)
@@ -280,7 +323,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusToEstimatedTime() {
-    const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
+    const ret = getSelectionCursorState.call(this)
+    const isStart = ret.atStart
+    // const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
     if (isStart) {
       this.focus(this.columns.estimatedTime)
     }
@@ -474,6 +519,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  onArrowRightOnRightMostCell() {
+    // if ( getActiveElementCaretPos() === 0 ) {
+    this.focusNodeBelowAtBeginningOfLine()
+    // }
+  }
+
   onKeyDownBackspaceOnEstimatedTime() {
     if ( getActiveElementCaretPos() === 0
       && this.treeNode.itemData.estimatedTime === ''
@@ -505,6 +556,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       return 'calendar_today'
     } else {
       return 'note'
+    }
+  }
+
+  onCursorMoveKeydown() {
+    if ( getSelectionCursorState.call(this).atEnd ) {
+      this.onArrowRightOnRightMostCell()
+      console.log('atEnd')
     }
   }
 }
