@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {LoginViaEmailPasswordComponent} from "./login-via-email-password/login-via-email-password.component";
+import {LoginComponent} from "./login/login.component";
+import {IonicModule} from "@ionic/angular";
 
 let exports = [
   LoginViaEmailPasswordComponent,
+  LoginComponent,
 ]
 
 @NgModule({
@@ -12,6 +15,7 @@ let exports = [
   ],
   imports: [
     CommonModule,
+    IonicModule.forRoot()
   ],
   exports: exports
 })
