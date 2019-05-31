@@ -50,6 +50,11 @@ export class CordovaNotificationsService extends PlatformNotificationsService<Co
       vibrate: true,
       // sound: true,
       sound: 'content://media/internal/audio/media/1',
+      wakeup: true,
+      priority: 1 /* PRIORITY_HIGH:
+        https://developer.android.com/reference/android/app/Notification.html#PRIORITY_HIGH
+        not PRIORITY_MAX, because PRIORITY_MAX seems to use RTC instead of RTC_WAKEUP in mgr.setExact(RTC, time, pi);
+        */
     });
     console.log('scheduleNotification-d' + schedule +  JSON.stringify(schedule))
     let schedulerHandle = this.schedulerService.schedule(notifInfo.when, () => {
