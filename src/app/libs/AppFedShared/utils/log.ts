@@ -17,3 +17,11 @@ export function errorAlert(...args) {
   console.error(prefix, ...args)
   window.alert(prefix + '(see console for details) ' + args.join(', '))
 }
+
+export function apfLogger(instance) {
+  return console // HACK
+}
+
+export function apfErrLog(instance, ...rest) {
+  return console.error('' + instance, ...rest)
+}

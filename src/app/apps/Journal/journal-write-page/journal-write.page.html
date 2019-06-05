@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button color="primary" slot="start" >< Previous</ion-button>
+    <!-- TODO: this will go to previous journal entry to correct it if necessary -->
+    <!-- TODO: Next button -->
+    <ion-title>
+      Journal
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- TODO: contenteditable -->
+  <ion-textarea
+    (change)="onChangeText($event)"
+    (input)="onChangeText($event)"
+    style="height: 100%"
+    placeholder="Write journal entry"
+  >
+  </ion-textarea>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
+    <!--      +-->
+    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
+    <!--    </ion-fab-button>-->
+    <ion-fab-button id='fabNewJournalEntry'
+                    (click)="newEntry()"
+    >
+      <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
+      <!--      +-->
+      <!--      <ion-icon name="add-circle"></ion-icon>-->
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+

@@ -10,6 +10,7 @@ export class AudioService {
 
   playAudio(file: string) {
     var audio = new Audio(file);
+    // audio.pause()
     // audio.loop = true
     // IDEA: gradually increase volume, so as not to bother other people in the vicinity
     // IDEA: exponential back-off

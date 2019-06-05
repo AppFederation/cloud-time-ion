@@ -35,7 +35,9 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     public isDeleted?: Date,
   ) {
     if ( !id ) {
-      this.id = '' + this.odmService.className + new Date() // hack
+      this.id = '' + this.odmService.className + "__" + new Date().toISOString()
+        .replace('T', '_')
+        .replace(/:/g, '.') + '_' // hack
     }
     this.localUserSavesToThrottle$.pipe(
       throttleTimeWithLeadingTrailing(this.odmService.throttleSaveToDbMs)
@@ -82,6 +84,13 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     if ( !dbFormat.isDeleted ) {
       delete dbFormat.isDeleted // For Firestore to avoid undefined
     }
+    for ( let key of Object.keys(dbFormat) ) {
+      if ( dbFormat[key] === undefined ) {
+        delete dbFormat[key]
+      }
+    }
+    // TODO: https://stackoverflow.com/questions/35055731/how-to-deeply-map-object-keys-with-javascript-lodash
+    // https://stackoverflow.com/questions/48156234/function-documentreference-set-called-with-invalid-data-unsupported-field-val
     return dbFormat
   }
 
@@ -94,6 +103,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.locallyVisibleChanges$.next(incomingConverted)
   }
 
+  /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */
   saveNowToDb() {
     this.odmService.saveNowToDb(this.asT)
   }

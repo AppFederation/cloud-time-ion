@@ -43,6 +43,7 @@ export class NotificationsService {
       this.notificationsService = injector.get(BrowserNotificationsService)
     }
     document.addEventListener("deviceready", () => {
+      console.log('deviceready')
       // (cordova.plugins as any).notification.local.schedule({
       //   title: 'CloudTime first notification',
       //   text: 'Notif text',

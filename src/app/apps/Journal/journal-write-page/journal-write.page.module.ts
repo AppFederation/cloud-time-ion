@@ -1,0 +1,18 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { JournalWritePageRoutingModule } from './journal-write.page-routing.module';
+import {IonicModule} from "@ionic/angular";
+import {JournalWritePage} from "./journal-write.page";
+
+@NgModule({
+  declarations: [
+    JournalWritePage,
+  ],
+  imports: [
+    CommonModule,
+    JournalWritePageRoutingModule,
+    IonicModule.forRoot(),
+  ]
+})
+export class JournalWritePageModule { }
