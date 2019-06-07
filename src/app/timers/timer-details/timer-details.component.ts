@@ -23,7 +23,7 @@ export class TimerDetailsComponent implements OnInit {
 
   constructor(
       public alertController: AlertController,
-      public timersService: TimersService,
+      // public timersService: TimersService,
       private modalController: ModalController,
   ) { }
 
