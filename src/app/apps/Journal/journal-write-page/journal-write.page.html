@@ -10,27 +10,24 @@
 </ion-header>
 <ion-content>
   <!-- TODO: contenteditable -->
-  <ion-textarea
-    (change)="onChangeText($event)"
-    (input)="onChangeText($event)"
-    style="height: 100%"
-    placeholder="Write journal entry"
-  >
-  </ion-textarea>
+  <app-mood-picker (mood)="onChangeMood($event)"></app-mood-picker>
+
+  <div style="display: flex; flex-direction: column; align-items: stretch; height: 100%">
+    <ion-textarea
+      style="flex-grow: 1"
+      *ngFor="let textDesc of textDescriptors"
+      (change)="onChangeText($event, textDesc)"
+      (input)="onChangeText($event, textDesc)"
+      placeholder="Journal entry: {{textDesc.id}}"
+    ></ion-textarea>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
-    <!--      +-->
-    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
-    <!--    </ion-fab-button>-->
     <ion-fab-button id='fabNewJournalEntry'
                     (click)="newEntry()"
     >
       <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
-      <!--      +-->
-      <!--      <ion-icon name="add-circle"></ion-icon>-->
     </ion-fab-button>
   </ion-fab>
 
 </ion-content>
-
