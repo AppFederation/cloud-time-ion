@@ -51,7 +51,7 @@ export class CordovaNotificationsService extends PlatformNotificationsService<Co
       // sound: true,
       sound: 'content://media/internal/audio/media/1',
       wakeup: true,
-      priority: 1 /* PRIORITY_HIGH:
+      priority: 2 /* 1 == PRIORITY_HIGH:
         https://developer.android.com/reference/android/app/Notification.html#PRIORITY_HIGH
         not PRIORITY_MAX, because PRIORITY_MAX seems to use RTC instead of RTC_WAKEUP in mgr.setExact(RTC, time, pi);
         */
