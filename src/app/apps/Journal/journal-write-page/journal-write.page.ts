@@ -25,9 +25,9 @@ export class JournalWritePage implements OnInit {
     this.newEntry();
   }
 
-  private newEntry() {
+  public newEntry() {
     this.journalEntry = new JournalEntry(this.journalEntriesService, undefined)
-    this.journalEntry.saveNowToDb()
+    // this.journalEntry.saveNowToDb()
   }
 
   /** TODO: user reactive forms with ODM wrapper for listening to diffs */
