@@ -9,6 +9,14 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
 
 :root {
   --ion-background-color: lightgreen;

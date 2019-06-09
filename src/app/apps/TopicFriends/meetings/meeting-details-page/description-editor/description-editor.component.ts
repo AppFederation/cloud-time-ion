@@ -1,34 +1,17 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-description-editor',
   templateUrl: './description-editor.component.html',
   styleUrls: ['./description-editor.component.sass'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DescriptionEditorComponent),
-      multi: true,
-    }
-  ],
 })
-export class DescriptionEditorComponent implements OnInit, ControlValueAccessor {
+export class DescriptionEditorComponent implements OnInit {
+
+  @Input() control: FormControl;
 
   constructor() { }
 
   ngOnInit() {}
-
-  registerOnChange(fn: any): void {
-  }
-
-  registerOnTouched(fn: any): void {
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-  }
-
-  writeValue(obj: any): void {
-  }
-
 }

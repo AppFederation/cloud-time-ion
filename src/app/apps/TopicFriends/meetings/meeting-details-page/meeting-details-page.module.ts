@@ -7,6 +7,7 @@ import {MeetingsSharedModule} from "../meetings-shared/meetings-shared.module";
 import {IonicModule} from "@ionic/angular";
 import {ReactiveFormsModule} from "@angular/forms";
 import {DescriptionEditorComponent} from "./description-editor/description-editor.component";
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {DescriptionEditorComponent} from "./description-editor/description-edito
     MeetingDetailsPageRoutingModule,
     IonicModule,
     ReactiveFormsModule,
+    QuillModule,
   ]
 })
 export class MeetingDetailsPageModule { }
