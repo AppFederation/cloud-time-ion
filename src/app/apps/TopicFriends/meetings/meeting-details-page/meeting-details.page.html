@@ -1,5 +1,9 @@
 Meeting-details
 
+
+LEN: {{(formGroup.value|json).length}}
+<!--{{formGroup.value|json}}-->
+
 <form
   [formGroup]="formGroup"
 >
@@ -13,9 +17,15 @@ Meeting-details
     placeholder="Location"
   ></ion-input>
 
+  <ion-input
+    [formControl]="formGroupControls.date"
+    placeholder="Date and Time"
+  ></ion-input>
+
   <app-description-editor
-    [formControl]="formGroupControls.description"
+    [control]="formGroupControls.description"
   ></app-description-editor>
+
 
 </form>
 

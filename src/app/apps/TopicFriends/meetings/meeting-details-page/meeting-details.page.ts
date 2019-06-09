@@ -12,6 +12,7 @@ export class MeetingDetailsPage implements OnInit {
   formGroupControls = {
     title: new FormControl(),
     location: new FormControl(),
+    date: new FormControl(),
     description: new FormControl(),
   };
   formGroup = new FormGroup(this.formGroupControls);
