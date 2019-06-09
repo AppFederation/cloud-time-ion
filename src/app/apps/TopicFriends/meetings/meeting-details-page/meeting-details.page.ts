@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Meeting} from "../meetings-models/Meeting";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-meeting-details-page',
@@ -7,8 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MeetingDetailsPage implements OnInit {
 
-  constructor() { }
+  formGroupControls = {
+    title: new FormControl(),
+    location: new FormControl(),
+    description: new FormControl(),
+  };
+  formGroup = new FormGroup(this.formGroupControls);
 
-  ngOnInit() {}
+  meeting: Meeting // = new Meeting() // forkDraftItem()
 
+  constructor() {
+  }
+
+  ngOnInit() {
+    this.formGroup.valueChanges.subscribe(val => {
+      this.meeting.patchDraftThrottled(val)
+    })
+  }
+
+  onPublish() {
+    this.meeting.publishDraft()
+  }
 }

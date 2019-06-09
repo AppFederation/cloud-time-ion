@@ -1,6 +1,26 @@
-<p>
-  meeting-details.page works!
-</p>
+Meeting-details
 
+<form
+  [formGroup]="formGroup"
+>
+  <ion-input
+    [formControl]="formGroupControls.title"
+    placeholder="Title"
+  ></ion-input>
 
-TODO: @moi @noviodelangel Rich Text Editor here, with image upload
+  <ion-input
+    [formControl]="formGroupControls.location"
+    placeholder="Location"
+  ></ion-input>
+
+  <app-description-editor
+    [formControl]="formGroupControls.description"
+  ></app-description-editor>
+
+</form>
+
+<ion-button
+  (click)="onPublish()"
+>
+  Publish
+</ion-button>

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {TopicFriendsRoutingModule} from "./TopicFriends.routing.module";
+
+import { WelcomeRoutingModule } from './welcome-routing.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    TopicFriendsRoutingModule,
+    WelcomeRoutingModule
   ]
 })
-export class TopicFriendsModule { }
+export class WelcomeModule { }

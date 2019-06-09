@@ -19,6 +19,8 @@ export abstract class OdmItemData<TData> {
   */
 }
 
+export type OdmPatch<TData> = Partial<TData>
+
 export class OdmItem<T extends OdmItem<T>, TData = T> {
 
   public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
@@ -52,7 +54,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.onModified()
   }
 
-  patchThrottled(patch: Partial<TData>) {
+  patchThrottled(patch: OdmPatch<TData>) {
     debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
@@ -62,12 +64,17 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.odmService.emitLocalItems()
   }
 
-  patchNow(patch: Partial<TData>) {
+  patchNow(patch: OdmPatch<TData>) {
     Object.assign(this, patch)
     this.onModified()
     this.odmService.saveNowToDb(this.asT)
     this.locallyVisibleChanges$.next(this.asT) // other code listens to this and throttles - saves
     this.odmService.emitLocalItems()
+  }
+
+  patchDraftThrottled(patch: OdmPatch<TData>) {
+    // TODO: distinguish draft
+    this.patchThrottled(patch)
   }
 
   deleteWithoutConfirmation() {
@@ -106,5 +113,13 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */
   saveNowToDb() {
     this.odmService.saveNowToDb(this.asT)
+  }
+
+  publishDraft() {
+    // FIXME
+  }
+
+  public forkDraftItem(): OdmItem<T> {
+    return null
   }
 }
