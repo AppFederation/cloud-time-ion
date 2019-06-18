@@ -15,4 +15,5 @@ export class JournalTextDescriptors {
   general = d()
   positive = d()
   negative = d()
+  should = d()
 }
