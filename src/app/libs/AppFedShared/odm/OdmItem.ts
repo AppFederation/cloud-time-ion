@@ -55,7 +55,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   }
 
   patchThrottled(patch: OdmPatch<TData>) {
-    debugLog('patchThrottled ([save])', patch)
+    // debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
@@ -72,6 +72,11 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.odmService.emitLocalItems()
   }
 
+  /* perhaps new approach: things are drafts by default, but can be promoted explicitly to published,
+    e.g. even selected journal entries can be promoted to be published a'la blog.
+    Shopping list items can be published after editing finished, to not distract e.g. spouse or coworker who is shopping,
+    with not-yet-completely described items
+  */
   patchDraftThrottled(patch: OdmPatch<TData>) {
     // TODO: distinguish draft
     this.patchThrottled(patch)

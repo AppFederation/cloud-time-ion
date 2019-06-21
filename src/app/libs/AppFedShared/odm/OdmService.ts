@@ -9,7 +9,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
 
   throttleIntervalMs = 500
   // TODO: throttleLocalUiMs = 200
-  throttleSaveToDbMs = 2000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
+  throttleSaveToDbMs = 1000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
 
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
@@ -98,7 +98,11 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
         debugLog('setBackendListener onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
         let existingItem = service.getItemById(modifiedItemId)
-        existingItem.applyDataFromDbAndEmit(convertedItemData)
+        if ( existingItem.applyDataFromDbAndEmit ) {
+          existingItem.applyDataFromDbAndEmit(convertedItemData)
+        } else {
+          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem.applyDataFromDbAndEmit)
+        }
         service.emitLocalItems()
       },
       onRemoved(removedItemId: OdmItemId<T>) {

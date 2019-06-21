@@ -1,6 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {OdmService} from "../../../libs/AppFedShared/odm/OdmService";
-import {JournalEntry} from "./JournalEntry";
+import {JournalEntry} from "../models/JournalEntry";
 
 @Injectable({
   providedIn: 'root'

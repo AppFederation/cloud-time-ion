@@ -1,6 +1,7 @@
 /**
  * Created by kd on 2017-08-01.
  */
+import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
 
 export interface Dict<TVal, /*TKey = string*/> { [key: string /*TKey*/]: TVal }
 
@@ -32,7 +33,14 @@ export function setIdsFromKeys<TItem>(dictionary: Dict<TItem>, idKeyName: string
 }
 
 
-export function dictToArrayAssigningIds<TItem>(dictionary: Dict<TItem>, idKeyName: string = 'id'): TItem[] {
+export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: string = 'id'): TItem[] {
   const dictWithIdsFromKeys: Dict<TItem> = setIdsFromKeys(dictionary, idKeyName);
-  return getDictionaryValuesAsArray(dictWithIdsFromKeys)
+  let arr = getDictionaryValuesAsArray(dictWithIdsFromKeys)
+  arr = arr.map(_ => {
+    if ( (_ as any as ILateInit).lateInit ) {
+      _ = (_ as any as ILateInit).lateInit() || _
+    }
+    return _
+  })
+  return arr
 }

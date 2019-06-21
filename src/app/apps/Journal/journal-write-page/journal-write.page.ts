@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {JournalEntriesService} from "../journal-core/journal-entries.service";
-import {JournalEntry} from "../journal-core/JournalEntry";
+import {JournalEntriesService} from "../core/journal-entries.service";
+import {JournalEntry} from "../models/JournalEntry";
 import {debugLog} from "../../../libs/AppFedShared/utils/log";
 import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf-geo-location.service";
-import {JournalTextDescriptor, JournalTextDescriptors} from "../journal-models/JournalTextDescriptors";
+import {JournalTextDescriptor, JournalTextDescriptors} from "../models/JournalTextDescriptors";
 import {NumericPickerVal} from "./numeric-picker/numeric-picker.component";
 
 @Component({

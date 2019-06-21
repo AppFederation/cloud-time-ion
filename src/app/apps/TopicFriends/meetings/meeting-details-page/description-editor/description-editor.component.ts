@@ -1,6 +1,5 @@
 import { Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-description-editor',

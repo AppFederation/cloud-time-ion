@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {JournalNumericDescriptor} from '../../journal-models/JournalNumericDescriptors'
+import {JournalNumericDescriptor} from '../../models/JournalNumericDescriptors'
 
 export type NumericPickerVal = number
 

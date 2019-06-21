@@ -6,7 +6,8 @@ import {IonicModule} from "@ionic/angular";
 import {JournalWritePage} from "./journal-write.page";
 import {NumericPickerComponent} from "./numeric-picker/numeric-picker.component";
 import {JournalNumericFieldsComponent} from './journal-numeric-fields/journal-numeric-fields.component'
-import {JournalTextFieldsComponent} from './journal-text-fields/journal-text-fields.component'
+import {JournalTextFieldsComponent} from './journal-text-fields/journal-text-fields.component';
+import { JournalSituationsComponent } from './journal-situations/journal-situations.component'
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {JournalTextFieldsComponent} from './journal-text-fields/journal-text-fie
     NumericPickerComponent,
     JournalNumericFieldsComponent,
     JournalTextFieldsComponent,
+    JournalSituationsComponent,
   ],
   imports: [
     CommonModule,

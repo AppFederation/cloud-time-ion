@@ -1,0 +1,9 @@
+<ng-container
+  *ngFor="let descriptor of numDescriptors"
+>
+  <apf-numeric-picker
+    (numericValue)="onChangeNumericValue($event, descriptor)"
+    [numFieldDef]="descriptor"
+  ></apf-numeric-picker>
+
+</ng-container>

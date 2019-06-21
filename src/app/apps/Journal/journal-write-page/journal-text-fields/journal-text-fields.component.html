@@ -1,0 +1,19 @@
+<div style="display: flex; flex-direction: column; align-items: stretch; height: 100%">
+  <ng-container
+    *ngFor="let textDesc of textDescriptors"
+  >
+    <div
+      style="border-bottom: 1px var(--ion-color-primary) solid"
+    >
+      <ion-textarea
+        [rows]="4"
+        style="flex-grow: 1"
+        (change)="onChangeText($event, textDesc)"
+        (input)="onChangeText($event, textDesc)"
+        placeholder="Journal entry: {{textDesc.id}}"
+      ></ion-textarea>
+
+    </div>
+  </ng-container>
+
+</div>
