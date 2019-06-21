@@ -4,7 +4,7 @@ import {JournalEntry} from "../journal-core/JournalEntry";
 import {debugLog} from "../../../libs/AppFedShared/utils/log";
 import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf-geo-location.service";
 import {JournalTextDescriptor, JournalTextDescriptors} from "../journal-models/JournalTextDescriptors";
-import {Mood} from "./mood-picker/mood-picker.component";
+import {NumericPickerVal} from "./numeric-picker/numeric-picker.component";
 
 @Component({
   selector: 'app-journal-write-page',
@@ -14,7 +14,6 @@ import {Mood} from "./mood-picker/mood-picker.component";
 export class JournalWritePage implements OnInit {
 
   public journalEntry: JournalEntry
-  textDescriptors = JournalTextDescriptors.array
 
   /** annoying coz covers part of the last text field */
   showFab = false
@@ -33,25 +32,9 @@ export class JournalWritePage implements OnInit {
     // this.journalEntry.saveNowToDb()
   }
 
-  /** TODO: user reactive forms with ODM wrapper for listening to diffs */
-  onChangeText($event: Event, textDesc: JournalTextDescriptor) {
-    const value = $event.srcElement['value'];
-    debugLog('onChangeText', value, $event)
-    const patch = {};
-    patch[textDesc.id] = value as unknown as string
-    this.patch(patch)
-  }
-
-  onChangeMood(mood: Mood) {
-    debugLog('onChangeMood', mood)
-    const patch = {
-      mood: mood
-    };
-    this.patch(patch)
-  }
-
   private patch(patch) {
     patch.lastModifiedGeo =
+      /* this should be interceptor (or at least smth in overwritten method in JournalEntry) outside of UI anyway */
       this.geoLocationService.geoLocation$.lastVal &&
       this.geoLocationService.geoLocation$.lastVal.currentPosition &&
       this.geoLocationService.geoLocation$.lastVal.currentPosition.coords &&

@@ -14,18 +14,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- TODO: contenteditable -->
-  <app-mood-picker (mood)="onChangeMood($event)"></app-mood-picker>
+  <app-journal-numeric-fields
+    [journalEntry]="journalEntry"
+  ></app-journal-numeric-fields>
 
-  <div style="display: flex; flex-direction: column; align-items: stretch; height: 100%">
-    <ion-textarea
-      style="flex-grow: 1"
-      *ngFor="let textDesc of textDescriptors"
-      (change)="onChangeText($event, textDesc)"
-      (input)="onChangeText($event, textDesc)"
-      placeholder="Journal entry: {{textDesc.id}}"
-    ></ion-textarea>
-  </div>
+  <app-journal-text-fields
+    [journalEntry]="journalEntry"
+  ></app-journal-text-fields>
+
+  <!-- TODO: contenteditable -->
 
   <ion-fab *ngIf=showFab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button id='fabNewJournalEntry'
