@@ -16,6 +16,9 @@ export class JournalWritePage implements OnInit {
   public journalEntry: JournalEntry
   textDescriptors = JournalTextDescriptors.array
 
+  /** annoying coz covers part of the last text field */
+  showFab = false
+
   constructor(
     public journalEntriesService: JournalEntriesService,
     public geoLocationService: ApfGeoLocationService,

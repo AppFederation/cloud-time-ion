@@ -6,6 +6,11 @@
     <ion-title>
       Journal
     </ion-title>
+    <ion-button slot="end" color="secondary"
+      (click)="newEntry()"
+    >
+      NEW ENTRY
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -22,7 +27,7 @@
     ></ion-textarea>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab *ngIf=showFab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button id='fabNewJournalEntry'
                     (click)="newEntry()"
     >
