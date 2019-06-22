@@ -1,9 +1,10 @@
-import {JournalNumericDescriptor, JournalNumericDescriptors} from './JournalNumericDescriptors'
+import {JournalNumericDescriptors} from './JournalNumericDescriptors'
 
 describe('JournalNumericDescriptors', () => {
   it('creates from dict, with lateInit', () => {
-    expect(JournalNumericDescriptors.instance.array.length).toBe(12)
+    const defs = JournalNumericDescriptors.instance
+    expect(defs.array.length).toBe(14)
     console.log(JournalNumericDescriptors)
-    expect(JournalNumericDescriptors.instance.long_term_thinking.uiName).toBe('long term thinking')
+    expect(defs.long_term_thinking.uiName).toBe('long term thinking')
   })
 })

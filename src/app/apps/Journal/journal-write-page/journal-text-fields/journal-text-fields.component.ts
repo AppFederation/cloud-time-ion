@@ -11,7 +11,7 @@ export class JournalTextFieldsComponent implements OnInit {
 
   @Input() journalEntry: JournalEntry
 
-  textDescriptors = JournalTextDescriptors.array
+  textDescriptors = JournalTextDescriptors.instance.array
 
   constructor() { }
 

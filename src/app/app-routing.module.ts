@@ -5,7 +5,7 @@ const routes: Routes = [
   { path: '',
     loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'journal',
-    loadChildren: 'app/apps/Journal/journal-write-page/journal-write.page.module#JournalWritePageModule' },
+    loadChildren: './apps/Journal/journal-write-page/journal-write.page.module#JournalWritePageModule' },
   { path: 'TopicFriends',
     loadChildren: './apps/TopicFriends/topic-friends.module#TopicFriendsModule' },
   { path: 'auth',

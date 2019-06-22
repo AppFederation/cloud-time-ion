@@ -13,8 +13,7 @@ function jnd(anti?: string) {
   return new JournalNumericDescriptor()
 }
 
-class UiFieldDefs {
-  array = dictToArrayWithIds(new JournalNumericDescriptors() as any as Dict<JournalNumericDescriptor>)
+export class UiFieldDefs {
 }
 
 /** TODO: each numerical descriptor should have a text comment (some sort of "..." or comment bubble button which would expand comment field) */
@@ -35,4 +34,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   grooming = jnd()
   order = jnd('chaos')
   long_term_thinking = jnd()
+  rationality = jnd()
+  mindfulness = jnd()
+
+  array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
+
 }

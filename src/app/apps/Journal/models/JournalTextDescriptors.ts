@@ -22,7 +22,7 @@ function d() {
 
 export class JournalTextDescriptors {
 
-  static array = dictToArrayWithIds(new JournalTextDescriptors() as any as Dict<JournalTextDescriptor>)
+  static instance = new JournalTextDescriptors()
 
   general = d()
   positive = d()
@@ -36,9 +36,12 @@ export class JournalTextDescriptors {
   /** Add psychology hints:  start step by step, don't get overwhelmed */
   should_start_doing = d()
   should_do_less = d()
-  /** Add psychology hints: be careful, because ofte people take extreme vows, like stop drinking whereas moderation might be better */
+  /** Add psychology hints: be careful, because often people take extreme vows, like stop drinking whereas moderation might be better */
   should_stop_doing = d()
   should_continue_doing = d()
 
   predictions = d()
+
+  array = dictToArrayWithIds(this as any as Dict<JournalTextDescriptor>)
+
 }
