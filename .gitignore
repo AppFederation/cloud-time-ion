@@ -1,6 +1,6 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
-
+.env
 *~
 *.sw[mnpcod]
 *.log
@@ -12,6 +12,7 @@ log.txt
 .vscode/
 npm-debug.log*
 
+.prettierrc
 .idea/
 .ionic/
 .sourcemaps/

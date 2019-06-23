@@ -3,16 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="/timers"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ isLogin ? 'Signup' : 'Login' }}</ion-title>
+    <ion-title>{{ isLogin ? 'Login' : 'Signup' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-col size="10" offset="1">
   <ion-content>
-    <app-login-email-password *ngIf="!this.isLogin"></app-login-email-password>
-    <app-signup-email-password *ngIf="this.isLogin"></app-signup-email-password>
+    <app-login-email-password *ngIf="this.isLogin"></app-login-email-password>
+    <app-signup-email-password *ngIf="!this.isLogin"></app-signup-email-password>
     <ion-button fill="outline" color="primary" expand="block" (click)="onAuthSwitch()">Switch to
-      {{ !isLogin ? 'Signup' : 'Login' }}
+      {{ !isLogin ? 'Login' : 'Signup' }}
     </ion-button>
   </ion-content>
 </ion-col>

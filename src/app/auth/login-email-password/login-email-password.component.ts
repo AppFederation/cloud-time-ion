@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-login-email-password',
   templateUrl: './login-email-password.component.html',
-  styleUrls: ['./login-email-password.component.sass'],
+  styleUrls: ['./login-email-password.component.sass']
 })
 export class LoginEmailPasswordComponent implements OnInit {
   constructor(private AuthService: AuthService) {}

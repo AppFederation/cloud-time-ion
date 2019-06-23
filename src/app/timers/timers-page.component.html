@@ -4,7 +4,14 @@
       <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
       CloudTime
     </ion-title>
-    <ion-button color="primary" slot="end" [routerLink]="['/auth']">Account</ion-button>
+     <ion-buttons slot="primary">
+      <ion-button *ngIf="!this.AuthService.userIsAuthenticated" [routerLink]="['/auth']">
+        <ion-icon name="ios-log-in"></ion-icon>
+      </ion-button>
+       <ion-button *ngIf="this.AuthService.userIsAuthenticated" (click)="this.AuthService.logout()">
+        <ion-icon name="ios-log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
