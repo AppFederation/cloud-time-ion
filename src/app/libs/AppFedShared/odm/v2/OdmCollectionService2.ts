@@ -1,12 +1,21 @@
 import {Injector} from "@angular/core";
-import {OdmBackend} from "./OdmBackend";
-import {OdmItem} from "./OdmItem";
-import {CachedSubject} from "../utils/CachedSubject";
-import {debugLog, errorAlert} from "../utils/log";
-import {OdmItemId} from "./OdmItemId";
+import {OdmBackend} from "../OdmBackend";
+import {OdmItem} from "../OdmItem";
+import {CachedSubject} from "../../utils/CachedSubject";
+import {debugLog, errorAlert} from "../../utils/log";
+import {OdmItemId} from "../OdmItemId";
+import {OdmItemHandle} from './OdmItemHandle'
+import {OdmItemSnapshot} from './OdmItemSnapshot'
 
-export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> = T> {
-
+/* TODO: rename to OdmCollectionService? As OdmService suggests smth global */
+export abstract class OdmCollectionService2<
+  TRamItem,
+  TDbData = TRamItem,
+  THandle = OdmItemHandle<TRamItem, TDbData>,
+  // TSnap = OdmItemSnapshot<TInMemData>,
+  >
+{
+  // public type x = string
   throttleIntervalMs = 500
   // TODO: throttleLocalUiMs = 200
   throttleSaveToDbMs = 1000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
@@ -14,7 +23,8 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
 
-  localItems$ = new CachedSubject<T[]>([])
+  /* Rename to itemsArr$ ? */
+  localItems$ = new CachedSubject<TRamItem[]>([])
 
   protected constructor(
     protected injector: Injector,
@@ -29,9 +39,9 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
       let convertedCol = dbCol.map(dbItem => {
         return this.convertFromDbFormat(dbItem)
       });
-      const incomingNotKnownIfExisted = new Set<T>(convertedCol)
-      const incomingItemsWhichAreNew = new Set<T>(convertedCol)
-      const existingToDelete = new Set<T>(this.localItems$.lastVal)
+      const incomingNotKnownIfExisted = new Set<TRamItem>(convertedCol)
+      const incomingItemsWhichAreNew = new Set<TRamItem>(convertedCol)
+      const existingToDelete = new Set<TRamItem>(this.localItems$.lastVal)
       for (let incomingItemConverted of convertedCol) {
         let existingItem = this.getItemById(incomingItemConverted.id)
         if (existingItem) {
@@ -57,20 +67,20 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
     })
   }
 
-  deleteWithoutConfirmation(item: T) {
-    this.odmCollectionBackend.deleteWithoutConfirmation(item.id)
-  }
+  // deleteWithoutConfirmation(item: T) {
+  //   this.odmCollectionBackend.deleteWithoutConfirmation(item.id)
+  // }
 
-  saveNowToDb(itemToSave: T) {
+  saveNowToDb(handle: THandle, itemToSave: TRamItem) {
     debugLog('saveNowToDb', itemToSave)
-    this.odmCollectionBackend.saveNowToDb(itemToSave, itemToSave.id)
+    this.odmCollectionBackend.saveNowToDb(itemToSave, handle.itemId)
   }
 
-  protected convertFromDbFormat(dbItem: TRaw): T {
-    return dbItem as unknown as T // default impl
+  protected convertFromDbFormat(dbItem: TDbData): TRamItem {
+    return dbItem as any as TRamItem // default impl
   }
 
-  public getItemById(id: OdmItemId<T>) {
+  public getItemById(id: OdmItemId<TRamItem>) {
     // this.getById()
     return (
       this.localItems$.lastVal &&
@@ -81,7 +91,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
   private setBackendListener() {
     const service = this
     this.odmCollectionBackend.setListener({
-      onAdded(addedItemId: OdmItemId<T>, newItemRawData: TRaw) {
+      onAdded(addedItemId: OdmItemId<TRamItem>, newItemRawData: TDbData) {
         // debugLog('setBackendListener onAdded', ...arguments)
         let existingItem = service.getItemById(addedItemId)
         let items = service.localItems$.lastVal;
@@ -94,7 +104,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
         }
         service.emitLocalItems()
       },
-      onModified(modifiedItemId: OdmItemId<T>, modifiedItemRawData: TRaw) {
+      onModified(modifiedItemId: OdmItemId<TRamItem>, modifiedItemRawData: TDbData) {
         debugLog('setBackendListener onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
         let existingItem = service.getItemById(modifiedItemId)
@@ -105,7 +115,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
         }
         service.emitLocalItems()
       },
-      onRemoved(removedItemId: OdmItemId<T>) {
+      onRemoved(removedItemId: OdmItemId<TRamItem>) {
         service.localItems$.lastVal = service.localItems$.lastVal.filter(item => item.id !== removedItemId)
         service.emitLocalItems()
       }

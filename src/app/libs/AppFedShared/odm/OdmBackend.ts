@@ -12,6 +12,6 @@ export abstract class OdmBackend {
   ) {
   }
 
-  abstract createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string): OdmCollectionBackend<T>
+  abstract createCollectionBackend<TInDb>(injector: Injector, className: string): OdmCollectionBackend<TInDb>
 
 }

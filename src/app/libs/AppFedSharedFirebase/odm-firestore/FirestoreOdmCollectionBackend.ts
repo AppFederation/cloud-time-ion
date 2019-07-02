@@ -9,7 +9,7 @@ import {CachedSubject} from "../../AppFedShared/utils/CachedSubject";
 import {debugLog} from "../../AppFedShared/utils/log";
 
 
-export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> extends OdmCollectionBackend<T> {
+export class FirestoreOdmCollectionBackend<TDbItem> extends OdmCollectionBackend<T> {
 
   protected angularFirestore = this.injector.get(AngularFirestore)
 
@@ -22,12 +22,12 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
   ) {
     super(injector, className, odmBackend)
     this.collectionBackendReady$.subscribe(() => {
-      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<T>) => {
+      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<TDbItem>) => {
         for ( let change of snapshot.docChanges() ) {
           if ( change.type === 'added' ) {
-            this.listener.onAdded(change.doc.id, change.doc.data() as T)
+            this.listener.onAdded(change.doc.id, change.doc.data() as TDbItem)
           } else if ( change.type === 'modified') {
-            this.listener.onModified(change.doc.id, change.doc.data() as T)
+            this.listener.onModified(change.doc.id, change.doc.data() as TDbItem)
           } else if ( change.type === 'removed') {
             this.listener.onRemoved(change.doc.id)
           }
@@ -35,7 +35,7 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
 
       })
       this.collection().valueChanges().subscribe(coll => {
-        this.dbCollection$.nextWithCache(coll as T[])
+        this.dbCollection$.nextWithCache(coll as TDbItem[])
       })
     })
   }
@@ -44,9 +44,9 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
     ignorePromise(this.itemDoc(itemId).delete())
   }
 
-  saveNowToDb(item: T) {
+  saveNowToDb(item: TDbItem, id) {
     debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
-    ignorePromise(this.itemDoc(item.id).set(item.toDbFormat()))
+    ignorePromise(this.itemDoc(id).set(item.toDbFormat()))
   }
 
   private collection() {

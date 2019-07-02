@@ -1,25 +1,33 @@
 import { TestBed } from '@angular/core/testing';
-import {OdmService} from "./OdmService";
-import {OdmItem} from "./OdmItem";
 import {Injectable, Injector} from "@angular/core";
-import {OdmBackend} from "./OdmBackend";
-import {OdmCollectionBackend, OdmCollectionBackendListener} from "./OdmCollectionBackend";
-import {debugLog} from "../utils/log";
-import {OdmItemId} from './OdmItemId'
+import {OdmCollectionService2} from './OdmCollectionService2'
+import {OdmBackend} from '../OdmBackend'
+import {OdmCollectionBackend} from '../OdmCollectionBackend'
+import {OdmItemHandle} from './OdmItemHandle'
 
-class SutItem extends OdmItem<SutItem> {
-  stringField: string
-  numberField: number
+class SutRamItem {
+  constructor(
+    public stringFieldInMem: string,
+    public numberFieldInMem?: number,
+  ) {}
+}
+
+class SutDbItem {
+  stringFieldInDb: string
+  numberFieldInDb: number
 }
 
 @Injectable()
-class SutOdmService extends OdmService<SutItem> {
+class SutOdmService extends OdmCollectionService2<SutRamItem, SutDbItem> {
   constructor(injector: Injector) {
     super(injector, 'SutItem')
   }
 
-  protected convertFromDbFormat(dbItem: SutItem): SutItem {
-    return Object.assign(new SutItem(this), dbItem)
+  protected convertFromDbFormat(dbItem: SutDbItem): SutRamItem {
+    // return Object.assign(new SutRamItem(), dbItem)
+    const inMem = new SutRamItem(dbItem.stringFieldInDb)
+    inMem.numberFieldInMem = dbItem.numberFieldInDb
+    return inMem
   }
 
 }
@@ -28,18 +36,17 @@ class SutOdmService extends OdmService<SutItem> {
 class FakeOdmBackend extends OdmBackend {
   constructor(injector: Injector) { super(injector) }
 
-  createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string): OdmCollectionBackend<T> {
+  createCollectionBackend(injector: Injector, className: string): OdmCollectionBackend<any> {
     return new FakeBackendCollection<any>(injector, className, this)
   }
 }
 
-class FakeBackendCollection<TDbItem extends OdmItem<TDbItem>> extends OdmCollectionBackend<TDbItem> {
+class FakeBackendCollection<TInDb> extends OdmCollectionBackend<TInDb> {
   constructor(injector: Injector, className, odmBackend) {
     super(injector, className, odmBackend)
   }
 
-  saveNowToDb(item: TDbItem, id: OdmItemId) {
-
+  saveNowToDb(item: TInDb) {
   }
 
   deleteWithoutConfirmation(itemId: string) {
@@ -63,9 +70,12 @@ describe('OdmService: ', () => {
 
   describe('reaction to local saves by user: ', () => {
     it('saves new item', () => {
-      let sutItem = new SutItem(service, 'newItemId1');
-      sutItem.patchNow({}) // TODO: save?
-      sutItem.patchNow({stringField: 'str1'})
+      let sutItemInMem = new SutRamItem('str1')
+      let handle = new OdmItemHandle(service, sutItemInMem)
+      expect(handle.localSnapshot.data.stringFieldInMem).toBe('str1')
+
+      handle.localSnapshot.patchNow({}) // TODO: save?
+      handle.localSnapshot.patchNow({stringField: 'str1_Patched'})
       // service.
     })
   })
