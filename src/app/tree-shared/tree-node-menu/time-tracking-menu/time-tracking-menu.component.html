@@ -1,13 +1,18 @@
-<button
-  *ngIf="! isTimeTrackingThis"
-  class="btn btn-primary"
-  (click)="startTimeTracking()">
-  Start TT
-</button>
+<app-node-content-time-tracking
+  [treeNode]="treeNode"
+  style="margin-left: 0.5em; vertical-align: middle; align-self: center"
+></app-node-content-time-tracking>
 
-<button
-  *ngIf="isTimeTrackingThis"
-  class="btn btn-primary"
-  (click)="stopTimeTracking()">
-  Stop TT
-</button>
+<!--<button-->
+<!--  *ngIf="! isTimeTrackingThis"-->
+<!--  class="btn btn-primary"-->
+<!--  (click)="startTimeTracking()">-->
+<!--  Start TT-->
+<!--</button>-->
+
+<!--<button-->
+<!--  *ngIf="isTimeTrackingThis"-->
+<!--  class="btn btn-primary"-->
+<!--  (click)="stopTimeTracking()">-->
+<!--  Stop TT-->
+<!--</button>-->
