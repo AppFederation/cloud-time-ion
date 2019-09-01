@@ -3,7 +3,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
+import {
+  TimeTrackedEntry,
+  TimeTrackingService,
+} from '../../time-tracking/time-tracking.service'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 
 @Component({
@@ -15,11 +18,14 @@ export class NodeContentTimeTrackingComponent implements OnInit {
 
   @Input() treeNode: OryTreeNode
 
+  timeTrackedEntry: TimeTrackedEntry
+
   constructor(
     public timeTrackingService: TimeTrackingService,
   ) { }
 
   ngOnInit() {
+    this.timeTrackedEntry = new TimeTrackedEntry(this.treeNode)
   }
 
 }

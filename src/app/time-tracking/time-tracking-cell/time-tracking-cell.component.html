@@ -1,0 +1,33 @@
+<div
+  style="display: flex; align-items: center;"
+>
+  <app-time-passing
+    [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
+    [referenceTime]="timeTrackedEntry?.startTime"
+    [pausableEntry]="timeTrackedEntry"
+    [isCountDown]="false"
+    *ngIf="timeTrackedEntry.wasTracked"
+  ></app-time-passing>
+  <i style="vertical-align: middle"
+     class="material-icons actionable"
+     (press)="onStopClicked()"
+     *ngIf="false"
+  >
+    stop
+  </i>
+  <i *ngIf="timeTrackedEntry.isTrackingNow"
+     style="vertical-align: middle"
+     class="material-icons actionable"
+     (click)="onPauseClicked()"
+  >
+    pause
+  </i>
+  <i *ngIf="! timeTrackedEntry.isTrackingNow"
+     style="vertical-align: middle"
+     class="material-icons actionable"
+     (click)="onPlayClicked()"
+  >
+    play_arrow
+  </i>
+
+</div>

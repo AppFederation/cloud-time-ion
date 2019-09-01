@@ -1,32 +1,4 @@
-<div
-  style="display: flex; align-items: center;"
-  *ngIf="timeTrackedEntry"
->
-  <app-time-passing
-    style="font-family: 'Lucida Console', monospace"
-    [referenceTime]="timeTrackedEntry?.startTime"
-    [pausableEntry]="timeTrackedEntry"
-    [isCountDown]="false"
-  ></app-time-passing>
-  <i style="vertical-align: middle"
-     class="material-icons actionable"
-     (press)="onStopClicked()"
-  >
-    stop
-  </i>
-  <i *ngIf="! timeTrackedEntry.isPaused"
-     style="vertical-align: middle"
-     class="material-icons actionable"
-     (click)="onPauseClicked()"
-  >
-    pause
-  </i>
-  <i *ngIf="timeTrackedEntry.isPaused"
-     style="vertical-align: middle"
-     class="material-icons actionable"
-     (click)="onPlayClicked()"
-  >
-    play_arrow
-  </i>
-
-</div>
+<app-time-tracking-cell
+  *ngIf="timeTrackingService.timeTrackedEntry$ | async; let entry"
+  [timeTrackedEntry]="entry"
+></app-time-tracking-cell>

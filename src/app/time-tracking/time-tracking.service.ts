@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CachedSubject } from '../utils/CachedSubject'
 import { debugLog } from '../utils/log'
+import { OryTreeNode } from '../tree-model/TreeModel'
 
 export type TimeTrackable = any
 
-export class TimeTrackerEntry {
+export class TimeTrackedEntry {
+  public isTrackingNow = false
+  public wasTracked = false
+
   get totalMsPaused() {
     return this.previousPausesMs + this.currentPauseMsTillNow
   }
@@ -27,40 +31,70 @@ export class TimeTrackerEntry {
   get isPaused() { return !! this.whenLastPaused }
 
   constructor(
-    public timeTrackable: TimeTrackable,
-    public startTime: Date,
-    public whenLastPaused = null,
-    public previousPausesMs = 0,
+    // public timeTrackingService: TimeTrackingService,
+    // public timeTrackable: TimeTrackable,
+    private treeNode: OryTreeNode,
+    public startTime?: Date,
+    public whenLastPaused?,
+    public previousPausesMs?,
   ) {}
+
+  beginTimeTracking() {
+    // this.treeNode.onChangeItemData
+    //
+    this.treeNode.patchItemData({
+      timeTrack: {
+        // TODO: amount tracked so far
+        currentTrackingSince: new Date(),
+      }
+    })
+    this.isTrackingNow = true
+    this.wasTracked = true
+    TimeTrackingService.the.timeTrackedEntry$.next(this)
+  }
+
+  pause() {
+    this.isTrackingNow = false
+  }
 }
 
+// ================================================================================================
 @Injectable()
 export class TimeTrackingService {
 
-  timeTrackingOf$ = new CachedSubject<TimeTrackable>()
-  timeTrackedEntry$ = new CachedSubject<TimeTrackerEntry>()
+  private static _the
+  static get the() {
+    return this._the || (this._the = new TimeTrackingService())
+  }
+
+  // timeTrackingOf$ = new CachedSubject<TimeTrackable>()
+  timeTrackedEntry$ = new CachedSubject<TimeTrackedEntry>()
   get currentEntry() { return this.timeTrackedEntry$.lastVal }
 
-  constructor() { }
-
-  startTimeTrackingOf(item: TimeTrackable) {
-    debugLog('before timeTrackingOf$', item, this.timeTrackingOf$)
-    this.emitTimeTrackedEntry(new TimeTrackerEntry(
-      item,
-      new Date()
-    ))
+  constructor() {
+    if ( TimeTrackingService._the ) {
+      return TimeTrackingService._the
+    }
   }
 
-  stopTimeTrackingOf(item?: TimeTrackable) {
-    this.emitTimeTrackedEntry(null)
-  }
+  // startTimeTrackingOf(item: TimeTrackable) {
+  //   // debugLog('before timeTrackingOf$', item, this.timeTrackingOf$)
+  //   this.emitTimeTrackedEntry(new TimeTrackedEntry(
+  //     item,
+  //     new Date()
+  //   ))
+  // }
+  //
+  // stopTimeTrackingOf(item?: TimeTrackable) {
+  //   this.emitTimeTrackedEntry(null)
+  // }
 
   isTimeTracking(timeTrackable: TimeTrackable) {
-    return this.timeTrackingOf$.lastVal === timeTrackable
+    // return this.timeTrackingOf$.lastVal === timeTrackable
   }
 
-  private emitTimeTrackedEntry(entry: TimeTrackerEntry) {
-    this.timeTrackingOf$.next(entry && entry.timeTrackable)
+  private emitTimeTrackedEntry(entry: TimeTrackedEntry) {
+    // this.timeTrackingOf$.next(entry && entry.timeTrackable)
     this.timeTrackedEntry$.next(entry)
   }
 

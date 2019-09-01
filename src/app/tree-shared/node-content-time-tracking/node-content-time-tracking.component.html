@@ -1,3 +1,4 @@
-<app-time-tracking-toolbar
-  *ngIf="(timeTrackingService.timeTrackedEntry$ | async)?.timeTrackable === this.treeNode.itemId"
-></app-time-tracking-toolbar>
+<app-time-tracking-cell
+  [timeTrackedEntry]="timeTrackedEntry"
+></app-time-tracking-cell>
+<!--*ngIf="(timeTrackingService.timeTrackedEntry$ | async)?.timeTrackable === this.treeNode.itemId"-->

@@ -4,12 +4,9 @@ import { TimeTrackingService } from '../time-tracking.service'
 @Component({
   selector: 'app-time-tracking-toolbar',
   templateUrl: './time-tracking-toolbar.component.html',
-  styleUrls: ['./time-tracking-toolbar.component.scss']
+  styleUrls: ['./time-tracking-toolbar.component.sass']
 })
 export class TimeTrackingToolbarComponent implements OnInit {
-
-  get timeTrackedEntry() { return this.timeTrackingService.timeTrackedEntry$.lastVal }
-
 
   constructor(
     public timeTrackingService: TimeTrackingService
@@ -18,15 +15,4 @@ export class TimeTrackingToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  onStopClicked() {
-    this.timeTrackingService.stopTimeTrackingOf()
-  }
-
-  onPlayClicked() {
-    this.timeTrackingService.resume()
-  }
-
-  onPauseClicked() {
-    this.timeTrackingService.pause()
-  }
 }

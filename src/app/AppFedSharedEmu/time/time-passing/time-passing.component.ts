@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { TimeTrackerEntry } from '../../../time-tracking/time-tracking.service'
+import { TimeTrackedEntry } from '../../../time-tracking/time-tracking.service'
 
 @Component({
   selector: 'app-time-passing',
   templateUrl: './time-passing.component.html',
-  styleUrls: ['./time-passing.component.scss'],
+  styleUrls: ['./time-passing.component.sass'],
 })
 export class TimePassingComponent implements OnInit, OnDestroy {
 
@@ -15,7 +15,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
   isCountDown: boolean = true
 
   @Input()
-  pausableEntry: TimeTrackerEntry
+  pausableEntry: TimeTrackedEntry
 
   msDiff = 0
 
@@ -30,6 +30,9 @@ export class TimePassingComponent implements OnInit, OnDestroy {
   }
 
   private update() {
+    if ( ! this.referenceTime ) {
+      return
+    }
     // FIXME: Cannot read property 'getTime' of null
     if ( this.isCountDown ) {
       this.msDiff = this.referenceTime.getTime() - Date.now()

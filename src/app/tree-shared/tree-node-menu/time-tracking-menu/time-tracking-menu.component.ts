@@ -26,11 +26,11 @@ export class TimeTrackingMenuComponent implements OnInit {
   }
 
   startTimeTracking() {
-    this.timeTrackingService.startTimeTrackingOf(this.timeTrackable)
+    // this.timeTrackingService.startTimeTrackingOf(this.timeTrackable)
   }
 
   stopTimeTracking() {
-    this.timeTrackingService.stopTimeTrackingOf(this.timeTrackable)
+    // this.timeTrackingService.stopTimeTrackingOf(this.timeTrackable)
   }
 
 }
