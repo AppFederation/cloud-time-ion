@@ -33,7 +33,7 @@ import {
   NgbModal,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NodeCellComponent } from '../node-cell/node-cell.component'
+import { NumericCellComponent } from '../cells/node-cell/numeric-cell.component'
 import {
   setCaretOnContentEditable,
   setCaretPosition,
@@ -49,6 +49,7 @@ import {
   Cells,
   ColumnCell,
 } from './Cells'
+import { CellComponent } from '../cells/CellComponent'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -107,16 +108,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() treeHost: TreeHostComponent
 
-  @ViewChild('inputEstimatedTime') elInputEstimatedTime: NodeCellComponent
-  @ViewChild('inputTitle') elInputTitle: ElementRef;
-
-  // https://stackoverflow.com/questions/44479457/angular-2-4-set-focus-on-input-element
+  // @ViewChild('inputEstimatedTime') elInputEstimatedTime: NodeCellComponent
 
   // nodeIndex = 0
   private focusedColumn: OryColumn
 
   // isApplyingFromDbNow = false
-  mapColumnToComponent = new Map<OryColumn, NodeCellComponent>()
+  mapColumnToComponent = new Map<OryColumn, CellComponent>()
 
   editedHere = new Map<OryColumn, boolean>()
   lastEditedLocallyByColumn = new Map<OryColumn, Date>()
@@ -157,10 +155,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
     // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
-    // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
-
-    this.elInputTitle
-      .nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev, this.columns.title));
 
     // this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
     // */
@@ -206,30 +200,16 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       debugLog('newEstimatedTime, ', newValue)
 
       const column = this.columns.estimatedTime
-      if (this.elInputEstimatedTime.inputValueEquals(newValue)) {
-        this.editedHere.set(column, false)
-      } else {
-        if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
-          this.elInputEstimatedTime.setInputValue(newValue)
-          // FIXME: note, this should also take focus into account
-          // --> evolved to the when-last-edited idea
-        }
-      }
-    }
-
-    { // title:
-      const column = this.columns.title
-
-      const newValue = this.treeNode.itemData.title
-      if (this.elInputTitle.nativeElement.innerHTML === newValue) {
-        this.editedHere.set(column, false)
-      } else {
-        if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
-          this.elInputTitle.nativeElement.innerHTML = newValue
-          // FIXME: note, this should also take focus into account
-          // --> evolved to the when-last-edited idea
-        }
-      }
+      // FIXME: take care of the inputValueEquals -- editedHere -- canApplyDataToViewGivenColumnLocalEdits
+      // if (this.elInputEstimatedTime.inputValueEquals(newValue)) {
+      //   this.editedHere.set(column, false)
+      // } else {
+      //   if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
+      //     this.elInputEstimatedTime.setInputValue(newValue)
+      //     // FIXME: note, this should also take focus into account
+      //     // --> evolved to the when-last-edited idea
+      //   }
+      // }
     }
 
     this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
@@ -240,17 +220,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeDetectorRef.detectChanges()
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   for (let propName in changes) {
-  //     let chng = changes[propName];
-  //     // let cur  = JSON.stringify(chng.currentValue);
-  //     // let prev = JSON.stringify(chng.previousValue);
-  //     console.log('ngOnChanges', propName, chng)
-  //   }
-  // }
-
   ngAfterViewInit(): void {
+
     for ( let entry of this.mapColumnToComponent.entries() ) {
+      // maybe call applyItemDataValuesToViews instead and move the loop to applyItemDataValuesToViews
+      // FIXME: extract and call also incoming subsequent changes
+      // FIXME: take care of the inputValueEquals -- editedHere -- canApplyDataToViewGivenColumnLocalEdits
       const col = entry[0], component = entry[1]
       const fieldVal = col.getValueFromItemData(this.treeNode.itemData)
       component.setInputValue(fieldVal)
@@ -287,7 +262,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   keyPressMetaEnter(event) {
     debugLog('keyPressMetaEnter')
     this.isDone = !this.isDone
-    this.onInputChanged(null, this.columns.isDone)
+    this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columns.isDone), this.isDone, null)
     this.focusNodeBelow()
   }
 
@@ -316,12 +291,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusToEstimatedTime() {
-    const ret = getSelectionCursorState(this.elInputTitle.nativeElement)
-    const isStart = ret.atStart
+    // const ret = getSelectionCursorState(this.elInputTitle.nativeElement)
+    // const isStart = ret.atStart
     // const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
-    if (isStart) {
-      this.focus(this.columns.estimatedTime)
-    }
+    // if (isStart) {
+    //   this.focus(this.columns.estimatedTime)
+    // }
   }
 
   focusToDescription() {
@@ -336,27 +311,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focus(column?: OryColumn, options?: NodeFocusOptions) {
-    let toFocus = this.getComponentOrElementByColumnOrDefault(column)
-    let isContentEditable
-    if ( (toFocus as NodeCellComponent).cellInput ) {
-      toFocus = (toFocus as NodeCellComponent).cellInput
-      isContentEditable = false
-    } else {
-      isContentEditable = true
-    }
-    toFocus.nativeElement.focus()
-    if ( options ) {
-      if (isContentEditable) {
-        setCaretOnContentEditable(toFocus.nativeElement, options.cursorPosition >= 0 /* simplification of start vs end*/)
-      } else {
-        // not tested yet
-        setCaretPosition(toFocus.nativeElement, options.cursorPosition)
-      }
-    }
+    let componentToFocus = this.getComponentOrElementByColumnOrDefault(column)
+    componentToFocus && componentToFocus.focus(options)
   }
 
-  getComponentOrElementByColumnOrDefault(column?: OryColumn): NodeCellComponent | ElementRef {
-    return this.mapColumnToComponent.get(column) || this.elInputTitle
+  getComponentOrElementByColumnOrDefault(column?: OryColumn): CellComponent {
+    return this.mapColumnToComponent.get(column)
+      || this.mapColumnToComponent.get(this.columns.title)
     // if (column === this.columns.estimatedTime) {
     //   return this.elInputEstimatedTime
     // } else {
@@ -371,11 +332,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* TODO: rename reactToInputChangedAndSave */
-  onInputChanged(event, column: OryColumn) {
-    debugLog('onInputChanged, column', column, event)
+  onInputChanged(event, cell: ColumnCell, newValue, component: CellComponent) {
+    debugLog('onInputChanged, cell', cell, event, component)
+    const column = cell.column
     this.editedHere.set(column, true)
     this.lastEditedLocallyByColumn.set(column, new Date())
-    const inputNewValue = event.target.value
+    const inputNewValue = newValue // event.target.value
     column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
     // this.setTreeNodeItemDataFromUi()
@@ -523,11 +485,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onKeyDownBackspaceOnTitle() {
-    if (getCaretPosition(this.elInputTitle.nativeElement) === 0
-      && this.treeNode.itemData.title === ''
-    ) {
-      this.openDeleteDialog()
-    }
+    // if (getCaretPosition(this.elInputTitle.nativeElement) === 0
+    //   && this.treeNode.itemData.title === ''
+    // ) {
+    //   this.openDeleteDialog()
+    // }
   }
 
   private openDeleteDialog() {
@@ -549,9 +511,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCursorMoveKeydown() {
-    if ( getSelectionCursorState(this.elInputTitle.nativeElement).atEnd ) {
-      this.onArrowRightOnRightMostCell()
-      console.log('atEnd')
-    }
+    // if ( getSelectionCursorState(this.elInputTitle.nativeElement).atEnd ) {
+    //   this.onArrowRightOnRightMostCell()
+    //   console.log('atEnd')
+    // }
   }
 }

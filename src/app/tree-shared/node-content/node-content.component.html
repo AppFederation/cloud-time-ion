@@ -77,28 +77,26 @@
 
   <!-- ======= new cells approach: -->
   <app-node-cell
+    [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMin)"
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
-    [nodeContentComponent]="this"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <app-node-cell
+    [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTime)"
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
-    [nodeContentComponent]="this"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <app-node-cell
+    [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMax)"
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
-    [nodeContentComponent]="this"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <!-- ===== end new cells approach -->
 
-  <div
-    #inputTitle
-      contenteditable
+  <app-contenteditable-cell
     style='
       flex-basis: fill;
       flex-grow: 1;
@@ -108,25 +106,9 @@
       margin-top: 2px; /* help not overlap input focus outline and hackish help centering text a bit vertically */
       font-size: 13px;
     '
-    [ngClass]="{'done-title': isDone}"
-    (keydown.enter)="keyPressEnter($event)"
-    (keydown.arrowup)="focusNodeAbove($event)"
-    (keydown.arrowdown)="focusNodeBelow($event)"
-
-    (keydown.arrowleft)="focusToEstimatedTime()"
-    (keydown.alt.arrowleft)="focusToEstimatedTime()"
-    (keydown.control.arrowleft)="focusToEstimatedTime()"
-    (keydown.meta.arrowleft)="focusToEstimatedTime()"
-
-    (keydown.arrowright)="onCursorMoveKeydown()"
-    (keydown.alt.arrowright)="onCursorMoveKeydown()"
-    (keydown.control.arrowright)="onCursorMoveKeydown()"
-    (keydown.meta.arrowright)="onCursorMoveKeydown()"
-
-    (keydown.backspace)="onKeyDownBackspaceOnTitle()"
-    (focus)="onColumnFocused(columns.title, $event)"
-  >  <!--sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)-->
-  </div>
+    [nodeContentComponent]="this"
+    [cell]="cells.forColumn(columns.title)"
+  ></app-contenteditable-cell>
 
   <span style="font-size: 7px" *ngIf="debugService.isDebug$ | async">
     {{treeNode.itemId}}
