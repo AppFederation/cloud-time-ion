@@ -50,6 +50,7 @@ export class FirestoreAllInclusionsSyncer {
 
   startQuery() {
     this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot) => {
+      // TODO: check again regarding offline/metadata: https://firebase.google.com/docs/firestore/query-data/listen
       const mapParentIdToDocsModified = new MultiMap<string, DocumentSnapshot>()
       const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
       // NOTE: for now treating adding and modifying as same event (as in tree event add-or-modify)

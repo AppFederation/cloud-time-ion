@@ -71,6 +71,7 @@ export class OryTreeNode implements TreeNode {
   droppable?: boolean;
   selectable?: boolean;
 
+  /** TODO: rename to itemData$ and use CachedSubject to get initial val too */
   onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
 
@@ -155,12 +156,6 @@ export class OryTreeNode implements TreeNode {
 
   addSiblingAfterThis(newNode?: OryTreeNode) {
     return this.parent2.addChild(this, newNode)
-    // // window.alert('my index z')
-    // console.log('this.parent', this.parent)
-    // const newNode = this.treeModel.addSiblingAfterNode(newNode, this)
-    // // window.alert('my index' + myIndex)
-    // // getNodeBelowThis()
-    // return newNode
   }
 
   public getIndexInParent() {

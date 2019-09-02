@@ -4,6 +4,14 @@
       background: #fbfbfb;
       margin: .3em;
   "
+  (keydown.enter)="nodeContentComponent.keyPressEnter($event)"
+  (keydown.arrowup)="nodeContentComponent.focusNodeAbove($event)"
+  (keydown.arrowdown)="nodeContentComponent.focusNodeBelow($event)"
+  (keydown.arrowleft)="nodeContentComponent.onArrowLeftOnLeftMostCell()"
+
+  (keydown.alt.arrowright)="onArrowRight()"
+  (keydown.meta.arrowright)="onArrowRight()"
+  (keydown.control.arrowright)="onArrowRight()"
 >
   <input
     #cellInput

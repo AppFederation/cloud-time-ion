@@ -1,10 +1,8 @@
 
-<!--<p>-->
-  <!--Popovers can contain any arbitrary HTML, Angular bindings and even directives!-->
-  <!--Simply enclose desired content or title in a <code>&lt;ng-template&gt;</code> element.-->
-<!--</p>-->
+<ng-template #popTitle>Fancy <b>content</b></ng-template>
 
 <ng-template #popContent>
+  <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
   <app-tree-node-menu
     [treeNode]="treeNode"
     [treeHost]="treeHost"
@@ -12,12 +10,7 @@
     [nodeContentComponent]="this"
   ></app-tree-node-menu>
 </ng-template>
-<!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
 
-<ng-template #popTitle>Fancy <b>content!!</b></ng-template>
-<!--<button type="button" class="btn btn-outline-secondary" [ngbPopover]="popContent" [popoverTitle]="popTitle">-->
-  <!--I've got markup and bindings in my popover!-->
-<!--</button>-->
 
 <div
   style="display: flex; align-items: stretch; font-size: 13px"
@@ -30,7 +23,12 @@
   (keydown.tab)="indentIncrease($event)"
   [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
 >
-<!--<div style="display: flex; align-items: center;">-->
+<!--  <app-cell-host>-->
+<!--    <app-node-cell-->
+<!--      [cell]="cells.forColumn(columns.estimatedTimeMin)"-->
+<!--      [nodeContentComponent]="this"-->
+<!--    ></app-node-cell>-->
+<!--  </app-cell-host>-->
 
   <i
     class="material-icons tappable-icon actionable"
@@ -47,10 +45,6 @@
   >
     {{getIconName()}}
   </i>
-  <!--<i class="material-icons">work</i>-->
-  <!--<i class="material-icons">build</i>-->
-  <!--<i class="material-icons">assignment</i>-->
-  <!--<mat-icon></mat-icon>-->
 
   <div *ngIf="treeNode.isDayPlan"
        style="user-select: none; vertical-align: middle; display: table-cell; align-self: center"
@@ -68,22 +62,12 @@
   ></app-node-content-time-tracking>
 
   <app-node-cell
+    [cell]="cells.forColumn(columns.estimatedTime)"
+    [nodeContentComponent]="this"
     #inputEstimatedTime
     [hidden]="! isEstimatedTimeShown"
-    (cellInputChanged)="onInputChanged($event, columns.estimatedTime)"
-
     [ngClass]="{'done-title': isDone}"
-    (keydown.enter)="keyPressEnter($event)"
-    (keydown.arrowup)="focusNodeAbove($event)"
-    (keydown.arrowdown)="focusNodeBelow($event)"
     (focusin)="onColumnFocused(columns.estimatedTime, $event)"
-    (change)="onChangeEstimatedTime($event)"
-    (keydown.arrowleft)="onArrowLeftOnLeftMostCell()"
-    (keydown.arrowright)="focusToDescription()"
-    (keydown.alt.arrowright)="focusToDescription()"
-    (keydown.meta.arrowright)="focusToDescription()"
-    (keydown.control.arrowright)="focusToDescription()"
-    (keydown.backspace)="onKeyDownBackspaceOnEstimatedTime()"
 
     [showCalculatedValue]="treeNode.showEffectiveDuration()"
     [calculatedValue]="treeNode.effectiveDurationText()"
@@ -91,6 +75,26 @@
 
   ></app-node-cell> <!-- TODO: rename to #cellEstimatedTime-->
 
+  <!-- ======= new cells approach: -->
+  <app-node-cell
+    [cell]="cells.forColumn(columns.estimatedTimeMin)"
+    [showCalculatedValue]="treeNode.showEffectiveDuration()"
+    [nodeContentComponent]="this"
+    [hidden]="! isEstimatedTimeShown"
+  ></app-node-cell>
+  <app-node-cell
+    [cell]="cells.forColumn(columns.estimatedTime)"
+    [showCalculatedValue]="treeNode.showEffectiveDuration()"
+    [nodeContentComponent]="this"
+    [hidden]="! isEstimatedTimeShown"
+  ></app-node-cell>
+  <app-node-cell
+    [cell]="cells.forColumn(columns.estimatedTimeMax)"
+    [showCalculatedValue]="treeNode.showEffectiveDuration()"
+    [nodeContentComponent]="this"
+    [hidden]="! isEstimatedTimeShown"
+  ></app-node-cell>
+  <!-- ===== end new cells approach -->
 
   <div
     #inputTitle
@@ -103,9 +107,6 @@
       margin-left: 0.3em;
       margin-top: 2px; /* help not overlap input focus outline and hackish help centering text a bit vertically */
       font-size: 13px;
-      /*treeNode.isDayPlan ? "13px" : "11px"*/
-      /*display: table-cell;
-      vertical-align: middle; */
     '
     [ngClass]="{'done-title': isDone}"
     (keydown.enter)="keyPressEnter($event)"
@@ -124,9 +125,7 @@
 
     (keydown.backspace)="onKeyDownBackspaceOnTitle()"
     (focus)="onColumnFocused(columns.title, $event)"
-    (change)="onChangeEstimatedTime($event)"
-  > <!-- FIXME: why onChangeEstimatedTime() ? -->
-    <!--{{sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)}}-->
+  >  <!--sanitizer.bypassSecurityTrustHtml(treeNode.itemData.title)-->
   </div>
 
   <span style="font-size: 7px" *ngIf="debugService.isDebug$ | async">
@@ -137,11 +136,5 @@
     {{treeNode.nodeInclusion.orderNum}}
     view updates: {{debug.countApplyItemDataValuesToViews}}
   </span>
-
-  <!--<button-->
-    <!--(click)="addChild()"-->
-  <!--&gt;-->
-    <!--+-->
-  <!--</button>-->
 
 </div>

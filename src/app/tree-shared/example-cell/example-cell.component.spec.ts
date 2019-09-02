@@ -1,0 +1,25 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ExampleCellComponent } from './example-cell.component';
+
+describe('ExampleCellComponent', () => {
+  let component: ExampleCellComponent;
+  let fixture: ComponentFixture<ExampleCellComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ExampleCellComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ExampleCellComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

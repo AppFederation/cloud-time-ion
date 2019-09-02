@@ -7,6 +7,9 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { NodeContentComponent } from '../node-content/node-content.component'
+import { OryColumn } from '../OryColumn'
+import { ColumnCell } from '../node-content/Cells'
 
 /* TODO: rename to eg NumericCell */
 @Component({
@@ -15,6 +18,13 @@ import {
   styleUrls: ['./node-cell.component.scss']
 })
 export class NodeCellComponent implements OnInit {
+
+  /** TODO fix circular dep via e.g. event */
+  @Input()
+  nodeContentComponent: NodeContentComponent
+
+  @Input()
+  cell: ColumnCell
 
   @Input()
   showCalculatedValue: boolean
@@ -40,10 +50,12 @@ export class NodeCellComponent implements OnInit {
   ngOnInit() {
     this.nativeElement = this.cellInput.nativeElement
     this.nativeElement.addEventListener('input', (ev) => this.onInputChanged(ev));
+    this.nodeContentComponent.mapColumnToComponent.set(this.cell.column, this)
   }
 
-  private onInputChanged(ev: any) {
-    return this.cellInputChanged.emit(ev);
+  private onInputChanged(event: any) {
+    this.nodeContentComponent.onInputChanged(event, this.cell.column)
+    return this.cellInputChanged.emit(event);
   }
 
   getInputValue(): string {
@@ -51,10 +63,14 @@ export class NodeCellComponent implements OnInit {
   }
 
   setInputValue(newValue: string) {
-    this.cellInput.nativeElement.value = newValue
+    this.cellInput.nativeElement.value = newValue || ''
   }
 
   inputValueEquals(newValue: string) {
     return this.getInputValue() === newValue
+  }
+
+  onArrowRight() {
+
   }
 }

@@ -11,26 +11,44 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {NodeFocusOptions, OryTreeNode} from '../../tree-model/TreeModel'
-import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
-import {OryColumn} from '../OryColumn'
-import {DbTreeService} from '../../tree-model/db-tree-service'
-import {DomSanitizer} from '@angular/platform-browser'
-import {isNullOrUndefined} from 'util'
-import {DialogService} from '../../core/dialog.service'
+import {
+  NodeFocusOptions,
+  OryTreeNode,
+} from '../../tree-model/TreeModel'
+import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
+import { OryColumn } from '../OryColumn'
+import { DbTreeService } from '../../tree-model/db-tree-service'
+import { DomSanitizer } from '@angular/platform-browser'
+import { isNullOrUndefined } from 'util'
+import { DialogService } from '../../core/dialog.service'
 // import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 
-import {padStart} from 'lodash';
-import {DebugService} from '../../core/debug.service'
+import { padStart } from 'lodash';
+import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';
-import {debugLog} from '../../utils/log'
-import {NgbModal, NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap'
-import {NodeCellComponent} from '../node-cell/node-cell.component'
-import {setCaretOnContentEditable, setCaretPosition} from '../../utils/utils'
-import {getActiveElementCaretPos, getCaretPosition, isCaretAtEndOfActiveElement} from '../../utils/caret-utils'
-import {ConfirmDeleteTreeNodeComponent} from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
+import { debugLog } from '../../utils/log'
+import {
+  NgbModal,
+  NgbPopoverConfig,
+} from '@ng-bootstrap/ng-bootstrap'
+import { NodeCellComponent } from '../node-cell/node-cell.component'
+import {
+  setCaretOnContentEditable,
+  setCaretPosition,
+} from '../../utils/utils'
+import {
+  getActiveElementCaretPos,
+  getCaretPosition,
+  getSelectionCursorState,
+  isCaretAtEndOfActiveElement,
+} from '../../utils/caret-utils'
+import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
+import {
+  Cells,
+  ColumnCell,
+} from './Cells'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -40,56 +58,32 @@ import {ConfirmDeleteTreeNodeComponent} from '../confirm-delete-tree-node/confir
 * - firestore (sent-to-firestore, received-from-firestore)
 */
 
+
 /* Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
  * Or maybe PropertyView ? */
 export class Columns {
   title = new OryColumn('title')
+  estimatedTimeMin = new OryColumn('estimatedTimeMin')
   estimatedTime = new OryColumn('estimatedTime')
+  estimatedTimeMax = new OryColumn('estimatedTimeMax')
   isDone = new OryColumn('isDone')
   allColumns = [
     this.title,
+    this.estimatedTimeMin,
     this.estimatedTime,
+    this.estimatedTimeMax,
     this.isDone,
   ]
   lastColumn = this.title
   leftMostColumn = this.estimatedTime
-}
 
-function getSelectionCursorState() {
-  const el = this.elInputTitle.nativeElement
-  var atStart = true, atEnd = false;
-  var selRange, testRange;
-  const selection = (document as any).selection
-  if (window.getSelection) {
-    var sel = window.getSelection();
-    if (sel.rangeCount) {
-      selRange = sel.getRangeAt(0);
-      testRange = selRange.cloneRange();
-
-      testRange.selectNodeContents(el);
-      testRange.setEnd(selRange.startContainer, selRange.startOffset);
-      atStart = (testRange.toString() == "");
-
-      testRange.selectNodeContents(el);
-      testRange.setStart(selRange.endContainer, selRange.endOffset);
-      atEnd = (testRange.toString() == "");
-    }
-  } else if (selection && selection.type != "Control") {
-    selRange = selection.createRange();
-    testRange = selRange.duplicate();
-
-    testRange.moveToElementText(el);
-    testRange.setEndPoint("EndToStart", selRange);
-    atStart = (testRange.text == "");
-
-    testRange.moveToElementText(el);
-    testRange.setEndPoint("StartToEnd", selRange);
-    atEnd = (testRange.text == "");
+  createColumnCells() {
+    const cells = new Cells()
+    this.allColumns.forEach(column => {
+      new ColumnCell(column, cells)
+    })
+    return cells
   }
-
-  const ret = {atStart: atStart, atEnd: atEnd}
-  console.log('start/end', ret)
-  return ret
 }
 
 @Component({
@@ -105,18 +99,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   static columnsStatic = new Columns()
 
   columns: Columns = NodeContentComponent.columnsStatic
+  cells = this.columns.createColumnCells()
 
   isDone: boolean = false
 
   @Input() treeNode: OryTreeNode
-
-  // @Input() set treeNode(treeNode) {
-  //   this._treeNode = treeNode
-  //   this.changeDetectorRef.detectChanges()
-  //   this.applyItemDataValuesToViews()
-  // }
-  //
-  // get treeNode() {return this._treeNode}
 
   @Input() treeHost: TreeHostComponent
 
@@ -129,12 +116,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private focusedColumn: OryColumn
 
   // isApplyingFromDbNow = false
+  mapColumnToComponent = new Map<OryColumn, NodeCellComponent>()
 
   editedHere = new Map<OryColumn, boolean>()
   lastEditedLocallyByColumn = new Map<OryColumn, Date>()
   private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
   isDestroyed = false
+  private pendingThrottledItemDataPatch = {}
 
   get isEstimatedTimeShown() {
     return ! this.treeNode.isChildOfRoot // FIXME
@@ -166,8 +155,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
-    // debugLog('node content node', this.treeNode)
-    // debugLog('n2', this.node2)
     // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
     // this.elInputTitle.nativeElement.value = 'title: ' + (this.treeNode.itemData as any).title
@@ -245,7 +232,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    this.isDone = this.treeNode.itemData.isDone
+    this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
     if (isNullOrUndefined(this.isDone)) {
       this.isDone = false;
     }
@@ -263,6 +250,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   ngAfterViewInit(): void {
+    for ( let entry of this.mapColumnToComponent.entries() ) {
+      const col = entry[0], component = entry[1]
+      const fieldVal = col.getValueFromItemData(this.treeNode.itemData)
+      component.setInputValue(fieldVal)
+    }
+
     // focus if expecting to focus
     // this.focus()
   }
@@ -323,7 +316,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusToEstimatedTime() {
-    const ret = getSelectionCursorState.call(this)
+    const ret = getSelectionCursorState(this.elInputTitle.nativeElement)
     const isStart = ret.atStart
     // const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
     if (isStart) {
@@ -332,9 +325,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focusToDescription() {
-    if (isCaretAtEndOfActiveElement()) {
-      this.focus(<HTMLInputElement>this.columns.title)
-    }
+    // if (isCaretAtEndOfActiveElement()) {
+      this.focus(this.columns.title)
+    // }
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
@@ -343,7 +336,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focus(column?: OryColumn, options?: NodeFocusOptions) {
-    let toFocus = this.getComponentByColumnOrDefault(column)
+    let toFocus = this.getComponentOrElementByColumnOrDefault(column)
     let isContentEditable
     if ( (toFocus as NodeCellComponent).cellInput ) {
       toFocus = (toFocus as NodeCellComponent).cellInput
@@ -362,12 +355,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getComponentByColumnOrDefault(column?: OryColumn) {
-    if (column === this.columns.estimatedTime) {
-      return this.elInputEstimatedTime
-    } else {
-      return this.elInputTitle
-    }
+  getComponentOrElementByColumnOrDefault(column?: OryColumn): NodeCellComponent | ElementRef {
+    return this.mapColumnToComponent.get(column) || this.elInputTitle
+    // if (column === this.columns.estimatedTime) {
+    //   return this.elInputEstimatedTime
+    // } else {
+    //   return this.elInputTitle
+    // }
   }
 
   onColumnFocused(column: OryColumn, event) {
@@ -376,21 +370,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }
 
-  onChangeEstimatedTime() {
-    debugLog('onChangeEstimatedTime')
-  }
-
-  onChange(e) {
-    debugLog('onInputChanged onChange', e)
-  }
-
   /* TODO: rename reactToInputChangedAndSave */
-  onInputChanged(e, column) {
-    debugLog('onInputChanged, column')
+  onInputChanged(event, column: OryColumn) {
+    debugLog('onInputChanged, column', column, event)
     this.editedHere.set(column, true)
     this.lastEditedLocallyByColumn.set(column, new Date())
-    this.setTreeNodeItemDataFromUi()
-    this.onChange(e)
+    const inputNewValue = event.target.value
+    column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
+    column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
+    // this.setTreeNodeItemDataFromUi()
     this.getEventEmitterOnChangePerColumn(column).emit(column)
     // this.treeNode.itemData.buildItemDataFromUi
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
@@ -436,30 +424,31 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       ).subscribe((changeEvent) => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if (!this.treeNode.treeModel.isApplyingFromDbNow) {
-          const itemData = this.buildItemDataFromUi()
-          this.treeNode.patchItemData(itemData)
+          // const itemData = this.buildItemDataFromUi()
+          this.treeNode.patchItemData(this.pendingThrottledItemDataPatch)
+          this.pendingThrottledItemDataPatch = {}
         } // else: no need to react, since it is being applied from Db
       })
     }
   }
 
-  private setTreeNodeItemDataFromUi() {
-    this.treeNode.itemData = this.buildItemDataFromUi()
-  }
-
-  private buildItemDataFromUi() {
-    // TODO: later this will be incremental diff in NodeContentViewSyncer /
-    const titleVal = this.elInputTitle.nativeElement.innerHTML
-    const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
-    // console.log('input val: ' + titleVal)
-    const itemData = {
-      title: titleVal,
-      estimatedTime: estimatedTimeVal,
-      isDone: this.isDone,
-      itemClass: 'task' /* FIXME */,
-    }
-    return itemData
-  }
+  // private setTreeNodeItemDataFromUi() {
+  //   this.treeNode.itemData = this.buildItemDataFromUi()
+  // }
+  //
+  // private buildItemDataFromUi() {
+  //   // TODO: later this will be incremental diff in NodeContentViewSyncer /
+  //   const titleVal = this.elInputTitle.nativeElement.innerHTML
+  //   const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
+  //   // console.log('input val: ' + titleVal)
+  //   const itemData = {
+  //     title: titleVal,
+  //     estimatedTime: estimatedTimeVal,
+  //     isDone: this.isDone,
+  //     itemClass: 'task' /* FIXME */,
+  //   }
+  //   return itemData
+  // }
 
   ngOnDestroy(): void {
     this.isDestroyed = true
@@ -560,7 +549,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCursorMoveKeydown() {
-    if ( getSelectionCursorState.call(this).atEnd ) {
+    if ( getSelectionCursorState(this.elInputTitle.nativeElement).atEnd ) {
       this.onArrowRightOnRightMostCell()
       console.log('atEnd')
     }
