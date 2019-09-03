@@ -28,6 +28,7 @@ import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
 import { ITEM_CLASSES } from '../tree-model-oryol/OryolItemClasses'
 import { DbItem } from '../db/DbItem'
+import { count } from '../utils/collection-utils'
 
 
 /**
@@ -454,10 +455,23 @@ export class OryTreeNode implements TreeNode {
     }
     const columnVal = column.getValueFromItemData(this.itemData)
     const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
+    // TODO: use AggregateValue
     const childrenTimeLeftSum = sumBy(this.children, childNode => {
       return childNode.effectiveValueLeft(column)
     })
     return Math.max(selfTimeLeft, childrenTimeLeftSum)
+  }
+
+  missingValsCount(column: OryColumn) {
+    const missingValsCount = count(this.children, childNode => {
+      // if ( ! childNode.hasField(column) ) {
+      //   // e.g. notes don't need estimated time, so it won't be counted as missing
+      //   return false
+      // }
+      const valueFromItemData = column.getValueFromItemData(childNode.itemData)
+      return isNullOrUndefined(valueFromItemData) || '' === valueFromItemData
+    })
+    return missingValsCount
   }
 
   effectiveValueLeft(column: OryColumn) {
