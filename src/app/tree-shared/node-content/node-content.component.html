@@ -24,6 +24,7 @@
   [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
 >
 <!--  <app-cell-host>-->
+  <!-- re-check the cell-host idea when handling keyboard shortcuts and focus -->
 <!--    <app-node-cell-->
 <!--      [cell]="cells.forColumn(columns.estimatedTimeMin)"-->
 <!--      [nodeContentComponent]="this"-->
@@ -94,13 +95,10 @@
     [cell]="cells.forColumn(columns.title)"
   ></app-contenteditable-cell>
 
-  <span style="font-size: 7px" *ngIf="debugService.isDebug$ | async">
-    {{treeNode.itemId}}
-    -
-    {{treeNode.nodeInclusion.nodeInclusionId}}
-    order:
-    {{treeNode.nodeInclusion.orderNum}}
-    view updates: {{debug.countApplyItemDataValuesToViews}}
-  </span>
+  <app-node-debug-cell
+    *ngIf="debugService.isDebug$ | async"
+    [treeNode]="treeNode"
+    [nodeDebug]="nodeDebug"
+  ></app-node-debug-cell>
 
 </div>

@@ -47,15 +47,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
 
   setInputValue(newValue: string) {
     debugLog('contenteditable setInputValue', newValue)
-    // if (this.elInputTitle.nativeElement.innerHTML === newValue) {
-    //   this.editedHere.set(column, false)
-    // } else {
-    //   if (this.canApplyDataToViewGivenColumnLocalEdits(column)) {
-        this.contentEditableEl.nativeElement.innerHTML = newValue
-        // FIXME: note, this should also take focus into account
-        // --> evolved to the when-last-edited idea
-    //   }
-    // }
+    this.contentEditableEl.nativeElement.innerHTML = newValue
   }
 
   focus(options?: NodeFocusOptions) {

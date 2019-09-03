@@ -3,12 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -17,11 +14,7 @@ import {
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { OryColumn } from '../OryColumn'
-import { DbTreeService } from '../../tree-model/db-tree-service'
-import { DomSanitizer } from '@angular/platform-browser'
 import { isNullOrUndefined } from 'util'
-import { DialogService } from '../../core/dialog.service'
-// import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 
 import { padStart } from 'lodash';
@@ -33,23 +26,16 @@ import {
   NgbModal,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NumericCellComponent } from '../cells/node-cell/numeric-cell.component'
-import {
-  setCaretOnContentEditable,
-  setCaretPosition,
-} from '../../utils/utils'
-import {
-  getActiveElementCaretPos,
-  getCaretPosition,
-  getSelectionCursorState,
-  isCaretAtEndOfActiveElement,
-} from '../../utils/caret-utils'
+import { getActiveElementCaretPos } from '../../utils/caret-utils'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import {
   Cells,
   ColumnCell,
 } from './Cells'
 import { CellComponent } from '../cells/CellComponent'
+import { NodeContentViewSyncer } from './NodeContentViewSyncer'
+import { NodeDebug } from './node-debug-cell/node-debug-cell.component'
+import { Columns } from './Columns'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -58,34 +44,6 @@ import { CellComponent } from '../cells/CellComponent'
 * (those above could probably be always 100% in sync; although might be throttleTime-d eg. 100ms if complex calculations and updating dependent nodes)
 * - firestore (sent-to-firestore, received-from-firestore)
 */
-
-
-/* Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
- * Or maybe PropertyView ? */
-export class Columns {
-  title = new OryColumn('title')
-  estimatedTimeMin = new OryColumn('estimatedTimeMin')
-  estimatedTime = new OryColumn('estimatedTime')
-  estimatedTimeMax = new OryColumn('estimatedTimeMax')
-  isDone = new OryColumn('isDone')
-  allColumns = [
-    this.title,
-    this.estimatedTimeMin,
-    this.estimatedTime,
-    this.estimatedTimeMax,
-    this.isDone,
-  ]
-  lastColumn = this.title
-  leftMostColumn = this.estimatedTime
-
-  createColumnCells(treeNode: OryTreeNode) {
-    const cells = new Cells()
-    this.allColumns.forEach(column => {
-      new ColumnCell(column, cells, treeNode)
-    })
-    return cells
-  }
-}
 
 @Component({
   selector: 'app-node-content',
@@ -97,77 +55,49 @@ export class Columns {
 })
 export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  /** Could be actually map *Cell* to Component */
+  mapColumnToComponent = new Map<OryColumn, CellComponent>()
+
   static columnsStatic = new Columns()
 
   columns: Columns = NodeContentComponent.columnsStatic
+
   cells: Cells
 
   isDone: boolean = false
+
+  nodeContentViewSyncer: NodeContentViewSyncer
 
   @Input() treeNode: OryTreeNode
 
   @Input() treeHost: TreeHostComponent
 
-  // @ViewChild('inputEstimatedTime') elInputEstimatedTime: NodeCellComponent
-
-  // nodeIndex = 0
   private focusedColumn: OryColumn
 
-  // isApplyingFromDbNow = false
-  mapColumnToComponent = new Map<OryColumn, CellComponent>()
-
-  editedHere = new Map<OryColumn, boolean>()
-  lastEditedLocallyByColumn = new Map<OryColumn, Date>()
-  private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
   isAncestorOfFocused = false
+
   isDestroyed = false
-  private pendingThrottledItemDataPatch = {}
 
   get isEstimatedTimeShown() {
     return ! this.treeNode.isChildOfRoot // FIXME
     // return this.treeNode.hasField(this.columns.estimatedTime)
   }
 
-  debug = new class Debug {
-    countApplyItemDataValuesToViews = 0
-  } ()
-
-  // get estimatedTime() {
-  //   return this.treeNode.itemData.estimatedTime
-  // }
-
+  nodeDebug = new NodeDebug()
 
   constructor(
-    public dbService: DbTreeService,
-    public sanitizer: DomSanitizer,
-    public dialogService: DialogService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
     private modalService: NgbModal,
-    config: NgbPopoverConfig,
+    ngbPopoverConfig: NgbPopoverConfig,
   ) {
-    // config.placement = 'right';
-    config.placement = 'auto';
-    // config.triggers = 'hover';
+    ngbPopoverConfig.placement = 'auto' // 'right' // 'hover';
   }
 
   ngOnInit() {
     this.cells = this.columns.createColumnCells(this.treeNode)
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
-    // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
-
-    // this.initialTitle = this.treeNode.itemData.title /* note: shortcut that I took: not yet updating title in realtime
-    // */
-    // NEXT: enable real time updates of title - perhaps check if new value === existing, perhaps use isApplyingFromDbNow
-    // WHY: 1. my mind is already in the topic; cementing it would be good
-    // WHY: 2. it can lead to data loss if I go to another window/device and accidentally edit something that was changed elsewhere
-    // this.elInputTitle.nativeElement.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.initialTitle);
-    // this.elInputTitle.nativeElement.innerHTML = this.initialTitle;
-    // this.estimatedTimeModel = this.treeNode.itemData.estimatedTime
-    // this.elInputEstimatedTime.nativeElement.value = this.estimatedTimeModel;
-
-    this.applyItemDataValuesToViews()
 
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
@@ -179,7 +109,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeNode.onChangeItemData.subscribe(onChangeItemDataOrChildHandler)
     this.treeNode.onChangeItemDataOfChild.subscribe(onChangeItemDataOrChildHandler)
 
-    this.subscribeDebouncedOnChangePerColumns()
     this.treeNode.treeModel.focus.focus$.subscribe(() => {
       if (!this.isDestroyed) {
         this.isAncestorOfFocused = this.treeNode.highlight.isAncestorOfFocusedNode()
@@ -191,46 +120,26 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyItemDataValuesToViews() {
-    this.debug.countApplyItemDataValuesToViews ++
+    this.nodeDebug.countApplyItemDataValuesToViews ++
     debugLog('applyItemDataValuesToViews this.treeNode', this.treeNode)
-    { // estimated time:
-      let newValue = this.treeNode.itemData.estimatedTime
-      if (newValue === undefined || newValue === null) {
-        newValue = ''
-      }
-      debugLog('newEstimatedTime, ', newValue)
-
-      const column = this.columns.estimatedTime
-      // FIXME: take care of the inputValueEquals -- editedHere -- canApplyDataToViewGivenColumnLocalEdits
-      // if (this.elInputEstimatedTime.inputValueEquals(newValue)) {
-      //   this.editedHere.set(column, false)
-      // } else {
-      //   if ( this.canApplyDataToViewGivenColumnLocalEdits(column) ) {
-      //     this.elInputEstimatedTime.setInputValue(newValue)
-      //     // FIXME: note, this should also take focus into account
-      //     // --> evolved to the when-last-edited idea
-      //   }
-      // }
-    }
 
     this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
     if (isNullOrUndefined(this.isDone)) {
       this.isDone = false;
     }
 
+    this.nodeContentViewSyncer.applyItemDataValuesToViews()
     this.changeDetectorRef.detectChanges()
   }
 
   ngAfterViewInit(): void {
+    this.nodeContentViewSyncer = new NodeContentViewSyncer(
+      this.treeNode,
+      this.columns,
+      this.mapColumnToComponent,
+    )
+    this.applyItemDataValuesToViews()
 
-    for ( let entry of this.mapColumnToComponent.entries() ) {
-      // maybe call applyItemDataValuesToViews instead and move the loop to applyItemDataValuesToViews
-      // FIXME: extract and call also incoming subsequent changes
-      // FIXME: take care of the inputValueEquals -- editedHere -- canApplyDataToViewGivenColumnLocalEdits
-      const col = entry[0], component = entry[1]
-      const fieldVal = col.getValueFromItemData(this.treeNode.itemData)
-      component.setInputValue(fieldVal)
-    }
 
     // focus if expecting to focus
     // this.focus()
@@ -240,7 +149,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     const newTreeNode = this.treeNode.addChild()
     this.treeNode.expanded = true
     this.focusNewlyCreatedNode(newTreeNode)
-    // this.addChildToDb()
   }
 
   private focusNewlyCreatedNode(newTreeNode: OryTreeNode) {
@@ -312,18 +220,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focus(column?: OryColumn, options?: NodeFocusOptions) {
-    let componentToFocus = this.getComponentOrElementByColumnOrDefault(column)
+    let componentToFocus = this.getCellComponentByColumnOrDefault(column)
     componentToFocus && componentToFocus.focus(options)
   }
 
-  getComponentOrElementByColumnOrDefault(column?: OryColumn): CellComponent {
+  getCellComponentByColumnOrDefault(column?: OryColumn): CellComponent {
     return this.mapColumnToComponent.get(column)
       || this.mapColumnToComponent.get(this.columns.title)
-    // if (column === this.columns.estimatedTime) {
-    //   return this.elInputEstimatedTime
-    // } else {
-    //   return this.elInputTitle
-    // }
   }
 
   onColumnFocused(column: OryColumn, event) {
@@ -333,17 +236,11 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* TODO: rename reactToInputChangedAndSave */
-  onInputChanged(event, cell: ColumnCell, newValue, component: CellComponent) {
+  onInputChanged(event, cell: ColumnCell, inputNewValue, component: CellComponent) {
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
-    this.editedHere.set(column, true)
-    this.lastEditedLocallyByColumn.set(column, new Date())
-    const inputNewValue = newValue // event.target.value
+    this.nodeContentViewSyncer.onInputChangedByUser(cell, inputNewValue)
     column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
-    column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
-    // this.setTreeNodeItemDataFromUi()
-    this.getEventEmitterOnChangePerColumn(column).emit(column)
-    // this.treeNode.itemData.buildItemDataFromUi
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()
     this.treeNode.onChangeItemData.emit()
@@ -360,57 +257,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeNode.reorderDown()
   }
 
-  private getEventEmitterOnChangePerColumn(column: OryColumn) {
-    let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
-    if ( ! eventEmitter ) {
-      eventEmitter = new EventEmitter()
-      this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
-    }
-    return eventEmitter
-  }
-
-  private subscribeDebouncedOnChangePerColumns() {
-    for ( const column of this.columns.allColumns ) {
-      this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        3000 /* 500ms almost real-time feeling without overwhelming firestore.
-        Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
-        where they contrasted the latency with Firebase Realtime DB.
-        At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing.
-        2018-11-27 23:14 Increased from 1000 to 4000ms after problem with cursor position reset returned */,
-        undefined, {
-          leading: true /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
-            /* think about false; usually single character; but what if someone pastes something, then it will be fast;
-            plus a single character can give good indication that someone started writing */
-          trailing: true /* ensures last value is not lost;
-            http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
-        }
-      ).subscribe((changeEvent) => {
-        debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
-        if (!this.treeNode.treeModel.isApplyingFromDbNow) {
-          // const itemData = this.buildItemDataFromUi()
-          this.treeNode.patchItemData(this.pendingThrottledItemDataPatch)
-          this.pendingThrottledItemDataPatch = {}
-        } // else: no need to react, since it is being applied from Db
-      })
-    }
-  }
-
-  // private setTreeNodeItemDataFromUi() {
-  //   this.treeNode.itemData = this.buildItemDataFromUi()
-  // }
-  //
   // private buildItemDataFromUi() {
-  //   // TODO: later this will be incremental diff in NodeContentViewSyncer /
-  //   const titleVal = this.elInputTitle.nativeElement.innerHTML
-  //   const estimatedTimeVal = this.elInputEstimatedTime.nativeElement.value
-  //   // console.log('input val: ' + titleVal)
   //   const itemData = {
   //     title: titleVal,
   //     estimatedTime: estimatedTimeVal,
   //     isDone: this.isDone,
   //     itemClass: 'task' /* FIXME */,
   //   }
-  //   return itemData
   // }
 
   ngOnDestroy(): void {
@@ -428,25 +281,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPress(event) {
-    // window.alert('onPress')
     console.log('onPress')
     this.treeNode.expansion.toggleExpansion(true)
-  }
-
-  private canApplyDataToViewGivenColumnLocalEdits(column: OryColumn) {
-    return !this.editedHere.get(column)
-      && this.canApplyDataToViewGivenColumnLastLocalEdit(column)
-  }
-
-  private canApplyDataToViewGivenColumnLastLocalEdit(column: OryColumn) {
-    const lastEditedByColumn = this.lastEditedLocallyByColumn.get(column)
-    if ( ! lastEditedByColumn ) {
-      return true
-    } else {
-      const timeNow = new Date().getTime() /* milliseconds since 1970/01/01 */
-      // can only apply incoming changes to view if at least N seconds passed since last local edit
-      return (timeNow - lastEditedByColumn.getTime()) > 5000
-    }
   }
 
   navigateInto() {
@@ -494,11 +330,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private openDeleteDialog() {
+    // TODO: move to our own modal service - single line with passing treeNode
     const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
     const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
     component.treeNode = this.treeNode;
   }
 
+  /** TODO: move to NodeIconCellComponent */
   getIconName() {
     // return this.treeNode.dbItem.itemClass.iconName
     if ( this.treeNode.parent2.isDayPlan) {

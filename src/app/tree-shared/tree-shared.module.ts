@@ -13,7 +13,8 @@ import { RangeCellComponent } from './cells/range-cell/range-cell.component';
 import { CellsGroupComponent } from './cells/cells-group/cells-group.component';
 import { CellHostComponent } from './cell-host/cell-host.component';
 import { ExampleCellComponent } from './cells/example-cell/example-cell.component';
-import { ContenteditableCellComponent } from './cells/contenteditable-cell/contenteditable-cell.component'
+import { ContenteditableCellComponent } from './cells/contenteditable-cell/contenteditable-cell.component';
+import { NodeDebugCellComponent } from './node-content/node-debug-cell/node-debug-cell.component'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
@@ -31,6 +32,7 @@ import { ContenteditableCellComponent } from './cells/contenteditable-cell/conte
     CellHostComponent,
     ExampleCellComponent,
     ContenteditableCellComponent,
+    NodeDebugCellComponent,
   ],
   imports: [
     CommonModule,
