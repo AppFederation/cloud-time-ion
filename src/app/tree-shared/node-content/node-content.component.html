@@ -1,7 +1,7 @@
 
 <ng-template #popTitle>Fancy <b>content</b></ng-template>
 
-<ng-template #popContent>
+<ng-template #popupContent>
   <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
   <app-tree-node-menu
     [treeNode]="treeNode"
@@ -31,16 +31,15 @@
 <!--    ></app-node-cell>-->
 <!--  </app-cell-host>-->
 
-  <i
-    class="material-icons tappable-icon actionable"
-    (tap)="toggleExpand($event)"
-    (press)="onPress($event)"
-  >expand_more</i>
+  <app-node-expansion-icon
+    [treeNode]="treeNode"
+  ></app-node-expansion-icon>
+
 
   <i
     class="material-icons tappable-icon actionable"
     (press)='treeNode.navigateInto()'
-    [ngbPopover]="popContent"
+    [ngbPopover]="popupContent"
     #popOver="ngbPopover"
     [autoClose]="'outside'"
   >

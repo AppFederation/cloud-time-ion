@@ -14,7 +14,9 @@ import { CellsGroupComponent } from './cells/cells-group/cells-group.component';
 import { CellHostComponent } from './cell-host/cell-host.component';
 import { ExampleCellComponent } from './cells/example-cell/example-cell.component';
 import { ContenteditableCellComponent } from './cells/contenteditable-cell/contenteditable-cell.component';
-import { NodeDebugCellComponent } from './node-content/node-debug-cell/node-debug-cell.component'
+import { NodeDebugCellComponent } from './node-content/node-debug-cell/node-debug-cell.component';
+import { NodeExpansionIconComponent } from './node-content/node-expansion-icon/node-expansion-icon.component';
+import { NodeClassIconComponent } from './node-content/node-class-icon/node-class-icon.component'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
@@ -33,6 +35,8 @@ import { NodeDebugCellComponent } from './node-content/node-debug-cell/node-debu
     ExampleCellComponent,
     ContenteditableCellComponent,
     NodeDebugCellComponent,
+    NodeExpansionIconComponent,
+    NodeClassIconComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,10 @@
+<i
+  class="material-icons tappable-icon actionable"
+  (tap)="toggleExpand($event)"
+  (press)="onPress($event)"
+  [ngClass]="{collapsedIcon: ! treeNode.expanded}"
+>expand_more</i>
+
+<!-- TODO: for some reason expanding by 3-dots below this icon does not update the icon
+    - could be change detection problem?
+    -> could directly listen to tree mode/node expansion events observable ? -->

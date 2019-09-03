@@ -275,16 +275,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 
-  toggleExpand(event) {
-    debugLog('toggleExpand', event)
-    this.treeNode.expansion.toggleExpansion(event.altKey)
-  }
-
-  onPress(event) {
-    console.log('onPress')
-    this.treeNode.expansion.toggleExpansion(true)
-  }
-
   navigateInto() {
     this.treeNode.navigateInto()
   }
