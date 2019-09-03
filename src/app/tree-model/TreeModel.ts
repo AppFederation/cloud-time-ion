@@ -222,6 +222,7 @@ export class OryTreeNode implements TreeNode {
   }
 
   getNodeVisuallyBelowThis(): OryTreeNode {
+    // this could be extracted as a generic tree util func, a'la sumRecursively
     let ret: OryTreeNode
     const simple = (
       this.children
@@ -267,7 +268,6 @@ export class OryTreeNode implements TreeNode {
     return this.children && this.children.length > 0 && this.children[this.children.length - 1]
   }
 
-
   _appendChildAndSetThisAsParent(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
     if ( ! nodeToAppend ) {
       nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel, this.newItemData())
@@ -277,20 +277,13 @@ export class OryTreeNode implements TreeNode {
     if ( nullOrUndef(insertBeforeIndex) ) {
       insertBeforeIndex = this.children.length
     }
-    // console.log('this', this)
     if ( nullOrUndef(this.children) ) {
       this.children = []
     }
     nodeToAppend.parent = this
     nodeToAppend.parent2 = this
-    // console.log('node.parent', nodeToAppend.parent)
-    // console.log('push child', nodeToAppend.parent)
-    // this.children.push(node)
     this.children.splice(insertBeforeIndex, 0, nodeToAppend)
     this.treeModel.registerNode(nodeToAppend)
-    // console.log('afterNode', afterNode)
-    // this.treeModel.addSiblingAfterNode(nodeToAppend, afterNode)
-
     return nodeToAppend
   }
 
@@ -308,11 +301,7 @@ export class OryTreeNode implements TreeNode {
 
   private isIndexPresent(index: number): boolean {
     const lastIndex = this.children.length - 1
-    if ( index < 0 || index > lastIndex ) {
-      return false
-    } else {
-      return true
-    }
+    return ! (index < 0 || index > lastIndex);
   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
@@ -457,14 +446,6 @@ export class OryTreeNode implements TreeNode {
   }
 
   valueLeftSum(column: OryColumn) {
-    if ( this.children.length ) {
-      // debugLog('timeLeftSum this.children', this.children)
-    }
-    if ( ! column ) {
-      console.log('column', column)
-      console.trace('column', column)
-      return 999111
-    }
     const columnVal = column.getValueFromItemData(this.itemData)
     const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
     // TODO: use AggregateValue
@@ -521,7 +502,7 @@ export class OryTreeNode implements TreeNode {
     return ! this.isChildOfRoot &&
       ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
         this.valueLeftSum(column) !== 0 ||
-        colVal >= 60
+        colVal >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
       )
   }
 
