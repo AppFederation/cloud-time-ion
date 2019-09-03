@@ -7,13 +7,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { NodeContentComponent } from '../../node-content/node-content.component'
-import { OryColumn } from '../../OryColumn'
-import { ColumnCell } from '../../node-content/Cells'
 import { CellComponent } from '../CellComponent'
-import { NodeFocusOptions } from '../../../tree-model/TreeModel'
 import {
-  setCaretOnContentEditable,
+  NodeFocusOptions,
+  OryTreeNode,
+} from '../../../tree-model/TreeModel'
+import {
   setCaretPosition,
 } from '../../../utils/utils'
 
@@ -25,14 +24,16 @@ import {
 })
 export class NumericCellComponent extends CellComponent implements OnInit, CellComponent {
 
-  @Input()
-  showCalculatedValue: boolean
+  // @Input()
+  get showCalculatedValue() { return this.treeNode.showEffectiveValue(this.column) }
 
-  @Input()
-  calculatedValue = ''
+  // @Input()
+  get calculatedValue() { return this.treeNode.effectiveDurationText(this.column) }
 
-  @Input()
-  isDanger = false
+  // @Input()
+  get isDanger() {
+    return this.treeNode.isChildrenEstimationExceedingOwn(this.column)
+  }
 
   @ViewChild('cellInput')
   cellInput: ElementRef

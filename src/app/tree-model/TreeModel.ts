@@ -436,30 +436,37 @@ export class OryTreeNode implements TreeNode {
   // since nodes are to allow changing their type, we would just swap an instance of the class mentioned above
   // the separation first would be mainly to separate generic node-logic from time-planning specific, etc.
 
-  timeLeftSumText() {
-    const minutesTotalLeft = this.timeLeftSum()
+  timeLeftSumText(column: OryColumn) {
+    const minutesTotalLeft = this.valueLeftSum(column)
     const hours = Math.floor(minutesTotalLeft / 60)
     const minutesUpTo60 = minutesTotalLeft % 60
     return `${hours}h ${minutesUpTo60}m`
   }
 
-  timeLeftSum() {
+  valueLeftSum(column: OryColumn) {
     if ( this.children.length ) {
       // debugLog('timeLeftSum this.children', this.children)
     }
-    const selfTimeLeft = ( this.itemData.estimatedTime && parseFloat(this.itemData.estimatedTime)) || 0
+    if ( ! column ) {
+      console.log('column', column)
+      console.trace('column', column)
+      return 999111
+    }
+    const columnVal = column.getValueFromItemData(this.itemData)
+    const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
     const childrenTimeLeftSum = sumBy(this.children, childNode => {
-      return childNode.effectiveTimeLeft()
+      return childNode.effectiveValueLeft(column)
     })
     return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
-  effectiveTimeLeft() {
+  effectiveValueLeft(column: OryColumn) {
     if ( ! this.itemData.isDone ) {
-      if ( this.showEffectiveDuration() ) {
-        return this.timeLeftSum()
+      if ( this.showEffectiveValue(column) ) {
+        return this.valueLeftSum(column)
       }
-      const estimatedTime = parseFloat(this.itemData.estimatedTime) || 0
+      const columnValue = column.getValueFromItemData(this.itemData)
+      const estimatedTime = parseFloat(columnValue) || 0
       // console.log('estimatedTime for sum', estimatedTime)
       return estimatedTime
     } else {
@@ -467,26 +474,32 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
-  showEffectiveDuration() {
+  effectiveTimeLeft(column: OryColumn) {
+    return this.effectiveDurationText(column)
+  }
+
+  showEffectiveValue(column: OryColumn) {
+    const colVal = column.getValueFromItemData(this.itemData)
     return ! this.isChildOfRoot &&
       ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
-        this.timeLeftSum() !== 0 ||
-        this.itemData.estimatedTime >= 60
+        this.valueLeftSum(column) !== 0 ||
+        colVal >= 60
       )
   }
 
-  effectiveDurationText() {
-    return this.timeLeftSumText()
+  effectiveDurationText(column: OryColumn) {
+    return this.timeLeftSumText(column)
   }
 
-  get isChildrenEstimationExceedingOwn() {
-    return ! isEmpty(this.itemData.estimatedTime) &&
-      this.timeLeftSum() >
-      ( this.itemData.estimatedTime && parseFloat(this.itemData.estimatedTime)) || 0
+  isChildrenEstimationExceedingOwn(column: OryColumn) {
+    const colVal = column.getValueFromItemData(this.itemData)
+    return ! isEmpty(colVal) &&
+      this.valueLeftSum(column) >
+      ( colVal && parseFloat(colVal)) || 0
   }
 
-  endTime() {
-    return new Date(this.startTime.getTime() + this.timeLeftSum() * 60 * 1000)
+  endTime(column: OryColumn) {
+    return new Date(this.startTime.getTime() + this.valueLeftSum(column) * 60 * 1000)
   }
 
   highlight = new class Highlight {

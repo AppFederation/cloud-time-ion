@@ -49,7 +49,7 @@
   <div *ngIf="treeNode.isDayPlan"
        style="user-select: none; vertical-align: middle; display: table-cell; align-self: center"
   >
-    <span class="faded">End</span> {{formatEndTime()}}
+    <span class="faded">End</span> {{formatEndTime(columns.estimatedTime)}}
     <!--Sum: {{treeNode.timeLeftSumText()}}-->
   </div>
   <ng-container *ngIf="treeNode.itemData?.deleted">
@@ -61,37 +61,21 @@
     style="margin-left: 0.5em; vertical-align: middle; align-self: center"
   ></app-node-content-time-tracking>
 
-  <app-node-cell
-    [cell]="cells.forColumn(columns.estimatedTime)"
-    [nodeContentComponent]="this"
-    #inputEstimatedTime
-    [hidden]="! isEstimatedTimeShown"
-    [ngClass]="{'done-title': isDone}"
-    (focusin)="onColumnFocused(columns.estimatedTime, $event)"
-
-    [showCalculatedValue]="treeNode.showEffectiveDuration()"
-    [calculatedValue]="treeNode.effectiveDurationText()"
-    [isDanger]="treeNode.isChildrenEstimationExceedingOwn"
-
-  ></app-node-cell> <!-- TODO: rename to #cellEstimatedTime-->
 
   <!-- ======= new cells approach: -->
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMin)"
-    [showCalculatedValue]="treeNode.showEffectiveDuration()"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTime)"
-    [showCalculatedValue]="treeNode.showEffectiveDuration()"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMax)"
-    [showCalculatedValue]="treeNode.showEffectiveDuration()"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
   <!-- ===== end new cells approach -->

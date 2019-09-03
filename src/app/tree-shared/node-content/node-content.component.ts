@@ -78,10 +78,10 @@ export class Columns {
   lastColumn = this.title
   leftMostColumn = this.estimatedTime
 
-  createColumnCells() {
+  createColumnCells(treeNode: OryTreeNode) {
     const cells = new Cells()
     this.allColumns.forEach(column => {
-      new ColumnCell(column, cells)
+      new ColumnCell(column, cells, treeNode)
     })
     return cells
   }
@@ -100,7 +100,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   static columnsStatic = new Columns()
 
   columns: Columns = NodeContentComponent.columnsStatic
-  cells = this.columns.createColumnCells()
+  cells: Cells
 
   isDone: boolean = false
 
@@ -132,9 +132,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     countApplyItemDataValuesToViews = 0
   } ()
 
-  get estimatedTime() {
-    return this.treeNode.itemData.estimatedTime
-  }
+  // get estimatedTime() {
+  //   return this.treeNode.itemData.estimatedTime
+  // }
 
 
   constructor(
@@ -152,6 +152,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.cells = this.columns.createColumnCells(this.treeNode)
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
     // this.nodeIndex = this.treeNode.getIndexInParent()
     this.treeHost.registerNodeComponent(this)
@@ -371,7 +372,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        4000 /* 500ms almost real-time feeling without overwhelming firestore.
+        3000 /* 500ms almost real-time feeling without overwhelming firestore.
         Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
         where they contrasted the latency with Firebase Realtime DB.
         At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing.
@@ -416,8 +417,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isDestroyed = true
   }
 
-  formatEndTime() {
-    const date = this.treeNode.endTime()
+  formatEndTime(column: OryColumn) {
+    const date = this.treeNode.endTime(column)
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 

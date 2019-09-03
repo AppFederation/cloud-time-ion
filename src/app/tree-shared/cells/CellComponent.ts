@@ -4,7 +4,10 @@ import {
 } from '@angular/core'
 import { ColumnCell } from '../node-content/Cells'
 import { NodeContentComponent } from '../node-content/node-content.component'
-import { NodeFocusOptions } from '../../tree-model/TreeModel'
+import {
+  NodeFocusOptions,
+  OryTreeNode,
+} from '../../tree-model/TreeModel'
 
 export abstract class CellComponent implements OnInit {
 
@@ -14,6 +17,11 @@ export abstract class CellComponent implements OnInit {
 
   @Input()
   cell: ColumnCell
+
+  get column() { return this.cell.column }
+
+  get treeNode() { return this.cell.treeNode }
+
 
   abstract getInputValue(): string
 

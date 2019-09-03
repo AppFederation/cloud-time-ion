@@ -1,9 +1,11 @@
 import { OryColumn } from '../OryColumn'
+import { OryTreeNode } from '../../tree-model/TreeModel'
 
 export class ColumnCell<TVal = any> {
   constructor(
     public column: OryColumn<TVal>,
     public cells: Cells,
+    public treeNode: OryTreeNode
   ) {
     this.cells.add(this)
   }
