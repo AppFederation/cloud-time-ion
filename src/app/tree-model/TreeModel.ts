@@ -28,7 +28,10 @@ import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
 import { ITEM_CLASSES } from '../tree-model-oryol/OryolItemClasses'
 import { DbItem } from '../db/DbItem'
-import { count } from '../utils/collection-utils'
+import {
+  count,
+  sumRecursively,
+} from '../utils/collection-utils'
 
 
 /**
@@ -82,6 +85,15 @@ export class OryTreeNode implements TreeNode {
   dbItem: DbItem
 
   // ==== End of PrimeNG's TreeNode
+
+  public get hasChildren() {
+    return this.numChildren > 0
+  }
+
+  public get numChildren() {
+    return this.children && this.children.length || 0
+  }
+
 
   static INITIAL_TITLE = ''
 
@@ -463,15 +475,27 @@ export class OryTreeNode implements TreeNode {
   }
 
   missingValsCount(column: OryColumn) {
-    const missingValsCount = count(this.children, childNode => {
-      // if ( ! childNode.hasField(column) ) {
-      //   // e.g. notes don't need estimated time, so it won't be counted as missing
-      //   return false
-      // }
-      const valueFromItemData = column.getValueFromItemData(childNode.itemData)
-      return isNullOrUndefined(valueFromItemData) || '' === valueFromItemData
-    })
-    return missingValsCount
+    const hasMissingValFunc = (node: OryTreeNode) => {
+      const valueFromItemData = column.getValueFromItemData(node.itemData)
+      const hasField = node.hasField(column)
+      if ( ! hasField ) {
+        return false
+      }
+      /* TODO: could also use effective val (allowing calculated too) instead of plain user-entered
+        however: this could cause O(n^2). Shortcut could be just to check if it has children.
+       */
+      const isValProvided = isNullOrUndefined(valueFromItemData) || '' === valueFromItemData
+      return isValProvided
+    }
+    const missingValsCountFunc = (node: OryTreeNode) => {
+      if ( node.hasChildren ) {
+        return 0 // will be taken care in children
+      }
+      return hasMissingValFunc(node) ? 1 : 0
+    }
+    return sumRecursively<OryTreeNode>(this, node => node.children, missingValsCountFunc )
+    // const missingValsCount = count(this.children, )
+    // return missingValsCount
   }
 
   effectiveValueLeft(column: OryColumn) {
@@ -599,9 +623,10 @@ export class OryTreeNode implements TreeNode {
 
   hasField(attribute: OryColumn) {
     // return this.dbItem.hasField
-    if ( this.parent2.isDayPlan) {
-      return 'settings_applications'
-    }
+    // if ( this.parent2.isDayPlan) {
+    //   return 'settings_applications'
+    // }
+    return true // HACK FIXME
   }
 }
 
