@@ -26,7 +26,10 @@ import {
   NgbModal,
   NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap'
-import { getActiveElementCaretPos } from '../../utils/caret-utils'
+import {
+  getActiveElementCaretPos,
+  getSelectionCursorState,
+} from '../../utils/caret-utils'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import {
   Cells,
@@ -78,6 +81,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isDestroyed = false
 
+  public get isFocusAtRightmostColumn() { return this.focusedColumn === this.columns.lastColumn }
+
+  public get isFocusAtLeftmostColumn() { return this.focusedColumn === this.columns.leftMostColumn }
+
   get isEstimatedTimeShown() {
     return ! this.treeNode.isChildOfRoot // FIXME
     // return this.treeNode.hasField(this.columns.estimatedTime)
@@ -116,7 +123,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.changeDetectorRef.detectChanges()
       }
     })
-
   }
 
   private applyItemDataValuesToViews() {
@@ -139,7 +145,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mapColumnToComponent,
     )
     this.applyItemDataValuesToViews()
-
 
     // focus if expecting to focus
     // this.focus()
@@ -197,21 +202,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   public focusNodeBelow() {
     const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
     this.focusOtherNode(nodeToFocus)
-  }
-
-  focusToEstimatedTime() {
-    // const ret = getSelectionCursorState(this.elInputTitle.nativeElement)
-    // const isStart = ret.atStart
-    // const isStart = getCaretPosition(this.elInputTitle.nativeElement) === 0
-    // if (isStart) {
-    //   this.focus(this.columns.estimatedTime)
-    // }
-  }
-
-  focusToDescription() {
-    // if (isCaretAtEndOfActiveElement()) {
-      this.focus(this.columns.title)
-    // }
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
@@ -291,11 +281,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 
-  onArrowLeftOnLeftMostCell() {
-    if ( getActiveElementCaretPos() === 0 ) {
-      this.focusNodeAboveAtEnd()
-    }
-  }
 
   onArrowRightOnRightMostCell() {
     // if ( getActiveElementCaretPos() === 0 ) {
@@ -326,14 +311,36 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     component.treeNode = this.treeNode;
   }
 
-  onCursorMoveKeydown() {
-    // if ( getSelectionCursorState(this.elInputTitle.nativeElement).atEnd ) {
-    //   this.onArrowRightOnRightMostCell()
-    //   console.log('atEnd')
-    // }
+  onArrowLeft() {
+    if ( getSelectionCursorState().atStart )  {
+      if ( this.isFocusAtLeftmostColumn ) {
+        this.focusNodeAboveAtEnd()
+      } else {
+        this.focusColumnToTheLeft()
+      }
+    }
   }
 
-  onFocusIn($event) {
-    debugLog('onFocusIn', $event)
+  onArrowRight() {
+    if ( getSelectionCursorState().atEnd ) {
+      if ( this.isFocusAtRightmostColumn ) {
+        this.onArrowRightOnRightMostCell()
+      } else {
+        this.focusColumnToTheRight()
+
+      }
+    }
+  }
+
+  public focusColumnToTheRight() {
+    const colIdx = this.columns.allColumns.indexOf(this.focusedColumn)
+    debugLog('coldIdx', colIdx)
+    this.focus(this.columns.allColumns[colIdx + 1])
+  }
+
+  public focusColumnToTheLeft() {
+    const colIdx = this.columns.allColumns.indexOf(this.focusedColumn)
+    debugLog('coldIdx', colIdx)
+    this.focus(this.columns.allColumns[colIdx - 1])
   }
 }

@@ -1,5 +1,6 @@
 /** https://stackoverflow.com/a/3976125/170451 */
 import { debugLog } from './log'
+import { equalsIgnoreCase } from './utils'
 
 export function getCaretPosition(el) {
   var caretPos = 0,
@@ -38,7 +39,9 @@ export function getElementCaretPos(activeElement) {
 }
 
 export function getActiveElementCaretPos() {
-  return getElementCaretPos(<HTMLInputElement>document.activeElement)
+  const elementCaretPos = getElementCaretPos(<HTMLInputElement>document.activeElement)
+  debugLog('getActiveElementCaretPos', elementCaretPos)
+  return elementCaretPos
 }
 
 export function isCaretAtEndOfActiveElement() {
@@ -47,8 +50,18 @@ export function isCaretAtEndOfActiveElement() {
   return isEnd
 }
 
-export function getSelectionCursorState(nativeElement) {
-  const el = nativeElement
+
+export function getSelectionCursorState(/*nativeElement*/) {
+  // const el = nativeElement
+  const el = document.activeElement
+  debugLog('getSelectionCursorState', el.tagName, el)
+  if ( equalsIgnoreCase('INPUT', el.tagName) ) {
+    return {
+      atStart: getActiveElementCaretPos() === 0,
+      atEnd: isCaretAtEndOfActiveElement(),
+    }
+  }
+
   var atStart = true, atEnd = false;
   var selRange, testRange;
   const selection = (document as any).selection
@@ -80,6 +93,6 @@ export function getSelectionCursorState(nativeElement) {
   }
 
   const ret = {atStart: atStart, atEnd: atEnd}
-  console.log('start/end', ret)
+  debugLog('getSelectionCursorState start/end', ret)
   return ret
 }

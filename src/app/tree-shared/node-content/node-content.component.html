@@ -11,7 +11,6 @@
   ></app-tree-node-menu>
 </ng-template>
 
-
 <div
   style="display: flex; align-items: stretch; font-size: 13px"
   (keydown.alt.enter)="addChild()"
@@ -26,15 +25,18 @@
 
   (keydown.shift.tab)="indentDecrease($event)"
   (keydown.tab)="indentIncrease($event)"
+
   [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
-  (focusin)="onFocusIn($event)"
+
+  (keydown.arrowleft)="onArrowLeft()"
+  (keydown.alt.arrowleft)="onArrowLeft()"
+  (keydown.meta.arrowleft)="onArrowLeft()"
+
+  (keydown.arrowright)="onArrowRight()"
+  (keydown.alt.arrowright)="onArrowRight()"
+  (keydown.meta.arrowright)="onArrowRight()"
+  (keydown.control.arrowright)="onArrowRight()"
 >
-<!--  (keydown.arrowleft)="onArrowLeftOnLeftMostCell()"-->
-
-<!--  (keydown.alt.arrowright)="onArrowRight()"-->
-<!--  (keydown.meta.arrowright)="onArrowRight()"-->
-<!--  (keydown.control.arrowright)="onArrowRight()"-->
-
 
   <!--  <app-cell-host>-->
   <!-- re-check the cell-host idea when handling keyboard shortcuts and focus -->

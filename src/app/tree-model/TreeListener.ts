@@ -7,6 +7,8 @@ export class NodeInclusion {
     // public orderThisBeforeId,
     // public orderThisAfterId,
     public nodeInclusionId: string,
+    /** note other ordering implementations might not use orderNum */
+    public orderNum?: number,
   ) {}
 }
 

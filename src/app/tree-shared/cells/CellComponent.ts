@@ -1,4 +1,8 @@
 import {
+  ElementRef,
+  HostListener,
+  Injectable,
+  Injector,
   Input,
   OnInit,
 } from '@angular/core'
@@ -27,6 +31,10 @@ export abstract class CellComponent implements OnInit {
 
   abstract setInputValue(newValue: string)
 
+  constructor(
+    // protected injector: Injector,
+  ) {}
+
   inputValueEquals(newValue: string) {
     return this.getInputValue() === newValue
   }
@@ -39,5 +47,11 @@ export abstract class CellComponent implements OnInit {
 
   ngOnInit() {
     this.nodeContentComponent.mapColumnToComponent.set(this.cell.column, this)
+    // console.log(this.injector.get(ElementRef))
+  }
+
+  @HostListener('focusin', ['$event'])
+  onFocusIn() {
+    this.nodeContentComponent.onColumnFocused(this.column, null)
   }
 }

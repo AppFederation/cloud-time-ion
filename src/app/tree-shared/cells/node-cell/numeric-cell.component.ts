@@ -68,10 +68,6 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
     this.cellInput.nativeElement.value = newValue || ''
   }
 
-  onArrowRight() {
-
-  }
-
   focus(options?: NodeFocusOptions) {
     setCaretPosition(this.nativeElement, options && options.cursorPosition)
   }

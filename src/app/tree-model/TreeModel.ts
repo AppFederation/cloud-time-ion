@@ -299,6 +299,7 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
+  /** TODO: rename isItemIndexPresent */
   private isIndexPresent(index: number): boolean {
     const lastIndex = this.children.length - 1
     return ! (index < 0 || index > lastIndex);
@@ -438,6 +439,8 @@ export class OryTreeNode implements TreeNode {
   // since nodes are to allow changing their type, we would just swap an instance of the class mentioned above
   // the separation first would be mainly to separate generic node-logic from time-planning specific, etc.
 
+
+  /** TODO: move to NumericCell */
   timeLeftSumText(column: OryColumn) {
     const minutesTotalLeft = this.valueLeftSum(column)
     const hours = Math.floor(minutesTotalLeft / 60)
@@ -445,6 +448,7 @@ export class OryTreeNode implements TreeNode {
     return `${hours}h ${minutesUpTo60}m`
   }
 
+  /** TODO: move to NumericCell */
   valueLeftSum(column: OryColumn) {
     const columnVal = column.getValueFromItemData(this.itemData)
     const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
@@ -455,6 +459,7 @@ export class OryTreeNode implements TreeNode {
     return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
+  /** TODO: move to NumericCell */
   missingValsCount(column: OryColumn) {
     const hasMissingValFunc = (node: OryTreeNode) => {
       const valueFromItemData = column.getValueFromItemData(node.itemData)
@@ -479,6 +484,7 @@ export class OryTreeNode implements TreeNode {
     // return missingValsCount
   }
 
+  /** TODO: move to NumericCell */
   effectiveValueLeft(column: OryColumn) {
     if ( ! this.itemData.isDone ) {
       if ( this.showEffectiveValue(column) ) {
@@ -493,10 +499,12 @@ export class OryTreeNode implements TreeNode {
     }
   }
 
+  /** TODO: move to NumericCell */
   effectiveTimeLeft(column: OryColumn) {
     return this.effectiveDurationText(column)
   }
 
+  /** TODO: move to NumericCell */
   showEffectiveValue(column: OryColumn) {
     const colVal = column.getValueFromItemData(this.itemData)
     return ! this.isChildOfRoot &&
@@ -506,10 +514,12 @@ export class OryTreeNode implements TreeNode {
       )
   }
 
+  /** TODO: move to NumericCell */
   effectiveDurationText(column: OryColumn) {
     return this.timeLeftSumText(column)
   }
 
+  /** TODO: move to NumericCell */
   isChildrenEstimationExceedingOwn(column: OryColumn) {
     const colVal = column.getValueFromItemData(this.itemData)
     return ! isEmpty(colVal) &&

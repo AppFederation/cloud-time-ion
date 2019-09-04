@@ -82,3 +82,7 @@ export function isEmpty(val) {
   }
   return isNullOrUndefined(val)
 }
+
+export function equalsIgnoreCase(str1: string, str2: string) {
+  return str1.toLowerCase() === str2.toLowerCase();
+}

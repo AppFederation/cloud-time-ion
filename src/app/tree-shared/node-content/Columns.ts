@@ -15,14 +15,14 @@ export class Columns {
   estimatedTimeMax = new OryColumn('estimatedTimeMax')
   isDone = new OryColumn('isDone')
   allColumns = [
-    this.title,
     this.estimatedTimeMin,
     this.estimatedTime,
     this.estimatedTimeMax,
-    this.isDone,
+    this.title,
+    // this.isDone,
   ]
+  leftMostColumn = this.estimatedTimeMin // TODO: will need to be dynamic when we show/hide min/max
   lastColumn = this.title
-  leftMostColumn = this.estimatedTime
 
   createColumnCells(treeNode: OryTreeNode) {
     const cells = new Cells()
