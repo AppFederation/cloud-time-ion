@@ -51,7 +51,7 @@ import { Columns } from './Columns'
 @Component({
   selector: 'app-node-content',
   templateUrl: './node-content.component.html',
-  styleUrls: ['./node-content.component.scss'],
+  styleUrls: ['./node-content.component.sass'],
   // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NgbPopoverConfig],
@@ -280,7 +280,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeNode.indentIncrease()
     this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
-
 
   onArrowRightOnRightMostCell() {
     // if ( getActiveElementCaretPos() === 0 ) {

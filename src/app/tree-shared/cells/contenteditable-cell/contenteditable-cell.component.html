@@ -4,22 +4,7 @@
 >
   <!--
      [ngClass]="{'done-title': isDone}"
-  (keydown.enter)="keyPressEnter($event)"
-  (keydown.arrowup)="focusNodeAbove($event)"
-  (keydown.arrowdown)="focusNodeBelow($event)"
-
-  (keydown.arrowleft)="focusToEstimatedTime()"
-  (keydown.alt.arrowleft)="focusToEstimatedTime()"
-  (keydown.control.arrowleft)="focusToEstimatedTime()"
-  (keydown.meta.arrowleft)="focusToEstimatedTime()"
-
-  (keydown.arrowright)="onCursorMoveKeydown()"
-  (keydown.alt.arrowright)="onCursorMoveKeydown()"
-  (keydown.control.arrowright)="onCursorMoveKeydown()"
-  (keydown.meta.arrowright)="onCursorMoveKeydown()"
-
   (keydown.backspace)="onKeyDownBackspaceOnTitle()"
-  (focus)="onColumnFocused(columns.title, $event)"
    -->
 
 </div>
