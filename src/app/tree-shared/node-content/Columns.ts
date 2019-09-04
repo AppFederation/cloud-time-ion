@@ -14,12 +14,15 @@ export class Columns {
   estimatedTime = new OryColumn('estimatedTime')
   estimatedTimeMax = new OryColumn('estimatedTimeMax')
   isDone = new OryColumn('isDone')
-  allColumns = [
+  allVisibleColumns = [
     this.estimatedTimeMin,
     this.estimatedTime,
     this.estimatedTimeMax,
     this.title,
-    // this.isDone,
+  ]
+  allColumns = [
+    ...this.allVisibleColumns,
+    this.isDone,
   ]
   leftMostColumn = this.estimatedTimeMin // TODO: will need to be dynamic when we show/hide min/max
   lastColumn = this.title

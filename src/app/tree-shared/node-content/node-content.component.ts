@@ -333,14 +333,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public focusColumnToTheRight() {
-    const colIdx = this.columns.allColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allVisibleColumns.indexOf(this.focusedColumn)
     debugLog('coldIdx', colIdx)
-    this.focus(this.columns.allColumns[colIdx + 1])
+    this.focus(this.columns.allVisibleColumns[colIdx + 1])
   }
 
   public focusColumnToTheLeft() {
-    const colIdx = this.columns.allColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allVisibleColumns.indexOf(this.focusedColumn)
     debugLog('coldIdx', colIdx)
-    this.focus(this.columns.allColumns[colIdx - 1])
+    this.focus(this.columns.allVisibleColumns[colIdx - 1])
   }
 }
