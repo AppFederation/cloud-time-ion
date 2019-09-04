@@ -1,3 +1,8 @@
-<p>
-  node-class-icon works!
-</p>
+<!-- TODO: use app-item-class-icon and use it in popover too -->
+<i
+  style="vertical-align: middle"
+  class="material-icons tappable-icon actionable"
+  (press)='treeNode.navigateInto()'
+>
+  {{getIconName()}}
+</i>

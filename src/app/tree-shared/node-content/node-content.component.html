@@ -14,16 +14,29 @@
 
 <div
   style="display: flex; align-items: stretch; font-size: 13px"
-  (keydown.alt.enter)="addChild($event)"
+  (keydown.alt.enter)="addChild()"
   (keydown.meta.enter)="keyPressMetaEnter($event)"
   (keydown.control.enter)="keyPressMetaEnter($event)"
   (keydown.control.arrowup)="reorderUp($event)"
   (keydown.control.arrowdown)="reorderDown($event)"
+
+  (keydown.enter)="keyPressEnter($event)"
+  (keydown.arrowup)="focusNodeAbove($event)"
+  (keydown.arrowdown)="focusNodeBelow($event)"
+
   (keydown.shift.tab)="indentDecrease($event)"
   (keydown.tab)="indentIncrease($event)"
   [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
+  (focusin)="onFocusIn($event)"
 >
-<!--  <app-cell-host>-->
+<!--  (keydown.arrowleft)="onArrowLeftOnLeftMostCell()"-->
+
+<!--  (keydown.alt.arrowright)="onArrowRight()"-->
+<!--  (keydown.meta.arrowright)="onArrowRight()"-->
+<!--  (keydown.control.arrowright)="onArrowRight()"-->
+
+
+  <!--  <app-cell-host>-->
   <!-- re-check the cell-host idea when handling keyboard shortcuts and focus -->
 <!--    <app-node-cell-->
 <!--      [cell]="cells.forColumn(columns.estimatedTimeMin)"-->
@@ -35,16 +48,12 @@
     [treeNode]="treeNode"
   ></app-node-expansion-icon>
 
-
-  <i
-    class="material-icons tappable-icon actionable"
-    (press)='treeNode.navigateInto()'
+  <app-node-class-icon
+    [treeNode]="treeNode"
     [ngbPopover]="popupContent"
     #popOver="ngbPopover"
     [autoClose]="'outside'"
-  >
-    {{getIconName()}}
-  </i>
+  ></app-node-class-icon>
 
   <div *ngIf="treeNode.isDayPlan"
        style="user-select: none; vertical-align: middle; display: table-cell; align-self: center"
@@ -60,7 +69,6 @@
     [treeNode]="treeNode"
     style="margin-left: 0.5em; vertical-align: middle; align-self: center"
   ></app-node-content-time-tracking>
-
 
   <!-- ======= new cells approach: -->
   <app-node-cell

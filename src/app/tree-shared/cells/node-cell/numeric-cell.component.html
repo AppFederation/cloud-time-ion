@@ -3,12 +3,11 @@
 <!--  [nodeContentComponent]="this"-->
 <!--  [hidden]="! isEstimatedTimeShown"-->
 <!--  [ngClass]="{'done-title': isDone}"-->
-<!--  (focusin)="onColumnFocused(columns.estimatedTime, $event)"-->
 
 <!--  [showCalculatedValue]="treeNode.showEffectiveDuration()"-->
 <!--  [calculatedValue]="treeNode.effectiveDurationText()"-->
 
-<!--&gt;</app-node-cell> &lt;!&ndash; TODO: rename to #cellEstimatedTime&ndash;&gt;-->
+<!-- </app-node-cell> -->
 
 
 <div
@@ -17,14 +16,6 @@
       background: #fbfbfb;
       margin: .3em;
   "
-  (keydown.enter)="nodeContentComponent.keyPressEnter($event)"
-  (keydown.arrowup)="nodeContentComponent.focusNodeAbove($event)"
-  (keydown.arrowdown)="nodeContentComponent.focusNodeBelow($event)"
-  (keydown.arrowleft)="nodeContentComponent.onArrowLeftOnLeftMostCell()"
-
-  (keydown.alt.arrowright)="onArrowRight()"
-  (keydown.meta.arrowright)="onArrowRight()"
-  (keydown.control.arrowright)="onArrowRight()"
 >
   <input
     #cellInput

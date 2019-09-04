@@ -10,22 +10,12 @@
   text-decoration: line-through;
 }
 
-
 $border-left: 2px;
-
 
 .node-content-container {
   border-left: transparent $border-left solid;
 }
 
-
 .ancestor-of-focused {
   border-left: #CCF $border-left solid;
-}
-
-.tappable-icon {
-  cursor: pointer;
-  user-select: none;
-  //color: #777;
-  font-size: 30px;
 }

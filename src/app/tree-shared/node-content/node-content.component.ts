@@ -49,7 +49,7 @@ import { Columns } from './Columns'
   selector: 'app-node-content',
   templateUrl: './node-content.component.html',
   styleUrls: ['./node-content.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NgbPopoverConfig],
 })
@@ -326,23 +326,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     component.treeNode = this.treeNode;
   }
 
-  /** TODO: move to NodeIconCellComponent */
-  getIconName() {
-    // return this.treeNode.dbItem.itemClass.iconName
-    if ( this.treeNode.parent2.isDayPlan) {
-      return 'settings_applications'
-    }
-    if ( this.treeNode.isDayPlan ) {
-      return 'calendar_today'
-    } else {
-      return 'note'
-    }
-  }
-
   onCursorMoveKeydown() {
     // if ( getSelectionCursorState(this.elInputTitle.nativeElement).atEnd ) {
     //   this.onArrowRightOnRightMostCell()
     //   console.log('atEnd')
     // }
+  }
+
+  onFocusIn($event) {
+    debugLog('onFocusIn', $event)
   }
 }
