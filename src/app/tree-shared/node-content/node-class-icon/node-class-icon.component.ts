@@ -24,8 +24,9 @@ export class NodeClassIconComponent implements OnInit {
     // return this.treeNode.dbItem.itemClass.iconName
     if ( this.treeNode.parent2.isDayPlan) {
       return 'settings_applications'
-    }
-    if ( this.treeNode.isDayPlan ) {
+    } else if ( this.treeNode.isChildOfRoot ) {
+      return 'folder'
+    } else if ( this.treeNode.isDayPlan ) {
       return 'calendar_today'
     } else {
       return 'note'

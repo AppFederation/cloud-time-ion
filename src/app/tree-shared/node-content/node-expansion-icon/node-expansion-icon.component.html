@@ -1,11 +1,10 @@
 <i
-  *ngIf="treeNode.hasChildren"
   class="material-icons tappable-icon actionable"
   (tap)="toggleExpand($event)"
   (press)="onPress($event)"
   [ngClass]="{collapsedIcon: ! treeNode.expanded}"
 >
-  expand_more
+  {{ treeNode.hasChildren ? 'expand_more' : 'add_circle' }}
   <!-- Idea: add_circle icon if no children (therefore no expand/collapse) and would create child node -->
 </i>
 
