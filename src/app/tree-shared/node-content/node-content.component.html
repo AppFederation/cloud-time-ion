@@ -61,7 +61,7 @@
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMin)"
-    [hidden]="! isEstimatedTimeShown"
+    [hidden]="! isEstimatedTimeShown || (configService.config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
   <app-node-cell
     [nodeContentComponent]="this"
@@ -71,7 +71,7 @@
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMax)"
-    [hidden]="! isEstimatedTimeShown"
+    [hidden]="! isEstimatedTimeShown || (configService.config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
   <!-- ===== end new cells approach -->
 
@@ -96,7 +96,7 @@
     style='
       flex-basis: fill;
       flex-grow: 1;
-      background-color: #FFFFFF;
+      background-color: #222;
       margin-right: 0.3em;
       margin-left: 0.3em;
       margin-top: 2px; /* help not overlap input focus outline and hackish help centering text a bit vertically */

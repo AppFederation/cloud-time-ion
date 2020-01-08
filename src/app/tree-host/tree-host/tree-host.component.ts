@@ -34,6 +34,8 @@ export class TreeHostComponent implements OnInit {
 
   useNestedTree = true
 
+  public showAllCols: boolean = true
+
   constructor(
     public treeService: TreeService,
     public treeDragDropService: TreeDragDropService,

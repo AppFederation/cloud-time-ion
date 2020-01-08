@@ -39,6 +39,7 @@ import { CellComponent } from '../cells/CellComponent'
 import { NodeContentViewSyncer } from './NodeContentViewSyncer'
 import { NodeDebug } from './node-debug-cell/node-debug-cell.component'
 import { Columns } from './Columns'
+import { ConfigService } from '../../core/config.service'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -96,6 +97,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
     private modalService: NgbModal,
+    public configService: ConfigService,
     ngbPopoverConfig: NgbPopoverConfig,
   ) {
     ngbPopoverConfig.placement = 'auto' // 'right' // 'hover';

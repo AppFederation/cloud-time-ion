@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { DebugService } from '../../core/debug.service'
 import { TreeHostComponent } from '../tree-host/tree-host.component'
+import { ConfigService } from '../../core/config.service'
 
 @Component({
   selector: 'app-toolbar',
@@ -17,7 +18,8 @@ export class ToolbarComponent implements OnInit {
   @Input() treeHost: TreeHostComponent
 
   constructor(
-    public debugService: DebugService
+    public debugService: DebugService,
+    public configService: ConfigService,
   ) { }
 
   ngOnInit() {
