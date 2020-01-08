@@ -12,7 +12,7 @@ $nested-tree-node-margin: 5px;
   //border-left: 3px solid red;
   //border-bottom: 2px solid #F8F8F8;
   margin: 2px 0 2px $nested-tree-node-margin;
-  box-shadow: 0px 1px 3px 1px #EEE;
+  box-shadow: 0px 1px 3px 1px #111;
   //margin-bottom: 20px;
   border-radius: 3px;
   animation: nested-tree-node-animation 0.7s;
@@ -36,7 +36,7 @@ hr {
   display: block;
   //height: 1px;
   border: 0;
-  border-top: 2px solid #DDD;
+  border-top: 2px solid #000;
   //margin: 1em 0;
   padding: 0;
 }

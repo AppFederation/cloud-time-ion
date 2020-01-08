@@ -20,7 +20,7 @@ import {
 @Component({
   selector: 'app-node-cell',
   templateUrl: './numeric-cell.component.html',
-  styleUrls: ['./numeric-cell.component.scss']
+  styleUrls: ['./numeric-cell.component.sass']
 })
 export class NumericCellComponent extends CellComponent implements OnInit, CellComponent {
 

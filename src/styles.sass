@@ -5,6 +5,15 @@
 @import "~primeng/resources/primeng.min.css"
 @import "~font-awesome/css/font-awesome.min.css"
 
+
+// Bootswatch theme
+@import "styles/_variables.scss"
+@import "~bootstrap/scss/bootstrap" // import bootstrap has to be in-between _variables.scss and _bootswatch.scss - https://bootswatch.com/help/
+@import "styles/_bootswatch.scss"
+
+body
+  color: lightgray
+
 $popover-max-width: 500px
 
 .popover
@@ -19,17 +28,18 @@ $popover-max-width: 500px
   color: gray
 
 \:root
-  --primary: orange
+  --primary: #B15900
 
 .danger
   background-color: lightcoral
 
 input
-  background: #f5f5f5
+  background: #0a0a0a // #f5f5f5
+  color: lightgray
 
 
 $border-left: 2px
 
 .ancestor-of-focused,
 .ancestor-of-focused.node-content-container
-  border-left: #CCF $border-left solid
+  border-left: var(--primary) $border-left solid
