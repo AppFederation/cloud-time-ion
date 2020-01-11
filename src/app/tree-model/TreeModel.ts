@@ -32,6 +32,7 @@ import {
   count,
   sumRecursively,
 } from '../utils/collection-utils'
+import { HasItemData } from './has-item-data'
 
 
 /**
@@ -50,9 +51,10 @@ let generateNewInclusionId = function () {
   return 'inclusion_' + uuidV4()
 }
 
+
 /** ======================================================================================= */
 /** ======================================================================================= */
-export class OryTreeNode implements TreeNode {
+export class OryTreeNode implements TreeNode, HasItemData {
 
   // ==== from PrimeNG's TreeNode:
 

@@ -1,13 +1,22 @@
 <div
   style="display: flex; align-items: center;"
 >
+
+  <ng-container
+    *ngIf="debugService.isDebug$.lastVal"
+  >
+    tt entry: {{timeTrackedEntry.isTrackingNow | json}}
+    tt start: {{timeTrackedEntry.whenFirstStarted | json}}
+  </ng-container>
+
   <app-time-passing
     [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
-    [referenceTime]="timeTrackedEntry?.startTime"
+    [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
     [isCountDown]="false"
     *ngIf="timeTrackedEntry.wasTracked"
   ></app-time-passing>
+
   <i style="vertical-align: middle"
      class="material-icons actionable"
      (press)="onStopClicked()"
@@ -15,6 +24,7 @@
   >
     stop
   </i>
+
   <i *ngIf="timeTrackedEntry.isTrackingNow"
      style="vertical-align: middle"
      class="material-icons actionable"
@@ -22,6 +32,7 @@
   >
     pause
   </i>
+
   <i *ngIf="! timeTrackedEntry.isTrackingNow"
      style="vertical-align: middle"
      class="material-icons actionable"

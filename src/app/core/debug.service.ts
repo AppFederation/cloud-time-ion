@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject'
+import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 @Injectable()
 export class DebugService {
@@ -7,7 +7,7 @@ export class DebugService {
   IS_DEBUG_KEY = 'oryol_is_debug'
 
 
-  public isDebug$ = new ReplaySubject<boolean>(1)
+  public isDebug$ = new CachedSubject<boolean>()
   public static isDebug: boolean
 
   constructor() {

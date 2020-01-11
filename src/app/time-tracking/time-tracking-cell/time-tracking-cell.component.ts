@@ -7,6 +7,7 @@ import {
   TimeTrackedEntry,
   TimeTrackingService,
 } from '../time-tracking.service'
+import { DebugService } from '../../core/debug.service'
 
 @Component({
   selector: 'app-time-tracking-cell',
@@ -21,7 +22,8 @@ export class TimeTrackingCellComponent implements OnInit {
 
 
   constructor(
-    public timeTrackingServiceOff: TimeTrackingService
+    public timeTrackingServiceOff: TimeTrackingService,
+    public debugService: DebugService,
   ) { }
 
   ngOnInit() {
@@ -32,7 +34,7 @@ export class TimeTrackingCellComponent implements OnInit {
   }
 
   onPlayClicked() {
-    this.timeTrackedEntry.beginTimeTracking() // could be first start or unpause
+    this.timeTrackedEntry.startOrResumeTracking() // could be first start or unpause
     // this.timeTrackingService.resume()
   }
 

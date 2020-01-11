@@ -1,33 +1,117 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TimeTrackingService } from './time-tracking.service';
+import {
+  TimeTrackedEntry,
+  TimeTrackingService,
+} from './time-tracking.service';
 import { DebugService } from '../core/debug.service'
+import { TimeService } from '../core/time.service'
+import { HasItemData } from '../tree-model/has-item-data'
 
-describe('TimeTrackingService', () => {
-  let service: TimeTrackingService
+class MockHasItemData implements HasItemData {
+  mockItemData
+
+  patchItemData(itemDataToPatch: any) {
+    this.mockItemData = {
+      ...{},
+      ... this.mockItemData,
+      ... itemDataToPatch,
+    }
+  }
+}
+
+class MockTimeService implements TimeService {
+  private mockTime = new Date(0)
+
+  now() {
+    return this.mockTime
+  }
+
+  advanceMs(msDiff: number) {
+    this.mockTime = new Date(this.mockTime.getTime() + msDiff)
+  }
+}
+
+const mockTimeService = new MockTimeService()
+
+describe('TimeTrackingService 2', () => {
+  let timeTrackingService: TimeTrackingService
   DebugService.isDebug = true
+  let mockHasItemData: MockHasItemData
+  let tte: TimeTrackedEntry
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimeTrackingService]
+      providers: [
+        TimeTrackingService,
+        { provide: TimeService, useValue: mockTimeService },
+      ]
     })
-    service = TestBed.get(TimeTrackingService);
+    timeTrackingService = TestBed.get(TimeTrackingService);
+    mockHasItemData = new MockHasItemData()
+    tte = new TimeTrackedEntry(timeTrackingService, mockHasItemData)
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(timeTrackingService).toBeTruthy();
   });
 
-  it('starts time tracking and reports true', () => {
-    service.startTimeTrackingOf('ttItem')
-    expect(service.timeTrackingOf$.lastVal).toBe('ttItem')
-    expect(service.isTimeTracking('ttItem')).toBe(true)
-    expect(service.isTimeTracking('ttItem2')).toBe(false)
+  it('reports zero time tracked right after tracking starts', () => {
+    tte.startOrResumeTracking()
+    expect (tte.totalMsExcludingPauses).toBe(0)
   })
 
-  it('stops time tracking and reports false', () => {
-    service.startTimeTrackingOf('ttItem')
-    service.stopTimeTrackingOf('ttItem')
-    expect(service.isTimeTracking('ttItem')).toBe(false)
-    expect(service.isTimeTracking('ttItem2')).toBe(false)
+  it('starts tracking', () => {
+    tte.startOrResumeTracking()
+    expect(tte.isTrackingNow).toBeTruthy()
+    expect(mockHasItemData.mockItemData.timeTrack.currentTrackingSince.getTime())
+      .toEqual(mockTimeService.now().getTime())
+    expect(mockHasItemData.mockItemData.timeTrack.currentTrackingSince)
+      .toEqual(mockTimeService.now())
   })
+
+  it('reports time tracked after time passes after starting', () => {
+    tte.startOrResumeTracking()
+    mockTimeService.advanceMs(777)
+    expect(tte.totalMsExcludingPauses).toBe(777) // ASSERT
+    mockTimeService.advanceMs(100)
+    expect(tte.totalMsExcludingPauses).toBe(877) // ASSERT
+  })
+
+  it('does not accumulate more time after paused', () => {
+    tte.startOrResumeTracking()
+    mockTimeService.advanceMs(999)
+    // expect (tte.totalMsExcludingPauses).toBe(999)
+    tte.pause() // ==== ACT
+    expect(tte.isPaused).toBeTruthy()
+    expect(tte.isTrackingNow).toBeFalsy()
+    expect(tte.totalMsExcludingPauses).toBe(999) // sanity check
+    expect(tte.currentPauseMsTillNow).toBe(0) // sanity check
+    mockTimeService.advanceMs(111)
+    expect(tte.currentPauseMsTillNow).toBe(111)
+    expect (tte.totalMsExcludingPauses).toBe(999)
+  })
+
+  it('resumes accumulating time after resume', () => {
+    tte.startOrResumeTracking()
+    mockTimeService.advanceMs(999)
+    tte.pause()
+    mockTimeService.advanceMs(111) // paused
+    tte.startOrResumeTracking() // ======== ACT // FIXME: have a method startOrResumeTracking()
+    expect(tte.isPaused).toBeFalsy()
+    expect(tte.isTrackingNow).toBeTruthy()
+    mockTimeService.advanceMs(100)
+    expect (tte.totalMsExcludingPauses).toBe(1099)
+  })
+
+  it('keeps whenFirstStarted when resuming', () => {
+    tte.startOrResumeTracking()
+    const whenFirstStarted = tte.whenFirstStarted
+    mockTimeService.advanceMs(999) // optional
+    tte.pause()
+    mockTimeService.advanceMs(111) // optional
+    tte.startOrResumeTracking()
+    expect(tte.whenFirstStarted).toBe(whenFirstStarted)
+  })
+
 });

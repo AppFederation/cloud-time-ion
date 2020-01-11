@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CachedSubject } from '../utils/CachedSubject'
 import { debugLog } from '../utils/log'
-import { OryTreeNode } from '../tree-model/TreeModel'
+import { TimeService } from '../core/time.service'
+import { HasItemData } from '../tree-model/has-item-data'
 
 export type TimeTrackable = any
 
 export class TimeTrackedEntry {
+
   public isTrackingNow = false
   public wasTracked = false
 
@@ -13,67 +15,95 @@ export class TimeTrackedEntry {
     return this.previousPausesMs + this.currentPauseMsTillNow
   }
 
+  /** Could be useful for seeing e.g. which tasks have been started a long time ago and then abandoned */
   get totalMsIncludingPauses() {
-    return Date.now() - this.startTime.getTime()
+    return this.nowMs() - this.whenFirstStarted.getTime()
   }
 
   get currentPauseMsTillNow() {
-    if ( ! this.whenLastPaused ) {
+    if ( ! this.whenCurrentPauseStarted ) {
       return 0
     }
-    return Date.now() - this.whenLastPaused
+    return this.nowMs() - this.whenCurrentPauseStarted.getTime()
   }
 
   get totalMsExcludingPauses() {
     return this.totalMsIncludingPauses - this.totalMsPaused
   }
 
-  get isPaused() { return !! this.whenLastPaused }
+  get isPaused() { return !! this.whenCurrentPauseStarted }
 
   constructor(
-    // public timeTrackingService: TimeTrackingService,
+    public timeTrackingService: TimeTrackingService,
     // public timeTrackable: TimeTrackable,
-    private treeNode: OryTreeNode,
-    public startTime?: Date,
-    public whenLastPaused?,
-    public previousPausesMs?,
+    private itemWithData: HasItemData,
+
+    public whenFirstStarted?: Date,
+    public whenCurrentPauseStarted?: Date,
+    public previousPausesMs: number = 0,
   ) {}
 
-  beginTimeTracking() {
+  startOrResumeTracking() {
     // this.treeNode.onChangeItemData
     //
-    this.treeNode.patchItemData({
-      timeTrack: {
-        // TODO: amount tracked so far
-        currentTrackingSince: new Date(),
-      }
-    })
+    if ( ! this.whenFirstStarted ) {
+      this.whenFirstStarted = this.now()
+    }
     this.isTrackingNow = true
     this.wasTracked = true
+    if ( this.isPaused ) {
+      this.previousPausesMs += this.currentPauseMsTillNow
+    }
+    this.whenCurrentPauseStarted = null
+    this.itemWithData.patchItemData({
+      timeTrack: {
+        // TODO: amount tracked so far
+        currentTrackingSince: this.now(),
+      }
+    })
     TimeTrackingService.the.timeTrackedEntry$.next(this)
   }
 
   pause() {
     this.isTrackingNow = false
+    this.whenCurrentPauseStarted = this.now()
+  }
+
+  private now(): Date {
+    return this.timeTrackingService.now()
+  }
+
+  private nowMs(): number {
+    return this.now().getTime()
   }
 }
 
 // ================================================================================================
+
 @Injectable()
 export class TimeTrackingService {
 
   private static _the
+
   static get the() {
-    return this._the || (this._the = new TimeTrackingService())
+    // console.log('TimeTrackingService the()')
+    // console.trace('TimeTrackingService the()')
+    return this._the || (this._the = new TimeTrackingService(new TimeService()))
   }
 
   // timeTrackingOf$ = new CachedSubject<TimeTrackable>()
   timeTrackedEntry$ = new CachedSubject<TimeTrackedEntry>()
   get currentEntry() { return this.timeTrackedEntry$.lastVal }
 
-  constructor() {
+  constructor(
+    public timeService: TimeService,
+  ) {
+    // console.log('TimeTrackingService constructor()')
+    // console.trace('TimeTrackingService constructor()')
     if ( TimeTrackingService._the ) {
       return TimeTrackingService._the
+    } else {
+      TimeTrackingService._the = this
     }
   }
 
@@ -102,11 +132,15 @@ export class TimeTrackingService {
   resume() {
     const entry = this.currentEntry
     entry.previousPausesMs += entry.currentPauseMsTillNow
-    entry.whenLastPaused = null
+    entry.whenCurrentPauseStarted = null
   }
 
   /* TODO: move to entry class for being able to track multiple things */
   pause() {
-    this.currentEntry.whenLastPaused = new Date()
+    this.currentEntry.whenCurrentPauseStarted = this.timeService.now()
+  }
+
+  now() {
+    return this.timeService.now()
   }
 }
