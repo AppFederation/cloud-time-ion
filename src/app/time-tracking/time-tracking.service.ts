@@ -4,7 +4,7 @@ import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
 import { HasItemData } from '../tree-model/has-item-data'
 
-export type TimeTrackable = any
+export type TimeTrackable = HasItemData
 
 export class TimeTrackedEntry {
 
@@ -56,6 +56,7 @@ export class TimeTrackedEntry {
     }
     this.whenCurrentPauseStarted = null
     this.itemWithData.patchItemData({
+      /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
       timeTrack: {
         // TODO: amount tracked so far
         currentTrackingSince: this.now(),
@@ -76,6 +77,10 @@ export class TimeTrackedEntry {
   private nowMs(): number {
     return this.now().getTime()
   }
+
+  static of(timeTrackedItem: HasItemData) {
+    return TimeTrackingService.the.obtainEntryForItem(timeTrackedItem)
+  }
 }
 
 // ================================================================================================
@@ -84,6 +89,8 @@ export class TimeTrackedEntry {
 export class TimeTrackingService {
 
   private static _the
+
+  private mapItemToEntry = new Map<TimeTrackable, TimeTrackedEntry>()
 
   static get the() {
     // console.log('TimeTrackingService the()')
@@ -142,5 +149,14 @@ export class TimeTrackingService {
 
   now() {
     return this.timeService.now()
+  }
+
+  obtainEntryForItem(timeTrackedItem: HasItemData) {
+    let entry = this.mapItemToEntry.get(timeTrackedItem)
+    if ( ! entry ) {
+      entry = new TimeTrackedEntry(this, timeTrackedItem)
+      this.mapItemToEntry.set(timeTrackedItem, entry)
+    }
+    return entry
   }
 }

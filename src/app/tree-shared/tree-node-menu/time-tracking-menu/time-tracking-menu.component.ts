@@ -15,7 +15,7 @@ export class TimeTrackingMenuComponent implements OnInit {
 
   @Input() treeNode: OryTreeNode
 
-  get isTimeTrackingThis() { return this.timeTrackingService.isTimeTracking(this.timeTrackable) }
+  // get isTimeTrackingThis() { return this.timeTrackingService.isTimeTracking(this.timeTrackable) }
   get timeTrackable() { return this.treeNode.itemId }
 
   constructor(
