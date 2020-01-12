@@ -1,0 +1,8 @@
+
+ts_out/
+dist/
+# TestCafe
+reports
+screenshots
+
+node_modules

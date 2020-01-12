@@ -1,0 +1,32 @@
+{
+    "name": "oryol-testcafe",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "tcafe": "npx testcafe",
+        "tcafe:repeated": "npm run tcafe --",
+        "tcafe:raw": "",
+        "tcafe:all": "testcafe all",
+        "tcafe:ffch": "testcafe firefox,chrome",
+        "test": "npm run test:ff --",
+        "test1_opts_experiment": "npm run test:ff  -- $TCAFE_OPTS",
+        "tcafe:live_experiments": "TCAFE_OPTS=tcafeOpts  npm run test -- --zzz --live --speed 0.3 --uuu",
+        "tcafe:l": "npm run tcafe -- --live --debug-on-fail",
+        "test:chrome": "npm run tsc  &&  testcafe chrome --speed 1",
+        "test:ff_OLD": "npm run tsc  &&  testcafe firefox -S -s screenshots $TCAFE_OPTS",
+        "test:short:h": "npm run tsc && testcafe \"chrome:headless:emulation:device=iphone X\"  ; testcafe \"chrome:headless:emulation:device=iphone X\"  ; testcafe \"chrome:headless:emulation:device=iPad\"  ; testcafe \"chrome:headless:emulation:device=iPhone 6/7/8\"  ; testcafe \"chrome:headless:emulation:device=Pixel 2 XL\"  ; testcafe \"chrome:headless:emulation:device=Galaxy S5\" ",
+        "test:all:h": "npm i && npm run tsc && testcafe \"chrome:headless:emulation:device=iphone X\"  ; testcafe \"chrome:headless:emulation:device=iphone X\"  ; testcafe \"chrome:headless:emulation:device=iPad Pro\"  ; testcafe \"chrome:headless:emulation:device=iPad\"  ; testcafe \"chrome:headless:emulation:device=iPhone 6/7/8\"  ; testcafe \"chrome:headless:emulation:device=iPhone 5/SE\"  ; testcafe \"chrome:headless:emulation:device=Pixel 2 XL\"  ; testcafe \"chrome:headless:emulation:device=Pixel 2\"  ; testcafe \"chrome:headless:emulation:device=Galaxy S5\" ",
+        "test:short": "npm run tsc && testcafe \"chrome:emulation:device=iphone X\"  ; testcafe \"chrome:emulation:device=iphone X\"  ; testcafe \"chrome:emulation:device=iPad\"  ; testcafe \"chrome:emulation:device=iPhone 6/7/8\"  ; testcafe \"chrome:emulation:device=Pixel 2 XL\"  ; testcafe \"chrome:emulation:device=Galaxy S5\" ",
+        "test:all": "npm run test:ff ; npm run tsc && testcafe \"chrome:emulation:device=iphone X\"  ; testcafe \"chrome:emulation:device=iphone X\"  ; testcafe \"chrome:emulation:device=iPad Pro\"  ; testcafe \"chrome:emulation:device=iPad\"  ; testcafe \"chrome:emulation:device=iPhone 6/7/8\"  ; testcafe \"chrome:emulation:device=iPhone 5/SE\"  ; testcafe \"chrome:emulation:device=Pixel 2 XL\"  ; testcafe \"chrome:emulation:device=Pixel 2\"  ; testcafe \"chrome:emulation:device=Galaxy S5\" ",
+        "test:custom-emulator": "npm run tsc && testcafe \"chrome:emulation:width=360;height=700;mobile=true;orientation=vertical;touch=true\" ",
+        "test:custom-emulator-h": "npm run tsc && testcafe \"chrome:headless:emulation:device=iphone X;cdpPort=9223\" "
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@ffmpeg-installer/ffmpeg": "^1.0.17",
+        "testcafe": "^1.6.1",
+        "typescript": "^3.7.2"
+    }
+}
