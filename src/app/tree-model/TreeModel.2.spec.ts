@@ -13,6 +13,7 @@ import {
 } from './TreeListener'
 import { TreeService } from './tree.service'
 import { AuthService } from '../core/auth.service'
+import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 
 
 @Injectable()
@@ -56,6 +57,7 @@ describe('OryTreeModel', () => {
         { provide: DbTreeService, useClass: DbTreeMockService },
         { provide: AuthService, useClass: AuthService },
         TreeService,
+        TimeTrackingService,
       ]
     });
     dbTreeService = TestBed.get(DbTreeService)

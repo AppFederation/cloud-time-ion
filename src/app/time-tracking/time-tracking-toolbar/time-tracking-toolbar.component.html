@@ -2,3 +2,5 @@
   *ngIf="timeTrackingService.timeTrackedEntry$ | async; let entry"
   [timeTrackedEntry]="entry"
 ></app-time-tracking-cell>
+
+<!--{{(timeTrackingService.timeTrackedEntry$ | async) | json}}-->

@@ -78,9 +78,9 @@ describe('TimeTrackingService', () => {
   it('starts tracking', () => {
     tte.startOrResumeTrackingIfNeeded()
     expect(tte.isTrackingNow).toBeTruthy()
-    expect(mockHasItemData.mockItemData.timeTrack.currentTrackingSince.getTime())
+    expect(mockHasItemData.mockItemData.timeTrack.nowTrackingSince.getTime())
       .toEqual(mockTimeService.now().getTime())
-    expect(mockHasItemData.mockItemData.timeTrack.currentTrackingSince)
+    expect(mockHasItemData.mockItemData.timeTrack.nowTrackingSince)
       .toEqual(mockTimeService.now())
   })
 

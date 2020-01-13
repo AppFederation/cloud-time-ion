@@ -5,7 +5,11 @@ import {
   errorAlert,
 } from '../utils/log'
 import {DbTreeService} from './db-tree-service'
-import {EventEmitter, Injectable} from '@angular/core'
+import {
+  EventEmitter,
+  Injectable,
+  Injector,
+} from '@angular/core'
 import {
   isNull,
   isNullOrUndefined,
@@ -33,6 +37,7 @@ import {
   sumRecursively,
 } from '../utils/collection-utils'
 import { HasItemData } from './has-item-data'
+import { DataItemsService } from '../core/data-items.service'
 
 
 /**
@@ -651,6 +656,7 @@ export class NodeFocusOptions {
   cursorPosition: number
 }
 
+
 /** =========================================================================== */
 /** =========================================================================== */
 /** ===========================================================================
@@ -731,7 +737,10 @@ export class TreeModel {
 
   permissionsManager: PermissionsManager
 
+  dataItemsService = this.injector.get(DataItemsService)
+
   constructor(
+    public injector: Injector,
     /* TODO Rename to dbTreeService */
     public treeService: DbTreeService,
     public authService: AuthService,
@@ -775,6 +784,7 @@ export class TreeModel {
 
               const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
+              this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
             }
           }
         }

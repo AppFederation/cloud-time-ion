@@ -3,33 +3,46 @@ import { CachedSubject } from '../utils/CachedSubject'
 import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
 import { HasItemData } from '../tree-model/has-item-data'
+import { DataItemsService } from '../core/data-items.service'
 
 export type TimeTrackable = HasItemData
+
+function date(obj) {
+  if ( ! obj ) {
+    return null
+  }
+  if ( obj.toDate ) {
+    return obj.toDate()
+  }
+  return obj
+}
 
 export class TimeTrackingPersistentData {
   whenFirstStarted?: Date
 
   // ==== tracking periods:
   previousTrackingsMs? : number
-  /** TODO: rename to whenCurrentTrackingStarted ? */
-  currentTrackingSince?: Date
+
+  nowTrackingSince?: Date
 
   // ==== tracking pause periods:
   previousPausesMs? : number
+
+  /* could rename to nowPausedSince for consistency and much shorter */
   whenCurrentPauseStarted?: Date
 }
 
 export type TTPatch = Partial<TimeTrackingPersistentData>
 
 export class TTFirstStartPatch implements TTPatch {
-  currentTrackingSince = this.whenFirstStarted
+  nowTrackingSince = this.whenFirstStarted
   constructor(
     public whenFirstStarted : Date
   ) {}
 }
 
 export class TTResumePatch implements TTPatch {
-  currentTrackingSince : Date
+  nowTrackingSince : Date
   previousPausesMs : number
   whenCurrentPauseStarted = null
 }
@@ -37,7 +50,7 @@ export class TTResumePatch implements TTPatch {
 export class TTPausePatch implements TTPatch {
   previousTrackingsMs : number
   /** TODO: rename to whenCurrentTrackingStarted ? */
-  currentTrackingSince = null
+  nowTrackingSince = null
   whenCurrentPauseStarted : Date
 }
 
@@ -45,7 +58,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   public get isTrackingNow() {
     // return this.wasTracked && ! this.isPaused
-    return !! this.currentTrackingSince
+    return !! this.nowTrackingSince
   }
 
   public get wasTracked() { return !! this.whenFirstStarted }
@@ -70,7 +83,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     if ( ! this.isTrackingNow ) {
       return 0
     }
-    return this.nowMs() - this.currentTrackingSince
+    return this.nowMs() - this.nowTrackingSince
   }
 
   get totalMsExcludingPauses() {
@@ -90,20 +103,18 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     public whenCurrentPauseStarted?: Date,
     public previousPausesMs: number = 0,
     public previousTrackingsMs: number = 0,
-    public currentTrackingSince = null,
+    public nowTrackingSince = null,
   ) {
     const itemData = this.itemWithData.getItemData()
     const ttData = itemData && itemData.timeTrack
+    console.log('ttData', ttData)
     if ( ttData ) {
       ttData.whenFirstStarted =
-        ttData.whenFirstStarted &&
-        ttData.whenFirstStarted.toDate()
-      ttData.currentTrackingSince =
-        ttData.currentTrackingSince &&
-        ttData.currentTrackingSince.toDate()
+        date(ttData.whenFirstStarted)
+      ttData.nowTrackingSince =
+        date(ttData.nowTrackingSince)
       ttData.whenCurrentPauseStarted =
-        ttData.whenCurrentPauseStarted &&
-        ttData.whenCurrentPauseStarted.toDate()
+        date(ttData.whenCurrentPauseStarted)
       Object.assign(this, ttData)
     }
   }
@@ -113,9 +124,9 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       return
     }
     this.timeTrackingService.pauseCurrentOrNoop()
-    this.currentTrackingSince = this.now()
+    this.nowTrackingSince = this.now()
     const dataItemPatch: TTPatch = {
-      currentTrackingSince: this.now(),
+      nowTrackingSince: this.now(),
     }
     if ( ! this.whenFirstStarted ) {
       // TODO: const patch = new TTFirstStartPatch(this.now())
@@ -130,7 +141,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     }
     this.whenCurrentPauseStarted = null
     this.patchItemTimeTrackingData(dataItemPatch)
-    TimeTrackingService.the.emitTimeTrackedEntry(this)
+    this.timeTrackingService.emitTimeTrackedEntry(this)
   }
 
   pauseOrNoop() {
@@ -139,13 +150,13 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     }
     // TODO: const patch = new TTPausePatch(this.now())
     this.previousTrackingsMs += this.currentTrackingMsTillNow
-    this.currentTrackingSince = null
+    this.nowTrackingSince = null
 
     // this.isTrackingNow = false
     this.whenCurrentPauseStarted = this.now()
     const dataItemPatch: TTPausePatch = {
       whenCurrentPauseStarted: this.whenCurrentPauseStarted,
-      currentTrackingSince: this.currentTrackingSince,
+      nowTrackingSince: this.nowTrackingSince,
       previousTrackingsMs: this.previousTrackingsMs,
     }
     this.patchItemTimeTrackingData(dataItemPatch)
@@ -159,9 +170,9 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     return this.now().getTime()
   }
 
-  static of(timeTrackedItem: TimeTrackable) {
-    return TimeTrackingService.the.obtainEntryForItem(timeTrackedItem)
-  }
+  // static of(timeTrackedItem: TimeTrackable) {
+  //   return TimeTrackingService.the.obtainEntryForItem(timeTrackedItem)
+  // }
 
   private patchItemTimeTrackingData(dataItemPatch: TTPatch) {
     // debugLog('patchItemTimeTrackingData', dataItemPatch)
@@ -182,15 +193,15 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 @Injectable()
 export class TimeTrackingService {
 
-  private static _the
+  private static _the: TimeTrackingService
 
   private mapItemToEntry = new Map<TimeTrackable, TimeTrackedEntry>()
 
-  static get the() {
-    // console.log('TimeTrackingService the()')
-    // console.trace('TimeTrackingService the()')
-    return this._the || (this._the = new TimeTrackingService(new TimeService()))
-  }
+  // static get the() {
+  //   // console.log('TimeTrackingService the()')
+  //   // console.trace('TimeTrackingService the()')
+  //   return this._the || (this._the = new TimeTrackingService(new TimeService()))
+  // }
 
   // timeTrackingOf$ = new CachedSubject<TimeTrackable>()
 
@@ -200,14 +211,27 @@ export class TimeTrackingService {
 
   constructor(
     public timeService: TimeService,
+    public dataItemsService: DataItemsService,
   ) {
     // console.log('TimeTrackingService constructor()')
     // console.trace('TimeTrackingService constructor()')
     if ( TimeTrackingService._the ) {
       return TimeTrackingService._the
+      // throw new Error('TimeTrackingService._the already exists')
     } else {
       TimeTrackingService._the = this
     }
+
+    this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem) => {
+      const itemData = dataItem.getItemData()
+      const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
+      if ( ttData && ttData.nowTrackingSince &&
+          (ttData.whenFirstStarted as any).toDate /* FIX for a string */ ) {
+        console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
+        const timeTrackedEntry = this.obtainEntryForItem(dataItem)
+        this.emitTimeTrackedEntry(timeTrackedEntry)
+      }
+    })
   }
 
   // isTimeTracking(timeTrackable: TimeTrackable) {
@@ -215,8 +239,9 @@ export class TimeTrackingService {
   // }
 
   emitTimeTrackedEntry(entry: TimeTrackedEntry) {
+    console.log('emitTimeTrackedEntry', entry)
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
-    this.timeTrackedEntry$.next(entry)
+    this.timeTrackedEntry$.nextWithCache(entry)
   }
 
   now() {

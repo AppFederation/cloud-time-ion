@@ -1,25 +1,28 @@
-import { Injectable } from '@angular/core';
-// import {
-//   FirestoreTreeService,
-// } from './firestore-tree.service'
+import {
+  Injectable,
+  Injector,
+} from '@angular/core';
 import {TreeModel} from './TreeModel'
 import {NodeAddEvent} from './TreeListener'
 import {DbTreeService} from './db-tree-service'
 import { debugLog } from '../utils/log'
 import { AuthService } from '../core/auth.service'
+import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 
 
 @Injectable()
 export class TreeService {
 
   constructor(
+    public injector: Injector,
     public dbTreeService: DbTreeService,
     public authService: AuthService,
+    public timeTrackingService: TimeTrackingService /* just to ensure it subscribes for events before loadNodesTree */,
   ) { }
 
   getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeModel {
     // const componentThis = this
-    const treeModel = new TreeModel(this.dbTreeService, this.authService, {
+    const treeModel = new TreeModel(this.injector, this.dbTreeService, this.authService, {
       onAfterNodeMoved() {
 
       }
