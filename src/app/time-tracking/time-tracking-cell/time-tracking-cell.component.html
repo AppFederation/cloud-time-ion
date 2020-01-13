@@ -7,14 +7,15 @@
   >
     tt entry: {{timeTrackedEntry.isTrackingNow | json}}
     tt start: {{timeTrackedEntry.whenFirstStarted | json}}
+    tt: {{timeTrackedEntry.itemWithData.getItemData()?.timeTrack | json}}
   </ng-container>
 
   <app-time-passing
+    *ngIf="timeTrackedEntry.wasTracked"
     [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
     [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
     [isCountDown]="false"
-    *ngIf="timeTrackedEntry.wasTracked"
   ></app-time-passing>
 
   <i style="vertical-align: middle"

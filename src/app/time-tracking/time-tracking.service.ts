@@ -6,10 +6,49 @@ import { HasItemData } from '../tree-model/has-item-data'
 
 export type TimeTrackable = HasItemData
 
-export class TimeTrackedEntry {
+export class TimeTrackingPersistentData {
+  whenFirstStarted?: Date
 
-  public isTrackingNow = false
-  public wasTracked = false
+  // ==== tracking periods:
+  previousTrackingsMs? : number
+  /** TODO: rename to whenCurrentTrackingStarted ? */
+  currentTrackingSince?: Date
+
+  // ==== tracking pause periods:
+  previousPausesMs? : number
+  whenCurrentPauseStarted?: Date
+}
+
+export type TTPatch = Partial<TimeTrackingPersistentData>
+
+export class TTFirstStartPatch implements TTPatch {
+  currentTrackingSince = this.whenFirstStarted
+  constructor(
+    public whenFirstStarted : Date
+  ) {}
+}
+
+export class TTResumePatch implements TTPatch {
+  currentTrackingSince : Date
+  previousPausesMs : number
+  whenCurrentPauseStarted = null
+}
+
+export class TTPausePatch implements TTPatch {
+  previousTrackingsMs : number
+  /** TODO: rename to whenCurrentTrackingStarted ? */
+  currentTrackingSince = null
+  whenCurrentPauseStarted : Date
+}
+
+export class TimeTrackedEntry implements TimeTrackingPersistentData {
+
+  public get isTrackingNow() {
+    // return this.wasTracked && ! this.isPaused
+    return !! this.currentTrackingSince
+  }
+
+  public get wasTracked() { return !! this.whenFirstStarted }
 
   get totalMsPaused() {
     return this.previousPausesMs + this.currentPauseMsTillNow
@@ -27,8 +66,16 @@ export class TimeTrackedEntry {
     return this.nowMs() - this.whenCurrentPauseStarted.getTime()
   }
 
+  get currentTrackingMsTillNow() {
+    if ( ! this.isTrackingNow ) {
+      return 0
+    }
+    return this.nowMs() - this.currentTrackingSince
+  }
+
   get totalMsExcludingPauses() {
-    return this.totalMsIncludingPauses - this.totalMsPaused
+    // return this.totalMsIncludingPauses - this.totalMsPaused
+    return this.previousTrackingsMs + this.currentTrackingMsTillNow
   }
 
   get isPaused() { return !! this.whenCurrentPauseStarted }
@@ -36,38 +83,71 @@ export class TimeTrackedEntry {
   constructor(
     public timeTrackingService: TimeTrackingService,
     // public timeTrackable: TimeTrackable,
-    private itemWithData: HasItemData,
+    public itemWithData: TimeTrackable,
 
     public whenFirstStarted?: Date,
+
     public whenCurrentPauseStarted?: Date,
     public previousPausesMs: number = 0,
-  ) {}
-
-  startOrResumeTracking() {
-    // this.treeNode.onChangeItemData
-    //
-    if ( ! this.whenFirstStarted ) {
-      this.whenFirstStarted = this.now()
+    public previousTrackingsMs: number = 0,
+    public currentTrackingSince = null,
+  ) {
+    const itemData = this.itemWithData.getItemData()
+    const ttData = itemData && itemData.timeTrack
+    if ( ttData ) {
+      ttData.whenFirstStarted =
+        ttData.whenFirstStarted &&
+        ttData.whenFirstStarted.toDate()
+      ttData.currentTrackingSince =
+        ttData.currentTrackingSince &&
+        ttData.currentTrackingSince.toDate()
+      ttData.whenCurrentPauseStarted =
+        ttData.whenCurrentPauseStarted &&
+        ttData.whenCurrentPauseStarted.toDate()
+      Object.assign(this, ttData)
     }
-    this.isTrackingNow = true
-    this.wasTracked = true
-    if ( this.isPaused ) {
-      this.previousPausesMs += this.currentPauseMsTillNow
-    }
-    this.whenCurrentPauseStarted = null
-    this.itemWithData.patchItemData({
-      /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
-      timeTrack: {
-        // TODO: amount tracked so far
-        currentTrackingSince: this.now(),
-      }
-    })
-    TimeTrackingService.the.timeTrackedEntry$.next(this)
   }
 
-  pause() {
-    this.isTrackingNow = false
+  startOrResumeTrackingIfNeeded() {
+    if ( this.isTrackingNow ) {
+      return
+    }
+    this.currentTrackingSince = this.now()
+    const dataItemPatch: TTPatch = {
+      currentTrackingSince: this.now(),
+    }
+    if ( ! this.whenFirstStarted ) {
+      // TODO: const patch = new TTFirstStartPatch(this.now())
+      this.whenFirstStarted = this.now()
+      dataItemPatch.whenFirstStarted = this.whenFirstStarted
+      dataItemPatch.whenCurrentPauseStarted = null
+    }
+    // this.isTrackingNow = true
+    if ( this.isPaused ) {
+      this.previousPausesMs += this.currentPauseMsTillNow
+      dataItemPatch.previousPausesMs = this.previousPausesMs
+    }
+    this.whenCurrentPauseStarted = null
+    this.patchItemTimeTrackingData(dataItemPatch)
+    TimeTrackingService.the.emitTimeTrackedEntry(this)
+  }
+
+  pauseOrNoop() {
+    if ( this.isPaused ) {
+      return
+    }
+    // TODO: const patch = new TTPausePatch(this.now())
+    this.previousTrackingsMs += this.currentTrackingMsTillNow
+    this.currentTrackingSince = null
+
+    // this.isTrackingNow = false
     this.whenCurrentPauseStarted = this.now()
+    const dataItemPatch: TTPausePatch = {
+      whenCurrentPauseStarted: this.whenCurrentPauseStarted,
+      currentTrackingSince: this.currentTrackingSince,
+      previousTrackingsMs: this.previousTrackingsMs,
+    }
+    this.patchItemTimeTrackingData(dataItemPatch)
   }
 
   private now(): Date {
@@ -78,13 +158,26 @@ export class TimeTrackedEntry {
     return this.now().getTime()
   }
 
-  static of(timeTrackedItem: HasItemData) {
+  static of(timeTrackedItem: TimeTrackable) {
     return TimeTrackingService.the.obtainEntryForItem(timeTrackedItem)
+  }
+
+  private patchItemTimeTrackingData(dataItemPatch: TTPatch) {
+    // debugLog('patchItemTimeTrackingData', dataItemPatch)
+    this.itemWithData.patchItemData({
+      /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
+      timeTrack: {
+        ... dataItemPatch,
+        whenFirstStarted: this.whenFirstStarted /* quick way to not lose; real solution to use keys with dots
+          like '{timeTrack.whenFirstStarted: xyz }'*/,
+        previousTrackingsMs: this.previousTrackingsMs,
+        previousPausesMs: this.previousPausesMs,
+      },
+    })
   }
 }
 
-// ================================================================================================
-
+/** ================================================================================================ */
 @Injectable()
 export class TimeTrackingService {
 
@@ -99,7 +192,9 @@ export class TimeTrackingService {
   }
 
   // timeTrackingOf$ = new CachedSubject<TimeTrackable>()
+
   timeTrackedEntry$ = new CachedSubject<TimeTrackedEntry>()
+
   get currentEntry() { return this.timeTrackedEntry$.lastVal }
 
   constructor(
@@ -114,44 +209,20 @@ export class TimeTrackingService {
     }
   }
 
-  // startTimeTrackingOf(item: TimeTrackable) {
-  //   // debugLog('before timeTrackingOf$', item, this.timeTrackingOf$)
-  //   this.emitTimeTrackedEntry(new TimeTrackedEntry(
-  //     item,
-  //     new Date()
-  //   ))
-  // }
-  //
-  // stopTimeTrackingOf(item?: TimeTrackable) {
-  //   this.emitTimeTrackedEntry(null)
+  // isTimeTracking(timeTrackable: TimeTrackable) {
+  //   // return this.timeTrackingOf$.lastVal === timeTrackable
   // }
 
-  isTimeTracking(timeTrackable: TimeTrackable) {
-    // return this.timeTrackingOf$.lastVal === timeTrackable
-  }
-
-  private emitTimeTrackedEntry(entry: TimeTrackedEntry) {
+  emitTimeTrackedEntry(entry: TimeTrackedEntry) {
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
     this.timeTrackedEntry$.next(entry)
-  }
-
-  /* TODO: move to entry class for being able to track multiple things */
-  resume() {
-    const entry = this.currentEntry
-    entry.previousPausesMs += entry.currentPauseMsTillNow
-    entry.whenCurrentPauseStarted = null
-  }
-
-  /* TODO: move to entry class for being able to track multiple things */
-  pause() {
-    this.currentEntry.whenCurrentPauseStarted = this.timeService.now()
   }
 
   now() {
     return this.timeService.now()
   }
 
-  obtainEntryForItem(timeTrackedItem: HasItemData) {
+  public obtainEntryForItem(timeTrackedItem: TimeTrackable) {
     let entry = this.mapItemToEntry.get(timeTrackedItem)
     if ( ! entry ) {
       entry = new TimeTrackedEntry(this, timeTrackedItem)

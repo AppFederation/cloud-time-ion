@@ -13,6 +13,7 @@ export function testWrapper(title: string, testBody: (t) => Promise<void>) {
   const testNumWithinRepetitionCaptured = testNumWithinRepetition
   const repetitionPrefix = (runNum === null || runNum === undefined) ? `(Not repeated)` : `---- (Repetition ${runNum} of ${numRepetitions})`
   test(title, async t => {
+    console.log('testNumWithinRepetitionCaptured', testNumWithinRepetitionCaptured)
     if ( testNumWithinRepetitionCaptured === 0 ) {
       console.log()
       console.log(`==================== Start ${repetitionPrefix}`)

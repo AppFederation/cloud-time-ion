@@ -621,6 +621,12 @@ export class OryTreeNode implements TreeNode, HasItemData {
     // }
     return true // HACK FIXME
   }
+
+  getItemData() {
+    // console.log('getItemData', this.itemData)
+    return this.itemData
+  }
+
 }
 
 export abstract class OryTreeListener {
@@ -836,4 +842,5 @@ export class TreeModel {
     const nodes: OryTreeNode[] = this.mapItemIdToNode.get(itemId)
     return nodes
   }
+
 }

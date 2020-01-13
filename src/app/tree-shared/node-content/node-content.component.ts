@@ -179,7 +179,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     debugLog('keyPressMetaEnter')
     this.isDone = !this.isDone
     this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columns.isDone), this.isDone, null)
-    this.focusNodeBelow()
+    this.focusNodeBelow(event)
   }
 
   addNodeAfterThis() {
@@ -196,12 +196,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.focusNode(nodeToFocus, this.columns.leftMostColumn, {cursorPosition: 0})
   }
 
-  public focusNodeAbove() {
+  public focusNodeAbove($event) {
     const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
     this.focusOtherNode(nodeToFocus)
   }
 
-  public focusNodeBelow() {
+  public focusNodeBelow($event) {
     const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
     this.focusOtherNode(nodeToFocus)
   }

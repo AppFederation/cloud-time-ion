@@ -24,12 +24,14 @@ const runAllTests = true
 // https://github.com/DevExpress/testcafe/issues/1770
 // https://stackoverflow.com/questions/57370963/whats-the-progress-or-direction-on-disable-page-reloads-flag-in-testcafe
 
-if ( runAllTests ) testWrapper('Log in via username & password', async () => {
-  // https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html
-
-})
+// if ( runAllTests ) testWrapper('Log in via username & password', async () => {
+//   // https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html
+//
+// })
 
 testRepetitions(() => {
-  testWrapper('OrYoL test', async () => {
+  testWrapper('OrYoL test 1', async () => {
+  })
+  testWrapper('OrYoL test 2', async () => {
   })
 })

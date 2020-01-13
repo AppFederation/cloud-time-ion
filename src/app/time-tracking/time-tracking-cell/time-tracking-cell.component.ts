@@ -34,12 +34,12 @@ export class TimeTrackingCellComponent implements OnInit {
   }
 
   onPlayClicked() {
-    this.timeTrackedEntry.startOrResumeTracking() // could be first start or unpause
+    this.timeTrackedEntry.startOrResumeTrackingIfNeeded() // could be first start or unpause
     // this.timeTrackingService.resume()
   }
 
   onPauseClicked() {
-    this.timeTrackedEntry.pause()
+    this.timeTrackedEntry.pauseOrNoop()
     // this.timeTrackingService.pause()
   }
 }
