@@ -112,6 +112,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     if ( this.isTrackingNow ) {
       return
     }
+    this.timeTrackingService.pauseCurrentOrNoop()
     this.currentTrackingSince = this.now()
     const dataItemPatch: TTPatch = {
       currentTrackingSince: this.now(),
@@ -229,5 +230,11 @@ export class TimeTrackingService {
       this.mapItemToEntry.set(timeTrackedItem, entry)
     }
     return entry
+  }
+
+  pauseCurrentOrNoop() {
+    if ( this.currentEntry ) {
+      this.currentEntry.pauseOrNoop()
+    }
   }
 }
