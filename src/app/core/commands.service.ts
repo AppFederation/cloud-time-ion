@@ -27,6 +27,6 @@ export class CommandsService {
 
   planToday() {
     // navigate to last child of Day Plans node - 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
-    this.navigationService.navigateToNodeLastChild('item_35023937-195c-4b9c-b265-5e8a01cf397e')
+    // this.navigationService.navigateToNodeLastChild('item_35023937-195c-4b9c-b265-5e8a01cf397e')
   }
 }

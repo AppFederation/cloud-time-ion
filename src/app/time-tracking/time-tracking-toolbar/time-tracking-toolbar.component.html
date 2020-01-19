@@ -1,4 +1,5 @@
 <app-time-tracking-cell
+  (click)="navigateTo()"
   *ngIf="timeTrackingService.timeTrackedEntry$ | async; let entry"
   [timeTrackedEntry]="entry"
 ></app-time-tracking-cell>

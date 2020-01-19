@@ -1,5 +1,5 @@
 <div
-  style="display: flex; align-items: center;"
+  style="display: flex; align-items: center; cursor: pointer"
 >
 
   <ng-container
@@ -7,7 +7,7 @@
   >
     tt entry: {{timeTrackedEntry.isTrackingNow | json}}
     tt start: {{timeTrackedEntry.whenFirstStarted | json}}
-    tt: {{timeTrackedEntry.itemWithData.getItemData()?.timeTrack | json}}
+    tt: {{timeTrackedEntry.timeTrackable.getItemData()?.timeTrack | json}}
   </ng-container>
 
   <app-time-passing

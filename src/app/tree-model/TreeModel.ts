@@ -682,7 +682,10 @@ export class TreeModel {
       this.navigateToRoot()
     }
 
-    navigateInto(node: OryTreeNode) {
+    navigateInto(node: OryTreeNode | string) {
+      if ( typeof node === 'string' ) {
+        node = this.treeModel.getNodesByItemId(node)[0]
+      }
       this.visualRoot = node
       this.treeModel.isRootShown = node !== this.treeModel.root
       node.expanded = true

@@ -96,7 +96,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
   constructor(
     public timeTrackingService: TimeTrackingService,
     // public timeTrackable: TimeTrackable,
-    public itemWithData: TimeTrackable,
+    public timeTrackable: TimeTrackable,
 
     public whenFirstStarted?: Date,
 
@@ -105,7 +105,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     public previousTrackingsMs: number = 0,
     public nowTrackingSince = null,
   ) {
-    const itemData = this.itemWithData.getItemData()
+    const itemData = this.timeTrackable.getItemData()
     const ttData = itemData && itemData.timeTrack
     console.log('ttData', ttData)
     if ( ttData ) {
@@ -176,7 +176,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   private patchItemTimeTrackingData(dataItemPatch: TTPatch) {
     // debugLog('patchItemTimeTrackingData', dataItemPatch)
-    this.itemWithData.patchItemData({
+    this.timeTrackable.patchItemData({
       /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
       timeTrack: {
         ... dataItemPatch,

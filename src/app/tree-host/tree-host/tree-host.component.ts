@@ -15,6 +15,7 @@ import { debugLog } from '../../utils/log'
 import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import { CommandsService } from '../../core/commands.service'
+import { NavigationService } from '../../core/navigation.service'
 
 
 @Component({
@@ -42,8 +43,13 @@ export class TreeHostComponent implements OnInit {
     private activatedRoute : ActivatedRoute,
     private debugService: DebugService,
     private commandsService: CommandsService,
+    private navigationService: NavigationService,
   ) {
     this.activatedRoute.snapshot.params['rootNodeId']
+    this.navigationService.navigation$.subscribe(nodeId => {
+      // this.treeModel.navigation.navigateInto(nodeId)
+      this.focusNode(this.treeModel.getNodesByItemId(nodeId)[0])
+    })
 
     commandsService.commands$.subscribe(command => {
       const lastFocusedNode = this.treeModel.focus.lastFocusedNode

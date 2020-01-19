@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { OryTreeNode } from '../tree-model/TreeModel'
+import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 /* Distinguish between navigation and focus?*/
 @Injectable({
@@ -6,10 +8,12 @@ import { Injectable } from '@angular/core';
 })
 export class NavigationService {
 
+  /* TODO: distinguish between focus and navigation */
+  public readonly navigation$ = new CachedSubject<string>()
+
   constructor() { }
 
-  navigateToNodeLastChild(nodeItemId: string) {
-
-    
+  navigateToNodeLastChild(node: OryTreeNode) {
+    this.navigation$.next(node.itemId)
   }
 }
