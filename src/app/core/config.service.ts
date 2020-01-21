@@ -8,4 +8,11 @@ export class ConfigService {
   public readonly config$ = new CachedSubject<any>()
 
   constructor() { }
+
+  patchConfig(patch: any) {
+    this.config$.next({
+      ... this.config$.lastVal,
+      ... patch
+    })
+  }
 }

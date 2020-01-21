@@ -43,7 +43,7 @@
   <label class="checkbox-inline" style="user-select: none">
     <input type="checkbox"
            [checked]="debugService.isDebug$ | async"
-           (change)="configService.config$.next({showMinMaxColumns: $event.target.checked})">
+           (change)="configService.patchConfig({showMinMaxColumns: $event.target.checked})">
     Cols
   </label>
 
