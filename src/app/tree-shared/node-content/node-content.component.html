@@ -57,6 +57,11 @@
     [autoClose]="'outside'"
   ></app-node-class-icon>
 
+  <app-node-content-time-tracking
+    [treeNode]="treeNode"
+    style="margin-left: 0.5em; vertical-align: middle; align-self: center"
+  ></app-node-content-time-tracking>
+
   <!-- ======= new cells approach: -->
   <app-node-cell
     [nodeContentComponent]="this"
@@ -82,10 +87,6 @@
     <!--Sum: {{treeNode.timeLeftSumText()}}-->
   </div>
 
-  <app-node-content-time-tracking
-    [treeNode]="treeNode"
-    style="margin-left: 0.5em; vertical-align: middle; align-self: center"
-  ></app-node-content-time-tracking>
 
   <ng-container *ngIf="treeNode.itemData?.deleted">
     Deleted <!--{{treeNode.itemData?.deleted}}-->
