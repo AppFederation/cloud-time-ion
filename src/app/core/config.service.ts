@@ -5,7 +5,7 @@ import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
   providedIn: 'root'
 })
 export class ConfigService {
-  public readonly config$ = new CachedSubject<any>()
+  public readonly config$ = new CachedSubject<any>( {} )
 
   constructor() { }
 

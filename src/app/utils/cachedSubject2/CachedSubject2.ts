@@ -11,8 +11,11 @@ export class CachedSubject<T> extends Subject<T> {
   /** Useful for e.g. determining in UI if initial data set has arrived (distinguish from initial empty) */
   public hasEmitted = false
 
-  constructor() {
+  constructor(initialVal ? : T) {
     super()
+    if ( initialVal ) {
+      this.next(initialVal)
+    }
   }
 
   public next(val: T) {

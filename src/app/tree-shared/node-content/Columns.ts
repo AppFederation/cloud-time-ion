@@ -4,6 +4,7 @@ import {
   Cells,
   ColumnCell,
 } from './Cells'
+import { ignoreUnused } from '../../utils/utils'
 
 
 /** Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
@@ -20,17 +21,24 @@ export class Columns {
     this.estimatedTimeMax,
     this.title,
   ]
+
+  get allNotHiddenColumns() {
+    return this.allVisibleColumns.filter( col => ! col.hidden)
+  }
+
   allColumns = [
     ...this.allVisibleColumns,
     this.isDone,
   ]
-  leftMostColumn = this.estimatedTimeMin // TODO: will need to be dynamic when we show/hide min/max
-  lastColumn = this.title
+
+  get leftMostColumn() { return this.allVisibleColumns.find(column => ! column.hidden) }
+
+  lastColumn = this.title // will need allVisibleColumns.findLast
 
   createColumnCells(treeNode: OryTreeNode) {
     const cells = new Cells()
     this.allColumns.forEach(column => {
-      new ColumnCell(column, cells, treeNode)
+      ignoreUnused(new ColumnCell(column, cells, treeNode))
     })
     return cells
   }

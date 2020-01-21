@@ -1,6 +1,8 @@
 
 export class OryColumn<TVal = any> {
 
+  hidden: boolean = false
+
   public get fieldName() { return this.name }
 
   constructor(

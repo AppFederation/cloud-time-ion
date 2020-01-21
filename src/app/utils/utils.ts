@@ -86,3 +86,7 @@ export function isEmpty(val) {
 export function equalsIgnoreCase(str1: string, str2: string) {
   return str1.toLowerCase() === str2.toLowerCase();
 }
+
+export function ignoreUnused(_value: any) {
+  // do nothing
+}

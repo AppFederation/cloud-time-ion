@@ -62,6 +62,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Could be actually map *Cell* to Component */
   mapColumnToComponent = new Map<OryColumn, CellComponent>()
 
+  /* TODO: move to tree model / column-model */
   static columnsStatic = new Columns()
 
   columns: Columns = NodeContentComponent.columnsStatic
@@ -101,6 +102,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     ngbPopoverConfig: NgbPopoverConfig,
   ) {
     ngbPopoverConfig.placement = 'auto' // 'right' // 'hover';
+
+    // should be at the level of model / column-model
+    this.configService.config$.subscribe(config => {
+      this.columns.estimatedTimeMin.hidden = ! config.showMinMaxColumns
+      this.columns.estimatedTimeMax.hidden = ! config.showMinMaxColumns
+    })
   }
 
   ngOnInit() {
@@ -334,14 +341,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public focusColumnToTheRight() {
-    const colIdx = this.columns.allVisibleColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn)
     debugLog('coldIdx', colIdx)
-    this.focus(this.columns.allVisibleColumns[colIdx + 1])
+    this.focus(this.columns.allNotHiddenColumns[colIdx + 1])
   }
 
   public focusColumnToTheLeft() {
-    const colIdx = this.columns.allVisibleColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn)
     debugLog('coldIdx', colIdx)
-    this.focus(this.columns.allVisibleColumns[colIdx - 1])
+    this.focus(this.columns.allNotHiddenColumns[colIdx - 1])
   }
 }
