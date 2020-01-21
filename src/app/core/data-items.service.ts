@@ -12,5 +12,7 @@ export class DataItemsService {
 
   public readonly onItemWithDataAdded$ = new Subject<HasItemData>()
 
+  public readonly onItemWithDataPatchedByUserLocally$ = new Subject<[HasItemData, any]>()
+
   constructor() { }
 }

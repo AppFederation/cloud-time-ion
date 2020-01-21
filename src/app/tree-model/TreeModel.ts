@@ -388,8 +388,9 @@ export class OryTreeNode implements TreeNode, HasItemData {
     this.parent2._removeChild(this)
   }
 
-  patchItemData(itemData: any) {
-    this.treeModel.treeService.patchItemData(this.itemId, itemData)
+  patchItemData(itemDataPatch: any) {
+    this.treeModel.treeService.patchItemData(this.itemId, itemDataPatch)
+    this.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
   }
 
   reorderUp() {
@@ -581,7 +582,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
 
   toggleDone() {
     this.patchItemData({
-      isDone: ! this.itemData.isDone,
+      isDone: ! this.itemData.isDone, /* TODO: could store timestamp */
     })
     // FIXME: fireOnChangeItemDataOfChildOnParents and on this
 

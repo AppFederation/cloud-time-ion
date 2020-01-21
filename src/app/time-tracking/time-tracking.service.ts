@@ -222,6 +222,14 @@ export class TimeTrackingService {
       TimeTrackingService._the = this
     }
 
+    // pause tracking of items which are done:
+    this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe(event => {
+      if ( event[1].isDone /* truthy is enough; could be also timestamp */ ) {
+        this.pauseOrNoop(event[0])
+      }
+    })
+
+    // detect item being tracked when loading from DB:
     this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem) => {
       const itemData = dataItem.getItemData()
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
@@ -262,4 +270,9 @@ export class TimeTrackingService {
       this.currentEntry.pauseOrNoop()
     }
   }
+
+  public pauseOrNoop(timeTrackable: TimeTrackable) {
+    this.obtainEntryForItem(timeTrackable).pauseOrNoop()
+  }
+
 }
