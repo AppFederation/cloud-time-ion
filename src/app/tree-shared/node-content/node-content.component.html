@@ -68,11 +68,13 @@
     [cell]="cells.forColumn(columns.estimatedTimeMin)"
     [hidden]="! isEstimatedTimeShown || ! (configService.config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
+
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTime)"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
+
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columns.estimatedTimeMax)"

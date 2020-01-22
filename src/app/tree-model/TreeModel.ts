@@ -460,11 +460,15 @@ export class OryTreeNode implements TreeNode, HasItemData {
   valueLeftSum(column: OryColumn) {
     const columnVal = column.getValueFromItemData(this.itemData)
     const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
-    // TODO: use AggregateValue
-    const childrenTimeLeftSum = sumBy(this.children, childNode => {
+    // TODO: use AggregateValue class
+    const childrenTimeLeftSum = this.getChildrenTimeLeftSum(column)
+    return Math.max(selfTimeLeft, childrenTimeLeftSum)
+  }
+
+  getChildrenTimeLeftSum(column: OryColumn) {
+    return sumBy(this.children, childNode => {
       return childNode.effectiveValueLeft(column)
     })
-    return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
   /** TODO: move to NumericCell */
@@ -512,13 +516,14 @@ export class OryTreeNode implements TreeNode, HasItemData {
     return this.effectiveDurationText(column)
   }
 
-  /** TODO: move to NumericCell */
+  /** TODO: move to NumericCell (model class, not component */
   showEffectiveValue(column: OryColumn) {
     const colVal = column.getValueFromItemData(this.itemData)
+    // if ( colVal ) console.log('showEffectiveValue colVal', colVal, typeof colVal)
     return ! this.isChildOfRoot &&
       ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
-        this.valueLeftSum(column) !== 0 ||
-        colVal >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
+        this.getChildrenTimeLeftSum(column) !== 0 ||
+        parseInt(colVal, 10) >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
       )
   }
 
