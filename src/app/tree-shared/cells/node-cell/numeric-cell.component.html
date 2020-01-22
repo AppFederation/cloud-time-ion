@@ -31,7 +31,7 @@
     "
     [ngClass]="{'danger' : isDanger}"
   >
-  <ng-container *ngIf="true">
+  <ng-container *ngIf="showCalculatedValue || treeNode.getChildrenMissingValsCount(column)"> <!-- note: double calculation of getChildrenMissingValsCount -->
     <span
       *ngIf="showCalculatedValue"
       style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
