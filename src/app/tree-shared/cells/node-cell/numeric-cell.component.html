@@ -31,8 +31,11 @@
     "
     [ngClass]="{'danger' : isDanger}"
   >
-  <ng-container *ngIf="showCalculatedValue">
-    <span style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
+  <ng-container *ngIf="true">
+    <span
+      *ngIf="showCalculatedValue"
+      style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
+
     <span *ngIf='treeNode.missingValsCount(column); let missingValsCount'
           style="color: red">
       &nbsp;{{missingValsCount}}
