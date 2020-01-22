@@ -31,7 +31,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   get calculatedValue() { return this.treeNode.effectiveDurationText(this.column) }
 
   // @Input()
-  get isDanger() {
+  isDanger() {
     return this.treeNode.isChildrenEstimationExceedingOwn(this.column)
   }
 
