@@ -19,7 +19,7 @@ import { ClipboardService } from '../../core/clipboard.service'
 @Component({
   selector: 'app-tree-node-menu',
   templateUrl: './tree-node-menu.component.html',
-  styleUrls: ['./tree-node-menu.component.scss']
+  styleUrls: ['./tree-node-menu.component.sass']
 })
 export class TreeNodeMenuComponent implements OnInit {
 
