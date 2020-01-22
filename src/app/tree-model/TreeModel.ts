@@ -39,6 +39,7 @@ import {
 } from '../utils/collection-utils'
 import { HasItemData } from './has-item-data'
 import { DataItemsService } from '../core/data-items.service'
+import { parseTimeToMinutes } from '../utils/time-utils'
 
 
 /**
@@ -460,7 +461,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
   /** TODO: move to NumericCell */
   valueLeftSum(column: OryColumn) {
     const columnVal = column.getValueFromItemData(this.itemData)
-    const selfTimeLeft = ( columnVal && parseFloat(columnVal)) || 0
+    const selfTimeLeft = ( columnVal && parseTimeToMinutes(columnVal)) || 0
     // TODO: use AggregateValue class
     const childrenTimeLeftSum = this.getChildrenTimeLeftSum(column)
     return Math.max(selfTimeLeft, childrenTimeLeftSum)
@@ -513,7 +514,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
         return this.valueLeftSum(column)
       }
       const columnValue = column.getValueFromItemData(this.itemData)
-      const estimatedTime = parseFloat(columnValue) || 0
+      const estimatedTime = parseTimeToMinutes(columnValue) || 0
       // console.log('estimatedTime for sum', estimatedTime)
       return estimatedTime
     } else {
@@ -533,7 +534,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
     return ! this.isChildOfRoot &&
       ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
         this.getChildrenTimeLeftSum(column) !== 0 ||
-        parseInt(colVal, 10) >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
+        parseTimeToMinutes(colVal) >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
       )
   }
 
@@ -547,7 +548,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
     const colVal = column.getValueFromItemData(this.itemData)
     return ! isEmpty(colVal) &&
       this.valueLeftSum(column) >
-      ( colVal && parseFloat(colVal)) || 0
+      ( colVal && parseTimeToMinutes(colVal)) || 0
   }
 
   endTime(column: OryColumn) {
