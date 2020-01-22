@@ -34,7 +34,8 @@ import { ITEM_CLASSES } from '../tree-model-oryol/OryolItemClasses'
 import { DbItem } from '../db/DbItem'
 import {
   count,
-  sumRecursively,
+  sumRecursivelyIncludingRoot,
+  sumRecursivelyJustChildren,
 } from '../utils/collection-utils'
 import { HasItemData } from './has-item-data'
 import { DataItemsService } from '../core/data-items.service'
@@ -471,29 +472,38 @@ export class OryTreeNode implements TreeNode, HasItemData {
     })
   }
 
+
+  hasMissingVal(column: OryColumn) {
+    const valueFromItemData = column.getValueFromItemData(this.itemData)
+    const hasField = this.hasField(column)
+    if ( ! hasField ) {
+      return false
+    }
+    /* TODO: could also use effective val (allowing calculated too) instead of plain user-entered
+      however: this could cause O(n^2). Shortcut could be just to check if it has children.
+     */
+    return isEmpty(valueFromItemData)
+  }
+
   /** TODO: move to NumericCell */
   missingValsCount(column: OryColumn) {
+    return this.getChildrenMissingValsCount(column) + this.hasMissingVal(column) ? 1 : 0
+    // const missingValsCount = count(this.children, )
+    // return missingValsCount
+  }
+
+  getChildrenMissingValsCount(column: OryColumn) {
     const hasMissingValFunc = (node: OryTreeNode) => {
-      const valueFromItemData = column.getValueFromItemData(node.itemData)
-      const hasField = node.hasField(column)
-      if ( ! hasField ) {
-        return false
-      }
-      /* TODO: could also use effective val (allowing calculated too) instead of plain user-entered
-        however: this could cause O(n^2). Shortcut could be just to check if it has children.
-       */
-      const isValProvided = isNullOrUndefined(valueFromItemData) || '' === valueFromItemData
-      return isValProvided
+      return node.hasMissingVal(column)
     }
+
     const missingValsCountFunc = (node: OryTreeNode) => {
       if ( node.hasChildren ) {
         return 0 // will be taken care in children
       }
       return hasMissingValFunc(node) ? 1 : 0
     }
-    return sumRecursively<OryTreeNode>(this, node => node.children, missingValsCountFunc )
-    // const missingValsCount = count(this.children, )
-    // return missingValsCount
+    return sumRecursivelyJustChildren<OryTreeNode>(this, node => node.children, missingValsCountFunc)
   }
 
   /** TODO: move to NumericCell */

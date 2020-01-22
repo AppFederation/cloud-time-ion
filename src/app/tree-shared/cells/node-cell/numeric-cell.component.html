@@ -36,7 +36,7 @@
       *ngIf="showCalculatedValue"
       style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
 
-    <span *ngIf='treeNode.missingValsCount(column); let missingValsCount'
+    <span *ngIf='treeNode.getChildrenMissingValsCount(column); let missingValsCount'
           style="color: red">
       &nbsp;{{missingValsCount}}
     </span>&nbsp;

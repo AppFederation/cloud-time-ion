@@ -13,13 +13,21 @@ export function count<T>(array: T[], predicate: ((_: T) => boolean)): number {
   return counter
 }
 
-export function sumRecursively<TNode>(
+export function sumRecursivelyIncludingRoot<TNode>(
+  root: TNode,
+  childrenGetter: (parent: TNode) => TNode[],
+  valGetter: (item: TNode) => number
+) {
+  const rootVal = valGetter(root)
+  return rootVal + sumRecursivelyJustChildren(root, childrenGetter, valGetter)
+}
+
+export function sumRecursivelyJustChildren<TNode>(
     root: TNode,
     childrenGetter: (parent: TNode) => TNode[],
     valGetter: (item: TNode) => number
 ) {
   const children = childrenGetter(root)
-  const rootVal = valGetter(root)
-  const sumVal = sumBy(children, child => sumRecursively(child, childrenGetter, valGetter))
-  return rootVal + sumVal
+  const sumVal = sumBy(children, child => sumRecursivelyIncludingRoot(child, childrenGetter, valGetter))
+  return sumVal
 }

@@ -107,7 +107,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
   ) {
     const itemData = this.timeTrackable.getItemData()
     const ttData = itemData && itemData.timeTrack
-    console.log('ttData', ttData)
+    // console.log('ttData', ttData)
     if ( ttData ) {
       ttData.whenFirstStarted =
         date(ttData.whenFirstStarted)
