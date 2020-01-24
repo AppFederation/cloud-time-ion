@@ -155,6 +155,13 @@ export class TreeHostComponent implements OnInit {
     this.focusNode(newTreeNode)
   }
 
+  goToMilestones() {
+    const milestones = this.treeModel.getNodesByItemId('item_28cca5d5-6935-4fb1-907a-44f1f1898851')[0]//.getChildAtIndexOrNull(0)
+    milestones.navigateInto()
+    milestones.expansion.setExpanded(true, {recursive: false})
+    this.focusNode(milestones)
+  }
+
   planToday() {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
@@ -164,9 +171,14 @@ export class TreeHostComponent implements OnInit {
   }
 
   newJournalEntry() {
-    this.commandsService.planToday()
     const journalNode = this.treeModel.getNodesByItemId('item_50872811-928d-4878-94c0-0df36667be0e')[0].addChild()
     journalNode.navigateInto()
     this.focusNode(journalNode)
+  }
+
+  newNote() {
+    const noteNode = this.treeModel.getNodesByItemId('item_91c761a4-0308-43a1-8634-5164cb4d5b0e')[0].addChild()
+    noteNode.navigateInto()
+    this.focusNode(noteNode)
   }
 }
