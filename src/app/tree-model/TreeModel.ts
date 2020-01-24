@@ -165,6 +165,12 @@ export class OryTreeNode implements TreeNode, HasItemData {
     return this.parent2 && this.parent2.itemId === 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
   }
 
+  /** conceptual differences between note and journal entry: note is more pertaining to the topic,
+   * whereas journal entry is more about the User's state in a given moment, useful for retrospective, tracking mood, etc. */
+  get isJournalEntry() {
+    return this.parent2 && this.parent2.itemId === 'item_50872811-928d-4878-94c0-0df36667be0e'
+  }
+
   get isMilestone() {
     const milestonesNodeId = 'item_28cca5d5-6935-4fb1-907a-44f1f1898851'
     // return //this.parent2 && this.parent2.itemId === milestonesNodeId ||

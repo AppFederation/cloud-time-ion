@@ -30,6 +30,8 @@ export class NodeClassIconComponent implements OnInit {
       return 'calendar_today'
     } else if ( this.treeNode.isMilestone ) {
       return 'event_note'
+    } else if ( this.treeNode.isJournalEntry ) {
+      return 'edit'
     } else {
       return 'note'
     }

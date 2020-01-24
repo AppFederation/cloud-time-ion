@@ -162,4 +162,11 @@ export class TreeHostComponent implements OnInit {
     lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }
+
+  newJournalEntry() {
+    this.commandsService.planToday()
+    const journalNode = this.treeModel.getNodesByItemId('item_50872811-928d-4878-94c0-0df36667be0e')[0].addChild()
+    journalNode.navigateInto()
+    this.focusNode(journalNode)
+  }
 }
