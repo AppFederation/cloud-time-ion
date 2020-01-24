@@ -165,6 +165,16 @@ export class OryTreeNode implements TreeNode, HasItemData {
     return this.parent2 && this.parent2.itemId === 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
   }
 
+  get isMilestone() {
+    const milestonesNodeId = 'item_28cca5d5-6935-4fb1-907a-44f1f1898851'
+    // return //this.parent2 && this.parent2.itemId === milestonesNodeId ||
+    return (this.parent2 && this.parent2.parent2 && this.parent2.parent2.itemId === milestonesNodeId )
+  }
+
+  get isTask() {
+    return this.parent2 && (this.parent2.isMilestone || this.parent2.isDayPlan)
+  }
+
   get isChildOfRoot() {
     return ! (this.parent2 && this.parent2.parent2) // top-level node (our parent is the virtual root)
   }

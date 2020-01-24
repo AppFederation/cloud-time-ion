@@ -22,12 +22,14 @@ export class NodeClassIconComponent implements OnInit {
   /** TODO: move to NodeIconCellComponent */
   getIconName() {
     // return this.treeNode.dbItem.itemClass.iconName
-    if ( this.treeNode.parent2.isDayPlan) {
+    if ( this.treeNode.isTask) {
       return 'settings_applications'
     } else if ( this.treeNode.isChildOfRoot ) {
       return 'folder'
     } else if ( this.treeNode.isDayPlan ) {
       return 'calendar_today'
+    } else if ( this.treeNode.isMilestone ) {
+      return 'event_note'
     } else {
       return 'note'
     }
