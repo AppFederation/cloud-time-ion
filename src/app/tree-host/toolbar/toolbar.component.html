@@ -44,18 +44,20 @@
   <app-time-tracking-toolbar
   ></app-time-tracking-toolbar>
 
-  <label class="checkbox-inline" style="user-select: none">
-    <input type="checkbox"
-           [checked]="debugService.isDebug$ | async"
-           (change)="treeHost.onDebugChange($event)">
-    D
-  </label>
-  <label class="checkbox-inline" style="user-select: none">
-    <input type="checkbox"
-           [checked]="debugService.isDebug$ | async"
-           (change)="configService.patchConfig({showMinMaxColumns: $event.target.checked})">
-    Cols
-  </label>
+  <fa-icon [icon]="['fas', 'cog']" class="actionable" style="font-size: 24px"
+           [ngbPopover]="popupContent"
+           #popOver="ngbPopover"
+           [autoClose]="'outside'"
+           placement="bottom"
+  ></fa-icon>
+
+  <ng-template #popupContent>
+    <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
+    <app-toolbar-popover
+      [treeHost]="treeHost"
+    ></app-toolbar-popover>
+  </ng-template>
+
 
   <ng-container *ngIf="debugService.isDebug$ | async">
     Pending listeners: {{treeHost.pendingListeners}}

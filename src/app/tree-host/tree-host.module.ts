@@ -6,6 +6,8 @@ import {TreeNestedModule} from '../tree-nested/tree-nested.module';
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { TimeTrackingModule } from '../time-tracking/time-tracking.module'
 import { TreeTableModule } from 'primeng/primeng'
+import { SharedModule } from '../shared/shared.module';
+import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popover.component'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
@@ -15,10 +17,12 @@ import { TreeTableModule } from 'primeng/primeng'
     TreeNestedModule,
     TimeTrackingModule,
     TreeTableModule,
+    SharedModule,
   ],
   declarations: [
     TreeHostComponent,
     ToolbarComponent,
+    ToolbarPopoverComponent,
   ],
   exports: [
     TreeHostComponent,

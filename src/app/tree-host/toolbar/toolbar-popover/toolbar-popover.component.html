@@ -1,0 +1,15 @@
+<label class="checkbox" style="user-select: none">
+  <input type="checkbox"
+         [checked]="debugService.isDebug$ | async"
+         (change)="treeHost.onDebugChange($event)">
+  D
+</label>
+
+<br>
+
+<label class="checkbox" style="user-select: none">
+  <input type="checkbox"
+         [checked]="debugService.isDebug$ | async"
+         (change)="configService.patchConfig({showMinMaxColumns: $event.target.checked})">
+  Cols
+</label>
