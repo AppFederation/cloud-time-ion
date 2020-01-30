@@ -1,5 +1,6 @@
 <div
-  style="display: flex; align-items: center; cursor: pointer"
+  style="display: flex; align-items: center; cursor: pointer; border-radius: 3px; padding: 2px;"
+  [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
 >
 
   <ng-container
@@ -11,8 +12,8 @@
   </ng-container>
 
   <app-time-passing
+    style="margin-left: 4px;"
     *ngIf="timeTrackedEntry.wasTracked"
-    [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
     [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
     [isCountDown]="false"
