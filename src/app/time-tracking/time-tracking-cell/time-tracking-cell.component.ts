@@ -12,7 +12,7 @@ import { DebugService } from '../../core/debug.service'
 @Component({
   selector: 'app-time-tracking-cell',
   templateUrl: './time-tracking-cell.component.html',
-  styleUrls: ['./time-tracking-toolbar.component.sass']
+  styleUrls: ['./time-tracking-cell.component.sass']
 })
 export class TimeTrackingCellComponent implements OnInit {
 
