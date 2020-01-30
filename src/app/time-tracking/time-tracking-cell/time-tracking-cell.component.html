@@ -1,5 +1,5 @@
 <div
-  style="display: flex; align-items: center; cursor: pointer; border-radius: 3px; padding: 2px; margin-right: 2px;"
+  style="display: flex; align-items: center; cursor: pointer; border-radius: 3px; padding: 1px; margin-right: 2px;"
   [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
 >
 
@@ -12,7 +12,7 @@
   </ng-container>
 
   <app-time-passing
-    style="margin-left: 4px;"
+    style="margin-left: 4px; margin-right: -2px;"
     *ngIf="timeTrackedEntry.wasTracked"
     [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
@@ -20,7 +20,7 @@
   ></app-time-passing>
 
   <i style="vertical-align: middle"
-     class="material-icons actionable"
+     class="material-icons actionable startPauseIcon"
      (press)="onStopClicked()"
      *ngIf="false"
   >
@@ -29,7 +29,7 @@
 
   <i *ngIf="timeTrackedEntry.isTrackingNow"
      style="vertical-align: middle"
-     class="material-icons actionable"
+     class="material-icons actionable startPauseIcon"
      (click)="onPauseClicked()"
   >
     pause
