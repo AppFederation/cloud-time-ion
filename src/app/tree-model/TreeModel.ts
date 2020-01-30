@@ -471,7 +471,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
     const minutesTotalLeft = this.valueLeftSum(column)
     const hours = Math.floor(minutesTotalLeft / 60)
     const minutesUpTo60 = minutesTotalLeft % 60
-    return `${hours}h ${minutesUpTo60}m`
+    return (hours ? `${hours}h ` : ``) + `${minutesUpTo60}m`
   }
 
   /** TODO: move to NumericCell */
