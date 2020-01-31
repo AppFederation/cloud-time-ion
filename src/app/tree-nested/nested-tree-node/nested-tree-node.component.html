@@ -14,13 +14,13 @@
     [treeHost]="treeHost"
   ></app-node-content>
 
-  <div *ngIf="treeNode.expanded || alwaysExpanded" style="margin-left: 5px">
+  <div *ngIf="treeNode.expanded || alwaysExpanded" class="node-children">
     <ng-container *ngFor="let childNode of treeNode.children">
       <app-nested-tree-node
         [treeNode]="childNode"
         [treeHost]="treeHost"
       ></app-nested-tree-node>
-      <hr *ngIf="isVisualRoot"/>
+<!--      <hr *ngIf="isVisualRoot"/>-->
     </ng-container>
   </div>
 
