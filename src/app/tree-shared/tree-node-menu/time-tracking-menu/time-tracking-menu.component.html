@@ -3,6 +3,14 @@
   style="margin-left: 0.5em; vertical-align: middle; align-self: center"
 ></app-node-content-time-tracking>
 
+<p style="margin-top: .5em">
+  Aggregate:
+  <app-time-view
+    style="display: inline-flex;"
+    [timeMs]="treeNode.getSumRecursivelyIncludingThisNode(timeTrackedMsFunc)"
+  ></app-time-view>
+</p>
+
 <!--<button-->
 <!--  *ngIf="! isTimeTrackingThis"-->
 <!--  class="btn btn-primary"-->

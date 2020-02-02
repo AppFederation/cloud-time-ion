@@ -95,6 +95,10 @@ export class OryTreeNode implements TreeNode, HasItemData {
 
   // ==== End of PrimeNG's TreeNode
 
+  /** 2020-02-02 Decided that done/cancelled should be a core concept to tree node,
+   * as it will simplify a lot of methods, at minimal cost in this file. Also, where else to put it... */
+  public get isDoneOrCancelled() { return this.itemData.isDone /* TODO: cancelled */ }
+
   public get hasChildren() {
     return this.numChildren > 0
   }
@@ -489,7 +493,6 @@ export class OryTreeNode implements TreeNode, HasItemData {
     })
   }
 
-
   hasMissingVal(column: OryColumn) {
     const valueFromItemData = column.getValueFromItemData(this.itemData)
     const hasField = this.hasField(column)
@@ -511,7 +514,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
 
   getChildrenMissingValsCount(column: OryColumn) {
     const hasMissingValFunc = (node: OryTreeNode) => {
-      return node.hasMissingVal(column)
+      return ! node.isDoneOrCancelled && node.hasMissingVal(column) // TODO: ignore done ones
     }
 
     const missingValsCountFunc = (node: OryTreeNode) => {
@@ -520,12 +523,20 @@ export class OryTreeNode implements TreeNode, HasItemData {
       }
       return hasMissingValFunc(node) ? 1 : 0
     }
-    return sumRecursivelyJustChildren<OryTreeNode>(this, node => node.children, missingValsCountFunc)
+    return this.getSumRecursivelyJustChildren(missingValsCountFunc)
+  }
+
+  public getSumRecursivelyJustChildren(sumValueFunc) {
+    return sumRecursivelyJustChildren<OryTreeNode>(this, node => node.children, sumValueFunc)
+  }
+
+  public getSumRecursivelyIncludingThisNode(sumValueFunc) {
+    return sumRecursivelyIncludingRoot<OryTreeNode>(this, node => node.children, sumValueFunc)
   }
 
   /** TODO: move to NumericCell */
   effectiveValueLeft(column: OryColumn) {
-    if ( ! this.itemData.isDone ) {
+    if ( ! this.isDoneOrCancelled ) {
       if ( this.showEffectiveValue(column) ) {
         return this.valueLeftSum(column)
       }
