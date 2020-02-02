@@ -132,7 +132,9 @@ export class TreeHostComponent implements OnInit {
     node.expansion.setExpansionOnParentsRecursively(true)
     setTimeout(() => {
       const component: NodeContentComponent = this.getComponentForNode(node)
-      component.focus(column, options)
+      if ( component ) {
+        component.focus(column, options)
+      }
       this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column, options)
     })
   }
