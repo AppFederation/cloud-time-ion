@@ -7,7 +7,7 @@ import { DataItemsService } from '../core/data-items.service'
 
 export type TimeTrackable = HasItemData
 
-function date(obj) {
+export function date(obj) {
   if ( ! obj ) {
     return null
   }
@@ -91,7 +91,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     return this.previousTrackingsMs + this.currentTrackingMsTillNow
   }
 
-  get isPaused() { return !! this.whenCurrentPauseStarted }
+  get isPausedButWasTrackingBefore() { return !! this.whenCurrentPauseStarted }
 
   constructor(
     public timeTrackingService: TimeTrackingService,
@@ -135,7 +135,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       dataItemPatch.whenCurrentPauseStarted = null
     }
     // this.isTrackingNow = true
-    if ( this.isPaused ) {
+    if ( this.isPausedButWasTrackingBefore ) {
       this.previousPausesMs += this.currentPauseMsTillNow
       dataItemPatch.previousPausesMs = this.previousPausesMs
     }
@@ -145,7 +145,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
   }
 
   pauseOrNoop() {
-    if ( this.isPaused ) {
+    if ( ! this.isTrackingNow ) {
       return
     }
     // TODO: const patch = new TTPausePatch(this.now())
@@ -180,10 +180,10 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
       timeTrack: {
         ... dataItemPatch,
-        whenFirstStarted: this.whenFirstStarted /* quick way to not lose; real solution to use keys with dots
+        whenFirstStarted: this.whenFirstStarted /* || null */ /* quick way to not lose; real solution to use keys with dots
           like '{timeTrack.whenFirstStarted: xyz }'*/,
-        previousTrackingsMs: this.previousTrackingsMs,
-        previousPausesMs: this.previousPausesMs,
+        previousTrackingsMs: this.previousTrackingsMs /* || null*/,
+        previousPausesMs: this.previousPausesMs /* || null*/,
       },
     })
   }

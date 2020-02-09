@@ -97,7 +97,7 @@ describe('TimeTrackingService', () => {
     mockTimeService.advanceMs(999)
     expect (tte.totalMsExcludingPauses).toBe(999)
     tte.pauseOrNoop() // ==== ACT
-    expect(tte.isPaused).toBeTruthy()
+    expect(tte.isPausedButWasTrackingBefore).toBeTruthy()
     expect(tte.isTrackingNow).toBeFalsy()
     expect(tte.totalMsExcludingPauses).toBe(999) // sanity check
     expect(tte.currentPauseMsTillNow).toBe(0) // sanity check
@@ -112,7 +112,7 @@ describe('TimeTrackingService', () => {
     tte.pauseOrNoop()
     mockTimeService.advanceMs(111) // paused
     tte.startOrResumeTrackingIfNeeded() // ======== ACT
-    expect(tte.isPaused).toBeFalsy()
+    expect(tte.isPausedButWasTrackingBefore).toBeFalsy()
     expect(tte.isTrackingNow).toBeTruthy()
     mockTimeService.advanceMs(100)
     expect (tte.totalMsExcludingPauses).toBe(1099)
