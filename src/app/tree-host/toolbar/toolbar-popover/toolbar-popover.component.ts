@@ -5,7 +5,14 @@ import {
 } from '@angular/core';
 import { TreeHostComponent } from '../../tree-host/tree-host.component'
 import { DebugService } from '../../../core/debug.service'
-import { ConfigService } from '../../../core/config.service'
+import {
+  Config,
+  ConfigService,
+} from '../../../core/config.service'
+import {
+  FormControl,
+  FormGroup,
+} from '@angular/forms'
 
 @Component({
   selector: 'app-toolbar-popover',
@@ -17,12 +24,28 @@ export class ToolbarPopoverComponent implements OnInit {
   /* workaround for now */
   @Input() treeHost: TreeHostComponent
 
+  controls: { [K in keyof Config]: FormControl } = {
+    showMinMaxColumns: new FormControl(),
+    showMissingValuesCount: new FormControl(),
+    showAggregateValues: new FormControl(),
+    showTimeTrackedValue: new FormControl(),
+  }
+
+  formGroup = new FormGroup(this.controls)
+
   constructor(
     public debugService: DebugService,
     public configService: ConfigService,
   ) { }
 
   ngOnInit() {
+    // this.configService.config$.subscribe(val => {
+    //   this.formGroup.setValue(val)
+    // })
+    this.formGroup.setValue(this.configService.config$.lastVal)
+    this.formGroup.valueChanges.subscribe(val => {
+      this.configService.patchConfig(val)
+    })
   }
 
 }

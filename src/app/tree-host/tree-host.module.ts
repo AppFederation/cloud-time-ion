@@ -8,6 +8,7 @@ import { TimeTrackingModule } from '../time-tracking/time-tracking.module'
 import { TreeTableModule } from 'primeng/primeng'
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popover.component'
+import { ReactiveFormsModule } from '@angular/forms'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
@@ -18,6 +19,7 @@ import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popov
     TimeTrackingModule,
     TreeTableModule,
     SharedModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     TreeHostComponent,

@@ -1,42 +1,42 @@
-<label class="checkbox" >
-  <input type="checkbox"
-         [checked]="debugService.isDebug$ | async"
-         (change)="treeHost.onDebugChange($event)">
-  Debug
-</label>
+<div
+  [formGroup]=formGroup
+>
 
-<br>
+  <label class="checkbox" >
+    <input type="checkbox"
+           [checked]="debugService.isDebug$ | async"
+           (change)="treeHost.onDebugChange($event)">
+    Debug
+  </label>
 
-<label class="checkbox" >
-  <input type="checkbox"
-         [checked]="debugService.isDebug$ | async"
-         (change)="configService.patchConfig({showMinMaxColumns: $event.target.checked})">
-  Show Min/Max Cols
-</label>
+  <label class="checkbox" >
+    <input type="checkbox"
+           [formControl]="controls.showMinMaxColumns"
+    >
+    Min/Max Cols
+  </label>
 
-<br>
+  <label class="checkbox" >
+    <input type="checkbox"
+           [formControl]="controls.showAggregateValues"
+    >
+    Aggregate Values
 
-<label class="checkbox" >
-  <input type="checkbox"
-         [checked]="debugService.isDebug$ | async"
-         (change)="configService.patchConfig({showMissingValuesCount: $event.target.checked})">
-  Show Missing Values Count
-</label>
+    <label class="checkbox" >
+      <input type="checkbox"
+             [formControl]="controls.showMissingValuesCount"
+      >
+      Missing Values Count
+    </label>
 
-<br>
 
-<label class="checkbox" >
-  <input type="checkbox"
-         [checked]="debugService.isDebug$ | async"
-         (change)="configService.patchConfig({showAggregateValues: $event.target.checked})">
-  Show Aggregate Values
-</label>
+  </label>
 
-<br>
+  <label class="checkbox" >
+    <input type="checkbox"
+           [formControl]="controls.showTimeTrackedValue"
+    >
+    Time-tracked Values
+  </label>
 
-<label class="checkbox" >
-  <input type="checkbox"
-         [checked]="debugService.isDebug$ | async"
-         (change)="configService.patchConfig({showTimeTrackedValue: $event.target.checked})">
-  Show Time-tracked Values
-</label>
+</div>
