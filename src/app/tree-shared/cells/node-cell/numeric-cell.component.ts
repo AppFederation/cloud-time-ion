@@ -15,6 +15,7 @@ import {
 import {
   setCaretPosition,
 } from '../../../utils/utils'
+import { ConfigService } from '../../../core/config.service'
 
 /* TODO: rename to eg NumericCell */
 @Component({
@@ -44,8 +45,11 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   /* for interim compatibility after extracting this component */
   nativeElement: any
 
+  config$ = this.configService.config$
 
-  constructor() {
+  constructor(
+    public configService: ConfigService,
+  ) {
     super()
   }
 

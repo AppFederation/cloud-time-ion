@@ -13,7 +13,7 @@
 
   <app-time-passing
     style="margin-left: 4px; margin-right: -2px;"
-    *ngIf="timeTrackedEntry.wasTracked"
+    *ngIf="(((config$ | async)?.showTimeTrackedValue || toolBarMode ) && timeTrackedEntry.wasTracked) || timeTrackedEntry.isTrackingNow"
     [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
     [isCountDown]="false"

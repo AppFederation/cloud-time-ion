@@ -94,6 +94,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   nodeDebug = new NodeDebug()
 
+  config$ = this.configService.config$
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
@@ -104,7 +106,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     ngbPopoverConfig.placement = 'auto' // 'right' // 'hover';
 
     // should be at the level of model / column-model
-    this.configService.config$.subscribe(config => {
+    this.config$.subscribe(config => {
       this.columns.estimatedTimeMin.hidden = ! config.showMinMaxColumns
       this.columns.estimatedTimeMax.hidden = ! config.showMinMaxColumns
     })

@@ -8,6 +8,7 @@ import {
   TimeTrackingService,
 } from '../time-tracking.service'
 import { DebugService } from '../../core/debug.service'
+import { ConfigService } from '../../core/config.service'
 
 @Component({
   selector: 'app-time-tracking-cell',
@@ -20,8 +21,12 @@ export class TimeTrackingCellComponent implements OnInit {
 
   @Input() timeTrackedEntry: TimeTrackedEntry //  = new TimeTrackedEntry(this.timeTrackingServiceOff, null)
 
+  @Input() toolBarMode: boolean
+
+  config$ = this.configService.config$
 
   constructor(
+    public configService: ConfigService,
     public timeTrackingServiceOff: TimeTrackingService,
     public debugService: DebugService,
   ) { }
