@@ -63,5 +63,6 @@
   <ng-container *ngIf="debugService.isDebug$ | async">
     Pending listeners: {{treeHost.pendingListeners}}
   </ng-container>
-  {{treeHost.treeModel.mapItemIdToNode.keyCount}}
+
+  <div style="width: 80px"><!-- empty to not conflict with round buttons--></div>
 </div>
