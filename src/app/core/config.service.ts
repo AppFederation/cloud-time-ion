@@ -3,20 +3,29 @@ import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 export class Config {
   showMinMaxColumns?
+  showMissingValuesCount?
+  showAggregateValues? /* aggregate -> https://www.thesaurus.com/browse/aggregate e.g. combined or total */
+  showTimeTrackedValue?
 }
+
+const ORYOL_CONFIG_KEY = 'OrYoL_Config'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
-  public readonly config$ = new CachedSubject<Config>( {} )
+  public readonly config$ = new CachedSubject<Config>(
+    JSON.parse(localStorage.getItem(ORYOL_CONFIG_KEY)) || new Config()
+  )
 
   constructor() { }
 
   patchConfig(patch: any) {
-    this.config$.next({
+    const newValuePatched = {
       ... this.config$.lastVal,
       ... patch
-    })
+    }
+    this.config$.next(newValuePatched)
+    localStorage.setItem(ORYOL_CONFIG_KEY, JSON.stringify(newValuePatched))
   }
 }
