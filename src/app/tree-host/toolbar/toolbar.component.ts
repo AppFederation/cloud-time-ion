@@ -10,7 +10,7 @@ import { ConfigService } from '../../core/config.service'
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  styleUrls: ['./toolbar.component.sass']
 })
 export class ToolbarComponent implements OnInit {
 
