@@ -57,14 +57,6 @@
     [autoClose]="'outside'"
   ></app-node-class-icon>
 
-  <div *ngIf="treeNode.isDayPlan"
-       style="margin-left: 4px; margin-right: 2px; user-select: none; vertical-align: middle; display: table-cell; align-self: center"
-  >
-    <span class="faded">End</span> {{formatEndTime(columns.estimatedTime)}}
-    <!--Sum: {{treeNode.timeLeftSumText()}}-->
-  </div>
-
-
   <ng-container *ngIf="treeNode.itemData?.deleted">
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
@@ -94,6 +86,13 @@
     [treeNode]="treeNode"
     style="margin-left: 0.5em; vertical-align: middle; align-self: center"
   ></app-node-content-time-tracking>
+
+  <div *ngIf="treeNode.isDayPlan"
+       style="margin-left: 4px; margin-right: 2px; user-select: none; vertical-align: middle; display: table-cell; align-self: center"
+  >
+    <span class="faded">End {{formatEndTime(columns.estimatedTime)}}</span>
+    <!--Sum: {{treeNode.timeLeftSumText()}}-->
+  </div>
 
   <app-contenteditable-cell
     style='
