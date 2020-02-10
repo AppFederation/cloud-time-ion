@@ -40,6 +40,7 @@ import { NodeContentViewSyncer } from './NodeContentViewSyncer'
 import { NodeDebug } from './node-debug-cell/node-debug-cell.component'
 import { Columns } from './Columns'
 import { ConfigService } from '../../core/config.service'
+import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -97,6 +98,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   config$ = this.configService.config$
 
   constructor(
+    public timeTrackingService: TimeTrackingService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
     private modalService: NgbModal,
@@ -186,9 +188,15 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   keyPressMetaEnter(event) {
     debugLog('keyPressMetaEnter')
-    this.isDone = !this.isDone
-    this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columns.isDone), this.isDone, null)
-    this.focusNodeBelow(event)
+    const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
+
+    if ( timeTrackedEntry.wasTracked ) {
+      this.isDone = !this.isDone
+      this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columns.isDone), this.isDone, null)
+      this.focusNodeBelow(event)
+    } else {
+      timeTrackedEntry.startOrResumeTrackingIfNeeded()
+    }
   }
 
   addNodeAfterThis() {
