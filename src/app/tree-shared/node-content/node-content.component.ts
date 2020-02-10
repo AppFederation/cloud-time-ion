@@ -279,10 +279,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 
-  navigateInto() {
-    this.treeNode.navigateInto()
-  }
-
   indentDecrease($event) {
     $event.preventDefault()
     this.treeNode.indentDecrease()
