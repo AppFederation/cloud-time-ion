@@ -7,6 +7,7 @@ import { TreeService } from '../../tree-model/tree.service'
 import {
   NodeFocusOptions,
   OryTreeNode,
+  TreeCell,
   TreeModel,
 } from '../../tree-model/TreeModel'
 import { NodeContentComponent } from '../../tree-shared/node-content/node-content.component'
@@ -86,7 +87,7 @@ export class TreeHostComponent implements OnInit {
     debugLog('reFocusLastFocused')
     setTimeout(() => {
       debugLog('reFocusLastFocused in setTimeout, ', this.treeModel.focus.lastFocusedNode, this.treeModel.focus.lastFocusedColumn)
-      this.focusNode(this.treeModel.focus.lastFocusedNode, this.treeModel.focus.lastFocusedColumn)
+      this.focus(this.treeModel.focus.lastFocusedCell)
     })
   }
 
@@ -150,10 +151,12 @@ export class TreeHostComponent implements OnInit {
 
   navigateUp($event) {
     this.treeModel.navigation.navigateToParent()
+    this.reFocusLastFocused()
   }
 
   navigateToRoot($event) {
     this.treeModel.navigation.navigateToRoot()
+    this.reFocusLastFocused()
   }
 
   newNodeAtVisualRoot() {
@@ -188,4 +191,7 @@ export class TreeHostComponent implements OnInit {
     this.focusNode(noteNode)
   }
 
+  public focus(cell: TreeCell) {
+    this.focusNode(cell.node, cell.column)
+  }
 }
