@@ -20,9 +20,7 @@ export class TimeTrackingToolbarComponent implements OnInit {
 
   navigateTo() {
     const node = this.timeTrackingService.currentEntry.timeTrackable as OryTreeNode
-    this.navigationService.navigateToNodeLastChild(
-      node
-    )
+    this.navigationService.navigateToNodeLastChild(node)
     node.expansion.setExpanded(true, {recursive: false})
   }
 }

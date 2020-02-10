@@ -51,9 +51,14 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   }
 
   focus(options?: NodeFocusOptions) {
-    setCaretOnContentEditable(
-      this.contentEditableEl.nativeElement, options && (options.cursorPosition) >= 0 /* simplification of start vs end*/
-    )
+    console.log('ContenteditableCellComponent focus', options)
+    setTimeout(() => {
+      this.contentEditableEl.nativeElement.focus()
+      setCaretOnContentEditable(
+        this.contentEditableEl.nativeElement, options && (options.cursorPosition) >= 0 /* simplification of start vs end*/
+      )
+    })
+    // this.contentEditableEl.nativeElement.scrollIntoView()
   }
 
 }

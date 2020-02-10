@@ -43,7 +43,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   cellInputChanged = new EventEmitter()
 
   /* for interim compatibility after extracting this component */
-  nativeElement: any
+  nativeElement: HTMLElement
 
   config$ = this.configService.config$
 
@@ -73,6 +73,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   }
 
   focus(options?: NodeFocusOptions) {
+    this.nativeElement.focus()
     setCaretPosition(this.nativeElement, options && options.cursorPosition)
   }
 }

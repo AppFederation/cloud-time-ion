@@ -221,8 +221,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   focus(column?: OryColumn, options?: NodeFocusOptions) {
-    let componentToFocus = this.getCellComponentByColumnOrDefault(column)
-    componentToFocus && componentToFocus.focus(options)
+    let cellComponentToFocus = this.getCellComponentByColumnOrDefault(column)
+    if ( cellComponentToFocus ) {
+      cellComponentToFocus.focus(options)
+    }
   }
 
   getCellComponentByColumnOrDefault(column?: OryColumn): CellComponent {
@@ -269,6 +271,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed = true
+    this.treeHost.onNodeContentComponentDestroyed(this)
   }
 
   formatEndTime(column: OryColumn) {

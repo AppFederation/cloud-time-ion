@@ -95,8 +95,8 @@ export class TreeHostComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const rootNodeInclusionId = params['rootNodeId']
       console.log('activatedRoute.params.subscribe rootNodeId', rootNodeInclusionId)
-      const node = this.treeModel.mapNodeInclusionIdToNode.get(rootNodeInclusionId)
-      node && node.navigateInto()
+      // const node = this.treeModel.mapNodeInclusionIdToNode.get(rootNodeInclusionId)
+      // node && node.navigateInto()
     })
 
     setTimeout(() => {
@@ -116,8 +116,12 @@ export class TreeHostComponent implements OnInit {
     this.treeModel.navigation.visualRoot.expansion.setExpanded(false, true)
   }
 
-  registerNodeComponent(nodeComp: NodeContentComponent) {
-    this.mapNodeToComponent.set(nodeComp.treeNode, nodeComp)
+  registerNodeComponent(nodeContentComponent: NodeContentComponent) {
+    this.mapNodeToComponent.set(nodeContentComponent.treeNode, nodeContentComponent)
+  }
+
+  onNodeContentComponentDestroyed(nodeContentComponent: NodeContentComponent) {
+    this.mapNodeToComponent.delete(nodeContentComponent.treeNode)
   }
 
   getComponentForNode(node: OryTreeNode) {
@@ -131,11 +135,11 @@ export class TreeHostComponent implements OnInit {
     }
     node.expansion.setExpansionOnParentsRecursively(true)
     setTimeout(() => {
+      this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column, options)
       const component: NodeContentComponent = this.getComponentForNode(node)
       if ( component ) {
         component.focus(column, options)
       }
-      this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column, options)
     })
   }
 
@@ -183,4 +187,5 @@ export class TreeHostComponent implements OnInit {
     noteNode.navigateInto()
     this.focusNode(noteNode)
   }
+
 }
