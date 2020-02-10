@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 export class Config {
-  showMinMaxColumns?
-  showMissingValuesCount?
-  showAggregateValues? /* aggregate -> https://www.thesaurus.com/browse/aggregate e.g. combined or total */
-  showTimeTrackedValue?
+  showMinMaxColumns = true
+  showMissingValuesCount = true
+  showAggregateValues = true /* aggregate -> https://www.thesaurus.com/browse/aggregate e.g. combined or total */
+  showTimeTrackedValue = true
 }
 
 const ORYOL_CONFIG_KEY = 'OrYoL_Config'
