@@ -56,6 +56,8 @@ export class TTPausePatch implements TTPatch {
 
 export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
+  private timeoutHandles = []
+
   public get isTrackingNow() {
     // return this.wasTracked && ! this.isPaused
     return !! this.nowTrackingSince
@@ -160,6 +162,14 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       previousTrackingsMs: this.previousTrackingsMs,
     }
     this.patchItemTimeTrackingData(dataItemPatch)
+    this.clearTimeouts()
+  }
+
+  private clearTimeouts() {
+    for (const toh of this.timeoutHandles) {
+      clearTimeout(toh)
+    }
+    this.timeoutHandles = []
   }
 
   private now(): Date {
@@ -186,6 +196,16 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
         previousPausesMs: this.previousPausesMs /* || null*/,
       },
     })
+  }
+
+  public notifyTrackedMsElapsedUntilPaused(msElapsedToNotify: number, callback: (entry?: TimeTrackedEntry) => void) {
+    const delayFromNow = msElapsedToNotify - this.totalMsExcludingPauses
+    if ( delayFromNow >= 0 ) {
+      const timeoutHandle = setTimeout(() => {
+        callback(this)
+      }, delayFromNow)
+      this.timeoutHandles.push(timeoutHandle)
+    }
   }
 }
 

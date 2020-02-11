@@ -65,19 +65,19 @@
   <!-- ======= new cells approach: -->
   <app-node-cell
     [nodeContentComponent]="this"
-    [cell]="cells.forColumn(columns.estimatedTimeMin)"
+    [cell]="cells.forColumn(columnDefs.estimatedTimeMin)"
     [hidden]="! isEstimatedTimeShown || ! (config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
 
   <app-node-cell
     [nodeContentComponent]="this"
-    [cell]="cells.forColumn(columns.estimatedTime)"
+    [cell]="cells.forColumn(columnDefs.estimatedTime)"
     [hidden]="! isEstimatedTimeShown"
   ></app-node-cell>
 
   <app-node-cell
     [nodeContentComponent]="this"
-    [cell]="cells.forColumn(columns.estimatedTimeMax)"
+    [cell]="cells.forColumn(columnDefs.estimatedTimeMax)"
     [hidden]="! isEstimatedTimeShown || ! (config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
   <!-- ===== end new cells approach -->
@@ -90,7 +90,7 @@
   <div *ngIf="treeNode.isDayPlan"
        style="margin-left: 4px; margin-right: 2px; user-select: none; vertical-align: middle; display: table-cell; align-self: center"
   >
-    <span class="faded">End {{formatEndTime(columns.estimatedTime)}}</span>
+    <span class="faded">End {{formatEndTime(columnDefs.estimatedTime)}}</span>
     <!--Sum: {{treeNode.timeLeftSumText()}}-->
   </div>
 
@@ -104,7 +104,7 @@
       font-size: 13px;
     '
     [nodeContentComponent]="this"
-    [cell]="cells.forColumn(columns.title)"
+    [cell]="cells.forColumn(columnDefs.title)"
   ></app-contenteditable-cell>
 
   <app-node-debug-cell

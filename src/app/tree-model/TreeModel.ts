@@ -549,6 +549,15 @@ export class OryTreeNode implements TreeNode, HasItemData {
     }
   }
 
+  public getMinutes(column: OryColumn) {
+    const columnValue = this.getValueForColumn(column)
+    return parseTimeToMinutes(columnValue) || 0
+  }
+
+  public getValueForColumn(column: OryColumn) {
+    return column.getValueFromItemData(this.itemData)
+  }
+
   /** TODO: move to NumericCell */
   effectiveTimeLeft(column: OryColumn) {
     return this.effectiveDurationText(column)

@@ -38,7 +38,10 @@ import {
 import { CellComponent } from '../cells/CellComponent'
 import { NodeContentViewSyncer } from './NodeContentViewSyncer'
 import { NodeDebug } from './node-debug-cell/node-debug-cell.component'
-import { Columns } from './Columns'
+import {
+  columnDefs,
+  Columns,
+} from './Columns'
 import { ConfigService } from '../../core/config.service'
 import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 
@@ -62,6 +65,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Could be actually map *Cell* to Component */
   mapColumnToComponent = new Map<OryColumn, CellComponent>()
+
+  columnDefs = columnDefs
 
   /* TODO: move to tree model / column-model */
   static columnsStatic = new Columns()
@@ -109,8 +114,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // should be at the level of model / column-model
     this.config$.subscribe(config => {
-      this.columns.estimatedTimeMin.hidden = ! config.showMinMaxColumns
-      this.columns.estimatedTimeMax.hidden = ! config.showMinMaxColumns
+      this.columnDefs.estimatedTimeMin.hidden = ! config.showMinMaxColumns
+      this.columnDefs.estimatedTimeMax.hidden = ! config.showMinMaxColumns
     })
   }
 
@@ -192,7 +197,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if ( timeTrackedEntry.wasTracked ) {
       this.isDone = !this.isDone
-      this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columns.isDone), this.isDone, null)
+      this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone), this.isDone, null)
       this.focusNodeBelow(event)
     } else {
       timeTrackedEntry.startOrResumeTrackingIfNeeded()
@@ -237,7 +242,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getCellComponentByColumnOrDefault(column?: OryColumn): CellComponent {
     return this.mapColumnToComponent.get(column)
-      || this.mapColumnToComponent.get(this.columns.title)
+      || this.mapColumnToComponent.get(this.columnDefs.title)
   }
 
   onColumnFocused(column: OryColumn, event) {

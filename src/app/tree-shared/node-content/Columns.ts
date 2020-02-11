@@ -6,20 +6,25 @@ import {
 } from './Cells'
 import { ignoreUnused } from '../../utils/utils'
 
-
-/** Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
- * Or maybe PropertyView ? */
-export class Columns {
+export class ColumnDefs {
   title = new OryColumn('title')
   estimatedTimeMin = new OryColumn('estimatedTimeMin')
   estimatedTime = new OryColumn('estimatedTime')
   estimatedTimeMax = new OryColumn('estimatedTimeMax')
   isDone = new OryColumn('isDone')
+}
+
+export const columnDefs = new ColumnDefs()
+
+
+/** Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
+ * Or maybe PropertyView ? */
+export class Columns {
   allVisibleColumns = [
-    this.estimatedTimeMin,
-    this.estimatedTime,
-    this.estimatedTimeMax,
-    this.title,
+    columnDefs.estimatedTimeMin,
+    columnDefs.estimatedTime,
+    columnDefs.estimatedTimeMax,
+    columnDefs.title,
   ]
 
   get allNotHiddenColumns() {
@@ -28,12 +33,12 @@ export class Columns {
 
   allColumns = [
     ...this.allVisibleColumns,
-    this.isDone,
+    columnDefs.isDone,
   ]
 
   get leftMostColumn() { return this.allVisibleColumns.find(column => ! column.hidden) }
 
-  lastColumn = this.title // will need allVisibleColumns.findLast
+  lastColumn = columnDefs.title // will need allVisibleColumns.findLast
 
   createColumnCells(treeNode: OryTreeNode) {
     const cells = new Cells()
