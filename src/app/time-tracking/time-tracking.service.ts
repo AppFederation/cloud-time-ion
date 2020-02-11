@@ -207,6 +207,10 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       this.timeoutHandles.push(timeoutHandle)
     }
   }
+
+  cancelAllNotifications() {
+    this.clearTimeouts()
+  }
 }
 
 /** ================================================================================================ */
