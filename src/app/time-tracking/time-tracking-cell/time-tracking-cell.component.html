@@ -6,7 +6,7 @@
   <i *ngIf="timeTrackedEntry.isTrackingNow"
      style="vertical-align: middle"
      class="material-icons actionable startPauseIcon"
-     (click)="onPauseClicked()"
+     (click)="onPauseClicked($event)"
   >
     pause
   </i>
@@ -14,7 +14,7 @@
   <i *ngIf="! timeTrackedEntry.isTrackingNow"
      style="vertical-align: middle"
      class="material-icons actionable"
-     (click)="onPlayClicked()"
+     (click)="onPlayClicked($event)"
   >
     play_arrow
   </i>

@@ -38,13 +38,15 @@ export class TimeTrackingCellComponent implements OnInit {
     // this.timeTrackingService.stopTimeTrackingOf()
   }
 
-  onPlayClicked() {
+  onPlayClicked($event: MouseEvent) {
     this.timeTrackedEntry.startOrResumeTrackingIfNeeded() // could be first start or unpause
+    $event.stopPropagation()
     // this.timeTrackingService.resume()
   }
 
-  onPauseClicked() {
+  onPauseClicked($event: MouseEvent) {
     this.timeTrackedEntry.pauseOrNoop()
+    $event.stopPropagation()
     // this.timeTrackingService.pause()
   }
 }
