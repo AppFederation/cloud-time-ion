@@ -248,7 +248,7 @@ export class TimeTrackingService {
 
     // pause tracking of items which are done:
     this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe(event => {
-      if ( event[1].isDone /* truthy is enough; could be also timestamp */ ) {
+      if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
         console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
         this.pauseOrNoop(event[0])
       }
