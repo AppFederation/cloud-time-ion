@@ -12,6 +12,13 @@ export function debugLog(...args) {
   }
 }
 
+export function traceLog(...args) {
+  // ignore for now as too voluminous -- later have UI switch
+  if (enableLogging && DebugService.isDebug) {
+    console.log('traceLog', ...args)
+  }
+}
+
 export function errorAlert(...args) {
   const prefix = 'ERROR: errorAlert: '
   window.alert(prefix + '(see console for details) ' + args.join(', '))
