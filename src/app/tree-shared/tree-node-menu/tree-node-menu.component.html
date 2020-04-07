@@ -1,9 +1,17 @@
-<input type="checkbox"> <!-- will allow selecting multiple items -->
-&nbsp;
-<!--{{treeNode.title}}-->
-<!--<span [innerHTML]="'<script>window.alert()</script><b>TE</b>st'"></span>-->
-<span [innerHTML]="treeNode.title"></span>
-<br>
+<div
+  style="display: flex; align-items: center"
+>
+  <input type="checkbox"> <!-- will allow selecting multiple items -->
+  &nbsp; &nbsp;
+  <!--{{treeNode.title}}-->
+  <!--<span [innerHTML]="'<script>window.alert()</script><b>TE</b>st'"></span>-->
+  <app-node-class-icon
+    style="display: inline"
+    [treeNode]="treeNode"
+  ></app-node-class-icon>
+  &nbsp; &nbsp;
+  <span [innerHTML]="treeNode.title"></span>
+</div>
 In n Places:
 
 <app-time-tracking-menu [treeNode]="treeNode"></app-time-tracking-menu>

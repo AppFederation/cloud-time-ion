@@ -51,7 +51,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   }
 
   focus(options?: NodeFocusOptions) {
-    console.log('ContenteditableCellComponent focus', options)
+    // console.log('ContenteditableCellComponent focus', options)
     setTimeout(() => {
       this.contentEditableEl.nativeElement.focus()
       setCaretOnContentEditable(
