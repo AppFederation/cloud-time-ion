@@ -17,7 +17,8 @@ import { ContenteditableCellComponent } from './cells/contenteditable-cell/conte
 import { NodeDebugCellComponent } from './node-content/node-debug-cell/node-debug-cell.component';
 import { NodeExpansionIconComponent } from './node-content/node-expansion-icon/node-expansion-icon.component';
 import { NodeClassIconComponent } from './node-content/node-class-icon/node-class-icon.component'
-import { TimeModule } from '../AppFedSharedEmu/time/time.module'
+import { TimeModule } from '../AppFedSharedEmu/time/time.module';
+import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/node-class-picker.component'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
@@ -38,6 +39,7 @@ import { TimeModule } from '../AppFedSharedEmu/time/time.module'
     NodeDebugCellComponent,
     NodeExpansionIconComponent,
     NodeClassIconComponent,
+    NodeClassPickerComponent,
   ],
   imports: [
     CommonModule,

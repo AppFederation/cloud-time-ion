@@ -49,42 +49,5 @@ In n Places:
   Created: {{getWhenCreated()}}
 </p>
 
-<div *ngIf="false">
-  Classes:
-  <!-- TODO: use app-item-class-icon -->
-
-  <p>
-    Milestone
-  </p>
-
-  <p>
-    <i
-       class="material-icons actionable"
-    >note</i>
-    Note
-  </p>
-
-  <p>
-    <fa-icon [icon]="['fas', 'pen-nib']" [mask]="['fas', 'circle']"></fa-icon>
-    Journal Entry <!--(same as a loose note? &#45;&#45; Journal entry is more like self-introspection can have more info like mood, geolocation)-->
-  </p>
-
-  <p>
-    <fa-icon icon="project-diagram"></fa-icon>
-    Project
-  </p>
-
-  <p>
-    <i
-       class="material-icons actionable"
-    >settings_applications</i>
-    Task
-  </p>
-
-  <p>
-    <i
-       class="material-icons actionable"
-    >today</i>
-    Day-Plan
-  </p>
-</div>
+<app-node-class-picker
+></app-node-class-picker>
