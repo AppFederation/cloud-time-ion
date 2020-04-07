@@ -171,6 +171,13 @@ export class TreeHostComponent implements OnInit {
     this.focusNode(milestones)
   }
 
+  goToShopping() {
+    const milestones = this.treeModel.getNodesByItemId('item_dee48f04-4795-41d4-a609-2af6ac83f3d9')[0]//.getChildAtIndexOrNull(0)
+    milestones.navigateInto()
+    milestones.expansion.setExpanded(true, {recursive: false})
+    this.focusNode(milestones)
+  }
+
   planToday() {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
