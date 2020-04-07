@@ -1,5 +1,7 @@
 import { nullOrUndef } from './utils'
 
+const EMPTY_ARRAY = []
+
 export class MultiMap<K, V> {
   map = new Map<K, V[]>()
 
@@ -22,8 +24,8 @@ export class MultiMap<K, V> {
     }
   }
 
-  get(key: K) {
-    return this.map.get(key);
+  get(key: K): V[] {
+    return this.map.get(key) || EMPTY_ARRAY
   }
 
   get keyCount() {
