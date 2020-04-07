@@ -1,48 +1,16 @@
-import {Injectable} from '@angular/core'
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import {
   OryTreeNode,
   TreeModel,
 } from './TreeModel'
-import {DbTreeService} from './db-tree-service'
-import { getDep } from '../test-utils/test-utils'
-import {
-  DbTreeListener,
-  NodeInclusion,
-} from './TreeListener'
+import { DbTreeService } from './db-tree-service'
+import { NodeInclusion } from './TreeListener'
 import { TreeService } from './tree.service'
 import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
+import { DbTreeServiceMock } from './DbTree.service.mock'
 
-
-@Injectable()
-export class DbTreeMockService implements DbTreeService {
-
-  HARDCODED_ROOT_NODE_ITEM_ID = 'HARDCODED_ROOT_NODE_ITEM_ID'
-
-  dbTreeListener : DbTreeListener
-
-  addSiblingAfterNode() {}
-
-  addChildNode() {}
-
-  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any) {
-    console.log('DbTreeMockService patchChildInclusionData', arguments)
-    this.dbTreeListener.onNodeInclusionModified(itemInclusionId, itemInclusionData, parentItemId) /* ! WARNING: this causes browser to hang !*/
-  }
-
-  loadNodesTree(dbTreeListener: DbTreeListener) {
-    this.dbTreeListener = dbTreeListener
-  }
-
-  deleteWithoutConfirmation(itemId: string) {
-  }
-
-  patchItemData(itemId: string, itemData: any) {
-  }
-
-}
 
 ///////
 describe('OryTreeModel', () => {
@@ -54,7 +22,7 @@ describe('OryTreeModel', () => {
     console.log('beforeEach')
     TestBed.configureTestingModule({
       providers: [
-        { provide: DbTreeService, useClass: DbTreeMockService },
+        { provide: DbTreeService, useClass: DbTreeServiceMock },
         { provide: AuthService, useClass: AuthService },
         TreeService,
         TimeTrackingService,
