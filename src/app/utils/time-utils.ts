@@ -13,3 +13,10 @@ export function parseTimeToMinutes(val: string) {
     return parseFloat(val)
   }
 }
+
+export function minutesToString(minutes: number) {
+  minutes = Math.round(minutes * 100) / 100
+  const hours = Math.floor(minutes / 60)
+  const minutesUpTo60 = minutes % 60
+  return (hours ? `${hours}h ` : ``) + `${minutesUpTo60}m`
+}
