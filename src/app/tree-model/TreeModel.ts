@@ -84,6 +84,12 @@ export class OryTreeNode implements TreeNode, HasItemData {
   droppable?: boolean;
   selectable?: boolean;
 
+  // ==== End of PrimeNG's TreeNode
+
+  get title() {
+    return this.itemData && this.itemData.title
+  }
+
   /** TODO: rename to itemData$ and use CachedSubject to get initial val too */
   onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
