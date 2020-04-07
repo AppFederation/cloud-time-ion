@@ -15,6 +15,8 @@ export abstract class DbTreeService {
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
   abstract addChildNode(parentNode: OryTreeNode, newNode: OryTreeNode)
 
+  abstract addAssociateSiblingAfterNode(parentNode: OryTreeNode, nodeToAssociate: OryTreeNode, associateAfterNode: OryTreeNode)
+
   abstract loadNodesTree(listener: DbTreeListener)
 
   abstract patchItemData(itemId: string, itemData: any)

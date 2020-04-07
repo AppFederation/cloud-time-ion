@@ -252,6 +252,11 @@ export class FirestoreTreeService extends DbTreeService {
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
   }
 
+  addAssociateSiblingAfterNode(parentNode: OryTreeNode, nodeToAssociate: OryTreeNode, associateAfterNode: OryTreeNode) {
+    const itemDocRef = this.itemDocById(nodeToAssociate.itemId)
+    this.addNodeInclusionToParent(parentNode.itemId, nodeToAssociate.nodeInclusion, itemDocRef)
+  }
+
   patchItemData(itemId: string, itemData: any) {
     this.timeStamper.onBeforeSaveToDb(itemData)
 

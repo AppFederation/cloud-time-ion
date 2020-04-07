@@ -1,27 +1,26 @@
-import {TreeNode} from 'primeng/primeng'
-import {NodeAddEvent, NodeInclusion} from './TreeListener'
+import { TreeNode } from 'primeng/primeng'
+import {
+  NodeAddEvent,
+  NodeInclusion,
+} from './TreeListener'
 import {
   debugLog,
-  errorAlert,
+  FIXME,
+  traceLog,
 } from '../utils/log'
-import {DbTreeService} from './db-tree-service'
+import { DbTreeService } from './db-tree-service'
 import {
   EventEmitter,
   Injectable,
   Injector,
 } from '@angular/core'
+import { isNullOrUndefined } from 'util'
 import {
-  isNull,
-  isNullOrUndefined,
-} from 'util'
-import {
-  defined,
   isEmpty,
   nullOrUndef,
 } from '../utils/utils'
-import {sumBy} from 'lodash';
+import { sumBy } from 'lodash';
 import { OryColumn } from '../tree-shared/OryColumn'
-import { FIXME } from '../utils/log'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
 import { MultiMap } from '../utils/multi-map'
 import {
@@ -30,16 +29,17 @@ import {
 } from './node-orderer'
 import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
-import { ITEM_CLASSES } from '../tree-model-oryol/OryolItemClasses'
 import { DbItem } from '../db/DbItem'
 import {
-  count,
   sumRecursivelyIncludingRoot,
   sumRecursivelyJustChildren,
 } from '../utils/collection-utils'
 import { HasItemData } from './has-item-data'
 import { DataItemsService } from '../core/data-items.service'
-import { parseTimeToMinutes } from '../utils/time-utils'
+import {
+  minutesToString,
+  parseTimeToMinutes,
+} from '../utils/time-utils'
 
 
 /**
@@ -61,7 +61,7 @@ let generateNewInclusionId = function () {
 
 /** ======================================================================================= */
 /** ======================================================================================= */
-export class OryTreeNode implements TreeNode, HasItemData {
+export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   // ==== from PrimeNG's TreeNode:
 
@@ -96,10 +96,9 @@ export class OryTreeNode implements TreeNode, HasItemData {
 
   startTime = new Date()
 
-  /** FIXME: not yet used */
-  dbItem: DbItem
+  /** FIXME: not yet fully used; TODO: prevent duplicates - map id to canonical */
+  dbItem = new DbItem(this.itemId)
 
-  // ==== End of PrimeNG's TreeNode
 
   /** 2020-02-02 Decided that done/cancelled should be a core concept to tree node,
    * as it will simplify a lot of methods, at minimal cost in this file. Also, where else to put it... */
@@ -376,8 +375,16 @@ export class OryTreeNode implements TreeNode, HasItemData {
     FIXME('addAssociationsHere not impl')
     for ( const nodeToAssociate of nodes ) {
       const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId())
+      this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
+        {
+          inclusionBefore: this.lastChildNode && this.lastChildNode.nodeInclusion,
+          inclusionAfter: null,
+        },
+        newInclusion,
+      )
+
       const newNode = new OryTreeNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData)
-      // this.treeModel.treeService.addSiblingAfterNode(this.lastChildNode, )
+      this.treeModel.treeService.addAssociateSiblingAfterNode(this, newNode, this.lastChildNode)
     }
   }
 
@@ -399,16 +406,20 @@ export class OryTreeNode implements TreeNode, HasItemData {
         },
         inclusionToModify
       )
-      this.treeModel.treeService.patchChildInclusionData(
-        /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
-        inclusionToModify.nodeInclusionId,
-        inclusionToModify,
-        childNodeToAssociate.itemId
-      )
+      this.patchChildInclusionData(inclusionToModify, childNodeToAssociate)
       childNodeToAssociate.parent2._removeChild(childNodeToAssociate)
       const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : this.children.length
       this._appendChildAndSetThisAsParent(childNodeToAssociate, insertionIndex)
     }
+  }
+
+  private patchChildInclusionData(inclusionToModify, childNodeToAssociate) {
+    this.treeModel.treeService.patchChildInclusionData(
+      /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
+      inclusionToModify.nodeInclusionId,
+      inclusionToModify,
+      childNodeToAssociate.itemId,
+    )
   }
 
   deleteWithoutConfirmation() {
@@ -416,9 +427,13 @@ export class OryTreeNode implements TreeNode, HasItemData {
     this.parent2._removeChild(this)
   }
 
-  patchItemData(itemDataPatch: any) {
+  patchItemData(itemDataPatch: any /* TData */) {
+    Object.assign(this.itemData, itemDataPatch)
     this.treeModel.treeService.patchItemData(this.itemId, itemDataPatch)
+    // TODO: fireOnChangeItemDataOfChildOnParents ?
     this.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
+    this.dbItem.data$.next(this.itemData)
+    // this.itemData$.next()
   }
 
   reorderUp() {
@@ -461,7 +476,15 @@ export class OryTreeNode implements TreeNode, HasItemData {
     // TODO: replace patch with set due to problems with "no document to update" after quickly reordering/indenting after creating
     const inclusion = this.nodeInclusion
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
-    // TODO: reorder locally to avoid UI lag, e.g. when quickly reordering up/down and perhaps will remove keyboard appearing/disappearing on android
+
+    { // reorder locally to avoid UI lag, e.g. when quickly reordering up/down and perhaps will remove keyboard appearing/disappearing on android
+      this.parent2._removeChild(this)
+      const insertionIndex = this.parent2.findInsertionIndexForNewInclusion(inclusion)
+      this.parent2._appendChildAndSetThisAsParent(this, insertionIndex)
+      // TODO: duplicate with onNodeInclusionModified - extract applyParentAndOrder or smth
+    }
+
+    // this.patchChildInclusionData()
     this.treeModel.treeService.patchChildInclusionData(
       this.parent2.itemId,
       this.nodeInclusion.nodeInclusionId,
@@ -479,9 +502,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
   /** TODO: move to NumericCell */
   timeLeftSumText(column: OryColumn) {
     const minutesTotalLeft = this.valueLeftSum(column)
-    const hours = Math.floor(minutesTotalLeft / 60)
-    const minutesUpTo60 = minutesTotalLeft % 60
-    return (hours ? `${hours}h ` : ``) + `${minutesUpTo60}m`
+    return minutesToString(minutesTotalLeft)
   }
 
   /** TODO: move to NumericCell */
@@ -546,8 +567,7 @@ export class OryTreeNode implements TreeNode, HasItemData {
       if ( this.showEffectiveValue(column) ) {
         return this.valueLeftSum(column)
       }
-      const columnValue = column.getValueFromItemData(this.itemData)
-      const estimatedTime = parseTimeToMinutes(columnValue) || 0
+      const estimatedTime = this.getMinutes(column)
       // console.log('estimatedTime for sum', estimatedTime)
       return estimatedTime
     } else {
@@ -734,7 +754,7 @@ export class TreeModel {
   isRootShown = false
 
   navigation = new class Navigation {
-    visualRoot: OryTreeNode = this.treeModel.root
+    visualRoot: OryTreeNode = null
     visualRoot$ = new ReplaySubject<OryTreeNode>(1)
 
     constructor(public treeModel: TreeModel) {
@@ -748,6 +768,7 @@ export class TreeModel {
       this.visualRoot = node
       this.treeModel.isRootShown = node !== this.treeModel.root
       node.expanded = true
+      // this.treeModel.focus.lastFocusedCell.node.
       // this.treeModel.focus.setFocused(node, )
       // TODO: set focused
       this.visualRoot$.next(this.visualRoot)
@@ -766,9 +787,11 @@ export class TreeModel {
 
   }(this)
 
-  // mapNodeInclusionIdToNode = new MultiMap<string, OryTreeNode>()
-  mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
+  mapNodeInclusionIdToNodes = new MultiMap<string, OryTreeNode>()
+  // mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
+
   mapItemIdToNode = new MultiMap<string, OryTreeNode>()
+
   isApplyingFromDbNow = false
 
   focus = new class Focus {
@@ -818,24 +841,26 @@ export class TreeModel {
   onNodeAdded(event: NodeAddEvent) {
     debugLog('onNodeAdded', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
-    const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
+    const existingNodes = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     try {
       this.isApplyingFromDbNow = true
-      if (existingNode) {
-        debugLog('node inclusion already exists: ', nodeInclusionId)
-        // setTimeout(() => {
-        //   setTimeout(() => {
-            // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
-            existingNode.itemData = event.itemData
-            debugLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
+      if ( existingNodes && existingNodes.length > 0 ) {
+        traceLog('node(s) for inclusion already exist(s): ', nodeInclusionId)
+        for ( const existingNode of existingNodes ) {
+          // setTimeout(() => {
+          //   setTimeout(() => {
+          // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
+          existingNode.itemData = event.itemData
+          traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
 
-        existingNode.onChangeItemData.emit(event.itemData)
-        existingNode.fireOnChangeItemDataOfChildOnParents()
-        // TODO: unify with the else branch and emit onChangeItemData* stars there too
+          existingNode.onChangeItemData.emit(event.itemData)
+          existingNode.fireOnChangeItemDataOfChildOnParents()
+          // TODO: unify with the else branch and emit onChangeItemData* stars there too
           // })
-        // }, 0)
-
+          // }, 0)
+        }
       } else {
+        // node with inclusion does not yet exist
         if ( ! event.itemData.deleted || this.showDeleted ) {
           const parentNodes = this.mapItemIdToNode.get(event.immediateParentId)
           if ( ! parentNodes ) {
@@ -847,6 +872,7 @@ export class TreeModel {
               const newTreeNode = new OryTreeNode(event.nodeInclusion, event.itemId, this, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
+              // console.log('onItemWithDataAdded$.next(newTreeNode)')
             }
           }
         }
@@ -860,8 +886,9 @@ export class TreeModel {
   onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
     // TODO: ensure this same code is executed locally immediately after reorder/move, without waiting for DB
     // if ( nodeInclusionData.parentNode)
-    const node: OryTreeNode | undefined = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
-    // if ( node.parent2.itemId !== newParentItemId ) {
+    const nodes: OryTreeNode[] | undefined = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
+    for (const node of nodes) {
+      // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
       node.parent2._removeChild(node)
       const newParents = this.mapItemIdToNode.get(newParentItemId)
@@ -877,6 +904,7 @@ export class TreeModel {
         newParent._appendChildAndSetThisAsParent(node, insertionIndex)
       }
       node.nodeInclusion = nodeInclusionData
+    }
 
     // } else { /* same parent */
     //   node.nodeInclusion = nodeInclusionData
@@ -896,7 +924,7 @@ export class TreeModel {
     // NOTE: does not yet support the same node being in multiple places
     // NOTE: this should register nodeInclusion id
 
-    this.mapNodeInclusionIdToNode.set(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
+    this.mapNodeInclusionIdToNodes.add(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
     this.addNodeToMapByItemId(nodeToRegister)
   }
 
@@ -904,11 +932,11 @@ export class TreeModel {
     this.mapItemIdToNode.add(nodeToRegister.itemId, nodeToRegister)
   }
 
-  private nodeInclusionExists(nodeInclusionId: string) {
-    const existingNode = this.mapNodeInclusionIdToNode.get(nodeInclusionId)
-    // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
-    return defined(existingNode)
-  }
+  // private nodeInclusionExists(nodeInclusionId: string) {
+  //   const existingNode = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
+  //   // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
+  //   return defined(existingNode)
+  // }
 
   getNodesByItemId(itemId: string) {
     const nodes: OryTreeNode[] = this.mapItemIdToNode.get(itemId)
