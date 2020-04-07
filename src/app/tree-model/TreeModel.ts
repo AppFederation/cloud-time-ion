@@ -762,6 +762,9 @@ export class TreeModel {
     }
 
     navigateInto(node: OryTreeNode | string) {
+      if ( this.visualRoot === node ) {
+        return // Prevent navigation if currently navigated-to (visual root) node is the same
+      }
       if ( typeof node === 'string' ) {
         node = this.treeModel.getNodesByItemId(node)[0]
       }
