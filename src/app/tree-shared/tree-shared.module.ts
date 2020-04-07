@@ -48,6 +48,7 @@ import { TimeModule } from '../AppFedSharedEmu/time/time.module'
   exports: [
     NodeContentComponent,
     ExampleCellComponent,
+    NodeClassIconComponent,
   ],
   entryComponents: [
     ConfirmDeleteTreeNodeComponent,

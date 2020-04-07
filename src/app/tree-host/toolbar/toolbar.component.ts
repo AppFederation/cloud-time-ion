@@ -20,7 +20,10 @@ export class ToolbarComponent implements OnInit {
   constructor(
     public debugService: DebugService,
     public configService: ConfigService,
-  ) { }
+    ngbPopoverConfig: NgbPopoverConfig,
+  ) {
+    ngbPopoverConfig.placement = 'bottom-left' // 'right' // 'hover';
+  }
 
   ngOnInit() {
   }

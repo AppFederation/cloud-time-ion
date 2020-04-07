@@ -9,6 +9,18 @@
   <!--Start:-->
   <!--End: {{treeModel.endTime()}}-->
 
+  <a
+    (window:keydown.meta.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+    (window:keydown.control.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+  >
+    <fa-icon #searchPopOverTrigger="ngbPopover" [ngbPopover]="searchPopupContent"
+      icon="search" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
+  </a>
+
+  <ng-template #searchPopupContent>
+    <app-search
+    ></app-search>
+  </ng-template>
 
   <fa-icon icon="brain" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
   <fa-icon icon="shopping-cart" class="actionable"></fa-icon>

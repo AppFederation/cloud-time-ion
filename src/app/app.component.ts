@@ -4,6 +4,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DialogService } from './core/dialog.service'
+import { SearchService } from './core/search.service'
 
 declare var $: any
 
@@ -19,6 +20,7 @@ export class AppComponent implements AfterViewInit {
 
   constructor(
     public dialogService: DialogService,
+    public searchService: SearchService /* to ensure it gets created to get results */,
     // public dbService: FirestoreTreeService,
   ) {
 
