@@ -9,6 +9,8 @@ import { TreeTableModule } from 'primeng/primeng'
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popover.component'
 import { ReactiveFormsModule } from '@angular/forms'
+import { RouterModule } from '@angular/router'
+import { SearchModule } from '../search/search.module'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
@@ -20,6 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms'
     TreeTableModule,
     SharedModule,
     ReactiveFormsModule,
+    RouterModule,
+    SearchModule,
   ],
   declarations: [
     TreeHostComponent,

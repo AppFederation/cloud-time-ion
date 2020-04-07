@@ -6,6 +6,7 @@ import {
 import { DebugService } from '../../core/debug.service'
 import { TreeHostComponent } from '../tree-host/tree-host.component'
 import { ConfigService } from '../../core/config.service'
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-toolbar',
