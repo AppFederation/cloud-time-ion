@@ -8,6 +8,7 @@ import { ignoreUnused } from '../../utils/utils'
 
 export class ColumnDefs {
   title = new OryColumn('title')
+  subTitle = new OryColumn('subTitle')
   estimatedTimeMin = new OryColumn('estimatedTimeMin')
   estimatedTime = new OryColumn('estimatedTime')
   estimatedTimeMax = new OryColumn('estimatedTimeMax')
