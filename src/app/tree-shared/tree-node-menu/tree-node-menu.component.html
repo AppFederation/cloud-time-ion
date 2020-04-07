@@ -56,6 +56,9 @@ In n Places:
 <p style="margin-top: .5em">
   Created: {{getWhenCreated()}}
 </p>
+<p style="margin-top: .5em">
+  Done: {{treeNode?.itemData?.isDone?.toDate?.apply(treeNode?.itemData?.isDone)}}
+</p>
 
 <app-node-class-picker
 ></app-node-class-picker>

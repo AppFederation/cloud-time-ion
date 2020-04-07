@@ -75,7 +75,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   cells: Cells
 
-  isDone: boolean = false
+  /* TODO: remove */
+  isDone: Date | true /* for backwards compatibility */ | null = null
 
   nodeContentViewSyncer: NodeContentViewSyncer
 
@@ -149,7 +150,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
     if (isNullOrUndefined(this.isDone)) {
-      this.isDone = false;
+      this.isDone = null; // TODO: test for done timestamp
     }
 
     this.nodeContentViewSyncer.applyItemDataValuesToViews()
@@ -196,7 +197,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
 
     if ( timeTrackedEntry.wasTracked ) {
-      this.isDone = !this.isDone
+      this.isDone = this.isDone ? null : new Date() // TODO: test for done timestamp
       this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone), this.isDone, null)
       this.focusNodeBelow(event)
     } else {
