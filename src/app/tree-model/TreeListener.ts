@@ -1,12 +1,16 @@
 /**
  * Created by kd on 2017-10-28.
  */
+import {
+  ItemId,
+  NodeInclusionId,
+} from '../db/DbItem'
 
 export class NodeInclusion {
   constructor(
     // public orderThisBeforeId,
     // public orderThisAfterId,
-    public nodeInclusionId: string,
+    public nodeInclusionId: NodeInclusionId,
     /** note other ordering implementations might not use orderNum */
     public orderNum?: number,
   ) {}
@@ -15,9 +19,9 @@ export class NodeInclusion {
 export class NodeAddEvent {
   constructor (
     public parents,
-    public immediateParentId: string,
+    public immediateParentItemId: ItemId,
     public itemData: any,
-    public itemId: string,
+    public itemId: ItemId,
     public pendingListeners: number,
     public nodeInclusion: NodeInclusion
   ) {}

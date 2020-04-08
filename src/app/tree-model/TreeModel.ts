@@ -29,7 +29,11 @@ import {
 } from './node-orderer'
 import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
-import { DbItem } from '../db/DbItem'
+import {
+  DbItem,
+  ItemId,
+  NodeInclusionId,
+} from '../db/DbItem'
 import {
   sumRecursivelyIncludingRoot,
   sumRecursivelyJustChildren,
@@ -90,14 +94,14 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return this.itemData && this.itemData.title
   }
 
-  /** TODO: rename to itemData$ and use CachedSubject to get initial val too */
+  /** TODO: rename to itemData$ and use CachedSubject to get initial val too; unify with DbItem.data$ */
   onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
 
   startTime = new Date()
 
-  /** FIXME: not yet fully used; TODO: prevent duplicates - map id to canonical */
-  dbItem = new DbItem(this.itemId)
+  /** FIXME: not yet fully used because we are still using itemData */
+  dbItem = this.treeModel.obtainItemById(this.itemId) // new DbItem(this.itemId)
 
 
   /** 2020-02-02 Decided that done/cancelled should be a core concept to tree node,
@@ -746,8 +750,6 @@ export class NodeFocusOptions {
 @Injectable()
 export class TreeModel {
 
-  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
-
   nodeOrderer = new NodeOrderer()
 
   /** hardcoded for now, as showing real root-most root is not implemented in UI due to issues */
@@ -758,7 +760,6 @@ export class TreeModel {
     visualRoot$ = new ReplaySubject<OryTreeNode>(1)
 
     constructor(public treeModel: TreeModel) {
-      this.navigateToRoot()
     }
 
     navigateInto(node: OryTreeNode | string) {
@@ -790,10 +791,11 @@ export class TreeModel {
 
   }(this)
 
-  mapNodeInclusionIdToNodes = new MultiMap<string, OryTreeNode>()
-  // mapNodeInclusionIdToNode = new Map<string, OryTreeNode>()
+  mapNodeInclusionIdToNodes = new MultiMap<NodeInclusionId, OryTreeNode>()
 
-  mapItemIdToNode = new MultiMap<string, OryTreeNode>()
+  mapItemIdToNodes = new MultiMap<ItemId, OryTreeNode>()
+
+  private mapItemById = new Map<ItemId, DbItem>()
 
   isApplyingFromDbNow = false
 
@@ -827,6 +829,9 @@ export class TreeModel {
 
   dataItemsService = this.injector.get(DataItemsService)
 
+  /** Init last, because OryTreeNode depends on stuff from TreeModel */
+  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
+
   constructor(
     public injector: Injector,
     /* TODO Rename to dbTreeService */
@@ -836,13 +841,23 @@ export class TreeModel {
   ) {
     this.addNodeToMapByItemId(this.root)
     this.permissionsManager = new PermissionsManager(this.authService.userId)
+    this.navigation.navigateToRoot()
   }
 
   /* TODO: unify onNodeAdded, onNodeInclusionModified; from OryTreeNode: moveInclusionsHere, addAssociationsHere, addChild, _appendChildAndSetThisAsParent,
    * reorder(). In general unify reordering with moving/copying inclusions and adding nodes */
 
+  obtainItemById(itemId: ItemId): DbItem {
+    let item = this.mapItemById.get(itemId)
+    if ( ! item ) {
+      item = new DbItem(itemId)
+      this.mapItemById.set(itemId, item)
+    }
+    return item
+  }
+
   onNodeAdded(event: NodeAddEvent) {
-    debugLog('onNodeAdded', event)
+    debugLog('onNodeAdded NodeAddEvent', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
     const existingNodes = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     try {
@@ -865,9 +880,10 @@ export class TreeModel {
       } else {
         // node with inclusion does not yet exist
         if ( ! event.itemData.deleted || this.showDeleted ) {
-          const parentNodes = this.mapItemIdToNode.get(event.immediateParentId)
+          const parentNodes = this.mapItemIdToNodes.get(event.immediateParentItemId)
+          traceLog('onNodeAdded parentNodes', parentNodes)
           if ( ! parentNodes ) {
-            console.log('onNodeAdded: no parent', event.immediateParentId)
+            console.log('onNodeAdded: no parent', event.immediateParentItemId)
           } else {
             for (const parentNode of parentNodes) {
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
@@ -886,7 +902,7 @@ export class TreeModel {
   }
 
   /* Can unify this with moveInclusionsHere() */
-  onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
+  onNodeInclusionModified(nodeInclusionId: NodeInclusionId, nodeInclusionData, newParentItemId: ItemId) {
     // TODO: ensure this same code is executed locally immediately after reorder/move, without waiting for DB
     // if ( nodeInclusionData.parentNode)
     const nodes: OryTreeNode[] | undefined = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
@@ -894,7 +910,7 @@ export class TreeModel {
       // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
       node.parent2._removeChild(node)
-      const newParents = this.mapItemIdToNode.get(newParentItemId)
+      const newParents = this.mapItemIdToNodes.get(newParentItemId)
       // FIXME: need to create new node instead of moving existing
       debugLog('onNodeInclusionModified newParents.length', newParents.length)
       if ( newParents && newParents.length > 1 ) {
@@ -932,7 +948,7 @@ export class TreeModel {
   }
 
   private addNodeToMapByItemId(nodeToRegister: OryTreeNode) {
-    this.mapItemIdToNode.add(nodeToRegister.itemId, nodeToRegister)
+    this.mapItemIdToNodes.add(nodeToRegister.itemId, nodeToRegister)
   }
 
   // private nodeInclusionExists(nodeInclusionId: string) {
@@ -941,8 +957,8 @@ export class TreeModel {
   //   return defined(existingNode)
   // }
 
-  getNodesByItemId(itemId: string) {
-    const nodes: OryTreeNode[] = this.mapItemIdToNode.get(itemId)
+  getNodesByItemId(itemId: ItemId) {
+    const nodes: OryTreeNode[] = this.mapItemIdToNodes.get(itemId)
     return nodes
   }
 

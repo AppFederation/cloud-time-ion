@@ -6,6 +6,8 @@ import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 export type ItemId = string
 
+export type NodeInclusionId = string
+
 export class DbItem<TData = any> {
 
   constructor(
