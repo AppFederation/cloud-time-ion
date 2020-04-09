@@ -485,6 +485,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
       this.parent2._removeChild(this)
       const insertionIndex = this.parent2.findInsertionIndexForNewInclusion(inclusion)
       this.parent2._appendChildAndSetThisAsParent(this, insertionIndex)
+      this.treeModel.treeListener.onAfterNodeMoved() // fixes focus being lost after reorder
       // TODO: duplicate with onNodeInclusionModified - extract applyParentAndOrder or smth
     }
 
