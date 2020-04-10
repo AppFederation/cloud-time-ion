@@ -39,6 +39,9 @@ export class TimeTrackingCellComponent implements OnInit {
   }
 
   onPlayClicked($event: MouseEvent) {
+    Notification.requestPermission().then(ret => {
+      console.log(`Notification.requestPermission .then`, ret)
+    })
     this.timeTrackedEntry.startOrResumeTrackingIfNeeded() // could be first start or unpause
     $event.stopPropagation()
     // this.timeTrackingService.resume()
