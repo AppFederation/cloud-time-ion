@@ -26,6 +26,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
   public locallyVisibleChangesThrottled$ = new CachedSubject<T>(this.asT)
   public localUserSavesToThrottle$ = new CachedSubject<T>(this.asT)
+  // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get asT() { return this as unknown as T}
 
@@ -38,7 +39,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   ) {
     if ( !id ) {
       this.id = '' + this.odmService.className + "__" + new Date().toISOString()
-        .replace('T', '_')
+        .replace('T', '__')
         .replace(/:/g, '.') + '_' // hack
     }
     this.localUserSavesToThrottle$.pipe(
