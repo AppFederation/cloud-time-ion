@@ -34,28 +34,29 @@
 <!--<div class="sc-ion-picker-md-h sc-ion-picker-md-s md picker-md hydrated">-->
   <div
     [hidden]="! showTimePicker"
-    class="picker-wrapper sc-ion-picker-md" style="height: 300px; width: 300px">
-<!--    <div class="picker-toolbar sc-ion-picker-md">-->
-<!--      <div class="picker-toolbar-button sc-ion-picker-md">-->
-<!--        <button type="button" class="picker-button ion-activatable sc-ion-picker-md">Done</button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="picker-columns sc-ion-picker-md">-->
-<!--      <div class="picker-above-highlight sc-ion-picker-md"></div>-->
+    class="picker-wrapper sc-ion-picker-md" style="height: 300px; width: 300px"
+  >
+    Picker:
+    <div class="picker-toolbar sc-ion-picker-md">
+      <div class="picker-toolbar-button sc-ion-picker-md">
+        <button type="button" class="picker-button ion-activatable sc-ion-picker-md">Done</button>
+      </div>
+    </div>
+    <div class="picker-columns sc-ion-picker-md">
+      <div class="picker-above-highlight sc-ion-picker-md"></div>
+
+      <ion-picker-column
+        [col]="colHours()" class="sc-ion-picker-md md picker-col hydrated"
+      ></ion-picker-column>
 
 
-<!--      <ion-picker-column-->
-<!--        [col]="colHours()" class="sc-ion-picker-md md picker-col hydrated"-->
-<!--      ></ion-picker-column>-->
-
-
-<!--      <div class="picker-below-highlight sc-ion-picker-md"></div>-->
-<!--    </div>-->
+      <div class="picker-below-highlight sc-ion-picker-md"></div>
+    </div>
 
   </div>
 <!--</div>-->
 
-
+<!-- From Mike Hartington: https://demo.mobiscroll.com/jquery/datetime/mobile-display-modes# -->
 <!--IonPicker:-->
 <!--<ion-picker-->
 <!--  [columns]="[_pickerColumn]"-->
