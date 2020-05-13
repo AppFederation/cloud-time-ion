@@ -13,6 +13,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms'
+import { debugLog } from '../../../utils/log'
 
 @Component({
   selector: 'app-toolbar-popover',
@@ -46,6 +47,11 @@ export class ToolbarPopoverComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(val => {
       this.configService.patchConfig(val)
     })
+  }
+
+  onDebugChange($event) {
+    debugLog('$event', $event)
+    this.debugService.isDebug$.next($event.target.checked)
   }
 
 }

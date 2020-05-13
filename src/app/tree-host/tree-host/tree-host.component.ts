@@ -144,11 +144,6 @@ export class TreeHostComponent implements OnInit {
     })
   }
 
-  onDebugChange($event) {
-    debugLog('$event', $event)
-    this.debugService.isDebug$.next($event.target.checked)
-  }
-
   navigateUp($event) {
     this.treeModel.navigation.navigateToParent()
     this.reFocusLastFocused()
