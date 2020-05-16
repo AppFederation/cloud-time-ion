@@ -37,11 +37,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     public id?: OdmItemId<T>,
     public isDeleted?: Date,
   ) {
-    if ( !id ) {
-      this.id = '' + this.odmService.className + "__" + new Date().toISOString()
-        .replace('T', '__')
-        .replace(/:/g, '.') + '_' // hack
-    }
+    // do not call as we want timestamp of first write this.setIdIfNecessary()
     this.localUserSavesToThrottle$.pipe(
       throttleTimeWithLeadingTrailing(this.odmService.throttleSaveToDbMs)
     ).subscribe(value => {
@@ -55,7 +51,17 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.onModified()
   }
 
+  private setIdIfNecessary() {
+    if ( ! this.id ) {
+      this.id = '' + this.odmService.className + "__" + new Date().toISOString()
+        .replace('T', '__')
+        .replace(/:/g, '.') + '_' // hack
+    }
+  }
+
   patchThrottled(patch: OdmPatch<TData>) {
+    console.log(`patchThrottled`)
+    this.setIdIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
