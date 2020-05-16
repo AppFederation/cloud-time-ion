@@ -11,6 +11,8 @@ export class JournalNumericFieldsComponent implements OnInit {
 
   numDescriptors = JournalNumericDescriptors.instance.array
 
+  search = ''
+
   @Input() journalEntry
 
   constructor() { }
