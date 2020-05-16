@@ -23,6 +23,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   importance = jnd({subTitle: `of this journal entry`})
   mood = jnd()
+  motivation = jnd()
+  energy = jnd()
   hope = jnd()
   health = jnd()
   rest = jnd('tired')
