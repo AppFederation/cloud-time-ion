@@ -1,6 +1,6 @@
 <app-time-tracking-cell
-  (click)="navigateTo()"
-  *ngIf="timeTrackingService.timeTrackedEntry$ | async; let entry"
+  *ngFor="let entry of (timeTrackingService.timeTrackedEntries$ | async)"
+  (click)="navigateTo(entry)"
   [timeTrackedEntry]="entry"
   [toolBarMode]="true"
 ></app-time-tracking-cell>

@@ -7,6 +7,7 @@ import { OryTreeNode } from '../tree-model/TreeModel'
 import { columnDefs } from '../tree-shared/node-content/Columns'
 import { Subscription } from 'rxjs'
 import { minutesToString } from '../utils/time-utils'
+import { ConfigService } from '../core/config.service'
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +16,50 @@ export class PlanExecutionService {
   private dbItemDataSubscriptions: Subscription[] = []
   private currentlyTrackedEntries: TimeTrackedEntry[] = []
 
+  notificationsEnabled = true
+
   constructor(
     private timeTrackingService: TimeTrackingService,
+    private configService: ConfigService,
   ) {
-    this.timeTrackingService.timeTrackedEntry$.subscribe(ttEntryNotified => {
-      Notification.requestPermission(() => {}).then(() => {
-      })
-      for ( const curTrackedEntry of this.currentlyTrackedEntries ) {
-        curTrackedEntry.cancelAllNotifications()
-      }
-      this.currentlyTrackedEntries = [ ttEntryNotified /* emulate multi-time-tracking */ ]
-      this.cancelDbItemDataSubscriptions()
-
-      for (const ttEntry of this.currentlyTrackedEntries) {
-        this.subscribeForTtEntry(ttEntry)
-      }
+    this.configService.config$.subscribe(config => {
+      this.notificationsEnabled = config.planExecutionNotificationsEnabled
+      console.log(`PlanExecutionService config$`, config)
+      this.reset()
     })
+    this.timeTrackingService.timeTrackedEntries$.subscribe(newTtEntries => {
+      console.log(`PlanExecutionService timeTrackedEntries$`, newTtEntries)
+      this.onEntriesChanged(newTtEntries)
+    })
+  }
+
+  private onEntriesChanged(newTtEntries: TimeTrackedEntry[]) {
+    Notification.requestPermission(() => {
+    }).then(() => {
+    })
+    this.cancelAllNotifications()
+    this.cancelDbItemDataSubscriptions()
+
+    this.currentlyTrackedEntries = newTtEntries
+
+    if ( this.notificationsEnabled ) {
+      for (const ttEntry of this.currentlyTrackedEntries) {
+        if ( ttEntry.isTrackingNow ) {
+          this.subscribeForTtEntry(ttEntry)
+        }
+      }
+    }
+  }
+
+  private reset() {
+    this.onEntriesChanged(this.currentlyTrackedEntries)
+  }
+
+
+  private cancelAllNotifications() {
+    for (const curTrackedEntry of this.currentlyTrackedEntries) {
+      curTrackedEntry.cancelAllNotifications()
+    }
   }
 
   private subscribeForTtEntry(ttEntry: TimeTrackedEntry) {
@@ -60,16 +89,19 @@ export class PlanExecutionService {
       90, /* `Time to start wrapping-up!` */
       95, /* `Time to start wrapping-up!` */
       100, /* `Should be finished!` */
-      105, /* `Should be finished!` */
+      // 105, /* `Should be finished!` */
       110, /* `You are getting in trouble` */
-      120, /* `Stop this or re-schedule / re-plan` */
+      // 120, /* `Stop this or re-schedule / re-plan` */
       130, /* `Seriously, something is wrong, You were supposed to finish` */
-      150, /* `Whooa!` */
-      160, /* `Whooa!` */
+      // 150, /* `Whooa!` */
+      // 160, /* `Whooa!` */
       170, /* `Whooa!` */
       180, /* `Whooa!` */
       190, /* `Whooa!` */
       200, /* `Whooa!` */
+      300, /* `Whooa!` */
+      400, /* `Whooa!` */
+      500, /* `Whooa!` */
     ]
     ttEntry.cancelAllNotifications()
     for (const percent of percentages) {

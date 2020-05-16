@@ -38,6 +38,13 @@
     Time-tracked Values
   </label>
 
+  <label class="checkbox" >
+    <input type="checkbox"
+           [formControl]="controls.planExecutionNotificationsEnabled"
+    >
+    Plan Execution Notifications Enabled
+  </label>
+
   Items: {{treeHost.treeModel.mapItemIdToNodes.keyCount}}
 
 </div>

@@ -30,6 +30,8 @@ export class ToolbarPopoverComponent implements OnInit {
     showMissingValuesCount: new FormControl(),
     showAggregateValues: new FormControl(),
     showTimeTrackedValue: new FormControl(),
+    planExecutionNotificationsEnabled: new FormControl(),
+    planExecutionNotificationTimePercentages: new FormControl(),
   }
 
   formGroup = new FormGroup(this.controls)
@@ -43,10 +45,15 @@ export class ToolbarPopoverComponent implements OnInit {
     // this.configService.config$.subscribe(val => {
     //   this.formGroup.setValue(val)
     // })
-    this.formGroup.setValue(this.configService.config$.lastVal)
+    this.setFormValue()
     this.formGroup.valueChanges.subscribe(val => {
       this.configService.patchConfig(val)
     })
+  }
+
+  private setFormValue() {
+    const formValue = this.configService.config$.lastVal
+    this.formGroup.patchValue(formValue)
   }
 
   onDebugChange($event) {

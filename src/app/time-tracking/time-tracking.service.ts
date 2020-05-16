@@ -163,6 +163,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     }
     this.patchItemTimeTrackingData(dataItemPatch)
     this.clearTimeouts()
+    this.timeTrackingService.emitTimeTrackedEntry(this)
   }
 
   private clearTimeouts() {
@@ -229,9 +230,9 @@ export class TimeTrackingService {
 
   // timeTrackingOf$ = new CachedSubject<TimeTrackable>()
 
-  timeTrackedEntry$ = new CachedSubject<TimeTrackedEntry>()
+  timeTrackedEntries$ = new CachedSubject<TimeTrackedEntry[]>()
 
-  get currentEntry() { return this.timeTrackedEntry$.lastVal }
+  get currentEntry() { return this.timeTrackedEntries$.lastVal }
 
   constructor(
     public timeService: TimeService,
@@ -274,7 +275,7 @@ export class TimeTrackingService {
   emitTimeTrackedEntry(entry: TimeTrackedEntry) {
     console.log('emitTimeTrackedEntry', entry)
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
-    this.timeTrackedEntry$.nextWithCache(entry)
+    this.timeTrackedEntries$.nextWithCache([entry] /* hack to emulate multi-tracking */)
   }
 
   now() {
@@ -292,7 +293,9 @@ export class TimeTrackingService {
 
   pauseCurrentOrNoop() {
     if ( this.currentEntry ) {
-      this.currentEntry.pauseOrNoop()
+      for ( let entryToPause of this.currentEntry ) {
+        entryToPause.pauseOrNoop()
+      }
     }
   }
 

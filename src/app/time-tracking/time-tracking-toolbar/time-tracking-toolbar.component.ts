@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TimeTrackingService } from '../time-tracking.service'
+import {
+  TimeTrackedEntry,
+  TimeTrackingService,
+} from '../time-tracking.service'
 import { NavigationService } from '../../core/navigation.service'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 import { PlanExecutionService } from '../../plan-execution/plan-execution.service'
@@ -20,8 +23,8 @@ export class TimeTrackingToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  navigateTo() {
-    const node = this.timeTrackingService.currentEntry.timeTrackable as OryTreeNode
+  navigateTo(entry: TimeTrackedEntry) {
+    const node = entry.timeTrackable as OryTreeNode
     node.navigateInto()
     this.navigationService.navigateToNodeLastChild(node)
     node.expansion.setExpanded(true, {recursive: false})
