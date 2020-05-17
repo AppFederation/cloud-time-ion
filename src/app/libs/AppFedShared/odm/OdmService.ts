@@ -4,6 +4,7 @@ import {OdmItem} from "./OdmItem";
 import {CachedSubject} from "../utils/CachedSubject";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
+import {SyncStatusService} from './sync-status.service'
 
 export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> = T> {
 
@@ -15,6 +16,8 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
 
   localItems$ = new CachedSubject<T[]>([])
+
+  syncStatusService = this.injector.get(SyncStatusService)
 
   protected constructor(
     protected injector: Injector,
@@ -63,7 +66,9 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
 
   saveNowToDb(itemToSave: T) {
     debugLog('saveNowToDb', itemToSave)
-    this.odmCollectionBackend.saveNowToDb(itemToSave)
+    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave)
+    // this.syncStatusService.syncStatus$.next({pendingUploadsCount: 1})
+    this.syncStatusService.handleSavingPromise(promise)
   }
 
   protected convertFromDbFormat(dbItem: TRaw): T {

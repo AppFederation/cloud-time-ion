@@ -26,7 +26,7 @@ export abstract class OdmCollectionBackend<T extends OdmItem<T>, TRaw = T> {
   ) {
   }
 
-  abstract saveNowToDb(item: T)
+  abstract saveNowToDb(item: T): Promise<any>
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId)
 

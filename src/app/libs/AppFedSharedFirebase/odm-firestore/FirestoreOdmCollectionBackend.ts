@@ -44,9 +44,14 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
     ignorePromise(this.itemDoc(itemId).delete())
   }
 
-  saveNowToDb(item: T) {
+  saveNowToDb(item: T): Promise<any> {
     debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
-    ignorePromise(this.itemDoc(item.id).set(item.toDbFormat()))
+    return this.itemDoc(item.id).set(item.toDbFormat())
+    // FIXME: update() to patch
+
+    // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+    /* Retrieved documents have a metadata.hasPendingWrites property that indicates whether the document has local changes that haven't been written to the backend yet.
+      You can use this property to determine the source of events received by your snapshot listener: */
   }
 
   private collection() {

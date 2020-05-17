@@ -9,6 +9,7 @@ import {JournalNumericFieldsComponent} from './journal-numeric-fields/journal-nu
 import {JournalTextFieldsComponent} from './journal-text-fields/journal-text-fields.component';
 import { JournalSituationsComponent } from './journal-situations/journal-situations.component'
 import {FormsModule} from '@angular/forms'
+import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {FormsModule} from '@angular/forms'
     JournalWritePageRoutingModule,
     IonicModule.forRoot(),
     FormsModule,
+    OdmModule,
   ],
 })
 export class JournalWritePageModule { }
