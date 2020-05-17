@@ -10,11 +10,11 @@
     *ngFor="let n of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
     size="small"
     style="flex-grow: 1; font-size: 10px; height: 2.5rem"
-    [ngClass]="{selectedMood: (numVal === n)}"
+    [ngClass]="{selectedMood: (numVal === n || numVal === n + 0.5)}"
     (click)="setNumVal(n)"
   >
     <!-- TODO (press)="setNumVal(n + .5)"-->
-    {{n}}
+    {{(numVal === n + 0.5) ? numVal : n}}
 
   </ion-button>
 </div>

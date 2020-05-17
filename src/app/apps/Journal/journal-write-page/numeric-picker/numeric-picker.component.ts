@@ -27,8 +27,12 @@ export class NumericPickerComponent implements OnInit {
 
   ngOnInit() {}
 
-  setNumVal(numVal: number) {
-    this.numVal = numVal
-    this.numericValue.next(numVal)
+  setNumVal(newNumVal: number) {
+    if ( newNumVal === this.numVal ) {
+      this.numVal = newNumVal + 0.5
+    } else {
+      this.numVal = newNumVal
+    }
+    this.numericValue.next(this.numVal)
   }
 }
