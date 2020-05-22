@@ -27,9 +27,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   energy = jnd()
   hope = jnd()
   health = jnd()
+  diet = jnd() // nutrition
   rest = jnd('tired')
   'sleep quality' = jnd()
   'sleep quantity' = jnd()
+  breathing = jnd()
   relax = jnd('stressed')
   satisfaction = jnd('frustrated' /*?*/)
   productivity = jnd()
@@ -41,6 +43,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   grooming = jnd()
   order = jnd('chaos')
   focus = jnd('distraction')
+  planning = jnd()
   courage = jnd('fear') // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd()
   confidence = jnd('doubts')
@@ -48,7 +51,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   long_term_thinking = jnd()
   rationality = jnd()
   mindfulness = jnd()
+  relationships = jnd()
   alcohol = jnd()
+  sport = jnd()
+  sex = jnd()
+  weather = jnd()
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
 
