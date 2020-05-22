@@ -1,1 +1,7 @@
-{{syncStatusService.syncStatus$ | async | json}}
+<ion-text color="primary" (click)="onClick($event)" style="cursor: pointer">
+  <img *ngIf="! (syncStatusService.syncStatus$ | async)?.pendingUploadsCount"
+    style="color: darkgray; height: 25px" src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg">
+  <ng-container *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount; let count">
+    {{count}}
+  </ng-container>
+</ion-text>

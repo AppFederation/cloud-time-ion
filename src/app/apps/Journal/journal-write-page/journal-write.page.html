@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button color="primary" slot="start" >< Previous</ion-button>
+    <ion-button color="primary" slot="start" >< </ion-button>
     <!-- TODO: this will go to previous journal entry to correct it if necessary -->
     <!-- TODO: Next button -->
     <ion-title>
       Journal
+      <odm-sync-status></odm-sync-status>
     </ion-title>
     <ion-button slot="end" color="secondary"
       (click)="newEntry()"
     >
-      NEW ENTRY
+      NEW
     </ion-button>
-    <odm-sync-status></odm-sync-status>
   </ion-toolbar>
 </ion-header>
 <ion-content>
