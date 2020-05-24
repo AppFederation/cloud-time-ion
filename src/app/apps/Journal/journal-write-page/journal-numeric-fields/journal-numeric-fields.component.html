@@ -9,7 +9,7 @@
   *ngFor="let descriptor of numDescriptors"
 >
   <apf-numeric-picker
-    [hidden]="! descriptor.id.toLowerCase().startsWith(search.toLowerCase())"
+    [hidden]="! descriptor.id.toLowerCase().includes(search.toLowerCase())"
     (numericValue)="onChangeNumericValue($event, descriptor)"
     [numFieldDef]="descriptor"
   ></apf-numeric-picker>
