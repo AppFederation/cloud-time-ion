@@ -4,10 +4,7 @@ import {JournalWritePage} from "./journal-write.page";
 
 const routes: Routes = [
   {
-    path: '', /* FIXME: hierarchical routes for journal */
-    redirectTo: 'write'
-  }, {
-    path: 'write/:journalEntryId',
+    path: ':journalEntryId',
     component: JournalWritePage,
   }
 ];
