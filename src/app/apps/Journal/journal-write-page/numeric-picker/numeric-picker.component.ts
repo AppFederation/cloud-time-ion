@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {JournalNumericDescriptor} from '../../models/JournalNumericDescriptors'
 
@@ -9,6 +9,7 @@ export type NumericPickerVal = number
   selector: 'apf-numeric-picker',
   templateUrl: './numeric-picker.component.html',
   styleUrls: ['./mood-picker.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NumericPickerComponent implements OnInit {
 
