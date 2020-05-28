@@ -36,6 +36,8 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     public odmService: OdmService<T>,
     public id?: OdmItemId<T>,
     public isDeleted?: Date,
+    public whenCreated?: any,
+    public whenLastModified?: any,
   ) {
     // do not call as we want timestamp of first write this.setIdIfNecessary()
     this.localUserSavesToThrottle$.pipe(
@@ -46,12 +48,14 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
       // this.odmService.saveNowToDb(this as unknown as T)
       this.odmService.saveNowToDb(this.asT)
       */
+
       this.odmService.saveNowToDb(value as T)
     })
     this.onModified()
   }
 
-  private setIdIfNecessary() {
+  private setIdAndWhenCreatedIfNecessary() {
+    this.whenCreated = this.whenCreated || new Date()
     if ( ! this.id ) {
       this.id = '' + this.odmService.className + "__" + new Date().toISOString()
         .replace('T', '__')
@@ -61,7 +65,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
 
   patchThrottled(patch: OdmPatch<TData>) {
     console.log(`patchThrottled`)
-    this.setIdIfNecessary()
+    this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)
     this.onModified()
@@ -70,6 +74,10 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.locallyVisibleChanges$.next(this.asT) // other code listens to this and throttles - saves
     this.odmService.emitLocalItems()
   }
+
+  // patchFieldThrottled(fieldKey: keyof TData, fieldPatch: (typeof this.fieldKey)) {
+  //
+  // }
 
   patchNow(patch: OdmPatch<TData>) {
     Object.assign(this, patch)
@@ -114,7 +122,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   }
 
   onModified() {
-
+    this.whenLastModified = new Date()
   }
 
   applyDataFromDbAndEmit(incomingConverted: T) {
