@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-title><ion-button (click)="window.history.back()"><</ion-button>
+      learn-item-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-button>DELETE</ion-button>
+
+  <div
+    *ngFor="let side of sidesDefsArray"
+  >
+    side: {{side.id}}
+    <ion-textarea></ion-textarea>
+  </div>
+
+</ion-content>

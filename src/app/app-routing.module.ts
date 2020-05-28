@@ -17,6 +17,11 @@ const routes: Routes = [
   { path: 'learn',
     loadChildren: './apps/Learn/search-or-add-learnable-item/search-or-add-learnable-item.module#SearchOrAddLearnableItemPageModule'
   },
+  { path: 'learn/item',
+    loadChildren: './apps/Learn/learn-item-details/learn-item-details.module#LearnItemDetailsPageModule'
+  },
+
+
 
 ];
 @NgModule({
