@@ -65,6 +65,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> =
   }
 
   saveNowToDb(itemToSave: T) {
+    itemToSave.onModified()
     debugLog('saveNowToDb', itemToSave)
     const promise = this.odmCollectionBackend.saveNowToDb(itemToSave)
     // this.syncStatusService.syncStatus$.next({pendingUploadsCount: 1})
