@@ -41,6 +41,7 @@
     "core-js": "^2.5.4",
     "firebase": "^5.11.1",
     "fp-ts": "^2.6.2",
+    "lodash-es": "^4.17.15",
     "moment": "^2.24.0",
     "ngx-moment": "^3.4.0",
     "ngx-quill": "^5.2.0",
