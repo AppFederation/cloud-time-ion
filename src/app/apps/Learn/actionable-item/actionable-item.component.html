@@ -1,0 +1,7 @@
+<p style="margin-left: 5px;" [routerLink]="['/learn/item/'+item.title]">
+  <!--      {{item | json}}-->
+  <!--      <ion-title>{{item.title}}</ion-title>-->
+  <ion-note *ngIf="item.isTask">TASK</ion-note>
+  &nbsp;
+  {{item.title}}
+</p>

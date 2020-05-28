@@ -14,6 +14,9 @@ const routes: Routes = [
     loadChildren: './apps/TopicFriends/topic-friends.module#TopicFriendsModule' },
   { path: 'auth',
     loadChildren: './auth/auth.module#AuthPageModule' },
+  { path: 'learn',
+    loadChildren: './apps/Learn/search-or-add-learnable-item/search-or-add-learnable-item.module#SearchOrAddLearnableItemPageModule'
+  },
 
 ];
 @NgModule({
