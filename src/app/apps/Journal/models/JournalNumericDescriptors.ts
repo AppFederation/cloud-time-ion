@@ -9,14 +9,14 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
 }
 
-function jnd(antonym?: string | {
+function jnd(antonymOrData?: string | {
   antonym?: string,
   subTitle?: string;
   unit?: string;
   lowerIsBetter?: true,
   moderateIsBetter?: true,
   idealValue?: number,
-  searchTerms?: string[],
+  searchTerms?: string | string[],
 }) {
   return new JournalNumericDescriptor()
 }
@@ -30,29 +30,50 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   static instance = new JournalNumericDescriptors()
 
   importance = jnd({subTitle: `of this journal entry`})
+
   mood = jnd()
+  'liking life' = jnd({searchTerms: `life appreciation`})
+  'enjoyment of current activity' = jnd()
+  'engagement' = jnd()
+  'empathy' = jnd()
+  'insensitivity' = jnd({moderateIsBetter: true, searchTerms: [`not give a fuck`]})
+  'indifference' = jnd({moderateIsBetter: true})
+  'assertiveness' = jnd()
+  'flow state' = jnd()
   'self-esteem' = jnd()
+  guilt = jnd({lowerIsBetter: true}) /* mental state group */
+  shame = jnd({lowerIsBetter: true}) /* mental state group */
   excitement = jnd()
+  passion = jnd()
   adventure = jnd()
+  exploration = jnd()
+  novelty = jnd()
+  variety = jnd()
+  'sense of wonder' = jnd()
   'peace of mind' = jnd()
   'calmness' = jnd()
   'annoyance' = jnd({lowerIsBetter: true,})
   'irritability' = jnd({lowerIsBetter: true,})
   motivation = jnd()
-  determination = jnd()
-  energy = jnd()
+  determination = jnd({idealValue: 7.5})
+  energy = jnd({idealValue: 8.5})
   hypomania = jnd({moderateIsBetter: true})
   hope = jnd()
+  optimism = jnd()
   progress = jnd()
   health = jnd()
   diet = jnd({
     searchTerms: ['nutrition', 'food', 'eating']
   })
-  rest = jnd('tired')
+  rest = jnd({antonym: 'tired', searchTerms: [`Somnolence`, `sleepy` /* Note; someone searches sleepy, but the might want to distinguish tired */]})
+  /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
+  'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
   'sleep quality' = jnd()
   'sleep quantity' = jnd({
     unit: 'hours',
   })
+  caffeine = jnd({lowerIsBetter: true})
+  coffee = jnd({lowerIsBetter: true})
   breathing = jnd()
   relax = jnd('stressed')
   satisfaction = jnd('frustrated' /*?*/)
@@ -61,7 +82,15 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   cravings = jnd({
     lowerIsBetter: true,
   })
+  'cravings for computer games' = jnd({
+    lowerIsBetter: true,
+  })
+  'cravings for computer alcohol' = jnd({
+    lowerIsBetter: true,
+  })
   productivity = jnd()
+  cognition = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})
+  thinking = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})
   'work quality' = jnd()
   'work quantity' = jnd({idealValue: 8})
   /** self-control? ... self-discipline */
@@ -70,6 +99,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'self-discipline' = jnd()
   /** Self-discipline says go, and keep it going. Self-control is discipline in the face of pressure from an immediate urge, desire or compulsion. Self-control relates to delaying immediate gratification of the senses. Its struggle is the conflict between intellectual knowing and emotional desiring.Mar 29, 2003*/
   'self-control' = jnd()
+  'self-restraint' = jnd({searchTerms: [`powściągliwość`, `moderation`]})
   'self-regulation' = jnd()
   'willpower' = jnd()
   /** **Will** Not **Want**: Self-Control Rather Than Motivation Explains the Female Advantage in Report Card Grades - https://pubmed.ncbi.nlm.nih.gov/25883522/*/
@@ -87,13 +117,23 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   courage = jnd('fear') // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd()
   confidence = jnd('doubts')
-  music = jnd()
+  'music enjoyment' = jnd()
+  'music quantity' = jnd({lowerIsBetter: true})
+  'music volume' = jnd({lowerIsBetter: true})
   long_term_thinking = jnd()
   rationality = jnd()
   mindfulness = jnd()
-  moderation = jnd()
+  moderation = jnd({searchTerms: [`junkie`]})
+  junkie = jnd({})
+  desire = jnd({searchTerms: [`wanting`]})
+  greed = jnd({})
+
   'delaying of gratification' = jnd()
   relationships = jnd()
+  relationships_with_friends = jnd()
+  relationships_with_partner = jnd()
+  relationships_at_home = jnd()
+  relationships_with_coworkers = jnd()
   alcohol = jnd({lowerIsBetter: true,})
   'physical exercises' = jnd()
   sport = jnd()
@@ -105,6 +145,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   management = jnd()
   infrastructure = jnd()
   comfort = jnd({moderateIsBetter: true,})
+  ergonomy = jnd({moderateIsBetter: true,})
   learning = jnd()
   memory = jnd()
   'memory recall' = jnd()
@@ -116,7 +157,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'skin itch' = jnd({
     lowerIsBetter: true,
   })
-
+  'balance' = jnd()
+  'allergy' = jnd()
+  'food allergies' = jnd()
+  freedom = jnd()
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
 
