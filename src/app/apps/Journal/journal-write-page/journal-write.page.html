@@ -15,6 +15,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <div style="margin: 5px;">
+    Play the self-improvement game and its mini-games! {{fieldDescriptors.length}} fields
+    <p>{{journalEntry.whenCreated || journalEntry.id}}</p>
+  </div>
   <app-journal-numeric-fields
     [journalEntry]="journalEntry"
   ></app-journal-numeric-fields>

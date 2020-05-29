@@ -5,6 +5,7 @@ import {debugLog} from "../../../libs/AppFedShared/utils/log";
 import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf-geo-location.service";
 import {JournalTextDescriptor, JournalTextDescriptors} from "../models/JournalTextDescriptors";
 import {NumericPickerVal} from "./numeric-picker/numeric-picker.component";
+import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 
 @Component({
   selector: 'app-journal-write-page',
@@ -14,6 +15,8 @@ import {NumericPickerVal} from "./numeric-picker/numeric-picker.component";
 export class JournalWritePage implements OnInit {
 
   public journalEntry: JournalEntry
+
+  fieldDescriptors = JournalNumericDescriptors.instance.array
 
   /** annoying coz covers part of the last text field */
   showFab = false
