@@ -1,10 +1,11 @@
-<ion-input
+<ion-searchbar
   [(ngModel)]="search"
   placeholder="Search"
-  [clearInput]="true"
-></ion-input>
+  autofocus="autofocus"
+  debounce="100"
+  inputmode="search"
+></ion-searchbar>
 
-{{search}}
 <ng-container
   *ngFor="let descriptor of numDescriptors"
 >
