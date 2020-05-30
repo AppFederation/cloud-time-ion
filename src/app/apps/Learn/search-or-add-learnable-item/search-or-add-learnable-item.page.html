@@ -1,9 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button color="primary" slot="start" routerLink="/" >< </ion-button>
-    <ion-title>Search or add
+    <ion-title>
+      <ion-button color="primary" routerLink="/" >< </ion-button>
+      Search or add
       <odm-sync-status></odm-sync-status>
     </ion-title>
+    <ion-searchbar
+      [(ngModel)]="search"
+      placeholder="Search or add"
+      debounce="100"
+      inputmode="search"
+      (keyup.enter)="addTask()"
+      (keyup.meta.enter)="addToLearn()"
+      (keyup.alt.enter)="addToLearn()"
+      (keyup.control.enter)="addToLearn()"
+    ></ion-searchbar>
+
+    <ion-button
+      (click)="addTask()"
+      [disabled]="! search?.trim().length"
+    >ADD TASK</ion-button>
+
+    <ion-button
+      (click)="addToLearn()"
+      [disabled]="! search?.trim().length"
+    >ADD TO LEARN</ion-button>
+
+    Items: {{ items?.length }}
   </ion-toolbar>
 </ion-header>
 
@@ -18,28 +41,7 @@
 <!--    [rows]="2"-->
 <!--    (keyup.enter)="add()"-->
 <!--  ></ion-textarea>-->
-  <ion-searchbar
-    [(ngModel)]="search"
-    placeholder="Search or add"
-    debounce="100"
-    inputmode="search"
-    (keyup.enter)="addTask()"
-    (keyup.meta.enter)="addToLearn()"
-    (keyup.alt.enter)="addToLearn()"
-    (keyup.control.enter)="addToLearn()"
-  ></ion-searchbar>
 
-  <ion-button
-    (click)="addTask()"
-    [disabled]="! search?.trim().length"
-  >ADD TASK</ion-button>
-
-  <ion-button
-    (click)="addToLearn()"
-    [disabled]="! search?.trim().length"
-  >ADD TO LEARN</ion-button>
-
-  Items: {{ items?.length }}
 
 <!--  asfasf: {{(coll.valueChanges() | async)?.length}}-->
 <!--  <ion-item *ngFor="let item of (coll.valueChanges() | async)">-->
