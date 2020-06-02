@@ -76,7 +76,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   cells: Cells
 
   /* TODO: remove */
-  isDone: Date | true /* for backwards compatibility */ | null = null
+  isDone: Date | boolean /* for backwards compatibility */ | null = null
 
   nodeContentViewSyncer: NodeContentViewSyncer
 
@@ -193,16 +193,36 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   keyPressMetaEnter(event) {
-    debugLog('keyPressMetaEnter')
+    // debugLog('keyPressMetaEnter')
     const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
 
-    if ( timeTrackedEntry.wasTracked ) {
-      this.isDone = this.isDone ? null : new Date() // TODO: test for done timestamp
-      this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone), this.isDone, null)
+    // fresh
+    // -> (1) being tracked
+    // -> done + next row
+    // -> was tracked, **not done**
+    // -> (1 back) being tracked, not done
+
+    if ( timeTrackedEntry.isTrackingNow ) {
+      this.setDone(true)
+      timeTrackedEntry.pauseOrNoop()
       this.focusNodeBelow(event)
     } else {
-      timeTrackedEntry.startOrResumeTrackingIfNeeded()
+      if ( this.isDone ) {
+        this.setDone(false)
+      } else {
+        timeTrackedEntry.startOrResumeTrackingIfNeeded()
+      }
     }
+
+    // if ( timeTrackedEntry.wasTracked /* no longer relevant if it was tracked or not */ ) {
+    // } else {
+    //   timeTrackedEntry.startOrResumeTrackingIfNeeded()
+    // }
+  }
+
+  private setDone(newDone: boolean) {
+    this.isDone = newDone ? (this.isDone || new Date()) : false // TODO: test for done timestamp
+    this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone), this.isDone, null)
   }
 
   addNodeAfterThis() {
