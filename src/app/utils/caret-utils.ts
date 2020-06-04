@@ -2,6 +2,10 @@
 import { debugLog } from './log'
 import { equalsIgnoreCase } from './utils'
 
+/* to consider: https://github.com/timdown/rangy - A cross-browser JavaScript range and selection library.
+  but 2015; but there could be something similar more modern
+ */
+
 export function getCaretPosition(el) {
   var caretPos = 0,
     sel, range;
