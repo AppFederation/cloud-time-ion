@@ -9,6 +9,10 @@ const appRoutes: Routes = [
     loadChildren: 'app/tree-page/tree-page.module#TreePageModule'
   },
   {
+    path: 'moderation',
+    loadChildren: 'app/apps/ModerationTimers/moderation-timers-page/moderation-timers-page.module#ModerationTimersPageModule'
+  },
+  {
     path: '',
     redirectTo: 'tree',
     pathMatch: 'full',
