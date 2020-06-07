@@ -6,6 +6,8 @@ export class Config {
   showMissingValuesCount = true
   showAggregateValues = true /* aggregate -> https://www.thesaurus.com/browse/aggregate e.g. combined or total */
   showTimeTrackedValue = true
+  planExecutionNotificationsEnabled = true
+  planExecutionNotificationTimePercentages: Array<number> = [75, 95, 100, 110, 150]
 }
 
 const ORYOL_CONFIG_KEY = 'OrYoL_Config'
