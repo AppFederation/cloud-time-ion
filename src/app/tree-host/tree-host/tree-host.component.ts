@@ -159,6 +159,13 @@ export class TreeHostComponent implements OnInit {
     this.focusNode(newTreeNode)
   }
 
+  navigateIntoItemIdExpandAndFocus(itemId: string) {
+    const parentNode = this.treeModel.getNodesByItemId(itemId)[0]
+    parentNode.navigateInto()
+    parentNode.expansion.setExpanded(true, {recursive: false})
+    this.focusNode(parentNode)
+  }
+
   goToMilestones() {
     const milestones = this.treeModel.getNodesByItemId('item_28cca5d5-6935-4fb1-907a-44f1f1898851')[0]//.getChildAtIndexOrNull(0)
     milestones.navigateInto()
