@@ -46,9 +46,11 @@ export class TreeHostComponent implements OnInit {
     private commandsService: CommandsService,
     private navigationService: NavigationService,
   ) {
-    this.activatedRoute.snapshot.params['rootNodeId']
+    const rootNodeInclusionId = this.activatedRoute.snapshot.params['rootNodeId']
+    console.log('rootNodeInclusionId', rootNodeInclusionId)
     this.navigationService.navigation$.subscribe(nodeId => {
       // this.treeModel.navigation.navigateInto(nodeId)
+      // TODO: reFocusLastFocused()?
       this.focusNode(this.treeModel.getNodesByItemId(nodeId)[0])
     })
 
@@ -71,7 +73,6 @@ export class TreeHostComponent implements OnInit {
     treeDragDropService.dragStop$.subscribe((...args) => {
       console.log('dragStop$', args)
     })
-    // treeDragDropService.
 
     this.treeModel = this.treeService.getRootTreeModel()
     const thisComponent = this
@@ -90,7 +91,6 @@ export class TreeHostComponent implements OnInit {
       this.focus(this.treeModel.focus.lastFocusedCell)
     })
   }
-
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -146,12 +146,12 @@ export class TreeHostComponent implements OnInit {
 
   navigateUp($event) {
     this.treeModel.navigation.navigateToParent()
-    this.reFocusLastFocused()
+    this.reFocusLastFocused() // FIXME: move this to treeModel or reaction to navigation (or maybe it is there already)
   }
 
   navigateToRoot($event) {
     this.treeModel.navigation.navigateToRoot()
-    this.reFocusLastFocused()
+    this.reFocusLastFocused() // FIXME: move this to treeModel or reaction to navigation (or maybe it is there already)
   }
 
   newNodeAtVisualRoot() {
@@ -167,17 +167,25 @@ export class TreeHostComponent implements OnInit {
   }
 
   goToMilestones() {
-    const milestones = this.treeModel.getNodesByItemId('item_28cca5d5-6935-4fb1-907a-44f1f1898851')[0]//.getChildAtIndexOrNull(0)
-    milestones.navigateInto()
-    milestones.expansion.setExpanded(true, {recursive: false})
-    this.focusNode(milestones)
+    this.navigateIntoItemIdExpandAndFocus('item_28cca5d5-6935-4fb1-907a-44f1f1898851')
   }
 
   goToShopping() {
-    const milestones = this.treeModel.getNodesByItemId('item_dee48f04-4795-41d4-a609-2af6ac83f3d9')[0]//.getChildAtIndexOrNull(0)
-    milestones.navigateInto()
-    milestones.expansion.setExpanded(true, {recursive: false})
-    this.focusNode(milestones)
+    this.navigateIntoItemIdExpandAndFocus('item_dee48f04-4795-41d4-a609-2af6ac83f3d9')
+  }
+
+  private createChildNavigateAndFocus(itemId: string) {
+    const newNode = this.treeModel.getNodesByItemId(itemId)[0].addChild()
+    newNode.navigateInto()
+    this.focusNode(newNode)
+  }
+
+  newJournalEntry() {
+    this.createChildNavigateAndFocus('item_50872811-928d-4878-94c0-0df36667be0e')
+  }
+
+  newNote() {
+    this.createChildNavigateAndFocus('item_91c761a4-0308-43a1-8634-5164cb4d5b0e')
   }
 
   planToday() {
@@ -186,18 +194,6 @@ export class TreeHostComponent implements OnInit {
     lastPlanNode.parent2.navigateInto()
     lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
-  }
-
-  newJournalEntry() {
-    const journalNode = this.treeModel.getNodesByItemId('item_50872811-928d-4878-94c0-0df36667be0e')[0].addChild()
-    journalNode.navigateInto()
-    this.focusNode(journalNode)
-  }
-
-  newNote() {
-    const noteNode = this.treeModel.getNodesByItemId('item_91c761a4-0308-43a1-8634-5164cb4d5b0e')[0].addChild()
-    noteNode.navigateInto()
-    this.focusNode(noteNode)
   }
 
   public focus(cell: TreeCell) {
