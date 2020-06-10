@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { DbTreeService } from './db-tree-service'
 import { DbTreeListener } from './TreeListener'
+import { OryTreeNode } from './TreeModel'
 
 @Injectable()
 export class DbTreeServiceMock implements DbTreeService {
@@ -28,6 +29,14 @@ export class DbTreeServiceMock implements DbTreeService {
   }
 
   patchItemData(itemId: string, itemData: any) {
+  }
+
+  addAssociateSiblingAfterNode(
+      parentNode: OryTreeNode<any>,
+      nodeToAssociate: OryTreeNode<any>,
+      associateAfterNode: OryTreeNode<any>
+  ) {
+    throw new Error('Not implemented')
   }
 
 }
