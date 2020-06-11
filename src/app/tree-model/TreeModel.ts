@@ -291,18 +291,18 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   getLastMostNestedVisibleNodeRecursively() {
-    const lastImmediateChild = this.getLastImmediateChild()
-    if ( lastImmediateChild && ! lastImmediateChild.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
+    const lastDirectChild = this.getLastDirectChild()
+    if ( lastDirectChild && ! lastDirectChild.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
       return this // we stop at this because deeper one is not visible
     }
-    if ( lastImmediateChild ) {
-      return lastImmediateChild.getLastMostNestedVisibleNodeRecursively()
+    if ( lastDirectChild ) {
+      return lastDirectChild.getLastMostNestedVisibleNodeRecursively()
     } else {
       return this
     }
   }
 
-  public getLastImmediateChild() {
+  public getLastDirectChild() {
     return this.children && this.children.length > 0 && this.children[this.children.length - 1]
   }
 
@@ -881,10 +881,10 @@ export class TreeModel {
       } else {
         // node with inclusion does not yet exist
         if ( ! event.itemData.deleted || this.showDeleted ) {
-          const parentNodes = this.mapItemIdToNodes.get(event.immediateParentItemId)
+          const parentNodes = this.mapItemIdToNodes.get(event.directParentItemId)
           traceLog('onNodeAdded parentNodes', parentNodes)
           if ( ! parentNodes ) {
-            console.log('onNodeAdded: no parent', event.immediateParentItemId)
+            console.log('onNodeAdded: no parent', event.directParentItemId)
           } else {
             for (const parentNode of parentNodes) {
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
