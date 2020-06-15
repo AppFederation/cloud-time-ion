@@ -24,7 +24,6 @@ import 'hammerjs';
 import { debugLog } from '../../utils/log'
 import {
   NgbModal,
-  NgbPopoverConfig,
 } from '@ng-bootstrap/ng-bootstrap'
 import {
   getActiveElementCaretPos,
@@ -59,7 +58,6 @@ import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
   styleUrls: ['./node-content.component.sass'],
   // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NgbPopoverConfig],
 })
 export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -109,10 +107,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public debugService: DebugService,
     private modalService: NgbModal,
     public configService: ConfigService,
-    ngbPopoverConfig: NgbPopoverConfig,
   ) {
-    ngbPopoverConfig.placement = 'auto' // 'right' // 'hover';
-
     // should be at the level of model / column-model
     this.config$.subscribe(config => {
       this.columnDefs.estimatedTimeMin.hidden = ! config.showMinMaxColumns
@@ -293,15 +288,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
     this.treeNode.reorderDown()
   }
-
-  // private buildItemDataFromUi() {
-  //   const itemData = {
-  //     title: titleVal,
-  //     estimatedTime: estimatedTimeVal,
-  //     isDone: this.isDone,
-  //     itemClass: 'task' /* FIXME */,
-  //   }
-  // }
 
   ngOnDestroy(): void {
     this.isDestroyed = true
