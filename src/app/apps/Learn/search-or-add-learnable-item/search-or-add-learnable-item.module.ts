@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { SearchOrAddLearnableItemPage } from './search-or-add-learnable-item.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {ActionableItemComponent} from '../actionable-item/actionable-item.component'
+import {MicComponent} from './mic/mic.component'
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     OdmModule,
   ],
-  declarations: [SearchOrAddLearnableItemPage, ActionableItemComponent],
+  declarations: [
+    SearchOrAddLearnableItemPage,
+    ActionableItemComponent,
+    MicComponent,
+  ],
 })
 export class SearchOrAddLearnableItemPageModule {}
