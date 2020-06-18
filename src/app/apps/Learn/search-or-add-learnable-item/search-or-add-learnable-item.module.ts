@@ -11,6 +11,7 @@ import {ActionableItemComponent} from '../actionable-item/actionable-item.compon
 import {MicComponent} from './mic/mic.component'
 import {AngularFirestoreModule} from '@angular/fire/firestore'
 import {AngularFireStorageModule} from '@angular/fire/storage'
+import {PlayButtonComponent} from '../play-button/play-button.component'
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
     SearchOrAddLearnableItemPage,
     ActionableItemComponent,
     MicComponent,
+    PlayButtonComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}

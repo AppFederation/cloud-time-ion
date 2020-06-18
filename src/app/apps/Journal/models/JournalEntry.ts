@@ -14,4 +14,6 @@ export class JournalEntry extends OdmItem<JournalEntry> {
       id,
     )
   }
+
+  // patchJournalField(fieldId: keyof JournalNumericDescriptors, patch: JournalFieldPatch)
 }

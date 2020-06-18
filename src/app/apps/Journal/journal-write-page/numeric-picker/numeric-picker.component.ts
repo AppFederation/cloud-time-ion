@@ -35,5 +35,6 @@ export class NumericPickerComponent implements OnInit {
       this.numVal = newNumVal
     }
     this.numericValue.next(this.numVal)
+    // note this triggers change detection
   }
 }

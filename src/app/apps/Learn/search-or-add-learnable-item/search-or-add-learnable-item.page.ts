@@ -2,12 +2,26 @@ import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular
 import {AngularFirestore} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import sortBy from 'lodash/sortBy'
+import {OdmItem} from '../../../libs/AppFedShared/odm/OdmItem'
+import {LearnDoService} from '../learn-do.service'
 
-export class LearnItem {
+/** LearnDoItemData */
+export class LearnItem extends OdmItem<LearnItem> {
   whenAdded: any
   title: string
   isTask?: boolean
+  hasAudio?: true | null
+
+  public constructor(
+    service: LearnDoService,
+  ) {
+    super(service)
+  }
 }
+
+// export class LearnDoItem$ extends OdmItem<LearnDoItem$, LearnItem> {
+//
+// }
 
 function field<T>(fieldName: keyof T) {
   return fieldName
@@ -22,12 +36,13 @@ export class SearchOrAddLearnableItemPage implements OnInit {
 
   search: string
 
-  coll = this.angularFirestore.collection<LearnItem>('LearnItem')
+  coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem')
   items: LearnItem[]
 
   constructor(
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
+    protected learnDoService: LearnDoService,
   ) { }
 
   ngOnInit() {
@@ -59,7 +74,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     }
 
     this.syncStatusService.handleSavingPromise(
-        this.coll.add({
+      this.coll.add({
         title: (string || '')./*?.*/trim() /*?? null*/,
         whenAdded: new Date(),
         isTask: isTask ? true : null

@@ -39,13 +39,13 @@ export class UploadService {
 
   }
 
-  async uploadAudio2(blob: Blob/*, id: any*/) {
+  async uploadAudio2(blob: Blob/*, id: any*/, id: string) {
     console.log(`blob.size`, blob.size)
 
     // blob.getBytes
     const int8Array = new Uint8Array(await (blob as any).arrayBuffer())
     console.log(`int8Array.byteLength`, int8Array.byteLength)
-    const promise = this.angularFirestore.collection('LearnDoAudio').doc(uuid4()).set({
+    const promise = this.angularFirestore.collection('LearnDoAudio').doc(id).set({
       audio: firebase.firestore.Blob.fromUint8Array(int8Array),
     })
     this.syncStatusService.handleSavingPromise(promise)

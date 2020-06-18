@@ -6,7 +6,7 @@ import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 
-export abstract class OdmService<T extends OdmItem<T>, TRaw extends OdmItem<T> = T> {
+export abstract class OdmService<T extends OdmItem<T>, TRaw = T /* TODO: no longer = T */> {
 
   throttleIntervalMs = 500
   // TODO: throttleLocalUiMs = 200

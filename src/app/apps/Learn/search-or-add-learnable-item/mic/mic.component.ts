@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../upload.service'
+import {LearnDoService} from '../../learn-do.service'
+import {LearnItem} from '../search-or-add-learnable-item.page'
 declare const MediaRecorder: any;
 
 @Component({
@@ -15,6 +17,7 @@ export class MicComponent implements OnInit {
 
   constructor(
     public uploadService: UploadService,
+    public learnDoService: LearnDoService,
   ) { }
 
   ngOnInit() {}
@@ -69,7 +72,12 @@ export class MicComponent implements OnInit {
     this.chunks = [];
     const audioURL = window.URL.createObjectURL(blob);
     console.log(`audioURL`, audioURL)
-    this.uploadService.uploadAudio2(blob)
+    console.log(`learnDoService`, this.learnDoService)
+    const learnItem = new LearnItem(this.learnDoService)
+    learnItem.hasAudio = true
+    learnItem.whenAdded = new Date()
+    learnItem.saveNowToDb()
+    this.uploadService.uploadAudio2(blob, learnItem.id)
     // audio.src = audioURL;
 
     // deleteButton.onclick = function(e) {

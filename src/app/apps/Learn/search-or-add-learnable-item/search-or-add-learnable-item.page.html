@@ -50,7 +50,7 @@
 
   <ng-container *ngFor="let item of items">
     <app-actionable-item
-      [hidden]="! item.title.toLowerCase().includes((search||'').trim().toLowerCase())"
+      [hidden]="! (item.title || '').toLowerCase().includes((search||'').trim().toLowerCase())"
       [item]="item"
     ></app-actionable-item>
 

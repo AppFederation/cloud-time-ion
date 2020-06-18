@@ -132,6 +132,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
 
   /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */
   saveNowToDb() {
+    this.setIdAndWhenCreatedIfNecessary()
     this.odmService.saveNowToDb(this.asT)
   }
 
