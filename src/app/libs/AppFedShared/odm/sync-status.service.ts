@@ -5,18 +5,20 @@ export class SyncStatus {
   pendingUploadsCount: number
 }
 
+type SyncTask = Promise<any> | {then: any}
+
 @Injectable({
   providedIn: 'root'
 })
 export class SyncStatusService {
 
-  pendingPromises = new Set<Promise<any>>()
+  pendingPromises = new Set<SyncTask>()
 
   public readonly syncStatus$ = new CachedSubject<SyncStatus>()
 
   constructor() { }
 
-  handleSavingPromise(promise: Promise<any>) {
+  handleSavingPromise(promise: SyncTask) {
     this.pendingPromises.add(promise)
     this.emitSyncStatus()
     promise.then(() => {

@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import {SharedModule} from "./shared/shared.module";
 import {CoreModule} from "./core/core.module";
 import {ShoppingListsModule} from "./apps/ShopNext/shopping-lists/shopping-lists.module";
+import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storage'
 
 @NgModule({
 
@@ -23,6 +24,7 @@ import {ShoppingListsModule} from "./apps/ShopNext/shopping-lists/shopping-lists
     SharedModule,
     CoreModule,
     ShoppingListsModule, /* HACK as a kind of core, for shopping list service*/
+    AngularFireStorageModule,
   ],
   exports: [
     CoreModule,

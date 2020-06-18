@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UploadService} from '../../upload.service'
 declare const MediaRecorder: any;
 
 @Component({
@@ -12,7 +13,9 @@ export class MicComponent implements OnInit {
   private mediaRecorder: any = null
   private chunks: any[] = []
 
-  constructor() { }
+  constructor(
+    public uploadService: UploadService,
+  ) { }
 
   ngOnInit() {}
 
@@ -30,9 +33,8 @@ export class MicComponent implements OnInit {
       console.log('getUserMedia supported.');
 
       navigator.mediaDevices.getUserMedia(
-        // constraints - only audio needed for this app
         {
-          audio: true,
+          audio: true, // constraints - only audio needed for this app
         })
         .then((stream) => {
           this.isRecording = true
@@ -53,11 +55,11 @@ export class MicComponent implements OnInit {
 
         })
         .catch(function (err) {
-            console.log('The following getUserMedia error occurred: ' + err);
+            window.alert('The following getUserMedia error occurred: ' + err);
           },
         );
     } else {
-      console.log('getUserMedia not supported on your browser!');
+      window.alert('getUserMedia not supported on your browser!');
     }
   }
 
@@ -67,6 +69,7 @@ export class MicComponent implements OnInit {
     this.chunks = [];
     const audioURL = window.URL.createObjectURL(blob);
     console.log(`audioURL`, audioURL)
+    this.uploadService.uploadAudio2(blob)
     // audio.src = audioURL;
 
     // deleteButton.onclick = function(e) {

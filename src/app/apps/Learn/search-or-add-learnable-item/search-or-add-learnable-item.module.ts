@@ -9,6 +9,8 @@ import { SearchOrAddLearnableItemPage } from './search-or-add-learnable-item.pag
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {ActionableItemComponent} from '../actionable-item/actionable-item.component'
 import {MicComponent} from './mic/mic.component'
+import {AngularFirestoreModule} from '@angular/fire/firestore'
+import {AngularFireStorageModule} from '@angular/fire/storage'
 
 const routes: Routes = [
   {
@@ -24,6 +26,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes),
     OdmModule,
+    AngularFireStorageModule,
   ],
   declarations: [
     SearchOrAddLearnableItemPage,
