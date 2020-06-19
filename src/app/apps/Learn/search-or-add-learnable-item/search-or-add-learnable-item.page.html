@@ -5,30 +5,35 @@
       Search or add
       <odm-sync-status></odm-sync-status>
     </ion-title>
-    <ion-searchbar
-      [(ngModel)]="search"
-      placeholder="Search or add"
-      debounce="100"
-      inputmode="search"
-      (keyup.enter)="addTask()"
-      (keyup.meta.enter)="addToLearn()"
-      (keyup.alt.enter)="addToLearn()"
-      (keyup.control.enter)="addToLearn()"
-    ></ion-searchbar>
-    <app-mic></app-mic>
+    <div
+      style="display: flex; align-items: stretch"
+    >
+      <div style="flex-grow: 1">
+        <ion-searchbar
+          [(ngModel)]="search"
+          placeholder="Search or add"
+          debounce="100"
+          inputmode="search"
+          (keyup.enter)="addTask()"
+          (keyup.meta.enter)="addToLearn()"
+          (keyup.alt.enter)="addToLearn()"
+          (keyup.control.enter)="addToLearn()"
+        ></ion-searchbar>
+        <ion-button
+          (click)="addTask()"
+          [disabled]="! search?.trim().length"
+        >ADD TASK</ion-button>
 
+        <ion-button
+          (click)="addToLearn()"
+          [disabled]="! search?.trim().length"
+        >ADD TO LEARN</ion-button>
+        Items: {{ items?.length }}
+      </div>
+      <app-mic style="display: flex; align-items: stretch"></app-mic>
 
-    <ion-button
-      (click)="addTask()"
-      [disabled]="! search?.trim().length"
-    >ADD TASK</ion-button>
+    </div>
 
-    <ion-button
-      (click)="addToLearn()"
-      [disabled]="! search?.trim().length"
-    >ADD TO LEARN</ion-button>
-
-    Items: {{ items?.length }}
   </ion-toolbar>
 </ion-header>
 

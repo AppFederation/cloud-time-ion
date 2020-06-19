@@ -1,3 +1,8 @@
 <ion-button
+  style="height: 100%"
   (click)="onMicClick()"
-><ion-icon [icon]="isRecording ? 'recording' : 'microphone'"></ion-icon></ion-button>
+>
+  <ion-icon [icon]="isRecording ? 'recording' : 'microphone'"></ion-icon>
+  &nbsp;
+  {{isRecording ? 'stop' : 'record'}}
+</ion-button>
