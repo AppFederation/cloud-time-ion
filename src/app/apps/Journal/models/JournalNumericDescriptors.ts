@@ -79,6 +79,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   satisfaction = jnd('frustrated' /*?*/)
   meaning = jnd()
   purpose = jnd()
+  mission = jnd()
   cravings = jnd({
     lowerIsBetter: true,
   })
@@ -112,6 +113,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   order = jnd('chaos')
   focus = jnd('distraction')
   clarity = jnd()
+  'clear thinking' = jnd()
   planning = jnd()
   'time tracking' = jnd()
   courage = jnd('fear') // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
@@ -161,6 +163,15 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'allergy' = jnd()
   'food allergies' = jnd()
   freedom = jnd()
+
+  worry = jnd({moderateIsBetter: true})
+  concern = jnd({moderateIsBetter: true})
+  anxiety = jnd({lowerIsBetter: true})
+  visualizing = jnd({moderateIsBetter: true})
+  fun = jnd()
+  entertainment = jnd({moderateIsBetter: true})
+  'guilt-free entertainment' = jnd({moderateIsBetter: true})
+
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
 
