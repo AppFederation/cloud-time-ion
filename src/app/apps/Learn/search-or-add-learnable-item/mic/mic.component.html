@@ -1,7 +1,11 @@
 <ion-button
   style="height: 100%"
+  (touchstart)="onMicClick($event)"
   (click)="onMicClick()"
 >
+  <!--   (mousedown)="onMicClick()"
+  (dragstart)="onMicClick()"
+-->
   <ion-icon [icon]="isRecording ? 'recording' : 'microphone'"></ion-icon>
   &nbsp;
   {{isRecording ? 'stop' : 'record'}}

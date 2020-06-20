@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../upload.service'
 import {LearnDoService} from '../../learn-do.service'
 import {LearnItem} from '../search-or-add-learnable-item.page'
+
 declare const MediaRecorder: any;
 
 @Component({
@@ -22,7 +23,10 @@ export class MicComponent implements OnInit {
 
   ngOnInit() {}
 
-  onMicClick() {
+  onMicClick(event?) {
+    if (event) {
+      event.preventDefault()
+    }
     if ( this.isRecording ) {
       this.mediaRecorder.stop()
       this.isRecording = false
