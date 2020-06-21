@@ -10,3 +10,9 @@
   &nbsp;
   {{isRecording ? 'stop' : 'record'}}
 </ion-button>
+<ion-button
+  (click)="releaseMic()"
+  [hidden]="! stream"
+>
+  RELEASE
+</ion-button>
