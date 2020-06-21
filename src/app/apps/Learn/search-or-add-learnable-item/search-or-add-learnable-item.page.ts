@@ -52,6 +52,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
       console.log('items2 items.docs.length', items.docs.length)
     })
     this.coll.valueChanges().subscribe(items => {
+    this.coll.valueChanges({idField: 'id'}).subscribe(items => {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
       console.log('items', items.length)
     })
