@@ -1,8 +1,14 @@
 <ion-header>
   <ion-toolbar>
 
-    <ion-title><ion-button (click)="window.history.back()"><</ion-button>
-      learn-item-details</ion-title>
+    <ion-title>
+<!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+      <ion-button routerLink="/learn"><</ion-button>
+<!--      {{(item?.locallyVisibleChanges$ | async)?.title}}</ion-title>-->
+<!--      {{((doc.valueChanges() | async)?.title) || "test"}}-->
+      {{title}}
+<!--      {{(doc.get() | async)?.title || "test"}}-->
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
