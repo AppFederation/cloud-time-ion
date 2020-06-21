@@ -41,6 +41,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'assertiveness' = jnd()
   'flow state' = jnd()
   'self-esteem' = jnd()
+  /* TODO: esteem / respect from others, */
   guilt = jnd({lowerIsBetter: true}) /* mental state group */
   shame = jnd({lowerIsBetter: true}) /* mental state group */
   excitement = jnd()
@@ -123,9 +124,15 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'music quantity' = jnd({lowerIsBetter: true})
   'music volume' = jnd({lowerIsBetter: true})
   long_term_thinking = jnd()
+  perspective = jnd()
   rationality = jnd()
+  pragmatism = jnd({searchTerms: [`practical`]})
+  /** note simple personal adjective */
+  realistic = jnd()
+  /** note simple personal adjective */
+  smart = jnd({searchTerms: [`clever`], antonym: `stupid`})
   mindfulness = jnd()
-  moderation = jnd({searchTerms: [`junkie`]})
+  moderation = jnd({searchTerms: [`junkie`], antonym: `excess`})
   junkie = jnd({})
   desire = jnd({searchTerms: [`wanting`]})
   greed = jnd({})
