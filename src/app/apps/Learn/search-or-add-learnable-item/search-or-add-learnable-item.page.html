@@ -53,7 +53,7 @@
 <!--  asfasf: {{(coll.valueChanges() | async)?.length}}-->
 <!--  <ion-item *ngFor="let item of (coll.valueChanges() | async)">-->
 
-  <ng-container *ngFor="let item of items">
+  <ng-container *ngFor="let item of items; trackBy: trackByFn">
     <app-actionable-item
       [hidden]="! (item.title || '').toLowerCase().includes((search||'').trim().toLowerCase())"
       [item]="item"

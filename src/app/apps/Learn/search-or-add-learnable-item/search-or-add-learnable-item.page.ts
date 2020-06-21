@@ -97,4 +97,9 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     console.log(`alt enter`)
     // window.alert('winkeup')
   }
+
+  trackByFn(index: number, item: LearnItem) {
+    return item.id
+  }
+
 }
