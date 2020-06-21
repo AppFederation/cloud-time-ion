@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {sidesDefsArray} from '../sidesDefs'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
+import {LearnDoService} from '../learn-do.service'
+import {LearnItem, LearnItemId} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
+import {AlertController} from '@ionic/angular'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -12,17 +16,39 @@ export class LearnItemDetailsPage implements OnInit {
   window = window
   sidesDefsArray = sidesDefsArray
 
-  constructor(
-    public activatedRoute: ActivatedRoute
-  ) {
+  public id: LearnItemId
+  public item: LearnItem
+  public title: string
 
+
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    protected learnDoService: LearnDoService,
+    protected angularFirestore: AngularFirestore,
+    public alertController: AlertController,
+    private router: Router,
+  ) {
   }
 
-  ngOnInit() {
-    const msg = new SpeechSynthesisUtterance();
+  private doc: AngularFirestoreDocument<LearnItem>
 
+  ngOnInit() {
+    // const msg = new SpeechSynthesisUtterance();
+
+    this.id = this.activatedRoute.snapshot.params['itemId']
+    console.log(`id`, this.id)
+    this.item = this.learnDoService.getItemById(this.id)
+    this.doc = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
+    this.doc.valueChanges().subscribe(x => {
+      console.log(`valueChanges`, JSON.stringify(x))
+      this.title = x && x.title
+      this.item = x
+    })
+    // this.item.locallyVisibleChanges$.subscribe(i => {
+    //   console.log(`locallyVisibleChanges$`, i)
+    // })
     // Set the text.
-    msg.text = this.activatedRoute.snapshot.params['itemId'];
+    // msg.text = this.id;
 
     // Set the attributes.
     // msg.volume = parseFloat(volumeInput.value);
@@ -37,7 +63,32 @@ export class LearnItemDetailsPage implements OnInit {
     // }
 
     // Queue this utterance.
-    window.speechSynthesis.speak(msg, );
+    // window.speechSynthesis.speak(msg, );
+  }
+
+  async askDelete() {
+    const alert = await this.alertController.create({
+      header: 'Delete item ' + this.item.title + " ?",
+      message: 'Delete <strong>'+ this.item.title +'</strong>!!!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'DELETE',
+          handler: async () => {
+            // this.doc.update({
+            //   whenDeleted: new Date(),
+            // })
+            await this.doc.delete() // TODO: listen to promise for sync status
+            await this.angularFirestore.collection(`LearnDoAudio`).doc(this.id).delete() // TODO: listen to promise for sync status
+            this.router.navigate([`/learn`])
+          }
+        }
+      ]
+    })
+    await alert.present()
   }
 
 }
