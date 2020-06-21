@@ -4,7 +4,7 @@
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
   &nbsp;
-  <ion-button *ngIf="item.hasAudio" (click)="playAudio()">
+  <ion-button *ngIf="item.hasAudio" (click)="playAudio(); $event.stopPropagation()">
     <ion-icon icon="play"></ion-icon>
   </ion-button>
   {{item.title}}
