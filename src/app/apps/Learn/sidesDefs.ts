@@ -49,6 +49,9 @@ export class SidesDefs {
     defaultLang: 'es-ES',
     ask: false,
   })
+  es = side({
+    defaultLang: 'es-ES',
+  })
   en = side({
     defaultLang: 'en-US',
   })
