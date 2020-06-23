@@ -35,8 +35,10 @@ export class ActionableItemComponent implements OnInit {
           source.start(0)
         },
 
-        function(e){ console.log("Error with decoding audio data" + e.err); }
-        );
+        function(e){
+          window.alert("Error with decoding audio data: " + e.err + ' ' + e);
+        }
+      );
 
       console.log(`audioItem.audio`, audioBytes)
     })
