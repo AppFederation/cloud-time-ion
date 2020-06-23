@@ -2,6 +2,7 @@
   style="height: 100%"
   (touchstart)="onMicClick($event)"
   (click)="onMicClick()"
+  [color]="isRecording ? 'danger' : 'primary' "
 >
   <!--   (mousedown)="onMicClick()"
   (dragstart)="onMicClick()"
@@ -14,5 +15,5 @@
   (click)="releaseMic()"
   [hidden]="! stream"
 >
-  RELEASE
+  X
 </ion-button>
