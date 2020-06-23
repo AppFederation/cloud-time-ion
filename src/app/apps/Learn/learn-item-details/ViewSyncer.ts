@@ -1,9 +1,16 @@
 import {FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 
-export class ViewSyncer {
+export class ViewSyncer<TKey = string> {
+
   public initialDataArrived = false
   public isApplyingFromDb = false
+
+  // mapKeyToLastEditTime = new Map<TKey, number>()
+
+  lastLocalEditByUserMs = 0
+
+  MIN_INTERVAL_MS = 5_000
 
   constructor(
     private formGroup: FormGroup,
@@ -13,7 +20,8 @@ export class ViewSyncer {
     this.item$.locallyVisibleChanges$.subscribe(dataFromDb => {
       console.log(`locallyVisibleChanges$`, this.item$.id, dataFromDb)
       // this.formGroup.setValue(data) // FIXME: use setValue in case some field externally deleted, but need to fill missing fields using new util func ensureFieldsExistBasedOn
-      if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
+      // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
+      if ( this.hasEnoughTimePassedFromLastUserEditToApplyFromDb() ) {
         if ( dataFromDb ) {
           this.initialDataArrived = true
         }
@@ -27,10 +35,19 @@ export class ViewSyncer {
     })
     this.formGroup.valueChanges.subscribe(newValue => {
       if ( ! this.isApplyingFromDb ) {
+        this.lastLocalEditByUserMs = Date.now()
         this.item$.patchThrottled(newValue)
       }
     })
 
   }
 
+  getLastEditTimeForField(field: TKey): number {
+    return this.lastLocalEditByUserMs
+  }
+
+  /* To prevent incoming changes overwriting user edit */
+  private hasEnoughTimePassedFromLastUserEditToApplyFromDb() {
+    return (Date.now() - this.lastLocalEditByUserMs) > this.MIN_INTERVAL_MS
+  }
 }
