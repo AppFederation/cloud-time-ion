@@ -14,15 +14,28 @@
 
 
 <ion-content>
-  <ion-button (click)="askDelete()">DELETE</ion-button>
-
-  <div
-    *ngFor="let side of sidesDefsArray"
+  <ng-container
+    *ngIf="viewSyncer.initialDataArrived else notLoaded"
   >
-    <ion-textarea
-      [placeholder]="side.id"
-      [value]="getField((item$.locallyVisibleChanges$ | async), side.id) + 'xyz'">
-    </ion-textarea>
-  </div>
+    <ion-button (click)="askDelete()">DELETE</ion-button>
+
+    <div
+      *ngFor="let side of sidesDefsArray"
+    >
+      <ion-textarea
+        [formGroup]="formGroup"
+        [formControl]="formControls[side.id]"
+        [placeholder]="side.id"
+      >
+        <!--       [value]="getField((item$.locallyVisibleChanges$ | async), side.id) + 'xyz'"
+   -->
+      </ion-textarea>
+    </div>
+  </ng-container>
+  <ng-template #notLoaded>
+    Loading...
+  </ng-template>
+
+
 
 </ion-content>

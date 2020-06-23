@@ -2,6 +2,7 @@
  * Created by kd on 2017-08-01.
  */
 import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
+import {FormControl} from '@angular/forms'
 
 export interface Dict<TVal, /*TKey = string*/> { [key: string /*TKey*/]: TVal }
 
@@ -44,3 +45,19 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
   })
   return arr
 }
+
+export function mapFields(srcObj: any, mapFunc: any) {
+  const ret = {}
+  for ( let key of Object.keys(srcObj) ) {
+    ret[key] = mapFunc(key, srcObj[key])
+  }
+  return ret
+}
+
+export function mapFieldsToFormControls(srcObj: any) {
+  return mapFields(srcObj, () => {
+    return new FormControl()
+  })
+}
+
+// export function ensureFieldsExistBasedOn(templateObje)

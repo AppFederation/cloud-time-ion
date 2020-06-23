@@ -1,10 +1,11 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
 import {CachedSubject} from "../utils/CachedSubject";
-import {debugLog, errorAlert} from "../utils/log";
+import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 import {OdmItem$2} from './OdmItem$2'
+import {assertTruthy} from '../utils/assertUtils'
 
 export abstract class OdmService2<
   TInMemData,
@@ -48,6 +49,7 @@ export abstract class OdmService2<
   }
 
   public getItem$ById(id: TItemId): TOdmItem$ {
+    assertTruthy(id, `id`)
     let item$ = this.mapIdToItem$.get(id)
     if ( ! item$ ) {
       item$ = this.createOdmItem$ForExisting(id)

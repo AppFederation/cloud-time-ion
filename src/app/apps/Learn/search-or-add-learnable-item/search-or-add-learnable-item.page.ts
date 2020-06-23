@@ -53,7 +53,6 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     console.log(`this.coll.get()`, this.coll.get())
 
     this.coll.get().subscribe(items => {
-
       console.log('get(): items2 items.docs.length', items.docs.length)
     })
 
