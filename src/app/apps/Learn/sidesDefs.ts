@@ -5,9 +5,13 @@ export type SideId = string
 export class Side {
   id: SideId
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
-  defaultLang: string
+  defaultLang?: string // = 'en-US'
+  ask?: boolean // = true
 }
 
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
+export type SideDecl = Omit<Side, 'id'>
 
 /*
  stuff like Artikel, example as extra fields.
@@ -15,28 +19,44 @@ export class Side {
  Each addressable for spaced repetition self-rating.
 * */
 
-export const sidesDefs = {
-  title: {
-    defaultLang: 'en-US'
-  },
-  question: {
-    defaultLang: 'en-US'
-  },
-  answer: {
-    defaultLang: 'en-US'
-  },
-  de: {
-    defaultLang: 'de-DE'
-  },
-  en: {
-    defaultLang: 'en-US'
-  },
-  es: {
-    defaultLang: 'es-ES'
-  },
-  pl: {
-    defaultLang: 'pl-PL'
-  },
+function side(param: SideDecl): SideDecl {
+  return param
 }
+
+export class SidesDefs {
+  title = side({
+    defaultLang: 'en-US',
+  })
+  question = side({
+    defaultLang: 'en-US',
+  })
+  answer = side({
+    defaultLang: 'en-US'
+  })
+  examples = side({
+  })
+  comments = side({
+    ask: false,
+  })
+  de_gender_article = side({
+    defaultLang: 'de-DE',
+    ask: false,
+  })
+  de = side({
+    defaultLang: 'de-DE',
+  })
+  es_gender_article = side({
+    defaultLang: 'es-ES',
+    ask: false,
+  })
+  en = side({
+    defaultLang: 'en-US',
+  })
+  pl = side({
+    defaultLang: 'pl-PL',
+  })
+}
+
+export const sidesDefs = new SidesDefs()
 
 export const sidesDefsArray = dictToArrayWithIds(sidesDefs as any as Dict<Side>)
