@@ -14,8 +14,14 @@ export function debugLog(...args) {
 
 export function errorAlert(...args) {
   const prefix = 'ERROR: errorAlert: '
+  let toString = 'toString failed'
+  try {
+    toString = args.join(', ')
+  } catch {
+    // no op
+  }
+  window.alert(prefix + '(see console for details) ' + toString)
   console.error(prefix, ...args)
-  window.alert(prefix + '(see console for details) ' + args.join(', '))
 }
 
 export function apfLogger(instance) {

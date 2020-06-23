@@ -5,8 +5,14 @@ import {CachedSubject} from "../utils/CachedSubject";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
+import {Observable} from 'rxjs/internal/Observable'
 
-export abstract class OdmService<T extends OdmItem<T>, TRaw = T /* TODO: no longer = T */> {
+export abstract class OdmService<
+  T extends OdmItem<T>,
+  TRaw = T /* TODO: no longer = T */,
+  // TOdmItem$ extends T /*OdmItem<T>*/ = T
+  >
+{
 
   throttleIntervalMs = 500
   // TODO: throttleLocalUiMs = 200
@@ -67,8 +73,7 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw = T /* TODO: no long
   saveNowToDb(itemToSave: T) {
     itemToSave.onModified()
     debugLog('saveNowToDb', itemToSave)
-    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave)
-    // this.syncStatusService.syncStatus$.next({pendingUploadsCount: 1})
+    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat(), itemToSave.id)
     this.syncStatusService.handleSavingPromise(promise)
   }
 
@@ -77,7 +82,6 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw = T /* TODO: no long
   }
 
   public getItemById(id: OdmItemId<T>) {
-    // this.getById()
     return (
       this.localItems$.lastVal &&
       this.localItems$.lastVal.find(_ => _.id === id)
@@ -104,10 +108,10 @@ export abstract class OdmService<T extends OdmItem<T>, TRaw = T /* TODO: no long
         debugLog('setBackendListener onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
         let existingItem = service.getItemById(modifiedItemId)
-        if ( existingItem.applyDataFromDbAndEmit ) {
+        if ( existingItem && existingItem.applyDataFromDbAndEmit ) {
           existingItem.applyDataFromDbAndEmit(convertedItemData)
         } else {
-          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem.applyDataFromDbAndEmit)
+          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
         }
         service.emitLocalItems()
       },

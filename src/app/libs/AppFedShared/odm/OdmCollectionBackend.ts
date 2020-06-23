@@ -2,22 +2,28 @@ import {Injector} from "@angular/core";
 import {OdmItemId} from "./OdmItemId";
 import {OdmBackend} from "./OdmBackend";
 import {CachedSubject} from "../utils/CachedSubject";
-import {OdmItem} from "./OdmItem";
 
-export abstract class OdmCollectionBackendListener<T extends OdmItem<T>, TRaw = T> {
-  abstract onAdded(addedItemId: OdmItemId<T>, addedItemData: T)
-  abstract onModified(modifiedItemId: OdmItemId<T>, modifiedItemData: T)
-  abstract onRemoved(removedItemId: OdmItemId<T>)
+export abstract class OdmCollectionBackendListener<
+  TRaw,
+  TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
+  >
+{
+  abstract onAdded(addedItemId: TItemId, addedItemData: TRaw)
+  abstract onModified(modifiedItemId: TItemId, modifiedItemData: TRaw)
+  abstract onRemoved(removedItemId: TItemId)
 }
 
 
-export abstract class OdmCollectionBackend<T extends OdmItem<T>, TRaw = T> {
+export abstract class OdmCollectionBackend<
+  TRaw,
+  TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
+  > {
 
-  listener: OdmCollectionBackendListener<T>
+  listener: OdmCollectionBackendListener<TRaw>
 
   collectionBackendReady$ = this.odmBackend.backendReady$
 
-  dbCollection$ = new CachedSubject<T[]>([])
+  dbCollection$ = new CachedSubject<TRaw[]>([])
 
   protected constructor(
     protected injector: Injector,
@@ -26,11 +32,11 @@ export abstract class OdmCollectionBackend<T extends OdmItem<T>, TRaw = T> {
   ) {
   }
 
-  abstract saveNowToDb(item: T): Promise<any>
+  abstract saveNowToDb(item: TRaw, id: string): Promise<any>
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId)
 
-  public setListener(listener: OdmCollectionBackendListener<T>) {
+  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>) {
     this.listener = listener
   }
 

@@ -19,8 +19,10 @@
   <div
     *ngFor="let side of sidesDefsArray"
   >
-    side: {{side.id}}
-    <ion-textarea></ion-textarea>
+    <ion-textarea
+      [placeholder]="side.id"
+      [value]="getField((item$.locallyVisibleChanges$ | async), side.id) + 'xyz'">
+    </ion-textarea>
   </div>
 
 </ion-content>

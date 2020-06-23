@@ -6,10 +6,10 @@ import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {CachedSubject} from "../../AppFedShared/utils/CachedSubject";
-import {debugLog} from "../../AppFedShared/utils/log";
+import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 
 
-export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> extends OdmCollectionBackend<T> {
+export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TRaw> {
 
   protected angularFirestore = this.injector.get(AngularFirestore)
 
@@ -22,20 +22,22 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
   ) {
     super(injector, className, odmBackend)
     this.collectionBackendReady$.subscribe(() => {
-      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<T>) => {
+      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<TRaw>) => {
+        console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+        // FIXME: let the service process in batch, for performance
         for ( let change of snapshot.docChanges() ) {
           if ( change.type === 'added' ) {
-            this.listener.onAdded(change.doc.id, change.doc.data() as T)
+            this.listener.onAdded(change.doc.id, change.doc.data() as TRaw)
           } else if ( change.type === 'modified') {
-            this.listener.onModified(change.doc.id, change.doc.data() as T)
+            this.listener.onModified(change.doc.id, change.doc.data() as TRaw)
           } else if ( change.type === 'removed') {
             this.listener.onRemoved(change.doc.id)
           }
         }
 
       })
-      this.collection().valueChanges().subscribe(coll => {
-        this.dbCollection$.nextWithCache(coll as T[])
+      this.collection().valueChanges().subscribe((coll: TRaw[]) => {
+        this.dbCollection$.nextWithCache(coll)
       })
     })
   }
@@ -44,9 +46,12 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
     ignorePromise(this.itemDoc(itemId).delete())
   }
 
-  saveNowToDb(item: T): Promise<any> {
+  saveNowToDb(item: TRaw, id: string): Promise<any> {
+    if ( ! id ) {
+      errorAlert('id cannot be ' + id)
+    }
     debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
-    return this.itemDoc(item.id).set(item.toDbFormat())
+    return this.itemDoc(id).set(item/*.toDbFormat()*/)
     // FIXME: update() to patch
 
     // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
@@ -55,7 +60,7 @@ export class FirestoreOdmCollectionBackend<T extends OdmItem<T>, TRaw = T> exten
   }
 
   private collection() {
-    return this.angularFirestore.collection(this.collectionName);
+    return this.angularFirestore.collection<TRaw>(this.collectionName);
   }
 
   private itemDoc(itemId: OdmItemId) {

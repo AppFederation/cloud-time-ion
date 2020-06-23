@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {sidesDefsArray} from '../sidesDefs'
+import {SideId, sidesDefsArray} from '../sidesDefs'
 import {ActivatedRoute, Router} from '@angular/router'
 import {LearnDoService} from '../learn-do.service'
-import {LearnItem, LearnItemId} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
+import {LearnItem, LearnItem$, LearnItemId} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
 import {AlertController} from '@ionic/angular'
 
@@ -17,7 +17,7 @@ export class LearnItemDetailsPage implements OnInit {
   sidesDefsArray = sidesDefsArray
 
   public id: LearnItemId
-  public item: LearnItem
+  public item$: LearnItem$
   public title: string
 
 
@@ -37,12 +37,22 @@ export class LearnItemDetailsPage implements OnInit {
 
     this.id = this.activatedRoute.snapshot.params['itemId']
     console.log(`id`, this.id)
-    this.item = this.learnDoService.getItemById(this.id)
+    console.log(`this.learnDoService.itemsCount`, this.learnDoService.itemsCount())
+
+    this.learnDoService.localItems$.subscribe(items => {
+      console.log(`this.learnDoService.localItems$ items.length`, items.length, 'itemsCount', this.learnDoService.itemsCount())
+    })
+    this.item$ = this.learnDoService.getItem$ById(this.id)
+    console.log(`this.item$.currentVal`, this.item$.currentVal, this.item$.locallyVisibleChanges$.lastVal)
+    this.item$.locallyVisibleChanges$.subscribe(data => {
+      console.log(`locallyVisibleChanges$`, this.item$.id, data)
+    })
+
     this.doc = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
     this.doc.valueChanges().subscribe(x => {
       console.log(`valueChanges`, JSON.stringify(x))
       this.title = x && x.title
-      this.item = x
+      // this.item = x
     })
     // this.item.locallyVisibleChanges$.subscribe(i => {
     //   console.log(`locallyVisibleChanges$`, i)
@@ -68,8 +78,8 @@ export class LearnItemDetailsPage implements OnInit {
 
   async askDelete() {
     const alert = await this.alertController.create({
-      header: 'Delete item ' + this.item.title + " ?",
-      message: 'Delete <strong>'+ this.item.title +'</strong>!!!',
+      header: 'Delete item ' + this.item$.currentVal.title + " ?",
+      message: 'Delete <strong>'+ this.item$.currentVal.title +'</strong>!!!',
       buttons: [
         {
           text: 'Cancel',
@@ -91,4 +101,11 @@ export class LearnItemDetailsPage implements OnInit {
     await alert.present()
   }
 
+  getField(tInMemData: LearnItem, fieldId: SideId) {
+    if ( tInMemData ) {
+      return tInMemData[fieldId]
+    } else {
+      return null
+    }
+  }
 }

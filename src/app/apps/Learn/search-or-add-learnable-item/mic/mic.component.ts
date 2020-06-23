@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../upload.service'
 import {LearnDoService} from '../../learn-do.service'
 import {LearnItem} from '../search-or-add-learnable-item.page'
+import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
 
 declare const MediaRecorder: any;
 
@@ -15,6 +16,8 @@ export class MicComponent implements OnInit {
   isRecording = false
   private mediaRecorder: any = null
   private audioChunks: any[] = []
+
+  /* TODO: move to service, to ensure reference is not lost on component being re-created (e.g. on mobile) */
   stream: MediaStream
 
   constructor(
@@ -86,11 +89,13 @@ export class MicComponent implements OnInit {
     const audioURL = window.URL.createObjectURL(blob);
     console.log(`audioURL`, audioURL)
     console.log(`learnDoService`, this.learnDoService)
-    const learnItem = new LearnItem(this.learnDoService)
-    learnItem.hasAudio = true
-    learnItem.whenAdded = new Date()
-    learnItem.saveNowToDb()
-    this.uploadService.uploadAudio2(blob, learnItem.id)
+
+    const learnItemData = new LearnItem()
+    learnItemData.hasAudio = true
+    learnItemData.whenAdded = OdmBackend.nowTimestamp()
+    const learnItem$ = this.learnDoService.newItem(undefined, learnItemData)
+    learnItem$.saveNowToDb()
+    this.uploadService.uploadAudio2(blob, learnItem$.id)
   }
 
   releaseMic() {
