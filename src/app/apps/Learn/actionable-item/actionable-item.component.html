@@ -7,7 +7,15 @@
   <ion-button *ngIf="item.hasAudio" (click)="playAudio(); $event.stopPropagation()">
     <ion-icon icon="play"></ion-icon>
   </ion-button>
-  {{item.title}}
+<!--  {{item.title}}-->
+
+<!--  <ng-container-->
+<!--    *ngFor="let side of sidesDefsArray"-->
+<!--  >-->
+<!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
+<!--  </ng-container>-->
+
+  {{joinedSides()}}
 
 <!--  <app-play-button *ngIf="item.hasAudio"></app-play-button>-->
 

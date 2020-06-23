@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {LearnItem} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {AngularFirestore} from '@angular/fire/firestore'
+import {sidesDefs, sidesDefsArray} from '../sidesDefs'
 
 
 @Component({
@@ -10,6 +11,8 @@ import {AngularFirestore} from '@angular/fire/firestore'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionableItemComponent implements OnInit {
+
+  sidesDefsArray = sidesDefsArray
 
   @Input() item: LearnItem
   // @Input() search: string
@@ -42,5 +45,10 @@ export class ActionableItemComponent implements OnInit {
 
       console.log(`audioItem.audio`, audioBytes)
     })
+  }
+
+  joinedSides() {
+    // this seems very slow
+    return sidesDefsArray.map(side => this.item[side.id]).filter(_ => _).join(' | ')
   }
 }
