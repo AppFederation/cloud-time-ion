@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { LearnItemDetailsPage } from './learn-item-details.page';
+import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 
 const routes: Routes = [
   {
@@ -15,13 +16,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        RouterModule.forChild(routes),
-        ReactiveFormsModule,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
+    OdmModule,
+  ],
   declarations: [LearnItemDetailsPage]
 })
 export class LearnItemDetailsPageModule {}

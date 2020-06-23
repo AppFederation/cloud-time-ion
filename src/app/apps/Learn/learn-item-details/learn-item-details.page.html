@@ -4,6 +4,8 @@
     <ion-title>
 <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
       <ion-button routerLink="/learn"><</ion-button>
+
+      <odm-sync-status></odm-sync-status>
 <!--      {{(item?.locallyVisibleChanges$ | async)?.title}}</ion-title>-->
 <!--      {{((doc.valueChanges() | async)?.title) || "test"}}-->
       {{title}}
@@ -20,8 +22,10 @@
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
     <div
+      style="margin-left: 4px"
       *ngFor="let side of sidesDefsArray"
     >
+      <ion-header><h5>{{side.id}}</h5></ion-header>
       <ion-textarea
         [formGroup]="formGroup"
         [formControl]="formControls[side.id]"
