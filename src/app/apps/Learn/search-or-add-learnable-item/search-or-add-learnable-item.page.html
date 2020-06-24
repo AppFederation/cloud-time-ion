@@ -55,7 +55,7 @@
 
   <ng-container *ngFor="let item of items; trackBy: trackByFn">
     <app-actionable-item
-      [hidden]="! (item.title || '').toLowerCase().includes((search||'').trim().toLowerCase())"
+      [hidden]="! matchesSearch(item)"
       [item]="item"
     ></app-actionable-item>
 

@@ -7,6 +7,7 @@ import {LearnDoService} from '../learn-do.service'
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
+import {sidesDefs, sidesDefsArray} from '../sidesDefs'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
@@ -117,4 +118,17 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     return item.id
   }
 
+  matchesSearch(item: LearnItem) {
+    const search = (this.search || '').trim().toLowerCase()
+    if ( search.length === 0 ) {
+      return true
+    }
+    for (let side of sidesDefsArray) {
+      const sideVal = item[side.id]
+      if ( sideVal && sideVal.toLowerCase().includes(search) ) {
+        return true
+      }
+    }
+    return false
+  }
 }
