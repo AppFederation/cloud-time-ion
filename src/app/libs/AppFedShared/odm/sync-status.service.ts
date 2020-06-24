@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {CachedSubject} from '../utils/CachedSubject'
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export class SyncStatus {
   pendingUploadsCount: number

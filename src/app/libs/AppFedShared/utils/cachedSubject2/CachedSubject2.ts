@@ -24,6 +24,11 @@ export class CachedSubject<T> extends Subject<T> {
     super.next(val)
   }
 
+  /** for compat with v1 */
+  public nextWithCache(val: T) {
+    return this.next(val)
+  }
+
   public _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     if ( this.hasEmitted ) {

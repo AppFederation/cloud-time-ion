@@ -5,7 +5,6 @@ import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
-import {CachedSubject} from "../../AppFedShared/utils/CachedSubject";
 import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 
 

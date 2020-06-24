@@ -1,11 +1,11 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
-import {CachedSubject} from "../utils/CachedSubject";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 import {OdmItem$2} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmService2<
   TInMemData,
