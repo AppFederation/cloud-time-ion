@@ -20,6 +20,9 @@ const routes: Routes = [
   { path: 'learn/item',
     loadChildren: './apps/Learn/learn-item-details/learn-item-details.module#LearnItemDetailsPageModule'
   },
+  { path: 'learn/quiz',
+    loadChildren: './apps/Learn/quiz/quiz.module#QuizPageModule'
+  },
 
 
 

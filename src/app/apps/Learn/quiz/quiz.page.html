@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-title>
+      <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+      <ion-button routerLink="/learn"><</ion-button>
+
+      <odm-sync-status></odm-sync-status>
+      <!--      {{(item?.locallyVisibleChanges$ | async)?.title}}</ion-title>-->
+      <!--      {{((doc.valueChanges() | async)?.title) || "test"}}-->
+      QUIZ
+      <!--      {{(doc.get() | async)?.title || "test"}}-->
+    </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="quizService.getNextItemForSelfRating()">
+    sdafsd
+  </ion-button>
+
+</ion-content>
