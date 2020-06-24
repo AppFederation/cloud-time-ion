@@ -21,6 +21,7 @@ export class LearnItem extends OdmInMemItem {
   whenDeleted?: Date
   lastSelfRating?: number
   whenLastSelfRated?: OdmTimestamp
+  selfRatingsCount?: number
 }
 
 export type LearnItem$ = OdmItem$2<LearnItem>
