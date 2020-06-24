@@ -1,5 +1,5 @@
 import {FormGroup} from '@angular/forms'
-import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
+import {OdmItem$2} from '../OdmItem$2'
 
 export class ViewSyncer<TKey = string> {
 

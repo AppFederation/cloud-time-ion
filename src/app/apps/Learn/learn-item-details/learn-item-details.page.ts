@@ -7,7 +7,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {AlertController} from '@ionic/angular'
 import {FormControl, FormGroup} from '@angular/forms'
 import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
-import {ViewSyncer} from './ViewSyncer'
+import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 
