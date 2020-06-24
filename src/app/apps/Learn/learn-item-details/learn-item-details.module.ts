@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { LearnItemDetailsPage } from './learn-item-details.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
+import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     OdmModule,
+    RatingsModule,
   ],
   declarations: [LearnItemDetailsPage]
 })

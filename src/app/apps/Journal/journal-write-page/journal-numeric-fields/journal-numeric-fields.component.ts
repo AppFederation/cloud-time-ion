@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NumericPickerVal} from '../numeric-picker/numeric-picker.component'
+import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {JournalNumericDescriptor, JournalNumericDescriptors} from '../../models/JournalNumericDescriptors'
 
 @Component({

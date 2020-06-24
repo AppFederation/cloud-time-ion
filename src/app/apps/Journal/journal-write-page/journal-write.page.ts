@@ -4,7 +4,7 @@ import {JournalEntry} from "../models/JournalEntry";
 import {debugLog} from "../../../libs/AppFedShared/utils/log";
 import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf-geo-location.service";
 import {JournalTextDescriptor, JournalTextDescriptors} from "../models/JournalTextDescriptors";
-import {NumericPickerVal} from "./numeric-picker/numeric-picker.component";
+import {NumericPickerVal} from "../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component";
 import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 
 @Component({

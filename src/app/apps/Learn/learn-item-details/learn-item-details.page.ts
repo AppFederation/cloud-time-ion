@@ -8,6 +8,8 @@ import {AlertController} from '@ionic/angular'
 import {FormControl, FormGroup} from '@angular/forms'
 import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {ViewSyncer} from './ViewSyncer'
+import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -51,7 +53,7 @@ export class LearnItemDetailsPage implements OnInit {
 
     this.doc = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
     this.doc.valueChanges().subscribe(x => {
-      console.log(`valueChanges`, JSON.stringify(x))
+      // console.log(`valueChanges`, JSON.stringify(x))
       this.title = x && x.title
       // this.item = x
     })
@@ -61,10 +63,16 @@ export class LearnItemDetailsPage implements OnInit {
 
   }
 
+  joinedSides() {
+    // this seems very slow
+    return sidesDefsArray.map(side => this.item$.currentVal[side.id]).filter(_ => _).join(' | ')
+  }
+
   async askDelete() {
+
     const alert = await this.alertController.create({
       header: 'Delete item ' + this.item$.currentVal.title + " ?",
-      message: 'Delete <strong>'+ this.item$.currentVal.title +'</strong>!!!',
+      message: 'Delete <strong>' + this.joinedSides() + '</strong>!!!?',
       buttons: [
         {
           text: 'Cancel',
@@ -92,5 +100,21 @@ export class LearnItemDetailsPage implements OnInit {
     } else {
       return null
     }
+  }
+
+  onChangeSelfRating($event: NumericPickerVal) {
+    const previousRating = this.item$.currentVal.lastSelfRating
+    let newRating = $event
+    if ( newRating === 2 && previousRating >= 2 ) {
+      const enoughTimePassed = false // TODO: based on calculation
+      if ( enoughTimePassed ) {
+        newRating = previousRating + 1
+      }
+    }
+
+    this.item$.patchThrottled({
+      lastSelfRating: newRating,
+      whenLastSelfRated: OdmBackend.nowTimestamp(),
+    })
   }
 }

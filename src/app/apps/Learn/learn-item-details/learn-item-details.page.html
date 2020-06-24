@@ -19,18 +19,24 @@
   <ng-container
     *ngIf="viewSyncer.initialDataArrived else notLoaded"
   >
+    <apf-numeric-picker
+      (numericValue)="onChangeSelfRating($event)"
+      [allowedVals]="[0, 1, 2]"
+    ></apf-numeric-picker>
+
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
     <div
       style="margin-left: 4px"
       *ngFor="let side of sidesDefsArray"
     >
-      <ion-header><h5>{{side.id}}</h5></ion-header>
+      <ion-header><ion-text color="secondary"><h5>{{side.id}}:</h5></ion-text></ion-header>
       <ion-textarea
         [formGroup]="formGroup"
         [formControl]="formControls[side.id]"
-        [placeholder]="side.id"
       >
+        <!--         [placeholder]="side.id"
+ -->
         <!--       [value]="getField((item$.locallyVisibleChanges$ | async), side.id) + 'xyz'"
    -->
       </ion-textarea>

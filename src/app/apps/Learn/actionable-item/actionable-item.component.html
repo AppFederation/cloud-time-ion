@@ -7,6 +7,10 @@
   <ion-button *ngIf="item.hasAudio" (click)="playAudio(); $event.stopPropagation()">
     <ion-icon icon="play"></ion-icon>
   </ion-button>
+
+  <span style="color: orange">
+    {{ item.lastSelfRating }}
+  </span>
 <!--  {{item.title}}-->
 
 <!--  <ng-container-->
@@ -15,7 +19,7 @@
 <!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
 <!--  </ng-container>-->
 
-  {{joinedSides()}}
+  {{ joinedSides() }}
 
 <!--  <app-play-button *ngIf="item.hasAudio"></app-play-button>-->
 

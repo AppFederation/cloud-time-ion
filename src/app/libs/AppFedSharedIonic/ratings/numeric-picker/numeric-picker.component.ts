@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {JournalNumericDescriptor} from '../../models/JournalNumericDescriptors'
+import {JournalNumericDescriptor} from '../../../../apps/Journal/models/JournalNumericDescriptors'
 
 export type NumericPickerVal = number
 
@@ -19,6 +19,10 @@ export class NumericPickerComponent implements OnInit {
 
   @Input() minNum: number
   @Input() maxNum: number
+
+  @Input()
+  allowedVals: Array<any> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 
   numValFormControl = new FormControl()
 

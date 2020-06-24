@@ -15,10 +15,12 @@ export type LearnItemId = OdmItemId<LearnItem>
 export class LearnItem extends OdmInMemItem {
   id: LearnItemId
   whenAdded: OdmTimestamp
-  title: string
+  title?: string
   isTask?: boolean
   hasAudio?: true | null
-  whenDeleted: Date
+  whenDeleted?: Date
+  lastSelfRating?: number
+  whenLastSelfRated?: OdmTimestamp
 }
 
 export type LearnItem$ = OdmItem$2<LearnItem>
