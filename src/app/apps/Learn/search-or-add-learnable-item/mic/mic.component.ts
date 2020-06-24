@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {UploadService} from '../../upload.service'
-import {LearnDoService} from '../../learn-do.service'
+import {UploadService} from '../../core/upload.service'
+import {LearnDoService} from '../../core/learn-do.service'
 import {LearnItem} from '../search-or-add-learnable-item.page'
 import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {LearnDoService} from '../learn-do.service'
+import {LearnDoService} from './learn-do.service'
 import {LearnItem$} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 
 @Injectable({

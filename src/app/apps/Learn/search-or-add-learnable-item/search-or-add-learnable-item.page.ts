@@ -3,11 +3,11 @@ import {AngularFirestore} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import sortBy from 'lodash/sortBy'
 import {OdmItem, OdmItemData} from '../../../libs/AppFedShared/odm/OdmItem'
-import {LearnDoService} from '../learn-do.service'
+import {LearnDoService} from '../core/learn-do.service'
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {sidesDefs, sidesDefsArray} from '../sidesDefs'
+import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
 
 export type LearnItemId = OdmItemId<LearnItem>
 

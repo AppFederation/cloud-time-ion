@@ -1,4 +1,4 @@
-import {Dict, dictToArrayWithIds} from '../../libs/AppFedShared/utils/dictionary-utils'
+import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 export type SideId = string
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {SideId, SidesDefs, sidesDefs, sidesDefsArray} from '../sidesDefs'
+import {SideId, SidesDefs, sidesDefs, sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, Router} from '@angular/router'
-import {LearnDoService} from '../learn-do.service'
+import {LearnDoService} from '../core/learn-do.service'
 import {LearnItem, LearnItem$, LearnItemId} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
 import {AlertController} from '@ionic/angular'

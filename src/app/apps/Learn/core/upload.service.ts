@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AngularFireStorage} from '@angular/fire/storage'
 import {uuid4} from '@capacitor/core/dist/esm/util'
-import {SyncStatusService} from '../../libs/AppFedShared/odm/sync-status.service'
+import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {AngularFirestore} from '@angular/fire/firestore'
 
 import * as firebase from 'firebase';
