@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { LearnItemDetailsPage } from './learn-item-details.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
+import {SharedModule} from '../shared/shared.module'
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     OdmModule,
     RatingsModule,
+    SharedModule,
   ],
   declarations: [LearnItemDetailsPage]
 })

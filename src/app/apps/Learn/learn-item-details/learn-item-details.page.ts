@@ -101,20 +101,4 @@ export class LearnItemDetailsPage implements OnInit {
       return null
     }
   }
-
-  onChangeSelfRating($event: NumericPickerVal) {
-    const previousRating = this.item$.currentVal.lastSelfRating
-    let newRating = $event
-    if ( newRating === 2 && previousRating >= 2 ) {
-      const enoughTimePassed = false // TODO: based on calculation
-      if ( enoughTimePassed ) {
-        newRating = previousRating + 1
-      }
-    }
-
-    this.item$.patchThrottled({
-      lastSelfRating: newRating,
-      whenLastSelfRated: OdmBackend.nowTimestamp(),
-    })
-  }
 }

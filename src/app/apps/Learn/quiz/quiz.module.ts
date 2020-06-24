@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { QuizPage } from './quiz.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
+import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
+import {SharedModule} from '../shared/shared.module'
 
 const routes: Routes = [
   {
@@ -16,13 +18,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        RouterModule.forChild(routes),
-        OdmModule,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild(routes),
+    OdmModule,
+    RatingsModule,
+    SharedModule,
+  ],
   declarations: [QuizPage]
 })
 export class QuizPageModule {}

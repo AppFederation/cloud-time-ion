@@ -19,10 +19,9 @@
   <ng-container
     *ngIf="viewSyncer.initialDataArrived else notLoaded"
   >
-    <apf-numeric-picker
-      (numericValue)="onChangeSelfRating($event)"
-      [allowedVals]="[0, 1, 2]"
-    ></apf-numeric-picker>
+    <app-self-rating
+      [item$]="item$"
+    ></app-self-rating>
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
@@ -45,7 +44,5 @@
   <ng-template #notLoaded>
     Loading...
   </ng-template>
-
-
 
 </ion-content>
