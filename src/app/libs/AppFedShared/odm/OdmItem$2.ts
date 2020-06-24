@@ -34,9 +34,8 @@ export class OdmItem$2<
     public id?: OdmItemId<TInMemData>,
     initialInMemData?: TInMemData,
   ) {
-    if (initialInMemData) {
-      this.currentVal = initialInMemData
-
+    if ( initialInMemData ) {
+      this.emitNewVal(initialInMemData)
       // DO NOT patch here, as it can create an infinite loop
       // this.patchNow(initialInMemData) // maybe should override rather than patch
     }
@@ -122,8 +121,12 @@ export class OdmItem$2<
 
   applyDataFromDbAndEmit(incomingConverted: TInMemData) {
     // Object.assign(this, incomingConverted) // TODO:
-    this.currentVal = incomingConverted
-    this.locallyVisibleChanges$.next(incomingConverted)
+    this.emitNewVal(incomingConverted)
+  }
+
+  private emitNewVal(newVal: TInMemData) {
+    this.currentVal = newVal
+    this.locallyVisibleChanges$.next(newVal)
   }
 
   /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */

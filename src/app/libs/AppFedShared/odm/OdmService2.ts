@@ -69,7 +69,9 @@ export abstract class OdmService2<
 
         let items = service.localItems$.lastVal;
         // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
-          existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+        //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+        // }
+          existingItem.applyDataFromDbAndEmit(addedItemRawData)
           items.push(existingItem)
         // } else {
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
