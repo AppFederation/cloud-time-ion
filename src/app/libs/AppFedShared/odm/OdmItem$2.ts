@@ -36,7 +36,9 @@ export class OdmItem$2<
   ) {
     if (initialInMemData) {
       this.currentVal = initialInMemData
-      this.patchNow(initialInMemData) // maybe should override rather than patch
+
+      // DO NOT patch here, as it can create an infinite loop
+      // this.patchNow(initialInMemData) // maybe should override rather than patch
     }
 
     this.localUserSavesToThrottle$.pipe(

@@ -62,19 +62,19 @@ export abstract class OdmService2<
     const service = this /* MUST use instead of `this` */
     this.odmCollectionBackend.setListener({
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
-        // debugLog('setBackendListener onAdded', ...arguments)
         let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
+        // debugLog('setBackendListener onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
 
         // service.obtainOdmItem$(addedItemId) TODO
 
         let items = service.localItems$.lastVal;
-        if ( ! existingItem ) {
-          existingItem = service.createOdmItem$ForExisting(addedItemId)// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+        // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
+          existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
           items.push(existingItem)
-        } else {
+        // } else {
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
-          existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-        }
+          // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
+        // }
         service.emitLocalItems()
       },
       onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
@@ -97,8 +97,8 @@ export abstract class OdmService2<
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */
-  protected createOdmItem$ForExisting(itemId: TItemId): TOdmItem$ {
-    return new OdmItem$2(this, itemId) as TOdmItem$
+  protected createOdmItem$ForExisting(itemId: TItemId, inMemVal?: TInMemData): TOdmItem$ {
+    return new OdmItem$2(this, itemId, inMemVal) as TOdmItem$
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */

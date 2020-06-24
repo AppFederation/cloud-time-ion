@@ -7,6 +7,12 @@ export class Side {
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang?: string // = 'en-US'
   ask?: boolean // = true
+
+  constructor() {
+    if ( this.ask === undefined ) {
+      this.ask = true // use `??`
+    }
+  }
 }
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -31,7 +37,8 @@ export class SidesDefs {
     defaultLang: 'en-US',
   })
   answer = side({
-    defaultLang: 'en-US'
+    defaultLang: 'en-US',
+    ask: false,
   })
   examples = side({
   })
@@ -44,6 +51,7 @@ export class SidesDefs {
   })
   de = side({
     defaultLang: 'de-DE',
+    ask: false /* not asking German for now, to force recall */,
   })
   es_gender_article = side({
     defaultLang: 'es-ES',

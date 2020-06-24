@@ -17,13 +17,21 @@
 
 <ion-content>
 
-  <ng-container>(ahead of time)</ng-container>
+  {{ (item$ | async)?.id }}
 
-  <ion-button (click)="quizService.getNextItemForSelfRating()">
-    sdafsd
-  </ion-button>
+  {{ getSideValForQuiz$() | async }}
+
+<!--  <ng-container>(ahead of time by X hours)</ng-container>-->
+<!--  <ng-container>(overdue X hours)</ng-container>-->
+
+<!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$.currentVal) - nowMs()) * 1000 * 3600 }}-->
+
+<!--  <ion-button (click)="nextItem()">-->
+<!--    NEXT-->
+<!--  </ion-button>-->
 
   <app-self-rating
+    [item$]="item$ | async"
   ></app-self-rating>
 
 </ion-content>

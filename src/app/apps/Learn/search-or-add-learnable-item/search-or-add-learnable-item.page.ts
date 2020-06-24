@@ -11,6 +11,8 @@ import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
+export type Rating = number
+
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem {
   id: LearnItemId
@@ -19,7 +21,7 @@ export class LearnItem extends OdmInMemItem {
   isTask?: boolean
   hasAudio?: true | null
   whenDeleted?: Date
-  lastSelfRating?: number
+  lastSelfRating?: Rating
   whenLastSelfRated?: OdmTimestamp
   selfRatingsCount?: number
 }
