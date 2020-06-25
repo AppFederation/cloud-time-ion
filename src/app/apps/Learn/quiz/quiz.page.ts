@@ -10,6 +10,8 @@ import {map} from 'rxjs/operators'
 })
 export class QuizPage implements OnInit {
 
+  private shouldShowAnswer = false
+
   get item$() {
     return this.quizService.getNextItemForSelfRating$()
   }
@@ -50,5 +52,13 @@ export class QuizPage implements OnInit {
 
   nowMs() {
     return Date.now()
+  }
+
+  newDate(number: number) {
+    return new Date(number)
+  }
+
+  showAnswer() {
+    this.shouldShowAnswer = true
   }
 }

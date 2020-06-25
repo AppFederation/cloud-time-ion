@@ -17,14 +17,33 @@
 
 <ion-content>
 
-  {{ (item$ | async)?.id }}
+  <p>
+    {{ (item$ | async)?.id }}
 
-  {{ getSideValForQuiz$() | async }}
+  </p>
 
+  <p>
+    {{ getSideValForQuiz$() | async }}
+  </p>
 <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
 <!--  <ng-container>(overdue X hours)</ng-container>-->
 
-<!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$.currentVal) - nowMs()) * 1000 * 3600 }}-->
+<!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
+  <p>
+    next repetition: {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$ | async)) }}
+  </p>
+
+  <ion-button
+    (click)="showAnswer()"
+  >Show answer</ion-button>
+
+  <ion-button
+    [routerLink]="'/learn/item/'+(item$ | async)?.id"
+  >EDIT</ion-button>
+
+  <p *ngIf="shouldShowAnswer">
+    {{ (item$ | async)?.currentVal?.joinedSides() }}
+  </p>
 
 <!--  <ion-button (click)="nextItem()">-->
 <!--    NEXT-->
@@ -32,6 +51,7 @@
 
   <app-self-rating
     [item$]="item$ | async"
+    (click)="shouldShowAnswer = false"
   ></app-self-rating>
 
 </ion-content>

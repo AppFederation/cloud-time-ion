@@ -20,9 +20,9 @@ export class QuizService {
 
   getNextItemForSelfRating$(): Observable<LearnItem$> {
     return this.learnDoService.localItems$.pipe(
-      map(item$s => {
+      map((item$s: LearnItem$[]) => {
         // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
-        return minBy(item$s, item => this.calculateWhenNextRepetitionMsEpoch(item))
+        return minBy(item$s, (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
       })
     )
     // console.log(`QuizService learnDoService.itemsCount()`, this.learnDoService.itemsCount())
@@ -30,18 +30,28 @@ export class QuizService {
   }
 
   calculateIntervalHours(rating: Rating) {
-    return 12 * Math.pow(2, rating)
+    return 12 * Math.pow(2, rating || 0)
   }
 
-  calculateWhenNextRepetitionMsEpoch(item: LearnItem) {
+  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$) {
+    // return item$.currentVal.whenAdded.toMillis()
+    if ( ! item$ ) {
+      return 0
+    }
+    const item = item$.currentVal
+    if ( ! item ) {
+      return 0
+    }
     const whenLastTouched: OdmTimestamp =
       item.whenLastSelfRated ||
-      item.whenLastModified ||
-      item.whenAdded ||
-      item.whenCreated
+      // item.whenLastModified || /* garbled by accidental patching of all items */
+      item.whenAdded // ||
+      // item.whenCreated /* garbled by accidental patching of all items */
     if ( ! whenLastTouched ) {
       return 0 // 1970
     }
-    return whenLastTouched.toMillis() + (1000 * 3600 * this.calculateIntervalHours(item.lastSelfRating || 0))
+    const ret = whenLastTouched.toMillis() + (1000 * 3600 * this.calculateIntervalHours(item.lastSelfRating || 0))
+    // console.log('calculateWhenNextRepetitionMsEpoch', new Date(ret))
+    return ret
   }
 }
