@@ -78,6 +78,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   breathing = jnd()
   relax = jnd('stressed')
   satisfaction = jnd('frustrated' /*?*/)
+  fulfillment = jnd({searchTerms: [`fulfilment` /* single l */]})
   meaning = jnd()
   purpose = jnd()
   mission = jnd()
