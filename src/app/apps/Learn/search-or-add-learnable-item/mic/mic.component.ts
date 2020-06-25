@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../core/upload.service'
 import {LearnDoService} from '../../core/learn-do.service'
-import {LearnItem} from '../search-or-add-learnable-item.page'
 import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
+import {LearnItem} from '../../models/LearnItem'
 
 declare const MediaRecorder: any;
 

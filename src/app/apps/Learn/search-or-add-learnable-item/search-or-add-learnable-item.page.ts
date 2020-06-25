@@ -1,40 +1,11 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import sortBy from 'lodash/sortBy'
-import {OdmItem, OdmItemData} from '../../../libs/AppFedShared/odm/OdmItem'
 import {LearnDoService} from '../core/learn-do.service'
-import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
-import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
-import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
+import {sidesDefsArray} from '../core/sidesDefs'
+import {field, LearnItem} from '../models/LearnItem'
 
-export type LearnItemId = OdmItemId<LearnItem>
-
-export type Rating = number
-
-/** LearnDoItemData */
-export class LearnItem extends OdmInMemItem {
-  id: LearnItemId
-  whenAdded: OdmTimestamp
-  title?: string
-  isTask?: boolean
-  hasAudio?: true | null
-  whenDeleted?: Date
-  lastSelfRating?: Rating
-  whenLastSelfRated?: OdmTimestamp
-  selfRatingsCount?: number
-}
-
-export type LearnItem$ = OdmItem$2<LearnItem>
-
-// export class LearnDoItem$ extends OdmItem<LearnDoItem$, LearnItem> {
-//
-// }
-
-function field<T>(fieldName: keyof T) {
-  return fieldName
-}
 
 @Component({
   selector: 'app-search-or-add-learnable-item',

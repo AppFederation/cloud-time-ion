@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
-import {LearnItem, LearnItem$, Rating} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
 import {minBy} from 'lodash'
 import {Observable} from 'rxjs/internal/Observable'
 import {map} from 'rxjs/operators'
+import {LearnItem, LearnItem$, Rating} from '../models/LearnItem'
 
 @Injectable({
   providedIn: 'root'

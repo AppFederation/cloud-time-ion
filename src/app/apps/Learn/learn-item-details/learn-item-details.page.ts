@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {SideId, SidesDefs, sidesDefs, sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, Router} from '@angular/router'
 import {LearnDoService} from '../core/learn-do.service'
-import {LearnItem, LearnItem$, LearnItemId} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
 import {AlertController} from '@ionic/angular'
 import {FormControl, FormGroup} from '@angular/forms'
@@ -10,6 +9,7 @@ import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictiona
 import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
+import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
 
 @Component({
   selector: 'app-learn-item-details',

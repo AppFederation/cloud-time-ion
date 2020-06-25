@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {LearnItem} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {AngularFirestore} from '@angular/fire/firestore'
 import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
+import {LearnItem} from '../models/LearnItem'
 
 
 @Component({

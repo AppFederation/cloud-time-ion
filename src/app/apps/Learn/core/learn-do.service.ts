@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {OdmService} from '../../../libs/AppFedShared/odm/OdmService'
-import {LearnItem} from '../search-or-add-learnable-item/search-or-add-learnable-item.page'
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
+import {LearnItem} from '../models/LearnItem'
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,10 @@ export class LearnDoService extends OdmService2<LearnItem> {
     this.localItems$.subscribe(items => {
       console.log(`LearnDoService items.length`, items.length)
     })
+  }
+
+  protected convertFromDbFormat(dbItem: LearnItem): LearnItem {
+    return Object.assign(new LearnItem(), dbItem)
   }
 
 }
