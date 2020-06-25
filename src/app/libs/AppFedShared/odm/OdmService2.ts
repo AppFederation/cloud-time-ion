@@ -71,7 +71,7 @@ export abstract class OdmService2<
         // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
         //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
         // }
-          existingItem.applyDataFromDbAndEmit(addedItemRawData)
+          existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
           items.push(existingItem)
         // } else {
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
