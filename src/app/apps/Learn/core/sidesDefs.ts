@@ -36,22 +36,25 @@ export class SidesDefs {
   question = side({
     defaultLang: 'en-US',
   })
+  /** for a 2-way asking */
+  question2 = side({
+    defaultLang: 'en-US',
+  })
   answer = side({
     defaultLang: 'en-US',
     ask: false,
   })
+  /* first EN and PL to be more likely to ask from languages that I know already */
   examples = side({
   })
   comments = side({
     ask: false,
   })
-  de_gender_article = side({
-    defaultLang: 'de-DE',
-    ask: false,
+  pl = side({
+    defaultLang: 'pl-PL',
   })
-  de = side({
-    defaultLang: 'de-DE',
-    ask: false /* not asking German for now, to force recall */,
+  en = side({
+    defaultLang: 'en-US',
   })
   es_gender_article = side({
     defaultLang: 'es-ES',
@@ -60,11 +63,13 @@ export class SidesDefs {
   es = side({
     defaultLang: 'es-ES',
   })
-  en = side({
-    defaultLang: 'en-US',
+  de_gender_article = side({
+    defaultLang: 'de-DE',
+    ask: false,
   })
-  pl = side({
-    defaultLang: 'pl-PL',
+  de = side({
+    defaultLang: 'de-DE',
+    ask: false /* not asking German for now, to force recall */,
   })
 }
 
