@@ -26,7 +26,7 @@ export type SideDecl = Omit<Side, 'id'>
 * */
 
 function side(param: SideDecl): SideDecl {
-  return param
+  return Object.assign(new Side(), param)
 }
 
 export class SidesDefs {
