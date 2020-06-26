@@ -6,14 +6,10 @@ import {sidesDefsArray} from '../core/sidesDefs'
 export type LearnItemId = OdmItemId<LearnItem>
 export type Rating = number
 
-// export class LearnDoItem$ extends OdmItem<LearnDoItem$, LearnItem> {
-//
-// }
-
 
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem {
-  id: LearnItemId
+  id?: LearnItemId
   whenAdded: OdmTimestamp
   title?: string
   isTask?: boolean
@@ -25,7 +21,7 @@ export class LearnItem extends OdmInMemItem {
 
   joinedSides?() {
     // this seems very slow
-    return sidesDefsArray.map(side => this[side.id]).filter(_ => _).join(' • ')
+    return sidesDefsArray.map(side => this[side.id]).filter(_ => _).join(' ● ')
   }
 
 }

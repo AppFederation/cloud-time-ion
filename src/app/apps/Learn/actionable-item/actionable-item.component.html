@@ -1,12 +1,16 @@
-<p style="margin-left: 5px;" [routerLink]="['/learn/item/'+item.id]">
+<p style="margin-left: 5px;"
+   [routerLink]="['/learn/item/'+item.id]"
+>
 <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
   &nbsp;
-  <ion-button *ngIf="item.hasAudio" (click)="playAudio(); $event.stopPropagation()">
-    <ion-icon icon="play"></ion-icon>
-  </ion-button>
+  <app-play-button
+    *ngIf="item.hasAudio"
+    [item]="item"
+    [itemId]="item.id"
+  ></app-play-button>
 
   <span style="color: orange">
     {{ item.lastSelfRating }}

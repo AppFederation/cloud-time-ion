@@ -2,16 +2,13 @@
   <ion-toolbar>
 
     <ion-title>
-<!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+      <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
       <ion-button routerLink="/learn"><</ion-button>
 
       <odm-sync-status></odm-sync-status>
       <ion-button routerLink="/learn/quiz">QUIZ</ion-button>
 
-      <!--      {{(item?.locallyVisibleChanges$ | async)?.title}}</ion-title>-->
-<!--      {{((doc.valueChanges() | async)?.title) || "test"}}-->
       {{title}}
-<!--      {{(doc.get() | async)?.title || "test"}}-->
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,6 +22,10 @@
       [item$]="item$"
     ></app-self-rating>
 
+    <app-play-button
+      [item]="item$.locallyVisibleChanges$ | async"
+      [itemId]="item$.id"
+    ></app-play-button>
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
     <div
@@ -36,10 +37,7 @@
         [formGroup]="formGroup"
         [formControl]="formControls[side.id]"
       >
-        <!--         [placeholder]="side.id"
- -->
-        <!--       [value]="getField((item$.locallyVisibleChanges$ | async), side.id) + 'xyz'"
-   -->
+        <!-- [placeholder]="side.id" -->
       </ion-textarea>
     </div>
   </ng-container>

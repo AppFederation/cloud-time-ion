@@ -9,9 +9,8 @@ import { SearchOrAddLearnableItemPage } from './search-or-add-learnable-item.pag
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {ActionableItemComponent} from '../actionable-item/actionable-item.component'
 import {MicComponent} from './mic/mic.component'
-import {AngularFirestoreModule} from '@angular/fire/firestore'
 import {AngularFireStorageModule} from '@angular/fire/storage'
-import {PlayButtonComponent} from '../play-button/play-button.component'
+import {SharedModule} from '../shared/shared.module'
 
 const routes: Routes = [
   {
@@ -28,12 +27,12 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     OdmModule,
     AngularFireStorageModule,
+    SharedModule,
   ],
   declarations: [
     SearchOrAddLearnableItemPage,
     ActionableItemComponent,
     MicComponent,
-    PlayButtonComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}

@@ -17,10 +17,14 @@
 
 <ion-content>
 
-  <p>
-    {{ (item$ | async)?.id }}
+  <ion-note>
+    {{ (item$$ | async)?.id }}
+  </ion-note>
 
-  </p>
+  <app-play-button
+    [item]="(item$$ | async)?.locallyVisibleChanges$ | async"
+    [itemId]="(item$$ | async)?.id"
+  ></app-play-button>
 
   <p>
     {{ getSideValForQuiz$() | async }}
@@ -30,7 +34,7 @@
 
 <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
   <p>
-    next repetition: {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$ | async)) }}
+    next repetition: {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async)) }}
   </p>
 
   <ion-button
@@ -38,11 +42,11 @@
   >Show answer</ion-button>
 
   <ion-button
-    [routerLink]="'/learn/item/'+(item$ | async)?.id"
+    [routerLink]="'/learn/item/'+(item$$ | async)?.id"
   >EDIT</ion-button>
 
   <p *ngIf="shouldShowAnswer">
-    {{ (item$ | async)?.currentVal?.joinedSides() }}
+    {{ (item$$ | async)?.currentVal?.joinedSides() }}
   </p>
 
 <!--  <ion-button (click)="nextItem()">-->
@@ -50,7 +54,7 @@
 <!--  </ion-button>-->
 
   <app-self-rating
-    [item$]="item$ | async"
+    [item$]="item$$ | async"
     (click)="shouldShowAnswer = false"
   ></app-self-rating>
 

@@ -12,7 +12,7 @@ export class QuizPage implements OnInit {
 
   private shouldShowAnswer = false
 
-  get item$() {
+  get item$$() {
     return this.quizService.getNextItemForSelfRating$()
   }
 
@@ -24,7 +24,7 @@ export class QuizPage implements OnInit {
   }
 
   getSideValForQuiz$() {
-    return this.item$.pipe(map(item$ => {
+    return this.item$$.pipe(map(item$ => {
       if ( ! item$ ) {
         return '(no item$)'
       }

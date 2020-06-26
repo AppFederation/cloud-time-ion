@@ -23,30 +23,6 @@ export class ActionableItemComponent implements OnInit {
 
   ngOnInit() {}
 
-  playAudio() {
-    this.angularFirestore.collection('LearnDoAudio').doc(this.item.id).get().subscribe(audioItem => {
-      const audioBytes = audioItem.data().audio.toUint8Array().buffer as ArrayBuffer
-      const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
-      const source = audioCtx.createBufferSource();
-
-      audioCtx.decodeAudioData(audioBytes, function(buffer) {
-          source.buffer = buffer;
-          console.log(`source.buffer`, source.buffer)
-
-          source.connect(audioCtx.destination);
-          // source.loop = true;
-          source.start(0)
-        },
-
-        function(e){
-          window.alert("Error with decoding audio data: " + e.err + ' ' + e);
-        }
-      );
-
-      console.log(`audioItem.audio`, audioBytes)
-    })
-  }
-
   joinedSides() {
     // this seems very slow
     return LearnItem.prototype.joinedSides.call(this.item) // this.item.joinedSides()

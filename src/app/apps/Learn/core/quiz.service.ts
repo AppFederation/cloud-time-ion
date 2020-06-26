@@ -3,9 +3,11 @@ import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
 import {minBy} from 'lodash'
-import {Observable} from 'rxjs/internal/Observable'
+// import {Observable} from 'rxjs/internal/Observable'
 import {map} from 'rxjs/operators'
 import {LearnItem, LearnItem$, Rating} from '../models/LearnItem'
+
+import {Observable,of, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,7 @@ export class QuizService {
         return minBy(item$s, (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
       })
     )
+    // return of(this.learnDoService.getItem$ById(`LearnItem__2020-06-24__23.56.06.054Z_`))
     // console.log(`QuizService learnDoService.itemsCount()`, this.learnDoService.itemsCount())
     // return null
   }

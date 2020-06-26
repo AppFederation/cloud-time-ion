@@ -22,6 +22,9 @@ export abstract class OdmService2<
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
 
+  /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
+     And itemsJustList$ for just changes of list, without reporting changes of individual item data-s
+     */
   localItems$ = new CachedSubject<TOdmItem$[]>([])
 
   mapIdToItem$ = new Map<TItemId, TOdmItem$>()

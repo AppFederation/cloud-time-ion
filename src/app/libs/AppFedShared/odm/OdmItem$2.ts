@@ -77,7 +77,7 @@ export class OdmItem$2<
   }
 
   // patchFieldThrottled(fieldKey: keyof TData, fieldPatch: (typeof this.fieldKey)) {
-  //
+  //  // idea: patch level 1 and pass partial
   // }
 
   patchNow(patch: OdmPatch<TInMemData>) {

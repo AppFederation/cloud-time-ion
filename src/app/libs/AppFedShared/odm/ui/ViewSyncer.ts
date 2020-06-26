@@ -18,7 +18,7 @@ export class ViewSyncer<TKey = string> {
   ) {
     console.log('ViewSyncer ctor', item$, item$.id)
     this.item$.locallyVisibleChanges$.subscribe(dataFromDb => {
-      console.log(`locallyVisibleChanges$`, this.item$.id, dataFromDb)
+      console.log(`ViewSyncer locallyVisibleChanges$`, this.item$.id, dataFromDb)
       // this.formGroup.setValue(data) // FIXME: use setValue in case some field externally deleted, but need to fill missing fields using new util func ensureFieldsExistBasedOn
       // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
       if ( this.hasEnoughTimePassedFromLastUserEditToApplyFromDb() ) {

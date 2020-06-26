@@ -1,0 +1,6 @@
+<ion-button
+  *ngIf="item?.hasAudio"
+  (click)="playAudio(); $event.stopPropagation()"
+>
+  <ion-icon icon="play"></ion-icon>
+</ion-button>
