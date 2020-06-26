@@ -7,9 +7,8 @@ import {AlertController} from '@ionic/angular'
 import {FormControl, FormGroup} from '@angular/forms'
 import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
+import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -19,7 +18,7 @@ import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
 export class LearnItemDetailsPage implements OnInit {
 
   // formControls: {[key: keyof SidesDefs]: FormControl} =
-  formControls: {[key: string]: FormControl} = mapFieldsToFormControls(sidesDefs)
+  formControls: {[key: string]: FormControl /* TODO: mapped type */} = mapFieldsToFormControls(sidesDefs)
   formGroup = new FormGroup(this.formControls)
 
   window = window
@@ -50,29 +49,12 @@ export class LearnItemDetailsPage implements OnInit {
       console.log(`this.learnDoService.localItems$ items.length`, items.length, 'itemsCount', this.learnDoService.itemsCount())
     })
     console.log(`this.item$.currentVal`, this.item$.currentVal, this.item$.locallyVisibleChanges$.lastVal)
-
-    this.doc = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
-    this.doc.valueChanges().subscribe(x => {
-      // console.log(`valueChanges`, JSON.stringify(x))
-      this.title = x && x.title
-      // this.item = x
-    })
-    // this.item.locallyVisibleChanges$.subscribe(i => {
-    //   console.log(`locallyVisibleChanges$`, i)
-    // })
-
-  }
-
-  joinedSides() {
-    // this seems very slow
-    return sidesDefsArray.map(side => this.item$.currentVal[side.id]).filter(_ => _).join(' | ')
   }
 
   async askDelete() {
-
     const alert = await this.alertController.create({
       header: 'Delete item ' + this.item$.currentVal.title + " ?",
-      message: 'Delete <strong>' + this.joinedSides() + '</strong>!!!?',
+      message: 'Delete <strong>' + this.item$.currentVal.joinedSides() + '</strong>!!!?',
       buttons: [
         {
           text: 'Cancel',
@@ -86,7 +68,7 @@ export class LearnItemDetailsPage implements OnInit {
             // })
             await this.doc.delete() // TODO: listen to promise for sync status
             await this.angularFirestore.collection(`LearnDoAudio`).doc(this.id).delete() // TODO: listen to promise for sync status
-            this.router.navigate([`/learn`])
+            ignorePromise(this.router.navigate([`/learn`]))
           }
         }
       ]
@@ -94,11 +76,4 @@ export class LearnItemDetailsPage implements OnInit {
     await alert.present()
   }
 
-  getField(tInMemData: LearnItem, fieldId: SideId) {
-    if ( tInMemData ) {
-      return tInMemData[fieldId]
-    } else {
-      return null
-    }
-  }
 }

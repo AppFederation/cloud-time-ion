@@ -49,6 +49,6 @@ export class ActionableItemComponent implements OnInit {
 
   joinedSides() {
     // this seems very slow
-    return sidesDefsArray.map(side => this.item[side.id]).filter(_ => _).join(' | ')
+    return LearnItem.prototype.joinedSides.call(this.item) // this.item.joinedSides()
   }
 }
