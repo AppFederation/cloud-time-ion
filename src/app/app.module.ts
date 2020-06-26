@@ -32,7 +32,8 @@ import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storag
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    // { provide: RouteReuseStrategy, useClass: }
   ],
   bootstrap: [AppComponent]
 })

@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'auth',
     loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'learn',
-    loadChildren: './apps/Learn/search-or-add-learnable-item/search-or-add-learnable-item.module#SearchOrAddLearnableItemPageModule'
+    loadChildren: './apps/Learn/search-or-add-learnable-item/search-or-add-learnable-item.module#SearchOrAddLearnableItemPageModule',
+    data: { shouldReuse: true },
   },
   { path: 'learn/item',
     loadChildren: './apps/Learn/learn-item-details/learn-item-details.module#LearnItemDetailsPageModule'
@@ -24,9 +25,8 @@ const routes: Routes = [
     loadChildren: './apps/Learn/quiz/quiz.module#QuizPageModule'
   },
 
-
-
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
