@@ -10,7 +10,7 @@ import {map} from 'rxjs/operators'
 })
 export class QuizPage implements OnInit {
 
-  private shouldShowAnswer = false
+  public shouldShowAnswer = false
 
   get item$$() {
     return this.quizService.getNextItemForSelfRating$()
@@ -25,6 +25,7 @@ export class QuizPage implements OnInit {
 
   getSideValForQuiz$() {
     return this.item$$.pipe(map(item$ => {
+      this.shouldShowAnswer = false
       if ( ! item$ ) {
         return '(no item$)'
       }
