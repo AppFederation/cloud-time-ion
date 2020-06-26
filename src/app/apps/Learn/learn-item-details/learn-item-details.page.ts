@@ -39,7 +39,7 @@ export class LearnItemDetailsPage implements OnInit {
   ) {
   }
 
-  private doc: AngularFirestoreDocument<LearnItem>
+  private doc: AngularFirestoreDocument<LearnItem> = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
 
   ngOnInit() {
     console.log(`id`, this.id)
