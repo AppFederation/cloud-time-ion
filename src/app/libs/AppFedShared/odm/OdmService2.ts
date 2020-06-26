@@ -99,9 +99,9 @@ export abstract class OdmService2<
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */
-  protected createOdmItem$ForExisting(itemId: TItemId, inMemVal?: TInMemData): TOdmItem$ {
-    return new OdmItem$2(this, itemId, inMemVal) as TOdmItem$
-  }
+  protected abstract createOdmItem$ForExisting(itemId: TItemId, inMemVal?: TInMemData): TOdmItem$ // {
+  //   return new OdmItem$2(this, itemId, inMemVal) as TOdmItem$
+  // }
 
   /** Can be overridden by subclasses to provide specific sub-type */
   newItem(id?: TItemId, inMemData?: TInMemData): TOdmItem$ {

@@ -1,7 +1,8 @@
 import {Injectable, Injector} from '@angular/core';
-import {OdmService} from '../../../libs/AppFedShared/odm/OdmService'
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
-import {LearnItem} from '../models/LearnItem'
+import {LearnItem, LearnItem$} from '../models/LearnItem'
+import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
+import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class LearnDoService extends OdmService2<LearnItem> {
 
   protected convertFromDbFormat(dbItem: LearnItem): LearnItem {
     return Object.assign(new LearnItem(), dbItem)
+  }
+
+  protected createOdmItem$ForExisting(itemId: OdmItemId<LearnItem>, inMemVal?: LearnItem): OdmItem$2<LearnItem, LearnItem> {
+    return new LearnItem$(this, itemId, inMemVal)
   }
 
 }

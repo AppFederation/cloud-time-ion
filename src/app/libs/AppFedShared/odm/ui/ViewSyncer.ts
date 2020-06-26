@@ -36,7 +36,7 @@ export class ViewSyncer<TKey = string> {
     this.formGroup.valueChanges.subscribe(newValue => {
       if ( ! this.isApplyingFromDb ) {
         this.lastLocalEditByUserMs = Date.now()
-        this.item$.patchThrottled(newValue)
+        this.item$.patchThrottled(newValue) // TODO: patchThrottled({cleanUp: true}) -- trim to null; maybe remove unused fields to save bytes and not put `null`
       }
     })
 

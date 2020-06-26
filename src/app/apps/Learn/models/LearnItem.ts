@@ -30,7 +30,9 @@ export class LearnItem extends OdmInMemItem {
 
 }
 
-export type LearnItem$ = OdmItem$2<LearnItem>
+export class LearnItem$ extends OdmItem$2<LearnItem> {
+
+}
 
 export function field<T>(fieldName: keyof T) {
     return fieldName

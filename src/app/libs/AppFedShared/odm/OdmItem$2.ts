@@ -20,6 +20,7 @@ export class OdmItem$2<
   >
 {
 
+  /* consider renaming to just `val` or `data` */
   currentVal: TInMemData = undefined
 
   public locallyVisibleChanges$ = new CachedSubject<TInMemData>()
