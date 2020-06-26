@@ -1,5 +1,6 @@
 <ion-button
   *ngIf="item?.hasAudio"
+  (touchstart)="playAudio(); $event.stopPropagation(); $event.preventDefault()"
   (click)="playAudio(); $event.stopPropagation()"
 >
   <ion-icon
