@@ -13,20 +13,20 @@ export type Rating = number
 
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem {
-    id: LearnItemId
-    whenAdded: OdmTimestamp
-    title?: string
-    isTask?: boolean
-    hasAudio?: true | null
-    whenDeleted?: Date
-    lastSelfRating?: Rating
-    whenLastSelfRated?: OdmTimestamp
-    selfRatingsCount?: number
+  id: LearnItemId
+  whenAdded: OdmTimestamp
+  title?: string
+  isTask?: boolean
+  hasAudio?: true | null
+  whenDeleted?: Date
+  lastSelfRating?: Rating
+  whenLastSelfRated?: OdmTimestamp
+  selfRatingsCount?: number
 
-    joinedSides?() {
-        // this seems very slow
-        return sidesDefsArray.map(side => this[side.id]).filter(_ => _).join(' | ')
-    }
+  joinedSides?() {
+    // this seems very slow
+    return sidesDefsArray.map(side => this[side.id]).filter(_ => _).join(' • ')
+  }
 
 }
 
@@ -35,5 +35,5 @@ export class LearnItem$ extends OdmItem$2<LearnItem> {
 }
 
 export function field<T>(fieldName: keyof T) {
-    return fieldName
+  return fieldName
 }
