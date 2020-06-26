@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {LearnItem, LearnItem$, LearnItemId} from '../../models/LearnItem'
 import {AngularFirestore} from '@angular/fire/firestore'
 
@@ -16,25 +16,31 @@ export class PlayButtonComponent implements OnInit {
   @Input()
   private itemId: LearnItemId
 
+  isPlaying = false
+
   constructor(
     protected angularFirestore: AngularFirestore,
+    protected changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {}
 
   playAudio() {
+    this.isPlaying = true
     // TODO: move to service
     this.angularFirestore.collection('LearnDoAudio').doc(this.itemId || this.item.id).get().subscribe(audioItem => {
       const audioBytes = audioItem.data().audio.toUint8Array().buffer as ArrayBuffer
+      // todo maybe reuse ctx / source
       const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
       const source = audioCtx.createBufferSource();
 
-      audioCtx.decodeAudioData(audioBytes, function(buffer) {
+      audioCtx.decodeAudioData(audioBytes, (buffer: AudioBuffer) => {
           source.buffer = buffer;
           console.log(`source.buffer`, source.buffer)
 
           source.connect(audioCtx.destination);
           // source.loop = true;
+          source.onended = () => this.onSoundEnded()
           source.start(0)
         },
 
@@ -45,6 +51,11 @@ export class PlayButtonComponent implements OnInit {
 
       console.log(`audioItem.audio`, audioBytes)
     })
+  }
+
+  private onSoundEnded() {
+    this.isPlaying = false
+    this.changeDetectorRef.detectChanges()
   }
 
 }
