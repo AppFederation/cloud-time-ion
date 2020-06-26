@@ -26,6 +26,10 @@ export class PlayButtonComponent implements OnInit {
   ngOnInit() {}
 
   playAudio() {
+    if ( this.isPlaying ) {
+      return
+      // (will be pause ; and long-press to stop)
+    }
     this.isPlaying = true
     // TODO: move to service
     this.angularFirestore.collection('LearnDoAudio').doc(this.itemId || this.item.id).get().subscribe(audioItem => {
