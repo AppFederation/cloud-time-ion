@@ -64,7 +64,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   }
 
   patchThrottled(patch: OdmPatch<TData>) {
-    console.log(`patchThrottled`)
+    // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this, patch)

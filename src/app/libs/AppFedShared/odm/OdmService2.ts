@@ -45,7 +45,7 @@ export abstract class OdmService2<
 
   saveNowToDb(itemToSave: TOdmItem$) {
     itemToSave.onModified()
-    debugLog('saveNowToDb', itemToSave)
+    // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
     const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id)
     this.syncStatusService.handleSavingPromise(promise)
@@ -80,10 +80,10 @@ export abstract class OdmService2<
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
           // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
         // }
-        service.emitLocalItems()
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
-        debugLog('setBackendListener onModified', ...arguments)
+        // debugLog('setBackendListener onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
         let existingItem = service.getItem$ById(modifiedItemId)
         if ( existingItem && existingItem.applyDataFromDbAndEmit ) {
@@ -91,13 +91,17 @@ export abstract class OdmService2<
         } else {
           console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
         }
-        service.emitLocalItems()
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onRemoved(removedItemId: TItemId) {
         service.localItems$.lastVal = service.localItems$.lastVal.filter(item => item.id !== removedItemId)
         // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onFinishedProcessingChangeSet() {
         service.emitLocalItems()
       }
+
     })
   }
 

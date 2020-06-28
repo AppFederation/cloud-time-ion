@@ -11,6 +11,7 @@ export abstract class OdmCollectionBackendListener<
   abstract onAdded(addedItemId: TItemId, addedItemData: TRaw)
   abstract onModified(modifiedItemId: TItemId, modifiedItemData: TRaw)
   abstract onRemoved(removedItemId: TItemId)
+  abstract onFinishedProcessingChangeSet()
 }
 
 

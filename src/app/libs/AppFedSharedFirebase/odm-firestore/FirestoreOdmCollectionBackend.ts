@@ -22,7 +22,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     super(injector, className, odmBackend)
     this.collectionBackendReady$.subscribe(() => {
       this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<TRaw>) => {
-        console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+        // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
         // FIXME: let the service process in batch, for performance
         for ( let change of snapshot.docChanges() ) {
           if ( change.type === 'added' ) {
@@ -33,6 +33,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
             this.listener.onRemoved(change.doc.id)
           }
         }
+        this.listener.onFinishedProcessingChangeSet()
+
+        // FIXME: only emit after processing finished
 
       })
       this.collection().valueChanges().subscribe((coll: TRaw[]) => {
@@ -49,7 +52,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     if ( ! id ) {
       errorAlert('id cannot be ' + id)
     }
-    debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
+    // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
     return this.itemDoc(id).set(item/*.toDbFormat()*/)
     // FIXME: update() to patch
 

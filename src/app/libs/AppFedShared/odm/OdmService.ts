@@ -118,6 +118,9 @@ export abstract class OdmService<
       onRemoved(removedItemId: OdmItemId<T>) {
         service.localItems$.lastVal = service.localItems$.lastVal.filter(item => item.id !== removedItemId)
         service.emitLocalItems()
+      },
+      onFinishedProcessingChangeSet() {
+        // nothing in v1
       }
     })
   }
