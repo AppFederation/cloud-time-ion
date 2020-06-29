@@ -7,7 +7,7 @@ import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 @Injectable({
   providedIn: 'root'
 })
-export class LearnDoService extends OdmService2<LearnItem> {
+export class LearnDoService extends OdmService2<LearnItem, LearnItem, LearnItem$> {
 
   constructor(
     injector: Injector,
@@ -16,17 +16,17 @@ export class LearnDoService extends OdmService2<LearnItem> {
       injector,
       'LearnItem'
     )
-    console.log(`this.odmCollectionBackend`, this.odmCollectionBackend)
-    this.localItems$.subscribe(items => {
-      console.log(`LearnDoService items.length`, items.length)
-    })
+    // console.log(`this.odmCollectionBackend`, this.odmCollectionBackend)
+    // this.localItems$.subscribe(items => {
+    //   console.log(`LearnDoService items.length`, items.length)
+    // })
   }
 
   protected convertFromDbFormat(dbItem: LearnItem): LearnItem {
     return Object.assign(new LearnItem(), dbItem)
   }
 
-  protected createOdmItem$ForExisting(itemId: OdmItemId<LearnItem>, inMemVal?: LearnItem): OdmItem$2<LearnItem, LearnItem> {
+  protected createOdmItem$ForExisting(itemId: OdmItemId<LearnItem>, inMemVal?: LearnItem): LearnItem$ {
     return new LearnItem$(this, itemId, inMemVal)
   }
 
