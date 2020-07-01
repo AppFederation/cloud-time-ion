@@ -16,6 +16,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-item>
+    <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
+    </ion-checkbox>
+    <ion-label>
+      &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
+    </ion-label>
+  </ion-item>
 
   <ion-note>
     {{ (item$$ | async)?.id }}
@@ -34,7 +41,8 @@
 
 <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
   <p>
-    next repetition: {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async)) }}
+    next repetition:
+    {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))?.toISOString()?.replace('T', ' ') }}
   </p>
 
   <ion-button
@@ -49,13 +57,17 @@
     {{ (item$$ | async)?.currentVal?.joinedSides() }}
   </p>
 
-<!--  <ion-button (click)="nextItem()">-->
-<!--    NEXT-->
-<!--  </ion-button>-->
-
   <app-self-rating
+    [autoSave]="false"
+    *ngFor="let dummy of dummyArray"
     [item$]="item$$ | async"
-    (click)="shouldShowAnswer = false"
+    (numericValue)="selfRating = $event"
   ></app-self-rating>
+
+  <ion-button
+    (click)="applyAndNext()"
+  >
+    APPLY & NEXT
+  </ion-button>
 
 </ion-content>

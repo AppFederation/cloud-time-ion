@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem, LearnItem$} from '../../models/LearnItem'
@@ -12,6 +12,11 @@ export class SelfRatingComponent implements OnInit {
 
   @Input()
   item$: LearnItem$
+
+  @Input()
+  autoSave = true
+
+  @Output() numericValue = new EventEmitter<NumericPickerVal>()
 
   constructor() { }
 

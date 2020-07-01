@@ -42,13 +42,13 @@ export class LearnItemDetailsPage implements OnInit {
   private doc: AngularFirestoreDocument<LearnItem> = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
 
   ngOnInit() {
-    console.log(`id`, this.id)
-    console.log(`this.learnDoService.itemsCount`, this.learnDoService.itemsCount())
+    // console.log(`id`, this.id)
+    // console.log(`this.learnDoService.itemsCount`, this.learnDoService.itemsCount())
 
-    this.learnDoService.localItems$.subscribe(items => {
-      console.log(`this.learnDoService.localItems$ items.length`, items.length, 'itemsCount', this.learnDoService.itemsCount())
-    })
-    console.log(`this.item$.currentVal`, this.item$.currentVal, this.item$.locallyVisibleChanges$.lastVal)
+    // this.learnDoService.localItems$.subscribe(items => {
+    //   console.log(`this.learnDoService.localItems$ items.length`, items.length, 'itemsCount', this.learnDoService.itemsCount())
+    // })
+    // console.log(`this.item$.currentVal`, this.item$.currentVal, this.item$.locallyVisibleChanges$.lastVal)
   }
 
   async askDelete() {
