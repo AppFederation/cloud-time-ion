@@ -2,9 +2,11 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import sortBy from 'lodash/sortBy'
+import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem} from '../models/LearnItem'
+import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 
 
 @Component({
@@ -19,6 +21,8 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
     /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
   items: LearnItem[]
+  public itemsWithRatingCount: number = undefined
+  public itemsWithRatingCount2: number
 
   constructor(
     protected angularFirestore: AngularFirestore,
@@ -27,31 +31,27 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(`this.coll.get()`, this.coll.get())
+    // this.coll.get().subscribe(items => {
+    //   // console.log('get(): items2 items.docs.length', items.docs.length)
+    // })
 
-    this.coll.get().subscribe(items => {
-      console.log('get(): items2 items.docs.length', items.docs.length)
-    })
-
-    this.coll.snapshotChanges().subscribe(items => {
-      // this.items = items.map(doc => {
-      //   const documentData = doc.data()
-      //   documentData.id = doc.id
-      //   return documentData as LearnItem
-      // })
-      // this.items = sortBy(this.items, field<LearnItem>(`whenAdded`)).reverse()
-      console.log(`snapshotChanges`, items.length)
-    })
+    // this.coll.snapshotChanges().subscribe(items => {
+    //   // this.items = items.map(doc => {
+    //   //   const documentData = doc.data()
+    //   //   documentData.id = doc.id
+    //   //   return documentData as LearnItem
+    //   // })
+    //   // this.items = sortBy(this.items, field<LearnItem>(`whenAdded`)).reverse()
+    //   // console.log(`snapshotChanges`, items.length)
+    // })
 
     this.coll.valueChanges({idField: 'id'}).subscribe(items => {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
-      console.log('items', items.length)
+
+      this.itemsWithRatingCount = countBy(this.items, (item: LearnItem) => item.lastSelfRating)
+      this.itemsWithRatingCount2 = countNotNullishBy(this.items, item => item.lastSelfRating)
     })
 
-    // for ( let txt of ().split('\n').map(item => {/*console.log('item map',item)*/; return (item || '').trim()})
-    //   ) {
-    //   // this.add(txt)
-    // }
   }
 
   add(string?: string, isTask?: boolean) {
