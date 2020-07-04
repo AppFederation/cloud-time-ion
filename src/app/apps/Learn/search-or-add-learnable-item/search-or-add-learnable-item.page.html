@@ -29,7 +29,7 @@
           (click)="addToLearn()"
           [disabled]="! search?.trim().length"
         >ADD TO LEARN</ion-button>
-        Items: {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}
+        <ion-text style="color: gray"> Items: {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}</ion-text>
       </div>
       <app-mic style="display: flex; align-items: stretch"></app-mic>
 
