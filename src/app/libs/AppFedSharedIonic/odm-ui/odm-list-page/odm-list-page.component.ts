@@ -13,7 +13,7 @@ export class OdmListPageComponent implements OnInit {
   @Input() creatItemFunc
 
   /** https://alligator.io/angular/reusable-components-ngtemplateoutlet/ */
-  @ContentChild(OdmListItemDirective, /* TODO: add static flag */ { read: TemplateRef }) itemTemplate
+  @ContentChild(OdmListItemDirective, /* TODO: add static flag */ { read: TemplateRef, static: true /* TODO check*/ }) itemTemplate
 
   constructor() { }
 
