@@ -54,12 +54,34 @@
 <!--  asfasf: {{(coll.valueChanges() | async)?.length}}-->
 <!--  <ion-item *ngFor="let item of (coll.valueChanges() | async)">-->
 
-  <ng-container *ngFor="let item of items; trackBy: trackByFn">
-    <app-actionable-item
-      [hidden]="! matchesSearch(item)"
-      [item]="item"
-    ></app-actionable-item>
+<!--  <ng-container *ngFor="let item of items; trackBy: trackByFn">-->
+<!--    <app-actionable-item-->
+<!--      [hidden]="! matchesSearch(item)"-->
+<!--      [item]="item"-->
+<!--    ></app-actionable-item>-->
 
-  </ng-container>
+<!--  </ng-container>-->
+
+  <ion-virtual-scroll [items]="items" approxItemHeight="20px">
+<!--    <div *virtualItem="let item; let itemBounds = bounds;">-->
+<!--      {{item.id}}-->
+
+<!--    </div>-->
+
+    <div *virtualItem="let currItem">
+<!--      {{ item2 }}-->
+<!--      {{ item2.id }}-->
+      <app-actionable-item
+        [hidden]="! matchesSearch(currItem)"
+        [item]="currItem"
+      ></app-actionable-item>
+<!--      <app-test-item-->
+<!--        [itemInp]="currItem"-->
+<!--      ></app-test-item>-->
+
+    </div>
+    <!--           [hidden]="! matchesSearch(item2)"-->
+
+  </ion-virtual-scroll>
 
 </ion-content>

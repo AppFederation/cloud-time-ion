@@ -95,6 +95,9 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   }
 
   matchesSearch(item: LearnItem) {
+    if ( ! item ) {
+      return false
+    }
     const search = (this.search || '').trim().toLowerCase()
     if ( search.length === 0 ) {
       return true
