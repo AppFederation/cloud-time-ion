@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: '../tab1/tab1.module#Tab1PageModule'
+        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
       }
     ]
   },
@@ -45,7 +45,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: '../timers/timers.module#TimersPageModule'
+        loadChildren: () => import('../timers/timers.module').then(m => m.TimersPageModule)
       }
     ]
   },
