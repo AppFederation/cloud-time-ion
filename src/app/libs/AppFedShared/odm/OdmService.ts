@@ -19,7 +19,7 @@ export abstract class OdmService<
   throttleSaveToDbMs = 1000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
 
   odmBackendFactory = this.injector.get(OdmBackend)
-  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
+  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRaw>(this.injector, this.className)
 
   localItems$ = new CachedSubject<T[]>([])
 
@@ -73,7 +73,7 @@ export abstract class OdmService<
   saveNowToDb(itemToSave: T) {
     itemToSave.onModified()
     debugLog('saveNowToDb', itemToSave)
-    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat(), itemToSave.id)
+    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat() as any as TRaw /* TODO check type */, itemToSave.id)
     this.syncStatusService.handleSavingPromise(promise)
   }
 

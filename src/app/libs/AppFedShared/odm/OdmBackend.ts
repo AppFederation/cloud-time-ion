@@ -19,7 +19,7 @@ export abstract class OdmBackend {
   ) {
   }
 
-  abstract createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string): OdmCollectionBackend<T>
+  abstract createCollectionBackend<TRaw>(injector: Injector, className: string): OdmCollectionBackend<TRaw>
 
   static nowTimestamp() {
     return Timestamp.now()

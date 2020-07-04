@@ -102,7 +102,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     this.odmService.deleteWithoutConfirmation(this.asT)
   }
 
-  toDbFormat() {
+  toDbFormat(): TData {
     let dbFormat = Object.assign({}, this);
     delete dbFormat.odmService
     delete dbFormat.locallyVisibleChanges$
@@ -118,7 +118,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     }
     // TODO: https://stackoverflow.com/questions/35055731/how-to-deeply-map-object-keys-with-javascript-lodash
     // https://stackoverflow.com/questions/48156234/function-documentreference-set-called-with-invalid-data-unsupported-field-val
-    return dbFormat
+    return dbFormat as any as TData /* TODO: check */
   }
 
   onModified() {

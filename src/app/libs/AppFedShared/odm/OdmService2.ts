@@ -20,7 +20,7 @@ export abstract class OdmService2<
   throttleSaveToDbMs = 1000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
 
   odmBackendFactory = this.injector.get(OdmBackend)
-  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend(this.injector, this.className)
+  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(this.injector, this.className)
 
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
      And itemsJustList$ for just changes of list, without reporting changes of individual item data-s
