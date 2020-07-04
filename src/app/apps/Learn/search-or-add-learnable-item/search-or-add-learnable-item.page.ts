@@ -21,6 +21,8 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
     /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
   items: LearnItem[]
+  filteredItems: LearnItem[]
+
   public itemsWithRatingCount: number = undefined
   public itemsWithRatingCount2: number
 
@@ -50,6 +52,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
 
       this.itemsWithRatingCount = countBy(this.items, (item: LearnItem) => item.lastSelfRating)
       this.itemsWithRatingCount2 = countNotNullishBy(this.items, item => item.lastSelfRating)
+      this.reFilter()
     })
 
   }
@@ -109,5 +112,13 @@ export class SearchOrAddLearnableItemPage implements OnInit {
       }
     }
     return false
+  }
+
+  onChangeSearch($event: string) {
+    this.reFilter()
+  }
+
+  private reFilter() {
+    this.filteredItems = this.items.filter(item => this.matchesSearch(item))
   }
 }

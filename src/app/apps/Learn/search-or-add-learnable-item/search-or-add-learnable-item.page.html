@@ -12,8 +12,9 @@
       <div style="flex-grow: 1">
         <ion-searchbar
           [(ngModel)]="search"
+          (ngModelChange)="onChangeSearch($event)"
           placeholder="Search or add"
-          debounce="100"
+          debounce="50"
           inputmode="search"
           (keyup.enter)="addTask()"
           (keyup.meta.enter)="addToLearn()"
@@ -62,26 +63,13 @@
 
 <!--  </ng-container>-->
 
-  <ion-virtual-scroll [items]="items" approxItemHeight="20px">
-<!--    <div *virtualItem="let item; let itemBounds = bounds;">-->
-<!--      {{item.id}}-->
-
-<!--    </div>-->
-
+  <ion-virtual-scroll [items]="filteredItems" approxItemHeight="20px">
     <div *virtualItem="let currItem">
-<!--      {{ item2 }}-->
-<!--      {{ item2.id }}-->
       <app-actionable-item
-        [hidden]="! matchesSearch(currItem)"
         [item]="currItem"
       ></app-actionable-item>
-<!--      <app-test-item-->
-<!--        [itemInp]="currItem"-->
-<!--      ></app-test-item>-->
-
+      <!-- [hidden]="! matchesSearch(currItem)"-->
     </div>
-    <!--           [hidden]="! matchesSearch(item2)"-->
-
   </ion-virtual-scroll>
 
 </ion-content>
