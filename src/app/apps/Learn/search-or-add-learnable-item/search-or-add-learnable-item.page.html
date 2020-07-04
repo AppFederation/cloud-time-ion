@@ -63,7 +63,11 @@
 
 <!--  </ng-container>-->
 
-  <ion-virtual-scroll [items]="filteredItems" approxItemHeight="20px">
+  <ion-virtual-scroll
+      [items]="filteredItems"
+      approxItemHeight="31px"
+      [trackBy]="trackByFn"
+  >
     <div *virtualItem="let currItem">
       <app-actionable-item
         [item]="currItem"
