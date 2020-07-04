@@ -4,6 +4,8 @@ import {NotificationHandle, NotificationInfo, PlatformNotificationsService} from
 import {SchedulerHandle, SchedulerService} from "../AppFedShared/scheduler/scheduler.service";
 import {AudioService} from "../AppFedShared/audio/audio.service";
 
+declare const cordova: any
+
 class CordovaNotifHandle extends NotificationHandle {
   constructor(
     notificationInfo: NotificationInfo,
