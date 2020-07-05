@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {QuizService} from '../core/quiz.service'
 import {sidesDefsArray} from '../core/sidesDefs'
-import {map} from 'rxjs/operators'
+import {map, switchMap} from 'rxjs/operators'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem, LearnItem$} from '../models/LearnItem'
+import {Observable} from 'rxjs/internal/Observable'
 
 @Component({
   selector: 'app-quiz',
@@ -19,7 +20,16 @@ export class QuizPage implements OnInit {
 
   item$: LearnItem$
 
-  dePrioritizeNewMaterial: boolean = true
+  get itemVal$(): Observable<LearnItem> {
+    return this.item$$.pipe(
+      switchMap(item$ => {
+        return item$.locallyVisibleChanges$
+      })
+    )
+  }
+
+
+    dePrioritizeNewMaterial: boolean = true
 
   get item$$() {
     return this.quizService.getNextItemForSelfRating$(this.dePrioritizeNewMaterial)
@@ -46,28 +56,14 @@ export class QuizPage implements OnInit {
         //   // FIXME: this should improve a lot when I emit entire array changed (newly arrived), instead of each onAdded
         // })
         // console.log(`getSideValForQuiz$ this.item$$.pipe`)
-        if (!item$) {
-          return '(no item$)'
+        if ( ! item$ ) {
+          return '(Loading...)'
         }
         const item = item$.currentVal
-        if (!item) {
+        if ( ! item ) {
           return '(none)'
         }
-        for (let side of sidesDefsArray) {
-          if (side.ask) {
-            const sideVal = item[side.id]
-            if (sideVal) {
-              return sideVal
-            }
-          }
-        }
-        // second attempt, without `ask` requirement
-        for (let side of sidesDefsArray) {
-          const sideVal = item[side.id]
-          if (sideVal) {
-            return sideVal
-          }
-        }
+        return item.getQuestionOrAnyString()
       // }
     }))
   }

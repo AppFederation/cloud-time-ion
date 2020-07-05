@@ -16,6 +16,9 @@
 </ion-header>
 
 <ion-content>
+  <div
+    style="margin: 6px"
+  >
   <ion-item>
     <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
     </ion-checkbox>
@@ -33,9 +36,7 @@
     [itemId]="(item$$ | async)?.id"
   ></app-play-button>
 
-  <p>
-    {{ getSideValForQuiz$() | async }}
-  </p>
+  <pre>{{ getSideValForQuiz$() | async }}</pre> <!-- DO NOT break line, coz it is shown in pre -->
 <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
 <!--  <ng-container>(overdue X hours)</ng-container>-->
 
@@ -57,9 +58,19 @@
     [routerLink]="'/learn/item/'+(item$$ | async)?.id"
   >EDIT</ion-button>
 
-  <p *ngIf="shouldShowAnswer">
-    {{ (item$$ | async)?.currentVal?.joinedSides() }}
-  </p>
+  <div
+    *ngIf="shouldShowAnswer"
+  >
+    <ng-container *ngFor="let answerString of (itemVal$ | async)?.getAnswers()">
+      <pre>{{answerString}}</pre> <!-- DO NOT break line, coz it is shown in pre -->
+      <hr>
+    </ng-container>
+  </div>
+
+
+<!--  <p *ngIf="shouldShowAnswer">-->
+<!--    {{ (item$$ | async)?.currentVal?.joinedSides() }}-->
+<!--  </p>-->
 
   <app-self-rating
     [autoSave]="false"
@@ -74,4 +85,5 @@
     APPLY & NEXT
   </ion-button>
 
+  </div>
 </ion-content>

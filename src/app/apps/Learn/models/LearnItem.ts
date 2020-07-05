@@ -1,7 +1,7 @@
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmBackend, OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {sidesDefsArray} from '../core/sidesDefs'
+import {Side, sidesDefsArray} from '../core/sidesDefs'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 
 export type LearnItemId = OdmItemId<LearnItem>
@@ -22,9 +22,55 @@ export class LearnItem extends OdmInMemItem {
 
   joinedSides?() {
     // this seems very slow
-    return sidesDefsArray.map(side => this[side.id]).filter(_ => _).join(' ● ')
+    return sidesDefsArray.map(side => this.getSideVal(side)).filter(_ => _).join(' ● ')
   }
 
+  getAnswers(): string[] {
+    const ret: string [] = []
+    let foundQuestionBefore = false
+    for (let side of sidesDefsArray) {
+      const sideVal = this.getSideVal(side)
+      if ( sideVal ) {
+        if (! side.ask || foundQuestionBefore) {
+          ret.push(sideVal)
+        } else {
+          foundQuestionBefore = true
+          // do not push
+        }
+      }
+    }
+    return ret
+  }
+
+  private getSideVal(side: Side) {
+    return this[side.id] ?. trim ?. ()
+  }
+
+  getQuestionOrAnyString() {
+    const question = this.getQuestion()
+    if ( question ) {
+      return question
+    }
+    // second attempt, without `ask` requirement
+    for (let side of sidesDefsArray) {
+      const sideVal = this.getSideVal(side)
+      if (sideVal) {
+        return sideVal
+      }
+    }
+
+  }
+
+  getQuestion() {
+    for (let side of sidesDefsArray) {
+      if (side.ask) {
+        const sideVal = this.getSideVal(side)
+        if (sideVal) {
+          return sideVal
+        }
+      }
+    }
+  }
 }
 
 export class LearnItem$ extends OdmItem$2<LearnItem> {
