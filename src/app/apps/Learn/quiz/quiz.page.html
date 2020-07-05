@@ -41,8 +41,12 @@
 
 <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
   <p>
-    next repetition:
-    {{ newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))?.toISOString()?.replace('T', ' ') }}
+    <ion-note>
+      next repetition:
+      <app-time-point
+        [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
+      ></app-time-point>
+    </ion-note>
   </p>
 
   <ion-button

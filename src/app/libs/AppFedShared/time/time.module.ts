@@ -6,11 +6,13 @@ import {TimePickerComponent} from "../../AppFedSharedIonic/time/time-picker/time
 import {NumberPickerComponent} from "./number-picker/number-picker.component";
 import {SharedModule} from "../../../shared/shared.module";
 import {IonicModule} from "@ionic/angular";
+import {TimePointComponent} from './time-point/time-point.component'
 
 let exports = [
   NumberPickerComponent,
   TimePassingComponent,
   TimeViewComponent,
+  TimePointComponent,
 ]
 
 @NgModule({

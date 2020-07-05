@@ -9,6 +9,7 @@ import { QuizPage } from './quiz.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
 import {SharedModule} from '../shared/shared.module'
+import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     OdmModule,
     RatingsModule,
     SharedModule,
+    TimeModule,
   ],
   declarations: [QuizPage]
 })
