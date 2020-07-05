@@ -158,4 +158,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     this.filteredItems = this.items.filter(item => this.matchesSearch(item))
   }
 
+  hasSearchText() {
+    return !! this.search?.trim();
+  }
 }

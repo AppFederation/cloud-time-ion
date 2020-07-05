@@ -26,19 +26,21 @@
             (keyup.control.enter)="addToLearn()"
           ></ion-textarea>
           <ion-button
-            [hidden]="! search?.trim()"
+            [hidden]="! hasSearchText()"
             (click)="clearInput()"
           ><ion-icon name="close-outline"></ion-icon></ion-button>
         </div>
 
         <ion-button
+          [hidden]="! hasSearchText()"
+          [disabled]="! hasSearchText()"
           (click)="addTask()"
-          [disabled]="! search?.trim().length"
         >ADD TASK</ion-button>
 
         <ion-button
+          [hidden]="! hasSearchText()"
+          [disabled]="! hasSearchText()"
           (click)="addToLearn()"
-          [disabled]="! search?.trim().length"
         >ADD TO LEARN</ion-button>
         <ion-text style="color: gray"> Items: {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}</ion-text>
       </div>
