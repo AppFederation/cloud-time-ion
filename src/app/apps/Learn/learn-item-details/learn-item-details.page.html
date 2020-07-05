@@ -34,6 +34,8 @@
     >
       <ion-header><ion-text color="secondary"><h5>{{side.id}}:</h5></ion-text></ion-header>
       <ion-textarea
+        autoGrow="true"
+        rows="6"
         [formGroup]="formGroup"
         [formControl]="formControls[side.id]"
       >
