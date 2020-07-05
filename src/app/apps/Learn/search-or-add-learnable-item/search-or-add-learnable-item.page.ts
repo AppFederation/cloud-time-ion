@@ -74,9 +74,12 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     if ( newItem ) {
       this.syncStatusService.handleSavingPromise(
         this.coll.add(newItem))
-
-      this.search = ''
+      this.clearInput()
     }
+  }
+
+  clearInput() {
+    this.search = ''
   }
 
   createItemFromInputString(string: string, isTask: boolean) {
@@ -154,4 +157,5 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   private reFilter() {
     this.filteredItems = this.items.filter(item => this.matchesSearch(item))
   }
+
 }

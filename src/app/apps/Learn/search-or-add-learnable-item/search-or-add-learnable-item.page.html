@@ -12,17 +12,25 @@
       style="display: flex; align-items: stretch"
     >
       <div style="flex-grow: 1">
-        <ion-searchbar
-          [(ngModel)]="search"
-          (ngModelChange)="onChangeSearch($event)"
-          placeholder="Search or add"
-          debounce="50"
-          inputmode="search"
-          (keyup.enter)="addTask()"
-          (keyup.meta.enter)="addToLearn()"
-          (keyup.alt.enter)="addToLearn()"
-          (keyup.control.enter)="addToLearn()"
-        ></ion-searchbar>
+        <div>
+          <ion-textarea
+            autoGrow="true"
+            [(ngModel)]="search"
+            (ngModelChange)="onChangeSearch($event)"
+            placeholder="Search or add"
+            debounce="50"
+            inputmode="search"
+            (keyup.enter)="addTask()"
+            (keyup.meta.enter)="addToLearn()"
+            (keyup.alt.enter)="addToLearn()"
+            (keyup.control.enter)="addToLearn()"
+          ></ion-textarea>
+          <ion-button
+            [hidden]="! search?.trim()"
+            (click)="clearInput()"
+          ><ion-icon name="close-outline"></ion-icon></ion-button>
+        </div>
+
         <ion-button
           (click)="addTask()"
           [disabled]="! search?.trim().length"
