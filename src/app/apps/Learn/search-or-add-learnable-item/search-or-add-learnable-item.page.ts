@@ -5,8 +5,9 @@ import sortBy from 'lodash/sortBy'
 import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
-import {field, LearnItem} from '../models/LearnItem'
+import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
+import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 
 
 @Component({
@@ -69,15 +70,46 @@ export class SearchOrAddLearnableItemPage implements OnInit {
       return
     }
 
-    this.syncStatusService.handleSavingPromise(
-      this.coll.add({
-        title: (string || '')./*?.*/trim() /*?? null*/,
-        whenAdded: new Date(),
-        isTask: isTask ? true : null
-    }))
+    const newItem = this.createItemFromInputString(string, isTask)
+    if ( newItem ) {
+      this.syncStatusService.handleSavingPromise(
+        this.coll.add(newItem))
 
-    this.search = ''
+      this.search = ''
+    }
+  }
 
+  createItemFromInputString(string: string, isTask: boolean) {
+    if ( ! string ?. trim() ) {
+      return
+    }
+    const QQ = /<-->|<->|<>/
+    const QA = /--|-->/
+    const overlay: Partial<LearnItemSidesVals> = {}
+    if ( string.match(QQ) ) {
+      const split = splitAndTrim(string, QQ)
+      overlay.question = split[0]
+      overlay.question2 = split[1]
+      if ( split[2] ) {
+        overlay.question3 = split[2]
+      }
+    } else if ( string.match(QA) ) {
+      const split = splitAndTrim(string, QA)
+      overlay.question = split[0]
+      overlay.answer = split[1]
+      if ( split[2] ) {
+        overlay.question2 = split[2]
+      }
+      if ( split[3] ) {
+        overlay.question3 = split[3]
+      }
+    } else {
+      overlay.title = (string || '')./*?.*/trim() /*?? null*/
+    }
+    return Object.assign({
+      whenAdded: new Date(),
+      isTask: isTask ? true : null,
+    }, overlay)
   }
 
   addTask() {
