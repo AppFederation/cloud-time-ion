@@ -1,7 +1,21 @@
-<ion-text color="primary" (click)="onClick($event)" style="cursor: pointer">
-  <img *ngIf="! (syncStatusService.syncStatus$ | async)?.pendingUploadsCount"
-    style="color: darkgray; height: 25px" src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg">
-  <ng-container *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount; let count">
-    {{count}}
-  </ng-container>
-</ion-text>
+<!--<ion-text-->
+<!--  color="primary"-->
+<!--  (click)="onClick($event)"-->
+<!--  style="cursor: pointer"-->
+<!--&gt;-->
+  <span style="display: inline-flex; align-items: center">
+    <img
+      [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true }"
+      style="color: orange; height: 25px;"
+      src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg"
+    >
+    <!-- position: absolute; top: 0; left: 0 -->
+    <span
+      style="margin-left: 3px; width: 1em"
+      [ngClass]="{ hide: ! (pendingUploadsCount$ | async), fade: true }"
+    >
+      {{ pendingUploadsCount$ | async }}
+    </span>
+  </span>
+
+<!--</ion-text>-->

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SyncStatusService} from '../sync-status.service'
 import {PopoverController} from '@ionic/angular'
 import {SyncPopoverComponent} from './sync-popover/sync-popover.component'
+import {map} from 'rxjs/operators'
 
 @Component({
   selector: 'odm-sync-status',
@@ -9,6 +10,10 @@ import {SyncPopoverComponent} from './sync-popover/sync-popover.component'
   styleUrls: ['./sync-status.component.sass'],
 })
 export class SyncStatusComponent implements OnInit {
+
+  get pendingUploadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingUploadsCount))}
+
+  get syncStatus$() { return this.syncStatusService.syncStatus$ }
 
   constructor(
     public syncStatusService: SyncStatusService,

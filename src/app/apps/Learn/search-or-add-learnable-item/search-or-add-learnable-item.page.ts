@@ -12,7 +12,7 @@ import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 @Component({
   selector: 'app-search-or-add-learnable-item',
   templateUrl: './search-or-add-learnable-item.page.html',
-  styleUrls: ['./search-or-add-learnable-item.page.sass'],
+  styleUrls: ['./search-or-add-learnable-item.page.scss'],
 })
 export class SearchOrAddLearnableItemPage implements OnInit {
 
