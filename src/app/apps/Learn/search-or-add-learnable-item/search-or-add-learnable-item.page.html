@@ -42,7 +42,9 @@
           [disabled]="! hasSearchText()"
           (click)="addToLearn()"
         >ADD TO LEARN</ion-button>
-        <ion-text style="color: gray"> Items: {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}</ion-text>
+        <ion-text style="color: gray"> Items:
+          <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
+          {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}</ion-text>
       </div>
       <app-mic style="display: flex; align-items: stretch"></app-mic>
 
