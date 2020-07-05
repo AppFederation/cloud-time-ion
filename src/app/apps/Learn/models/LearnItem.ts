@@ -1,7 +1,7 @@
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmBackend, OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Side, sidesDefsArray} from '../core/sidesDefs'
+import {Side, SidesDefs, sidesDefsArray} from '../core/sidesDefs'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 
 export type LearnItemId = OdmItemId<LearnItem>
@@ -72,6 +72,8 @@ export class LearnItem extends OdmInMemItem {
     }
   }
 }
+
+export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
 
 export class LearnItem$ extends OdmItem$2<LearnItem> {
 

@@ -40,6 +40,9 @@ export class SidesDefs {
   question2 = side({
     defaultLang: 'en-US',
   })
+  question3 = side({
+    defaultLang: 'en-US',
+  })
   answer = side({
     defaultLang: 'en-US',
     ask: false,
