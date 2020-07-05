@@ -48,6 +48,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     // })
 
     this.coll.valueChanges({idField: 'id'}).subscribe(items => {
+      items = items.map(item => Object.assign(new LearnItem(), item))
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
 
       this.itemsWithRatingCount = countBy(this.items, (item: LearnItem) => item.lastSelfRating)
