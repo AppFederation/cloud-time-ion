@@ -9,6 +9,7 @@ import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictiona
 import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
+import {Observable} from 'rxjs/internal/Observable'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -16,6 +17,10 @@ import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
   styleUrls: ['./learn-item-details.page.sass'],
 })
 export class LearnItemDetailsPage implements OnInit {
+
+  get val$(): Observable<LearnItem> {
+    return this.item$.locallyVisibleChanges$
+  }
 
   // formControls: {[key: keyof SidesDefs]: FormControl} =
   formControls: {[key: string]: FormControl /* TODO: mapped type */} = mapFieldsToFormControls(sidesDefs)

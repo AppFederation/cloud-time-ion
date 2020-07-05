@@ -23,7 +23,7 @@
     ></app-self-rating>
 
     <app-play-button
-      [item]="item$.locallyVisibleChanges$ | async"
+      [item]="val$ | async"
       [itemId]="item$.id"
     ></app-play-button>
     <ion-button (click)="askDelete()">DELETE</ion-button>
