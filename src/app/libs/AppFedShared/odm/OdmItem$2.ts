@@ -76,6 +76,9 @@ export class OdmItem$2<
     this.odmService.emitLocalItems()
   }
 
+  // patchFieldThrottled(fieldKey: keyof TInMemData, fieldPatch: TInMemData[fieldKey]) {
+  // patchFieldThrottled(fieldKey: keyof TInMemData, fieldPatch: typeof TInMemData[fieldKey]) {
+  // can I use T[P] ? as in: type ReadOnly = {   readonly [P in keyof T]: T[P] };
   // patchFieldThrottled(fieldKey: keyof TData, fieldPatch: (typeof this.fieldKey)) {
   //  // idea: patch level 1 and pass partial
   // }
