@@ -32,7 +32,14 @@
       style="margin-left: 4px"
       *ngFor="let side of sidesDefsArray"
     >
-      <ion-header><ion-text color="secondary"><h5>{{side.id}}:</h5></ion-text></ion-header>
+      <ion-header>
+
+        <ion-text color="secondary"><h5>
+          <img *ngIf="side.flag" src="assets/countries/{{side.flag}}.svg" width="20px">
+          &nbsp;
+          {{side.id}}:
+        </h5></ion-text>
+      </ion-header>
       <ion-textarea
         autoGrow="true"
         rows="2"

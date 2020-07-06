@@ -6,6 +6,7 @@ export class Side {
   id: SideId
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang?: string // = 'en-US'
+  flag?: string
   ask?: boolean // = true
 
   constructor() {
@@ -55,9 +56,11 @@ export class SidesDefs {
   })
   pl = side({
     defaultLang: 'pl-PL',
+    flag: `pl`,
   })
   en = side({
     defaultLang: 'en-US',
+    flag: `gb`,
   })
   es_gender_article = side({
     defaultLang: 'es-ES',
@@ -65,6 +68,7 @@ export class SidesDefs {
   })
   es = side({
     defaultLang: 'es-ES',
+    flag: `es`,
   })
   de_gender_article = side({
     defaultLang: 'de-DE',
@@ -73,6 +77,7 @@ export class SidesDefs {
   de = side({
     defaultLang: 'de-DE',
     ask: false /* not asking German for now, to force recall */,
+    flag: `de`,
   })
 }
 
