@@ -77,7 +77,7 @@ export class QuizPage implements OnInit {
   }
 
   showAnswer() {
-    this.shouldShowAnswer = true
+    this.shouldShowAnswer = ! this.shouldShowAnswer
   }
 
   // onChangeSelfRating($event: NumericPickerVal) {

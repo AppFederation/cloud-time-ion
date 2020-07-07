@@ -46,7 +46,7 @@ export class LearnItem extends OdmInMemItem {
     return ret
   }
 
-  private getSideVal(side: Side) {
+  private getSideVal(side: Side): string|undefined|null {
     return this[side.id] ?. trim ?. ()
   }
 

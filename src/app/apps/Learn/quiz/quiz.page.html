@@ -73,19 +73,23 @@
 <!--  <p *ngIf="shouldShowAnswer">-->
 <!--    {{ (item$$ | async)?.currentVal?.joinedSides() }}-->
 <!--  </p>-->
-
-  <app-self-rating
-    [autoSave]="false"
-    *ngFor="let dummy of dummyArray"
-    [item$]="item$$ | async"
-    (numericValue)="selfRating = $event"
-  ></app-self-rating>
-
-  <ion-button
-    (click)="applyAndNext()"
+  <ng-container
+    *ngIf="shouldShowAnswer"
   >
-    APPLY & NEXT
-  </ion-button>
+    <app-self-rating
+      [autoSave]="false"
+      *ngFor="let dummy of dummyArray"
+      [item$]="item$$ | async"
+      (numericValue)="selfRating = $event"
+    ></app-self-rating>
+
+    <ion-button
+      (click)="applyAndNext()"
+    >
+      APPLY & NEXT
+    </ion-button>
+
+  </ng-container>
 
   </div>
 </ion-content>
