@@ -61,8 +61,10 @@
   <div
     *ngIf="shouldShowAnswer"
   >
-    <ng-container *ngFor="let answerString of (itemVal$ | async)?.getAnswers()">
-      <pre>{{answerString}}</pre> <!-- DO NOT break line, coz it is shown in pre -->
+    <ng-container *ngFor="let answerSide of (itemVal$ | async)?.getSidesWithAnswers()">
+      <app-side-label [side]="answerSide"></app-side-label>
+
+      <pre>{{(itemVal$ | async)?.getSideVal(answerSide)}}</pre> <!-- DO NOT break line, coz it is shown in pre -->
       <hr>
     </ng-container>
   </div>

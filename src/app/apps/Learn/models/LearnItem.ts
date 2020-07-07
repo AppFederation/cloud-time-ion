@@ -26,13 +26,17 @@ export class LearnItem extends OdmInMemItem {
   }
 
   getAnswers(): string[] {
-    const ret: string [] = []
+    return this.getSidesWithAnswers().map(side => this.getSideVal(side))
+  }
+
+  private getSidesWithAnswers(): Side[] {
+    const ret: Side [] = []
     let foundQuestionBefore = false
     for (let side of sidesDefsArray) {
       const sideVal = this.getSideVal(side)
-      if ( sideVal ) {
-        if (! side.ask || foundQuestionBefore) {
-          ret.push(sideVal)
+      if (sideVal) {
+        if ( !side.ask || foundQuestionBefore ) {
+          ret.push(side)
         } else {
           foundQuestionBefore = true
           // do not push
