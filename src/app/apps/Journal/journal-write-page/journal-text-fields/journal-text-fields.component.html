@@ -15,6 +15,7 @@
         autocapitalize="sentences"
         [rows]="4"
         style="flex-grow: 1"
+        [autoGrow]="true"
         (change)="onChangeText($event, textDesc)"
         (input)="onChangeText($event, textDesc)"
         placeholder="Journal entry: {{textDesc.uiName}}"
