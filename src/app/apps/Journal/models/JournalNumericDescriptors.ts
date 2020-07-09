@@ -16,6 +16,7 @@ function jnd(antonymOrData?: string | {
   lowerIsBetter?: true,
   moderateIsBetter?: true,
   idealValue?: number,
+  /* not yet implemented */
   searchTerms?: string | string[],
 }) {
   return new JournalNumericDescriptor()
@@ -54,6 +55,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'peace of mind' = jnd()
   'calmness' = jnd()
   'annoyance' = jnd({lowerIsBetter: true,})
+  /** could be a search term on another one like calmness / resourcefulness */
+  'overwhelm' = jnd({lowerIsBetter: true,})
+  'resourcefulness' = jnd()
   'irritability' = jnd({lowerIsBetter: true,})
   motivation = jnd()
   determination = jnd({idealValue: 7.5})
@@ -113,7 +117,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   cleanliness = jnd()
   grooming = jnd()
   order = jnd('chaos')
-  focus = jnd('distraction')
+  focus = jnd({
+    antonym: `distraction`,
+    searchTerms: [`distractions`]
+  })
   clarity = jnd()
   'clear thinking' = jnd()
   planning = jnd()
