@@ -29,10 +29,16 @@ export class QuizPage implements OnInit {
   }
 
 
-    dePrioritizeNewMaterial: boolean = true
+  dePrioritizeNewMaterial: boolean = true
+  onlyWithQA = false
 
   get item$$() {
-    return this.quizService.getNextItemForSelfRating$(this.dePrioritizeNewMaterial)
+    return this.quizService.getNextItemForSelfRating$(
+      {
+        dePrioritizeNewMaterial: this.dePrioritizeNewMaterial,
+        onlyWithQA: this.onlyWithQA,
+      }
+    )
   }
 
   constructor(

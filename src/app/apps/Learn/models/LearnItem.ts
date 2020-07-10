@@ -75,6 +75,12 @@ export class LearnItem extends OdmInMemItem {
       }
     }
   }
+
+  hasQAndA() {
+    // might be flaky
+    // return true
+    return (this.getSidesWithAnswers().length > 0) && this.getQuestion();
+  }
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
