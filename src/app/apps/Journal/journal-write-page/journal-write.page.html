@@ -17,7 +17,8 @@
 <ion-content>
   <div style="margin: 5px;">
     Play the self-improvement game and its mini-games! {{fieldDescriptors.length}} fields
-    <p>{{journalEntry.whenCreated || journalEntry.id}}</p>
+    <p><app-time-point [time]="journalEntry?.whenCreated"></app-time-point></p>
+<!--    <p>{{journalEntry?.whenCreated?.toISOString() || journalEntry.id}}</p>-->
   </div>
   <app-journal-numeric-fields
     [journalEntry]="journalEntry"

@@ -11,6 +11,7 @@ import { JournalSituationsComponent } from './journal-situations/journal-situati
 import {FormsModule} from '@angular/forms'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
+import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.mod
         FormsModule,
         OdmModule,
         RatingsModule,
+        TimeModule,
     ],
     exports: [
     ],
