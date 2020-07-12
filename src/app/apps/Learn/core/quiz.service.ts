@@ -9,6 +9,11 @@ import {LearnItem, LearnItem$, Rating} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
 
+export class QuizOptions {
+  dePrioritizeNewMaterial: boolean
+  onlyWithQA: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,11 +24,15 @@ export class QuizService {
   ) {
   }
 
-  getNextItemForSelfRating$(dePrioritizeNewMaterial: boolean): Observable<LearnItem$> {
+  getNextItemForSelfRating$(quizOptions: QuizOptions): Observable<LearnItem$> {
     return this.learnDoService.localItems$.pipe(
       map((item$s: LearnItem$[]) => {
+        if ( quizOptions.onlyWithQA ) {
+          item$s = item$s.filter(item => item.currentVal.hasQAndA())
+        }
         // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
-        return minBy(item$s, (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, dePrioritizeNewMaterial))
+        return minBy(item$s,
+          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
       })
     )
     // return of(this.learnDoService.getItem$ById(`LearnItem__2020-06-24__23.56.06.054Z_`))
