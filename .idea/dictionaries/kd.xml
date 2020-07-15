@@ -8,10 +8,12 @@
       <w>deviceready</w>
       <w>ebbinghaus</w>
       <w>ergonomy</w>
+      <w>favicons</w>
       <w>firebaseapp</w>
       <w>hypomania</w>
       <w>innotopic</w>
       <w>mins</w>
+      <w>msapplication</w>
       <w>mtiaaky</w>
       <w>notif</w>
       <w>notifs</w>
@@ -19,6 +21,7 @@
       <w>smth</w>
       <w>syncer</w>
       <w>vals</w>
+      <w>webmanifest</w>
       <w>zwdkw</w>
     </words>
   </dictionary>
