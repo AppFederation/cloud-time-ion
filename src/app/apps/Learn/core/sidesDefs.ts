@@ -94,6 +94,11 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `it`,
   })
+  nl = side({
+    defaultLang: 'nl-NL',
+    ask: false /* not asking German for now, to force recall */,
+    flag: `nl`,
+  })
 }
 
 export const sidesDefs = new SidesDefs()
