@@ -19,7 +19,7 @@ doAll () {
   ionic build --prod --aot \
     && firebase deploy --only hosting \
     && git tag deploy_`date -u +%Y-%m-%d__%H.%M.%SZ` \
-    && git push --tags
+    && git push origin develop --tags
 
   Echo Finished `date`
 }
