@@ -9,6 +9,10 @@ export class TimePointComponent implements OnInit {
 
   @Input() time: Date
 
+  get isInFuture() {
+    return this.time.getTime() + 1000 > Date.now()
+  }
+
   constructor() { }
 
   ngOnInit() {}
