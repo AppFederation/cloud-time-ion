@@ -33,6 +33,17 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   importance = jnd({subTitle: `of this journal entry`})
 
   mood = jnd()
+  health = jnd()
+  productivity = jnd()
+  excitement = jnd()
+  motivation = jnd()
+  achievements = jnd()
+  success = jnd() /* prolly search term on achievements? */
+  // !!! TODO: those could/should be the ones from my big virtuous circle drawing!!!
+
+  /* ==== End of default shortlist of fields "to fill in a hurry".
+    Here could be "show more button */
+
   'liking life' = jnd({searchTerms: `life appreciation`})
   'enjoyment of current activity' = jnd()
   'engagement' = jnd()
@@ -45,7 +56,6 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* TODO: esteem / respect from others, */
   guilt = jnd({lowerIsBetter: true}) /* mental state group */
   shame = jnd({lowerIsBetter: true}) /* mental state group */
-  excitement = jnd()
   passion = jnd()
   adventure = jnd()
   exploration = jnd()
@@ -59,14 +69,12 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'overwhelm' = jnd({lowerIsBetter: true,})
   'resourcefulness' = jnd()
   'irritability' = jnd({lowerIsBetter: true,})
-  motivation = jnd()
   determination = jnd({idealValue: 7.5})
   energy = jnd({idealValue: 8.5})
   hypomania = jnd({moderateIsBetter: true})
   hope = jnd()
   optimism = jnd()
   progress = jnd()
-  health = jnd()
   diet = jnd({
     searchTerms: ['nutrition', 'food', 'eating']
   })
@@ -95,7 +103,6 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'cravings for computer alcohol' = jnd({
     lowerIsBetter: true,
   })
-  productivity = jnd()
   cognition = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})
   thinking = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})
   'work quality' = jnd()
