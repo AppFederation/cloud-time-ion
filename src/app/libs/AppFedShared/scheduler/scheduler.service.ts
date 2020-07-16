@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {SchedulerModule} from "./scheduler.module";
 
+export type TimeoutHandle = ReturnType<typeof setTimeout>
+
 export class SchedulerHandle {
 
   constructor(
-    public _timeOutHandle
+    public _timeOutHandle: TimeoutHandle
   ) {}
 
   unSchedule() {
