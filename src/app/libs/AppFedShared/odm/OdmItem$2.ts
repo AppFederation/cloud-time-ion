@@ -16,7 +16,19 @@ export type OdmPatch<TData> = Partial<TData>
 
 export class OdmItem$2<
   TInMemData extends OdmInMemItem,
-  TRawData = TInMemData
+  TRawData extends OdmInMemItem /* workaround */, // = TInMemData,
+  TItemListService extends
+    OdmService2<TInMemData, TRawData, any /* workaround */>, // =
+    // OdmService2<TInMemData, TRawData>,
+  TItemId extends
+    OdmItemId<TRawData> =
+    OdmItemId<TRawData>,
+  TMemPatch extends
+    OdmPatch<TInMemData> =
+    OdmPatch<TInMemData>,
+  TRawPatch extends
+    OdmPatch<TRawData> =
+    OdmPatch<TRawData>,
   >
 {
 
@@ -31,8 +43,8 @@ export class OdmItem$2<
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 
   constructor(
-    public odmService: OdmService2<TInMemData, TRawData>,
-    public id?: OdmItemId<TInMemData>,
+    public odmService: TItemListService,
+    public id?: TItemId,
     initialInMemData?: TInMemData,
   ) {
     if ( initialInMemData ) {
@@ -64,7 +76,7 @@ export class OdmItem$2<
     }
   }
 
-  patchThrottled(patch: OdmPatch<TInMemData>) {
+  patchThrottled(patch: TMemPatch) {
     // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
@@ -82,6 +94,8 @@ export class OdmItem$2<
   // patchFieldThrottled(fieldKey: keyof TData, fieldPatch: (typeof this.fieldKey)) {
   //  // idea: patch level 1 and pass partial
   // }
+
+  // TODO: patchFieldsDeeplyLevel1 -- deeply LEVEL 1 -- for type safety
 
   patchNow(patch: OdmPatch<TInMemData>) {
     this.setIdAndWhenCreatedIfNecessary()

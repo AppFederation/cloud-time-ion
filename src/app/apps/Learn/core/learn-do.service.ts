@@ -7,7 +7,12 @@ import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 @Injectable({
   providedIn: 'root'
 })
-export class LearnDoService extends OdmService2<LearnItem, LearnItem, LearnItem$> {
+/** TODO rename to OdmItemService */
+export class LearnDoService extends OdmService2<
+    LearnItem,
+    LearnItem,
+    LearnItem$
+  > {
 
   constructor(
     injector: Injector,

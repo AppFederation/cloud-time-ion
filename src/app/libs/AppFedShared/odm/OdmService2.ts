@@ -3,15 +3,25 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2} from './OdmItem$2'
+import {OdmItem$2, OdmPatch} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmService2<
   TInMemData,
-  TRawData = TInMemData,
-  TOdmItem$ extends OdmItem$2<TInMemData, TRawData> = OdmItem$2<TInMemData, TRawData>,
-  TItemId extends OdmItemId<TRawData> = OdmItemId<TRawData>,
+  TRawData, // = TInMemData,
+  TOdmItem$ extends
+    OdmItem$2<TInMemData, TRawData, any /* workaround for (indirectly) TS2716: Type parameter 'TOdmItem$' has a circular default. */>, // =
+    // OdmItem$2<TInMemData, TRawData>,
+  TItemId extends
+    OdmItemId<TRawData> =
+    OdmItemId<TRawData>,
+  TMemPatch extends
+    OdmPatch<TInMemData> =
+    OdmPatch<TInMemData>,
+  TRawPatch extends
+    OdmPatch<TRawData> =
+    OdmPatch<TRawData>,
   >
 {
 
@@ -112,7 +122,9 @@ export abstract class OdmService2<
 
   /** Can be overridden by subclasses to provide specific sub-type */
   newItem(id?: TItemId, inMemData?: TInMemData): TOdmItem$ {
-    const odmItem$ = new OdmItem$2(this, id, inMemData) as TOdmItem$
+    const odmItem$ = new OdmItem$2(this as any
+      /* workaround for TS2716: Type parameter 'TOdmItem$' has a circular default. */
+      , id, inMemData) as any as TOdmItem$
     return odmItem$
   }
 
