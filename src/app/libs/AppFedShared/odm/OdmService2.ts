@@ -8,10 +8,11 @@ import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmService2<
+  TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData,
   TRawData, // = TInMemData,
   TOdmItem$ extends
-    OdmItem$2<TInMemData, TRawData, any /* workaround for (indirectly) TS2716: Type parameter 'TOdmItem$' has a circular default. */>, // =
+    OdmItem$2<TOdmItem$, TInMemData, TRawData, TSelf /* (was any -> ) workaround for (indirectly) TS2716: Type parameter 'TOdmItem$' has a circular default. */>, // =
     // OdmItem$2<TInMemData, TRawData>,
   TItemId extends
     OdmItemId<TRawData> =

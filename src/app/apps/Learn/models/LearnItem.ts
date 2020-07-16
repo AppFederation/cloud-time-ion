@@ -85,7 +85,7 @@ export class LearnItem extends OdmInMemItem {
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
 
-export class LearnItem$ extends OdmItem$2<LearnItem> {
+export class LearnItem$ extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService> {
 
   // TODO: operations should actually be performed on certain Version, for versioning, drafts, branches, conflict detection/resolution
 

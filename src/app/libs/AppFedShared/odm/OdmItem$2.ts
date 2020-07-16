@@ -15,10 +15,11 @@ export class OdmInMemItem {
 export type OdmPatch<TData> = Partial<TData>
 
 export class OdmItem$2<
+  TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData extends OdmInMemItem,
   TRawData extends OdmInMemItem /* workaround */, // = TInMemData,
   TItemListService extends
-    OdmService2<TInMemData, TRawData, any /* workaround */>, // =
+    OdmService2<TItemListService, TInMemData, TRawData, any /* workaround */>, // =
     // OdmService2<TInMemData, TRawData>,
   TItemId extends
     OdmItemId<TRawData> =

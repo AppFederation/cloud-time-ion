@@ -9,6 +9,7 @@ import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 })
 /** TODO rename to OdmItemService */
 export class LearnDoService extends OdmService2<
+    LearnDoService,
     LearnItem,
     LearnItem,
     LearnItem$
