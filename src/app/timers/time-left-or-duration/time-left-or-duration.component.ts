@@ -9,7 +9,11 @@ import {TimerItem} from "../../core/TimerItem";
 export class TimeLeftOrDurationComponent implements OnInit {
 
   @Input()
-  timer: TimerItem
+  timer ! : TimerItem
+
+  get endTime() {
+    return this.timer.endTime !
+  }
 
   constructor() { }
 

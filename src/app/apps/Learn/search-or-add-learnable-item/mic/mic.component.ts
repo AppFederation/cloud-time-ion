@@ -18,7 +18,7 @@ export class MicComponent implements OnInit {
   private audioChunks: any[] = []
 
   /* TODO: move to service, to ensure reference is not lost on component being re-created (e.g. on mobile) */
-  stream: MediaStream
+  stream: MediaStream | undefined
 
   constructor(
     public uploadService: UploadService,
@@ -27,7 +27,7 @@ export class MicComponent implements OnInit {
 
   ngOnInit() {}
 
-  onMicClick(event?) {
+  onMicClick(event ? : any) {
     if (event) {
       event.preventDefault() // prevent mouse click emulation from touchstart event because we have on-click as well
     }
@@ -74,10 +74,10 @@ export class MicComponent implements OnInit {
 
     this.audioChunks = [];
 
-    this.mediaRecorder.ondataavailable = (e) => {
+    this.mediaRecorder.ondataavailable = (e: any) => {
       this.audioChunks.push(e.data);
     }
-    this.mediaRecorder.onstop = (e) => {
+    this.mediaRecorder.onstop = (e: any) => {
       this.onRecordStopped()
     }
   }
@@ -95,14 +95,14 @@ export class MicComponent implements OnInit {
     learnItemData.whenAdded = OdmBackend.nowTimestamp()
     const learnItem$ = this.learnDoService.newItem(undefined, learnItemData)
     learnItem$.saveNowToDb()
-    this.uploadService.uploadAudio2(blob, learnItem$.id)
+    this.uploadService.uploadAudio2(blob, learnItem$.id !)
   }
 
   releaseMic() {
     // this.stream.stop() // https://developers.google.com/web/updates/2015/07/mediastream-deprecations?hl=en#stop-ended-and-active
     // https://stackoverflow.com/questions/35977831/removing-the-recording-icon-mediastreamrecorder-js-library
     // https://stackoverflow.com/questions/11642926/stop-close-webcam-which-is-opened-by-navigator-getusermedia
-    this.stream.getTracks().forEach(function(track) {
+    this.stream ?. getTracks().forEach(function(track) {
       track.stop();
     });
     this.stream = undefined

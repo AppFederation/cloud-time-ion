@@ -29,7 +29,7 @@ export class TimerItem extends OdmItem<TimerItem> {
   constructor(
     timersService: TimersService,
     /*public*/ id?: TimerId,
-    public endTime?: Date | undefined,
+    public endTime?: Date | null | undefined,
     public durationSeconds?: number,
     public title?: string,
   ) {

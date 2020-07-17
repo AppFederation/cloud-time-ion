@@ -11,10 +11,10 @@ import {AngularFirestore} from '@angular/fire/firestore'
 export class PlayButtonComponent implements OnInit {
 
   @Input()
-  item: LearnItem
+  item ? : any // LearnItem | null
 
   @Input()
-  private itemId: LearnItemId
+  private itemId ? : LearnItemId
 
   isPlaying = false
 
@@ -32,8 +32,8 @@ export class PlayButtonComponent implements OnInit {
     }
     this.isPlaying = true
     // TODO: move to service
-    this.angularFirestore.collection('LearnDoAudio').doc(this.itemId || this.item.id).get().subscribe(audioItem => {
-      const audioBytes = audioItem.data().audio.toUint8Array().buffer as ArrayBuffer
+    this.angularFirestore.collection('LearnDoAudio').doc(this.itemId || this.item?.id).get().subscribe(audioItem => {
+      const audioBytes = audioItem ?. data() ?. audio?.toUint8Array()?.buffer as ArrayBuffer
       // todo maybe reuse ctx / source
       const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
       const source = audioCtx.createBufferSource();
@@ -48,8 +48,8 @@ export class PlayButtonComponent implements OnInit {
           source.start(0)
         },
 
-        function(e){
-          window.alert("Error with decoding audio data: " + e.err + ' ' + e);
+        function(e: DOMException){
+          window.alert("Error with decoding audio data: " + (e as any).err + ' ' + e);
         }
       );
 

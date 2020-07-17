@@ -8,7 +8,7 @@ import {Side} from '../core/sidesDefs'
 })
 export class SideLabelComponent implements OnInit {
 
-  @Input() side: Side
+  @Input() side ! : Side
 
   constructor() { }
 

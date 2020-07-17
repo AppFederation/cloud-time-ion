@@ -1,6 +1,7 @@
 import {Dict, dictToArrayWithIds} from "../../../libs/AppFedShared/utils/dictionary-utils";
 import {ILateInit} from './JournalNumericDescriptors'
 
+/* TODO: split into UiField and simpler UiFieldDecl */
 export class UiFieldDef implements ILateInit {
 
   constructor(
@@ -9,7 +10,7 @@ export class UiFieldDef implements ILateInit {
   ) {}
 
   lateInit() {
-    this.uiName = this.uiName || this.id.replace(/_/g, ' ')
+    this.uiName = this.uiName || this.id ! . replace(/_/g, ' ')
   }
 }
 

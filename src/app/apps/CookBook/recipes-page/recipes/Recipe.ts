@@ -3,10 +3,10 @@ import {TimeDuration} from "../../../../libs/AppFedShared/time/TimeDuration";
 
 export class Recipe extends OdmItem<Recipe> {
 
-  title: string
-  preparationDuration: TimeDuration
-  isVegetarian: boolean
-  isVegan: boolean
-  isGlutenFree: boolean
+  title ? : string
+  preparationDuration ? : TimeDuration // DurationSeconds / Ms better
+  isVegetarian ? : boolean
+  isVegan ? : boolean
+  isGlutenFree ? : boolean
 
 }

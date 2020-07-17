@@ -3,12 +3,12 @@
 
   <app-time-passing
     *ngIf="timer.isRunning"
-    [referenceTime]="timer.endTime"
+    [referenceTime]="endTime !"
   ></app-time-passing>
 
   <app-time-view
     *ngIf="! timer.isRunning"
-    [timeMs]="timer.durationSeconds * 1000"
+    [timeMs]="timer.durationSeconds ! * 1000"
   ></app-time-view>
 
 </ng-container>

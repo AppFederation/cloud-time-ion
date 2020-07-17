@@ -38,17 +38,17 @@ export class AuthService {
     return this.afAuth.auth.signOut();
   }
 
-  signUpWithEmailAndPassword(email, password: string) {
+  signUpWithEmailAndPassword(email: string, password: string) {
     return this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
-      .then(response => (this.login(), this.Router.navigateByUrl('/timers')))
+      .then(response => (this.login(), this.Router.navigateByUrl('/timers') /* TODO why comma expression */))
       .catch(error => console.log('Error on creating account', error));
   }
 
-  logInViaEmailAndPassword(email, password: string) {
+  logInViaEmailAndPassword(email: string, password: string) {
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(response => (this.login(), this.Router.navigateByUrl('/timers')))
-      .catch(error => console.log('Error loggin in', error));
+      .catch(error => console.log('Error logging in', error));
   }
 }

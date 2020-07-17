@@ -16,23 +16,22 @@ export class QuizPage implements OnInit {
   public shouldShowAnswer = false
   dummyArray = [{}]
 
-  selfRating: NumericPickerVal = undefined
+  selfRating: NumericPickerVal | undefined = undefined
 
-  item$: LearnItem$
+  item$: LearnItem$ | undefined
 
-  get itemVal$(): Observable<LearnItem> {
+  get itemVal$(): Observable<LearnItem | undefined> {
     return this.item$$.pipe(
       switchMap(item$ => {
-        return item$.locallyVisibleChanges$
+        return item$ ?. locallyVisibleChanges$ !
       })
     )
   }
 
-
   dePrioritizeNewMaterial: boolean = true
   onlyWithQA = false
 
-  get item$$() {
+  get item$$(): Observable<LearnItem$ | undefined> {
     return this.quizService.getNextItemForSelfRating$(
       {
         dePrioritizeNewMaterial: this.dePrioritizeNewMaterial,
@@ -57,7 +56,7 @@ export class QuizPage implements OnInit {
           this.reset()
         })
       }
-      this.item$ = item$
+      this.item$ = item$ // could be race condition?
         //   this.item$ = item$
         //   // FIXME: this should improve a lot when I emit entire array changed (newly arrived), instead of each onAdded
         // })
@@ -91,7 +90,7 @@ export class QuizPage implements OnInit {
   applyAndNext() {
     this.reset()
 
-    this.item$.setNewSelfRating(this.selfRating)
+    this.item$ ?. setNewSelfRating(this.selfRating !)
   }
 
   private reset() {

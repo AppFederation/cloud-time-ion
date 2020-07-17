@@ -20,7 +20,7 @@ export class TimersPageComponent {
 
   async onAddTimer() {
     debugLog('onAddTimer')
-    let timerItem = new TimerItem(this.timersService, null, undefined, 5, 'new timer')
+    let timerItem = new TimerItem(this.timersService, undefined, undefined, 5, 'new timer')
     // timerItem
     const modal: HTMLIonModalElement =
       await this.modalController.create({

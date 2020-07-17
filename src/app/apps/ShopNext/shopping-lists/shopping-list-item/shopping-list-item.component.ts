@@ -8,7 +8,7 @@ import {ShoppingList} from "../ShoppingList";
 })
 export class ShoppingListItemComponent implements OnInit {
 
-  @Input() item: ShoppingList
+  @Input() item ! : ShoppingList
   shoppingList = this.item
 
   get routerLink() {

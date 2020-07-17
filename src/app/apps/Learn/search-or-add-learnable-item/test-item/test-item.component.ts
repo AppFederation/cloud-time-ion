@@ -8,7 +8,7 @@ import {LearnItem} from '../../models/LearnItem'
 })
 export class TestItemComponent implements OnInit {
 
-  @Input() itemInp: LearnItem
+  @Input() itemInp ? : LearnItem
 
   constructor() { }
 

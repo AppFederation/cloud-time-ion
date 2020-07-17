@@ -44,7 +44,7 @@ export class TimerNotificationsService {
       for ( const timer of timers ) {
         if ( timer.isRunning ) {
           this.mapIdToMeta.set(
-            timer.id,
+            timer.id !,
             new TimerNotifMeta(
               this,
               this.scheduleNotification(timer),
@@ -67,12 +67,12 @@ export class TimerNotificationsService {
   private scheduleNotification(timer: TimerItem) {
     debugLog('scheduleNotification', timer)
     return this.notificationsService.scheduleNotification(
-      new NotificationInfo(`Timer finished: ${timer.title}`, timer.endTime)
+      new NotificationInfo(`Timer finished: ${timer.title}`, timer.endTime !)
     )
   }
 
   private scheduleTimerEnded(timer: TimerItem) {
-    return this.schedulerService.schedule(timer.endTime, async () => {
+    return this.schedulerService.schedule(timer.endTime !, async () => {
       await this.timerEndedService.showTimerEnded(timer)
     })
   }

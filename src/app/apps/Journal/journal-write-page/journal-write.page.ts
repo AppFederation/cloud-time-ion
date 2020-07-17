@@ -14,7 +14,7 @@ import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 })
 export class JournalWritePage implements OnInit {
 
-  public journalEntry: JournalEntry
+  public journalEntry ! : JournalEntry
 
   fieldDescriptors = JournalNumericDescriptors.instance.array
 
@@ -35,7 +35,7 @@ export class JournalWritePage implements OnInit {
     // this.journalEntry.saveNowToDb()
   }
 
-  private patch(patch) {
+  private patch(patch: any) {
     patch.lastModifiedGeo =
       /* this should be interceptor (or at least smth in overwritten method in JournalEntry) outside of UI anyway */
       this.geoLocationService.geoLocation$.lastVal &&

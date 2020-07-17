@@ -3,6 +3,8 @@ import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmBackend, OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Side, SidesDefs, sidesDefsArray} from '../core/sidesDefs'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
+import {LearnDoService} from '../core/learn-do.service'
 
 export type LearnItemId = OdmItemId<LearnItem>
 export type Rating = number
@@ -11,7 +13,7 @@ export type Rating = number
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem {
   id?: LearnItemId
-  whenAdded: OdmTimestamp
+  whenAdded ! : OdmTimestamp
   title?: string
   isTask?: boolean
   hasAudio?: true | null
@@ -20,16 +22,17 @@ export class LearnItem extends OdmInMemItem {
   whenLastSelfRated?: OdmTimestamp
   selfRatingsCount?: number
 
+  /* FIXME: this should not be optional */
   joinedSides?() {
     // this seems very slow
     return sidesDefsArray.map(side => this.getSideVal(side)).filter(_ => _).join(' ● ')
   }
 
-  getAnswers(): string[] {
-    return this.getSidesWithAnswers().map(side => this.getSideVal(side))
-  }
+  // getAnswers(): string[] {
+  //   return this.getSidesWithAnswers().map(side => this.getSideVal(side))
+  // }
 
-  private getSidesWithAnswers(): Side[] {
+  public getSidesWithAnswers(): Side[] {
     const ret: Side [] = []
     let foundQuestionBefore = false
     for (let side of sidesDefsArray) {
@@ -46,8 +49,8 @@ export class LearnItem extends OdmInMemItem {
     return ret
   }
 
-  private getSideVal(side: Side): string|undefined|null {
-    return this[side.id] ?. trim ?. ()
+  public getSideVal(side: Side): string|undefined|null {
+    return (this as any)[side.id] ?. trim ?. ()
   }
 
   getQuestionOrAnyString() {
@@ -91,20 +94,20 @@ export class LearnItem$ extends OdmItem$2<LearnItem$, LearnItem, LearnItem, Lear
 
   setNewSelfRating(newSelfRatingFromUser: NumericPickerVal) {
     const item = this.currentVal
-    const previousRating = item.lastSelfRating
+    const previousRating = item?.lastSelfRating
     let newEffectiveRating = newSelfRatingFromUser
     // repeatedly self-rating as 2 or 2.5, increases effective rating (confidence) :
-    if ( newEffectiveRating >= 2 /* in case of 2.5 (click 2 times) */ && previousRating >= 2 ) {
+    if ( newEffectiveRating >= 2 /* in case of 2.5 (click 2 times) */ && (previousRating ?? 0) >= 2 ) {
       const enoughTimePassed = true // TODO: based on calculation
       if ( enoughTimePassed ) {
-        newEffectiveRating = previousRating + 1
+        newEffectiveRating = previousRating ! + 1
       }
     }
 
     this.patchThrottled({
       lastSelfRating: newEffectiveRating,
       whenLastSelfRated: OdmBackend.nowTimestamp(),
-      selfRatingsCount: (item.selfRatingsCount || 0) + 1,
+      selfRatingsCount: (item?.selfRatingsCount || 0) + 1,
     })
 
   }

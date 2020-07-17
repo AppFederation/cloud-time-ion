@@ -3,7 +3,7 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 export type SideId = string
 
 export class Side {
-  id: SideId
+  id ! : SideId
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang?: string // = 'en-US'
   flag?: string

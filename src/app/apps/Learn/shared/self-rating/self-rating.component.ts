@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem, LearnItem$} from '../../models/LearnItem'
+import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 
 @Component({
   selector: 'app-self-rating',
@@ -11,7 +12,7 @@ import {LearnItem, LearnItem$} from '../../models/LearnItem'
 export class SelfRatingComponent implements OnInit {
 
   @Input()
-  item$: LearnItem$
+  item$ ? : LearnItem$
 
   @Input()
   autoSave = true
@@ -25,7 +26,11 @@ export class SelfRatingComponent implements OnInit {
   onChangeSelfRating($event: NumericPickerVal) {
     this.numericValue.emit($event)
     if ( this.autoSave ) {
-      this.item$.setNewSelfRating($event)
+      if ( ! this. item$ ) {
+        errorAlert(`cannot onChangeSelfRating on this. item$` + this. item$)
+      } else {
+        this.item$.setNewSelfRating($event)
+      }
     }
 
     // const item = this.item$.currentVal

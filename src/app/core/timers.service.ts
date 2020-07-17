@@ -13,11 +13,11 @@ export class TimersService extends OdmService<TimerItem> {
     super(injector, 'Timer')
   }
 
-  protected convertFromDbFormat(dbTimer) {
+  protected convertFromDbFormat(dbTimer: TimerItem) {
     const timerInstance = Object.assign(new TimerItem(this), dbTimer);
     timerInstance.endTime =
       timerInstance.endTime &&
-      timerInstance.endTime.toDate()
+      (timerInstance.endTime as any).toDate()
     return timerInstance
   }
 

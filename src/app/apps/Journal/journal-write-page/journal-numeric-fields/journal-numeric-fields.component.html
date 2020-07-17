@@ -2,7 +2,7 @@
   [(ngModel)]="search"
   placeholder="Search"
   autofocus="autofocus"
-  debounce="100"
+  [debounce]="100"
   inputmode="search"
 ></ion-searchbar>
 
@@ -10,7 +10,7 @@
   *ngFor="let descriptor of numDescriptors"
 >
   <apf-numeric-picker
-    [hidden]="! descriptor.id.toLowerCase().includes(search.toLowerCase())"
+    [hidden]="! descriptor.id !. toLowerCase().includes(search.toLowerCase())"
     (numericValue)="onChangeNumericValue($event, descriptor)"
     [numFieldDef]="descriptor"
   ></apf-numeric-picker>

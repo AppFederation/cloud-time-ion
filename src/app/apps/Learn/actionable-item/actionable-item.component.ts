@@ -13,7 +13,7 @@ export class ActionableItemComponent implements OnInit {
 
   sidesDefsArray = sidesDefsArray
 
-  @Input() item: LearnItem
+  @Input() item ! : LearnItem
   // @Input() search: string
 
   // @Input() set item(i: LearnItem) {
@@ -35,6 +35,7 @@ export class ActionableItemComponent implements OnInit {
 
   joinedSides() {
     // this seems very slow
-    return LearnItem.prototype.joinedSides.call(this.item) // this.item.joinedSides()
+    return LearnItem?.prototype?.joinedSides?.call(this.item) // this.item.joinedSides()
+    // TODO: why possibly undefined? (error after strict settings )
   }
 }

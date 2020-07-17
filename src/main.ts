@@ -12,5 +12,5 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
 
 declare global {
-  function xyzTestGlobal()
+  function xyzTestGlobal(): void
 }

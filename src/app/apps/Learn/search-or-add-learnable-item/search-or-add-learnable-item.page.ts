@@ -1,14 +1,15 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
-import sortBy from 'lodash/sortBy'
-import countBy from 'lodash/countBy'
+// import sortBy from 'lodash/sortBy'
+import {sortBy, countBy} from 'lodash'
+// import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
-
+import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 @Component({
   selector: 'app-search-or-add-learnable-item',
@@ -17,15 +18,15 @@ import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 })
 export class SearchOrAddLearnableItemPage implements OnInit {
 
-  search: string
+  search: string = ''
 
   coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
     /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
-  items: LearnItem[]
-  filteredItems: LearnItem[]
+  items: LearnItem[] = []
+  filteredItems: LearnItem[] = []
 
-  public itemsWithRatingCount: number = undefined
-  public itemsWithRatingCount2: number
+  public itemsWithRatingCount ? : Dictionary<number> = undefined
+  public itemsWithRatingCount2 ? : number
 
   constructor(
     protected angularFirestore: AngularFirestore,
@@ -82,7 +83,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     this.search = ''
   }
 
-  createItemFromInputString(string: string, isTask: boolean) {
+  createItemFromInputString(string: string, isTask?: boolean) {
     if ( ! string ?. trim() ) {
       return
     }
@@ -142,7 +143,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
       return true
     }
     for (let side of sidesDefsArray) {
-      const sideVal = item[side.id]
+      const sideVal = item.getSideVal(side)
       if ( sideVal && sideVal.toLowerCase().includes(search) ) {
         return true
       }

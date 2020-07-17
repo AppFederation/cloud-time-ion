@@ -18,7 +18,7 @@ import {Observable} from 'rxjs/internal/Observable'
 })
 export class LearnItemDetailsPage implements OnInit {
 
-  get val$(): Observable<LearnItem> {
+  get val$(): Observable<LearnItem | undefined> {
     return this.item$.locallyVisibleChanges$
   }
 
@@ -31,7 +31,7 @@ export class LearnItemDetailsPage implements OnInit {
 
   public id: LearnItemId = this.activatedRoute.snapshot.params['itemId']
   public item$: LearnItem$ = this.learnDoService.getItem$ById(this.id)
-  public title: string
+  public title? : string
 
   public viewSyncer = new ViewSyncer(this.formGroup, this.item$)
 
@@ -58,8 +58,8 @@ export class LearnItemDetailsPage implements OnInit {
 
   async askDelete() {
     const alert = await this.alertController.create({
-      header: 'Delete item ' + this.item$.currentVal.title + " ?",
-      message: 'Delete <strong>' + this.item$.currentVal.joinedSides() + '</strong>!!!?',
+      header: 'Delete item ' + this.item$ ?. currentVal ?. title + " ?",
+      message: 'Delete <strong>' + this.item$ ?. currentVal ?. joinedSides ?. () + '</strong>!!!?',
       buttons: [
         {
           text: 'Cancel',

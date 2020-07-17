@@ -19,20 +19,20 @@ export class TimersListComponent implements OnInit {
     return item.id
   }
 
-  sortTimers(timers: TimerItem[]) {
+  sortTimers(timers: TimerItem[] | null) {
     if ( timers == null ) {
       return timers
     }
     return timers.sort((t1, t2) => {
       if ( t1.isRunning && t2.isRunning ) {
-        return t1.endTime.getTime() - t2.endTime.getTime()
+        return (t1.endTime?.getTime()) ! - (t2.endTime?.getTime()) !
       }
       if ( t1.isRunning) {
         return -1 // TODO more
       } else if ( t2.isRunning) {
         return 1 // TODO more
       } else {
-        return t1.durationSeconds - t2.durationSeconds
+        return t1.durationSeconds ! - t2.durationSeconds !
       }
     })
   }

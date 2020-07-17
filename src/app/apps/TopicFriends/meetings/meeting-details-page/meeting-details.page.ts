@@ -17,7 +17,7 @@ export class MeetingDetailsPage implements OnInit {
   };
   formGroup = new FormGroup(this.formGroupControls);
 
-  meeting: Meeting // = new Meeting() // forkDraftItem()
+  meeting ! : Meeting // = new Meeting() // forkDraftItem()
 
   constructor() {
   }

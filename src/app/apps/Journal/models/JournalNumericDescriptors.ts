@@ -2,7 +2,12 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 
 export interface ILateInit {
-  lateInit()
+  lateInit(): any
+}
+
+export interface ILateInitWithMorph<TMorphInto> {
+  /** potentially can return another object into which it has "morphed" */
+  lateInitAndMorph(): TMorphInto
 }
 
 export class JournalNumericDescriptor extends UiFieldDef {

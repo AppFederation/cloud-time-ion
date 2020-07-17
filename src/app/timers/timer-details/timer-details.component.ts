@@ -13,12 +13,12 @@ import {ignorePromise} from "../../libs/AppFedShared/utils/promiseUtils";
 export class TimerDetailsComponent implements OnInit {
 
   @Input()
-  timer: TimerItem
+  timer ! : TimerItem
 
   timerTitleControl = new FormControl('');
 
   get endTime() {
-    return new Date(Date.now() + this.timer.durationSeconds * 1000)
+    return new Date(Date.now() + (this.timer.durationSeconds)! * 1000)
   }
 
   constructor(

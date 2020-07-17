@@ -9,7 +9,7 @@ import {JournalEntry} from '../../models/JournalEntry'
 })
 export class JournalTextFieldsComponent implements OnInit {
 
-  @Input() journalEntry: JournalEntry
+  @Input() journalEntry ! : JournalEntry
 
   textDescriptors = JournalTextDescriptors.instance.array
 
@@ -19,10 +19,10 @@ export class JournalTextFieldsComponent implements OnInit {
 
   /** TODO: user reactive forms with ODM wrapper for listening to diffs */
   onChangeText($event: Event, textDesc: JournalTextDescriptor) {
-    const value = $event.srcElement['value'];
+    const value = ($event.srcElement as any) ?. ['value'];
     // debugLog('onChangeText', value, $event)
-    const patch = {};
-    patch[textDesc.id] = value as unknown as string
+    const patch: any = {};
+    patch[textDesc.id !] = value as unknown as string
     this.journalEntry.patchThrottled(patch)
   }
 

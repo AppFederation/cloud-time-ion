@@ -14,7 +14,7 @@ import {debugLog} from "../../libs/AppFedShared/utils/log";
 export class TimerItemComponent implements OnInit {
 
   @Input()
-  timer: TimerItem
+  timer ! : TimerItem
 
   get isRunning() { return this.timer.isRunning }
 

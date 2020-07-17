@@ -14,11 +14,11 @@
       <div style="flex-grow: 1">
         <div>
           <ion-textarea
-            autoGrow="true"
+            [autoGrow]="true"
             [(ngModel)]="search"
             (ngModelChange)="onChangeSearch($event)"
             placeholder="Search or add"
-            debounce="50"
+            [debounce]="50"
             inputmode="search"
             (keyup.enter)="addTask()"
             (keyup.meta.enter)="addToLearn()"

@@ -8,7 +8,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/f
 })
 export class DescriptionEditorComponent implements OnInit {
 
-  @Input() control: FormControl;
+  @Input() control ! : FormControl;
 
   constructor() { }
 
