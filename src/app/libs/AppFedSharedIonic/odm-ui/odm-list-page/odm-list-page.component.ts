@@ -8,12 +8,12 @@ import {OdmListItemDirective} from "../odm-list/odm-list-item.directive";
 })
 export class OdmListPageComponent implements OnInit {
 
-  @Input() parentItem
+  @Input() parentItem ! : any
 
-  @Input() creatItemFunc
+  @Input() creatItemFunc ! : any
 
   /** https://alligator.io/angular/reusable-components-ngtemplateoutlet/ */
-  @ContentChild(OdmListItemDirective, /* TODO: add static flag */ { read: TemplateRef, static: true /* TODO check*/ }) itemTemplate
+  @ContentChild(OdmListItemDirective, /* TODO: add static flag */ { read: TemplateRef, static: true /* TODO check*/ }) itemTemplate: any
 
   constructor() { }
 

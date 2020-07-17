@@ -51,14 +51,14 @@ export abstract class OdmService2<
   }
 
   deleteWithoutConfirmation(item: TOdmItem$) {
-    this.odmCollectionBackend.deleteWithoutConfirmation(item.id)
+    this.odmCollectionBackend.deleteWithoutConfirmation(item.id !)
   }
 
   saveNowToDb(itemToSave: TOdmItem$) {
     itemToSave.onModified()
     // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
-    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id)
+    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
     this.syncStatusService.handleSavingPromise(promise)
   }
 
@@ -86,7 +86,7 @@ export abstract class OdmService2<
         //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
         // }
           existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-          items.push(existingItem)
+          items!.push(existingItem)
         // } else {
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
           // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
@@ -105,7 +105,7 @@ export abstract class OdmService2<
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onRemoved(removedItemId: TItemId) {
-        service.localItems$.lastVal = service.localItems$.lastVal.filter(item => item.id !== removedItemId)
+        service.localItems$.lastVal = service.localItems$ !. lastVal !. filter(item => item.id !== removedItemId)
         // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
@@ -135,7 +135,7 @@ export abstract class OdmService2<
   }
 
   emitLocalItems() {
-    this.localItems$.next(this.localItems$.lastVal)
+    this.localItems$.next(this.localItems$!.lastVal !)
   }
 
   itemsCount() {

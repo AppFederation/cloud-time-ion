@@ -34,11 +34,11 @@ export class OdmItem$2<
 {
 
   /* consider renaming to just `val` or `data` */
-  currentVal: TInMemData = undefined
+  currentVal: TInMemData | undefined = undefined
 
-  public locallyVisibleChanges$ = new CachedSubject<TInMemData>()
-  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData>()
-  public localUserSavesToThrottle$ = new CachedSubject<TInMemData>()
+  public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined>()
+  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined>()
+  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
@@ -56,25 +56,29 @@ export class OdmItem$2<
 
     this.localUserSavesToThrottle$.pipe(
       throttleTimeWithLeadingTrailing(this.odmService.throttleSaveToDbMs)
-    ).subscribe((value: TInMemData) => {
+    ).subscribe(((value: TInMemData) => {
       /* why this works only once?
        * Causes saveNowToDb to receive old value
       // this.odmService.saveNowToDb(this as unknown as T)
       this.odmService.saveNowToDb(this.asT)
       */
       this.odmService.saveNowToDb(this)
-    })
+    }) as any /* TODO investigate after strict */)
     // this.onModified()
   }
 
   private setIdAndWhenCreatedIfNecessary() {
-    this.currentVal.whenCreated = this.currentVal.whenCreated || OdmBackend.nowTimestamp()
+    this.currentVal ! . whenCreated = this.currentVal ! . whenCreated || OdmBackend.nowTimestamp()
     if ( ! this.id ) {
-      this.id = '' + this.odmService.className + "__" + new Date().toISOString()
-        .replace('T', '__')
-        .replace(/:/g, '.') + '_' // hack
+      this.id = this.generateItemId()
       // this.currentVal.id = this.id
     }
+  }
+
+  private generateItemId(): TItemId {
+    return ('' + this.odmService.className + "__" + new Date().toISOString()
+      .replace('T', '__')
+      .replace(/:/g, '.') + '_') as TItemId  // hack
   }
 
   patchThrottled(patch: TMemPatch) {
@@ -108,7 +112,7 @@ export class OdmItem$2<
   }
 
   deleteWithoutConfirmation() {
-    this.currentVal.isDeleted = OdmBackend.nowTimestamp()
+    this.currentVal ! . isDeleted = OdmBackend.nowTimestamp() // TODO: unused; check undefined
     this.odmService.deleteWithoutConfirmation(this)
   }
 
@@ -135,7 +139,7 @@ export class OdmItem$2<
   }
 
   onModified() {
-    this.currentVal.whenLastModified = OdmBackend.nowTimestamp()
+    this.currentVal ! . whenLastModified = OdmBackend.nowTimestamp()
   }
 
   applyDataFromDbAndEmit(incomingConverted: TInMemData) {

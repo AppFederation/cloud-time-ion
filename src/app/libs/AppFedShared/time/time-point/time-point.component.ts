@@ -7,17 +7,17 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TimePointComponent implements OnInit {
 
-  @Input() time: Date
+  @Input() time ? : Date
 
   get isInFuture() {
-    return this.time ?. getTime() + 1000 > Date.now()
+    return (this.time ?. getTime() ?? 0) - 1000 > Date.now()
   }
 
   constructor() { }
 
   ngOnInit() {}
 
-  process(time: Date) {
+  process(time ? : Date) {
     return time ?. toISOString() ?. replace('T', ' ') ?. replace(/\.\d\d\dZ/gi, '')
     //
   }

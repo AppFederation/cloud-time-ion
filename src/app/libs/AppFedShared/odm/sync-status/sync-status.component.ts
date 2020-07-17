@@ -22,7 +22,7 @@ export class SyncStatusComponent implements OnInit {
 
   ngOnInit() {}
 
-  async onClick(event) {
+  async onClick(event: any) {
 
     const popover = await this.popoverController.create({
       component: SyncPopoverComponent,

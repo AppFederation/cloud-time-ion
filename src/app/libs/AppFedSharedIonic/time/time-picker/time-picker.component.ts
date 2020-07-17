@@ -8,7 +8,7 @@ import {PickerController} from "@ionic/angular";
 })
 export class TimePickerComponent implements OnInit {
 
-  showTimePicker = false
+  showTimePicker: any = false
 
   @Output()
   durationSecondsChanged = new EventEmitter<number>()
@@ -19,7 +19,7 @@ export class TimePickerComponent implements OnInit {
   pickerHours = 0
 
   @Input()
-  totalTimeSeconds: number
+  totalTimeSeconds ! : number
 
   constructor(
     public pickerController: PickerController,
@@ -74,7 +74,7 @@ export class TimePickerComponent implements OnInit {
     let ret = await pickerElement.present();
   }
 
-  private getOptions(count) {
+  private getOptions(count: number) {
     return Array.from(new Array(count).keys()).map(k => {
       return {
         text: '' + k,

@@ -28,7 +28,7 @@ class FakeOdmBackend extends OdmBackend {
   constructor(injector: Injector) { super(injector) }
 
   createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string): OdmCollectionBackend<T> {
-    return new FakeBackendCollection<any>(injector, className, this)
+    return new FakeBackendCollection<any>(injector, className, this as any)
   }
 }
 
@@ -38,6 +38,7 @@ class FakeBackendCollection<T extends OdmItem<T>> extends OdmCollectionBackend<T
   }
 
   saveNowToDb(item: T) {
+    return undefined as any
   }
 
   deleteWithoutConfirmation(itemId: string) {

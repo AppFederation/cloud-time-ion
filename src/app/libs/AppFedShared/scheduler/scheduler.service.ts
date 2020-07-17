@@ -23,6 +23,9 @@ export class SchedulerService {
   constructor() { }
 
   schedule(when: Date, callback: () => void): SchedulerHandle {
+    // if ( ! when ) {
+    //   return
+    // }
     const timeoutHandle = setTimeout(() => {
       callback()
     }, when.getTime() - Date.now())

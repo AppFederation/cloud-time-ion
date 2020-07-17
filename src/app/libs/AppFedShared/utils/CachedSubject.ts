@@ -5,7 +5,7 @@ import {ReplaySubject} from "rxjs/internal/ReplaySubject";
 *  */
 export class CachedSubject<T> extends ReplaySubject<T> {
 
-  public lastVal: T
+  public lastVal ? : T
 
   /** Useful for e.g. determining in UI if initial data set has arrived (distinguish from initial empty) */
   public hasEmitted = false

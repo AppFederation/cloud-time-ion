@@ -1,7 +1,7 @@
 import {FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
 
-export class ViewSyncer<TKey = string> {
+export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
 
   public initialDataArrived = false
   public isApplyingFromDb = false
@@ -14,10 +14,10 @@ export class ViewSyncer<TKey = string> {
 
   constructor(
     private formGroup: FormGroup,
-    private item$: OdmItem$2<any>,
+    private item$: OdmItem$2<any, any, any, any>,
   ) {
     // console.log('ViewSyncer ctor', item$, item$.id)
-    this.item$.locallyVisibleChanges$.subscribe(dataFromDb => {
+    this.item$.locallyVisibleChanges$.subscribe((dataFromDb: any) => {
       // console.log(`ViewSyncer locallyVisibleChanges$`, this.item$.id, dataFromDb)
       // this.formGroup.setValue(data) // FIXME: use setValue in case some field externally deleted, but need to fill missing fields using new util func ensureFieldsExistBasedOn
       // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {

@@ -12,7 +12,7 @@ export abstract class NotificationHandle {
     public notificationInfo: NotificationInfo,
   ) {}
 
-  abstract cancel()
+  abstract cancel(): void
 }
 
 

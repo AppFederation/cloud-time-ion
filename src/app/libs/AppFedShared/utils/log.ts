@@ -1,18 +1,18 @@
 // import { DebugService } from '../core/debug.service'
 
-export function FIXME(...args): any {
+export function FIXME(...args: any): any {
   errorAlert('================ FIXME!', ...args)
 }
 
 const enableLogging = true
 
-export function debugLog(...args) {
+export function debugLog(...args: any) {
   if (enableLogging) {
     console.log('debugLog', ...args)
   }
 }
 
-export function errorAlert(...args) {
+export function errorAlert(...args: any) {
   const prefix = 'ERROR: errorAlert: '
   let toString = 'toString failed'
   try {
@@ -24,10 +24,10 @@ export function errorAlert(...args) {
   console.error(prefix, ...args)
 }
 
-export function apfLogger(instance) {
+export function apfLogger(instance: any) {
   return console // HACK
 }
 
-export function apfErrLog(instance, ...rest) {
+export function apfErrLog(instance: any, ...rest: any) {
   return console.error('' + instance, ...rest)
 }

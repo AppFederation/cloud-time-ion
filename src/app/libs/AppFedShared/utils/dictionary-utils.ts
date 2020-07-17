@@ -4,7 +4,12 @@
 import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
 import {FormControl} from '@angular/forms'
 
-export interface Dict<TVal, /*TKey = string*/> { [key: string /*TKey*/]: TVal }
+export interface Dict<TVal, /*TKey = string*/> {
+  [key: string /*TKey*/]: TVal
+}
+
+/* name for compat with stuff like lodash */
+export type Dictionary<T> = Dict<T>
 
 export function getDictionaryValuesAsArray<TItem>(dictionary: Dict<TItem>): TItem[] {
   // console.log('getDictionaryValuesAsArray dictionary', dictionary)
@@ -27,7 +32,7 @@ export function setIdsFromKeys<TItem>(dictionary: Dict<TItem>, idKeyName: string
   // console.log('setIdsFromKeys ownPropertyNames', ownPropertyNames);
   for (const id of ownPropertyNames) {
     const curExp = dictionary[id];
-    curExp[idKeyName] = id;
+    (curExp as any as {[key: string]: string}) [idKeyName] = id;
     // console.log('setIdsFromKeys', id, curExp);
   }
   return dictionary;
@@ -38,8 +43,8 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
   const dictWithIdsFromKeys: Dict<TItem> = setIdsFromKeys(dictionary, idKeyName);
   let arr = getDictionaryValuesAsArray(dictWithIdsFromKeys)
   arr = arr.map(_ => {
-    if ( (_ as any as ILateInit).lateInit ) {
-      _ = (_ as any as ILateInit).lateInit() || _
+    if ( (_ as any as ILateInit).lateInit ) { // TODO ?.
+      _ = (_ as any as ILateInit).lateInit() || _ // TODO: lateInitAndMorph
     }
     return _
   })
@@ -47,7 +52,7 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
 }
 
 export function mapFields(srcObj: any, mapFunc: any) {
-  const ret = {}
+  const ret: any = {}
   for ( let key of Object.keys(srcObj) ) {
     ret[key] = mapFunc(key, srcObj[key])
   }
@@ -60,4 +65,4 @@ export function mapFieldsToFormControls(srcObj: any) {
   })
 }
 
-// export function ensureFieldsExistBasedOn(templateObje)
+// export function ensureFieldsExistBasedOn(templateObject)

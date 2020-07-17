@@ -42,7 +42,7 @@ export abstract class OdmService<
       const incomingItemsWhichAreNew = new Set<T>(convertedCol)
       const existingToDelete = new Set<T>(this.localItems$.lastVal)
       for (let incomingItemConverted of convertedCol) {
-        let existingItem = this.getItemById(incomingItemConverted.id)
+        let existingItem = this.getItemById(incomingItemConverted.id !)
         if (existingItem) {
           existingToDelete.delete(existingItem) // it stays
           existingItem.applyDataFromDbAndEmit(incomingItemConverted)
@@ -54,7 +54,7 @@ export abstract class OdmService<
         }
       }
       for (let incomingItemToAdd of incomingItemsWhichAreNew) {
-        this.localItems$.lastVal.push(incomingItemToAdd)
+        this.localItems$ !. lastVal !. push(incomingItemToAdd)
       }
       // this.localItems$.lastVal.push(Array.from(incomingItemsWhichAreNew))
 
@@ -67,13 +67,13 @@ export abstract class OdmService<
   }
 
   deleteWithoutConfirmation(item: T) {
-    this.odmCollectionBackend.deleteWithoutConfirmation(item.id)
+    this.odmCollectionBackend.deleteWithoutConfirmation(item.id !)
   }
 
   saveNowToDb(itemToSave: T) {
     itemToSave.onModified()
     debugLog('saveNowToDb', itemToSave)
-    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat() as any as TRaw /* TODO check type */, itemToSave.id)
+    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat() as any as TRaw /* TODO check type */, itemToSave.id !)
     this.syncStatusService.handleSavingPromise(promise)
   }
 
@@ -97,7 +97,7 @@ export abstract class OdmService<
         let items = service.localItems$.lastVal;
         if ( ! existingItem ) {
           existingItem = service.convertFromDbFormat(newItemRawData);
-          items.push(existingItem)
+          items !. push(existingItem)
         } else {
           errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', newItemRawData)
           existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(newItemRawData))
@@ -116,7 +116,7 @@ export abstract class OdmService<
         service.emitLocalItems()
       },
       onRemoved(removedItemId: OdmItemId<T>) {
-        service.localItems$.lastVal = service.localItems$.lastVal.filter(item => item.id !== removedItemId)
+        service.localItems$.lastVal = service.localItems$!.lastVal!.filter(item => item.id !== removedItemId)
         service.emitLocalItems()
       },
       onFinishedProcessingChangeSet() {
@@ -126,6 +126,6 @@ export abstract class OdmService<
   }
 
   emitLocalItems() {
-    this.localItems$.next(this.localItems$.lastVal)
+    this.localItems$.next(this.localItems$ !.lastVal !)
   }
 }

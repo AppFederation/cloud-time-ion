@@ -21,23 +21,23 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
   ) {
     super(injector, className, odmBackend)
     this.collectionBackendReady$.subscribe(() => {
-      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot((snapshot: QuerySnapshot<TRaw>) => {
+      this.angularFirestore.firestore.collection(this.collectionName).onSnapshot(((snapshot: QuerySnapshot<TRaw>) => {
         // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
         // FIXME: let the service process in batch, for performance
         for ( let change of snapshot.docChanges() ) {
           if ( change.type === 'added' ) {
-            this.listener.onAdded(change.doc.id, change.doc.data() as TRaw)
+            this.listener?.onAdded(change.doc.id, change.doc.data() as TRaw)
           } else if ( change.type === 'modified') {
-            this.listener.onModified(change.doc.id, change.doc.data() as TRaw)
+            this.listener?.onModified(change.doc.id, change.doc.data() as TRaw)
           } else if ( change.type === 'removed') {
-            this.listener.onRemoved(change.doc.id)
+            this.listener?.onRemoved(change.doc.id)
           }
         }
-        this.listener.onFinishedProcessingChangeSet()
+        this.listener?.onFinishedProcessingChangeSet()
 
         // FIXME: only emit after processing finished
 
-      })
+      }) as any /* workaround after strict settings */)
       this.collection().valueChanges().subscribe((coll: TRaw[]) => {
         this.dbCollection$.nextWithCache(coll)
       })

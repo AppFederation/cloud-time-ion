@@ -33,9 +33,10 @@
 
 <!--<div class="sc-ion-picker-md-h sc-ion-picker-md-s md picker-md hydrated">-->
   <div
+    *ngIf="showTimePicker"
     [hidden]="! showTimePicker"
     class="picker-wrapper sc-ion-picker-md" style="height: 300px; width: 300px"
-  >
+  > <!-- NOTE: something here causes the page to hang -->
     Picker:
     <div class="picker-toolbar sc-ion-picker-md">
       <div class="picker-toolbar-button sc-ion-picker-md">

@@ -15,10 +15,10 @@ export class NumericPickerComponent implements OnInit {
 
   @Output() numericValue = new EventEmitter<NumericPickerVal>()
 
-  @Input() numFieldDef: JournalNumericDescriptor
+  @Input() numFieldDef ? : JournalNumericDescriptor
 
-  @Input() minNum: number
-  @Input() maxNum: number
+  @Input() minNum ! : number
+  @Input() maxNum ! : number
 
   @Input()
   allowedVals: Array<any> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -26,7 +26,7 @@ export class NumericPickerComponent implements OnInit {
 
   numValFormControl = new FormControl()
 
-  numVal: NumericPickerVal
+  numVal ? : NumericPickerVal
 
   constructor() { }
 

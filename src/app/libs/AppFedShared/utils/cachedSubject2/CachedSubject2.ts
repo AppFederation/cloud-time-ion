@@ -6,7 +6,7 @@ export class CachedSubject<T> extends Subject<T> {
 
   // private replaySubject = new ReplaySubject(1)
 
-  public lastVal: T
+  public lastVal ? : T
 
   /** Useful for e.g. determining in UI if initial data set has arrived (distinguish from initial empty) */
   public hasEmitted = false

@@ -8,7 +8,7 @@ import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/c
 export class TimePassingComponent implements OnInit, OnDestroy {
 
   @Input()
-  referenceTime: Date
+  referenceTime ! : Date
 
   @Input()
   isCountDown = true

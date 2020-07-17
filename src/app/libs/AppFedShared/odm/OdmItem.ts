@@ -112,8 +112,8 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
       delete dbFormat.isDeleted // For Firestore to avoid undefined
     }
     for ( let key of Object.keys(dbFormat) ) {
-      if ( dbFormat[key] === undefined ) {
-        delete dbFormat[key]
+      if ( (dbFormat as any) [key] === undefined ) {
+        delete (dbFormat as any) [key]
       }
     }
     // TODO: https://stackoverflow.com/questions/35055731/how-to-deeply-map-object-keys-with-javascript-lodash
@@ -140,7 +140,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
     // FIXME
   }
 
-  public forkDraftItem(): OdmItem<T> {
-    return null
-  }
+  // public forkDraftItem(): OdmItem<T> {
+  //   return null
+  // }
 }

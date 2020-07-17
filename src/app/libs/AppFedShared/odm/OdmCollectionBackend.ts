@@ -8,10 +8,10 @@ export abstract class OdmCollectionBackendListener<
   TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
   >
 {
-  abstract onAdded(addedItemId: TItemId, addedItemData: TRaw)
-  abstract onModified(modifiedItemId: TItemId, modifiedItemData: TRaw)
-  abstract onRemoved(removedItemId: TItemId)
-  abstract onFinishedProcessingChangeSet()
+  abstract onAdded(addedItemId: TItemId, addedItemData: TRaw): void
+  abstract onModified(modifiedItemId: TItemId, modifiedItemData: TRaw): void
+  abstract onRemoved(removedItemId: TItemId): void
+  abstract onFinishedProcessingChangeSet(): void
 }
 
 
@@ -20,7 +20,7 @@ export abstract class OdmCollectionBackend<
   TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
   > {
 
-  listener: OdmCollectionBackendListener<TRaw>
+  listener ? : OdmCollectionBackendListener<TRaw>
 
   collectionBackendReady$ = this.odmBackend.backendReady$
 
@@ -35,7 +35,7 @@ export abstract class OdmCollectionBackend<
 
   abstract saveNowToDb(item: TRaw, id: string): Promise<any>
 
-  abstract deleteWithoutConfirmation(itemId: OdmItemId)
+  abstract deleteWithoutConfirmation(itemId: OdmItemId): void
 
   public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>) {
     this.listener = listener

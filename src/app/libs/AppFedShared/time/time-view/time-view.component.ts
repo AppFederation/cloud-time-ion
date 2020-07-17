@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-const round = (t) => t < 0 ? Math.ceil(t) : Math.floor(t)
+const round = (t: number) => t < 0 ? Math.ceil(t) : Math.floor(t)
 
-const padTime = (time) => {
+const padTime = (time: number) => {
   if ( time < 0 ) {
     return '-' + ('' + Math.abs(time)).padStart(2, '0')
   } else {

@@ -16,7 +16,7 @@ export class FirestoreOdmBackend extends OdmBackend {
     this.initDb()
   }
 
-  createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string) {
+  createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string): FirestoreOdmCollectionBackend<any /* hack after strict */> {
     return new FirestoreOdmCollectionBackend<T>(injector, className, this)
   }
 
