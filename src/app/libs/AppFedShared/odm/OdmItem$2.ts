@@ -33,12 +33,14 @@ export class OdmItem$2<
   >
 {
 
-  /* consider renaming to just `val` or `data` */
-  currentVal: TInMemData | undefined = undefined
+  /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"
+   * or empty value arrived
+   **/
+  currentVal: TInMemData | undefined | null = undefined
 
-  public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined>()
-  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined>()
-  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined>()
+  public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
+  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
+  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined | null>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }

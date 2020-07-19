@@ -1,3 +1,6 @@
+
+export type nullish = null | undefined
+
 export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number {
   let count = 0
   for ( let item of arr ) {

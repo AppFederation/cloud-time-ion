@@ -5,6 +5,8 @@ import {map, switchMap} from 'rxjs/operators'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem, LearnItem$} from '../models/LearnItem'
 import {Observable} from 'rxjs/internal/Observable'
+import {nullish} from '../../../libs/AppFedShared/utils/utils'
+
 
 @Component({
   selector: 'app-quiz',
@@ -20,7 +22,7 @@ export class QuizPage implements OnInit {
 
   item$: LearnItem$ | undefined
 
-  get itemVal$(): Observable<LearnItem | undefined> {
+  get itemVal$(): Observable<LearnItem | nullish> {
     return this.item$$.pipe(
       switchMap(item$ => {
         return item$ ?. locallyVisibleChanges$ !

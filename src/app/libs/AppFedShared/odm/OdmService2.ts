@@ -73,7 +73,7 @@ export abstract class OdmService2<
   }
 
   private setBackendListener() {
-    const service = this /* MUST use instead of `this` */
+    const service = this /* MUST use instead of `this`; but could change it to object literal with arrow functions */
     this.odmCollectionBackend.setListener({
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
         let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
