@@ -51,6 +51,11 @@ export class QuizService {
     // 0.5 => few hours
     //
     // Ebbinghaus forgetting curve
+    // TODO: !!!! when rating zero, make it one minute (as in Anki), so that it goes in front of whatever stuff might have been there from previous days
+    if ( rating === 0 ) {
+      return 30/3600 // 30 seconds (could try 1 minute)
+    }
+
     return 12 * Math.pow(2, rating || 0)
   }
 
