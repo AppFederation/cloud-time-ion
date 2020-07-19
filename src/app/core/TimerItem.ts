@@ -61,7 +61,7 @@ export class TimerItem extends OdmItem<TimerItem> {
 
   startTimer() {
     this.patchNow({
-      endTime: this.durationSeconds && new Date(Date.now() + this.durationSeconds * 1000)
+      endTime: new Date(Date.now() + (this.durationSeconds ?? 0) * 1000)
     })
   }
 
