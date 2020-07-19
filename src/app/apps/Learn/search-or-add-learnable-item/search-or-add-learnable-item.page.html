@@ -79,7 +79,7 @@
 
   <ion-virtual-scroll
       [items]="filteredItems"
-      approxItemHeight="31px"
+      [approxItemHeight]="31"
       [trackBy]="trackByFn"
   >
     <div *virtualItem="let currItem">
