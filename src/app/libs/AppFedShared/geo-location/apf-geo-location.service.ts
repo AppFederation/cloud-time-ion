@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {CachedSubject} from "../utils/CachedSubject";
 import {apfErrLog, apfLogger, debugLog} from "../utils/log";
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 const geolocationOptions = {
   enableHighAccuracy: true,
