@@ -1,3 +1,9 @@
 stats:
 {{ (stats$ | async) ?. countWithRatingPresent }}
-{{ (stats$ | async) ?. countWithRatingEqual | json}}
+
+<span
+  *ngFor="let kv of ((stats$ | async) ?. countWithRatingEqual) ! | keyvalue"
+>
+  <b>{{kv.key}}:</b> {{kv.value}}
+
+</span>
