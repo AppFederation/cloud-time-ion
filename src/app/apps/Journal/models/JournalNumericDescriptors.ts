@@ -42,6 +42,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   productivity = jnd()
   excitement = jnd()
   motivation = jnd()
+  urgency = jnd()
+  sense_of_urgency = jnd()
   achievements = jnd()
   success = jnd() /* prolly search term on achievements? */
   // !!! TODO: those could/should be the ones from my big virtuous circle drawing!!!
