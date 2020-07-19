@@ -12,6 +12,7 @@ import {MicComponent} from './mic/mic.component'
 import {AngularFireStorageModule} from '@angular/fire/storage'
 import {SharedModule} from '../shared/shared.module'
 import {TestItemComponent} from './test-item/test-item.component'
+import {LearnStatsComponent} from '../learn-stats/learn-stats.component'
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
     ActionableItemComponent,
     MicComponent,
     TestItemComponent,
+    LearnStatsComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}

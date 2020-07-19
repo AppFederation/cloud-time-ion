@@ -25,9 +25,6 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
 
-  public itemsWithRatingCount ? : Dictionary<number> = undefined
-  public itemsWithRatingCount2 ? : number
-
   constructor(
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
@@ -53,8 +50,6 @@ export class SearchOrAddLearnableItemPage implements OnInit {
       items = items.map(item => Object.assign(new LearnItem(), item))
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
 
-      this.itemsWithRatingCount = countBy(this.items, (item: LearnItem) => item.lastSelfRating)
-      this.itemsWithRatingCount2 = countNotNullishBy(this.items, item => item.lastSelfRating)
       this.reFilter()
     })
 
@@ -127,7 +122,6 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   @HostListener('window:keyup.alt.enter', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     console.log(`alt enter`)
-    // window.alert('winkeup')
   }
 
   trackByFn(index: number, item: LearnItem) {

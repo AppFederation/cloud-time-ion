@@ -10,6 +10,7 @@ import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 import {Observable} from 'rxjs/internal/Observable'
+import {nullish} from '../../../libs/AppFedShared/utils/utils'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -18,7 +19,7 @@ import {Observable} from 'rxjs/internal/Observable'
 })
 export class LearnItemDetailsPage implements OnInit {
 
-  get val$(): Observable<LearnItem | undefined> {
+  get val$(): Observable<LearnItem | nullish> {
     return this.item$.locallyVisibleChanges$
   }
 

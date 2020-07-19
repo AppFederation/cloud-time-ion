@@ -44,7 +44,9 @@
         >ADD TO LEARN</ion-button>
         <ion-text style="color: gray">
           <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
-          {{ items?.length }}, {{ itemsWithRatingCount2 }} {{ itemsWithRatingCount | json}}</ion-text>
+          {{ items?.length }}
+          <app-learn-stats></app-learn-stats>
+        </ion-text>
       </div>
       <app-mic style="display: flex; align-items: stretch; padding-bottom: 8px;"></app-mic>
 
