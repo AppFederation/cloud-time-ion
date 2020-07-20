@@ -2,6 +2,17 @@
   <ion-toolbar>
 
     <ion-title>
+      <div style="display: flex; align-items: center">
+        <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+        <ion-button routerLink="/learn"><</ion-button>
+
+        <odm-sync-status></odm-sync-status>
+        QUIZ
+        <ion-icon class="action-icon" color="secondary"
+                  (click)="onClickTimer($event)"
+                  name="timer-outline"
+        ></ion-icon>
+      </div>
       <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
       <ion-button routerLink="/learn"><</ion-button>
 
