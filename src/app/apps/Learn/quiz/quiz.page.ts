@@ -44,8 +44,20 @@ export class QuizPage implements OnInit {
 
   constructor(
     public quizService: QuizService,
+    public popoverController: PopoverController,
   ) {
   }
+
+  async onClickTimer(event: any) {
+    const popover = await this.popoverController.create({
+      component: QuizTimerPopoverComponent,
+      event: event,
+      translucent: true,
+      mode: 'ios' /* TODO */,
+    });
+    return await popover.present();
+  }
+
 
   ngOnInit() {
   }
