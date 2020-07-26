@@ -1,4 +1,4 @@
-import {FormGroup} from '@angular/forms'
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
@@ -13,7 +13,8 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
   MIN_INTERVAL_MS = 5_000
 
   constructor(
-    private formGroup: FormGroup,
+    /** TODO make it FormControl in maybe ViewSyncer2 coz needs individual updates */
+    private formGroup: AbstractControl,
     private item$: OdmItem$2<any, any, any, any>,
   ) {
     // console.log('ViewSyncer ctor', item$, item$.id)
