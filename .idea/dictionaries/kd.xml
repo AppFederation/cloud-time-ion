@@ -1,9 +1,17 @@
 <component name="ProjectDictionaryState">
   <dictionary name="kd">
     <words>
+      <w>advlist</w>
+      <w>aligncenter</w>
+      <w>alignjustify</w>
+      <w>alignleft</w>
+      <w>alignright</w>
       <w>anki</w>
       <w>appspot</w>
       <w>artikel</w>
+      <w>autolink</w>
+      <w>bullist</w>
+      <w>charmap</w>
       <w>cloudtime</w>
       <w>cordova</w>
       <w>deviceready</w>
@@ -11,22 +19,30 @@
       <w>ergonomy</w>
       <w>favicons</w>
       <w>firebaseapp</w>
+      <w>formatselect</w>
       <w>homescreen</w>
       <w>hypomania</w>
       <w>innotopic</w>
+      <w>insertdatetime</w>
       <w>keyvalue</w>
       <w>mins</w>
       <w>msapplication</w>
       <w>mtiaaky</w>
       <w>notif</w>
       <w>notifs</w>
+      <w>numlist</w>
+      <w>outdent</w>
       <w>powściągliwość</w>
       <w>prolly</w>
+      <w>removeformat</w>
+      <w>searchreplace</w>
       <w>signup</w>
       <w>smth</w>
       <w>syncer</w>
       <w>vals</w>
+      <w>visualblocks</w>
       <w>webmanifest</w>
+      <w>wordcount</w>
       <w>zwdkw</w>
     </words>
   </dictionary>
