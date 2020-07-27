@@ -1,7 +1,7 @@
 <!--item input zz2: {{itemInp2}} uuu-->
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
-<div style="margin-left: 5px; padding: 5px;"
+<div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
 <!--  id: {{item.id}}-->
@@ -25,11 +25,14 @@
 <!--  >-->
 <!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
 <!--  </ng-container>-->
-
-  {{ joinedSides() }}
+  <span [innerHTML]="joinedSidesOneLine()"></span>
+<!--  {{ joinedSides() }}-->
 
 <!--  <app-play-button *ngIf="item.hasAudio"></app-play-button>-->
 
+<!--  <hr>-->
+
 </div>
+
 
 <!--</ng-container>-->

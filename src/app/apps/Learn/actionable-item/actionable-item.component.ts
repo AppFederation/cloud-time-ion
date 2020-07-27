@@ -38,4 +38,10 @@ export class ActionableItemComponent implements OnInit {
     return LearnItem?.prototype?.joinedSides?.call(this.item) // this.item.joinedSides()
     // TODO: why possibly undefined? (error after strict settings )
   }
+
+  joinedSidesOneLine() {
+    return this.joinedSides()
+      ?.replace('<p>', ' ')
+      ?.replace('</p>', ' ')
+  }
 }
