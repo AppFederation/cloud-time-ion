@@ -5,6 +5,9 @@ import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.mod
 import {PlayButtonComponent} from './play-button/play-button.component'
 import {IonicModule} from '@ionic/angular'
 import {SideLabelComponent} from '../side-label/side-label.component'
+import {ItemSideComponent} from './item-side/item-side.component'
+import {EditorModule} from '@tinymce/tinymce-angular'
+import {ReactiveFormsModule} from '@angular/forms'
 
 const exports = [
   SelfRatingComponent,
@@ -15,15 +18,19 @@ const exports = [
   declarations: [
     ...exports,
     SideLabelComponent,
+    ItemSideComponent,
   ],
   imports: [
     CommonModule,
     RatingsModule,
     IonicModule,
+    EditorModule,
+    ReactiveFormsModule,
   ],
   exports: [
     exports,
     SideLabelComponent,
+    ItemSideComponent,
   ],
 })
 export class SharedModule { }
