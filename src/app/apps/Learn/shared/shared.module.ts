@@ -6,6 +6,7 @@ import {PlayButtonComponent} from './play-button/play-button.component'
 import {IonicModule} from '@ionic/angular'
 import {SideLabelComponent} from '../side-label/side-label.component'
 import {ItemSideComponent} from './item-side/item-side.component'
+import {ItemSidesComponent} from './item-sides/item-sides.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {ReactiveFormsModule} from '@angular/forms'
 
@@ -19,6 +20,7 @@ const exports = [
     ...exports,
     SideLabelComponent,
     ItemSideComponent,
+    ItemSidesComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ const exports = [
     exports,
     SideLabelComponent,
     ItemSideComponent,
+    ItemSidesComponent,
   ],
 })
 export class SharedModule { }
