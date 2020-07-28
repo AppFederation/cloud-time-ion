@@ -15,6 +15,7 @@
 
 
 <ion-content>
+
   <ng-container
     *ngIf="viewSyncer.initialDataArrived else notLoaded"
   >
@@ -26,19 +27,25 @@
       [item]="val$ | async"
       [itemId]="item$.id"
     ></app-play-button>
+
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
     <div
       style="margin-left: 4px"
       *ngFor="let side of sidesDefsArray"
     >
-      <ion-header>
+      <app-item-side-editor
+        [item$]="item$"
+        [side]="side"
+      ></app-item-side-editor>
 
+      <ion-header>
         <ion-text color="secondary"><h5>
           <app-side-label [side]="side"></app-side-label>
         </h5></ion-text>
       </ion-header>
       <ion-textarea
+        *ngIf="showTextAreas"
         [autoGrow]="true"
         [rows]="2"
         [formGroup]="formGroup"
@@ -46,10 +53,24 @@
       >
         <!-- [placeholder]="side.id" -->
       </ion-textarea>
+<!--      <editor-->
+<!--        [init]="tinyMceInit"-->
+<!--        [inline]="true"-->
+<!--        [formControl]="formControls[side.id]"-->
+<!--      ></editor>-->
     </div>
   </ng-container>
   <ng-template #notLoaded>
     Loading...
   </ng-template>
+
+
+  <ion-item>
+    <ion-checkbox [(ngModel)]="showTextAreas">
+    </ion-checkbox>
+    <ion-label>
+      &nbsp; SHOW TEXT AREAS
+    </ion-label>
+  </ion-item>
 
 </ion-content>
