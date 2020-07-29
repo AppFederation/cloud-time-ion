@@ -1,7 +1,7 @@
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
 
-export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
+export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
 
   public initialDataArrived = false
   public isApplyingFromDb = false
@@ -15,10 +15,10 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
   constructor(
     /** TODO make it FormControl in maybe ViewSyncer2 coz needs individual updates */
     private formGroup: AbstractControl,
-    private item$: OdmItem$2<any, any, any, any>,
+    private item$: OdmItem$2<any, TItemInMem, any, any>,
   ) {
     // console.log('ViewSyncer ctor', item$, item$.id)
-    this.item$.locallyVisibleChanges$.subscribe((dataFromDb: any) => {
+    this.item$.locallyVisibleChanges$.subscribe((dataFromDb: TItemInMem | undefined | null) => {
       // console.log(`ViewSyncer locallyVisibleChanges$`, this.item$.id, dataFromDb)
       // this.formGroup.setValue(data) // FIXME: use setValue in case some field externally deleted, but need to fill missing fields using new util func ensureFieldsExistBasedOn
       // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
@@ -28,7 +28,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */> {
         }
         try {
           this.isApplyingFromDb = true
-          this.formGroup.patchValue(dataFromDb)
+          this.formGroup.patchValue(dataFromDb) // TODO: handle nullish
         } finally {
           this.isApplyingFromDb = false
         }
