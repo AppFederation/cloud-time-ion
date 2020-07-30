@@ -8,7 +8,7 @@
     (click)="onClick($event)"
   >
     <img
-      [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true }"
+      [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
       style="color: orange; height: 25px;"
       src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg"
       alt="all uploaded to cloud">
