@@ -64,6 +64,7 @@ export class OdmItem$2<
       // this.odmService.saveNowToDb(this as unknown as T)
       this.odmService.saveNowToDb(this.asT)
       */
+      // FIXME: incremental patching
       this.odmService.saveNowToDb(this)
     }) as any /* TODO investigate after strict */)
     // this.onModified()
@@ -87,7 +88,7 @@ export class OdmItem$2<
     // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
-    Object.assign(this.currentVal, patch)
+    Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     this.onModified()
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
