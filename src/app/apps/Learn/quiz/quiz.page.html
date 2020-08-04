@@ -13,14 +13,6 @@
                   name="timer-outline"
         ></ion-icon>
       </div>
-      <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
-      <ion-button routerLink="/learn"><</ion-button>
-
-      <odm-sync-status></odm-sync-status>
-      <!--      {{(item?.locallyVisibleChanges$ | async)?.title}}</ion-title>-->
-      <!--      {{((doc.valueChanges() | async)?.title) || "test"}}-->
-      QUIZ
-      <!--      {{(doc.get() | async)?.title || "test"}}-->
     </ion-title>
   </ion-toolbar>
 
@@ -46,7 +38,12 @@
     </ion-label>
   </ion-item>
 
-  <ion-note>
+<!--    <app-quiz-item-details-->
+<!--      [item$]="(item$$ | async)"-->
+<!--    >&lt;!&ndash; the entire component will be swapped on new item &ndash;&gt;</app-quiz-item-details>-->
+
+
+    <ion-note>
     {{ (item$$ | async)?.id }}
   </ion-note>
 
@@ -55,7 +52,14 @@
     [itemId]="(item$$ | async)?.id"
   ></app-play-button>
 
+
   <pre>{{ getSideValForQuiz$() | async }}</pre> <!-- DO NOT break line, coz it is shown in pre -->
+<!--    <app-item-side-editor-->
+<!--      *ngIf="questionSide$ | async"-->
+<!--      [item$]="item$$ | async"-->
+<!--      [side]="questionSide$ | async"-->
+<!--    ></app-item-side-editor>-->
+
 <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
 <!--  <ng-container>(overdue X hours)</ng-container>-->
 
@@ -79,9 +83,21 @@
 
   <div
     *ngIf="shouldShowAnswer"
-  >
+  > <!-- TODO: extract component for showing the item details, to encapsulate, ensure, that all class fields get recreated when item$ changes -->
+<!--    <app-item-sides-->
+<!--      [item$]="(item$$ | async)"-->
+<!--      [showQuestions]="false"-->
+<!--      [omitEmpty]="true"-->
+<!--    ></app-item-sides>-->
     <ng-container *ngFor="let answerSide of (itemVal$ | async)?.getSidesWithAnswers()">
       <app-side-label [side]="answerSide"></app-side-label>
+      BEGIN ED
+<!--      <editor-->
+<!--        [init]="tinyMceInit"-->
+<!--        [inline]="true"-->
+<!--        [formControl]="formControls[answerSide.id]"-->
+<!--      ></editor>-->
+      END ED
 
       <pre>{{(itemVal$ | async)?.getSideVal(answerSide)}}</pre> <!-- DO NOT break line, coz it is shown in pre -->
       <hr>
