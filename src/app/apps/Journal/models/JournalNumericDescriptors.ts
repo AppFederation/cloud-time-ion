@@ -206,6 +206,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   fun = jnd()
   entertainment = jnd({moderateIsBetter: true})
   'guilt-free entertainment' = jnd({moderateIsBetter: true})
+  'nostalgia' = jnd({moderateIsBetter: true})
 
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
