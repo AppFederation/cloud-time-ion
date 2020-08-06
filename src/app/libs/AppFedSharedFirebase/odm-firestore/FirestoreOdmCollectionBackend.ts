@@ -6,6 +6,7 @@ import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
+import {isNotNullish} from '../../AppFedShared/utils/utils'
 
 
 export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TRaw> {
@@ -49,7 +50,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
   }
 
   saveNowToDb(item: TRaw, id: string): Promise<any> {
-    if ( ! id ) {
+    if ( ! isNotNullish(id) ) {
       errorAlert('id cannot be ' + id)
     }
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
