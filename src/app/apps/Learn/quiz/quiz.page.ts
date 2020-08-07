@@ -91,7 +91,7 @@ export class QuizPage implements OnInit {
   ngOnInit() {
   }
 
-  getSideValForQuiz$() {
+  getQuestionValForQuiz$() {
     // FIXME: ! keep in mind this could be called multiple times due to change detection !
     return this.item$$.pipe(map(item$ => {
       if ( this.item$ !== item$ ) {
