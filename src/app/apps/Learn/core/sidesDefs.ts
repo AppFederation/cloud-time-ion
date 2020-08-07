@@ -1,4 +1,5 @@
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export type SideId = string
 
@@ -16,7 +17,7 @@ export class Side {
   }
 }
 
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+export type SideVal = string | nullish
 
 export type SideDecl = Omit<Side, 'id'>
 
