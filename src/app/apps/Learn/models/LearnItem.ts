@@ -1,10 +1,11 @@
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem, OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmBackend, OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Side, SidesDefs, sidesDefsArray} from '../core/sidesDefs'
+import {Side, SidesDefs, sidesDefsArray, SideVal} from '../core/sidesDefs'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
 import {LearnDoService} from '../core/learn-do.service'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
 export type Rating = number
@@ -49,7 +50,10 @@ export class LearnItem extends OdmInMemItem {
     return ret
   }
 
-  public getSideVal(side: Side): string|undefined|null {
+  public getSideVal(side?: Side | nullish): string|undefined|null {
+    if ( ! side ) {
+      return null
+    }
     return (this as any)[side.id] ?. trim ?. ()
   }
 
@@ -59,30 +63,43 @@ export class LearnItem extends OdmInMemItem {
       return question
     }
     // second attempt, without `ask` requirement
+  }
+
+  getQuestion(): SideVal {
+    return this.getSideVal(this.getSideWithQuestionOrFirstNonEmpty())
+  }
+
+  getSideWithQuestionOrFirstNonEmpty(): Side | null {
+    return this.getSideWithQuestion()
+      ?? this.getFirstNonEmptySide()
+  }
+
+  getFirstNonEmptySide(): Side | null {
     for (let side of sidesDefsArray) {
       const sideVal = this.getSideVal(side)
       if (sideVal) {
-        return sideVal
+        return side
       }
     }
-
-  }
-
-  getQuestion() {
-    for (let side of sidesDefsArray) {
-      if (side.ask) {
-        const sideVal = this.getSideVal(side)
-        if (sideVal) {
-          return sideVal
-        }
-      }
-    }
+    return null
   }
 
   hasQAndA() {
     // might be flaky
     // return true
     return (this.getSidesWithAnswers().length > 0) && this.getQuestion();
+  }
+
+  public getSideWithQuestion(): Side | null {
+    for (let side of sidesDefsArray) {
+      if (side.ask) {
+        const sideVal = this.getSideVal(side)
+        if (sideVal) {
+          return side
+        }
+      }
+    }
+    return null
   }
 }
 
