@@ -13,12 +13,17 @@ export class TimerEndedComponent implements OnInit {
 
   @Input() timer ! : TimerItem
 
+  // private static mapTimerToDialog = new Map<TimerId, TimerEndedComponent>()
+  private static timerEndedDialogsSet = new Set<TimerId>()
 
   constructor(
     public modalController: ModalController,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    // TimerEndedComponent.mapTimerToDialog.set(this.timer.id, this)
+
     this.timer.locallyVisibleChanges$.subscribe(timerItem => {
       // TODO: should be throttled
       debugLog('TimerEndedComponent: locallyVisibleChanges$', timerItem)
@@ -43,10 +48,26 @@ export class TimerEndedComponent implements OnInit {
 
   dismiss() {
     debugLog('dismiss ', this, this.timer)
+    // TimerEndedComponent.mapTimerToDialog.delete(this.timer)
+    TimerEndedComponent.timerEndedDialogsSet.delete(this.timer.id !)
     return ignorePromise(this.modalController.dismiss())
   }
 
   onClickPostponeOneMinute() {
     // TODO
+  }
+
+  static isDialogOpenForTimer(timerId: TimerId) {
+    // return TimerEndedComponent.mapTimerToDialog.get(timerId) !== undefined;
+    return TimerEndedComponent.timerEndedDialogsSet.has(timerId);
+  }
+
+  static addTimerDialog(timerId: TimerId) {
+    // return TimerEndedComponent.mapTimerToDialog.get(timerId) !== undefined;
+    return TimerEndedComponent.timerEndedDialogsSet.add(timerId);
+  }
+
+  static removeTimerDialog(timerId: TimerId) {
+    TimerEndedComponent.timerEndedDialogsSet.delete(timerId)
   }
 }
