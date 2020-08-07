@@ -47,6 +47,15 @@
     {{ (item$$ | async)?.id }}
   </ion-note>
 
+  <p>
+    <ion-note>
+      next repetition:
+      <app-time-point
+        [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
+      ></app-time-point>
+    </ion-note>
+  </p>
+
   <app-play-button
     [item]="((item$$ | async)?.locallyVisibleChanges$ | async) !"
     [itemId]="(item$$ | async)?.id"
@@ -64,14 +73,7 @@
 <!--  <ng-container>(overdue X hours)</ng-container>-->
 
 <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
-  <p>
-    <ion-note>
-      next repetition:
-      <app-time-point
-        [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
-      ></app-time-point>
-    </ion-note>
-  </p>
+
 
   <ion-button
     (click)="showAnswer()"
