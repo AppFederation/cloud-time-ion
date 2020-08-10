@@ -3,6 +3,7 @@ import {LearnItem$} from '../../models/LearnItem'
 import {Side} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
 
@@ -15,7 +16,7 @@ export class ItemSideComponent implements OnInit {
 
   @Input() item$ ! : LearnItem$
 
-  @Input() side ! : Side
+  @Input() side ! : Side | nullish
 
   formControls ! : FormControlsDict
 
@@ -45,14 +46,16 @@ export class ItemSideComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formControls = this.createFormControlDict()
-    this.formGroup = new FormGroup(this.formControls)
-    this.viewSyncer = new ViewSyncer(this.formGroup, this.item$) /* TODO might need to ignore other fields from db */
+    if ( this.side ) {
+      this.formControls = this.createFormControlDict()
+      this.formGroup = new FormGroup(this.formControls)
+      this.viewSyncer = new ViewSyncer(this.formGroup, this.item$) /* TODO might need to ignore other fields from db */
+    }
   }
 
   private createFormControlDict(): FormControlsDict {
     const ret = {} as FormControlsDict
-    ret[this.side.id] = new FormControl()
+    ret[this.side !. id] = new FormControl()
     // console.dir(ret)
     return ret
   }

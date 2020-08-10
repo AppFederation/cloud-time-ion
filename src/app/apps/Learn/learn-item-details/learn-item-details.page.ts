@@ -10,7 +10,7 @@ import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 import {Observable} from 'rxjs/internal/Observable'
-import {nullish} from '../../../libs/AppFedShared/utils/utils'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 @Component({
   selector: 'app-learn-item-details',

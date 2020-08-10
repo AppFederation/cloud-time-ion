@@ -1,6 +1,19 @@
 
-<editor
-  [init]="tinyMceInit"
-  [inline]="true"
-  [formControl]="formControls[side.id]"
-></editor>
+<div
+  *ngIf="side"
+  (click)="editor.editor.focus()"
+> <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
+
+  <app-side-label
+    [side]="side"
+  ></app-side-label>
+
+  <editor
+    #editor
+    [init]="tinyMceInit"
+    [inline]="true"
+    [formControl]="formControls[side.id]"
+  ></editor>
+
+</div>
+
