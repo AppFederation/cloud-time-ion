@@ -1,13 +1,22 @@
-
-<b>0+:</b>{{ (stats$ | async) ?. countWithRatingPresent }}
-<b>0.5+:</b>{{ (stats$ | async) ?. atLeast05 | json }}
-<b>1+:</b>{{ (stats$ | async) ?. atLeast1 | json }}
-<b>1.5+:</b>{{ (stats$ | async) ?. atLeast1_5 | json }}
-<b>2+:</b>{{ (stats$ | async) ?. atLeast2 | json }}
-
 <span
-  *ngFor="let kv of ((stats$ | async) ?. countWithRatingEqual) ! | keyvalue"
->
-  <b>{{kv.key?.replace('undefined', '-')}}:</b> {{kv.value}}
+  style="cursor: pointer; user-select: none; text-decoration: underline"
+  (click)="showStats = ! showStats"
+>Stats</span>
 
-</span>
+<ng-container
+  *ngIf="showStats"
+>
+  &nbsp;
+  <b>0+:</b>{{ (stats$ | async) ?. countWithRatingPresent }}
+  <b>0.5+:</b>{{ (stats$ | async) ?. atLeast05 | json }}
+  <b>1+:</b>{{ (stats$ | async) ?. atLeast1 | json }}
+  <b>1.5+:</b>{{ (stats$ | async) ?. atLeast1_5 | json }}
+  <b>2+:</b>{{ (stats$ | async) ?. atLeast2 | json }}
+
+  <span
+    *ngFor="let kv of ((stats$ | async) ?. countWithRatingEqual) ! | keyvalue"
+  >
+    <b>{{kv.key?.replace('undefined', '-')}}:</b> {{kv.value}}
+
+  </span>
+</ng-container>

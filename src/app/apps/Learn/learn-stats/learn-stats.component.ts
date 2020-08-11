@@ -10,6 +10,8 @@ export class LearnStatsComponent implements OnInit {
 
   public stats$ = this.learnStatsService.stats$
 
+  showStats = false
+
   constructor(
     public learnStatsService: LearnStatsService,
   ) { }
