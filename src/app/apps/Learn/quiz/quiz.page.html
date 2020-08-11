@@ -57,18 +57,10 @@
       [item$]="item$"
     ><!-- the entire component will be swapped on new item --></app-quiz-item-details>
 
-    <!--  <pre>{{ getQuestionValForQuiz$() | async }}</pre> &lt;!&ndash; DO NOT break line, coz it is shown in pre &ndash;&gt;-->
-    <!--    <app-item-side-editor-->
-    <!--      *ngIf="questionSide$ | async"-->
-    <!--      [item$]="item$$ | async"-->
-    <!--      [side]="questionSide$ | async"-->
-    <!--    ></app-item-side-editor>-->
-
     <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
     <!--  <ng-container>(overdue X hours)</ng-container>-->
 
     <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
-
 
   </div>
 </ion-content>

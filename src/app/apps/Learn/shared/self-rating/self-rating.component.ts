@@ -31,22 +31,6 @@ export class SelfRatingComponent implements OnInit {
         this.item$.setNewSelfRating($event)
       }
     }
-
-    // const item = this.item$.currentVal
-    // const previousRating = item.lastSelfRating
-    // let newRating = $event
-    // if ( newRating === 2 && previousRating >= 2 ) {
-    //   const enoughTimePassed = false // TODO: based on calculation
-    //   if ( enoughTimePassed ) {
-    //     newRating = previousRating + 1
-    //   }
-    // }
-    //
-    // this.item$.patchThrottled({
-    //   lastSelfRating: newRating,
-    //   whenLastSelfRated: OdmBackend.nowTimestamp(),
-    //   selfRatingsCount: (item.selfRatingsCount || 0) + 1,
-    // })
   }
 
 }

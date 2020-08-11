@@ -19,7 +19,7 @@
 
   <div
     *ngIf="shouldShowAnswer"
-  > <!-- TODO: extract component for showing the item details, to encapsulate, ensure, that all class fields get recreated when item$ changes -->
+  >
     <!--    <app-item-sides-->
     <!--      [item$]="(item$$ | async)"-->
     <!--      [showQuestions]="false"-->
@@ -35,10 +35,6 @@
     </ng-container>
   </div>
 
-
-  <!--  <p *ngIf="shouldShowAnswer">-->
-  <!--    {{ (item$$ | async)?.currentVal?.joinedSides() }}-->
-  <!--  </p>-->
   <ng-container
     *ngIf="shouldShowAnswer"
   >
@@ -56,16 +52,8 @@
 
   </ng-container>
 
-
-
 </div>
 
 <ng-template #noItem>
   No quiz item
 </ng-template>
-
-
-<!--<p *ngIf="item$" style="border: 1px yellow solid">-->
-<!--  quiz-item-details works!-->
-<!--  {{ (item$.locallyVisibleChanges$ | async) ?. getQuestionOrAnyString() }}-->
-<!--</p>-->
