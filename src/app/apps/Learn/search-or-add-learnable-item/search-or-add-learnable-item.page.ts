@@ -82,7 +82,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     if ( ! string ?. trim() ) {
       return
     }
-    const QQ = /<-->|<->|<>/
+    const QQ = /<-->|<->|<>|---/
     const QA = /--|-->/
     const overlay: Partial<LearnItemSidesVals> = {}
     if ( string.match(QQ) ) {
