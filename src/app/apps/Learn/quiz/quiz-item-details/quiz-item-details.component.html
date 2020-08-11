@@ -1,3 +1,71 @@
-<p>
-  quiz-item-details works!
-</p>
+<div *ngIf="item$ else noItem">
+  <app-play-button
+    [item]="(item$ ?. locallyVisibleChanges$ | async) !"
+    [itemId]="item$ ?. id"
+  ></app-play-button>
+
+  <app-item-side-editor
+    [item$]="item$ !"
+    [side]="(itemVal$ ! | async) ?. getSideWithQuestionOrFirstNonEmpty()"
+  ></app-item-side-editor>
+
+  <ion-button
+    (click)="showAnswer()"
+  >Show answer</ion-button>
+
+  <ion-button
+    [routerLink]="'/learn/item/' + item$ ?. id"
+  >EDIT</ion-button>
+
+  <div
+    *ngIf="shouldShowAnswer"
+  > <!-- TODO: extract component for showing the item details, to encapsulate, ensure, that all class fields get recreated when item$ changes -->
+    <!--    <app-item-sides-->
+    <!--      [item$]="(item$$ | async)"-->
+    <!--      [showQuestions]="false"-->
+    <!--      [omitEmpty]="true"-->
+    <!--    ></app-item-sides>-->
+    <ng-container *ngFor="let answerSide of (itemVal$ | async)?.getSidesWithAnswers()">
+<!--      <hr>-->
+      <app-item-side-editor
+        [item$]="item$ !"
+        [side]="answerSide"
+      ></app-item-side-editor>
+
+    </ng-container>
+  </div>
+
+
+  <!--  <p *ngIf="shouldShowAnswer">-->
+  <!--    {{ (item$$ | async)?.currentVal?.joinedSides() }}-->
+  <!--  </p>-->
+  <ng-container
+    *ngIf="shouldShowAnswer"
+  >
+    <app-self-rating
+      [autoSave]="false"
+      [item$]="item$ !"
+      (numericValue)="selfRating = $event"
+    ></app-self-rating>
+
+    <ion-button
+      (click)="applyAndNext()"
+    >
+      APPLY & NEXT
+    </ion-button>
+
+  </ng-container>
+
+
+
+</div>
+
+<ng-template #noItem>
+  No quiz item
+</ng-template>
+
+
+<!--<p *ngIf="item$" style="border: 1px yellow solid">-->
+<!--  quiz-item-details works!-->
+<!--  {{ (item$.locallyVisibleChanges$ | async) ?. getQuestionOrAnyString() }}-->
+<!--</p>-->

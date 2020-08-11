@@ -22,111 +22,53 @@
   <div
     style="margin: 6px"
   >
-  <ion-item>
-    <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
-    </ion-checkbox>
-    <ion-label>
-      &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
-    </ion-label>
-  </ion-item>
 
-  <ion-item>
-    <ion-checkbox [(ngModel)]="onlyWithQA">
-    </ion-checkbox>
-    <ion-label>
-      &nbsp; ONLY WITH Q&A
-    </ion-label>
-  </ion-item>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
+      </ion-checkbox>
+      <ion-label>
+        &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
+      </ion-label>
+    </ion-item>
 
-<!--    <app-quiz-item-details-->
-<!--      [item$]="(item$$ | async)"-->
-<!--    >&lt;!&ndash; the entire component will be swapped on new item &ndash;&gt;</app-quiz-item-details>-->
+    <ion-item>
+      <ion-checkbox [(ngModel)]="onlyWithQA">
+      </ion-checkbox>
+      <ion-label>
+        &nbsp; ONLY WITH Q&A
+      </ion-label>
+    </ion-item>
 
+    <!--  <ion-note>-->
+    <!--    {{ (item$$ | async)?.id }}-->
+    <!--  </ion-note>-->
 
-    <ion-note>
-    {{ (item$$ | async)?.id }}
-  </ion-note>
+    <p>
+      <ion-note>
+        next repetition:
+        <app-time-point
+          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
+        ></app-time-point>
+      </ion-note>
+    </p>
 
-  <p>
-    <ion-note>
-      next repetition:
-      <app-time-point
-        [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
-      ></app-time-point>
-    </ion-note>
-  </p>
+    <app-quiz-item-details
+      *ngFor="let item$ of [(item$$ | async)]"
+      [item$]="item$"
+    ><!-- the entire component will be swapped on new item --></app-quiz-item-details>
 
-  <app-play-button
-    [item]="((item$$ | async)?.locallyVisibleChanges$ | async) !"
-    [itemId]="(item$$ | async)?.id"
-  ></app-play-button>
+    <!--  <pre>{{ getQuestionValForQuiz$() | async }}</pre> &lt;!&ndash; DO NOT break line, coz it is shown in pre &ndash;&gt;-->
+    <!--    <app-item-side-editor-->
+    <!--      *ngIf="questionSide$ | async"-->
+    <!--      [item$]="item$$ | async"-->
+    <!--      [side]="questionSide$ | async"-->
+    <!--    ></app-item-side-editor>-->
 
+    <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
+    <!--  <ng-container>(overdue X hours)</ng-container>-->
 
-  <pre>{{ getQuestionValForQuiz$() | async }}</pre> <!-- DO NOT break line, coz it is shown in pre -->
-<!--    <app-item-side-editor-->
-<!--      *ngIf="questionSide$ | async"-->
-<!--      [item$]="item$$ | async"-->
-<!--      [side]="questionSide$ | async"-->
-<!--    ></app-item-side-editor>-->
+    <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
 
-<!--  <ng-container>(ahead of time by X hours)</ng-container>-->
-<!--  <ng-container>(overdue X hours)</ng-container>-->
-
-<!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
-
-
-  <ion-button
-    (click)="showAnswer()"
-  >Show answer</ion-button>
-
-  <ion-button
-    [routerLink]="'/learn/item/'+(item$$ | async)?.id"
-  >EDIT</ion-button>
-
-  <div
-    *ngIf="shouldShowAnswer"
-  > <!-- TODO: extract component for showing the item details, to encapsulate, ensure, that all class fields get recreated when item$ changes -->
-<!--    <app-item-sides-->
-<!--      [item$]="(item$$ | async)"-->
-<!--      [showQuestions]="false"-->
-<!--      [omitEmpty]="true"-->
-<!--    ></app-item-sides>-->
-    <ng-container *ngFor="let answerSide of (itemVal$ | async)?.getSidesWithAnswers()">
-      <app-side-label [side]="answerSide"></app-side-label>
-      BEGIN ED
-<!--      <editor-->
-<!--        [init]="tinyMceInit"-->
-<!--        [inline]="true"-->
-<!--        [formControl]="formControls[answerSide.id]"-->
-<!--      ></editor>-->
-      END ED
-
-      <pre>{{(itemVal$ | async)?.getSideVal(answerSide)}}</pre> <!-- DO NOT break line, coz it is shown in pre -->
-      <hr>
-    </ng-container>
-  </div>
-
-
-<!--  <p *ngIf="shouldShowAnswer">-->
-<!--    {{ (item$$ | async)?.currentVal?.joinedSides() }}-->
-<!--  </p>-->
-  <ng-container
-    *ngIf="shouldShowAnswer"
-  >
-    <app-self-rating
-      [autoSave]="false"
-      *ngFor="let dummy of dummyArray"
-      [item$]="(item$$ | async) !"
-      (numericValue)="selfRating = $event"
-    ></app-self-rating>
-
-    <ion-button
-      (click)="applyAndNext()"
-    >
-      APPLY & NEXT
-    </ion-button>
-
-  </ng-container>
 
   </div>
 </ion-content>
