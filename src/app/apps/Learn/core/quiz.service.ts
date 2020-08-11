@@ -6,9 +6,10 @@ import {minBy} from 'lodash'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs/internal/Observable'
 import {map} from 'rxjs/operators'
-import {LearnItem, LearnItem$, Rating} from '../models/LearnItem'
+import {LearnItem, Rating} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
+import {LearnItem$} from '../models/LearnItem$'
 
 /* TODO units */
 export type Duration = number
@@ -46,6 +47,7 @@ export class QuizService {
 
   calculateIntervalHours(rating: Rating): Duration {
 
+    // TODO: consider a kind of LIFO to prioritize minute periods (for them to not be at mercy of smth delayed from days ago); Coz the difference between 1 minute and say 10 hours is much bigger than 10 hours and 11 hours
     // TODO: (right now the app is ok at relative priority/frequency, but necessarily too good at determining the exact time spacing
     // 0 => 1 min
     // 0.5 => few hours

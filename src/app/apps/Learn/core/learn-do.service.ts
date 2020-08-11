@@ -1,8 +1,9 @@
 import {Injectable, Injector} from '@angular/core';
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
-import {LearnItem, LearnItem$} from '../models/LearnItem'
+import {LearnItem} from '../models/LearnItem'
 import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
+import {LearnItem$} from '../models/LearnItem$'
 
 @Injectable({
   providedIn: 'root'

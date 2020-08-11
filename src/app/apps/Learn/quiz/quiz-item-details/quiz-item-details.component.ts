@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
-import {LearnItem, LearnItem$} from '../../models/LearnItem'
+import {LearnItem} from '../../models/LearnItem'
 import {Observable} from 'rxjs/internal/Observable'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {LearnItem$} from '../../models/LearnItem$'
 
 @Component({
   selector: 'app-quiz-item-details',

@@ -7,10 +7,11 @@ import {AlertController} from '@ionic/angular'
 import {FormControl, FormGroup} from '@angular/forms'
 import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {LearnItem, LearnItem$, LearnItemId} from '../models/LearnItem'
+import {LearnItem, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 import {Observable} from 'rxjs/internal/Observable'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {LearnItem$} from '../models/LearnItem$'
 
 @Component({
   selector: 'app-learn-item-details',

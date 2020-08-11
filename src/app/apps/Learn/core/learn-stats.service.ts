@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {countBy} from 'lodash'
-import {LearnItem, LearnItem$} from '../models/LearnItem'
+import {LearnItem} from '../models/LearnItem'
 import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
 import {map} from 'rxjs/operators'
 import {Observable} from 'rxjs/internal/Observable'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {LearnItem$} from '../models/LearnItem$'
 
 /** split into part that goes into DB */
 export class LearnStats {

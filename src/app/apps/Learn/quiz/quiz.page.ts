@@ -3,7 +3,7 @@ import {QuizService} from '../core/quiz.service'
 import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
 import {map, switchMap} from 'rxjs/operators'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {LearnItem, LearnItem$} from '../models/LearnItem'
+import {LearnItem} from '../models/LearnItem'
 import {Observable} from 'rxjs/internal/Observable'
 import {PopoverController} from '@ionic/angular'
 import {SyncPopoverComponent} from '../../../libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
@@ -12,6 +12,7 @@ import {FormControl, FormGroup} from '@angular/forms'
 import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {LearnItem$} from '../models/LearnItem$'
 
 
 @Component({

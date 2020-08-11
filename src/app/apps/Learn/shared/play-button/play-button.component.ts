@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {LearnItem, LearnItem$, LearnItemId} from '../../models/LearnItem'
+import {LearnItem, LearnItemId} from '../../models/LearnItem'
 import {AngularFirestore} from '@angular/fire/firestore'
+import {LearnItem$} from '../../models/LearnItem$'
 
 @Component({
   selector: 'app-play-button',

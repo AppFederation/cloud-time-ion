@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
-import {LearnItem, LearnItem$} from '../../models/LearnItem'
 import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
+import {LearnItem$} from '../../models/LearnItem$'
 
 @Component({
   selector: 'app-self-rating',

@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LearnItem$} from '../../models/LearnItem'
 import {Side} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {LearnItem$} from '../../models/LearnItem$'
 
 export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
 
