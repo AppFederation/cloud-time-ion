@@ -13,7 +13,15 @@
     [init]="tinyMceInit"
     [inline]="true"
     [formControl]="formControls[side.id]"
-  ></editor>
+    (onInit)="logEditor('onInit'); viewSyncer.onInitialDataWasSet()"
+    (onSetContent)="logEditor('onSetContent')"
+    (onPostRender)="logEditor('onPostRender')"
+  >
+    <!-- events:
+      * Init -- actually called last?
+      * SetContent
+    -->
+  </editor>
 
 </div>
 

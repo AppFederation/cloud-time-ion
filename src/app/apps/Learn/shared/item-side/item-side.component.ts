@@ -4,6 +4,7 @@ import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
+import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 
 export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
 
@@ -49,7 +50,7 @@ export class ItemSideComponent implements OnInit {
     if ( this.side ) {
       this.formControls = this.createFormControlDict()
       this.formGroup = new FormGroup(this.formControls)
-      this.viewSyncer = new ViewSyncer(this.formGroup, this.item$) /* TODO might need to ignore other fields from db */
+      this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, true) /* TODO might need to ignore other fields from db */
     }
   }
 
@@ -58,5 +59,9 @@ export class ItemSideComponent implements OnInit {
     ret[this.side !. id] = new FormControl()
     // console.dir(ret)
     return ret
+  }
+
+  logEditor(msg: string) {
+    debugLog(`tinymce: `, msg)
   }
 }
