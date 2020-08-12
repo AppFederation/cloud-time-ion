@@ -15,8 +15,9 @@ export class QuizPage implements OnInit {
 
   item$: LearnItem$ | undefined
 
-  dePrioritizeNewMaterial: boolean = true
-  onlyWithQA = false
+  dePrioritizeNewMaterial: boolean = false
+
+  onlyWithQA = true
 
   get item$$(): Observable<LearnItem$ | undefined> {
     return this.quizService.getNextItemForSelfRating$(
