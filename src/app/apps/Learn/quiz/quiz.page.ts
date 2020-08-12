@@ -19,6 +19,8 @@ export class QuizPage implements OnInit {
 
   onlyWithQA = true
 
+  showOptions = false
+
   get item$$(): Observable<LearnItem$ | undefined> {
     return this.quizService.getNextItemForSelfRating$(
       {

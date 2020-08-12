@@ -6,12 +6,16 @@
         <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
         <ion-button routerLink="/learn"><</ion-button>
 
-        <odm-sync-status></odm-sync-status>
-        QUIZ
-        <ion-icon class="action-icon" color="secondary"
+        &nbsp;QUIZ&nbsp;
+        <ion-icon class="action-icon"
                   (click)="onClickTimer($event)"
                   name="timer-outline"
         ></ion-icon>
+
+        <span class='action-icon' (click)="showOptions = ! showOptions">OPTIONS</span>
+
+        <odm-sync-status></odm-sync-status>
+
       </div>
     </ion-title>
   </ion-toolbar>
@@ -23,21 +27,27 @@
     style="margin: 6px"
   >
 
-    <ion-item>
-      <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
-      </ion-checkbox>
-      <ion-label>
-        &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
-      </ion-label>
-    </ion-item>
+    <div>
+      <div *ngIf="showOptions">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
+          </ion-checkbox>
+          <ion-label>
+            &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
+          </ion-label>
+        </ion-item>
 
-    <ion-item>
-      <ion-checkbox [(ngModel)]="onlyWithQA">
-      </ion-checkbox>
-      <ion-label>
-        &nbsp; ONLY WITH Q&A
-      </ion-label>
-    </ion-item>
+        <ion-item>
+          <ion-checkbox [(ngModel)]="onlyWithQA">
+          </ion-checkbox>
+          <ion-label>
+            &nbsp; ONLY WITH Q&A
+          </ion-label>
+        </ion-item>
+
+      </div>
+    </div>
+
 
     <!--  <ion-note>-->
     <!--    {{ (item$$ | async)?.id }}-->
