@@ -29,7 +29,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
       if ( this.hasEnoughTimePassedFromLastUserEditToApplyFromDb() ) {
         if ( dataFromDb ) {
-          debugLog('ViewSyncer - item$.locallyVisibleChanges$.subscribe -- initialDataArrived = true', dataFromDb)
+          // debugLog('ViewSyncer - item$.locallyVisibleChanges$.subscribe -- initialDataArrived = true', dataFromDb)
           this.initialDataArrived = true
         }
         try {

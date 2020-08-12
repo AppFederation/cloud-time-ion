@@ -14,9 +14,10 @@
     [inline]="true"
     [formControl]="formControls[side.id]"
     (onInit)="logEditor('onInit'); viewSyncer.onInitialDataWasSet()"
-    (onSetContent)="logEditor('onSetContent')"
-    (onPostRender)="logEditor('onPostRender')"
   >
+    <!--     (onSetContent)="logEditor('onSetContent')"
+    (onPostRender)="logEditor('onPostRender')"
+    -->
     <!-- events: https://www.tiny.cloud/docs/advanced/events/#init
       * Init -- actually called last?
       * SetContent

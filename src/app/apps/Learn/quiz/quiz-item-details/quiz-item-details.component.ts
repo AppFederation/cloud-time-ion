@@ -19,6 +19,8 @@ export class QuizItemDetailsComponent implements OnInit {
   @Input()
   item$ ? : LearnItem$ | null
 
+  shouldShowHint = false
+
   get itemVal$(): Observable<LearnItem | undefined | null> | undefined {
     return this.item$ ?. locallyVisibleChanges$
   }
@@ -30,7 +32,12 @@ export class QuizItemDetailsComponent implements OnInit {
   ngOnInit() {}
 
   showAnswer() {
+    this.shouldShowHint = false
     this.shouldShowAnswer = ! this.shouldShowAnswer
+  }
+
+  showHint() {
+    this.shouldShowHint = true
   }
 
   // onChangeSelfRating($event: NumericPickerVal) {
@@ -44,4 +51,5 @@ export class QuizItemDetailsComponent implements OnInit {
   private reset() {
     this.shouldShowAnswer = false
   }
+
 }

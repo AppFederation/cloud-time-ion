@@ -10,6 +10,10 @@
   ></app-item-side-editor>
 
   <ion-button
+    (click)="showHint()"
+  >HINT</ion-button>
+
+  <ion-button
     (click)="showAnswer()"
   >Show answer</ion-button>
 
@@ -18,16 +22,22 @@
   >EDIT</ion-button>
 
   <div
-    *ngIf="shouldShowAnswer"
+    *ngIf="shouldShowAnswer || shouldShowHint"
   >
     <!--    <app-item-sides-->
     <!--      [item$]="(item$$ | async)"-->
     <!--      [showQuestions]="false"-->
     <!--      [omitEmpty]="true"-->
     <!--    ></app-item-sides>-->
-    <ng-container *ngFor="let answerSide of (itemVal$ | async)?.getSidesWithAnswers()">
+    <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
 <!--      <hr>-->
+      <app-side-label
+        *ngIf="shouldShowHint && ! shouldShowAnswer"
+        [side]="answerSide"
+      ></app-side-label>
+
       <app-item-side-editor
+        *ngIf="shouldShowAnswer"
         [item$]="item$ !"
         [side]="answerSide"
       ></app-item-side-editor>
