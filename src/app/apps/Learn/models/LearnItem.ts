@@ -63,7 +63,7 @@ export class LearnItem extends OdmInMemItem {
   }
 
   getQuestion(): SideVal {
-    return this.getSideVal(this.getSideWithQuestionOrFirstNonEmpty())
+    return this.getSideVal(this.getSideWithQuestion())
   }
 
   getSideWithQuestionOrFirstNonEmpty(): Side | null {
