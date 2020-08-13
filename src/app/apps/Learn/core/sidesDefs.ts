@@ -15,11 +15,15 @@ export class Side {
       this.ask = true // use `??`
     }
   }
+
+  get title () {
+    return this.id ?. replace(/_/g, ' ')
+  }
 }
 
 export type SideVal = string | nullish
 
-export type SideDecl = Omit<Side, 'id'>
+export type SideDecl = Omit<Side, 'id'|'title'>
 
 /*
  stuff like Artikel, example as extra fields.
