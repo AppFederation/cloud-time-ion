@@ -2,13 +2,22 @@
   <ion-toolbar>
 
     <ion-title>
-      <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
-      <ion-button routerLink="/learn"><</ion-button>
+      <div style="display: inline-flex; align-items: center; width: 100%">
+        <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
+        <ion-button routerLink="/learn"><<!-- TODO: create component back-icon --></ion-button>
 
-      <odm-sync-status></odm-sync-status>
-      <ion-button routerLink="/learn/quiz">QUIZ</ion-button>
+        <div style="flex-grow: 1; display: flex; align-items: center">
+          &nbsp; CARD DETAILS
+        </div>
 
-      {{title}}
+        <ion-button routerLink="/learn/quiz">QUIZ</ion-button>
+
+        {{title}}
+
+        <odm-sync-status></odm-sync-status>
+
+
+      </div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
