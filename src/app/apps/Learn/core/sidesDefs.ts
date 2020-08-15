@@ -8,6 +8,9 @@ export class Side {
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang?: string // = 'en-US'
   flag?: string
+  flagTransparent?: boolean
+
+  /* TODO: rename to `question` */
   ask?: boolean // = true
 
   constructor() {
@@ -70,6 +73,8 @@ export class SidesDefs {
   es_gender_article = side({
     defaultLang: 'es-ES',
     ask: false,
+    flag: `es`,
+    flagTransparent: true,
   })
   es = side({
     defaultLang: 'es-ES',
@@ -78,6 +83,8 @@ export class SidesDefs {
   de_gender_article = side({
     defaultLang: 'de-DE',
     ask: false,
+    flag: `de`,
+    flagTransparent: true,
   })
   de = side({
     defaultLang: 'de-DE',
