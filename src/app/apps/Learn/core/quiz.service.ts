@@ -51,6 +51,7 @@ export class QuizService {
   ) {
   }
 
+  /** TODO make into a member field to ensure no-one calls this spuriously by accident */
   getQuizStatus$(): Observable<QuizStatus> {
     const quizOptions: QuizOptions = this.options$.lastVal ! // FIXME: combineLatest
     return this.learnDoService.localItems$.pipe(
@@ -119,8 +120,6 @@ export class QuizService {
   calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined): TimeMsEpoch {
     const dePrioritizeNewMaterial = this.options$.lastVal !. dePrioritizeNewMaterial
     // TODO: extract into strategy pattern class LearnAlgorithm or RepetitionAlgorithm
-    // dePrioritizeNewMaterial = false
-    // return item$.currentVal.whenAdded.toMillis()
     if ( ! item$ ) {
       return 0
     }
@@ -134,15 +133,11 @@ export class QuizService {
       (dePrioritizeNewMaterial ? null : item.whenAdded) // ||
       // item.whenCreated /* garbled by accidental patching of all items */
 
-    // if ( item$.id === `02mW3hdwYRbxCZAVbrSD` /*&& whenLastTouched*/ ) {
-    //   console.log(`whenLastTouched`, /*item, */whenLastTouched, item.whenLastSelfRated, item.whenAdded)
-    // }
     if ( ! whenLastTouched ) {
       return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
     }
 
     const ret = whenLastTouched.toMillis() + hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0))
-    // console.log('calculateWhenNextRepetitionMsEpoch', new Date(ret))
     return ret
 
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
