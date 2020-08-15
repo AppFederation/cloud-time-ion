@@ -9,6 +9,7 @@ import {ItemSideComponent} from './item-side/item-side.component'
 import {ItemSidesComponent} from './item-sides/item-sides.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {ReactiveFormsModule} from '@angular/forms'
+import {ToggleComponent} from './toggle/toggle.component'
 
 const exports = [
   SelfRatingComponent,
@@ -16,12 +17,13 @@ const exports = [
 ]
 
 @NgModule({
-  declarations: [
-    ...exports,
-    SideLabelComponent,
-    ItemSideComponent,
-    ItemSidesComponent,
-  ],
+    declarations: [
+        ...exports,
+        SideLabelComponent,
+        ItemSideComponent,
+        ItemSidesComponent,
+        ToggleComponent,
+    ],
   imports: [
     CommonModule,
     RatingsModule,
@@ -29,11 +31,12 @@ const exports = [
     EditorModule,
     ReactiveFormsModule,
   ],
-  exports: [
-    exports,
-    SideLabelComponent,
-    ItemSideComponent,
-    ItemSidesComponent,
-  ],
+    exports: [
+        exports,
+        SideLabelComponent,
+        ItemSideComponent,
+        ItemSidesComponent,
+        ToggleComponent,
+    ],
 })
 export class SharedModule { }
