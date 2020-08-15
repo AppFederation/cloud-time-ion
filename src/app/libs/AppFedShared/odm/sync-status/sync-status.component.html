@@ -9,9 +9,9 @@
   >
     <img
       [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
-      style="color: orange; height: 25px;"
+      style="height: 25px;"
       src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg"
-      alt="all uploaded to cloud">
+      alt="all uploaded to cloud"> <!-- FIXME: a11y: change alt to depend if pending items -->
     <!-- position: absolute; top: 0; left: 0 -->
     <span
       style="margin-left: 3px; width: 1em"
