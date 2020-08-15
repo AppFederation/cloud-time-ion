@@ -31,13 +31,14 @@ export class ItemSideComponent implements OnInit {
     height: 500,
     menubar: true,
     plugins: [
-      'advlist autolink lists link image charmap print preview anchor',
+      'advlist autolink lists image charmap print preview anchor' /* link */,
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
+
     ],
     paste_data_images: true /* https://www.tiny.cloud/docs/plugins/paste/ */,
     toolbar:
-      'undo redo | formatselect | bold italic backcolor | \
+      'selectall copy paste | undo redo | formatselect | bold italic underline forecolor backcolor | \
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | help',
     skin: 'oxide-dark',
