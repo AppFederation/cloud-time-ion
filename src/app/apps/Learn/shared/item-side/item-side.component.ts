@@ -35,6 +35,7 @@ export class ItemSideComponent implements OnInit {
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
     ],
+    paste_data_images: true /* https://www.tiny.cloud/docs/plugins/paste/ */,
     toolbar:
       'undo redo | formatselect | bold italic backcolor | \
       alignleft aligncenter alignright alignjustify | \
