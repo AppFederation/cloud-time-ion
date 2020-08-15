@@ -7,9 +7,12 @@
       <span style="flex-grow: 1">Search or add</span>
       <ion-button routerLink="/learn/quiz">
         QUIZ
-        {{((quizService.getQuizStatus$() | async)?.itemsLeft) || ""}}
+
+        {{ ((quizService.getQuizStatus$() | async)?.itemsLeft) || "" }}
+        <span style="opacity: 50%; font-size: 60%">
+          &nbsp;{{ ((quizService.getQuizStatus$() | async)?.itemsLeftToday) || "" }}
+        </span>
       </ion-button>
-      <ion-button routerLink="/learn/quiz">QUIZ</ion-button>
       <odm-sync-status></odm-sync-status>
     </div>
     <div
