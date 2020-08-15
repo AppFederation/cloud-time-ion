@@ -7,16 +7,15 @@ import {sortBy, countBy} from 'lodash'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
-import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
-import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {QuizService} from '../core/quiz.service'
 
 @Component({
   selector: 'app-search-or-add-learnable-item',
   templateUrl: './search-or-add-learnable-item.page.html',
   styleUrls: ['./search-or-add-learnable-item.page.scss'],
 })
-export class SearchOrAddLearnableItemPage implements OnInit {
+export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   search: string = ''
 
@@ -29,6 +28,7 @@ export class SearchOrAddLearnableItemPage implements OnInit {
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
+    public quizService: QuizService,
   ) { }
 
   ngOnInit() {
@@ -129,6 +129,9 @@ export class SearchOrAddLearnableItemPage implements OnInit {
   }
 
   matchesSearch(item: LearnItem) {
+    if ( item.hasQAndA() ) {
+      return false
+    }
     if ( ! item ) {
       return false
     }
