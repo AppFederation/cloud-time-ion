@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CachedSubject } from '../libs/AppFedShared/utils/CachedSubject';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ignorePromise } from '../libs/AppFedShared/utils/promiseUtils';
 import { Router } from '@angular/router';
+
+import * as firebase from 'firebase/app';
+import {errorAlert} from '../libs/AppFedShared/utils/log'
+import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 @Injectable({
   providedIn: 'root',
@@ -50,5 +53,15 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(response => (this.login(), this.Router.navigateByUrl('/timers')))
       .catch(error => console.log('Error logging in', error));
+  }
+
+  logInViaGoogle() {
+    const authProvider = new firebase.auth.GoogleAuthProvider();
+    return this.afAuth.auth
+      .signInWithPopup(authProvider)
+      .then(response => (this.login(), this.Router.navigateByUrl('/timers'))
+        /* TODO: emit authUser$ */
+      )
+      .catch(error => errorAlert('Error logging in via Google ' + error));
   }
 }

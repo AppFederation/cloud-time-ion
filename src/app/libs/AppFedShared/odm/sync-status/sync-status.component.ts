@@ -3,6 +3,7 @@ import {SyncStatusService} from '../sync-status.service'
 import {PopoverController} from '@ionic/angular'
 import {SyncPopoverComponent} from './sync-popover/sync-popover.component'
 import {map} from 'rxjs/operators'
+import {AuthService} from '../../../../auth/auth.service'
 
 @Component({
   selector: 'odm-sync-status',
