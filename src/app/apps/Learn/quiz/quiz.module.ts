@@ -12,6 +12,7 @@ import {SharedModule} from '../shared/shared.module'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {QuizItemDetailsComponent} from './quiz-item-details/quiz-item-details.component'
+import {QuizTipsComponent} from './quiz-tips/quiz-tips.component'
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
   declarations: [
     QuizPage,
     QuizItemDetailsComponent,
+    QuizTipsComponent,
   ],
 })
 export class QuizPageModule {
