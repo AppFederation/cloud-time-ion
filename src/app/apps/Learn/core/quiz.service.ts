@@ -13,6 +13,8 @@ import {LearnItem$} from '../models/LearnItem$'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {countBy2} from '../../../libs/AppFedShared/utils/utils'
+import {hoursAsMs} from '../../../libs/AppFedShared/utils/time-utils'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -66,13 +68,19 @@ export class QuizService {
           // }
           return msEpochRepetition <= nowMs
         })
+        const endOfDayMs = Date.now() + hoursAsMs(12)
+        const pendingItemsTodayCount = countBy2(item$s, item$ => {
+          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
+          return msEpochRepetition <= endOfDayMs
+        })
         /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
            summarize - estimatedTimeLeft
          */
         const retStatus = new QuizStatus(
           pendingItems.length,
           minBy(pendingItems,
-              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
+              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$)),
+          pendingItemsTodayCount,
           // pendingItems[0] /* TODO: ensure sorted or minBy */,
         )
 
@@ -133,7 +141,7 @@ export class QuizService {
       return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
     }
 
-    const ret = whenLastTouched.toMillis() + (1000 * 3600 * this.calculateIntervalHours(item.lastSelfRating || 0))
+    const ret = whenLastTouched.toMillis() + hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0))
     // console.log('calculateWhenNextRepetitionMsEpoch', new Date(ret))
     return ret
 

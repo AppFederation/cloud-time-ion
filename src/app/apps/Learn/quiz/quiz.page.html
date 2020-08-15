@@ -41,12 +41,14 @@
       <ion-note>
         next repetition:
         <app-time-point
-          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch((status$ | async) ?. nextItem$, dePrioritizeNewMaterial))"
+          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch((status$ | async) ?. nextItem$))"
         ></app-time-point>
 
         <span>
           | pending:
           {{(status$ | async) ?. itemsLeft}}
+          | next 12h:
+          {{(status$ | async) ?. itemsLeftToday}}
         </span>
       </ion-note>
     </p>
