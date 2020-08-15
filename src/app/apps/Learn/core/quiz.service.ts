@@ -14,7 +14,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {hoursAsMs, isInFuture} from '../../../libs/AppFedShared/utils/time-utils'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -35,6 +35,7 @@ export class QuizStatus {
     public itemsLeft: number,
     public nextItem$?: LearnItem$,
     public itemsLeftToday?: number,
+    public isNextItemInFuture?: boolean,
     public estimatedMsLeft?: DurationMs,
   ) {}
 }
@@ -64,7 +65,6 @@ export class QuizService {
         const pendingItems: LearnItem$[] = item$s.filter(item$ => {
           const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
           // if ( ! (typeof msEpochRepetition === 'number') ) {
-          //   console
           //   return false
           // }
           return msEpochRepetition <= nowMs
@@ -73,17 +73,19 @@ export class QuizService {
         const pendingItemsTodayCount = countBy2(item$s, item$ => {
           const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
           return msEpochRepetition <= endOfDayMs
-        })
+        }) /* If it's low, we could suggest adding new material, based on how much time user wants to spend per day */
         /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
            summarize - estimatedTimeLeft
          */
+        const nextItem$ = minBy(item$s,
+          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
         const retStatus = new QuizStatus(
           pendingItems.length,
-          minBy(pendingItems,
-              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$)),
+          nextItem$,
           pendingItemsTodayCount,
+          isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
           // pendingItems[0] /* TODO: ensure sorted or minBy */,
-        )
+        );
 
         // if ( retStatus.itemsLeft ) {
         //   debugLog(`quiz: pendingItems`, retStatus.itemsLeft) // this logs a lot
