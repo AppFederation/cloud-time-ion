@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/internal/Observable'
 import {PopoverController} from '@ionic/angular'
 import {QuizTimerPopoverComponent} from './quiz-timer-popover/quiz-timer-popover.component'
 import {LearnItem$} from '../models/LearnItem$'
+import {debugLog} from '../../../libs/AppFedShared/utils/log'
 
 
 @Component({
@@ -15,18 +16,12 @@ export class QuizPage implements OnInit {
 
   item$: LearnItem$ | undefined
 
-  dePrioritizeNewMaterial: boolean = false
-
-  onlyWithQA = true
 
   showOptions = false
 
   get status$(): Observable<QuizStatus> {
-    return this.quizService.getQuizStatus$(
-    {
-      dePrioritizeNewMaterial: this.dePrioritizeNewMaterial,
-      onlyWithQA: this.onlyWithQA,
-    })
+    // debugLog(`get status$()`)
+    return this.quizService.getQuizStatus$()
     // FIXME: this is being trigger many times
   }
 

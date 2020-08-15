@@ -5,13 +5,14 @@ import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {minBy} from 'lodash'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs/internal/Observable'
-import {map} from 'rxjs/operators'
+import {combineAll, map} from 'rxjs/operators'
 import {LearnItem, Rating} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
 import {LearnItem$} from '../models/LearnItem$'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -19,15 +20,19 @@ export type Duration = number
 
 
 
-export interface QuizOptions {
-  dePrioritizeNewMaterial: boolean
-  onlyWithQA: boolean
+export class QuizOptions {
+  constructor(
+    public dePrioritizeNewMaterial: boolean,
+    public onlyWithQA: boolean,
+  ) {
+  }
 }
 
 export class QuizStatus {
   constructor(
     public itemsLeft: number,
     public nextItem$?: LearnItem$,
+    public itemsLeftToday?: number,
     public estimatedMsLeft?: DurationMs,
   ) {}
 }
@@ -37,12 +42,15 @@ export class QuizStatus {
 })
 export class QuizService {
 
+  options$ = new CachedSubject(new QuizOptions(false, true))
+
   constructor(
     private learnDoService: LearnDoService,
   ) {
   }
 
-  getQuizStatus$(quizOptions: QuizOptions): Observable<QuizStatus> {
+  getQuizStatus$(): Observable<QuizStatus> {
+    const quizOptions: QuizOptions = this.options$.lastVal ! // FIXME: combineLatest
     return this.learnDoService.localItems$.pipe(
       map((item$s: LearnItem$[]) => {
         if ( quizOptions.onlyWithQA ) {
@@ -51,7 +59,7 @@ export class QuizService {
         // filter remaining until now
         const nowMs: TimeMsEpoch = Date.now()
         const pendingItems: LearnItem$[] = item$s.filter(item$ => {
-          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial)
+          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
           // if ( ! (typeof msEpochRepetition === 'number') ) {
           //   console
           //   return false
@@ -64,7 +72,7 @@ export class QuizService {
         const retStatus = new QuizStatus(
           pendingItems.length,
           minBy(pendingItems,
-              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
+              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
           // pendingItems[0] /* TODO: ensure sorted or minBy */,
         )
 
@@ -100,7 +108,8 @@ export class QuizService {
   }
 
   /** This could be a method of LearnItem$ */
-  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined, dePrioritizeNewMaterial: boolean): TimeMsEpoch {
+  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined): TimeMsEpoch {
+    const dePrioritizeNewMaterial = this.options$.lastVal !. dePrioritizeNewMaterial
     // TODO: extract into strategy pattern class LearnAlgorithm or RepetitionAlgorithm
     // dePrioritizeNewMaterial = false
     // return item$.currentVal.whenAdded.toMillis()

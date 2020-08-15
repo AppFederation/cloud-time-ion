@@ -13,6 +13,7 @@ import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {QuizItemDetailsComponent} from './quiz-item-details/quiz-item-details.component'
 import {QuizTipsComponent} from './quiz-tips/quiz-tips.component'
+import {QuizOptionsComponent} from './quiz-options/quiz-options.component'
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
     QuizPage,
     QuizItemDetailsComponent,
     QuizTipsComponent,
+    QuizOptionsComponent,
   ],
 })
 export class QuizPageModule {
