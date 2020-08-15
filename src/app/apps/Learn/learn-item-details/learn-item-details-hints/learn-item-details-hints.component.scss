@@ -1,0 +1,148 @@
+.style1 {
+  li {
+    border: 3px red;
+    margin-bottom: 6px;
+  }
+
+  /* https://css-tricks.com/custom-list-number-styling/ */
+  ol {
+    //max-width: 350px;
+    counter-reset: my-awesome-counter;
+    list-style: none;
+    padding-left: 40px;
+  }
+  ol li {
+    margin: 0 0 0.5rem 0;
+    counter-increment: my-awesome-counter;
+    position: relative;
+  }
+  ol li::before {
+    content: counter(my-awesome-counter);
+    color: #fcd00050;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    --size: 32px;
+    left: calc(-1 * var(--size) - 10px);
+    line-height: var(--size);
+    width: var(--size);
+    height: var(--size);
+    top: 0;
+    transform: rotate(-10deg);
+    background: black;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 1px 1px 0 #999;
+  }
+
+  body {
+    background: #191919;
+    color: #eee;
+    font-family: Lato, sans-serif;
+    line-height: 1.4;
+    font-size: 90%;
+    margin: 2rem;
+  }
+}
+
+.style1-1 {
+
+  /* https://css-tricks.com/custom-list-number-styling/
+    does not show yet
+  */
+  .steps {
+    clear: both;
+    list-style: none;
+    padding-left: 2%;
+  }
+  .steps li {
+    margin: 2em 0;
+    padding-top: 1em;
+    display: block;
+    position: relative;
+    counter-increment: inst;
+  }
+  .steps li::before {
+    content: counter(inst);
+
+    background: rgba(255, 150, 0, 0.35);
+    color: #fff;
+
+    font-size: 1em;
+    font-weight: 700;
+    font-style: italic;
+    text-shadow: 1px 1px rgba(255, 150, 0, 0.5);
+
+    border-radius: 0 0.675em 0.675em 0;
+    font-size: 1.5em;
+    text-align: center;
+
+    padding-top: 0;
+    padding-left: 2.25%;
+    left: -5%;
+    top: -0.65em;
+    height: 1.35em;
+    width: 1.35em;
+    position: absolute;
+
+    transition: all 0.2s ease-in-out;
+
+    z-index: -1;
+  }
+  @media (min-width: 33em) {
+    .steps li:before {
+      border-radius: 50%;
+      font-size: 1.5em;
+      height: 1.35em;
+      margin-left: 2.5%;
+      padding-left: 0;
+      padding-top: 0;
+      top: -0.15em;
+      width: 1.35em;
+      z-index: -1;
+    }
+  }
+
+  body {
+    font-size: 25px;
+  }
+}
+
+.style2 {
+  /* https://stackoverflow.com/questions/47440918/creating-a-css-border-around-custom-li-bullet */
+  ul {
+    counter-reset: list-counter;
+    margin-right: 0;
+    padding-left: 0;
+    list-style: none;
+    //content: "Section " counter(section) ": ";
+  }
+
+  ul > li {
+    align-items: center;
+    //display: flex;
+    //margin: 5px 0;
+  }
+
+  ul li:before {
+    /* I'm using the url method to fetch an icon, but
+     inserted a emoji for demonstration
+     purposes seen below */
+
+    /*content: url("path/to/icon");*/
+    //content: '🚩';
+    counter-increment: list-counter;
+    content: counter(list-counter);
+    border: 1px solid #808080;
+    border-radius: 100%;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    padding: 0.25em;
+    line-height: 1.0;
+    margin-right: 0.5em;
+  }
+}
+
+
+

@@ -10,6 +10,7 @@ import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
 import {SharedModule} from '../shared/shared.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
+import {LearnItemDetailsHintsComponent} from './learn-item-details-hints/learn-item-details-hints.component'
 
 const routes: Routes = [
   {
@@ -30,6 +31,6 @@ const routes: Routes = [
     SharedModule,
     EditorModule,
   ],
-  declarations: [LearnItemDetailsPage]
+  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent],
 })
 export class LearnItemDetailsPageModule {}
