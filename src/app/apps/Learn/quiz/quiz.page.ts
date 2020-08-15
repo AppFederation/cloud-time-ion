@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {QuizService} from '../core/quiz.service'
+import {QuizService, QuizStatus} from '../core/quiz.service'
 import {Observable} from 'rxjs/internal/Observable'
 import {PopoverController} from '@ionic/angular'
 import {QuizTimerPopoverComponent} from './quiz-timer-popover/quiz-timer-popover.component'
@@ -21,13 +21,13 @@ export class QuizPage implements OnInit {
 
   showOptions = false
 
-  get item$$(): Observable<LearnItem$ | undefined> {
-    return this.quizService.getNextItemForSelfRating$(
-      {
-        dePrioritizeNewMaterial: this.dePrioritizeNewMaterial,
-        onlyWithQA: this.onlyWithQA,
-      }
-    )
+  get status$(): Observable<QuizStatus> {
+    return this.quizService.getQuizStatus$(
+    {
+      dePrioritizeNewMaterial: this.dePrioritizeNewMaterial,
+      onlyWithQA: this.onlyWithQA,
+    })
+    // FIXME: this is being trigger many times
   }
 
   constructor(

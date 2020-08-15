@@ -12,7 +12,10 @@
                   name="timer-outline"
         ></ion-icon>
 
-        <span class='action-icon' (click)="showOptions = ! showOptions">OPTIONS</span>
+        <span class='action-icon'
+              (click)="showOptions = ! showOptions">
+          OPTIONS
+        </span>
 
         <odm-sync-status></odm-sync-status>
 
@@ -48,24 +51,25 @@
       </div>
     </div>
 
-
-    <!--  <ion-note>-->
-    <!--    {{ (item$$ | async)?.id }}-->
-    <!--  </ion-note>-->
-
     <p>
       <ion-note>
         next repetition:
         <app-time-point
-          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(item$$ | async, dePrioritizeNewMaterial))"
+          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch((status$ | async) ?. nextItem$, dePrioritizeNewMaterial))"
         ></app-time-point>
+
+        <span>
+          | pending:
+          {{(status$ | async) ?. itemsLeft}}
+        </span>
       </ion-note>
     </p>
 
     <app-quiz-item-details
-      *ngFor="let item$ of [(item$$ | async)]"
+      *ngFor="let item$ of [(status$ | async) ?. nextItem$]"
       [item$]="item$"
-    ><!-- the entire component will be swapped on new item --></app-quiz-item-details>
+    ><!-- the entire component will be swapped on new item -->
+    </app-quiz-item-details>
 
     <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
     <!--  <ng-container>(overdue X hours)</ng-container>-->

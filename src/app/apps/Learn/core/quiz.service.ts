@@ -10,14 +10,26 @@ import {LearnItem, Rating} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
 import {LearnItem$} from '../models/LearnItem$'
+import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 
-/* TODO units */
+/* TODO units; rename to DurationMs or TimeDurationMs;
+*   !!! actually this is used as hours, confusingly! WARNING! */
 export type Duration = number
+
 
 
 export interface QuizOptions {
   dePrioritizeNewMaterial: boolean
   onlyWithQA: boolean
+}
+
+export class QuizStatus {
+  constructor(
+    public itemsLeft: number,
+    public nextItem$?: LearnItem$,
+    public estimatedMsLeft?: DurationMs,
+  ) {}
 }
 
 @Injectable({
@@ -30,15 +42,41 @@ export class QuizService {
   ) {
   }
 
-  getNextItemForSelfRating$(quizOptions: QuizOptions): Observable<LearnItem$ | undefined> {
+  getQuizStatus$(quizOptions: QuizOptions): Observable<QuizStatus> {
     return this.learnDoService.localItems$.pipe(
       map((item$s: LearnItem$[]) => {
         if ( quizOptions.onlyWithQA ) {
           item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
         }
+        // filter remaining until now
+        const nowMs: TimeMsEpoch = Date.now()
+        const pendingItems: LearnItem$[] = item$s.filter(item$ => {
+          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial)
+          // if ( ! (typeof msEpochRepetition === 'number') ) {
+          //   console
+          //   return false
+          // }
+          return msEpochRepetition <= nowMs
+        })
+        /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
+           summarize - estimatedTimeLeft
+         */
+        const retStatus = new QuizStatus(
+          pendingItems.length,
+          minBy(pendingItems,
+              (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
+          // pendingItems[0] /* TODO: ensure sorted or minBy */,
+        )
+
+        // if ( retStatus.itemsLeft ) {
+        //   debugLog(`quiz: pendingItems`, retStatus.itemsLeft) // this logs a lot
+        // }
+
+        return retStatus
+
         // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
-        return minBy(item$s,
-          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
+        // return minBy(item$s,
+        //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
       })
     )
     // return of(this.learnDoService.getItem$ById(`LearnItem__2020-06-24__23.56.06.054Z_`))
@@ -61,7 +99,8 @@ export class QuizService {
     return 12 * Math.pow(2, rating || 0)
   }
 
-  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined, dePrioritizeNewMaterial: boolean) {
+  /** This could be a method of LearnItem$ */
+  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined, dePrioritizeNewMaterial: boolean): TimeMsEpoch {
     // TODO: extract into strategy pattern class LearnAlgorithm or RepetitionAlgorithm
     // dePrioritizeNewMaterial = false
     // return item$.currentVal.whenAdded.toMillis()
