@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Side} from '../core/sidesDefs'
+import {Side} from '../../core/sidesDefs'
 
 @Component({
   selector: 'app-side-label',

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
-import {LearnItem} from '../models/LearnItem'
+import {sidesDefs, sidesDefsArray} from '../../core/sidesDefs'
+import {LearnItem} from '../../models/LearnItem'
 
 
 @Component({

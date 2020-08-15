@@ -2,7 +2,7 @@ import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Side, SidesDefs, sidesDefsArray, SideVal} from '../core/sidesDefs'
-import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {DurationMs, nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
 export type Rating = number

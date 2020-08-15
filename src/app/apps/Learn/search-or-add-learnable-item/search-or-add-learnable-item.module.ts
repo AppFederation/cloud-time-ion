@@ -7,12 +7,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { SearchOrAddLearnableItemPage } from './search-or-add-learnable-item.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
-import {ActionableItemComponent} from '../actionable-item/actionable-item.component'
+import {ActionableItemComponent} from './actionable-item/actionable-item.component'
 import {MicComponent} from './mic/mic.component'
 import {AngularFireStorageModule} from '@angular/fire/storage'
 import {SharedModule} from '../shared/shared.module'
 import {TestItemComponent} from './test-item/test-item.component'
-import {LearnStatsComponent} from '../learn-stats/learn-stats.component'
+import {LearnStatsComponent} from './learn-stats/learn-stats.component'
 
 const routes: Routes = [
   {
