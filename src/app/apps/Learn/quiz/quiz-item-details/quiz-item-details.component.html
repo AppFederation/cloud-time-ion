@@ -1,4 +1,9 @@
 <div *ngIf="item$ else noItem">
+
+  <app-time-passing
+    [isCountDown]="false"
+  ></app-time-passing>
+
   <app-play-button
     [item]="(item$ ?. locallyVisibleChanges$ | async) !"
     [itemId]="item$ ?. id"
