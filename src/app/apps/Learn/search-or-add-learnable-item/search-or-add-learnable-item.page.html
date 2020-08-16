@@ -5,14 +5,10 @@
     <div class="toolbar">
       <ion-button color="primary" routerLink="/" > < </ion-button>
       <span style="flex-grow: 1">Search or add</span>
-      <ion-button routerLink="/learn/quiz">
-        QUIZ
 
-        {{ ((quizService.getQuizStatus$() | async)?.itemsLeft) || "" }}
-        <span style="opacity: 50%; font-size: 60%">
-          &nbsp;{{ ((quizService.getQuizStatus$() | async)?.itemsLeftToday) || "" }}
-        </span>
-      </ion-button>
+      <app-quiz-button
+      ></app-quiz-button>
+
       <odm-sync-status></odm-sync-status>
     </div>
     <div

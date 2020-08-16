@@ -10,33 +10,33 @@ import {ItemSidesComponent} from './item-sides/item-sides.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {ReactiveFormsModule} from '@angular/forms'
 import {ToggleComponent} from './toggle/toggle.component'
+import {QuizButtonComponent} from './quiz-button/quiz-button.component'
+import {RouterModule} from '@angular/router'
 
 const exports = [
   SelfRatingComponent,
   PlayButtonComponent,
+  SideLabelComponent,
+  ItemSideComponent,
+  ItemSidesComponent,
+  ToggleComponent,
+  QuizButtonComponent,
 ]
 
 @NgModule({
-    declarations: [
-        ...exports,
-        SideLabelComponent,
-        ItemSideComponent,
-        ItemSidesComponent,
-        ToggleComponent,
-    ],
+  declarations: [
+    ...exports,
+  ],
   imports: [
     CommonModule,
     RatingsModule,
     IonicModule,
     EditorModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
-    exports: [
-        exports,
-        SideLabelComponent,
-        ItemSideComponent,
-        ItemSidesComponent,
-        ToggleComponent,
-    ],
+  exports: [
+    exports,
+  ],
 })
 export class SharedModule { }
