@@ -4,7 +4,9 @@ import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem} from './LearnItem'
 
-export class LearnItem$ extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService> {
+export class LearnItem$
+  extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService>
+{
 
     // TODO: operations should actually be performed on certain Version, for versioning, drafts, branches, conflict detection/resolution
 

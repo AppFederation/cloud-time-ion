@@ -1,8 +1,8 @@
 <ion-button routerLink="/learn/quiz">
   QUIZ
 
-  {{ ((quizService.getQuizStatus$() | async)?.itemsLeft) || "" }}
+  {{ ((quizService.quizStatus$ | async)?.itemsLeft) || "" }}
   <span style="opacity: 50%; font-size: 60%">
-          &nbsp;{{ ((quizService.getQuizStatus$() | async)?.itemsLeftToday) || "" }}
-        </span>
+    &nbsp;{{ ((quizService.quizStatus$ | async)?.itemsLeftToday) || "" }}
+  </span>
 </ion-button>

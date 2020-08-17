@@ -5,7 +5,7 @@ import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {minBy} from 'lodash'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs/internal/Observable'
-import {combineAll, map} from 'rxjs/operators'
+import {combineLatest} from 'rxjs'
 import {LearnItem, Rating} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
@@ -45,6 +45,7 @@ export class QuizStatus {
 })
 export class QuizService {
 
+  /** use PatchableObservable<TInMemData, TMemPatch> for bindability with ViewSyncer */
   options$ = new CachedSubject(new QuizOptions(false, true))
 
   constructor(
@@ -52,54 +53,58 @@ export class QuizService {
   ) {
   }
 
-  /** TODO make into a member field to ensure no-one calls this spuriously by accident */
-  getQuizStatus$(): Observable<QuizStatus> {
-    const quizOptions: QuizOptions = this.options$.lastVal ! // FIXME: combineLatest
-    return this.learnDoService.localItems$.pipe(
-      map((item$s: LearnItem$[]) => {
-        if ( quizOptions.onlyWithQA ) {
-          item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
-        }
-        // filter remaining until now
-        const nowMs: TimeMsEpoch = Date.now()
-        const pendingItems: LearnItem$[] = item$s.filter(item$ => {
-          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
-          // if ( ! (typeof msEpochRepetition === 'number') ) {
-          //   return false
-          // }
-          return msEpochRepetition <= nowMs
-        })
-        const endOfDayMs = Date.now() + hoursAsMs(12)
-        const pendingItemsTodayCount = countBy2(item$s, item$ => {
-          const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
-          return msEpochRepetition <= endOfDayMs
-        }) /* If it's low, we could suggest adding new material, based on how much time user wants to spend per day */
-        /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
-           summarize - estimatedTimeLeft
-         */
-        const nextItem$ = minBy(item$s,
-          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
-        const retStatus = new QuizStatus(
-          pendingItems.length,
-          nextItem$,
-          pendingItemsTodayCount,
-          isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
-          // pendingItems[0] /* TODO: ensure sorted or minBy */,
-        );
-
-        // if ( retStatus.itemsLeft ) {
-        //   debugLog(`quiz: pendingItems`, retStatus.itemsLeft) // this logs a lot
-        // }
-
-        return retStatus
-
-        // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
-        // return minBy(item$s,
-        //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
-      })
-    )
-    // return of(this.learnDoService.getItem$ById(`LearnItem__2020-06-24__23.56.06.054Z_`))
+  setOptions(newOptions: QuizOptions) {
+    this.options$.next(newOptions)
   }
+
+  /** TODO make into a member field to ensure no-one calls this spuriously by accident */
+  readonly quizStatus$: Observable<QuizStatus> = combineLatest(
+    // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
+    this.options$,
+    this.learnDoService.localItems$,
+    (quizOptions, item$s) => {
+      // debugLog(`quizStatus$ combineLatest`)
+      if ( quizOptions.onlyWithQA ) {
+        item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
+      }
+      // filter remaining until now
+      const nowMs: TimeMsEpoch = Date.now()
+      const pendingItems: LearnItem$[] = item$s.filter(item$ => {
+        const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
+        // if ( ! (typeof msEpochRepetition === 'number') ) {
+        //   return false
+        // }
+        return msEpochRepetition <= nowMs
+      })
+      const endOfDayMs = Date.now() + hoursAsMs(12)
+      const pendingItemsTodayCount = countBy2(item$s, item$ => {
+        const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
+        return msEpochRepetition <= endOfDayMs
+      }) /* If it's low, we could suggest adding new material, based on how much time user wants to spend per day */
+      /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
+         summarize - estimatedTimeLeft
+       */
+      const nextItem$ = minBy(item$s,
+        (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
+      const retStatus = new QuizStatus(
+        pendingItems.length,
+        nextItem$,
+        pendingItemsTodayCount,
+        isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
+        // pendingItems[0] /* TODO: ensure sorted or minBy */,
+      );
+
+      // if ( retStatus.itemsLeft ) {
+      //   debugLog(`quiz: pendingItems`, retStatus.itemsLeft) // this logs a lot
+      // }
+
+      return retStatus
+
+      // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
+      // return minBy(item$s,
+      //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
+    }
+  )
 
 
   calculateIntervalHours(rating: Rating): Duration {

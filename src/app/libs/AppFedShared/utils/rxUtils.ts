@@ -1,5 +1,7 @@
 import {debounceTime, throttleTime} from "rxjs/operators";
 import {async} from "rxjs/internal/scheduler/async";
+import {Observable} from 'rxjs/internal/Observable'
+import {CachedSubject} from './cachedSubject2/CachedSubject2'
 
 export function throttleTimeWithLeadingTrailing<T>(timeMs: number) {
   return debounceTime(timeMs)
@@ -17,4 +19,12 @@ export function throttleTimeWithLeadingTrailing<T>(timeMs: number) {
   //     trailing: true,
   //   }
   // )
+}
+
+export interface PatchableObservable<TInMemData, TMemPatch> {
+
+  locallyVisibleChanges$: CachedSubject<TInMemData | undefined | null>
+
+  patchThrottled(patch: TMemPatch): void
+
 }

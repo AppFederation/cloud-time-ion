@@ -4,6 +4,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 export type SideId = string
 
 export class Side {
+
   id ! : SideId
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang?: string // = 'en-US'

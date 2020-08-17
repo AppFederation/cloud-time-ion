@@ -29,17 +29,17 @@
   <div
     style="margin: 6px"
   >
+    <div>
+      <app-quiz-options *ngIf="showOptions">
+      </app-quiz-options>
+    </div>
+
     <app-quiz-tips
     ></app-quiz-tips>
 
     <app-time-passing
       [isCountDown]="false"
     ></app-time-passing>
-
-    <div>
-      <app-quiz-options *ngIf="showOptions">
-      </app-quiz-options>
-    </div>
 
     <p>
       <ion-note>

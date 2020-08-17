@@ -28,7 +28,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
-    public quizService: QuizService,
   ) { }
 
   ngOnInit() {

@@ -1,5 +1,6 @@
+
 <ion-item>
-  <ion-checkbox [(ngModel)]="dePrioritizeNewMaterial">
+  <ion-checkbox [formControl]="controls.dePrioritizeNewMaterial">
   </ion-checkbox>
   <ion-label>
     &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
@@ -7,7 +8,7 @@
 </ion-item>
 
 <ion-item>
-  <ion-checkbox [(ngModel)]="onlyWithQA">
+  <ion-checkbox [formControl]="controls.onlyWithQA">
   </ion-checkbox>
   <ion-label>
     &nbsp; ONLY WITH Q&A

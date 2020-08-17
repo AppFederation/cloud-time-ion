@@ -19,11 +19,7 @@ export class QuizPage implements OnInit {
 
   showOptions = false
 
-  status$ = this.quizService.getQuizStatus$()
-    // debugLog(`get status$()`)
-
-    // FIXME: this is being trigger many times
-  // }
+  status$ = this.quizService.quizStatus$
 
   constructor(
     public quizService: QuizService,

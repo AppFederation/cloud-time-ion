@@ -1,5 +1,5 @@
 /** Object-Document/Database Mapping item */
-import {throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
+import {PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
 import {debugLog} from "../utils/log";
 import {OdmService2} from './OdmService2'
@@ -31,6 +31,7 @@ export class OdmItem$2<
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
   >
+  implements PatchableObservable<TInMemData, TMemPatch>
 {
 
   /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"
