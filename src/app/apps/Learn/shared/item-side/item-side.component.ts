@@ -29,18 +29,21 @@ export class ItemSideComponent implements OnInit {
 
   tinyMceInit = {
     height: 500,
-    menubar: true,
+    // menubar: true,
+    menubar: false,
+    statusbar: false,
     plugins: [
       'advlist autolink lists image charmap print preview anchor' /* link */,
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
     ],
     paste_data_images: true /* https://www.tiny.cloud/docs/plugins/paste/ */,
-    paste_retain_style_properties: 'all', // https://www.tiny.cloud/docs/plugins/powerpaste/
+    paste_retain_style_properties: 'all', // https://www.tiny.cloud/docs/plugins/powerpaste/ - PowerPaste plugin - (30 eur/month?)
     /* https://www.tiny.cloud/pricing/ -- 30/month - BUT about pasting from Linguee - this should be automated by extension anyway, so probably not worth over-investing in tinymce for that
       see #LingueeService
     * */
 
+    // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
       'selectall copy paste | undo redo | formatselect | bold italic underline forecolor backcolor | \
       alignleft aligncenter alignright alignjustify | \
@@ -50,6 +53,12 @@ export class ItemSideComponent implements OnInit {
     entity_encoding: `raw`,
     content_style: '[contenteditable] { padding: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
       to be able to see cursor when it's close to focus border */,
+    setup: function (editor: any) {
+      editor.addShortcut(
+        'meta+e', 'Add yellow highlight to selected text.', function () {
+          editor.execCommand('hilitecolor', false , '#808000');
+        });
+    }
   }
 
   constructor() { }
