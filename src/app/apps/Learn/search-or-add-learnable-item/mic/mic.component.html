@@ -7,9 +7,12 @@
   <!--   (mousedown)="onMicClick()"
   (dragstart)="onMicClick()"
 -->
-  <ion-icon [icon]="isRecording ? 'recording' : 'mic-outline'"></ion-icon>
+  <ion-icon
+    [icon]="isRecording ? 'recording' : 'mic-outline'"
+    style="margin: 10px;"
+  ></ion-icon>
   &nbsp;
-  {{isRecording ? 'stop' : 'record'}}
+  {{isRecording ? 'stop' : ''}}
   <!-- TODO: record/*search*/entry when search/add via voice is implemented -->
 </ion-button>
 <ion-button
