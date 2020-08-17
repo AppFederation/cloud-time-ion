@@ -15,56 +15,60 @@
 
       <odm-sync-status></odm-sync-status>
     </div>
-    <div
-      style="display: flex; align-items: stretch"
-    >
-      <div style="flex-grow: 1">
-        <div>
-          <ion-textarea
-            [autoGrow]="true"
-            [(ngModel)]="search"
-            (ngModelChange)="onChangeSearch($event)"
-            placeholder="Search or add"
-            [debounce]="50"
-            inputmode="search"
-            (keyup.enter)="addTask()"
-            (keyup.meta.enter)="addToLearn()"
-            (keyup.alt.enter)="addToLearn()"
-            (keyup.control.enter)="addToLearn()"
-          ></ion-textarea>
-          <ion-button
-            [hidden]="! hasSearchText()"
-            (click)="clearInput()"
-          ><ion-icon name="close-outline"></ion-icon></ion-button>
-        </div>
-
-        <ion-button
-          [hidden]="! hasSearchText()"
-          [disabled]="! hasSearchText()"
-          (click)="addTask()"
-        >ADD TASK</ion-button>
-
-        <ion-button
-          [hidden]="! hasSearchText()"
-          [disabled]="! hasSearchText()"
-          (click)="addToLearn()"
-        >ADD TO LEARN</ion-button>
-        <ion-text style="color: gray">
-          <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
-          {{ items?.length }}
-          <app-learn-stats></app-learn-stats>
-        </ion-text>
-      </div>
-      <app-mic style="display: flex; align-items: stretch; padding-bottom: 8px;"></app-mic>
-
-    </div>
 
   </ion-toolbar>
+
+  <div
+    style="display: flex; align-items: stretch"
+  >
+    <div style="flex-grow: 1; color: white">
+      <div>
+        <ion-textarea
+          [autoGrow]="true"
+          [(ngModel)]="search"
+          (ngModelChange)="onChangeSearch($event)"
+          placeholder="Search or add"
+          [debounce]="50"
+          inputmode="search"
+          (keyup.enter)="addTask()"
+          (keyup.meta.enter)="addToLearn()"
+          (keyup.alt.enter)="addToLearn()"
+          (keyup.control.enter)="addToLearn()"
+        ></ion-textarea>
+        <ion-button
+          [hidden]="! hasSearchText()"
+          (click)="clearInput()"
+        ><ion-icon name="close-outline"></ion-icon></ion-button>
+      </div>
+
+      <ion-button
+        [hidden]="! hasSearchText()"
+        [disabled]="! hasSearchText()"
+        (click)="addTask()"
+      >ADD TASK</ion-button>
+
+      <ion-button
+        [hidden]="! hasSearchText()"
+        [disabled]="! hasSearchText()"
+        (click)="addToLearn()"
+      >ADD TO LEARN</ion-button>
+      <ion-text style="color: gray">
+        <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
+        {{ items?.length }}
+        <app-learn-stats></app-learn-stats>
+      </ion-text>
+    </div>
+    <app-mic style="display: flex; align-items: stretch; padding-bottom: 8px;"></app-mic>
+
+  </div>
 </ion-header>
 
 <ion-content
   (window:keyup.meta.enter)="addToLearn()"
 >
+<!--  <app-toggle option="listFilterItemNeedProcessing"-->
+<!--  >Need Processing</app-toggle>-->
+
 <!--  <ion-textarea-->
 <!--    [(ngModel)]="search"-->
 <!--    placeholder="Search or add"-->
