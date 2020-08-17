@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar>
-<!--    <ion-title style="display: flex; align-items: center">-->
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'"></ion-back-button>
+    </ion-buttons>
+
+    <!--    <ion-title style="display: flex; align-items: center">-->
 <!--    <div style="display: grid; grid-gap: 5px; grid-template-columns: auto fit-content() auto auto ">-->
     <div class="toolbar">
-      <ion-button color="primary" routerLink="/" > < </ion-button>
+<!--      <ion-button color="primary" routerLink="/" > < </ion-button>-->
       <span style="flex-grow: 1">Search or add</span>
 
       <app-quiz-button
