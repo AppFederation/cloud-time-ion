@@ -13,12 +13,17 @@
           &nbsp; CARD DETAILS
         </div>
 
-        <ion-button routerLink="/learn/quiz">QUIZ</ion-button>
+        <app-time-passing
+          style="font-size: 66%"
+          [isCountDown]="false"
+        ></app-time-passing>
+
+        <app-quiz-button
+        ></app-quiz-button>
 
         {{title}}
 
         <odm-sync-status></odm-sync-status>
-
 
       </div>
     </ion-title>
