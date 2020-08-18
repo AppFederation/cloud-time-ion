@@ -8,11 +8,14 @@ import {OptionsService} from '../../core/options.service'
 })
 export class ToggleComponent implements OnInit {
 
+  /* maybe better smaller building blocks and make this component to be custom form
+    control (more flexible in case I need some local options that are not to be saved)
+    and then have a wrapper component that would handle options
+  */
   @Input() option ! : string
 
   constructor(
     public optionsService: OptionsService,
-
   ) { }
 
   ngOnInit() {}

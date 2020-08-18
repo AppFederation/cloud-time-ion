@@ -52,15 +52,15 @@
 
         <span>
           | pending:
-          {{(status$ | async) ?. itemsLeft}}
+          {{ ( status$ | async ) ?. itemsLeft }}
           | next 12h:
-          {{(status$ | async) ?. itemsLeftToday}}
+          {{ ( status$ | async ) ?. itemsLeftToday }}
         </span>
       </ion-note>
     </p>
 
     <app-quiz-item-details
-      *ngFor="let item$ of [(status$ | async) ?. nextItem$]"
+      *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
       [item$]="item$"
     ><!-- the entire component will be swapped on new item -->
     </app-quiz-item-details>

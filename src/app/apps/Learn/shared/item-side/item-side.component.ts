@@ -29,8 +29,8 @@ export class ItemSideComponent implements OnInit {
 
   tinyMceInit = {
     height: 500,
-    // menubar: true,
-    menubar: false,
+    menubar: true,
+    // menubar: false,
     statusbar: false,
     plugins: [
       'advlist autolink lists image charmap print preview anchor' /* link */,
@@ -45,7 +45,7 @@ export class ItemSideComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'selectall copy paste | undo redo | formatselect | bold italic underline forecolor backcolor | \
+      'customInsertButton selectall copy paste | undo redo | formatselect | bold italic underline forecolor backcolor | \
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | help',
     skin: 'oxide-dark',
@@ -53,12 +53,24 @@ export class ItemSideComponent implements OnInit {
     entity_encoding: `raw`,
     content_style: '[contenteditable] { padding: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
       to be able to see cursor when it's close to focus border */,
-    setup: function (editor: any) {
+    setup: (editor: any) => {
       editor.addShortcut(
-        'meta+e', 'Add yellow highlight to selected text.', function () {
-          editor.execCommand('hilitecolor', false , '#808000');
+        'meta+e', 'Add yellow highlight to selected text.', () => {
+          this.highlightSelected(editor)
         });
+      editor.ui.registry.addButton('customInsertButton', {
+        /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
+        text: 'MARK',
+        onAction: () => {
+          this.highlightSelected(editor)
+          // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
+        }
+      });
     }
+  }
+
+  public highlightSelected(editor: any) {
+    editor.execCommand('hilitecolor', false, '#808000');
   }
 
   constructor() { }

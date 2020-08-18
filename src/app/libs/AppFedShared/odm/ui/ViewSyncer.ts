@@ -44,11 +44,11 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       if ( this.requireExplicitInitialValueTrigger && ! this.initialDataArrivalWasSetExplicitly ) {
         return
       }
-      debugLog(`this.formGroup.valueChanges.subscribe`, newValue, `isApplyingFromDb:`, this.isApplyingFromDb)
+      // debugLog(`this.formGroup.valueChanges.subscribe`, newValue, `isApplyingFromDb:`, this.isApplyingFromDb)
       // todo: check if self-patch pending ; or check timestamp difference ~500 ms or if value differed (though if it is converted to html, it will differ)
       if ( ! this.isApplyingFromDb && this.initialDataArrived ) {
         this.lastLocalEditByUserMs = Date.now()
-        debugLog('ViewSyncer - patchThrottled', newValue)
+        // debugLog('ViewSyncer - patchThrottled', newValue)
         this.item$.patchThrottled(newValue) // TODO: patchThrottled({cleanUp: true}) -- trim to null; maybe remove unused fields to save bytes and not put `null`
       }
     })

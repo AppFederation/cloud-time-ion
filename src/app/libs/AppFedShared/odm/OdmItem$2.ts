@@ -14,6 +14,10 @@ export class OdmInMemItem {
 
 export type OdmPatch<TData> = Partial<TData>
 
+/** Maybe have another conversion like OdmItem$W - W meaning writable,
+ * to not confuse with real observables; or another special char like EUR - editable, funny pun.
+ * Need to have a pronounceable version, like $ -> Stream
+ * */
 export class OdmItem$2<
   TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData extends OdmInMemItem,
