@@ -15,6 +15,8 @@ import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-uti
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture} from '../../../libs/AppFedShared/utils/time-utils'
+import {debounceTime} from 'rxjs/operators'
+import {throttleTimeWithLeadingTrailing} from '../../../libs/AppFedShared/utils/rxUtils'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -61,9 +63,10 @@ export class QuizService {
   readonly quizStatus$: Observable<QuizStatus> = combineLatest(
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
-    this.learnDoService.localItems$,
-    (quizOptions, item$s) => {
-      // debugLog(`quizStatus$ combineLatest`)
+    (this.learnDoService.localItems$.pipe(throttleTimeWithLeadingTrailing(2000)) as Observable<LearnItem$[]>),
+    // this.learnDoService.localItems$,
+    (quizOptions, item$s: LearnItem$[]) => {
+      debugLog(`quizStatus$ combineLatest`)
       if ( quizOptions.onlyWithQA ) {
         item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
       }
