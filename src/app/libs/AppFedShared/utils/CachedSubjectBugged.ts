@@ -3,7 +3,7 @@ import {ReplaySubject} from "rxjs/internal/ReplaySubject";
 /* !!!!! NOTE: for some reason it does not seem to fire when subscribed after value was next-ed.
 * use '../utils/cachedSubject2/CachedSubject2' instead
 *  */
-export class CachedSubject<T> extends ReplaySubject<T> {
+export class CachedSubjectBugged<T> extends ReplaySubject<T> {
 
   public lastVal ? : T
 

@@ -1,7 +1,7 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
 import {OdmItem} from "./OdmItem";
-import {CachedSubject} from "../utils/CachedSubject";
+import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
@@ -21,7 +21,7 @@ export abstract class OdmService<
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRaw>(this.injector, this.className)
 
-  localItems$ = new CachedSubject<T[]>([])
+  localItems$ = new CachedSubjectBugged<T[]>([])
 
   syncStatusService = this.injector.get(SyncStatusService)
 
@@ -90,8 +90,12 @@ export abstract class OdmService<
 
   private setBackendListener() {
     const service = this
+    debugLog(`BEFORE this.odmCollectionBackend.setListener({`, service.className)
     this.odmCollectionBackend.setListener({
+      // This could cause the race condition of items uninitialized when going from another route
       onAdded(addedItemId: OdmItemId<T>, newItemRawData: TRaw) {
+        // debugLog(`in onAdded: this.odmCollectionBackend.setListener({`, service.className)
+
         // debugLog('setBackendListener onAdded', ...arguments)
         let existingItem = service.getItemById(addedItemId)
         let items = service.localItems$.lastVal;
@@ -105,7 +109,7 @@ export abstract class OdmService<
         service.emitLocalItems()
       },
       onModified(modifiedItemId: OdmItemId<T>, modifiedItemRawData: TRaw) {
-        debugLog('setBackendListener onModified', ...arguments)
+        // debugLog('setBackendListener onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
         let existingItem = service.getItemById(modifiedItemId)
         if ( existingItem && existingItem.applyDataFromDbAndEmit ) {

@@ -24,6 +24,8 @@ export function errorAlert(...args: any) {
   console.error(prefix, ...args)
 }
 
+// idea: debugLogFirst / debugLogEveryX
+
 export function apfLogger(instance: any) {
   return console // HACK
 }

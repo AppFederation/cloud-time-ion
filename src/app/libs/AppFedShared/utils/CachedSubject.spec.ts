@@ -1,8 +1,8 @@
-import { CachedSubject } from './CachedSubject'
+import { CachedSubjectBugged } from './CachedSubjectBugged'
 
 describe('CachedSubject', () => {
   it('next', () => {
-    const cachedSubject = new CachedSubject()
+    const cachedSubject = new CachedSubjectBugged()
     cachedSubject.next('someVal')
     expect(cachedSubject.lastVal).toBe('someVal')
   })
