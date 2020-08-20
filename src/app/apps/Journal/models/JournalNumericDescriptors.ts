@@ -16,6 +16,8 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
 function jnd(antonymOrData?: string | {
   antonym?: string,
+  minLabel?: string,
+  maxLabel?: string,
   subTitle?: string;
   unit?: string;
   lowerIsBetter?: true,
@@ -35,11 +37,15 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   static instance = new JournalNumericDescriptors()
 
-  importance = jnd({subTitle: `of this journal entry`})
+  importance = jnd({subTitle: `of this journal entry`, minLabel: `routine`, maxLabel: `revolution`})
 
   mood = jnd()
   health = jnd()
   productivity = jnd()
+  creativity = jnd()
+  ideas = jnd()
+  execution = jnd()
+  procrastination = jnd()
   excitement = jnd()
   motivation = jnd()
   urgency = jnd()
@@ -94,6 +100,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
   'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
   'sleep quality' = jnd()
+  'sleep regularity' = jnd({searchTerms: `sleep pattern`})
   'sleep quantity' = jnd({
     unit: 'hours',
   })
@@ -112,7 +119,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'cravings for computer games' = jnd({
     lowerIsBetter: true,
   })
-  'cravings for computer alcohol' = jnd({
+  'cravings for food' = jnd({
+    lowerIsBetter: true,
+  })
+  'cravings for alcohol' = jnd({
     lowerIsBetter: true,
   })
   cognition = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})
@@ -131,6 +141,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /** **Will** Not **Want**: Self-Control Rather Than Motivation Explains the Female Advantage in Report Card Grades - https://pubmed.ncbi.nlm.nih.gov/25883522/*/
   'wanting' = jnd()
   routine = jnd()
+  day_routine = jnd()
   habits = jnd()
   punctuality = jnd()
   cleanliness = jnd()
@@ -147,6 +158,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   courage = jnd('fear') // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd()
   confidence = jnd('doubts')
+  'self-confidence' = jnd('doubts')
   'music enjoyment' = jnd()
   'music quantity' = jnd({lowerIsBetter: true})
   'music volume' = jnd({lowerIsBetter: true})
@@ -170,6 +182,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   relationships_with_partner = jnd()
   relationships_at_home = jnd()
   relationships_with_coworkers = jnd()
+  relationships_with_family = jnd()
+  relationships_with_close_family = jnd()
+  relationships_with_distant_family = jnd()
   alcohol = jnd({lowerIsBetter: true,})
   hangover_intensity = jnd({lowerIsBetter: true,})
   'physical exercises' = jnd()
@@ -203,6 +218,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   concern = jnd({moderateIsBetter: true})
   anxiety = jnd({lowerIsBetter: true})
   visualizing = jnd({moderateIsBetter: true})
+  long_term_vision = jnd({moderateIsBetter: true, searchTerms: `long-term vision`})
   fun = jnd()
   entertainment = jnd({moderateIsBetter: true})
   'guilt-free entertainment' = jnd({moderateIsBetter: true})
