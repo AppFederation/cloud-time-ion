@@ -12,13 +12,14 @@ export class LearnItem$
 
     setNewSelfRating(newSelfRatingFromUser: NumericPickerVal) {
         const item = this.currentVal
-        const previousRating = item?.lastSelfRating
+        const previousRating = item?.lastSelfRating // ?? 0
         let newEffectiveRating = newSelfRatingFromUser
         // repeatedly self-rating as 2 or 2.5, increases effective rating (confidence) :
         if (newEffectiveRating >= 2 /* in case of 2.5 (click 2 times) */ && (previousRating ?? 0) >= 2) {
             const enoughTimePassed = true // TODO: based on calculation
             if (enoughTimePassed) {
-                newEffectiveRating = previousRating ! + 1
+              const increaseBy = (newSelfRatingFromUser < 2.5) ? 1 : 2
+              newEffectiveRating = previousRating ! + increaseBy
             }
         }
 
