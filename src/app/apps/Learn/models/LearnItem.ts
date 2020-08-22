@@ -7,6 +7,14 @@ import {DurationMs, nullish} from '../../../libs/AppFedShared/utils/type-utils'
 export type LearnItemId = OdmItemId<LearnItem>
 export type Rating = number
 
+export class SelfRatingDescriptors {
+  none = 0
+  little = 0.5 // or "bad"
+  decent = 1
+  good = 1.5
+  very_good = 2.0
+  obvious = 3 // or 2.5
+}
 
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem {
@@ -18,7 +26,12 @@ export class LearnItem extends OdmInMemItem {
   whenDeleted?: Date
   lastSelfRating?: Rating
   whenLastSelfRated?: OdmTimestamp
+
+
   selfRatingsCount?: number
+
+  // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
+  // idea: quizTotalMs ?: DurationMs
 
   /* FIXME: this should not be optional */
   joinedSides?() {
