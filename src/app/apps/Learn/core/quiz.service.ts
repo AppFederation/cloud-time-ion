@@ -14,9 +14,11 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs, isInFuture} from '../../../libs/AppFedShared/utils/time-utils'
-import {debounceTime} from 'rxjs/operators'
+import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {debounceTime, shareReplay} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing} from '../../../libs/AppFedShared/utils/rxUtils'
+import {interval} from 'rxjs/internal/observable/interval'
+import {timer} from 'rxjs/internal/observable/timer'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -50,6 +52,10 @@ export class QuizService {
   /** use PatchableObservable<TInMemData, TMemPatch> for bindability with ViewSyncer */
   options$ = new CachedSubject(new QuizOptions(false, true))
 
+  showAnswer$ = new CachedSubject<boolean>(false)
+
+  showHint$ = new CachedSubject<boolean>(false)
+
   constructor(
     private learnDoService: LearnDoService,
   ) {
@@ -64,9 +70,10 @@ export class QuizService {
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
     (this.learnDoService.localItems$.pipe(throttleTimeWithLeadingTrailing(2000)) as Observable<LearnItem$[]>),
-    // this.learnDoService.localItems$,
-    (quizOptions, item$s: LearnItem$[]) => {
-      debugLog(`quizStatus$ combineLatest`)
+    timer(0, secondsAsMs(3)),
+      // this.learnDoService.localItems$,
+    (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
+      // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
       if ( quizOptions.onlyWithQA ) {
         item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
       }
@@ -106,8 +113,8 @@ export class QuizService {
       // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
       // return minBy(item$s,
       //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
-    }
-  )
+    },
+  ).pipe(shareReplay(1))
 
 
   calculateIntervalHours(rating: Rating): Duration {
@@ -151,5 +158,20 @@ export class QuizService {
     return ret
 
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
+  }
+
+  toggleShowAnswer() {
+    this.showAnswer$.next(! this.showAnswer$.lastVal)
+    this.showHint$.next(false)
+
+  }
+
+  toggleShowHint() {
+    this.showHint$.next(! this.showHint$.lastVal)
+  }
+
+  onNewQuestion() {
+    this.showAnswer$.next(false)
+    this.showHint$.next(false)
   }
 }

@@ -1,0 +1,35 @@
+<ion-button
+  (click)="showHint()"
+>HINT</ion-button>
+
+<ion-button
+  (click)="showAnswer()"
+>Show answer</ion-button>
+
+<ion-button
+  [routerLink]="'/learn/item/' + item$ ?. id"
+>EDIT</ion-button>
+
+
+<div
+  *ngIf="(showAnswer$ | async) || (showHint$ | async)"
+>
+  <ng-container
+    *ngIf="(showAnswer$ | async)"
+  >
+    <app-self-rating
+      [autoSave]="false"
+      [item$]="(quizStatus$ | async)?.nextItem$ !"
+      (numericValue)="selfRating = $event"
+    ></app-self-rating>
+
+    <ion-button
+      (click)="applyAndNext()"
+      style="width: 100%"
+    >
+      APPLY & NEXT
+    </ion-button>
+
+  </ng-container>
+
+</div>

@@ -1,55 +1,67 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
 import {Observable} from 'rxjs/internal/Observable'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
+import {QuizService} from '../../core/quiz.service'
+import {Subscription} from 'rxjs/internal/Subscription'
 
 @Component({
   selector: 'app-quiz-item-details',
   templateUrl: './quiz-item-details.component.html',
   styleUrls: ['./quiz-item-details.component.sass'],
 })
-export class QuizItemDetailsComponent implements OnInit {
-
-  public shouldShowAnswer = false
-
-  selfRating: NumericPickerVal | undefined = undefined
+export class QuizItemDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
   item$ ? : LearnItem$ | null
 
-  shouldShowHint = false
+  @Input()
+  ionContent: any
+
+  @ViewChild(`answers`) answersChild ! : ElementRef
+
 
   get itemVal$(): Observable<LearnItem | undefined | null> | undefined {
     return this.item$ ?. locallyVisibleChanges$
   }
 
-  constructor() {
+  get showAnswer$() { return this.quizService.showAnswer$ }
+
+  get showHint$() { return this.quizService.showHint$ }
+
+
+  private subscriptionToShowAnswer ? : Subscription
+
+  constructor(
+    public quizService: QuizService,
+  ) {
     debugLog('QuizItemDetailsComponent ctor')
   }
 
-  ngOnInit() {}
-
-  showAnswer() {
-    this.shouldShowHint = false
-    this.shouldShowAnswer = ! this.shouldShowAnswer
+  ngOnInit() {
+    this.quizService.onNewQuestion()
   }
 
-  showHint() {
-    this.shouldShowHint = true
-  }
-
-  // onChangeSelfRating($event: NumericPickerVal) {
+  // private scrollToBottom() {
+  //   // TODO: scroll to beginning of answer; as rate/next is gonna be in footer anyway
+  //   setTimeout(() => {
+  //     this.ionContent.scrollToBottom(300)
+  //   }, 0)
   // }
-  applyAndNext() {
-    this.reset()
 
-    this.item$ ?. setNewSelfRating(this.selfRating !)
+  ngOnDestroy(): void {
+    this.subscriptionToShowAnswer ?. unsubscribe()
   }
 
-  private reset() {
-    this.shouldShowAnswer = false
+  ngAfterViewInit(): void {
+    this.subscriptionToShowAnswer = this.quizService.showAnswer$.subscribe(showAnswer => {
+      if ( showAnswer ) {
+        setTimeout(() => {
+          this.answersChild.nativeElement.scrollIntoView()
+        }, 200)
+      }
+    })
   }
-
 }

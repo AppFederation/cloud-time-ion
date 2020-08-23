@@ -14,59 +14,34 @@
     [side]="(itemVal$ ! | async) ?. getSideWithQuestionOrFirstNonEmpty()"
   ></app-item-side-editor>
 
-  <ion-button
-    (click)="showHint()"
-  >HINT</ion-button>
-
-  <ion-button
-    (click)="showAnswer()"
-  >Show answer</ion-button>
-
-  <ion-button
-    [routerLink]="'/learn/item/' + item$ ?. id"
-  >EDIT</ion-button>
-
   <div
-    *ngIf="shouldShowAnswer || shouldShowHint"
+    #answers
   >
-    <!--    <app-item-sides-->
-    <!--      [item$]="(item$$ | async)"-->
-    <!--      [showQuestions]="false"-->
-    <!--      [omitEmpty]="true"-->
-    <!--    ></app-item-sides>-->
     <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
-<!--      <hr>-->
+      <!--      <hr>-->
       <app-side-label
-        *ngIf="shouldShowHint && ! shouldShowAnswer"
+        *ngIf="(showHint$ | async) && ! (showAnswer$ | async)"
         [side]="answerSide"
       ></app-side-label>
 
       <app-item-side-editor
-        *ngIf="shouldShowAnswer"
+        *ngIf="(showAnswer$ | async)"
         [item$]="item$ !"
         [side]="answerSide"
       ></app-item-side-editor>
 
+      <!--    <app-item-sides-->
+      <!--      [item$]="(item$$ | async)"-->
+      <!--      [showQuestions]="false"-->
+      <!--      [omitEmpty]="true"-->
+      <!--    ></app-item-sides>-->
+
     </ng-container>
   </div>
 
-  <ng-container
-    *ngIf="shouldShowAnswer"
-  >
-    <app-self-rating
-      [autoSave]="false"
-      [item$]="item$ !"
-      (numericValue)="selfRating = $event"
-    ></app-self-rating>
 
-    <ion-button
-      (click)="applyAndNext()"
-      style="width: 100%"
-    >
-      APPLY & NEXT
-    </ion-button>
-
-  </ng-container>
+<!--  <app-show-answer-and-rate-->
+<!--  ></app-show-answer-and-rate>-->
 
 </div>
 

@@ -8,16 +8,21 @@
         <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
 <!--        <ion-button routerLink="/learn"><</ion-button>-->
 
-        &nbsp;QUIZ&nbsp;
+        <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+
+        <app-time-passing
+          style="font-size: 75%"
+          [isCountDown]="false"
+        ></app-time-passing>
+
         <ion-icon class="action-icon"
                   (click)="onClickTimer($event)"
                   name="timer-outline"
         ></ion-icon>
 
-        <span class='action-icon'
-              (click)="showOptions = ! showOptions">
-          OPTIONS
-        </span>
+        <ion-icon class='action-icon' name="settings-outline"
+                  (click)="showOptions = ! showOptions">
+        ></ion-icon>
 
         <odm-sync-status></odm-sync-status>
 
@@ -27,7 +32,9 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content #ionContent
+             [scrollX]="true"
+>
   <div
     style="margin: 6px"
   >
@@ -36,22 +43,18 @@
       </app-quiz-options>
     </div>
 
-    <app-quiz-tips
-    ></app-quiz-tips>
-
-    <app-time-passing
-      [isCountDown]="false"
-    ></app-time-passing>
+<!--    <app-quiz-tips-->
+<!--    ></app-quiz-tips>-->
 
     <p>
-      <ion-note>
+      <ion-note style="text-transform: uppercase">
         next repetition:
         <app-time-point
           [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch((status$ | async) ?. nextItem$))"
         ></app-time-point>
 
         <span>
-          | pending:
+          | left:
           {{ ( status$ | async ) ?. itemsLeft }}
           | next 12h:
           {{ ( status$ | async ) ?. itemsLeftToday }}
@@ -62,6 +65,7 @@
     <app-quiz-item-details
       *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
       [item$]="item$"
+      [ionContent]="ionContent"
     ><!-- the entire component will be swapped on new item -->
     </app-quiz-item-details>
 
@@ -72,3 +76,11 @@
 
   </div>
 </ion-content>
+
+<ion-footer>
+
+  <app-show-answer-and-rate
+    [item$]="(quizService.quizStatus$ | async)?.nextItem$"
+  ></app-show-answer-and-rate>
+
+</ion-footer>

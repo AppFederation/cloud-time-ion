@@ -15,6 +15,7 @@ import {QuizItemDetailsComponent} from './quiz-item-details/quiz-item-details.co
 import {QuizTipsComponent} from './quiz-tips/quiz-tips.component'
 import {QuizOptionsComponent} from './quiz-options/quiz-options.component'
 import {TimersPageModule} from '../../../timers/timers.module'
+import {ShowAnswerAndRateComponent} from './show-answer-and-rate/show-answer-and-rate.component'
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
     QuizItemDetailsComponent,
     QuizTipsComponent,
     QuizOptionsComponent,
+    ShowAnswerAndRateComponent,
   ],
 })
 export class QuizPageModule {
