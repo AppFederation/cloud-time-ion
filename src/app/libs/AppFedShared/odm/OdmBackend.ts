@@ -1,12 +1,13 @@
 import {Injector} from "@angular/core";
 import {OdmCollectionBackend} from "./OdmCollectionBackend";
 import {OdmItem} from "./OdmItem";
-import {CachedSubject} from "../utils/CachedSubject";
+// import {CachedSubject} from "../utils/CachedSubject2";
 
 
 import * as firebase from 'firebase';
 
 import Timestamp = firebase.firestore.Timestamp
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export type OdmTimestamp = Timestamp
 
