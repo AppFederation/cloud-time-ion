@@ -51,11 +51,12 @@ export class ItemSideComponent implements OnInit {
     skin: 'oxide-dark',
     content_css: 'dark',  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    content_style: '[contenteditable] { padding: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
+    content_style: '[contenteditable] { padding-left: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
       to be able to see cursor when it's close to focus border */,
     setup: (editor: any) => {
       editor.addShortcut(
         'meta+e', 'Add yellow highlight to selected text.', () => {
+          // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/
           this.highlightSelected(editor)
         });
       editor.ui.registry.addButton('customInsertButton', {
