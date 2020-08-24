@@ -21,7 +21,11 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     odmBackend: OdmBackend,
   ) {
     super(injector, className, odmBackend)
+    debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
+      debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
+
+      // This could cause the race condition of items uninitialized when going from another route
       this.angularFirestore.firestore.collection(this.collectionName).onSnapshot(((snapshot: QuerySnapshot<TRaw>) => {
         // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
         // FIXME: let the service process in batch, for performance

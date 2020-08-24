@@ -1,7 +1,7 @@
 import {Injector} from "@angular/core";
 import {OdmItemId} from "./OdmItemId";
 import {OdmBackend} from "./OdmBackend";
-import {CachedSubject} from "../utils/CachedSubject";
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmCollectionBackendListener<
   TRaw,
