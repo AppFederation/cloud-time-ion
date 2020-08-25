@@ -100,6 +100,10 @@ export class LearnItem extends OdmInMemItem {
     return (this.getSidesWithAnswers().length > 0) && this.getQuestion();
   }
 
+  public needsProcessing() {
+    return ! this.hasQAndA()
+  }
+
   public getSideWithQuestion(): Side | null {
     for (let side of sidesDefsArray) {
       if (side.ask) {

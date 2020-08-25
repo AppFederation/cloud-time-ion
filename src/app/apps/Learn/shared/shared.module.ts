@@ -12,6 +12,7 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {ToggleComponent} from './toggle/toggle.component'
 import {QuizButtonComponent} from './quiz-button/quiz-button.component'
 import {RouterModule} from '@angular/router'
+import {ProcessButtonComponent} from './process-button/process-button.component'
 
 const exports = [
   SelfRatingComponent,
@@ -26,6 +27,7 @@ const exports = [
 @NgModule({
   declarations: [
     ...exports,
+    ProcessButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ const exports = [
   ],
   exports: [
     exports,
+    ProcessButtonComponent,
   ],
 })
 export class SharedModule { }
