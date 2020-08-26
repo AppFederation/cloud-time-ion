@@ -112,6 +112,17 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `nl`,
   })
+  ru = side({
+    defaultLang: 'ru-RU',
+    ask: false,
+    flag: `ru`,
+  })
+  cmn = side({
+    defaultLang: 'cmn',
+    ask: false,
+    flag: `cn`,
+  })
+  // IDEA: extra info that is not necessary for maximum self-rating ; could be ignored for scroll / buttons purposes
 }
 
 export const sidesDefs = new SidesDefs()
