@@ -5,6 +5,7 @@ import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
+import {LearnItem} from '../../models/LearnItem'
 
 export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
 
@@ -80,7 +81,7 @@ export class ItemSideComponent implements OnInit {
     if ( this.side ) {
       this.formControls = this.createFormControlDict()
       this.formGroup = new FormGroup(this.formControls)
-      this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, true) /* TODO might need to ignore other fields from db */
+      this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, true, this.side !. id as keyof LearnItem) /* TODO might need to ignore other fields from db */
     }
   }
 

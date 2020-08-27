@@ -13,7 +13,7 @@
     [init]="tinyMceInit"
     [inline]="true"
     [formControl]="formControls[side.id]"
-    (onInit)="logEditor('onInit'); viewSyncer.onInitialDataWasSet()"
+    (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
   >
     <!--     (onSetContent)="logEditor('onSetContent')"
     (onPostRender)="logEditor('onPostRender')"

@@ -2,6 +2,7 @@ import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
 import {debugLog} from '../../utils/log'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
+import {DurationMs, TimeMsEpoch} from '../../utils/type-utils'
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
 
@@ -9,9 +10,12 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
   public initialDataArrived = false
   public isApplyingFromDb = false
 
+  /** FIXME: cannot compare with lastVal coz we don't know in which field component is interested */
+  public lastValFromDb ? : TItemInMem | null
+
   // mapKeyToLastEditTime = new Map<TKey, number>()
 
-  lastLocalEditByUserMs = 0
+  lastLocalEditByUserMs: TimeMsEpoch = 0 // Date.now() //0 FIXME: if zero then as if ALWAYS ENOUGH TIME PASSED ! -- need to check together with initialDataHasArrived ; maybe allow undefined here (but watch out for NaN)
 
   MIN_INTERVAL_MS = 5_000
 
@@ -19,7 +23,14 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
     /** TODO make it FormControl in maybe ViewSyncer2 coz needs individual updates */
     public formGroup: AbstractControl,
     public item$: OdmItem$2<any, TItemInMem, any, any>,
-    public requireExplicitInitialValueTrigger ? : boolean)
+    public requireExplicitInitialValueTrigger ? : boolean,
+    /** Field in which we are interested;
+     * going forward, I should probably have a shared ViewSyncer and specifying field e.g. via FieldSyncer (OdmItemViewSyncer?).
+     * Need to refactor to fully incremental diff patches anyway, including deep patches. And to take into account fully/partially patching FormGroup,
+     * if necessary (or maybe just use FormControls always to avoid hassle with FormGroup; but to consider: whole form validation, but could be
+     * independent from ViewSyncer (just grouping the FormControl-s independently from ViewSyncer / OdmFieldViewSyncer)
+     * or PatchableObservableViewSyncer, to make it independent from ODM */
+    public fieldNameHack ? : keyof TItemInMem)
   {
     // console.log('ViewSyncer ctor', item$, item$.id)
     this.item$.locallyVisibleChanges$.subscribe((dataFromDb: TItemInMem | undefined | null) => {
@@ -27,14 +38,16 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       // console.log(`ViewSyncer locallyVisibleChanges$`, this.item$.id, dataFromDb)
       // this.formGroup.setValue(data) // FIXME: use setValue in case some field externally deleted, but need to fill missing fields using new util func ensureFieldsExistBasedOn
       // if ( ! this.initialDataArrived /* prevent self-overwrite; later could do smth like in OrYoL - minimum time delay from last edit, some seconds or even minutes*/ ) {
-      if ( this.hasEnoughTimePassedFromLastUserEditToApplyFromDb() ) {
+      if ( this.shouldApplyFromDb(dataFromDb) ) {
         if ( dataFromDb ) {
           // debugLog('ViewSyncer - item$.locallyVisibleChanges$.subscribe -- initialDataArrived = true', dataFromDb)
           this.initialDataArrived = true
         }
         try {
           this.isApplyingFromDb = true
+          debugLog(`ViewSyncer this.formGroup.patchValue(dataFromDb)`, this.fieldNameHack)
           this.formGroup.patchValue(dataFromDb) // TODO: handle nullish
+          this.lastValFromDb = dataFromDb
         } finally {
           this.isApplyingFromDb = false
         }
@@ -47,6 +60,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       // debugLog(`this.formGroup.valueChanges.subscribe`, newValue, `isApplyingFromDb:`, this.isApplyingFromDb)
       // todo: check if self-patch pending ; or check timestamp difference ~500 ms or if value differed (though if it is converted to html, it will differ)
       if ( ! this.isApplyingFromDb && this.initialDataArrived ) {
+        // debugLog(`this.lastLocalEditByUserMs`, this.lastLocalEditByUserMs, this)
         this.lastLocalEditByUserMs = Date.now()
         // debugLog('ViewSyncer - patchThrottled', newValue)
         this.item$.patchThrottled(newValue) // TODO: patchThrottled({cleanUp: true}) -- trim to null; maybe remove unused fields to save bytes and not put `null`
@@ -61,10 +75,29 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
 
   /* To prevent incoming changes overwriting user edit */
   private hasEnoughTimePassedFromLastUserEditToApplyFromDb() {
-    return (Date.now() - this.lastLocalEditByUserMs) > this.MIN_INTERVAL_MS
+    const msFromLastLocalEdit = Date.now() - this.lastLocalEditByUserMs
+    // debugLog(`msFromLastLocalEdit`, msFromLastLocalEdit, this.lastLocalEditByUserMs)
+    return msFromLastLocalEdit > this.MIN_INTERVAL_MS
   }
 
+  /* TODO: rename to ...WasSetInUI / inUi */
   onInitialDataWasSet() {
     this.initialDataArrivalWasSetExplicitly = true
+  }
+
+  private shouldApplyFromDb(newDataFromDb: TItemInMem | undefined | null): boolean {
+    /* NOTE: interestingly, setting empty string in tinymce only syncs to app in firefox when editor losing focus
+      not really, coz editing adding chars also does not sync the last chars until losing editor focus / could be related to throttleTime vs debounce?
+     */
+    if ( this.fieldNameHack && this.initialDataArrived ) {
+      const lastValFromDbElement = this.lastValFromDb?.[this.fieldNameHack]
+      const newDataFromDbElement = newDataFromDb?.[this.fieldNameHack]
+      if ( lastValFromDbElement === newDataFromDbElement ) {
+        // console.log(`shouldApplyFromDb: lastValFromDbElement equal`, this.fieldNameHack, lastValFromDbElement, newDataFromDbElement)
+        return false
+      }
+    }
+
+    return this.hasEnoughTimePassedFromLastUserEditToApplyFromDb()
   }
 }
