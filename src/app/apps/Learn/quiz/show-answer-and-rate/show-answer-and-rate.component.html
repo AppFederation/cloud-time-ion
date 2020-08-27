@@ -1,25 +1,37 @@
-<ion-button
-  (click)="showHint()"
->HINT</ion-button>
+<div
+  style="display: flex; align-items: center"
+>
+  <ion-button
+    (click)="showHint()"
+  >HINT</ion-button>
 
-<ion-button
-  (click)="showAnswer()"
->Show answer</ion-button>
+  <ion-button
+    (click)="showAnswer()"
+  >Show answer</ion-button>
 
-<ion-button
-  [routerLink]="'/learn/item/' + item$ ?. id"
->EDIT</ion-button>
+  <ion-button
+    [routerLink]="'/learn/item/' + item$ ?. id"
+  >
+    <ion-icon name="create-outline"></ion-icon>
+  </ion-button>
+
+  <app-time-passing
+    style="font-size: 95%; color: white; margin-left: 3px"
+    [isCountDown]="false"
+  ></app-time-passing>
+</div>
 
 
 <div
   *ngIf="(showAnswer$ | async) || (showHint$ | async)"
+  style="display: block"
 >
   <ng-container
     *ngIf="(showAnswer$ | async)"
   >
     <app-self-rating
       [autoSave]="false"
-      [item$]="(quizStatus$ | async)?.nextItem$ !"
+      [item$]="(quizStatus$ | async) ?. nextItem$ !"
       (numericValue)="selfRating = $event"
     ></app-self-rating>
 
