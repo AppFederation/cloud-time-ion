@@ -82,15 +82,15 @@
         [side]="side"
       ></app-item-side-editor>
 
-      <ion-textarea
-        *ngIf="showTextAreas"
-        [autoGrow]="true"
-        [rows]="2"
-        [formGroup]="formGroup"
-        [formControl]="formControls[side.id]"
-      >
-        <!-- [placeholder]="side.id" -->
-      </ion-textarea>
+<!--      <ion-textarea-->
+<!--        *ngIf="showTextAreas"-->
+<!--        [autoGrow]="true"-->
+<!--        [rows]="2"-->
+<!--        [formGroup]="formGroup"-->
+<!--        [formControl]="formControls[side.id]"-->
+<!--      >-->
+<!--        &lt;!&ndash; [placeholder]="side.id" &ndash;&gt;-->
+<!--      </ion-textarea>-->
     </div>
   </ng-container>
   <ng-template #notLoaded>
@@ -98,12 +98,12 @@
   </ng-template>
 
 
-  <ion-item>
-    <ion-checkbox [(ngModel)]="showTextAreas">
-    </ion-checkbox>
-    <ion-label>
-      &nbsp; SHOW TEXT AREAS
-    </ion-label>
-  </ion-item>
+<!--  <ion-item>-->
+<!--    <ion-checkbox [(ngModel)]="showTextAreas">-->
+<!--    </ion-checkbox>-->
+<!--    <ion-label>-->
+<!--      &nbsp; SHOW TEXT AREAS-->
+<!--    </ion-label>-->
+<!--  </ion-item>-->
 
 </ion-content>

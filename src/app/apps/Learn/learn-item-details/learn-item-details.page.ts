@@ -20,6 +20,7 @@ import {LearnItem$} from '../models/LearnItem$'
 })
 export class LearnItemDetailsPage implements OnInit {
 
+
   get val$(): Observable<LearnItem | nullish> {
     return this.item$.locallyVisibleChanges$
   }
@@ -27,16 +28,17 @@ export class LearnItemDetailsPage implements OnInit {
   // formControls: {[key: keyof SidesDefs]: FormControl} =
   formControls: {[key: string]: FormControl /* TODO: mapped type */} = mapFieldsToFormControls(sidesDefs)
 
-  formGroup = new FormGroup(this.formControls)
+  // formGroup = new FormGroup(this.formControls)
 
   window = window
+  // sidesDefsArray = [sidesDefs.title as any]
   sidesDefsArray = sidesDefsArray
 
   public id: LearnItemId = this.activatedRoute.snapshot.params['itemId']
   public item$: LearnItem$ = this.learnDoService.getItem$ById(this.id)
   public title? : string
 
-  public viewSyncer = new ViewSyncer(this.formGroup, this.item$)
+  // public viewSyncer = new ViewSyncer(this.formGroup, this.item$, true)
 
   constructor(
     public activatedRoute: ActivatedRoute,
