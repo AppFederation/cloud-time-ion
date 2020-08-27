@@ -75,12 +75,12 @@
     <!--  hoursDiff = {{ (quizService.calculateWhenNextRepetitionMsEpoch(item$ | async) - nowMs()) * 1000 * 3600 }}-->
 
   </div>
+
 </ion-content>
-
 <ion-footer>
-
   <app-show-answer-and-rate
-    [item$]="(quizService.quizStatus$ | async)?.nextItem$"
+    *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
+    [item$]="item$"
   ></app-show-answer-and-rate>
 
 </ion-footer>
