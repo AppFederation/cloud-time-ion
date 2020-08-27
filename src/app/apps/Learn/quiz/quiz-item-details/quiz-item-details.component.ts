@@ -59,7 +59,7 @@ export class QuizItemDetailsComponent implements OnInit, OnDestroy, AfterViewIni
     this.subscriptionToShowAnswer = this.quizService.showAnswer$.subscribe(showAnswer => {
       if ( showAnswer ) {
         setTimeout(() => {
-          this.answersChild.nativeElement.scrollIntoView()
+          this.answersChild?.nativeElement?.scrollIntoView()
         }, 200)
       }
     })
