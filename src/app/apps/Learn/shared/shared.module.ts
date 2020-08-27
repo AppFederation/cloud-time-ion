@@ -6,7 +6,6 @@ import {PlayButtonComponent} from './play-button/play-button.component'
 import {IonicModule} from '@ionic/angular'
 import {SideLabelComponent} from './side-label/side-label.component'
 import {ItemSideComponent} from './item-side/item-side.component'
-import {ItemSidesComponent} from './item-sides/item-sides.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {ReactiveFormsModule} from '@angular/forms'
 import {ToggleComponent} from './toggle/toggle.component'
@@ -19,7 +18,6 @@ const exports = [
   PlayButtonComponent,
   SideLabelComponent,
   ItemSideComponent,
-  ItemSidesComponent,
   ToggleComponent,
   QuizButtonComponent,
 ]
