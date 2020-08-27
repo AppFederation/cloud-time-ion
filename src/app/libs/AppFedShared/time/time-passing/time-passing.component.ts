@@ -22,6 +22,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
   ) {
     this.intervalHandle = setInterval(() => {
       this.update();
+      // could this be causing ExpressionChangedAfterChecked ?
     }, 500)
   }
 
@@ -31,6 +32,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
       this.msDiff = this.referenceTime.getTime() - Date.now()
     } else {
       this.msDiff = Date.now() - this.referenceTime.getTime()
+      // could this be causing ExpressionChangedAfterChecked ?
     }
     // this.changeDetectorRef.detectChanges()
     this.changeDetectorRef.markForCheck()
