@@ -4,7 +4,8 @@ import {JournalWritePage} from "./journal-write.page";
 
 const routes: Routes = [
   {
-    path: ':journalEntryId',
+    // path: ':journalEntryId',
+    path: 'new' /* not param yet to not lose content on switching routes */,
     component: JournalWritePage,
   }
 ];
