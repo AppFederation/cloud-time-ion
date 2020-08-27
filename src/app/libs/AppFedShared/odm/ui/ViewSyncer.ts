@@ -17,7 +17,8 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
 
   lastLocalEditByUserMs: TimeMsEpoch = 0 // Date.now() //0 FIXME: if zero then as if ALWAYS ENOUGH TIME PASSED ! -- need to check together with initialDataHasArrived ; maybe allow undefined here (but watch out for NaN)
 
-  MIN_INTERVAL_MS = 5_000
+  /** High number as hack for learnItem fields being overridden */
+  MIN_INTERVAL_MS: DurationMs = 10_000
 
   constructor(
     /** TODO make it FormControl in maybe ViewSyncer2 coz needs individual updates */
