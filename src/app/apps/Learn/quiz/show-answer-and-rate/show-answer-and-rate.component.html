@@ -1,22 +1,25 @@
 <div
-  style="display: flex; align-items: center"
+  style="display: flex; order: 1; align-items: stretch /* stretch *//*; height: 4.5rem;*/"
 >
   <ion-button
+    class="stretch-btn"
     (click)="showHint()"
   >HINT</ion-button>
 
   <ion-button
+    class="stretch-btn"
     (click)="showAnswer()"
   >Show answer</ion-button>
 
   <ion-button
+    class="stretch-btn"
     [routerLink]="'/learn/item/' + item$ ?. id"
   >
     <ion-icon name="create-outline"></ion-icon>
   </ion-button>
 
   <app-time-passing
-    style="font-size: 95%; color: white; margin-left: 3px"
+    style="font-size: 95%; color: white; margin-left: 3px; align-self: center"
     [isCountDown]="false"
   ></app-time-passing>
 </div>
@@ -24,7 +27,7 @@
 
 <div
   *ngIf="(showAnswer$ | async) || (showHint$ | async)"
-  style="display: block"
+  style="display: block; order: 0"
 >
   <ng-container
     *ngIf="(showAnswer$ | async)"
@@ -37,7 +40,7 @@
 
     <ion-button
       (click)="applyAndNext()"
-      style="width: 100%"
+      style="width: 100%; height: 3rem"
     >
       APPLY & NEXT
     </ion-button>
