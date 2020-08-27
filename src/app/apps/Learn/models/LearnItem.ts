@@ -60,7 +60,20 @@ export class LearnItem extends OdmInMemItem {
   /* FIXME: this should not be optional */
   joinedSides?() {
     // this seems very slow
-    return sidesDefsArray.map(side => this.getSideVal(side)).filter(_ => _).join(' ● ')
+    // const answerSides = this.getSidesWithAnswers()
+    return sidesDefsArray.map(side => {
+
+      const sideVal = this.getSideVal(side)
+      if (! sideVal ) {
+        return undefined
+      }
+
+      const substrLen = 1000
+      const sideValForDisplay = /*answerSides.includes(side) ?*/ sideVal?.substring(0, substrLen) +
+        (((sideVal?.length ?? 0) > substrLen) ? '...' : '')
+        // : sideVal
+      return sideValForDisplay
+    }).filter(_ => !! _).join(' ● ')
   }
 
   // getAnswers(): string[] {
