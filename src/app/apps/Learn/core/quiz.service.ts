@@ -16,7 +16,7 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
 import {debounceTime, shareReplay} from 'rxjs/operators'
-import {throttleTimeWithLeadingTrailing} from '../../../libs/AppFedShared/utils/rxUtils'
+import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs/internal/observable/interval'
 import {timer} from 'rxjs/internal/observable/timer'
 
@@ -69,7 +69,7 @@ export class QuizService {
   readonly quizStatus$: Observable<QuizStatus> = combineLatest(
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
-    (this.learnDoService.localItems$.pipe(throttleTimeWithLeadingTrailing(2000)) as Observable<LearnItem$[]>),
+    (this.learnDoService.localItems$.pipe(throttleTimeWithLeadingTrailing_ReallyThrottle(1000)) as Observable<LearnItem$[]>),
     timer(0, secondsAsMs(3)),
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
