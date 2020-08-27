@@ -12,6 +12,8 @@
 
   <div
     #answers
+    style="border: 3px darkgreen solid; border-radius: 6px; padding: 6px"
+    *ngIf="(showAnswer$ | async)"
   >
     <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
       <!--      <hr>-->
@@ -21,7 +23,6 @@
       ></app-side-label>
 
       <app-item-side-editor
-        *ngIf="(showAnswer$ | async)"
         [item$]="item$ !"
         [side]="answerSide"
       ></app-item-side-editor>
