@@ -72,7 +72,7 @@ export class ItemSideComponent implements OnInit {
   }
 
   public highlightSelected(editor: any) {
-    editor.execCommand('hilitecolor', false, /*'#808000'*/ '#FAB94A');
+    editor.execCommand('hilitecolor', false, /*'#808000'*/ '#ffa626');
   }
 
   constructor() { }
