@@ -43,6 +43,8 @@ export class OdmItem$2<
    **/
   currentVal: TInMemData | undefined | null = undefined
 
+  get val() { return this.currentVal }
+
   public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
   public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
   public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined | null>()

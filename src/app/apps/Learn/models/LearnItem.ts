@@ -137,7 +137,7 @@ export class LearnItem extends OdmInMemItem {
     return (this.getSidesWithAnswers().length > 0) && this.getQuestion();
   }
 
-  public needsProcessing() {
+  public needsProcessing(): boolean {
     return ! this.hasQAndA()
   }
 
