@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import {countBy} from 'lodash'
+import {countBy, isEqual} from 'lodash'
 import {LearnItem} from '../models/LearnItem'
 import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
-import {map} from 'rxjs/operators'
+import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
 import {Observable} from 'rxjs/internal/Observable'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
+import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
+import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {StatsHistoryService} from './stats-history.service'
 
 /** split into part that goes into DB */
 export class LearnStats {
@@ -16,8 +20,14 @@ export class LearnStats {
   atLeast1? = 0
   atLeast1_5? = 0
   atLeast2? = 0
+  /** to be stored in stats history */
   countWithRatingEqual?: Dictionary<number> = {}
   countWithRatingEqualOrHigher?: Dictionary<number> = {}
+}
+
+export class StoredLearnStats {
+  /* equivalent to countWithRatingEqual */
+  countByRating?: Dictionary<number> = {}
 }
 
 @Injectable({
@@ -32,7 +42,7 @@ export class LearnStatsService {
       }
       const items: (LearnItem|undefined|null)[] = item$s.map(item$ => item$.currentVal)
       return {
-        countWithRatingEqual: countBy(items, (item: LearnItem) => item ?. lastSelfRating),
+        countWithRatingEqual: this.getCountWithRatingEqual(items),
         countWithRatingPresent: countNotNullishBy(items, item => item ?. lastSelfRating),
         atLeast05: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 0.5) ?. length,
         atLeast1: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 1) ?. length,
@@ -42,10 +52,37 @@ export class LearnStatsService {
     })
   )
 
+  private getCountWithRatingEqual(items: (LearnItem | undefined | null)[]) {
+    return countBy(items, (item: LearnItem) => item?.lastSelfRating)
+  }
+
   constructor(
     private learnDoService: LearnDoService,
+    private statsHistoryService: StatsHistoryService,
   ) {
+    debugLog(`statsToSave init`)
 
+    /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(
+      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(2)),
+      filter(item$s => {
+        return !! item$s?.length; // skip the initial val that appears before data is loaded
+      }),
+      map(item$s => {
+        return {
+          countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal))
+        }
+      }),
+      distinctUntilChanged((stats1, stats2) => {
+        const equal = isEqual(stats1, stats2)
+        debugLog(`statsToSave$ isEqual`, equal, stats1, stats2)
+        return equal
+      }),
+      tap(stats => {
+        debugLog(`statsToSave$`, stats)
+      })
+    ).subscribe((stats) => {
+      this.statsHistoryService.newValue(stats)
+    })
   }
 
 }

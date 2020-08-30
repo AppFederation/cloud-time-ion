@@ -2,8 +2,15 @@ import {OdmService2} from './OdmService2'
 import {OdmBackend} from './OdmBackend'
 import {Injector} from '@angular/core'
 import {OdmItemId} from './OdmItemId'
+import {OdmItem$2} from './OdmItem$2'
+import {debugLog} from '../utils/log'
 
-export class HistoryService<TInMem, TRaw> extends OdmService2<HistoryService<TInMem, TRaw>,TInMem, TRaw, any>
+export class HistoryItem$ extends OdmItem$2<any, any, any, any> {
+
+}
+
+export class HistoryService<TInMem, TRaw = TInMem>
+  extends OdmService2<HistoryService<TInMem, TRaw>,TInMem, TRaw, any> /* TODO: compose, not inherit, to not expose tons of unneeded methods maybe */
 {
   constructor(
     protected injector: Injector,
@@ -13,12 +20,20 @@ export class HistoryService<TInMem, TRaw> extends OdmService2<HistoryService<TIn
   }
 
   public newValue(val: TInMem) {
-    const timestamp = OdmBackend.nowTimestamp()
+    const toSave = {
+      ...val
+    } /* copy to avoid disturbing distinctUntilChanged */
+    // (val as any).when = OdmBackend.nowTimestamp() // actually handled already: whenCreated
     // val.when = timestamp
-
+    // TODO: throttle and distinctUntilChanged
+    const histItem = new OdmItem$2(this as any, undefined, {})
+    debugLog(`HistoryService newValue`, val)
+    histItem.patchNow(toSave)
+    // this.createOdmItem$ForExisting(uuid)
   }
 
-  protected createOdmItem$ForExisting(itemId: OdmItemId<TRaw>, inMemVal: TInMem | undefined): any {
+  protected createOdmItem$ForExisting(itemId: OdmItemId<TRaw>, inMemVal: TInMem | undefined): HistoryItem$ {
+    return new HistoryItem$(this)
   }
   // throttle
 

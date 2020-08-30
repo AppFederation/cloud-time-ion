@@ -28,7 +28,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   public localUserSavesToThrottle$ = new CachedSubjectBugged<T>(this.asT)
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
-  public get asT() { return this as unknown as T}
+  public get asT() { return this as any as T}
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 

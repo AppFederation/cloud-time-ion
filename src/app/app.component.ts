@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {TimerNotificationsService} from "./core/timer-notifications.service";
 import {AuthService} from "./core/auth.service";
 import {SyncStatusService} from './libs/AppFedShared/odm/sync-status.service'
+import {LearnStatsService} from './apps/Learn/core/learn-stats.service'
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
     private statusBar: StatusBar,
     private timerNotificationService /* force the service to run */: TimerNotificationsService,
     private authService  /* force the service to run */: AuthService,
+    private learnStatsService  /* force the service to run */: LearnStatsService,
     public syncStatusService: SyncStatusService,
   ) {
     this.initializeApp();
