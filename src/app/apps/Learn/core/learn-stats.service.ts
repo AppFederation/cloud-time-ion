@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {countBy, isEqual} from 'lodash'
 import {LearnItem} from '../models/LearnItem'
-import {countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
+import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
@@ -28,6 +28,8 @@ export class LearnStats {
 export class StoredLearnStats {
   /* equivalent to countWithRatingEqual */
   countByRating?: Dictionary<number> = {}
+  countWithQA?: number
+  countWithAudio?: number
 }
 
 @Injectable({
@@ -68,9 +70,12 @@ export class LearnStatsService {
         return !! item$s?.length; // skip the initial val that appears before data is loaded
       }),
       map(item$s => {
-        return {
-          countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal))
+        const ret: StoredLearnStats = {
+          countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal)),
+          countWithQA: countBy2(item$s, item$ => !! item$.val?.hasQAndA()),
+          countWithAudio: countBy2(item$s, item$ => !! item$.val?.hasAudio),
         }
+        return ret
       }),
       distinctUntilChanged((stats1, stats2) => {
         const equal = isEqual(stats1, stats2)
