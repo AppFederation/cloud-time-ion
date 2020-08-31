@@ -4,9 +4,9 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {TimerNotificationsService} from "./core/timer-notifications.service";
-import {AuthService} from "./core/auth.service";
 import {SyncStatusService} from './libs/AppFedShared/odm/sync-status.service'
 import {LearnStatsService} from './apps/Learn/core/learn-stats.service'
+import {AuthService} from './auth/auth.service'
 
 @Component({
   selector: 'app-root',

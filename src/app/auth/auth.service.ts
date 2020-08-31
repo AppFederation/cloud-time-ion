@@ -7,17 +7,21 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import {errorAlert} from '../libs/AppFedShared/utils/log'
 import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {User} from 'firebase'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  authUser$ = new CachedSubject<any>();
+
+  authUser$ = new CachedSubject<User | null>();
+
   private _userIsAuthenticated = false;
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }
+
   constructor(
     private angularFirestore: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -25,6 +29,7 @@ export class AuthService {
   ) {
     this.afAuth.authState.subscribe(authState => {
       console.log('authState', authState);
+      this.authUser$.next(authState)
     });
     ignorePromise(
       /* TODO: only use this if User chooses this instead of Google, to avoid creating data somewhere where it is not gonna be accessible on another device */
@@ -36,6 +41,7 @@ export class AuthService {
   login() {
     this._userIsAuthenticated = true;
   }
+
   logout() {
     this._userIsAuthenticated = false;
     return this.afAuth.auth.signOut();
