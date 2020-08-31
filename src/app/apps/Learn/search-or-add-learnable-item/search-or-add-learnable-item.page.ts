@@ -128,9 +128,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   matchesSearch(item: LearnItem) {
-    if ( item.hasQAndA() ) {
-      return false
-    }
+    // if ( item.hasQAndA() ) {
+    //   return false
+    // }
+    // strip html: https://stackoverflow.com/questions/822452/strip-html-from-text-javascript
     if ( ! item ) {
       return false
     }
