@@ -11,6 +11,7 @@ import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.mod
 import {SharedModule} from '../shared/shared.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {LearnItemDetailsHintsComponent} from './learn-item-details-hints/learn-item-details-hints.component'
+import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
     RatingsModule,
     SharedModule,
     EditorModule,
+    TimeModule,
   ],
   declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent],
 })

@@ -22,7 +22,7 @@ let exports = [
   imports: [
     CommonModule,
     SharedModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot() /* FIXME */,
   ],
   exports: exports,
 })
