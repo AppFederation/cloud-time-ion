@@ -69,7 +69,9 @@ export class QuizService {
   readonly quizStatus$: Observable<QuizStatus> = combineLatest(
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
-    (this.learnDoService.localItems$.pipe(throttleTimeWithLeadingTrailing_ReallyThrottle(1000)) as Observable<LearnItem$[]>),
+    (this.learnDoService.localItems$.pipe(
+      throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
+    ),
     timer(0, secondsAsMs(3)),
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
