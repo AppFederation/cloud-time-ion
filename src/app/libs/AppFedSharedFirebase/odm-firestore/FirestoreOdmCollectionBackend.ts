@@ -19,6 +19,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     injector: Injector,
     className: string,
     odmBackend: OdmBackend,
+    // listenToCollection = true,
   ) {
     super(injector, className, odmBackend)
     debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
