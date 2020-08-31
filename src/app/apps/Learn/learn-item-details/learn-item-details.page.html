@@ -41,7 +41,7 @@
   ></app-learn-item-details-hints>
 
   <ng-container
-    *ngIf="viewSyncer.initialDataArrived else notLoaded"
+    *ngIf="(item$.locallyVisibleChanges$ | async) else notLoaded"
   >
 
 <!--    <div>-->
