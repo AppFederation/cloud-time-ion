@@ -1,8 +1,7 @@
 import {IonicModule} from '@ionic/angular';
 import {RouterModule} from '@angular/router';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 import {MomentModule} from 'ngx-moment';
 import {TimersPageComponent} from './timers-page.component';
 import {TimerItemComponent} from "./timer-item/timer-item.component";
@@ -19,19 +18,26 @@ import {TimeIonicModule} from "../libs/AppFedSharedIonic/time/time-ionic.module"
     IonicModule,
     CommonModule,
     MomentModule,
-    RouterModule.forChild([{ path: '', component: TimersPageComponent }]),
+    RouterModule.forChild([ { path: '', component: TimersPageComponent } ]),
     SharedModule,
     IonicModule.forRoot(),
     TimeModule,
     TimeIonicModule,
   ],
   declarations: [
-    TimersPageComponent, TimerItemComponent, TimersListComponent, TimerEndedComponent,
-    TimerDetailsComponent, TimeLeftOrDurationComponent
+    TimersPageComponent,
+    TimerItemComponent,
+    TimersListComponent,
+    TimerEndedComponent,
+    TimerDetailsComponent,
+    TimeLeftOrDurationComponent,
   ],
   entryComponents: [
     TimerDetailsComponent,
     TimerEndedComponent,
+  ],
+  exports: [
+    TimerItemComponent,
   ],
 })
 export class TimersPageModule {}
