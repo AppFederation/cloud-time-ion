@@ -92,27 +92,40 @@
 <!--    ></app-actionable-item>-->
 
 <!--  </ng-container>-->
+  <ng-container *ngIf="(! (authService.authUser$ | async)) else loggedIn">
 
-  <ion-virtual-scroll
+    <div style="display: flex; flex-direction: row; align-items: center; margin: 10px">
+      Please &nbsp;
+      <ion-button (click)="authService.logInViaGoogle()">LOG IN</ion-button>
+
+    </div>
+
+  </ng-container>
+
+  <ng-template #loggedIn>
+
+
+    <ion-virtual-scroll
       [items]="filteredItems"
       [approxItemHeight]="31"
       [trackBy]="trackByFn"
-  >
-    <div *virtualItem="let currItem">
-      <app-actionable-item
-        [item]="currItem"
-      ></app-actionable-item>
-      <!-- [hidden]="! matchesSearch(currItem)"-->
-    </div>
-  </ion-virtual-scroll>
+    >
+      <div *virtualItem="let currItem">
+        <app-actionable-item
+          [item]="currItem"
+        ></app-actionable-item>
+        <!-- [hidden]="! matchesSearch(currItem)"-->
+      </div>
+    </ion-virtual-scroll>
 
-  <!--
-     ion-virtual-scroll BUGS:
-     * items vertically on top of each other (wrong height, with item with audio)
-     * not reacting to delete (when deleting item -> changing route) until scrolled
-     * blinking when items array changed (check trackBy again)
-     * almost-invisible (black) scrollbar
-     * distracting broad light-colored scrollbar
-  -->
+    <!--
+       ion-virtual-scroll BUGS:
+       * items vertically on top of each other (wrong height, with item with audio)
+       * not reacting to delete (when deleting item -> changing route) until scrolled
+       * blinking when items array changed (check trackBy again)
+       * almost-invisible (black) scrollbar
+       * distracting broad light-colored scrollbar
+    -->
+  </ng-template>
 
 </ion-content>

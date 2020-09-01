@@ -24,7 +24,11 @@ export class FirestoreOdmBackend extends OdmBackend {
     this.angularFirestore.firestore.enablePersistence().then(() => {
       // window.alert('persistence enabled')
       debugLog('Firestore persistence enabled')
-      this.backendReady$.nextWithCache(true)
+      this.authService.authUser$.subscribe(user => {
+        if ( user ) {
+          this.backendReady$.nextWithCache(true)
+        }
+      })
     }).catch((caught) => {
       errorAlert('Firestore enablePersistence error', caught)
     })

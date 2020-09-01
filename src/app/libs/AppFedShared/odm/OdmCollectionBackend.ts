@@ -2,6 +2,7 @@ import {Injector} from "@angular/core";
 import {OdmItemId} from "./OdmItemId";
 import {OdmBackend} from "./OdmBackend";
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {AuthService} from '../../../auth/auth.service'
 
 export abstract class OdmCollectionBackendListener<
   TRaw,
@@ -25,6 +26,8 @@ export abstract class OdmCollectionBackend<
   collectionBackendReady$ = this.odmBackend.backendReady$
 
   dbCollection$ = new CachedSubject<TRaw[]>([])
+
+  authService = this.injector.get(AuthService)
 
   protected constructor(
     protected injector: Injector,

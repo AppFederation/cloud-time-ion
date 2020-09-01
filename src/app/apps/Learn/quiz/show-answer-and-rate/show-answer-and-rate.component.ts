@@ -41,6 +41,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   // onChangeSelfRating($event: NumericPickerVal) {
   // }
+
   applyAndNext() {
     this.item$ ?. setNewSelfRating(this.selfRating !)
   }

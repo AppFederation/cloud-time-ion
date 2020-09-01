@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore'
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 // import sortBy from 'lodash/sortBy'
 import {sortBy, countBy} from 'lodash'
@@ -9,6 +9,7 @@ import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {QuizService} from '../core/quiz.service'
+import {AuthService} from '../../../auth/auth.service'
 
 @Component({
   selector: 'app-search-or-add-learnable-item',
@@ -19,15 +20,17 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   search: string = ''
 
-  coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-    /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
+  coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
+
+  get authUser() { return this.authService.authUser$.lastVal?.uid }
 
   constructor(
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -44,13 +47,22 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     //   // this.items = sortBy(this.items, field<LearnItem>(`whenAdded`)).reverse()
     //   // console.log(`snapshotChanges`, items.length)
     // })
+    this.authService.authUser$.subscribe(user => {
+        if ( user ) {
+          this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
+            , coll => coll.where(`owner`, `==`, user?.uid))
+          // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
+          this.coll.valueChanges({idField: 'id'}).subscribe(items => {
+            items = items.map(item => Object.assign(new LearnItem(), item))
+            this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
 
-    this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-      items = items.map(item => Object.assign(new LearnItem(), item))
-      this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+            this.reFilter()
+          })
 
-      this.reFilter()
+        }
+
     })
+
 
   }
 
@@ -105,6 +117,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       overlay.title = (string || '')./*?.*/trim() /*?? null*/
     }
     return Object.assign({
+      owner: this.authUser,
       whenAdded: new Date(),
       isTask: isTask ? true : null,
     }, overlay)

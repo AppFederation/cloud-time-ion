@@ -11,7 +11,7 @@ export class StatsHistoryService extends HistoryService<StoredLearnStats> {
 
   constructor(
     // private learnStatsService: LearnStatsService,
-    private authService: AuthService /* */,
+    // private authService: AuthService /* */,
     injector: Injector,
   ) {
     super(injector, 'LearnStatsHistory')

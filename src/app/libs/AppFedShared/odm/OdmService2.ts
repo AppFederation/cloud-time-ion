@@ -6,6 +6,7 @@ import {SyncStatusService} from './sync-status.service'
 import {OdmItem$2, OdmPatch} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {AuthService} from '../../../auth/auth.service'
 
 export abstract class OdmService2<
   TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
@@ -28,10 +29,12 @@ export abstract class OdmService2<
 
   /* Unused? */
   throttleIntervalMs = 500
+
   // TODO: throttleLocalUiMs = 200
   throttleSaveToDbMs = 3000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
 
   odmBackendFactory = this.injector.get(OdmBackend)
+
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(this.injector, this.className)
 
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
@@ -42,6 +45,8 @@ export abstract class OdmService2<
   mapIdToItem$ = new Map<TItemId, TOdmItem$>()
 
   syncStatusService = this.injector.get(SyncStatusService)
+
+  authService = this.injector.get(AuthService)
 
   protected constructor(
     protected injector: Injector,

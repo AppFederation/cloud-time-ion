@@ -6,10 +6,13 @@ import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
+export type UserId = string
+
 export class OdmInMemItem {
   public whenCreated?: OdmTimestamp
   public whenLastModified?: OdmTimestamp
   public isDeleted?: OdmTimestamp
+  public owner?: UserId
 }
 
 export type OdmPatch<TData> = Partial<TData>
@@ -78,6 +81,7 @@ export class OdmItem$2<
   }
 
   private setIdAndWhenCreatedIfNecessary() {
+    this.currentVal ! . owner = this.odmService.authService.authUser$?.lastVal?.uid
     this.currentVal ! . whenCreated = this.currentVal ! . whenCreated || OdmBackend.nowTimestamp()
     if ( ! this.id ) {
       this.id = this.generateItemId()
@@ -97,6 +101,8 @@ export class OdmItem$2<
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     this.onModified()
+    console.log(`patchThrottled`)
+
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
