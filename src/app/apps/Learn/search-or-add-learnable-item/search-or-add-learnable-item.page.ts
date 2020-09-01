@@ -10,6 +10,8 @@ import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {QuizService} from '../core/quiz.service'
 import {AuthService} from '../../../auth/auth.service'
+import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {User} from 'firebase'
 
 @Component({
   selector: 'app-search-or-add-learnable-item',
@@ -23,6 +25,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
+  private patchingOwnerHasRun = false
 
   get authUser() { return this.authService.authUser$.lastVal?.uid }
 
@@ -57,13 +60,32 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
             this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
 
             this.reFilter()
+
+            this.patchOwnersIfNecessary(user, items)
           })
-
         }
-
     })
+  }
 
+  private patchOwnersIfNecessary(user: User, items: any[]) {
+    debugLog(`patchOwnersIfNecessary:`)
 
+    if ((!this.patchingOwnerHasRun) && (user.uid === `7Tbg0SwakaVoCXHlu1rniHQ6gwz1`)) {
+      let count = 0
+      for (let item of items) {
+        debugLog(`owner`, item.owner)
+        if ((!item.owner) || item.owner === `zzzowner` || item.owner === `5cXdqI2HKIYgbqWlJ8Pm372UpcI2`) {
+          this.coll.doc(item.id).update({
+            owner: user.uid,
+          })
+          if (count % 10 === 0) {
+            debugLog(`patching owner`, count)
+          }
+          ++count
+        }
+      }
+      this.patchingOwnerHasRun = true
+    }
   }
 
   add(string?: string, isTask?: boolean) {

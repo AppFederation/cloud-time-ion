@@ -28,7 +28,7 @@ export class AuthService {
     private Router: Router
   ) {
     this.afAuth.authState.subscribe(authState => {
-      console.log('authState', authState);
+      console.log('authState', authState?.uid, authState);
       this.authUser$.next(authState)
     });
     // ignorePromise(
