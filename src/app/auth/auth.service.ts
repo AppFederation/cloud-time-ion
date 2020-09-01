@@ -31,11 +31,11 @@ export class AuthService {
       console.log('authState', authState);
       this.authUser$.next(authState)
     });
-    ignorePromise(
-      /* TODO: only use this if User chooses this instead of Google, to avoid creating data somewhere where it is not gonna be accessible on another device */
-      this.afAuth.auth.signInAnonymously(),
-      'this.angularFireAuth.auth.signInAnonymously()'
-    );
+    // ignorePromise(
+    //   /* TODO: only use this if User chooses this instead of Google, to avoid creating data somewhere where it is not gonna be accessible on another device */
+    //   this.afAuth.auth.signInAnonymously(),
+    //   'this.angularFireAuth.auth.signInAnonymously()'
+    // );
   }
 
   login() {
@@ -50,14 +50,14 @@ export class AuthService {
   signUpWithEmailAndPassword(email: string, password: string) {
     return this.afAuth.auth
       .createUserWithEmailAndPassword(email, password)
-      .then(response => (this.login(), this.Router.navigateByUrl('/timers') /* TODO why comma expression */))
+      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers') /!* TODO why comma expression *!/)*/))
       .catch(error => console.log('Error on creating account', error));
   }
 
   logInViaEmailAndPassword(email: string, password: string) {
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
-      .then(response => (this.login(), this.Router.navigateByUrl('/timers')))
+      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers'))*/))
       .catch(error => console.log('Error logging in', error));
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
     const authProvider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth
       .signInWithPopup(authProvider)
-      .then(response => (this.login(), this.Router.navigateByUrl('/timers'))
+      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
         /* TODO: emit authUser$ */
       )
       .catch(error => errorAlert('Error logging in via Google ' + error));
