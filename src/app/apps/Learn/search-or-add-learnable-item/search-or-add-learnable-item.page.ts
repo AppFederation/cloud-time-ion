@@ -27,7 +27,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   filteredItems: LearnItem[] = []
   private patchingOwnerHasRun = false
 
-  get authUser() { return this.authService.authUser$.lastVal?.uid }
+  get authUserId() { return this.authService.authUser$.lastVal?.uid }
 
   constructor(
     protected angularFirestore: AngularFirestore,
@@ -61,7 +61,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
             this.reFilter()
 
-            this.patchOwnersIfNecessary(user, items)
+            // this.patchOwnersIfNecessary(user, items)
           })
         }
     })
@@ -101,6 +101,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
     const newItem = this.createItemFromInputString(string, isTask)
     if ( newItem ) {
+      debugLog(`add item:`, newItem)
       this.syncStatusService.handleSavingPromise(
         this.coll.add(newItem))
       this.clearInput()
@@ -139,7 +140,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       overlay.title = (string || '')./*?.*/trim() /*?? null*/
     }
     return Object.assign({
-      owner: this.authUser,
+      owner: this.authUserId,
       whenAdded: new Date(),
       isTask: isTask ? true : null,
     }, overlay)
