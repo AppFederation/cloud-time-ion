@@ -1,5 +1,23 @@
 <h3
   (click)="logIn()"
 >
-  Sync Status
+  SYNC STATUS
 </h3>
+
+{{(authService.authUser$ | async)?.email}}
+
+<p>
+  <ng-container
+    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount let count; else allSynced"
+  >
+    TO UPLOAD: {{count}}
+
+  </ng-container>
+
+  <ng-template
+    #allSynced
+  >
+    ALL SYNCED!
+  </ng-template>
+
+</p>

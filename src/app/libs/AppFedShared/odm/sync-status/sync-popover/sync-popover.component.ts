@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../../../auth/auth.service'
+import {SyncStatusService} from '../../sync-status.service'
 
 @Component({
   selector: 'app-sync-popover',
@@ -10,6 +11,7 @@ export class SyncPopoverComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
+    public syncStatusService: SyncStatusService,
   ) { }
 
   ngOnInit() {}
