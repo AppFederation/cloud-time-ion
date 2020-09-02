@@ -47,9 +47,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         // FIXME: only emit after processing finished
 
       }) as any /* workaround after strict settings */)
-      this.collection().valueChanges().subscribe((coll: TRaw[]) => {
-        this.dbCollection$.nextWithCache(coll)
-      })
+      // this.collection().valueChanges().subscribe((coll: TRaw[]) => {
+      //   this.dbCollection$.nextWithCache(coll)
+      // })
     })
   }
 
