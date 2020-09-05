@@ -92,6 +92,12 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `de`,
   })
+  de_example = side({
+    defaultLang: 'de-DE',
+    ask: false /* not asking German for now, to force recall */,
+    flag: `de`,
+    flagTransparent: true,
+  })
   pt = side({
     defaultLang: 'pt-PT',
     ask: false /* not asking German for now, to force recall */,
