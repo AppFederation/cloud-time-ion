@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LearnStatsChartComponent } from './learn-stats-chart.component';
+import { StackedInteractiveChartComponent } from './stacked-interactive-chart.component';
 
-describe('LearnStatsChartComponent', () => {
-  let component: LearnStatsChartComponent;
-  let fixture: ComponentFixture<LearnStatsChartComponent>;
+describe('StackedInteractiveChartComponent', () => {
+  let component: StackedInteractiveChartComponent;
+  let fixture: ComponentFixture<StackedInteractiveChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LearnStatsChartComponent ],
+      declarations: [ StackedInteractiveChartComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LearnStatsChartComponent);
+    fixture = TestBed.createComponent(StackedInteractiveChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
