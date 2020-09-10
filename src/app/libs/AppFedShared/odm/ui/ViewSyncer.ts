@@ -3,6 +3,7 @@ import {OdmItem$2} from '../OdmItem$2'
 import {debugLog} from '../../utils/log'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 import {DurationMs, TimeMsEpoch} from '../../utils/type-utils'
+import {PatchableObservable} from '../../utils/rxUtils'
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
 
@@ -23,9 +24,10 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
   constructor(
     /** TODO make it FormControl in maybe ViewSyncer2 coz needs individual updates */
     public formGroup: AbstractControl,
-    public item$: OdmItem$2<any, TItemInMem, any, any>,
+    public item$: PatchableObservable<TItemInMem> /*OdmItem$2<any, TItemInMem, any, any>*/,
     public requireExplicitInitialValueTrigger ? : boolean,
-    /** Field in which we are interested;
+    /**
+     * Field in which we are interested;
      * going forward, I should probably have a shared ViewSyncer and specifying field e.g. via FieldSyncer (OdmItemViewSyncer?).
      * Need to refactor to fully incremental diff patches anyway, including deep patches. And to take into account fully/partially patching FormGroup,
      * if necessary (or maybe just use FormControls always to avoid hassle with FormGroup; but to consider: whole form validation, but could be
