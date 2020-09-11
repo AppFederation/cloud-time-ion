@@ -55,7 +55,7 @@
 
         <span>
           | left:
-          {{ ( status$ | async ) ?. itemsLeft }}
+          <strong style="font-size: 130%; color: white">{{ ( status$ | async ) ?. itemsLeft }}</strong>
           | next 12h:
           {{ ( status$ | async ) ?. itemsLeftToday }}
         </span>
