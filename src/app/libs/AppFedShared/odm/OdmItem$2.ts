@@ -1,5 +1,5 @@
 /** Object-Document/Database Mapping item */
-import {PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
+import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
 import {debugLog} from "../utils/log";
 import {OdmService2} from './OdmService2'
@@ -15,11 +15,14 @@ export class OdmInMemItem {
   public owner?: UserId
 }
 
-export type OdmPatch<TData> = Partial<TData>
+export type OdmPatch<TData> = DictPatch<TData>
 
 /** Maybe have another conversion like OdmItem$W - W meaning writable,
  * to not confuse with real observables; or another special char like EUR - editable, funny pun.
- * Need to have a pronounceable version, like $ -> Stream
+ * Need to have a pronounceable version, like is the case with $ -> Stream
+ *
+ * In CoDaDriS terms, OdmItem$2 would have been ObjectAtBranch (not Vlid - Vlid is just a wrapper around ItemId)
+ * where branch is e.g. draft/published. And the $ listens to changes to the item on a particular branch.
  * */
 export class OdmItem$2<
   TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
@@ -42,6 +45,7 @@ export class OdmItem$2<
 {
 
   /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"
+   * or realizing we don't have access
    * or empty value arrived
    **/
   currentVal: TInMemData | undefined | null = undefined
