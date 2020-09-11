@@ -3,6 +3,7 @@
  */
 import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
 import {FormControl} from '@angular/forms'
+import {DictPatch} from './rxUtils'
 
 export interface Dict<TVal, /*TKey = string*/> {
   [key: string /*TKey*/]: TVal
@@ -63,6 +64,10 @@ export function mapFieldsToFormControls(srcObj: any) {
   return mapFields(srcObj, () => {
     return new FormControl()
   })
+}
+
+export function patch<T>(objToPatch: T, patch: DictPatch<T>) {
+  return Object.assign(objToPatch, patch)
 }
 
 // export function ensureFieldsExistBasedOn(templateObject)
