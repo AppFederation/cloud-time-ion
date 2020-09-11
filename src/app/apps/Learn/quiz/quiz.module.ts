@@ -16,7 +16,8 @@ import {QuizTipsComponent} from './quiz-tips/quiz-tips.component'
 import {QuizOptionsComponent} from './quiz-options/quiz-options.component'
 import {TimersPageModule} from '../../../timers/timers.module'
 import {ShowAnswerAndRateComponent} from './show-answer-and-rate/show-answer-and-rate.component'
-import {CongratsQuizFinishedComponent} from './congrats-quiz-finished/congrats-quiz-finished.component'
+import {CongratsQuizFinishedComponent} from './quiz-finished/congrats-quiz-finished/congrats-quiz-finished.component'
+import {QuizFinishedComponent} from './quiz-finished/quiz-finished.component'
 
 const routes: Routes = [
   {
@@ -46,6 +47,7 @@ const routes: Routes = [
     QuizOptionsComponent,
     ShowAnswerAndRateComponent,
     CongratsQuizFinishedComponent,
+    QuizFinishedComponent,
   ],
 })
 export class QuizPageModule {

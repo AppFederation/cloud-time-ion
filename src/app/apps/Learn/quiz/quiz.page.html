@@ -63,39 +63,8 @@
     </p>
 
     <div *ngIf="( status$ | async ) ?. isNextItemInFuture">
-      <app-congrats-quiz-finished
-      ></app-congrats-quiz-finished>
-
-      <div>
-        Items learned today: / in this session:
-        <table>
-          <thead>
-          </thead>
-          <tbody>
-            <tr>this session</tr>
-            <tr>today</tr>
-
-          </tbody>
-
-        </table>
-      </div>
-
-      <div>
-        <ion-button color="danger">FORCE NEXT</ion-button>
-      </div>
-      <div>
-        <ion-button>SCHEDULE NEXT SESSION</ion-button>
-      </div>
-
-      <a style="display: block">
-        Process more items: <app-process-button></app-process-button>
-      </a>
-      <a style="display: block" routerLink="/learn">
-        Add more items
-      </a>
-      <a style="display: block" routerLink="/learn/stats">
-        See statistics
-      </a>
+      <app-quiz-finished
+      ></app-quiz-finished>
     </div>
 
     <div>
