@@ -15,3 +15,18 @@
   </ion-label>
 </ion-item>
 
+<div style="display: flex; flex-direction: row; align-items: center">
+  <ion-range
+    [min]="110"
+    [max]="600"
+    [pin]="true"
+    [step]="1"
+    [formControl]="controls.powBaseX100"
+  >
+    <ion-note slot="start">{{formGroup.value['powBaseX100']}}</ion-note>
+    <ion-label slot="start">more<br>diligent</ion-label>
+    <ion-label slot="end">quicker</ion-label>
+  </ion-range>
+</div>
+<!--QUICKER <-> MORE DILIGENT-->
+
