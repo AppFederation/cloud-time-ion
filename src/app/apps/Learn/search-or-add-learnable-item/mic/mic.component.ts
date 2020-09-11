@@ -58,6 +58,9 @@ export class MicComponent implements OnInit {
           })
           .catch(function (err) {
               window.alert('The following getUserMedia error occurred: ' + err);
+              /* for iOS: https://www.gmass.co/blog/record-audio-mobile-web-page-ios-android/ -- AudioContext: audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                https://developers.google.com/web/fundamentals/media/recording-audio
+               */
             },
           );
       } else {
