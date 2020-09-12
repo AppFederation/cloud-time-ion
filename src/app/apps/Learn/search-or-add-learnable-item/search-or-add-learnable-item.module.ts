@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
@@ -13,6 +13,8 @@ import {AngularFireStorageModule} from '@angular/fire/storage'
 import {SharedModule} from '../shared/shared.module'
 import {TestItemComponent} from './test-item/test-item.component'
 import {LearnStatsComponent} from './learn-stats/learn-stats.component'
+import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search-or-add-text-editor.component'
+import {EditorModule} from '@tinymce/tinymce-angular'
 
 const routes: Routes = [
   {
@@ -30,13 +32,16 @@ const routes: Routes = [
     OdmModule,
     AngularFireStorageModule,
     SharedModule,
+    EditorModule,
+    ReactiveFormsModule,
   ],
-  declarations: [
-    SearchOrAddLearnableItemPageComponent,
-    ActionableItemComponent,
-    MicComponent,
-    TestItemComponent,
-    LearnStatsComponent,
-  ],
+    declarations: [
+        SearchOrAddLearnableItemPageComponent,
+        ActionableItemComponent,
+        MicComponent,
+        TestItemComponent,
+        LearnStatsComponent,
+        SearchOrAddTextEditorComponent,
+    ],
 })
 export class SearchOrAddLearnableItemPageModule {}

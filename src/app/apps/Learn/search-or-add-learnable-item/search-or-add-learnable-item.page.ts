@@ -12,6 +12,9 @@ import {QuizService} from '../core/quiz.service'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {User} from 'firebase'
+import {FormControl} from '@angular/forms'
+import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
+import {debounceTime} from 'rxjs/operators'
 
 @Component({
   selector: 'app-search-or-add-learnable-item',
@@ -21,11 +24,14 @@ import {User} from 'firebase'
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   search: string = ''
+  htmlSearch ? : string = undefined
+  searchFormControl = new FormControl()
 
   coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
   private patchingOwnerHasRun = false
+
 
   get authUserId() { return this.authService.authUser$.lastVal?.uid }
 
@@ -37,6 +43,15 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.searchFormControl.valueChanges.pipe(
+      debounceTime(200),
+    ).subscribe(val => {
+      this.htmlSearch = val
+      val = stripHtml(val)
+
+      this.search = val
+      this.onChangeSearch(val)
+    })
     // this.coll.get().subscribe(items => {
     //   // console.log('get(): items2 items.docs.length', items.docs.length)
     // })
@@ -90,7 +105,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   add(string?: string, isTask?: boolean) {
     console.log('add: ', string)
-    string = string || this.search
+    string = string || this.htmlSearch || this.search
     if ( !string ) {
       return
     }
@@ -110,6 +125,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   clearInput() {
     this.search = ''
+    this.searchFormControl.setValue('')
   }
 
   createItemFromInputString(string: string, isTask?: boolean) {

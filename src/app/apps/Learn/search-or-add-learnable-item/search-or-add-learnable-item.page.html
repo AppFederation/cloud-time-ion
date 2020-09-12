@@ -25,7 +25,16 @@
     style="display: flex; align-items: stretch"
   >
     <div style="flex-grow: 1; color: white">
-      <div>
+      <div
+        (keyup.enter)="addTask(); $event.stopPropagation()"
+        (keyup.meta.enter)="addToLearn(); $event.stopPropagation()"
+        (keyup.alt.enter)="addToLearn(); $event.stopPropagation()"
+        (keyup.control.enter)="addToLearn(); $event.stopPropagation()"
+      > <!-- TODO: Fix alt+enter -->
+        <app-search-or-add-text-editor
+          [formControl1]="searchFormControl"
+        ></app-search-or-add-text-editor>
+
         <ion-textarea
           [autoGrow]="true"
           [(ngModel)]="search"
@@ -33,10 +42,6 @@
           placeholder="Search or add"
           [debounce]="50"
           inputmode="search"
-          (keyup.enter)="addTask()"
-          (keyup.meta.enter)="addToLearn()"
-          (keyup.alt.enter)="addToLearn()"
-          (keyup.control.enter)="addToLearn()"
         ></ion-textarea>
         <ion-button
           [hidden]="! hasSearchText()"
