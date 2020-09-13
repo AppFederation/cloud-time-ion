@@ -49,6 +49,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
       [contenteditable] a { color: #98aed9 }
       */,
     setup: (editor: any) => {
+      // console.log(`setup: editor`, editor)
       editor.addShortcut(
         'meta+e', 'Add yellow highlight to selected text.', () => {
           // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/
@@ -60,6 +61,20 @@ export class SearchOrAddTextEditorComponent implements OnInit {
         onAction: () => {
           this.highlightSelected(editor)
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
+        }
+      });
+      // https://community.tiny.cloud/communityQuestion?id=90661000000IegjAAC :
+      // editor.onKeyDown.add((ed: any, event: any) => {
+      editor.on('keydown', (event: any) => {
+        // console.log(`keydown`, event)
+        if (event.keyCode == 13) {
+          if ( ! event.shiftKey ) {
+            // .shiftKey .metaKey .altKey .ctrlKey
+            // console.log(`Enter key`, event)
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+          }
         }
       });
     }
