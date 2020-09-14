@@ -10,6 +10,7 @@ export class Side {
   defaultLang?: string // = 'en-US'
   flag?: string
   flagTransparent?: boolean
+  dependsOn? : Side
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -35,7 +36,7 @@ export type SideDecl = Omit<Side, 'id'|'title'>
  Each addressable for spaced repetition self-rating.
 * */
 
-function side(param: SideDecl): SideDecl {
+function side(param: SideDecl): Side {
   return Object.assign(new Side(), param)
 }
 
@@ -49,9 +50,16 @@ export class SidesDefs {
   /** for a 2-way asking */
   question2 = side({
     defaultLang: 'en-US',
+    dependsOn: this.question,
   })
   question3 = side({
     defaultLang: 'en-US',
+    dependsOn: this.question2
+  })
+  hint = side({
+  })
+  hint_2 = side({
+    dependsOn: this.hint
   })
   answer = side({
     defaultLang: 'en-US',
