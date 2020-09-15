@@ -1,0 +1,7 @@
+<img
+  alt="{{side.title}}"
+  *ngIf="side ?.flag "
+  src="assets/countries/{{side.flag}}.svg"
+  height="14px"
+  style="opacity: {{side.flagTransparent ? 0.3 : 1}}"
+>

@@ -12,6 +12,7 @@ import {ToggleComponent} from './toggle/toggle.component'
 import {QuizButtonComponent} from './quiz-button/quiz-button.component'
 import {RouterModule} from '@angular/router'
 import {ProcessButtonComponent} from './process-button/process-button.component'
+import {SideIconComponent} from './side-icon/side-icon.component'
 
 const exports = [
   SelfRatingComponent,
@@ -23,10 +24,11 @@ const exports = [
 ]
 
 @NgModule({
-  declarations: [
-    ...exports,
-    ProcessButtonComponent,
-  ],
+    declarations: [
+        ...exports,
+        ProcessButtonComponent,
+        SideIconComponent,
+    ],
   imports: [
     CommonModule,
     RatingsModule,
