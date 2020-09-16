@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Side} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
@@ -6,9 +6,12 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
+import {EditorComponent} from '@tinymce/tinymce-angular'
 
-export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
+export type FormControlsDict = {[key: string /* TODO: mapped type with in keyof */]: FormControl }
 
+
+// TODO: escape key to hide toolbar&menu bar
 @Component({
   selector: 'app-item-side-editor',
   templateUrl: './item-side.component.html',
@@ -23,6 +26,30 @@ export class ItemSideComponent implements OnInit {
   formControls ! : FormControlsDict
 
   formGroup ! : FormGroup
+
+  editorOpened = false
+
+  private _editorViewChild: EditorComponent | undefined
+
+  @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
+    if ( ed ) {
+      setInterval(() => {
+        this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
+          for preserving undo and to prevent tinymce error when disappeared
+          */
+      }, 10)
+    }
+    this._editorViewChild = ed
+  }
+
+
+  get editorViewChild() {
+    return this._editorViewChild
+  }
+
+  get formControl() {
+    return this.formControls[this.side!.id]
+  }
 
 
   /** TODO     *ngIf="viewSyncer.initialDataArrived else notLoaded" */
@@ -71,6 +98,7 @@ export class ItemSideComponent implements OnInit {
     }
   }
 
+
   public highlightSelected(editor: any) {
     editor.execCommand('hilitecolor', false, /*'#808000'*/ '#ffa626');
   }
@@ -94,5 +122,28 @@ export class ItemSideComponent implements OnInit {
 
   logEditor(msg: string) {
     debugLog(`tinymce: `, msg)
+  }
+
+  focusEditor() {
+    setTimeout(() => {
+      debugLog(`focusEditor`, this.editorViewChild)
+      this.editorViewChild?.editor.focus()
+    }, 10)
+  }
+
+  isDependencySatisfied(): boolean {
+    if ( ! this.side?.dependsOn ) {
+      return true
+    } else {
+      // debugLog(`isDependencySatisfied`, this.side, this.formControls[this.side.dependsOn.id]?.value?.trim(), this.formControls)
+      return !! (this.item$?.currentVal?.[this.side.dependsOn.id as keyof LearnItem] as any as string)?.trim()
+      // return this.formControls[this.side.dependsOn.id]?.value
+      // return !! (this.formControls[this.side.dependsOn.id]?.value?.trim())
+    }
+  }
+
+  onChangeEditor($event: any) {
+    // hack
+    debugLog(`onChangeEditor`, $event)
   }
 }

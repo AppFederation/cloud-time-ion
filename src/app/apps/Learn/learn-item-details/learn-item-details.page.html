@@ -72,14 +72,11 @@
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
-    <div
-      style="margin-left: 4px"
+    <app-item-side-editor
       *ngFor="let side of sidesDefsArray"
-    >
-      <app-item-side-editor
-        [item$]="item$"
-        [side]="side"
-      ></app-item-side-editor>
+      [item$]="item$"
+      [side]="side"
+    ></app-item-side-editor>
 
 <!--      <ion-textarea-->
 <!--        *ngIf="showTextAreas"-->
@@ -90,7 +87,6 @@
 <!--      >-->
 <!--        &lt;!&ndash; [placeholder]="side.id" &ndash;&gt;-->
 <!--      </ion-textarea>-->
-    </div>
   </ng-container>
   <ng-template #notLoaded>
     Loading...

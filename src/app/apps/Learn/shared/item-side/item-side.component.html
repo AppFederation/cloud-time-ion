@@ -1,7 +1,22 @@
 
+<ion-button
+  *ngIf="side && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
+  (click)="editorOpened = true; focusEditor()"
+  color="gray"
+>
+  <app-side-icon
+    [side]="side"
+  ></app-side-icon>
+  &nbsp;
+
+  <!-- TODO: focus editor -->
+  <ion-note>{{side?.title}}</ion-note>
+</ion-button>
+
 <div
-  *ngIf="side"
-  (click)="editor.editor.focus()"
+  style="margin-left: 4px"
+  *ngIf="side && (editorOpened || formControl.value)"
+  (click)="focusEditor()"
 > <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
 
   <app-side-label
@@ -12,7 +27,8 @@
     #editor
     [init]="tinyMceInit"
     [inline]="true"
-    [formControl]="formControls[side.id]"
+    [formControl]="formControl"
+    (ngModelChange)="onChangeEditor($event)"
     (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
   >
     <!--     (onSetContent)="logEditor('onSetContent')"
