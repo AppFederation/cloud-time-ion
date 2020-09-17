@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
-export type SideId = string
+export type SideId = keyof SidesDefs
 
 export class Side {
 

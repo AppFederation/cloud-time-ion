@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Side} from '../../core/sidesDefs'
+import {Side, SidesDefs} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
@@ -8,7 +8,7 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 
-export type FormControlsDict = {[key: string /* TODO: mapped type with in keyof */]: FormControl }
+export type FormControlsDict = {[key in keyof SidesDefs]: FormControl }
 
 
 // TODO: escape key to hide toolbar&menu bar
