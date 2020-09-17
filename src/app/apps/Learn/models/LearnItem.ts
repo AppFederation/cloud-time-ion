@@ -1,7 +1,7 @@
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Side, SidesDefs, sidesDefsArray, SideVal} from '../core/sidesDefs'
+import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../core/sidesDefs'
 import {DurationMs, nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
@@ -92,6 +92,17 @@ export class LearnItem extends OdmInMemItem {
           foundQuestionBefore = true
           // do not push
         }
+      }
+    }
+    return ret
+  }
+
+  public getSidesWithHints(): Side[] {
+    const ret: Side [] = []
+    for (let side of sidesDefsHintsArray) {
+      const sideVal = this.getSideVal(side)
+      if ( sideVal ) {
+        ret.push(side)
       }
     }
     return ret

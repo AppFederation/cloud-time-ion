@@ -10,7 +10,8 @@ export class Side {
   defaultLang?: string // = 'en-US'
   flag?: string
   flagTransparent?: boolean
-  dependsOn? : Side
+  dependsOn ? : Side
+  isHint ? : boolean
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -57,8 +58,10 @@ export class SidesDefs {
     dependsOn: this.question2
   })
   hint = side({
+    isHint: true,
   })
   hint_2 = side({
+    isHint: true,
     dependsOn: this.hint
   })
   answer = side({
@@ -142,3 +145,5 @@ export class SidesDefs {
 export const sidesDefs = new SidesDefs()
 
 export const sidesDefsArray = dictToArrayWithIds(sidesDefs as any as Dict<Side>)
+
+export const sidesDefsHintsArray = sidesDefsArray.filter(side => side.isHint)
