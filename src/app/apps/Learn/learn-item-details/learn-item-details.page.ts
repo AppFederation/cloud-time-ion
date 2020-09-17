@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {sidesDefs, sidesDefsArray} from '../core/sidesDefs'
+import {sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, Router} from '@angular/router'
 import {LearnDoService} from '../core/learn-do.service'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
 import {AlertController} from '@ionic/angular'
-import {FormControl, FormGroup} from '@angular/forms'
-import {mapFieldsToFormControls} from '../../../libs/AppFedShared/utils/dictionary-utils'
-import {ViewSyncer} from '../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 import {Observable} from 'rxjs/internal/Observable'
@@ -20,25 +17,17 @@ import {LearnItem$} from '../models/LearnItem$'
 })
 export class LearnItemDetailsPage implements OnInit {
 
-
   get val$(): Observable<LearnItem | nullish> {
     return this.item$.locallyVisibleChanges$
   }
 
-  // formControls: {[key: keyof SidesDefs]: FormControl} =
-  formControls: {[key: string]: FormControl /* TODO: mapped type */} = mapFieldsToFormControls(sidesDefs)
-
-  // formGroup = new FormGroup(this.formControls)
-
   window = window
-  // sidesDefsArray = [sidesDefs.title as any]
+
   sidesDefsArray = sidesDefsArray
 
   public id: LearnItemId = this.activatedRoute.snapshot.params['itemId']
   public item$: LearnItem$ = this.learnDoService.getItem$ById(this.id)
   public title? : string
-
-  // public viewSyncer = new ViewSyncer(this.formGroup, this.item$, true)
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -52,13 +41,6 @@ export class LearnItemDetailsPage implements OnInit {
   private doc: AngularFirestoreDocument<LearnItem> = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
 
   ngOnInit() {
-    // console.log(`id`, this.id)
-    // console.log(`this.learnDoService.itemsCount`, this.learnDoService.itemsCount())
-
-    // this.learnDoService.localItems$.subscribe(items => {
-    //   console.log(`this.learnDoService.localItems$ items.length`, items.length, 'itemsCount', this.learnDoService.itemsCount())
-    // })
-    // console.log(`this.item$.currentVal`, this.item$.currentVal, this.item$.locallyVisibleChanges$.lastVal)
   }
 
   async askDelete() {

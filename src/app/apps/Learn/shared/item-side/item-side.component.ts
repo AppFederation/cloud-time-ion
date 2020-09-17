@@ -42,7 +42,6 @@ export class ItemSideComponent implements OnInit {
     this._editorViewChild = ed
   }
 
-
   get editorViewChild() {
     return this._editorViewChild
   }
@@ -50,7 +49,6 @@ export class ItemSideComponent implements OnInit {
   get formControl() {
     return this.formControls[this.side!.id]
   }
-
 
   /** TODO     *ngIf="viewSyncer.initialDataArrived else notLoaded" */
   viewSyncer ! : ViewSyncer
