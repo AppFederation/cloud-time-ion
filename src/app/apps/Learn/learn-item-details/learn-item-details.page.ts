@@ -51,8 +51,6 @@ export class LearnItemDetailsPage implements OnInit {
 
   private doc: AngularFirestoreDocument<LearnItem> = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)
 
-  showTextAreas = false
-
   ngOnInit() {
     // console.log(`id`, this.id)
     // console.log(`this.learnDoService.itemsCount`, this.learnDoService.itemsCount())
