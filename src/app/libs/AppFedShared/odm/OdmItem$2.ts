@@ -50,7 +50,12 @@ export class OdmItem$2<
    **/
   currentVal: TInMemData | undefined | null = undefined
 
+
   get val() { return this.currentVal }
+
+  get val$() { return this.locallyVisibleChanges$ }
+
+  private resolveFuncPendingThrottled?: (value?: (PromiseLike<any> | any)) => void
 
   public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
   public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
@@ -80,6 +85,7 @@ export class OdmItem$2<
       */
       // FIXME: incremental patching
       this.odmService.saveNowToDb(this)
+      this.resolveFuncPendingThrottledIfNecessary()
     }) as any /* TODO investigate after strict */)
     // this.onModified()
   }
@@ -100,6 +106,12 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch) {
+    if ( ! this.resolveFuncPendingThrottled ) {
+      const promise = new Promise((resolveFunc) => {
+        this.resolveFuncPendingThrottled = resolveFunc
+      })
+      this.odmService.syncStatusService.handleSavingPromise(promise)
+    }
     // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
@@ -127,6 +139,7 @@ export class OdmItem$2<
     Object.assign(this.currentVal, patch)
     this.onModified()
     this.odmService.saveNowToDb(this)
+    this.resolveFuncPendingThrottledIfNecessary()
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
     this.odmService.emitLocalItems()
   }
@@ -176,5 +189,14 @@ export class OdmItem$2<
   saveNowToDb() {
     this.setIdAndWhenCreatedIfNecessary()
     this.odmService.saveNowToDb(this)
+    this.resolveFuncPendingThrottledIfNecessary()
+  }
+
+  private resolveFuncPendingThrottledIfNecessary() {
+    if (this.resolveFuncPendingThrottled) {
+      console.log(`resolveFuncPendingThrottled()`)
+      this.resolveFuncPendingThrottled?.(true)
+      this.resolveFuncPendingThrottled = undefined
+    }
   }
 }
