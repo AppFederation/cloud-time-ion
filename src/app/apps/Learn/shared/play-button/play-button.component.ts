@@ -40,10 +40,11 @@ export class PlayButtonComponent implements OnInit {
       const audioBytes = audioItem ?. data() ?. audio?.toUint8Array()?.buffer as ArrayBuffer
       // todo maybe reuse ctx / source
       const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
-      this.source = audioCtx.createBufferSource()
-      const source = this.source
+      const source = audioCtx.createBufferSource()
+      this.source = source
 
-      audioCtx.decodeAudioData(audioBytes, (buffer: AudioBuffer) => {
+      audioCtx.decodeAudioData(audioBytes,
+        (buffer: AudioBuffer) => {
           source.buffer = buffer;
           console.log(`source.buffer`, source.buffer)
 
