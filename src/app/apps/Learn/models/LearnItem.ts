@@ -84,6 +84,9 @@ export class LearnItem extends OdmInMemItem {
     const ret: Side [] = []
     let foundQuestionBefore = false
     for (let side of sidesDefsArray) {
+      if ( side.isHint ) {
+        continue
+      }
       const sideVal = this.getSideVal(side)
       if (sideVal) {
         if ( !side.ask || foundQuestionBefore ) {
