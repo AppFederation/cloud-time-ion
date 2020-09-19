@@ -36,6 +36,7 @@
         ></app-search-or-add-text-editor>
 
         <ion-textarea
+          *ngIf="showOldEditor"
           [autoGrow]="true"
           [(ngModel)]="search"
           (ngModelChange)="onChangeSearch($event)"

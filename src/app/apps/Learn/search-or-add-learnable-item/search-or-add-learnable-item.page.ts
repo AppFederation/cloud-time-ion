@@ -32,6 +32,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   filteredItems: LearnItem[] = []
   private patchingOwnerHasRun = false
 
+  showOldEditor = false
+
 
   get authUserId() { return this.authService.authUser$.lastVal?.uid }
 
