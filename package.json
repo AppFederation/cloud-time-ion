@@ -54,6 +54,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^10.0.0",
     "@angular-devkit/architect": "^0.13.10",
     "@angular-devkit/build-angular": "~0.901.10",
     "@angular-devkit/core": "~9.1.10",
@@ -63,6 +64,7 @@
     "@angular/compiler-cli": "~9.1.11",
     "@angular/language-service": "~9.1.11",
     "@ionic/angular-toolkit": "^2.2.0",
+    "@types/chrome": "0.0.122",
     "@types/jasmine": "^2.8.17",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^12.11.1",

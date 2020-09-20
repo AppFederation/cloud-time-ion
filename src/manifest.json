@@ -1,0 +1,21 @@
+{
+  "name": "Ionic Task manager 4",
+  "version": "1.0",
+  "description": "Allows quickly adding tasks to learning app",
+  "manifest_version": 2,
+  "icons": {
+    "78": "assets/icon/LifeSuite.png"
+  },
+  "permissions": [
+    "activeTab",
+    "webNavigation",
+    "contextMenus"
+  ],
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://apis.google.com; https://cdnjs.cloudflare.com; https://cdn.tiny.cloud; d3js.org; object-src 'self'"
+}
