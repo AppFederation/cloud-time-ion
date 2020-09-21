@@ -10,7 +10,7 @@
     "main.ts",
     "polyfills.ts",
     "zone-flags.ts",
-    "background/background.ts"
+    "src/background/background.ts"
   ],
   "include": [
     "src/**/*.d.ts"

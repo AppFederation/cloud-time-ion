@@ -62,12 +62,21 @@ export class AuthService {
   }
 
   logInViaGoogle() {
-    const authProvider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth
-      .signInWithPopup(authProvider)
-      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
-        /* TODO: emit authUser$ */
-      )
-      .catch(error => errorAlert('Error logging in via Google ' + error));
+    if (window.chrome?.runtime?.getManifest?.()?.background) {
+      // @ts-ignore
+      chrome.runtime.sendMessage({
+        command: 'login'
+      }, (response) => {
+        console.log('Log  in response===', response);
+      });
+    } else {
+      const authProvider = new firebase.auth.GoogleAuthProvider();
+      return this.afAuth.auth
+        .signInWithPopup(authProvider)
+        .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
+          /* TODO: emit authUser$ */
+        )
+        .catch(error => errorAlert('Error logging in via Google ' + error));
+    }
   }
 }
