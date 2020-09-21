@@ -1,12 +1,14 @@
 import { environment } from '../environments/environment';
+console.log(`Background start`);
 
 // @ts-ignore
 firebase.initializeApp(environment.firebaseConfig);
 
+console.log(`Before listener`);
+
 // auto login on startup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
-        if (request.command === 'login') {
+  if (request.command === 'login') {
                 // @ts-ignore
                 firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
                     .then((userCredential) => {
