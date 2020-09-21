@@ -6,6 +6,7 @@ import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf
 import {JournalTextDescriptor, JournalTextDescriptors} from "../models/JournalTextDescriptors";
 import {NumericPickerVal} from "../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component";
 import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
+import {JournalEntry$} from '../models/JournalEntry$'
 
 @Component({
   selector: 'app-journal-write-page',
@@ -14,7 +15,7 @@ import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 })
 export class JournalWritePage implements OnInit {
 
-  public journalEntry ! : JournalEntry
+  public journalEntry$ ! : JournalEntry$
 
   fieldDescriptors = JournalNumericDescriptors.instance.array
 
@@ -31,7 +32,7 @@ export class JournalWritePage implements OnInit {
   }
 
   public newEntry() {
-    this.journalEntry = new JournalEntry(this.journalEntriesService, undefined)
+    this.journalEntry$ = new JournalEntry$(this.journalEntriesService, undefined, {})
     // this.journalEntry.saveNowToDb()
   }
 
@@ -44,6 +45,6 @@ export class JournalWritePage implements OnInit {
       Object.assign({}, this.geoLocationService.geoLocation$.lastVal.currentPosition.coords)
     // .coords || null // FIXME: use on-save interceptor
 
-    this.journalEntry.patchThrottled(patch)
+    this.journalEntry$.patchThrottled(patch)
   }
 }

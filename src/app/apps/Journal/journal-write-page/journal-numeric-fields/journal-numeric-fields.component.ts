@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {JournalNumericDescriptor, JournalNumericDescriptors} from '../../models/JournalNumericDescriptors'
 import {JournalEntry} from '../../models/JournalEntry'
+import {JournalEntry$} from '../../models/JournalEntry$'
 
 @Component({
   selector: 'app-journal-numeric-fields',
@@ -14,7 +15,7 @@ export class JournalNumericFieldsComponent implements OnInit {
 
   search = ''
 
-  @Input() journalEntry !: JournalEntry
+  @Input() journalEntry$ !: JournalEntry$
 
   constructor() { }
 
@@ -27,7 +28,7 @@ export class JournalNumericFieldsComponent implements OnInit {
       numVal: numericPickerVal
       // later: comments, maybe lastModified etc.
     }
-    this.journalEntry.patchThrottled(patch)
+    this.journalEntry$.patchThrottled(patch)
   }
 
 }

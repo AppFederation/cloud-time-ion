@@ -19,15 +19,15 @@
 <ion-content>
   <div style="margin: 5px;">
     Play the self-improvement game and its mini-games! {{fieldDescriptors.length}} fields
-    <p><app-time-point [time]="journalEntry?.whenCreated"></app-time-point></p>
+    <p><app-time-point [time]="journalEntry$?.whenCreated"></app-time-point></p>
 <!--    <p>{{journalEntry?.whenCreated?.toISOString() || journalEntry.id}}</p>-->
   </div>
   <app-journal-numeric-fields
-    [journalEntry]="journalEntry"
+    [journalEntry$]="journalEntry$"
   ></app-journal-numeric-fields>
 
   <app-journal-text-fields
-    [journalEntry]="journalEntry"
+    [journalEntry$]="journalEntry$"
   ></app-journal-text-fields>
 
   <!-- TODO: contenteditable -->
