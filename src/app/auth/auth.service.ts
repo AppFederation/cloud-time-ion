@@ -44,7 +44,8 @@ export class AuthService {
 
   logout() {
     this._userIsAuthenticated = false;
-    return this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut();
+    this.authUser$.next(null)
   }
 
   signUpWithEmailAndPassword(email: string, password: string) {
