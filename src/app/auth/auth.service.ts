@@ -63,6 +63,7 @@ export class AuthService {
 
   logInViaGoogle() {
     if (window.chrome?.runtime?.getManifest?.()?.background) {
+      // https://stackoverflow.com/questions/7507277/detecting-if-code-is-being-run-as-a-chrome-extension
       // @ts-ignore
       chrome.runtime.sendMessage({
         command: 'login'
