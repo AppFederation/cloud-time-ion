@@ -12,6 +12,7 @@ import {ToggleComponent} from './toggle/toggle.component'
 import {QuizButtonComponent} from './quiz-button/quiz-button.component'
 import {RouterModule} from '@angular/router'
 import {ProcessButtonComponent} from './process-button/process-button.component'
+import {StackedInteractiveChartComponent} from './stacked-interactive-chart/stacked-interactive-chart.component'
 
 const exports = [
   SelfRatingComponent,
@@ -20,6 +21,7 @@ const exports = [
   ItemSideComponent,
   ToggleComponent,
   QuizButtonComponent,
+  StackedInteractiveChartComponent,
 ]
 
 @NgModule({
