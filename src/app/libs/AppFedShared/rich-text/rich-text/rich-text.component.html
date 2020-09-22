@@ -1,3 +1,17 @@
-<p>
-  rich-text works!
-</p>
+<editor
+  #editor
+  [init]="tinyMceInit"
+  [inline]="true"
+  [formControl]="formControl1"
+  (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
+>
+<!--  (ngModelChange)="onChangeEditor($event)"-->
+  <!--     (onSetContent)="logEditor('onSetContent')"
+  (onPostRender)="logEditor('onPostRender')"
+  -->
+  <!-- events: https://www.tiny.cloud/docs/advanced/events/#init
+    * Init -- actually called last?
+    * SetContent
+  -->
+
+</editor>
