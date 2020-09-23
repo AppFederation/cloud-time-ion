@@ -11,6 +11,11 @@
     <div
       style="border-bottom: 1px var(--ion-color-primary) solid"
     >
+      <app-journal-text-field
+        [item$]="journalEntry$"
+        [fieldDescriptor]="textDesc"
+      ></app-journal-text-field>
+
       <ion-textarea
         autocapitalize="sentences"
         [rows]="4"
