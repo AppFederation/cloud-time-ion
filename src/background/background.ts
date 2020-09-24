@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             sendResponse(error);
                     });
         }
+  return true;
 });
 
 chrome.contextMenus.create({
