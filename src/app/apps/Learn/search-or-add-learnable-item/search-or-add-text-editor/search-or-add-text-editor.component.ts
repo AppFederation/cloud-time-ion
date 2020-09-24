@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms'
 import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
+import {RichTextInterceptorService} from '../../shared/text-utils/rich-text-interceptor.service'
 
 @Component({
   selector: 'app-search-or-add-text-editor',
@@ -10,8 +11,9 @@ import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
 export class SearchOrAddTextEditorComponent implements OnInit {
 
   @Input() formControl1 ! : FormControl
+  public selectedText = '';
 
-  constructor() { }
+  constructor(private richTextInterceptor: RichTextInterceptorService) { }
 
   tinyMceInit = {
     placeholder: "Search or add",
@@ -91,4 +93,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     })
   }
 
+  intercept() {
+    this.richTextInterceptor.intercept(selectedText => this.selectedText = selectedText[0]);
+  }
 }
