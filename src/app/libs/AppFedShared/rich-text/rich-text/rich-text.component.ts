@@ -107,7 +107,7 @@ export class RichTextComponent implements OnInit {
 
   focusEditor() {
     setTimeout(() => {
-      debugLog(`focusEditor`, this.editorViewChild)
+      // debugLog(`focusEditor`, this.editorViewChild)
       this.editorViewChild?.editor.focus()
     }, 10)
   }

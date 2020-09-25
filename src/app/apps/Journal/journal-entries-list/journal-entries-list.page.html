@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>journal-entries-list</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ng-container
+      *ngFor="let item$ of (journalEntriesService.items$ | async); trackBy: trackById"
+    >
+      <app-journal-entry-list-item
+        [item$]="item$"
+      ></app-journal-entry-list-item>
+    </ng-container>
+  </ion-list>
+
+
+</ion-content>

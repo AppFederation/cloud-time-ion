@@ -1,0 +1,7 @@
+<p
+  [routerLink]="['/journal/entry/' + item$.id]"
+>
+  Journal entry
+
+  {{item$.val$ | async | json}}
+</p>
