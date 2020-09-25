@@ -7,8 +7,15 @@ const routes: Routes = [
 
   { path: 'journal/write',
     loadChildren: () => import('./apps/Journal/journal-write-page/journal-write.page.module').then(m => m.JournalWritePageModule) },
+  { path: 'journal/entry',
+    loadChildren: () => import('./apps/Journal/journal-write-page/journal-write.page.module').then(m => m.JournalWritePageModule) },
   // { path: 'journal/charts',
   //   loadChildren: () => import('./apps/Journal/journal-charts/journal-charts.module').then(m => m.JournalChartsPageModule) },
+  {
+    path: 'journal',
+    loadChildren: () => import('./apps/Journal/journal-entries-list/journal-entries-list.module').then( m => m.JournalEntriesListPageModule)
+  },
+
 
   { path: 'TopicFriends',
     loadChildren: () => import('./apps/TopicFriends/topic-friends.module').then(m => m.TopicFriendsModule) },
@@ -28,7 +35,6 @@ const routes: Routes = [
     path: 'learn/stats',
     loadChildren: () => import('./apps/Learn/learn-stats/learn-stats.module').then( m => m.LearnStatsPageModule)
   },
-
 
 ];
 
