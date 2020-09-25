@@ -18,13 +18,13 @@ export class JournalTextFieldsComponent implements OnInit {
 
   ngOnInit() {}
 
-  /** TODO: user reactive forms with ODM wrapper for listening to diffs */
-  onChangeText($event: Event, textDesc: JournalTextDescriptor) {
-    const value = ($event.srcElement as any) ?. ['value'];
-    // debugLog('onChangeText', value, $event)
-    const patch: any = {};
-    patch[textDesc.id !] = value as unknown as string
-    this.journalEntry$.patchThrottled(patch)
-  }
+  // /** TODO: user reactive forms with ODM wrapper for listening to diffs */
+  // onChangeText($event: Event, textDesc: JournalTextDescriptor) {
+  //   const value = ($event.srcElement as any) ?. ['value'];
+  //   // debugLog('onChangeText', value, $event)
+  //   const patch: any = {};
+  //   patch[textDesc.id !] = value as unknown as string
+  //   this.journalEntry$.patchThrottled(patch)
+  // }
 
 }
