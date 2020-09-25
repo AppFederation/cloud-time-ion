@@ -48,7 +48,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
         }
         try {
           this.isApplyingFromDb = true
-          debugLog(`ViewSyncer this.formGroup.patchValue(dataFromDb)`, this.fieldNameHack)
+          // debugLog(`ViewSyncer this.formGroup.patchValue(dataFromDb)`, this.fieldNameHack)
           this.formGroup.patchValue(dataFromDb) // TODO: handle nullish
           this.lastValFromDb = dataFromDb
         } finally {
