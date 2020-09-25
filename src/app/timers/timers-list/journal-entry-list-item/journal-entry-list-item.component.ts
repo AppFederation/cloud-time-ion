@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {JournalEntry$} from '../../../apps/Journal/models/JournalEntry$'
+import {Observable} from 'rxjs/internal/Observable'
 
 @Component({
   selector: 'app-journal-entry-list-item',
@@ -9,6 +10,10 @@ import {JournalEntry$} from '../../../apps/Journal/models/JournalEntry$'
 export class JournalEntryListItemComponent implements OnInit {
 
   @Input() item$ ! : JournalEntry$
+
+  get itemVal$Any(): Observable<any> {
+    return this.item$.val$ as Observable<any>
+  }
 
   constructor() { }
 
