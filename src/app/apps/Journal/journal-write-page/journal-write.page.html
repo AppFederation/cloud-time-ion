@@ -17,17 +17,20 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ng-container *ngIf="itemVal$ | async let itemVal else loading">
+
+
   <div style="margin: 5px;">
     Play the self-improvement game and its mini-games! {{fieldDescriptors.length}} fields
-    <p><app-time-point [time]="(journalEntry$.val$|async)?.whenCreated?.toDate()"></app-time-point></p>
+    <p><app-time-point [time]="itemVal?.whenCreated?.toDate()"></app-time-point></p>
 <!--    <p>{{journalEntry?.whenCreated?.toISOString() || journalEntry.id}}</p>-->
   </div>
   <app-journal-numeric-fields
-    [journalEntry$]="journalEntry$"
+    [journalEntry$]="item$"
   ></app-journal-numeric-fields>
 
   <app-journal-text-fields
-    [journalEntry$]="journalEntry$"
+    [journalEntry$]="item$"
   ></app-journal-text-fields>
 
   <!-- TODO: contenteditable -->
@@ -39,5 +42,13 @@
       <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
     </ion-fab-button>
   </ion-fab>
+
+  </ng-container>
+
+  <ng-template #loading
+  >
+    Loading...
+    // TODO: also "Please log in"
+  </ng-template>
 
 </ion-content>

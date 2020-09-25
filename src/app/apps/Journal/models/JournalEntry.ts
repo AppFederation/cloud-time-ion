@@ -3,6 +3,9 @@ import {OdmService} from "../../../libs/AppFedShared/odm/OdmService";
 import {OdmItemId} from "../../../libs/AppFedShared/odm/OdmItemId";
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 
+
+export type JournalEntryId = OdmItemId<JournalEntry>
+
 export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
   constructor(
     // odmService: OdmService<JournalEntry>,
