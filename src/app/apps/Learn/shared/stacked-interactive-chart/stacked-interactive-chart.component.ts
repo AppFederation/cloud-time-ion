@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 
-import * as embed from 'vega-embed';
+import embed from 'vega-embed';
 
 
 @Component({
