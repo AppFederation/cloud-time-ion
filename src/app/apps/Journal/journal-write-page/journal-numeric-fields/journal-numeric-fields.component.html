@@ -1,8 +1,8 @@
 <ion-searchbar
   [(ngModel)]="search"
-  placeholder="Search"
+  placeholder="Search fields"
   autofocus="autofocus"
-  [debounce]="100"
+  [debounce]="200"
   inputmode="search"
 ></ion-searchbar>
 
@@ -10,6 +10,7 @@
   *ngFor="let descriptor of numDescriptors"
 >
   <apf-numeric-picker
+    *ngIf="descriptor?.isShortListed || showAll || (search?.length > 2)"
     [hidden]="! descriptor.id !. toLowerCase().includes(search.toLowerCase())"
     (numericValue)="onChangeNumericValue($event, descriptor)"
     [numFieldDef]="descriptor"

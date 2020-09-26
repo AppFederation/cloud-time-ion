@@ -17,6 +17,8 @@ export class JournalNumericFieldsComponent implements OnInit {
 
   @Input() journalEntry$ !: JournalEntry$
 
+  showAll = false
+
   constructor() { }
 
   ngOnInit() {}
