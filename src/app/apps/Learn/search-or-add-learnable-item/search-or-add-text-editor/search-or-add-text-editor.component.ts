@@ -87,7 +87,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
 
   ngOnInit() {
     this.formControl1.valueChanges.subscribe(val => {
-      console.log(`stripped html`, stripHtml(val), `orig:`, val)
+      // console.log(`stripped html ---`, `===`+ stripHtml(val)+`===`, `--- orig:`, val)
     })
   }
 

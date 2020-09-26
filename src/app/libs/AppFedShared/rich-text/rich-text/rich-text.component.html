@@ -3,6 +3,7 @@
   [init]="tinyMceInit"
   [inline]="true"
   [formControl]="formControl1"
+  modelEvents="change input undo redo nodechange"
   (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
 >
 <!--  (ngModelChange)="onChangeEditor($event)"-->
