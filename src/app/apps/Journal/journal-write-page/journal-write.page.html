@@ -1,12 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="'/'"></ion-back-button>
+<!--      <ion-back-button [defaultHref]="'/'"></ion-back-button>-->
+      <ion-icon
+        [size]="'25px'"
+        [routerLink]="'/journal'"
+        name="arrow-back-outline"
+        class="action-icon"
+      ></ion-icon>
     </ion-buttons>
     <!-- TODO: this will go to previous journal entry to correct it if necessary -->
     <!-- TODO: Next button -->
     <ion-title>
-      Journal
+      Journal Entry
       <odm-sync-status></odm-sync-status>
     </ion-title>
     <ion-button slot="end" color="secondary"
