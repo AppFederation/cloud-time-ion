@@ -29,7 +29,9 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictTemplates": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   }
 
 }
