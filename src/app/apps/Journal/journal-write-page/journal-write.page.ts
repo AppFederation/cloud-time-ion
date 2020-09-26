@@ -44,6 +44,8 @@ export class JournalWritePage implements OnInit {
 
   public newEntry() {
     if ( this.itemId === `new`) {
+      // #UX: #Focus: having a special url for `new` entry could actually be good: when browser/page loads, we always start fresh, without getting distracted by what happened to be the previous entry
+      // ... (which might be totally irrelevant and distracting now, since we want to write new entry and not make a retrospective
       this.item$ = new JournalEntry$(this.journalEntriesService, undefined, {})
 
     } else {

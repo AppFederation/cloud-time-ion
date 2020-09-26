@@ -31,6 +31,7 @@ export class MicComponent implements OnInit {
     if (event) {
       event.preventDefault() // prevent mouse click emulation from touchstart event because we have on-click as well
     }
+    // TODO: move to AudioRecordService:
     if ( this.isRecording ) {
       this.mediaRecorder.stop()
       this.isRecording = false
