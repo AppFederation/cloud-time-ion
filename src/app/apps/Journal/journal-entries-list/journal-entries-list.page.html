@@ -6,6 +6,19 @@
 
 <ion-content>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
+    <!--      +-->
+    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
+    <!--    </ion-fab-button>-->
+    <ion-fab-button id='fabAddTimer' [routerLink]="'/journal/write/new'">
+      <ion-icon name="add-outline"></ion-icon>
+      <!--      <img src="assets/icon/CloudTime_Logo.svg" height="25rem">-->
+      <!--      +-->
+      <!--      <ion-icon name="add-circle"></ion-icon>-->
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-list>
     <ng-container
       *ngFor="let item$ of (journalEntriesService.items$ | async); trackBy: trackById"
