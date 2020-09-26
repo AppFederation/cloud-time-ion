@@ -33,7 +33,8 @@ export class JournalTextFieldComponent implements OnInit {
   ngOnInit() {
     this.formControls = this.createFormControlDict()
     this.formGroup = new FormGroup(this.formControls)
-    this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, true, this.fieldDescriptor !. id as keyof JournalEntry) /* TODO might need to ignore other fields from db */
+    this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, true,
+      this.fieldDescriptor.id as keyof JournalEntry) /* TODO might need to ignore other fields from db */
   }
 
   private createFormControlDict(): TextDescriptorsFormControlsDict {
