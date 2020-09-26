@@ -25,6 +25,7 @@ function jnd(antonymOrData?: string | {
   idealValue?: number,
   /* not yet implemented */
   searchTerms?: string | string[],
+  isShortListed?: boolean,
 }) {
   return new JournalNumericDescriptor()
 }
