@@ -28,7 +28,7 @@ export class StackedInteractiveChartComponent implements OnInit, OnChanges {
   public vegaLiteInit(spec: {} | null) {
     console.log('vega');
     // @ts-ignore
-    embed(`#$chart`, spec).then();
+    embed(`#chart`, spec).then();
   }
 
   public reloadChart() {
