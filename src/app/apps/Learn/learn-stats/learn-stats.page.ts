@@ -3,9 +3,68 @@ import {StatsHistoryService} from '../core/stats-history.service'
 import {map} from 'rxjs/operators'
 
 
-const CHART_SPEC = {
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function* dataGenerator(days: number, start_at: number) {
+  let i = 0;
+  while (i < days) {
+    const seconds = start_at + (i * 3600 * 24);
+    yield {
+      "countByRating": {
+        "0": getRandomInt(0, 5),
+        "1": getRandomInt(0, 10),
+        "2": getRandomInt(0, 20),
+        "3": getRandomInt(0, 30),
+        "4": getRandomInt(0, 50),
+        "5": getRandomInt(0, 60),
+        "6": getRandomInt(0, 70),
+        "7": getRandomInt(0, 30),
+        "0.5": getRandomInt(0, 10),
+        "1.5": getRandomInt(0, 5),
+        "2.5": getRandomInt(0, 5),
+        "4.5": getRandomInt(0, 50),
+        "5.5": getRandomInt(0, 50),
+        "undefined": getRandomInt(100, 400)
+      },
+      "countWithAudio": 0,
+      "countWithQA": 262,
+      "owner": "7Tbg0SwakaVoCXHlu1rniHQ6gwz1",
+      "whenCreated": {
+        "seconds": seconds,
+        "nanoseconds": 0
+      },
+      "whenLastModified": {
+        "seconds": seconds,
+        "nanoseconds": 0
+      }
+    }
+    i++;
+  }
+}
+
+
+function* dataToSingleValues(dataset: any) {
+  for(const groupedData of dataset) {
+    for(const ratingCount of Object.entries(groupedData['countByRating'])) {
+      yield {
+        "series": ratingCount[0],
+        "count": ratingCount[1],
+        "date": new Date(groupedData['whenCreated']['seconds'] * 1000),
+      }
+    }
+  }
+}
+
+
+const DEMO_CHART = {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  // "data": {"url": "/assets/charts/data/stocks.csv"},
+  // "data": {"url": "assets/unemployment-across-industries.json"},
+  "data": {"values": Array.from(dataToSingleValues(dataGenerator(30, new Date().getTime() / 1000)))},
   "vconcat": [{
     "width": 480,
     "mark": "area",
@@ -16,8 +75,11 @@ const CHART_SPEC = {
         "scale": {"domain": {"selection": "brush"}},
         "axis": {"title": ""}
       },
-      "y": {"field": "price", "type": "quantitative", "aggregate": "sum"},
-      "color": {"field": "symbol", "type": "nominal"}
+      "y": {"field": "count", "aggregate": "sum"},
+      "color": {
+        "field": "series",
+        "scale": {"scheme": "category20b"}
+      }
     }
   }, {
     "width": 480,
@@ -32,11 +94,13 @@ const CHART_SPEC = {
         "type": "temporal"
       },
       "y": {
-        "field": "price",
+        "field": "count",
         "aggregate": "sum",
-        "axis": {"tickCount": 3, "grid": false}
       },
-      "color": {"field": "symbol", "type": "nominal"}
+      "color": {
+        "field": "series",
+        "scale": {"scheme": "category20b"}
+      }
     }
   }]
 }
@@ -55,7 +119,7 @@ export class LearnStatsPage implements OnInit {
     }
   ))
 
-  spec: {} = CHART_SPEC;
+  spec: {} = DEMO_CHART;
 
   constructor(
     public statsHistoryService: StatsHistoryService,
