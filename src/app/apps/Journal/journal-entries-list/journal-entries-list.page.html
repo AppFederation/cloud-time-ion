@@ -11,6 +11,14 @@
     </ion-buttons>
 
     <ion-title>Timeline</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
+
+      <odm-sync-status></odm-sync-status>
+
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -27,6 +35,7 @@
       <!--      +-->
       <!--      <ion-icon name="add-circle"></ion-icon>-->
     </ion-fab-button>
+
   </ion-fab>
 
   <ion-list>
