@@ -69,7 +69,8 @@ export class RichTextComponent implements OnInit {
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
-      '[contenteditable] ::marker { color: red } '
+      '[contenteditable] ::marker { color: red } ' +
+      `blockquote { border-left: 3px gray solid; padding-left: 6px; margin-left: 20px } `
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
       [contenteditable] a { color: #98aed9 }
