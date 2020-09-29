@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {JournalNumericDescriptor, JournalNumericDescriptors} from '../../models/JournalNumericDescriptors'
-import {JournalEntry} from '../../models/JournalEntry'
+import {JournalCompositeFieldVal, JournalEntry} from '../../models/JournalEntry'
 import {JournalEntry$} from '../../models/JournalEntry$'
 
 @Component({
@@ -17,6 +17,8 @@ export class JournalNumericFieldsComponent implements OnInit {
 
   @Input() journalEntry$ !: JournalEntry$
 
+  showAny = false
+
   showAll = false
 
   constructor() { }
@@ -26,10 +28,11 @@ export class JournalNumericFieldsComponent implements OnInit {
   onChangeNumericValue(numericPickerVal: NumericPickerVal, descriptor: JournalNumericDescriptor) {
     const patch: any = {}
     // TODO: figure out deep patches by path strings like in firebase (to prevent data loss)
-    patch[descriptor.id !] = {
+    const fieldVal: JournalCompositeFieldVal = {
       numVal: numericPickerVal
       // later: comments, maybe lastModified etc.
     }
+    patch[descriptor.id !] = fieldVal
     this.journalEntry$.patchThrottled(patch)
   }
 
