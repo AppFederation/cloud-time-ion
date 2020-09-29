@@ -60,7 +60,7 @@ export class RichTextComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customInsertButton selectall copy paste | undo redo | formatselect | bold italic underline forecolor backcolor | \
+      'customInsertButton selectall copy paste | undo redo | formatselect | blockquote bold italic underline forecolor backcolor | \
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | help',
     skin: 'oxide-dark',
