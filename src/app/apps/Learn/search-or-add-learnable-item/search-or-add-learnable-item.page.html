@@ -16,7 +16,13 @@
       <app-quiz-button
       ></app-quiz-button>
 
-      <odm-sync-status></odm-sync-status>
+      <ion-buttons slot="end">
+        <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
+
+        <odm-sync-status></odm-sync-status>
+
+      </ion-buttons>
+
     </div>
 
   </ion-toolbar>
