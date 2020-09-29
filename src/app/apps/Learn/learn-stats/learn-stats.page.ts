@@ -2,18 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import {StatsHistoryService} from '../core/stats-history.service'
 import {map} from 'rxjs/operators'
 import {HttpClient} from '@angular/common/http'
-// import {dataGenerator} from './learn-stats-demo-data';
+import {StoredLearnStats} from '../core/learn-stats.service'
+import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 
-const API_STATS_URL = '/path/to/stats';  // TODO
 
-
-function* dataToSingleValues(dataset: any) {
-  for(const groupedData of dataset) {
-    for(const ratingCount of Object.entries(groupedData['countByRating'])) {
+function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
+  for(const statEntry of dataset) {
+    for(const ratingCount of Object.entries(statEntry.countByRating??{})) {
       yield {
         "series": ratingCount[0],
         "count": ratingCount[1],
-        "date": new Date(groupedData['whenCreated']['seconds'] * 1000),
+        "date": new Date(statEntry.whenCreated!.seconds * 1000),
       }
     }
   }
@@ -80,7 +79,7 @@ export class LearnStatsPage implements OnInit {
   ))
 
   spec: {} = DEMO_CHART;
-  data: {}[] = [];
+  data: {series: string, count: number, date: Date}[] = [];
 
   constructor(
     public statsHistoryService: StatsHistoryService,
@@ -90,10 +89,13 @@ export class LearnStatsPage implements OnInit {
   ngOnInit() {
     // Use demo data:
     // this.data = Array.from(dataToSingleValues(dataGenerator(30, new Date().getTime() / 1000)));
+    // this.data = [...dataToSingleValues(CHART_TEST_DATA)];
 
-    this.http.get(API_STATS_URL).subscribe((data) => {
-      this.data = Array.from(dataToSingleValues(data));
-    });
+    // this.items$ = of(CHART_TEST_DATA);
+    this.items$.subscribe((data: (StoredLearnStats & OdmInMemItem)[]) => {
+      console.log('Items', data);
+      this.data = [...dataToSingleValues(data)];
+    })
   }
 
 }
