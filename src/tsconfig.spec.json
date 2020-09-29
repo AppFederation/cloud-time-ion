@@ -10,7 +10,8 @@
   "files": [
     "test.ts",
     "zone-flags.ts",
-    "polyfills.ts"
+    "polyfills.ts",
+    "app/apps/Learn/learn-stats/learn-stats-demo-data.ts"
   ],
   "include": [
     "**/*.spec.ts",
