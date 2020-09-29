@@ -13,13 +13,22 @@
     <!-- TODO: Next button -->
     <ion-title>
       Journal Entry
-      <odm-sync-status></odm-sync-status>
     </ion-title>
-    <ion-button slot="end" color="secondary"
-      (click)="newEntry()"
-    >
-      NEW
-    </ion-button>
+
+    <ion-buttons slot="end">
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
+
+      <odm-sync-status></odm-sync-status>
+
+    </ion-buttons>
+
+
+    <!--    <ion-button slot="end" color="secondary"-->
+<!--                [routerLink]="'/journal/write/new'"-->
+<!--    >-->
+<!--&lt;!&ndash;      (click)="newEntry()"&ndash;&gt;-->
+<!--      NEW-->
+<!--    </ion-button>-->
   </ion-toolbar>
 </ion-header>
 <ion-content>
