@@ -3,7 +3,7 @@
 <ng-container
   *ngFor="let textField of textDescriptors"
 >
-  <div *ngIf="(itemVal$ | async).getTextFieldVal(textField); let textFieldVal">
+  <div *ngIf="(itemVal$ | async)?.getTextFieldVal(textField); let textFieldVal">
     <ion-note>{{textField.id}}</ion-note>
     <app-rich-text-view
       [htmlString]="textFieldVal"
