@@ -11,7 +11,11 @@ function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
     for(const ratingCount of Object.entries(statEntry.countByRating??{})) {
       const key = ratingCount[0]
       yield {
-        "series": key === 'undefined' ? '-' : key /* workaround for https://github.com/vega/vega-lite/issues/1734 */,
+        "series": key === 'undefined' ? '-' : key /* workaround for https://github.com/vega/vega-lite/issues/1734
+          https://stackoverflow.com/questions/59185661/order-stacked-vega-lite-bar-graph-by-specific-order
+          -> ```A workaround is to use a calculate transform to encode the desired order.
+            A simple example of this can be found here: https://vega.github.io/vega-lite/docs/stack.html#order ```
+        */,
         "count": ratingCount[1],
         "date": new Date(statEntry.whenCreated!.seconds * 1000),
       }
