@@ -18,6 +18,10 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
     Object.assign(this, data)
   }
+
+  matchesSearch(search: string) {
+    return this.id !. toLowerCase().includes(search.toLowerCase())
+  }
 }
 
 type JndParams = {
@@ -166,10 +170,16 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'cravings for computer games' = jnd({
     lowerIsBetter: true,
   })
+  'thinking_about_computer_games' = jnd({
+    lowerIsBetter: true,
+  })
   'cravings for food' = jnd({
     lowerIsBetter: true,
   })
   'cravings for alcohol' = jnd({
+    lowerIsBetter: true,
+  })
+  'thinking_about_alcohol' = jnd({
     lowerIsBetter: true,
   })
   cognition = jnd({searchTerms: [`smart`, `intelligence`, `understanding`, `mental performance`]})

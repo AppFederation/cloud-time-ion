@@ -13,8 +13,8 @@
     *ngFor="let descriptor of numDescriptors"
   >
     <apf-numeric-picker
-      *ngIf="descriptor?.isShortListed || showAll"
-      [hidden]="! descriptor.id !. toLowerCase().includes(search.toLowerCase())"
+      *ngIf="descriptor?.isShortListed || showAll || descriptor.matchesSearch(search)"
+      [hidden]="! descriptor.matchesSearch(search)"
       (numericValue)="onChangeNumericValue($event, descriptor)"
       [numFieldDef]="descriptor"
     ></apf-numeric-picker>
