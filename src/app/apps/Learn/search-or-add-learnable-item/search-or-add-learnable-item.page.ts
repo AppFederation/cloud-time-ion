@@ -46,7 +46,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(200),
+      debounceTime(100),
     ).subscribe(val => {
       this.htmlSearch = val
       val = stripHtml(val)
