@@ -134,8 +134,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( ! string ?. trim() ) {
       return
     }
-    const QQ = /<-->|<->|<>|---/
-    const QA = /--|-->/
+    const QQ = /<-->|<->|----/ // <> - pascal not-equal
+    const QA = /---/ // |-->/ // removed -- because it exists in command line options and html comments
+    // --> - end of XML/HTML comment
     const overlay: Partial<LearnItemSidesVals> = {}
     if ( string.match(QQ) ) {
       const split = splitAndTrim(string, QQ)
