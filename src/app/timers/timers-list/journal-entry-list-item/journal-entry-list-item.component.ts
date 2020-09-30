@@ -11,11 +11,8 @@ export class JournalEntryListItemComponent implements OnInit {
 
   @Input() item$ ! : JournalEntry$
 
-  get itemVal$Any(): Observable<any> {
-    return this.item$.val$ as Observable<any>
-  }
-
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit() {}
 

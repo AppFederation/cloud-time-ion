@@ -1,0 +1,12 @@
+<ng-container
+  *ngFor="let field of numDescriptors"
+>
+  <span
+    style="color: var(--secondary)"
+    *ngIf="(val$ | async)?.getCompositeField(field) let fieldVal"
+  > <!-- TODO color -->
+    {{field.id}}:
+    <b>{{fieldVal?.numVal || fieldVal}}</b>
+  </span>
+
+</ng-container>

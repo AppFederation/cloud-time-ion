@@ -12,6 +12,7 @@ import {RichTextViewComponent} from '../../../libs/AppFedShared/rich-text/rich-t
 import {JournalNumFieldsViewComponent} from '../../../timers/timers-list/journal-entry-list-item/journal-num-fields-view/journal-num-fields-view.component'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {JournalTextFieldsViewComponent} from '../../../timers/timers-list/journal-entry-list-item/journal-text-fields-view/journal-text-fields-view.component'
+import {SharedModule} from '../../../shared/shared.module'
 
 @NgModule({
   imports: [
@@ -20,7 +21,13 @@ import {JournalTextFieldsViewComponent} from '../../../timers/timers-list/journa
     IonicModule,
     JournalEntriesListPageRoutingModule,
     OdmModule,
+    SharedModule,
   ],
-  declarations: [JournalEntriesListPage, JournalEntryListItemComponent, RichTextViewComponent, JournalNumFieldsViewComponent, JournalTextFieldsViewComponent],
+  declarations: [
+    JournalEntriesListPage,
+    JournalEntryListItemComponent,
+    JournalNumFieldsViewComponent,
+    JournalTextFieldsViewComponent,
+  ],
 })
 export class JournalEntriesListPageModule {}
