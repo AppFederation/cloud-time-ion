@@ -11,7 +11,7 @@ function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
     for(const ratingCount of Object.entries(statEntry.countByRating??{})) {
       const key = ratingCount[0]
       yield {
-        "series": key === 'undefined' ? '-' : key,
+        "series": key === 'undefined' ? '-' : key /* workaround for https://github.com/vega/vega-lite/issues/1734 */,
         "count": ratingCount[1],
         "date": new Date(statEntry.whenCreated!.seconds * 1000),
       }
