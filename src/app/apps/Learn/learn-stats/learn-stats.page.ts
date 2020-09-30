@@ -9,8 +9,9 @@ import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
   for(const statEntry of dataset) {
     for(const ratingCount of Object.entries(statEntry.countByRating??{})) {
+      const key = ratingCount[0]
       yield {
-        "series": ratingCount[0],
+        "series": key === 'undefined' ? '-' : key,
         "count": ratingCount[1],
         "date": new Date(statEntry.whenCreated!.seconds * 1000),
       }
