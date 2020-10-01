@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser'
+import {convertToHtmlIfNeeded} from '../../utils/html-utils'
+
 
 @Component({
   selector: 'app-rich-text-view',
@@ -15,6 +17,8 @@ export class RichTextViewComponent implements OnInit {
   ) { }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.htmlString = convertToHtmlIfNeeded(this.htmlString)
+  }
 
 }
