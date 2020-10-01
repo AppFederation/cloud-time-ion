@@ -73,11 +73,14 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   execution = jnd()
   procrastination = jnd()
   excitement = jnd({
+    idealValue: 8 /* excessive excitement can cause `tension` */,
     antonym: `boredom?`,
     isShortListed: true,
   })
   motivation = jnd({
     isShortListed: true,
+  })
+  ambition = jnd({
   })
   urgency = jnd()
   sense_of_urgency = jnd()
@@ -302,6 +305,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   worry = jnd({moderateIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   concern = jnd({moderateIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   anxiety = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
+  tension = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
   visualizing = jnd({moderateIsBetter: true})
   long_term_vision = jnd({moderateIsBetter: true, searchTerms: `long-term vision`})
   fun = jnd()
