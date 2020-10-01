@@ -33,7 +33,7 @@ export class ItemSideComponent implements OnInit {
 
   @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
     if ( ed ) {
-      setInterval(() => {
+      setTimeout(() => {
         this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
           for preserving undo and to prevent tinymce error when disappeared
           */
