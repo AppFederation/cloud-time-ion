@@ -5,7 +5,10 @@ import {
   TreeModel,
 } from './TreeModel'
 import { DbTreeService } from './db-tree-service'
-import { NodeInclusion } from './TreeListener'
+import {
+  NodeAddEvent,
+  NodeInclusion,
+} from './TreeListener'
 import { TreeService } from './tree.service'
 import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
@@ -53,7 +56,7 @@ describe('OryTreeModel', () => {
       parent.addChild(null, newNode) //  TODO: consider going via onNodeAdded() as if it was all added from DB at the beginning, to be more realistic
       expect(parent.children[index].itemId).toEqual(currentChild.itemId)
       expect(parent.children[index].nodeInclusion.nodeInclusionId).toEqual(currentChild.inclusionId)
-      expect(treeModel.mapItemIdToNode.get(currentChild.itemId).length).toEqual(1)
+      expect(treeModel.mapItemIdToNodes.get(currentChild.itemId).length).toBeGreaterThan(0)
       // addNodeToParent()
     }
   }
@@ -100,12 +103,56 @@ describe('OryTreeModel', () => {
       { itemId: 'n1', inclusionId: 'inc1'},
       { itemId: 'n2', inclusionId: 'inc2'},
     ])
-    expect(treeModel.mapItemIdToNode.get('n1').length).toEqual(1)
+    expect(treeModel.getNodesByItemId('n1').length).toEqual(1)
     treeModel.root.children[0].reorderDown()
-    expect(treeModel.mapItemIdToNode.get('n1').length).toEqual(1) // this assertion fails; but to really fix it, I should do multi-parent and unify add/reorder/move/copy
-
-
+    expect(treeModel.getNodesByItemId('n1').length).toEqual(1) // this assertion fails; but to really fix it, I should do multi-parent and unify add/reorder/move/copy
   })
+
+  function itHandlesInsertionOfNodeWithMultipleParents(viaExternalEvent: boolean) {
+    it('handles insertion of node with multiple parents, via: ' + (viaExternalEvent ? 'external event' : 'local user action'), () => {
+      givenTreeModelChildrenOfRoot([
+        {itemId: 'parentItemId', inclusionId: 'incP1'},
+        {itemId: 'parentItemId', inclusionId: 'incP2'},
+      ])
+      expect(treeModel.getNodesByItemId('parentItemId').length).toBe(2)
+      const parentNodes = treeModel.getNodesByItemId('parentItemId')
+
+      let childItemId = 'childItemId'
+      if (viaExternalEvent) {
+        treeModel.onNodeAdded(new NodeAddEvent(
+          null, 'parentItemId', {}, childItemId, 0,
+          new NodeInclusion('incChild', 0),
+        ))
+      } else {
+        const childNode = parentNodes[0].addChild()
+        childItemId = childNode.itemId
+      }
+      // verify child node added in both parent nodes:
+      expect(parentNodes[0].children[0].itemId).toBe(childItemId)
+      expect(parentNodes[1].children[0].itemId).toBe(childItemId)
+      // ======= Level 2:
+      let childItemLv2Id = 'childItemLv2Id'
+      if (viaExternalEvent) {
+        treeModel.onNodeAdded(new NodeAddEvent(
+          null, childItemId, {}, childItemLv2Id, 0,
+          new NodeInclusion('incChildLv2', 0),
+        ))
+      } else {
+        childItemLv2Id = parentNodes[0].addChild().itemId
+      }
+      const childNodes = treeModel.getNodesByItemId(childItemId)
+      expect(childNodes.length).toBe(2)
+      expect(childNodes[0].children[0].itemId).toBe(childItemLv2Id)
+      expect(childNodes[1].children[0].itemId).toBe(childItemLv2Id) // this should FAIL coz not working in UI
+      // treeModel.root.debugDump() /* compare json */
+    })
+  }
+
+  itHandlesInsertionOfNodeWithMultipleParents(true)
+
+  itHandlesInsertionOfNodeWithMultipleParents(false)
+
+  it(`handles moving into db item which is in multiple nodes` /* onNodeInclusionModified moving node and there are multiple new parents - not yet impl.!*/)
 
   // TODO: test indent after multiple reorders - looks like the map gets filled with multiple copies of the same node?
   // TODO: assert there is only one copy of the node in the map id->node
