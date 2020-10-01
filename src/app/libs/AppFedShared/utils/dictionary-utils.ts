@@ -44,7 +44,7 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
   const dictWithIdsFromKeys: Dict<TItem> = setIdsFromKeys(dictionary, idKeyName);
   let arr = getDictionaryValuesAsArray(dictWithIdsFromKeys)
   arr = arr.map(_ => {
-    if ( (_ as any as ILateInit).lateInit ) { // TODO ?.
+    if ( (_ as any as Partial<ILateInit>).lateInit ) { // TODO ?.
       _ = (_ as any as ILateInit).lateInit() || _ // TODO: lateInitAndMorph
     }
     return _
