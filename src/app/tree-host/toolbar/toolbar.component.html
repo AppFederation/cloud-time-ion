@@ -23,18 +23,22 @@
   </ng-template>
 
 
+  <ng-container *ngIf="showExtraNavIcons">
+    <a href="https://lifedvisor.innotopic.com/" target="_blank">
+      <fa-icon icon="brain" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
+    </a>
 
-  <a href="https://lifedvisor.innotopic.com/" target="_blank">
-    <fa-icon icon="brain" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
-  </a>
+    <fa-icon icon="shopping-cart" class="actionable"
+             (click)='treeHost.goToShopping()'
+    ></fa-icon>
 
-  <fa-icon icon="shopping-cart" class="actionable"
-           (click)='treeHost.goToShopping()'
-  ></fa-icon>
+    <a href="https://cloudtime.innotopic.com/" target="_blank">
+      <fa-icon icon="hourglass" class="actionable"></fa-icon>
+    </a>
+  </ng-container>
 
-  <a href="https://cloudtime.innotopic.com/" target="_blank">
-    <fa-icon icon="hourglass" class="actionable"></fa-icon>
-  </a>
+
+
 <!--  <fa-icon icon="expand-alt"></fa-icon>-->
 <!--  <fa-icon icon="compress-alt"></fa-icon>-->
 
@@ -76,8 +80,10 @@
     style="font-size: 13px"
   ></app-time-tracking-toolbar>
 
-  <fa-icon icon="trophy" class="actionable"
-  ></fa-icon>
+  <ng-container *ngIf="showExtraNavIcons">
+    <fa-icon icon="trophy" class="actionable"
+    ></fa-icon>
+  </ng-container>
 
   <fa-icon [icon]="['fas', 'cog']" class="actionable" style="font-size: 24px"
            [ngbPopover]="popupContent"

@@ -18,6 +18,8 @@ export class ToolbarComponent implements OnInit {
   /* workaround for now */
   @Input() treeHost: TreeHostComponent
 
+  showExtraNavIcons = false
+
   constructor(
     public debugService: DebugService,
     public configService: ConfigService,
