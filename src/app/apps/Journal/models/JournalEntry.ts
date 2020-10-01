@@ -2,10 +2,11 @@ import {OdmItem} from "../../../libs/AppFedShared/odm/OdmItem";
 import {OdmService} from "../../../libs/AppFedShared/odm/OdmService";
 import {OdmItemId} from "../../../libs/AppFedShared/odm/OdmItemId";
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
-import {JournalNumericDescriptor} from './JournalNumericDescriptors'
+import {JournalNumericDescriptor, JournalNumericDescriptors} from './JournalNumericDescriptors'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {JournalTextDescriptor} from './JournalTextDescriptors'
+import {JournalTextDescriptor, JournalTextDescriptors} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {isNotNullish} from '../../../libs/AppFedShared/utils/utils'
 
 export type JournalEntryId = OdmItemId<JournalEntry>
 
@@ -30,6 +31,9 @@ export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
   }
 
   getCompositeField(field: JournalNumericDescriptor): JournalCompositeFieldVal | undefined {
+    // console.log(`getCompositeField`)
+    // return undefined // {numVal: 999}
+    // TODO: is this func too slow or called too many times?
     return (this as any) [field.id !]
   }
 
@@ -42,6 +46,33 @@ export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
   getTextFieldVal(field: JournalTextDescriptor): string | nullish {
     return (this as any) [field.id !]
   }
+
+  getPresentCompositeFieldEntries(): [JournalNumericDescriptor, number][] {
+    const retArray = [] as Array<[JournalNumericDescriptor, number]>
+    for ( let desc of JournalNumericDescriptors.instance.array ) {
+      const fieldVal = this.getCompositeFieldNumVal(desc)
+      if ( fieldVal !== undefined ) {
+        retArray.push([desc, fieldVal])
+      }
+    }
+    return retArray
+  }
+
+  getPresentTextFieldEntries(): [JournalTextDescriptor, string][] {
+    const retArray = [] as Array<[JournalTextDescriptor, string]>
+    for ( let desc of JournalTextDescriptors.instance.array ) {
+      const fieldVal = this.getTextFieldVal(desc)
+      if ( isNotNullish(fieldVal) ) {
+        if ( ((fieldVal?.trim?.()?.length ?? 0) > 0) ) {
+          retArray.push([desc, fieldVal!])
+        } else {
+          // console.log(`fieldVal`, fieldVal)
+        }
+      }
+    }
+    return retArray
+  }
+
 
   // patchJournalField(fieldId: keyof JournalNumericDescriptors, patch: JournalFieldPatch)
 }

@@ -1,13 +1,15 @@
 
 
 <ng-container
-  *ngFor="let textField of textDescriptors"
->
-  <div *ngIf="(itemVal$ | async)?.getTextFieldVal(textField); let textFieldVal">
-    <ion-note>{{textField.id}}</ion-note>
+  *ngFor="let fieldEntry of (itemVal$ | async)?.getPresentTextFieldEntries()"
+> <!-- the entries are workaround for slow ngFor-s or too many async pipes -->
+
+<!--  <div *ngIf="(itemVal$ | async)?.getTextFieldVal(textField); let textFieldVal">-->
+    &nbsp;
+    <ion-note>{{fieldEntry[0].title}}</ion-note>
     <app-rich-text-view
-      [htmlString]="textFieldVal"
+      [htmlString]="fieldEntry[1]"
     ></app-rich-text-view>
-  </div>
+<!--  </div>-->
 
 </ng-container>

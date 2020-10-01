@@ -13,6 +13,10 @@ export interface ILateInitWithMorph<TMorphInto> {
 export class JournalNumericDescriptor extends UiFieldDef {
   isShortListed?: boolean
 
+  get title() {
+    return this.id
+  }
+
   constructor(data?: JndParams) {
     super();
 

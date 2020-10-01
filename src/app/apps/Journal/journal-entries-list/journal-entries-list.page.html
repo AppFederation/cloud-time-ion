@@ -10,7 +10,7 @@
       ></ion-icon>
     </ion-buttons>
 
-    <ion-title>Timeline</ion-title>
+    <ion-title>Timeline <ion-note>{{(journalEntriesService.localItems$ | async) ?. length}}</ion-note></ion-title>
 
     <ion-buttons slot="end">
       <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
@@ -38,15 +38,71 @@
 
   </ion-fab>
 
-  <ion-list>
-    <ng-container
-      *ngFor="let item$ of (journalEntriesService.items$ | async); trackBy: trackById"
-    >
-      <app-journal-entry-list-item
-        [item$]="item$"
-      ></app-journal-entry-list-item>
-    </ng-container>
-  </ion-list>
+  <ng-container
+    *ngIf="useVirtualScroll else nonVirtualScroll"
+  >
+    <!-- https://github.com/mhartington/cdk-virtual-scroll-ionic
+      https://stackblitz.com/edit/angular-vjmtpz
+      https://stackoverflow.com/questions/61213492/angular-cdk-virtual-scroll-viewport-does-not-render-correct-number-of-items
+      https://github.com/mhartington/cdk-virtual-scroll-ionic/commit/22c0b453cd059d7983d7908af3fc01ac291bc5d2#diff-4332cea4112c8f8b67046cb221632243
+      https://stackblitz.com/edit/cdk-virtual-scroll-autosize-zbvvxd?file=src%2Fapp%2Fapp.component.html
+      https://stackblitz.com/edit/cdk-virtual-scroll-simple-autosize-lxdfmu?file=app%2Fapp.component.scss
+      https://github.com/angular/components/issues/10113
+      https://stackblitz.com/angular/pogxdxayqgv?file=src%2Fapp%2Fcdk-virtual-scroll-context-example.html (not autosize)
+     -->
+    before viewport
+
+    <!-- https://stackblitz.com/edit/cdk-virtual-scroll-simple-autosize?file=package.json -->
+    <cdk-virtual-scroll-viewport
+      class="example-viewport" style="height: 500px" autosize  [minBufferPx]="1500" [maxBufferPx]="4500">
+      <!--autosize-->
+      <!-- [itemSize]="90" -->
+      <div
+        *cdkVirtualFor="let item$ of (items$ | async)?.slice();                        let index = index;
+                       let count = count;
+                       let first = first;
+                       let last = last;
+                       let even = even;
+                       let odd = odd;">
+        <!--    <div *cdkVirtualFor="let item of ['1', '2', '3'];-->
+        <!--                       let index = index;-->
+        <!--                       let count = count;-->
+        <!--                       let first = first;-->
+        <!--                       let last = last;-->
+        <!--                       let even = even;-->
+        <!--                       let odd = odd;"-->
+        <!--    >-->
+        <!--      <div>-->
+        <!--        item {{index}}-->
+        <!--        {{ item$ }}-->
+        <!--      </div>-->
+
+        <div>
+          <app-journal-entry-list-item
+            [item$]="item$"
+          ></app-journal-entry-list-item>
+        </div>
+
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+    after viewport
+  </ng-container>
+
+
+  <ng-template
+    #nonVirtualScroll
+  >
+    <ion-list >
+      <ng-container
+        *ngFor="let item$ of (journalEntriesService.items$ | async); trackBy: trackById"
+      >
+        <app-journal-entry-list-item
+          [item$]="item$"
+        ></app-journal-entry-list-item>
+      </ng-container>
+    </ion-list>
+  </ng-template>
 
 
 </ion-content>

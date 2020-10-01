@@ -13,6 +13,8 @@ import {JournalNumFieldsViewComponent} from '../../../timers/timers-list/journal
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {JournalTextFieldsViewComponent} from '../../../timers/timers-list/journal-entry-list-item/journal-text-fields-view/journal-text-fields-view.component'
 import {SharedModule} from '../../../shared/shared.module'
+import {ScrollingModule} from '@angular/cdk/scrolling'
+import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling';
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import {SharedModule} from '../../../shared/shared.module'
     JournalEntriesListPageRoutingModule,
     OdmModule,
     SharedModule,
+    ScrollingModule,
+    ExperimentalScrollingModule,
   ],
   declarations: [
     JournalEntriesListPage,

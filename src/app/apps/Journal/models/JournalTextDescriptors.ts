@@ -6,6 +6,10 @@ import {FormControl} from '@angular/forms'
 /* TODO: split into UiField and simpler UiFieldDecl */
 export class UiFieldDef implements ILateInit {
 
+  get title() {
+    return this.uiName
+  }
+
   constructor(
     public id?: string,
     public uiName?: string,

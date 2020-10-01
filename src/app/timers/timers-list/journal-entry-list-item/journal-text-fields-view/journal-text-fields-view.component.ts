@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {JournalEntry$} from '../../../../apps/Journal/models/JournalEntry$'
 import {JournalTextDescriptors} from '../../../../apps/Journal/models/JournalTextDescriptors'
 import {Observable} from 'rxjs/internal/Observable'
@@ -10,10 +10,11 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
   selector: 'app-journal-text-fields-view',
   templateUrl: './journal-text-fields-view.component.html',
   styleUrls: ['./journal-text-fields-view.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JournalTextFieldsViewComponent implements OnInit {
 
-  textDescriptors = JournalTextDescriptors.instance.array
+  // textDescriptors = [ JournalTextDescriptors.instance.array [0] ]
 
   @Input() item$ ! : JournalEntry$
 
