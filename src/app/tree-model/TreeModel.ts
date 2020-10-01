@@ -665,7 +665,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   toggleDone() {
     this.patchItemData({
-      isDone: ! this.itemData.isDone, /* TODO: could store timestamp */
+      isDone: this.itemData.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
     })
     // FIXME: fireOnChangeItemDataOfChildOnParents and on this
 
