@@ -13,7 +13,13 @@
     <!-- TODO: Next button -->
     <ion-title>
       Journal Entry
+      &nbsp;
+      <app-time-passing
+        style="font-size: .8rem;"
+        [isCountDown]="false"
+      ></app-time-passing>
     </ion-title>
+
 
     <ion-buttons slot="end">
       <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
