@@ -10,7 +10,11 @@ export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number
 }
 
 export function isNotNullish(x: any) {
-  return x !== null && x !== undefined
+  return (x !== null) && (x !== undefined)
+}
+
+export function isNullish(x: any) {
+  return (x === null) || (x === undefined)
 }
 
 export function countNotNullishBy<T>(arr: T[], getterFn: (item: T) => any): number {
