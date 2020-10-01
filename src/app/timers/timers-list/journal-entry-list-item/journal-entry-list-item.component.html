@@ -1,9 +1,14 @@
 
 
 <div
+  *ngIf="(val$ | async) as itemVal"
   [routerLink]="['/journal/entry/' + item$.id]"
   style="cursor: pointer; border-bottom: #2a2a2a 3px solid; margin-bottom: 7px; padding-bottom: 7px; padding-left: 7px;"
 >
+
+  <app-time-point
+    [time]="itemVal?.whenCreated?.toDate()"
+  ></app-time-point>
 
 <!--  {{item$.val$ | async | json}}-->
 

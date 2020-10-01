@@ -15,6 +15,7 @@ import {JournalTextFieldsViewComponent} from '../../../timers/timers-list/journa
 import {SharedModule} from '../../../shared/shared.module'
 import {ScrollingModule} from '@angular/cdk/scrolling'
 import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling';
+import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-expe
     SharedModule,
     ScrollingModule,
     ExperimentalScrollingModule,
+    TimeModule,
   ],
   declarations: [
     JournalEntriesListPage,
