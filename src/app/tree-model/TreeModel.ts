@@ -94,7 +94,8 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return this.itemData && this.itemData.title
   }
 
-  /** TODO: rename to itemData$ and use CachedSubject to get initial val too; unify with DbItem.data$ */
+  /** TODO: rename to itemData$ and use CachedSubject to get initial val too;
+   * TODO: unify with DbItem.data$ */
   onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
 
@@ -307,6 +308,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   _appendChildAndSetThisAsParent(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
+    // TODO: consider reacting to multi-node changes here for all nodes with the same
     if ( ! nodeToAppend ) {
       nodeToAppend = new OryTreeNode(null, '' + uuidV4(), this.treeModel, this.newItemData())
     }
@@ -320,8 +322,12 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     }
     nodeToAppend.parent = this
     nodeToAppend.parent2 = this
-    this.children.splice(insertBeforeIndex, 0, nodeToAppend)
-    this.treeModel.registerNode(nodeToAppend)
+
+    // add node to other nodes of the same itemId:
+    for ( const node of this.treeModel.getNodesByItemId(this.itemId)) {
+      this.children.splice(insertBeforeIndex, 0, nodeToAppend)
+      this.treeModel.registerNode(nodeToAppend)
+    }
     return nodeToAppend
   }
 
@@ -371,6 +377,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
     const newNodeIndex = afterExistingNode ? afterExistingNode.getIndexInParent() + 1 : 0
     this._appendChildAndSetThisAsParent(newNode, newNodeIndex) // this is to avoid delay caused by Firestore; for UX
+    // TODO: handle adding child in multiple parents; and this addChild method should actually accept DbItem instead of node, coz it really might create multiple nodes
     return newNode
   }
 
@@ -705,9 +712,6 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   hasField(attribute: OryColumn) {
     // return this.dbItem.hasField
-    // if ( this.parent2.isDayPlan) {
-    //   return 'settings_applications'
-    // }
     return true // HACK FIXME
   }
 
@@ -823,7 +827,7 @@ export class TreeModel {
     }
   }
 
-  /* Workaround for now, as there were some non-deleted children of a deleted parent */
+  /** Workaround for now, as there were some non-deleted children of a deleted parent */
   public showDeleted: boolean = false
 
   permissionsManager: PermissionsManager
@@ -935,15 +939,7 @@ export class TreeModel {
     // }
   }
 
-  // addSiblingAfterNode(newNode: OryTreeNode, afterExistingNode: OryTreeNode) {
-  //   const myIndex = this.getIndexInParent()
-  // }
-
   registerNode(nodeToRegister: OryTreeNode) {
-    // console.log('mapNodeInclusionIdToNode registerNode', nodeToRegister)
-    // NOTE: does not yet support the same node being in multiple places
-    // NOTE: this should register nodeInclusion id
-
     this.mapNodeInclusionIdToNodes.add(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
     this.addNodeToMapByItemId(nodeToRegister)
   }
@@ -951,12 +947,6 @@ export class TreeModel {
   private addNodeToMapByItemId(nodeToRegister: OryTreeNode) {
     this.mapItemIdToNodes.add(nodeToRegister.itemId, nodeToRegister)
   }
-
-  // private nodeInclusionExists(nodeInclusionId: string) {
-  //   const existingNode = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
-  //   // console.log('mapNodeInclusionIdToNode nodeInclusionExists: ', nodeInclusionId, existingNode)
-  //   return defined(existingNode)
-  // }
 
   getNodesByItemId(itemId: ItemId) {
     const nodes: OryTreeNode[] = this.mapItemIdToNodes.get(itemId)
