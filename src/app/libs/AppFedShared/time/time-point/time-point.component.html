@@ -1,4 +1,12 @@
-{{process(time) || '(no timestamp)'}}
+<span *ngIf="time else noTimestamp">
+  {{process(time) || '(no timestamp)'}}
+  UTC
+</span>
+
+<ng-template #noTimestamp
+>
+  <ion-note>(no timestamp)</ion-note>
+</ng-template>
 
 <ng-container
   *ngIf="isInFuture"
