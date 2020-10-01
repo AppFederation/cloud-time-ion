@@ -23,14 +23,14 @@
   </ng-template>
 
 
+  <fa-icon icon="shopping-cart" class="actionable"
+           (click)='treeHost.goToShopping()'
+  ></fa-icon>
+
   <ng-container *ngIf="showExtraNavIcons">
     <a href="https://lifedvisor.innotopic.com/" target="_blank">
       <fa-icon icon="brain" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
     </a>
-
-    <fa-icon icon="shopping-cart" class="actionable"
-             (click)='treeHost.goToShopping()'
-    ></fa-icon>
 
     <a href="https://cloudtime.innotopic.com/" target="_blank">
       <fa-icon icon="hourglass" class="actionable"></fa-icon>
