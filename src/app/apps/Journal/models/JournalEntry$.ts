@@ -3,7 +3,7 @@ import {JournalEntry} from './JournalEntry'
 import {JournalEntriesService} from '../core/journal-entries.service'
 import {errorAlert, errorAlertAndThrow} from '../../../libs/AppFedShared/utils/log'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {map} from 'rxjs/operators'
 
 export class JournalEntry$ extends OdmItem$2<

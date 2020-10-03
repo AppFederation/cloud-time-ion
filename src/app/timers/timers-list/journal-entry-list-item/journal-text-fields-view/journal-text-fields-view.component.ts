@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {JournalEntry$} from '../../../../apps/Journal/models/JournalEntry$'
 import {JournalTextDescriptors} from '../../../../apps/Journal/models/JournalTextDescriptors'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {JournalEntry} from '../../../../apps/Journal/models/JournalEntry'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'

@@ -5,7 +5,7 @@ import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/util
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {JournalEntry$} from '../../../apps/Journal/models/JournalEntry$'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {LearnItem} from '../../../apps/Learn/models/LearnItem'
 import {JournalEntry} from '../../../apps/Journal/models/JournalEntry'
 

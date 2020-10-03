@@ -1,6 +1,6 @@
-import {debounceTime, throttleTime} from "rxjs/operators";
-import {async} from "rxjs/internal/scheduler/async";
-import {Observable} from 'rxjs/internal/Observable'
+import {debounceTime, throttleTime} from 'rxjs/operators';
+import {async} from 'rxjs';
+import {Observable} from 'rxjs'
 import {CachedSubject} from './cachedSubject2/CachedSubject2'
 import {OdmPatch} from '../odm/OdmItem$2'
 

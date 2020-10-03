@@ -6,7 +6,7 @@ import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestor
 import {AlertController} from '@ionic/angular'
 import {LearnItem, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 

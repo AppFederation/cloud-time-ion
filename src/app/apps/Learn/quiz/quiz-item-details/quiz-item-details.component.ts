@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {QuizService} from '../../core/quiz.service'
-import {Subscription} from 'rxjs/internal/Subscription'
+import {Subscription} from 'rxjs'
 
 @Component({
   selector: 'app-quiz-item-details',

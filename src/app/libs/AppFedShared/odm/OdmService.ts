@@ -5,7 +5,7 @@ import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 
 export abstract class OdmService<
   T extends OdmItem<T>,
