@@ -11,7 +11,6 @@ import {RichTextInterceptorService} from '../../shared/text-utils/rich-text-inte
 export class SearchOrAddTextEditorComponent implements OnInit {
 
   @Input() formControl1 ! : FormControl
-  public selectedText = '';
 
   constructor(private richTextInterceptor: RichTextInterceptorService) { }
 
@@ -94,6 +93,6 @@ export class SearchOrAddTextEditorComponent implements OnInit {
   }
 
   intercept() {
-    this.richTextInterceptor.intercept(selectedText => this.selectedText = selectedText[0]);
+    this.richTextInterceptor.intercept(selectedText => this.formControl1.setValue(selectedText[0]));
   }
 }
