@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 // import sortBy from 'lodash/sortBy'
-import {sortBy, countBy} from 'lodash'
+import {sortBy, countBy} from 'lodash-es'
 // import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {countBy, isEqual} from 'lodash'
+import {countBy, isEqual} from 'lodash-es'
 import {LearnItem} from '../models/LearnItem'
 import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
-import {minBy} from 'lodash'
+import {minBy} from 'lodash-es'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
