@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser'
 import {convertToHtmlIfNeeded} from '../../utils/html-utils'
+import {nullish} from '../../utils/type-utils'
 
 
 @Component({
@@ -10,7 +11,7 @@ import {convertToHtmlIfNeeded} from '../../utils/html-utils'
 })
 export class RichTextViewComponent implements OnInit {
 
-  @Input() htmlString ! : string
+  @Input() htmlString ! : string | nullish
 
   constructor(
     public domSanitizer: DomSanitizer,
