@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms'
 import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
-import {RichTextInterceptorService} from '../../shared/text-utils/rich-text-interceptor.service'
+import {RichTextInterceptorService} from '../../shared/utils/rich-text-interceptor.service'
+import {ChromeExtensionService} from '../../shared/utils/chrome-extension.service'
 
 @Component({
   selector: 'app-search-or-add-text-editor',
@@ -12,7 +13,11 @@ export class SearchOrAddTextEditorComponent implements OnInit {
 
   @Input() formControl1 ! : FormControl
 
-  constructor(private richTextInterceptor: RichTextInterceptorService) { }
+  constructor(private richTextInterceptor: RichTextInterceptorService) {
+    if (ChromeExtensionService.isApplicationRunAsChromeExtension()) {
+      this.interceptSelectedText();
+    }
+  }
 
   tinyMceInit = {
     placeholder: "Search or add",
@@ -92,7 +97,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     })
   }
 
-  intercept() {
+  private interceptSelectedText() {
     this.richTextInterceptor.intercept(selectedText => this.formControl1.setValue(selectedText[0]));
   }
 }

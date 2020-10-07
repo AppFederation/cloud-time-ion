@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import {errorAlert} from '../libs/AppFedShared/utils/log'
 import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {User} from 'firebase'
+import {ChromeExtensionService} from '../apps/Learn/shared/utils/chrome-extension.service'
 
 @Injectable({
   providedIn: 'root',
@@ -63,8 +64,7 @@ export class AuthService {
   }
 
   logInViaGoogle() {
-    if (window.chrome?.runtime?.getManifest?.()?.background) {
-      // https://stackoverflow.com/questions/7507277/detecting-if-code-is-being-run-as-a-chrome-extension
+    if (ChromeExtensionService.isApplicationRunAsChromeExtension()) {
       // @ts-ignore
       chrome.runtime.sendMessage({
         command: 'login'
