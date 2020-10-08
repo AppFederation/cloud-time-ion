@@ -5,6 +5,7 @@ import {Observable} from 'rxjs'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {JournalEntry} from '../../../../apps/Journal/models/JournalEntry'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 
 @Component({
   selector: 'app-journal-text-fields-view',
@@ -16,6 +17,7 @@ export class JournalTextFieldsViewComponent implements OnInit {
 
   // textDescriptors = [ JournalTextDescriptors.instance.array [0] ]
 
+  @Required()
   @Input() item$ ! : JournalEntry$
 
   get itemVal$(): CachedSubject<JournalEntry | nullish> {
