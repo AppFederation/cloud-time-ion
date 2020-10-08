@@ -16,59 +16,12 @@ function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
           -> ```A workaround is to use a calculate transform to encode the desired order.
             A simple example of this can be found here: https://vega.github.io/vega-lite/docs/stack.html#order ```
         */,
-        "count": ratingCount[1],
+        "count": (ratingCount[1] as number),
         "date": new Date(statEntry.whenCreated!.seconds * 1000),
       }
     }
   }
 }
-
-
-const DEMO_CHART = {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  // "data": {"url": "assets/unemployment-across-industries.json"},
-  // "data": {"values": Array.from(dataToSingleValues(dataGenerator(30, new Date().getTime() / 1000)))},
-  "data": {"name": "data", "values": []},
-  "vconcat": [{
-    "width": 480,
-    "mark": "area",
-    "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal",
-        "scale": {"domain": {"selection": "brush"}},
-        "axis": {"title": ""}
-      },
-      "y": {"field": "count", "aggregate": "sum"},
-      "color": {
-        "field": "series",
-        "scale": {"scheme": "category20b"}
-      }
-    }
-  }, {
-    "width": 480,
-    "height": 60,
-    "mark": "area",
-    "selection": {
-      "brush": {"type": "interval", "encodings": ["x"]}
-    },
-    "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal"
-      },
-      "y": {
-        "field": "count",
-        "aggregate": "sum",
-      },
-      "color": {
-        "field": "series",
-        "scale": {"scheme": "category20b"}
-      }
-    }
-  }]
-}
-
 
 
 @Component({
@@ -83,7 +36,6 @@ export class LearnStatsPage implements OnInit {
     }
   ))
 
-  spec: {} = DEMO_CHART;
   data: {series: string, count: number, date: Date}[] = [];
 
   constructor(
@@ -94,13 +46,10 @@ export class LearnStatsPage implements OnInit {
   ngOnInit() {
     // Use demo data:
     // this.data = Array.from(dataToSingleValues(dataGenerator(30, new Date().getTime() / 1000)));
-    // this.data = [...dataToSingleValues(CHART_TEST_DATA)];
 
-    // this.items$ = of(CHART_TEST_DATA);
     this.items$.subscribe((data: (StoredLearnStats & OdmInMemItem)[]) => {
-      console.log('Items', data);
       this.data = [...dataToSingleValues(data)];
-    })
+    });
   }
 
 }
