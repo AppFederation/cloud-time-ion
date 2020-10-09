@@ -25,16 +25,24 @@ export class AudioVisualizerComponent implements OnInit, OnDestroy {
   @Input() stream ! : MediaStream | undefined
   private source ! : MediaStreamAudioSourceNode
 
+  @Input() useFreqs = true
+
+
   bufferLength = 32;
 
-  private dataArray: Uint8Array = new Uint8Array(this.bufferLength);
-  private array ! : Array<number>
+  public dataArray: Uint8Array = new Uint8Array(
+    this.bufferLength / (this.useFreqs ? 2 : 1)
+    // https://electronics.stackexchange.com/questions/12407/what-is-the-relation-between-fft-length-and-frequency-resolution
+  )
+  public array ! : Array<number>
 
   constructor(
   ) { }
 
 
   private intervalHandle ?: number
+
+  scale: number = 16
 
   ngOnInit() {
     this.analyser.minDecibels = -90;
@@ -47,6 +55,7 @@ export class AudioVisualizerComponent implements OnInit, OnDestroy {
     this.intervalHandle = setInterval(() => {
       // this.analyser.getByteTimeDomainData(this.dataArray);
       this.analyser.getByteFrequencyData(this.dataArray) // maybe freq domain more useful coz it kinda shows noise and voice in different place
+      // also, don't have to deal with the 127 values
       // console.log(`vis`, this.dataArray)
       this.array = Array.from(this.dataArray)
     }, 50)
