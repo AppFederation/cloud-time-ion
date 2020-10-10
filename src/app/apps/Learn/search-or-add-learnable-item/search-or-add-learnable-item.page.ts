@@ -190,17 +190,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( ! item ) {
       return false
     }
-    const search = (this.search || '').trim().toLowerCase()
-    if ( search.length === 0 ) {
-      return true
-    }
-    for (let side of sidesDefsArray) {
-      const sideVal = item.getSideVal(side)
-      if ( sideVal && sideVal.toLowerCase().includes(search) ) {
-        return true
-      }
-    }
-    return false
+    return item.matchesSearch(this.search)
   }
 
   onChangeSearch($event: string) {

@@ -166,6 +166,20 @@ export class LearnItem extends OdmInMemItem {
     }
     return null
   }
+
+  matchesSearch(search: string) {
+    search = (search || '').trim().toLowerCase()
+    if ( search.length === 0 ) {
+      return true
+    }
+    for (let side of sidesDefsArray) {
+      const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
+      if ( sideVal && sideVal.toLowerCase().includes(search) ) {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
