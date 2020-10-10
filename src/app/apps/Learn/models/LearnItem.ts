@@ -172,13 +172,10 @@ export class LearnItem extends OdmInMemItem {
     if ( search.length === 0 ) {
       return true
     }
-    for (let side of sidesDefsArray) {
+    return sidesDefsArray.some(side => {
       const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
-      if ( sideVal && sideVal.toLowerCase().includes(search) ) {
-        return true
-      }
-    }
-    return false
+      return sideVal && sideVal.toLowerCase().includes(search)
+    })
   }
 }
 
