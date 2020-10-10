@@ -22,7 +22,7 @@ export class JournalEntry$ extends OdmItem$2<
       .replace(/Z_/g, 'Z')
       .replace(/\./, ':')
       .replace(/\./, ':')
-    console.log(dateFromId)
+    // console.log(dateFromId)
     const ret = {
         ...val,
         whenCreated: {

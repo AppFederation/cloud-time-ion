@@ -40,8 +40,8 @@ export class TimePassingComponent implements OnInit, OnDestroy {
       this.msDiff = Date.now() - this.referenceTime.getTime()
       // could this be causing ExpressionChangedAfterChecked ?
     }
-    // this.changeDetectorRef.detectChanges()
-    this.changeDetectorRef.markForCheck()
+    this.changeDetectorRef.detectChanges()
+    // this.changeDetectorRef.markForCheck()
   }
 
   ngOnInit() {
