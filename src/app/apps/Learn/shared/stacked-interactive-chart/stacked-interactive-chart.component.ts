@@ -3,6 +3,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 
 import embed, {Result} from 'vega-embed';
 import {updateSpitter} from './color-gradient'
+import {Dictionary} from '../../../../libs/AppFedShared/utils/dictionary-utils'
 
 
 interface SeriesData {
@@ -11,6 +12,31 @@ interface SeriesData {
   date: Date,
 }
 
+
+interface VegaLiteEncodingPoint {
+  field?: string,
+  type?: string,
+  scale?: Dictionary<any>,
+  axis?: Dictionary<any>,
+}
+
+
+interface VegaLiteVconcat {
+  width?: number,
+  mark: string,
+  encoding: {
+    x?: VegaLiteEncodingPoint,
+    y?: VegaLiteEncodingPoint,
+    color?: VegaLiteEncodingPoint,
+  }
+}
+
+
+interface VegaLiteSchema {
+  "$schema": string,
+  data: {},
+  vconcat: VegaLiteVconcat[],
+}
 
 const DEMO_CHART = {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
@@ -64,7 +90,7 @@ export class StackedInteractiveChartComponent implements OnInit, OnChanges {
   @Input() firstColor: string = '#0000ff';
   @Input() lastColor: string = '#ff3300';
   res: Result | null = null;
-  spec: {} = DEMO_CHART;
+  spec: VegaLiteSchema = DEMO_CHART;
 
   constructor() { }
 
