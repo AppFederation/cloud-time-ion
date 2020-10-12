@@ -33,10 +33,16 @@ export class MicComponent implements OnInit {
     }
     // TODO: move to AudioRecordService:
     if ( this.isRecording ) {
-      this.mediaRecorder.stop()
-      this.isRecording = false
+      this.stopRecordingIfNeeded()
     } else {
       this.startRecording()
+    }
+  }
+
+  public stopRecordingIfNeeded() {
+    if ( this.isRecording ) {
+      this.mediaRecorder.stop()
+      this.isRecording = false
     }
   }
 
@@ -102,13 +108,16 @@ export class MicComponent implements OnInit {
     this.uploadService.uploadAudio2(blob, learnItem$.id !)
   }
 
-  releaseMic() {
-    // this.stream.stop() // https://developers.google.com/web/updates/2015/07/mediastream-deprecations?hl=en#stop-ended-and-active
-    // https://stackoverflow.com/questions/35977831/removing-the-recording-icon-mediastreamrecorder-js-library
-    // https://stackoverflow.com/questions/11642926/stop-close-webcam-which-is-opened-by-navigator-getusermedia
-    this.stream ?. getTracks().forEach(function(track) {
-      track.stop();
-    });
-    this.stream = undefined
+  stopRecordingIfNeededAndReleaseMic() {
+    this.stopRecordingIfNeeded()
+    setTimeout(() => {
+      // this.stream.stop() // https://developers.google.com/web/updates/2015/07/mediastream-deprecations?hl=en#stop-ended-and-active
+      // https://stackoverflow.com/questions/35977831/removing-the-recording-icon-mediastreamrecorder-js-library
+      // https://stackoverflow.com/questions/11642926/stop-close-webcam-which-is-opened-by-navigator-getusermedia
+      this.stream ?. getTracks().forEach(function(track) {
+        track.stop();
+      });
+      this.stream = undefined
+    }, 300 /* just some instinctual defensive voodoo programming ;) but harmless */)
   }
 }
