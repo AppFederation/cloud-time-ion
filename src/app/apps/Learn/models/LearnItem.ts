@@ -21,7 +21,7 @@ export class ImportanceDescriptors {
   off       = 0 // 0    BTN
   very_low  = 1 // 0.5
   low       = 2 // 1    BTN
-  medium    = 5 // 1.5 // default when unspecified
+  medium    = 5 // 1.5 // default when unspecified;  should medium have a BTN?
   high      = 10 // 2   BTN
   very_high = 20 /* just 4 times more than unspecified?? --> 10 times?
       20 times higher than very_low seems ok
@@ -165,6 +165,17 @@ export class LearnItem extends OdmInMemItem {
       }
     }
     return null
+  }
+
+  matchesSearch(search: string) {
+    search = (search || '').trim().toLowerCase()
+    if ( search.length === 0 ) {
+      return true
+    }
+    return sidesDefsArray.some(side => {
+      const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
+      return sideVal && sideVal.toLowerCase().includes(search)
+    })
   }
 }
 

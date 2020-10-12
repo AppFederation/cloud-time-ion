@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 // import sortBy from 'lodash/sortBy'
-import {sortBy, countBy} from 'lodash'
+import {sortBy, countBy} from 'lodash-es'
 // import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
@@ -32,6 +32,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   filteredItems: LearnItem[] = []
   private patchingOwnerHasRun = false
 
+  showOldEditor = false
+
 
   get authUserId() { return this.authService.authUser$.lastVal?.uid }
 
@@ -44,7 +46,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(200),
+      debounceTime(100),
     ).subscribe(val => {
       this.htmlSearch = val
       val = stripHtml(val)
@@ -132,8 +134,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( ! string ?. trim() ) {
       return
     }
-    const QQ = /<-->|<->|<>|---/
-    const QA = /--|-->/
+    const QQ = /<-->|<->|----/ // <> - pascal not-equal
+    const QA = /---/ // |-->/ // removed -- because it exists in command line options and html comments
+    // --> - end of XML/HTML comment
     const overlay: Partial<LearnItemSidesVals> = {}
     if ( string.match(QQ) ) {
       const split = splitAndTrim(string, QQ)
@@ -187,17 +190,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( ! item ) {
       return false
     }
-    const search = (this.search || '').trim().toLowerCase()
-    if ( search.length === 0 ) {
-      return true
-    }
-    for (let side of sidesDefsArray) {
-      const sideVal = item.getSideVal(side)
-      if ( sideVal && sideVal.toLowerCase().includes(search) ) {
-        return true
-      }
-    }
-    return false
+    return item.matchesSearch(this.search)
   }
 
   onChangeSearch($event: string) {

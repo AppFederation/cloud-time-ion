@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {LearnItem$} from '../models/LearnItem$'
 import {map, shareReplay} from 'rxjs/operators'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {findPreferred} from '../../../libs/AppFedShared/utils/cachedSubject2/collectionUtils'
 
 @Injectable({

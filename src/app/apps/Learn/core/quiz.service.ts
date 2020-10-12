@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
-import {minBy} from 'lodash'
+import {minBy} from 'lodash-es'
 // import * as _ from "lodash";
-// import {Observable} from 'rxjs/internal/Observable'
+// import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {LearnItem, Rating} from '../models/LearnItem'
 
@@ -17,8 +17,8 @@ import {countBy2} from '../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
 import {debounceTime, shareReplay} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
-import {interval} from 'rxjs/internal/observable/interval'
-import {timer} from 'rxjs/internal/observable/timer'
+import {interval} from 'rxjs'
+import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;

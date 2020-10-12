@@ -1,0 +1,20 @@
+
+
+<ng-container
+  *ngFor="let fieldEntry of (itemVal$ | async)?.getPresentTextFieldEntries()"
+> <!-- the entries are workaround for slow ngFor-s or too many async pipes -->
+
+<!--  <div *ngIf="(itemVal$ | async)?.getTextFieldVal(textField); let textFieldVal">-->
+    &nbsp;
+  <div>
+    <ion-note style="text-transform: uppercase">{{fieldEntry[0].title}}</ion-note>
+    <div>
+      <app-rich-text-view
+        [htmlString]="fieldEntry[1]"
+      ></app-rich-text-view>
+    </div>
+
+  </div>
+<!--  </div>-->
+
+</ng-container>

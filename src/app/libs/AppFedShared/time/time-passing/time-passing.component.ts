@@ -1,9 +1,10 @@
-import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-time-passing',
   templateUrl: './time-passing.component.html',
   styleUrls: ['./time-passing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimePassingComponent implements OnInit, OnDestroy {
 
@@ -15,15 +16,20 @@ export class TimePassingComponent implements OnInit, OnDestroy {
 
   msDiff = 0
 
-  private readonly intervalHandle: any
+  private intervalHandle: any
 
   constructor(
-      private changeDetectorRef: ChangeDetectorRef
+      private changeDetectorRef: ChangeDetectorRef,
+      private ngZone: NgZone,
   ) {
-    this.intervalHandle = setInterval(() => {
-      this.update();
-      // could this be causing ExpressionChangedAfterChecked ?
-    }, 500)
+
+    this.ngZone.runOutsideAngular(() => {
+      this.intervalHandle = setInterval(() => {
+          // https://medium.com/@krzysztof.grzybek89/how-runoutsideangular-might-reduce-change-detection-calls-in-your-app-6b4dab6e374d
+          this.update();
+        // could this be causing ExpressionChangedAfterChecked ?
+      }, 500)
+    })
   }
 
   private update() {
@@ -34,8 +40,8 @@ export class TimePassingComponent implements OnInit, OnDestroy {
       this.msDiff = Date.now() - this.referenceTime.getTime()
       // could this be causing ExpressionChangedAfterChecked ?
     }
-    // this.changeDetectorRef.detectChanges()
-    this.changeDetectorRef.markForCheck()
+    this.changeDetectorRef.detectChanges()
+    // this.changeDetectorRef.markForCheck()
   }
 
   ngOnInit() {

@@ -20,7 +20,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
   }
 
   tinyMceInit = {
-    placeholder: "Search or add",
+    placeholder: "Search or add" /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */,
     height: 500,
     menubar: false,
     toolbar_location: 'auto', // 'bottom', /* https://www.tiny.cloud/docs/configure/editor-appearance/ */
@@ -72,6 +72,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
       // https://community.tiny.cloud/communityQuestion?id=90661000000IegjAAC :
       // editor.onKeyDown.add((ed: any, event: any) => {
       editor.on('keydown', (event: any) => {
+        // https://community.tiny.cloud/communityQuestion?id=90661000000MsG2AAK
         // console.log(`keydown`, event)
         if (event.keyCode == 13) {
           if ( ! event.shiftKey ) {
@@ -93,7 +94,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
 
   ngOnInit() {
     this.formControl1.valueChanges.subscribe(val => {
-      console.log(`stripped html`, stripHtml(val), `orig:`, val)
+      // console.log(`stripped html ---`, `===`+ stripHtml(val)+`===`, `--- orig:`, val)
     })
   }
 

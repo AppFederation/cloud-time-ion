@@ -15,6 +15,7 @@ import {TestItemComponent} from './test-item/test-item.component'
 import {LearnStatsComponent} from './learn-stats/learn-stats.component'
 import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search-or-add-text-editor.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
+import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 
 const routes: Routes = [
   {
@@ -24,17 +25,18 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes),
-    OdmModule,
-    AngularFireStorageModule,
-    SharedModule,
-    EditorModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        OdmModule,
+        AngularFireStorageModule,
+        SharedModule,
+        EditorModule,
+        ReactiveFormsModule,
+        AudioModule,
+    ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,
         ActionableItemComponent,

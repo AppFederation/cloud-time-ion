@@ -1,18 +1,36 @@
 <ion-searchbar
   [(ngModel)]="search"
-  placeholder="Search"
+  placeholder="Search fields"
   autofocus="autofocus"
-  [debounce]="100"
+  [debounce]="200"
   inputmode="search"
 ></ion-searchbar>
 
 <ng-container
-  *ngFor="let descriptor of numDescriptors"
+  *ngIf="showAny || ((search?.length || 0) > 2) || showAll"
 >
-  <apf-numeric-picker
-    [hidden]="! descriptor.id !. toLowerCase().includes(search.toLowerCase())"
-    (numericValue)="onChangeNumericValue($event, descriptor)"
-    [numFieldDef]="descriptor"
-  ></apf-numeric-picker>
+  <ng-container
+    *ngFor="let descriptor of numDescriptors"
+  >
+    <apf-numeric-picker
+      *ngIf="descriptor?.isShortListed || showAll || descriptor.matchesSearch(search)"
+      [hidden]="! descriptor.matchesSearch(search)"
+      (numericValue)="onChangeNumericValue($event, descriptor)"
+      [numFieldDef]="descriptor"
+    ></apf-numeric-picker>
+
+  </ng-container>
 
 </ng-container>
+
+<ion-button
+  (click)="showAny = ! showAny"
+>
+  SHOW RATINGS
+</ion-button>
+
+<ion-button
+  (click)="showAll = ! showAll"
+>
+  SHOW ALL
+</ion-button>

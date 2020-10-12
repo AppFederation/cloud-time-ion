@@ -31,6 +31,7 @@
     (ngModelChange)="onChangeEditor($event)"
     (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
   >
+    <!-- FIXME:     modelEvents="change input undo redo nodechange" causes patching when opening details page -->
     <!--     (onSetContent)="logEditor('onSetContent')"
     (onPostRender)="logEditor('onPostRender')"
     -->

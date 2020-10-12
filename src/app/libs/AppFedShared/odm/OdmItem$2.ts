@@ -117,7 +117,7 @@ export class OdmItem$2<
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     this.onModified()
-    console.log(`patchThrottled`)
+    // console.log(`patchThrottled`)
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves

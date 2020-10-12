@@ -16,7 +16,13 @@
       <app-quiz-button
       ></app-quiz-button>
 
-      <odm-sync-status></odm-sync-status>
+      <ion-buttons slot="end">
+        <ion-icon class="action-icon" name="bar-chart-outline" slot="end" [routerLink]="['/learn/stats']"></ion-icon>
+        <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
+
+        <odm-sync-status></odm-sync-status>
+      </ion-buttons>
+
     </div>
 
   </ion-toolbar>
@@ -36,6 +42,7 @@
         ></app-search-or-add-text-editor>
 
         <ion-textarea
+          *ngIf="showOldEditor"
           [autoGrow]="true"
           [(ngModel)]="search"
           (ngModelChange)="onChangeSearch($event)"

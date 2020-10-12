@@ -8,7 +8,7 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 
-export type FormControlsDict = {[key in keyof SidesDefs]: FormControl }
+export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
 
 
 // TODO: escape key to hide toolbar&menu bar
@@ -23,7 +23,7 @@ export class ItemSideComponent implements OnInit {
 
   @Input() side ! : Side | nullish
 
-  formControls ! : FormControlsDict
+  formControls ! : SideFormControlsDict
 
   formGroup ! : FormGroup
 
@@ -33,7 +33,7 @@ export class ItemSideComponent implements OnInit {
 
   @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
     if ( ed ) {
-      setInterval(() => {
+      setTimeout(() => {
         this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
           for preserving undo and to prevent tinymce error when disappeared
           */
@@ -56,6 +56,8 @@ export class ItemSideComponent implements OnInit {
   tinyMceInit = {
     height: 500,
     menubar: true,
+    toolbar_location: 'auto', // 'bottom', /* https://www.tiny.cloud/docs/configure/editor-appearance/ */
+    toolbar_sticky: true,
     // menubar: false,
     statusbar: false,
     plugins: [
@@ -77,8 +79,14 @@ export class ItemSideComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    content_style: '[contenteditable] { padding-left: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
-      to be able to see cursor when it's close to focus border */,
+    content_style:
+      '[contenteditable] { padding-left: 5px; } ' +
+      '[contenteditable] li { padding-top: 6px; } ' +
+      '[contenteditable] ::marker { color: red } '
+    /* https://www.tiny.cloud/docs/configure/content-appearance/
+      padding to be able to see cursor when it's close to focus border
+      [contenteditable] a { color: #98aed9 }
+      */,
     setup: (editor: any) => {
       editor.addShortcut(
         'meta+e', 'Add yellow highlight to selected text.', () => {
@@ -111,8 +119,8 @@ export class ItemSideComponent implements OnInit {
     }
   }
 
-  private createFormControlDict(): FormControlsDict {
-    const ret = {} as FormControlsDict
+  private createFormControlDict(): SideFormControlsDict {
+    const ret = {} as SideFormControlsDict
     ret[this.side !. id] = new FormControl()
     // console.dir(ret)
     return ret
@@ -124,7 +132,7 @@ export class ItemSideComponent implements OnInit {
 
   focusEditor() {
     setTimeout(() => {
-      debugLog(`focusEditor`, this.editorViewChild)
+      // debugLog(`focusEditor`, this.editorViewChild)
       this.editorViewChild?.editor.focus()
     }, 10)
   }
@@ -142,6 +150,8 @@ export class ItemSideComponent implements OnInit {
 
   onChangeEditor($event: any) {
     // hack
-    debugLog(`onChangeEditor`, $event)
+    if ( $event?.length === 0 ) {
+      debugLog(`onChangeEditor empty`, $event)
+    }
   }
 }

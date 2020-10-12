@@ -12,23 +12,27 @@ import {FormsModule} from '@angular/forms'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
+import {SharedModule} from '../../../shared/shared.module'
+import {JournalTextFieldComponent} from './journal-text-fields/journal-text-field/journal-text-field.component'
 
 @NgModule({
-    declarations: [
-        JournalWritePage,
-        JournalNumericFieldsComponent,
-        JournalTextFieldsComponent,
-        JournalSituationsComponent,
-    ],
-    imports: [
-        CommonModule,
-        JournalWritePageRoutingModule,
-        IonicModule.forRoot(),
-        FormsModule,
-        OdmModule,
-        RatingsModule,
-        TimeModule,
-    ],
+  declarations: [
+    JournalWritePage,
+    JournalNumericFieldsComponent,
+    JournalTextFieldsComponent,
+    JournalSituationsComponent,
+    JournalTextFieldComponent,
+  ],
+  imports: [
+    CommonModule,
+    JournalWritePageRoutingModule,
+    IonicModule.forRoot(),
+    FormsModule,
+    OdmModule,
+    RatingsModule,
+    TimeModule,
+    SharedModule,
+  ],
     exports: [
     ],
 })

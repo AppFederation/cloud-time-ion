@@ -103,7 +103,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   }
 
   toDbFormat(): TData {
-    let dbFormat = Object.assign({}, this);
+    let dbFormat = Object.assign({}, this) as Partial<OdmItem<any>>;
     delete dbFormat.odmService
     delete dbFormat.locallyVisibleChanges$
     delete dbFormat.locallyVisibleChangesThrottled$

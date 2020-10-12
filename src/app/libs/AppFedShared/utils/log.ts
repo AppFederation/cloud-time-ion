@@ -24,6 +24,12 @@ export function errorAlert(...args: any) {
   console.error(prefix, ...args)
 }
 
+export function errorAlertAndThrow(...args: any) {
+  errorAlert(...args)
+  throw new Error(args)
+}
+
+
 // idea: debugLogFirst / debugLogEveryX
 
 export function apfLogger(instance: any) {
