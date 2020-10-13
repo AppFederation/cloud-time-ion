@@ -1,33 +1,57 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="'/'"></ion-back-button>
+<!--      <ion-back-button [defaultHref]="'/'"></ion-back-button>-->
+      <ion-icon
+        [size]="'25px'"
+        [routerLink]="'/journal'"
+        name="arrow-back-outline"
+        class="action-icon"
+      ></ion-icon>
     </ion-buttons>
     <!-- TODO: this will go to previous journal entry to correct it if necessary -->
     <!-- TODO: Next button -->
     <ion-title>
-      Journal
-      <odm-sync-status></odm-sync-status>
+      Journal Entry
+      &nbsp;
+      <app-time-passing
+        style="font-size: .8rem;"
+        [isCountDown]="false"
+      ></app-time-passing>
     </ion-title>
-    <ion-button slot="end" color="secondary"
-      (click)="newEntry()"
-    >
-      NEW
-    </ion-button>
+
+
+    <ion-buttons slot="end">
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
+
+      <odm-sync-status></odm-sync-status>
+
+    </ion-buttons>
+
+
+    <!--    <ion-button slot="end" color="secondary"-->
+<!--                [routerLink]="'/journal/write/new'"-->
+<!--    >-->
+<!--&lt;!&ndash;      (click)="newEntry()"&ndash;&gt;-->
+<!--      NEW-->
+<!--    </ion-button>-->
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ng-container *ngIf="itemVal$ | async let itemVal else loading">
+
+
   <div style="margin: 5px;">
-    Play the self-improvement game and its mini-games! {{fieldDescriptors.length}} fields
-    <p><app-time-point [time]="journalEntry?.whenCreated"></app-time-point></p>
+    Play the self-improvement game and its mini-games! {{ fieldDescriptors.length }} fields
+    <p><app-time-point [time]="itemVal?.whenCreated?.toDate()"></app-time-point></p>
 <!--    <p>{{journalEntry?.whenCreated?.toISOString() || journalEntry.id}}</p>-->
   </div>
   <app-journal-numeric-fields
-    [journalEntry]="journalEntry"
+    [journalEntry$]="item$"
   ></app-journal-numeric-fields>
 
   <app-journal-text-fields
-    [journalEntry]="journalEntry"
+    [journalEntry$]="item$"
   ></app-journal-text-fields>
 
   <!-- TODO: contenteditable -->
@@ -39,5 +63,13 @@
       <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
     </ion-fab-button>
   </ion-fab>
+
+  </ng-container>
+
+  <ng-template #loading
+  >
+    Loading...
+    // TODO: also "Please log in"
+  </ng-template>
 
 </ion-content>

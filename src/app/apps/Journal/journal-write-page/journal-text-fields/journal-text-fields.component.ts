@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {JournalTextDescriptor, JournalTextDescriptors} from '../../models/JournalTextDescriptors'
 import {JournalEntry} from '../../models/JournalEntry'
+import {JournalEntry$} from '../../models/JournalEntry$'
 
 @Component({
   selector: 'app-journal-text-fields',
@@ -9,7 +10,7 @@ import {JournalEntry} from '../../models/JournalEntry'
 })
 export class JournalTextFieldsComponent implements OnInit {
 
-  @Input() journalEntry ! : JournalEntry
+  @Input() journalEntry$ ! : JournalEntry$
 
   textDescriptors = JournalTextDescriptors.instance.array
 
@@ -17,13 +18,13 @@ export class JournalTextFieldsComponent implements OnInit {
 
   ngOnInit() {}
 
-  /** TODO: user reactive forms with ODM wrapper for listening to diffs */
-  onChangeText($event: Event, textDesc: JournalTextDescriptor) {
-    const value = ($event.srcElement as any) ?. ['value'];
-    // debugLog('onChangeText', value, $event)
-    const patch: any = {};
-    patch[textDesc.id !] = value as unknown as string
-    this.journalEntry.patchThrottled(patch)
-  }
+  // /** TODO: user reactive forms with ODM wrapper for listening to diffs */
+  // onChangeText($event: Event, textDesc: JournalTextDescriptor) {
+  //   const value = ($event.srcElement as any) ?. ['value'];
+  //   // debugLog('onChangeText', value, $event)
+  //   const patch: any = {};
+  //   patch[textDesc.id !] = value as unknown as string
+  //   this.journalEntry$.patchThrottled(patch)
+  // }
 
 }

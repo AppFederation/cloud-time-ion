@@ -1,0 +1,8 @@
+<span
+  *ngIf="htmlString && htmlString.length"
+  [innerHTML]="domSanitizer.bypassSecurityTrustHtml(htmlString || '')"
+>
+  <!-- TODO: convert from plain-->
+</span>
+<!--[innerHTML]="domSanitizer.bypassSecurityTrustHtml(htmlString)"-->
+

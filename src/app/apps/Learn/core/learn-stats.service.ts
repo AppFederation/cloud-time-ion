@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {countBy, isEqual} from 'lodash'
+import {countBy, isEqual} from 'lodash-es'
 import {LearnItem} from '../models/LearnItem'
 import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
-import {Observable} from 'rxjs/internal/Observable'
+import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
@@ -23,6 +23,8 @@ export class LearnStats {
   /** to be stored in stats history */
   countWithRatingEqual?: Dictionary<number> = {}
   countWithRatingEqualOrHigher?: Dictionary<number> = {}
+  countWithQA: number = 0
+  countWithAudio: number = 0
 }
 
 export class StoredLearnStats {
@@ -50,6 +52,8 @@ export class LearnStatsService {
         atLeast1: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 1) ?. length,
         atLeast1_5: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 1.5) ?. length,
         atLeast2: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 2) ?. length,
+        countWithQA: countBy2(item$s, item$ => !! item$.val?.hasQAndA()) /* FIXME duplicate */,
+        countWithAudio: countBy2(item$s, item$ => !! item$.val?.hasAudio) /* FIXME duplicate */,
       }
     })
   )

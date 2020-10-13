@@ -24,6 +24,8 @@
                   (click)="showOptions = ! showOptions">
         ></ion-icon>
 
+        <ion-icon class="action-icon" name="bar-chart-outline" slot="end" [routerLink]="['/learn/stats']"></ion-icon>
+
         <odm-sync-status></odm-sync-status>
 
       </div>
@@ -55,19 +57,28 @@
 
         <span>
           | left:
-          {{ ( status$ | async ) ?. itemsLeft }}
+          <strong style="font-size: 130%; color: white">{{ ( status$ | async ) ?. itemsLeft }}</strong>
           | next 12h:
           {{ ( status$ | async ) ?. itemsLeftToday }}
         </span>
       </ion-note>
     </p>
 
-    <app-quiz-item-details
-      *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
-      [item$]="item$"
-      [ionContent]="ionContent"
-    ><!-- the entire component will be swapped on new item -->
-    </app-quiz-item-details>
+    <div *ngIf="( status$ | async ) ?. isNextItemInFuture">
+      <app-quiz-finished
+      ></app-quiz-finished>
+    </div>
+
+    <div>
+      <!-- *ngIf="! ( status$ | async ) ?. isNextItemInFuture" -->
+      <app-quiz-item-details
+        *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
+        [item$]="item$"
+        [ionContent]="ionContent"
+      ><!-- the entire component will be swapped on new item -->
+      </app-quiz-item-details>
+    </div>
+
 
     <!--  <ng-container>(ahead of time by X hours)</ng-container>-->
     <!--  <ng-container>(overdue X hours)</ng-container>-->

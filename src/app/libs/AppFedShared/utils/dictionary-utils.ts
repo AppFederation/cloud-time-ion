@@ -3,6 +3,7 @@
  */
 import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
 import {FormControl} from '@angular/forms'
+import {DictPatch} from './rxUtils'
 
 export interface Dict<TVal, /*TKey = string*/> {
   [key: string /*TKey*/]: TVal
@@ -43,7 +44,7 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
   const dictWithIdsFromKeys: Dict<TItem> = setIdsFromKeys(dictionary, idKeyName);
   let arr = getDictionaryValuesAsArray(dictWithIdsFromKeys)
   arr = arr.map(_ => {
-    if ( (_ as any as ILateInit).lateInit ) { // TODO ?.
+    if ( (_ as any as Partial<ILateInit>).lateInit ) { // TODO ?.
       _ = (_ as any as ILateInit).lateInit() || _ // TODO: lateInitAndMorph
     }
     return _
@@ -63,6 +64,10 @@ export function mapFieldsToFormControls(srcObj: any) {
   return mapFields(srcObj, () => {
     return new FormControl()
   })
+}
+
+export function patch<T>(objToPatch: T, patch: DictPatch<T>) {
+  return Object.assign(objToPatch, patch)
 }
 
 // export function ensureFieldsExistBasedOn(templateObject)

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
-import {minBy} from 'lodash'
+import {minBy} from 'lodash-es'
 // import * as _ from "lodash";
-// import {Observable} from 'rxjs/internal/Observable'
+// import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {LearnItem, Rating} from '../models/LearnItem'
 
@@ -17,8 +17,9 @@ import {countBy2} from '../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
 import {debounceTime, shareReplay} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
-import {interval} from 'rxjs/internal/observable/interval'
-import {timer} from 'rxjs/internal/observable/timer'
+import {interval} from 'rxjs'
+import {timer} from 'rxjs'
+import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -30,6 +31,7 @@ export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
+    public powBaseX100: number = 3
   ) {
   }
 }
@@ -44,13 +46,17 @@ export class QuizStatus {
   ) {}
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
 
-  /** use PatchableObservable<TInMemData, TMemPatch> for bindability with ViewSyncer */
-  options$ = new CachedSubject(new QuizOptions(false, true))
+  options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
+    new QuizOptions(false, true), 'QuizOptions'
+  )
+
+  get options$(): CachedSubject<QuizOptions> { return this.options2$.locallyVisibleChanges$ }
 
   showAnswer$ = new CachedSubject<boolean>(false)
 
@@ -58,6 +64,7 @@ export class QuizService {
 
   constructor(
     private learnDoService: LearnDoService,
+    private optionsService: OptionsService,
   ) {
   }
 
@@ -118,21 +125,24 @@ export class QuizService {
     },
   ).pipe(shareReplay(1))
 
+  calculateIntervalHours2(rating: Rating): Duration {
+    return this.calculateIntervalHours(rating, this.options$?.lastVal !)
+  }
 
-  calculateIntervalHours(rating: Rating): Duration {
+  calculateIntervalHours(rating: Rating, quizOptions: QuizOptions): Duration {
+    // debugLog(`calculateIntervalHours`, quizOptions)
 
     // TODO: consider a kind of LIFO to prioritize minute periods (for them to not be at mercy of smth delayed from days ago); Coz the difference between 1 minute and say 10 hours is much bigger than 10 hours and 11 hours
     // TODO: (right now the app is ok at relative priority/frequency, but necessarily too good at determining the exact time spacing
     // 0 => 1 min
     // 0.5 => few hours
     //
-    // Ebbinghaus forgetting curve
+    // Ebbinghaus forgetting curve (related; but this equation is about time, not probability)
     // TODO: !!!! when rating zero, make it one minute (as in Anki), so that it goes in front of whatever stuff might have been there from previous days
     if ( rating === 0 ) {
       return 30/3600 // 30 seconds (could try 1 minute)
     }
-
-    return 12 * Math.pow(2, rating || 0)
+    return 12 * Math.pow(((quizOptions.powBaseX100 ?? 300) / 100) ?? 3.5, rating || 0)
   }
 
   /** This could be a method of LearnItem$ */
@@ -156,7 +166,7 @@ export class QuizService {
       return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
     }
 
-    const ret = whenLastTouched.toMillis() + hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0))
+    const ret = whenLastTouched.toMillis() + hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
     return ret
 
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)

@@ -1,0 +1,33 @@
+
+
+<div
+  *ngIf="(val$ | async) as itemVal"
+  [routerLink]="['/journal/entry/' + item$.id]"
+  style="cursor: pointer; border-bottom: #2a2a2a 3px solid; margin-bottom: 7px; padding-bottom: 7px; padding-left: 7px;"
+>
+
+  <app-time-point
+    [time]="itemVal?.whenCreated?.toDate()"
+  ></app-time-point>
+
+<!--  {{item$.val$ | async | json}}-->
+
+  <app-journal-num-fields-view
+    [item$]="item$"
+  ></app-journal-num-fields-view>
+
+  <app-journal-text-fields-view
+    [item$]="item$"
+  ></app-journal-text-fields-view>
+
+  <div>
+<!--    <ion-note>-->
+<!--      TODO: this could/should be interwoven with time-tracking, moderation timers, ...-->
+      <!--
+        (no need to write it down manually), finishing tasks, adding learn entries, learn progress-es, voice memos, vlog entries,
+        LifeDvisor stuff (learning progress, comments)
+      -->
+<!--    </ion-note>-->
+  </div>
+</div>
+

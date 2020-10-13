@@ -31,6 +31,7 @@ export class MicComponent implements OnInit {
     if (event) {
       event.preventDefault() // prevent mouse click emulation from touchstart event because we have on-click as well
     }
+    // TODO: move to AudioRecordService:
     if ( this.isRecording ) {
       this.mediaRecorder.stop()
       this.isRecording = false
@@ -58,6 +59,9 @@ export class MicComponent implements OnInit {
           })
           .catch(function (err) {
               window.alert('The following getUserMedia error occurred: ' + err);
+              /* for iOS: https://www.gmass.co/blog/record-audio-mobile-web-page-ios-android/ -- AudioContext: audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                https://developers.google.com/web/fundamentals/media/recording-audio
+               */
             },
           );
       } else {

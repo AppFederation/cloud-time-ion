@@ -1,25 +1,39 @@
+
 <div style="display: flex; flex-direction: column; align-items: stretch; height: 100%">
   <ng-container
     *ngFor="let textDesc of textDescriptors"
   >
     <div
-      style="font-size: 70%; margin-top: 5px; margin-left: 5px"
+      style="font-size: 80%; margin-top: 5px; margin-left: 5px"
     >
-      {{textDesc.uiName}}
+      <ng-container
+        *ngIf="textDesc.iconName let iconName"
+      >
+        <ion-icon
+          [name]="iconName"
+        ></ion-icon>
+        &nbsp;
+      </ng-container>
+      <span style="text-transform: uppercase; color: var(--secondary)">{{textDesc.uiName}}</span>
     </div>
 
     <div
       style="border-bottom: 1px var(--ion-color-primary) solid"
     >
-      <ion-textarea
-        autocapitalize="sentences"
-        [rows]="4"
-        style="flex-grow: 1"
-        [autoGrow]="true"
-        (change)="onChangeText($event, textDesc)"
-        (input)="onChangeText($event, textDesc)"
-        placeholder="Journal entry: {{textDesc.uiName}}"
-      ></ion-textarea>
+      <app-journal-text-field
+        [item$]="journalEntry$"
+        [fieldDescriptor]="textDesc"
+      ></app-journal-text-field>
+
+<!--      <ion-textarea-->
+<!--        autocapitalize="sentences"-->
+<!--        [rows]="4"-->
+<!--        style="flex-grow: 1"-->
+<!--        [autoGrow]="true"-->
+<!--        (change)="onChangeText($event, textDesc)"-->
+<!--        (input)="onChangeText($event, textDesc)"-->
+<!--        placeholder="Journal entry: {{textDesc.uiName}}"-->
+<!--      ></ion-textarea>-->
 
     </div>
   </ng-container>

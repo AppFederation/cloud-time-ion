@@ -1,7 +1,7 @@
 <ion-button
   *ngIf="item?.hasAudio"
-  (touchstart)="playAudio(); $event.stopPropagation(); $event.preventDefault()"
-  (click)="playAudio(); $event.stopPropagation()"
+  (touchstart)="playOrStopAudio(); $event.stopPropagation(); $event.preventDefault()"
+  (click)="playOrStopAudio(); $event.stopPropagation()"
 >
   <ion-icon
     *ngIf="!isPlaying else playing"
@@ -9,7 +9,11 @@
   ></ion-icon>
   <ng-template
     #playing
-  > ...
+  >
+    <ion-icon
+      icon="stop"
+    ></ion-icon>
+
     <!-- TODO: can use  https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
       ( but in separate AudioPlayingComponent, to not overload this one )
     -->

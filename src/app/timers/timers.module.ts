@@ -12,17 +12,19 @@ import {SharedModule} from "../shared/shared.module";
 import {TimeLeftOrDurationComponent} from "./time-left-or-duration/time-left-or-duration.component";
 import {TimeModule} from "../libs/AppFedShared/time/time.module";
 import {TimeIonicModule} from "../libs/AppFedSharedIonic/time/time-ionic.module";
+import {OdmModule} from '../libs/AppFedShared/odm/odm.module'
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     MomentModule,
-    RouterModule.forChild([ { path: '', component: TimersPageComponent } ]),
+    RouterModule.forChild([{path: '', component: TimersPageComponent}]),
     SharedModule,
     IonicModule.forRoot(),
     TimeModule,
     TimeIonicModule,
+    OdmModule,
   ],
   declarations: [
     TimersPageComponent,

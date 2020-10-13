@@ -1,14 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Side} from '../../core/sidesDefs'
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Side, SidesDefs} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
+import {EditorComponent} from '@tinymce/tinymce-angular'
 
-export type FormControlsDict = {[key: string]: FormControl /* TODO: mapped type */}
+export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
 
+
+// TODO: escape key to hide toolbar&menu bar
 @Component({
   selector: 'app-item-side-editor',
   templateUrl: './item-side.component.html',
@@ -20,10 +23,32 @@ export class ItemSideComponent implements OnInit {
 
   @Input() side ! : Side | nullish
 
-  formControls ! : FormControlsDict
+  formControls ! : SideFormControlsDict
 
   formGroup ! : FormGroup
 
+  editorOpened = false
+
+  private _editorViewChild: EditorComponent | undefined
+
+  @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
+    if ( ed ) {
+      setTimeout(() => {
+        this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
+          for preserving undo and to prevent tinymce error when disappeared
+          */
+      }, 10)
+    }
+    this._editorViewChild = ed
+  }
+
+  get editorViewChild() {
+    return this._editorViewChild
+  }
+
+  get formControl() {
+    return this.formControls[this.side!.id]
+  }
 
   /** TODO     *ngIf="viewSyncer.initialDataArrived else notLoaded" */
   viewSyncer ! : ViewSyncer
@@ -31,6 +56,8 @@ export class ItemSideComponent implements OnInit {
   tinyMceInit = {
     height: 500,
     menubar: true,
+    toolbar_location: 'auto', // 'bottom', /* https://www.tiny.cloud/docs/configure/editor-appearance/ */
+    toolbar_sticky: true,
     // menubar: false,
     statusbar: false,
     plugins: [
@@ -50,10 +77,16 @@ export class ItemSideComponent implements OnInit {
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | help',
     skin: 'oxide-dark',
-    content_css: 'dark',  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
+    // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    content_style: '[contenteditable] { padding-left: 5px; }' /* https://www.tiny.cloud/docs/configure/content-appearance/
-      to be able to see cursor when it's close to focus border */,
+    content_style:
+      '[contenteditable] { padding-left: 5px; } ' +
+      '[contenteditable] li { padding-top: 6px; } ' +
+      '[contenteditable] ::marker { color: red } '
+    /* https://www.tiny.cloud/docs/configure/content-appearance/
+      padding to be able to see cursor when it's close to focus border
+      [contenteditable] a { color: #98aed9 }
+      */,
     setup: (editor: any) => {
       editor.addShortcut(
         'meta+e', 'Add yellow highlight to selected text.', () => {
@@ -71,6 +104,7 @@ export class ItemSideComponent implements OnInit {
     }
   }
 
+
   public highlightSelected(editor: any) {
     editor.execCommand('hilitecolor', false, /*'#808000'*/ '#ffa626');
   }
@@ -85,8 +119,8 @@ export class ItemSideComponent implements OnInit {
     }
   }
 
-  private createFormControlDict(): FormControlsDict {
-    const ret = {} as FormControlsDict
+  private createFormControlDict(): SideFormControlsDict {
+    const ret = {} as SideFormControlsDict
     ret[this.side !. id] = new FormControl()
     // console.dir(ret)
     return ret
@@ -94,5 +128,30 @@ export class ItemSideComponent implements OnInit {
 
   logEditor(msg: string) {
     debugLog(`tinymce: `, msg)
+  }
+
+  focusEditor() {
+    setTimeout(() => {
+      // debugLog(`focusEditor`, this.editorViewChild)
+      this.editorViewChild?.editor.focus()
+    }, 10)
+  }
+
+  isDependencySatisfied(): boolean {
+    if ( ! this.side?.dependsOn ) {
+      return true
+    } else {
+      // debugLog(`isDependencySatisfied`, this.side, this.formControls[this.side.dependsOn.id]?.value?.trim(), this.formControls)
+      return !! (this.item$?.currentVal?.[this.side.dependsOn.id as keyof LearnItem] as any as string)?.trim()
+      // return this.formControls[this.side.dependsOn.id]?.value
+      // return !! (this.formControls[this.side.dependsOn.id]?.value?.trim())
+    }
+  }
+
+  onChangeEditor($event: any) {
+    // hack
+    if ( $event?.length === 0 ) {
+      debugLog(`onChangeEditor empty`, $event)
+    }
   }
 }

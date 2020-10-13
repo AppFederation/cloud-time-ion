@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
-export type SideId = string
+export type SideId = keyof SidesDefs
 
 export class Side {
 
@@ -10,6 +10,8 @@ export class Side {
   defaultLang?: string // = 'en-US'
   flag?: string
   flagTransparent?: boolean
+  dependsOn ? : Side
+  isHint ? : boolean
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -35,7 +37,7 @@ export type SideDecl = Omit<Side, 'id'|'title'>
  Each addressable for spaced repetition self-rating.
 * */
 
-function side(param: SideDecl): SideDecl {
+function side(param: SideDecl): Side {
   return Object.assign(new Side(), param)
 }
 
@@ -49,9 +51,18 @@ export class SidesDefs {
   /** for a 2-way asking */
   question2 = side({
     defaultLang: 'en-US',
+    dependsOn: this.question,
   })
   question3 = side({
     defaultLang: 'en-US',
+    dependsOn: this.question2
+  })
+  hint = side({
+    isHint: true,
+  })
+  hint_2 = side({
+    isHint: true,
+    dependsOn: this.hint
   })
   answer = side({
     defaultLang: 'en-US',
@@ -92,6 +103,12 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `de`,
   })
+  de_example = side({
+    defaultLang: 'de-DE',
+    ask: false /* not asking German for now, to force recall */,
+    flag: `de`,
+    flagTransparent: true,
+  })
   pt = side({
     defaultLang: 'pt-PT',
     ask: false /* not asking German for now, to force recall */,
@@ -128,3 +145,5 @@ export class SidesDefs {
 export const sidesDefs = new SidesDefs()
 
 export const sidesDefsArray = dictToArrayWithIds(sidesDefs as any as Dict<Side>)
+
+export const sidesDefsHintsArray = sidesDefsArray.filter(side => side.isHint)

@@ -1,0 +1,15 @@
+
+<ng-container
+  *ngFor="let fieldEntry of (val$ | async)?.getPresentCompositeFieldEntries()"
+> <!-- the entries are workaround for slow ngFor-s or too many async pipes -->
+  <!-- Even having this empty causes a massive slowdown on 292 journal entries x 150 fields = 43800 ; is ngFor so slow? -->
+<!--  {{field.id}}:-->
+  <span
+    style="color: var(--secondary)"
+  > <!-- TODO color -->
+    <!--     *ngIf="(val$ | async)?.getCompositeField(field) let fieldVal" -->
+    {{fieldEntry[0].title}}:
+    <b>{{fieldEntry[1]}}</b>
+  </span>
+
+</ng-container>

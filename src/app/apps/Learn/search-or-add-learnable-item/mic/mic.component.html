@@ -14,6 +14,10 @@
   &nbsp;
   {{isRecording ? 'stop' : ''}}
   <!-- TODO: record/*search*/entry when search/add via voice is implemented -->
+  <app-audio-visualizer
+    [stream]="stream"
+    *ngIf="isRecording"
+  ></app-audio-visualizer>
 </ion-button>
 <ion-button
   (click)="releaseMic()"

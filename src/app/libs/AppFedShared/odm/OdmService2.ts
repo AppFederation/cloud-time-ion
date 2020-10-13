@@ -42,6 +42,8 @@ export abstract class OdmService2<
      */
   localItems$ = new CachedSubject<TOdmItem$[]>([])
 
+  get items$() { return this.localItems$ }
+
   mapIdToItem$ = new Map<TItemId, TOdmItem$>()
 
   syncStatusService = this.injector.get(SyncStatusService)

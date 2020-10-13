@@ -1,7 +1,7 @@
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Side, SidesDefs, sidesDefsArray, SideVal} from '../core/sidesDefs'
+import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../core/sidesDefs'
 import {DurationMs, nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
@@ -21,7 +21,7 @@ export class ImportanceDescriptors {
   off       = 0 // 0    BTN
   very_low  = 1 // 0.5
   low       = 2 // 1    BTN
-  medium    = 5 // 1.5 // default when unspecified
+  medium    = 5 // 1.5 // default when unspecified;  should medium have a BTN?
   high      = 10 // 2   BTN
   very_high = 20 /* just 4 times more than unspecified?? --> 10 times?
       20 times higher than very_low seems ok
@@ -84,6 +84,9 @@ export class LearnItem extends OdmInMemItem {
     const ret: Side [] = []
     let foundQuestionBefore = false
     for (let side of sidesDefsArray) {
+      if ( side.isHint ) {
+        continue
+      }
       const sideVal = this.getSideVal(side)
       if (sideVal) {
         if ( !side.ask || foundQuestionBefore ) {
@@ -92,6 +95,17 @@ export class LearnItem extends OdmInMemItem {
           foundQuestionBefore = true
           // do not push
         }
+      }
+    }
+    return ret
+  }
+
+  public getSidesWithHints(): Side[] {
+    const ret: Side [] = []
+    for (let side of sidesDefsHintsArray) {
+      const sideVal = this.getSideVal(side)
+      if ( sideVal ) {
+        ret.push(side)
       }
     }
     return ret
@@ -151,6 +165,17 @@ export class LearnItem extends OdmInMemItem {
       }
     }
     return null
+  }
+
+  matchesSearch(search: string) {
+    search = (search || '').trim().toLowerCase()
+    if ( search.length === 0 ) {
+      return true
+    }
+    return sidesDefsArray.some(side => {
+      const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
+      return sideVal && sideVal.toLowerCase().includes(search)
+    })
   }
 }
 
