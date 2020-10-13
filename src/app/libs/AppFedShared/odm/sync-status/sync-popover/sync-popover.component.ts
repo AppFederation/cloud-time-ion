@@ -20,4 +20,7 @@ export class SyncPopoverComponent implements OnInit {
     this.authService.logInViaGoogle()
   }
 
+  logOut() {
+    this.authService.logout()
+  }
 }
