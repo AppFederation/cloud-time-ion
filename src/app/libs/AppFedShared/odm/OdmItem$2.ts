@@ -1,5 +1,5 @@
 /** Object-Document/Database Mapping item */
-import {PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
+import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
 import {debugLog} from "../utils/log";
 import {OdmService2} from './OdmService2'
@@ -15,11 +15,14 @@ export class OdmInMemItem {
   public owner?: UserId
 }
 
-export type OdmPatch<TData> = Partial<TData>
+export type OdmPatch<TData> = DictPatch<TData>
 
 /** Maybe have another conversion like OdmItem$W - W meaning writable,
  * to not confuse with real observables; or another special char like EUR - editable, funny pun.
- * Need to have a pronounceable version, like $ -> Stream
+ * Need to have a pronounceable version, like is the case with $ -> Stream
+ *
+ * In CoDaDriS terms, OdmItem$2 would have been ObjectAtBranch (not Vlid - Vlid is just a wrapper around ItemId)
+ * where branch is e.g. draft/published. And the $ listens to changes to the item on a particular branch.
  * */
 export class OdmItem$2<
   TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
@@ -42,11 +45,17 @@ export class OdmItem$2<
 {
 
   /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"
+   * or realizing we don't have access
    * or empty value arrived
    **/
   currentVal: TInMemData | undefined | null = undefined
 
+
   get val() { return this.currentVal }
+
+  get val$() { return this.locallyVisibleChanges$ }
+
+  private resolveFuncPendingThrottled?: (value?: (PromiseLike<any> | any)) => void
 
   public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
   public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
@@ -76,6 +85,7 @@ export class OdmItem$2<
       */
       // FIXME: incremental patching
       this.odmService.saveNowToDb(this)
+      this.resolveFuncPendingThrottledIfNecessary()
     }) as any /* TODO investigate after strict */)
     // this.onModified()
   }
@@ -96,12 +106,18 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch) {
+    if ( ! this.resolveFuncPendingThrottled ) {
+      const promise = new Promise((resolveFunc) => {
+        this.resolveFuncPendingThrottled = resolveFunc
+      })
+      this.odmService.syncStatusService.handleSavingPromise(promise)
+    }
     // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
     // debugLog('patchThrottled ([save])', patch)
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     this.onModified()
-    console.log(`patchThrottled`)
+    // console.log(`patchThrottled`)
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -123,6 +139,7 @@ export class OdmItem$2<
     Object.assign(this.currentVal, patch)
     this.onModified()
     this.odmService.saveNowToDb(this)
+    this.resolveFuncPendingThrottledIfNecessary()
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
     this.odmService.emitLocalItems()
   }
@@ -172,5 +189,14 @@ export class OdmItem$2<
   saveNowToDb() {
     this.setIdAndWhenCreatedIfNecessary()
     this.odmService.saveNowToDb(this)
+    this.resolveFuncPendingThrottledIfNecessary()
+  }
+
+  private resolveFuncPendingThrottledIfNecessary() {
+    if (this.resolveFuncPendingThrottled) {
+      console.log(`resolveFuncPendingThrottled()`)
+      this.resolveFuncPendingThrottled?.(true)
+      this.resolveFuncPendingThrottled = undefined
+    }
   }
 }

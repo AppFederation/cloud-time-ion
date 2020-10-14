@@ -1,7 +1,7 @@
 <div *ngIf="item$ else noItem">
 
   <app-play-button
-    [item]="(item$ ?. locallyVisibleChanges$ | async) !"
+    [item]="(itemVal$ | async) !"
     [itemId]="item$ ?. id"
   ></app-play-button>
 
@@ -15,6 +15,16 @@
     style="border: 3px darkgreen solid; border-radius: 6px; padding: 6px"
     *ngIf="(showHint$ | async) || (showAnswer$ | async)"
   >
+    <ng-container
+      *ngIf="(showHint$ | async)"
+    >
+      <app-item-side-editor
+        *ngFor="let hintSide of (itemVal$ | async) ?. getSidesWithHints()"
+        [item$]="item$ !"
+        [side]="hintSide"
+      ></app-item-side-editor>
+    </ng-container>
+
     <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
       <!--      <hr>-->
       <app-side-label

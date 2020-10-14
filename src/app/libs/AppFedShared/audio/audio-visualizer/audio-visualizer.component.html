@@ -1,0 +1,16 @@
+audio vis
+
+<ng-container
+  *ngIf="array"
+>
+  <div
+    *ngFor="let fftItem of array"
+    [ngStyle]="{
+    height: '3px', width: ''+ (fftItem / 4) + 'px', 'background-color': 'black'
+  }
+  "
+  ></div>
+</ng-container>
+
+end vs
+

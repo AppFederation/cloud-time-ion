@@ -27,8 +27,9 @@ export function throttleTimeWithLeadingTrailing_ReallyThrottle<T>(timeMs: number
 }
 
 /** also: interface Patchable<TInMemVal> */
+export type DictPatch<TData> = Partial<TData>
 
-export interface PatchableObservable<TInMemData, TMemPatch = OdmPatch<TInMemData>> {
+export interface PatchableObservable<TInMemData, TMemPatch = DictPatch<TInMemData>> {
 
   locallyVisibleChanges$: CachedSubject<TInMemData | undefined | null>
 

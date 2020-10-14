@@ -4,8 +4,17 @@ import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem} from './LearnItem'
 
+export class Quiz {
+  // status$: {
+  //   whenNextRepetition: Date
+  //   isInFuture: boolean
+  // }
+}
+
 export class LearnItem$
-  extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService> {
+  extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService>
+{
+  quiz = new Quiz() // medium-coupling?
 
   // TODO: operations should actually be performed on certain Version, for versioning, drafts, branches, conflict detection/resolution
 

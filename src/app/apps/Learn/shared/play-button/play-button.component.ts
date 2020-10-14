@@ -18,6 +18,7 @@ export class PlayButtonComponent implements OnInit {
   private itemId ? : LearnItemId
 
   isPlaying = false
+  private source ? : AudioBufferSourceNode
 
   constructor(
     protected angularFirestore: AngularFirestore,
@@ -26,8 +27,10 @@ export class PlayButtonComponent implements OnInit {
 
   ngOnInit() {}
 
-  playAudio() {
+
+  playOrStopAudio() {
     if ( this.isPlaying ) {
+      this.stopPlaying()
       return
       // (will be pause ; and long-press to stop)
     }
@@ -37,9 +40,11 @@ export class PlayButtonComponent implements OnInit {
       const audioBytes = audioItem ?. data() ?. audio?.toUint8Array()?.buffer as ArrayBuffer
       // todo maybe reuse ctx / source
       const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
-      const source = audioCtx.createBufferSource();
+      const source = audioCtx.createBufferSource()
+      this.source = source
 
-      audioCtx.decodeAudioData(audioBytes, (buffer: AudioBuffer) => {
+      audioCtx.decodeAudioData(audioBytes,
+        (buffer: AudioBuffer) => {
           source.buffer = buffer;
           console.log(`source.buffer`, source.buffer)
 
@@ -49,7 +54,7 @@ export class PlayButtonComponent implements OnInit {
           source.start(0)
         },
 
-        function(e: DOMException){
+        (e: DOMException) => {
           window.alert("Error with decoding audio data: " + (e as any).err + ' ' + e);
         }
       );
@@ -63,4 +68,9 @@ export class PlayButtonComponent implements OnInit {
     this.changeDetectorRef.detectChanges()
   }
 
+  stopPlaying() {
+    this.isPlaying = false
+    this.source ?. stop()
+    this.changeDetectorRef.detectChanges()
+  }
 }

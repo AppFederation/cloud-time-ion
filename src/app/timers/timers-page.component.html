@@ -6,11 +6,15 @@
     </ion-title>
 <!--    <ion-button color="primary" slot="end" routerLink="/journal/write/new">Journal</ion-button>-->
 <!--    <ion-button color="primary" slot="end" [routerLink]="['/auth']">Account</ion-button>-->
-    <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
-    <ion-icon class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
-    <ion-icon class="action-icon" name="person" slot="end" [routerLink]="['/auth']"></ion-icon>
+    <ion-buttons slot="end">
+      <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
+<!--      <ion-icon class="action-icon" name="person" slot="end" [routerLink]="['/auth']"></ion-icon>-->
+      <odm-sync-status></odm-sync-status>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
