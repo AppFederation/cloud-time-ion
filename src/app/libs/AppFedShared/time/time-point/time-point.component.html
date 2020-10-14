@@ -1,6 +1,7 @@
 <span *ngIf="time else noTimestamp">
   {{process(time) || '(no timestamp)'}}
-  UTC
+  <span style="opacity: 50%">UTC</span>
+  {{dayNames[time.getUTCDay()]}}
 </span>
 
 <ng-template #noTimestamp
