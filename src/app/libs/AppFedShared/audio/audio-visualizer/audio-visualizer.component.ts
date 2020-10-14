@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Required} from '../../utils/angular/Required.decorator'
+// import {Required} from '../../utils/angular/Required.decorator'
 
 // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
 // ->
@@ -21,7 +21,7 @@ export class AudioVisualizerComponent implements OnInit, OnDestroy {
 
   analyser = audioCtx.createAnalyser()
 
-  @Required()
+  // @Required()
   @Input() stream ! : MediaStream | undefined
   private source ! : MediaStreamAudioSourceNode
 
