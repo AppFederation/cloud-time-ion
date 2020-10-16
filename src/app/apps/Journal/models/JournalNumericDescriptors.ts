@@ -29,7 +29,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
 }
 
 type JndParams = {
-  antonym?: string,
+  antonym?: string | string[],
   minLabel?: string,
   maxLabel?: string,
   subTitle?: string;
@@ -73,8 +73,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   execution = jnd()
   procrastination = jnd()
   excitement = jnd({
+    searchTerms: [ `enthusiasm`],
     idealValue: 8 /* excessive excitement can cause `tension` */,
-    antonym: `boredom?`,
+    antonym: [`boredom?`, `apathy`],
     isShortListed: true,
   })
   motivation = jnd({
@@ -119,7 +120,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'peace of mind' = jnd({
     isShortListed: true,
   })
-  'calmness' = jnd()
+  /** TODO maybe merge with peace of mind */
+  'calmness' = jnd({
+    searchTerms: [`tranquility`],
+    antonym: `drama`,
+  })
   'annoyance' = jnd({lowerIsBetter: true,})
   anger = jnd({lowerIsBetter: true,})
   hate = jnd({lowerIsBetter: true,})
@@ -135,6 +140,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   energy = jnd({idealValue: 8.5,
     isShortListed: true,
+    antonym: [`tiredness`, `tired`, `apathy`] /* Note: also in "rest" */
   })
   hypomania = jnd({moderateIsBetter: true})
   hope = jnd({
