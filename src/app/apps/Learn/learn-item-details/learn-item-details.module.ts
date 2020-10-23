@@ -12,6 +12,7 @@ import {SharedModule} from '../shared/shared.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {LearnItemDetailsHintsComponent} from './learn-item-details-hints/learn-item-details-hints.component'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
+import {ImportanceEditComponent} from './importance-edit/importance-edit.component'
 
 const routes: Routes = [
   {
@@ -33,6 +34,6 @@ const routes: Routes = [
     EditorModule,
     TimeModule,
   ],
-  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent],
+  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent],
 })
 export class LearnItemDetailsPageModule {}

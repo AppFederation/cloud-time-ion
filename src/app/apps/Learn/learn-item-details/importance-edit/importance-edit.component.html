@@ -1,0 +1,18 @@
+{{(item$.val$ | async)?.importance | json}}
+
+<ion-item>
+
+  <ion-label>Importance</ion-label>
+  <ion-select placeholder="Select One"
+              [formControl]="formControls.importance"
+  >
+    <ion-select-option
+      *ngFor="let imp of importanceDescriptorsArray"
+      [value]="{ numeric: imp.numeric, id: imp.id }"
+    >
+<!--      value="{{ { numeric: imp.numeric } }}"-->
+
+      {{imp.id}} ( {{imp.numeric}}x )
+    </ion-select-option>
+  </ion-select>
+</ion-item>
