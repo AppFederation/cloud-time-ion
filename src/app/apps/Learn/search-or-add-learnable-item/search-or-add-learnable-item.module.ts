@@ -16,6 +16,7 @@ import {LearnStatsComponent} from './learn-stats/learn-stats.component'
 import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search-or-add-text-editor.component'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
+import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 
 const routes: Routes = [
   {
@@ -33,9 +34,11 @@ const routes: Routes = [
         OdmModule,
         AngularFireStorageModule,
         SharedModule,
+        SharedModule2,
         EditorModule,
         ReactiveFormsModule,
         AudioModule,
+        SharedModule,
     ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,

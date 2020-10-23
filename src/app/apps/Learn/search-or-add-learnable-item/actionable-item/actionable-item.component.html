@@ -1,10 +1,16 @@
-<!--item input zz2: {{itemInp2}} uuu-->
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
-<!--  id: {{item.id}}-->
+  <span
+    style="color: var(--primary)"
+    *ngIf="item.importance?.numeric || 1; let importanceNum"
+  >
+    {{importanceNum}}x
+  </span>
+
+  <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
@@ -18,21 +24,21 @@
   <span style="color: orange">
     {{ item.lastSelfRating }}
   </span>
-<!--  {{item.title}}-->
 
-<!--  <ng-container-->
-<!--    *ngFor="let side of sidesDefsArray"-->
-<!--  >-->
-<!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
-<!--  </ng-container>-->
+  <!--  <ng-container-->
+  <!--    *ngFor="let side of sidesDefsArray"-->
+  <!--  >-->
+  <!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
+  <!--  </ng-container>-->
+
   <span [innerHTML]="joinedSidesOneLine()"></span>
-<!--  {{ joinedSides() }}-->
 
-<!--  <app-play-button *ngIf="item.hasAudio"></app-play-button>-->
+  <!--  <app-rich-text-view-->
+  <!--    [htmlString]="joinedSides()"-->
+  <!--  ></app-rich-text-view>-->
 
-<!--  <hr>-->
+  <!--  <hr>-->
 
 </div>
-
 
 <!--</ng-container>-->
