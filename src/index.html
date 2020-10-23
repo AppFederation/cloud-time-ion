@@ -30,6 +30,17 @@
   <!-- END favicons -->
 
 
+<!--  <link rel="apple-touch-icon" sizes="180x180" href="/path/to/icons/apple-touch-icon.png">-->
+<!--  <link rel="icon" type="image/png" sizes="32x32" href="/path/to/icons/favicon-32x32.png">-->
+<!--  <link rel="icon" type="image/png" sizes="16x16" href="/path/to/icons/favicon-16x16.png">-->
+<!--  <link rel="manifest" href="/path/to/icons/site.webmanifest">-->
+<!--  <link rel="mask-icon" href="/path/to/icons/safari-pinned-tab.svg" color="#5bbad5">-->
+<!--  <link rel="shortcut icon" href="/path/to/icons/favicon.ico">-->
+<!--  <meta name="msapplication-TileColor" content="#2b5797">-->
+<!--  <meta name="msapplication-config" content="/path/to/icons/browserconfig.xml">-->
+<!--  <meta name="theme-color" content="#ffffff">-->
+
+
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -37,7 +48,13 @@
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
 
-  <script src="https://cdn.tiny.cloud/1/o9pxe54rr0n0ox46qj7gtlks0ilkpf7gmximm8syjqzjl184/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<!--  <script src="https://cdn.tiny.cloud/1/o9pxe54rr0n0ox46qj7gtlks0ilkpf7gmximm8syjqzjl184/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>-->
+  <!-- version before the bug https://github.com/tinymce/tinymce/issues/6093:
+    https://github.com/tinymce/tinymce-dist/blob/master/changelog.txt
+    https://github.com/tinymce/tinymce/pull/6133
+  -->
+  <script src="https://cdn.tiny.cloud/1/o9pxe54rr0n0ox46qj7gtlks0ilkpf7gmximm8syjqzjl184/tinymce/5.4.2/tinymce.min.js" referrerpolicy="origin"></script>
+
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
