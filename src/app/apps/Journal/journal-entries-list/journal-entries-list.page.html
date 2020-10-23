@@ -58,7 +58,7 @@
       <!--autosize-->
       <!-- [itemSize]="90" -->
       <div
-        *cdkVirtualFor="let item$ of (items$ | async)?.slice();                        let index = index;
+        *cdkVirtualFor="let item$ of (items$Sorted | async)?.slice(); let index = index;
                        let count = count;
                        let first = first;
                        let last = last;
@@ -95,7 +95,7 @@
   >
     <ion-list >
       <ng-container
-        *ngFor="let item$ of (journalEntriesService.items$ | async); trackBy: trackById"
+        *ngFor="let item$ of (items$Sorted | async); trackBy: trackById"
       >
         <app-journal-entry-list-item
           [item$]="item$"
@@ -103,6 +103,5 @@
       </ng-container>
     </ion-list>
   </ng-template>
-
 
 </ion-content>
