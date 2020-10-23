@@ -37,6 +37,7 @@
 <ion-content #ionContent
              [scrollX]="true"
 >
+
   <div
     style="margin: 6px"
   >
@@ -47,6 +48,7 @@
 
 <!--    <app-quiz-tips-->
 <!--    ></app-quiz-tips>-->
+    <!-- TODO extract `status$ | async` with ngIf let -->
 
     <p>
       <ion-note style="text-transform: uppercase">
@@ -61,6 +63,7 @@
           | next 12h:
           {{ ( status$ | async ) ?. itemsLeftToday }}
         </span>
+        {{ ((status$ | async)?.itemsLeftByImportance) | json }}
       </ion-note>
     </p>
 
