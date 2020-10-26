@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
+import {errorAlert} from '../../../libs/AppFedShared/utils/log'
 
+
+const genderToArticle = {
+  masculine: 'der',
+  feminine: 'die',
+  neuter: 'das',
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +22,37 @@ export class LingueeService {
   * */
 
   constructor() { }
+
+  async doIt(input: string) {
+    return; // Disabled
+    if ( ! input ) {
+      return
+    }
+    try {
+      const response = await fetch(`https://linguee-api.herokuapp.com/api?q=${input}&src=de&dst=en`)
+
+      const json = await response.json()
+      console.log(`Linguee response 1`, json)
+
+      /* word_type:
+          plural: true
+          pos: "noun"
+        */
+      for ( let match of json.exact_matches ) {
+        let genderArticle = (genderToArticle as any)[match.word_type.gender]
+        console.log(`---` + genderArticle)
+        console.log(`---` + match.text)
+        for ( let translation of match.translations ) {
+          console.log(translation.text)
+
+        }
+      }
+      console.log(`Linguee response`, json.exact_matches[0].translations[0].text)
+    } catch (error: any) {
+      errorAlert(`Linguee error`, error)
+    }
+
+  }
 }
 
 const apiExample = {
