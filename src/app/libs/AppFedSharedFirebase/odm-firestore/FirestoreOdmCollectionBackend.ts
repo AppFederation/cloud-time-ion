@@ -5,7 +5,7 @@ import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
-import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
+import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
 
 
@@ -83,7 +83,12 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       errorAlert('id cannot be ' + id)
     }
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
-    return this.itemDoc(id).set(item/*.toDbFormat()*/)
+    try {
+      const retPromise = this.itemDoc(id).set(item/*.toDbFormat()*/)
+      return retPromise
+    } catch (error: any) {
+      throw errorAlertAndThrow(`saveNowToDb error: `, error, item, id)
+    }
     // FIXME: update() to patch
 
     // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
