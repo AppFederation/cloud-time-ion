@@ -54,6 +54,9 @@
     "rxjs": "~6.6.0",
     "tar": "^4.4.13",
     "tslib": "^2.0.0",
+    "vega": "^5.15.0",
+    "vega-embed": "^6.12.1",
+    "vega-lite": "^4.16.8",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
