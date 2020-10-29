@@ -29,5 +29,35 @@ chrome.contextMenus.create({
         contexts: ['selection']
 });
 
+chrome.webRequest.onBeforeSendHeaders.addListener(
+  function(details) {
+    // Only do stuff if it's your extension and it's getting tinymce
+    if (details?.initiator?.indexOf(chrome.runtime.id) != -1 &&
+      (details.url.indexOf("cdn.tiny.cloud") !== -1 || details.url.indexOf("sp.tinymce.com") !== -1)) {
+      const newRef = "https://lifesuite.innotopic.com";
+      let gotRef = false;
+      // @ts-ignore
+      for(let n = 0 ; n < details.requestHeaders?.length; n++){
+        // @ts-ignore
+        gotRef = details.requestHeaders[n].name.toLowerCase() === "referer";
+        if(gotRef){
+          // @ts-ignore
+          details.requestHeaders[n].value = newRef;
+          break;
+        }
+      }
+      // If not already updated set to your approved domain
+      if(!gotRef){
+        details?.requestHeaders?.push({name: "Referer", value: newRef});
+      }
+    }
+    return { requestHeaders: details.requestHeaders };
+  },
+  { urls: ["<all_urls>"] },
+  ["blocking", "requestHeaders", "extraHeaders"]
+);
+
+
+
 chrome.runtime.onInstalled.addListener(() => {
 });
