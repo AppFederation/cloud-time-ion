@@ -8,14 +8,22 @@
 <div style="display: flex; align-items: center">
 
   <ion-button
-    *ngFor="let n of allowedVals"
-    size="small"
-    style="flex-grow: 1; font-size: 13px; height: 3rem"
-    [ngClass]="{selectedMood: (numVal === n || numVal === n + 0.5)}"
-    (click)="setNumVal(n)"
+    *ngFor="let btnDesc of buttonDescriptors.buttons"
+    style="flex-basis: 0; flex-grow: 1; font-size: 13px; height: 3rem"
+    [ngClass]="{selectedMood: isSelected(btnDesc)}"
+    (click)="onButtonClick(btnDesc)"
   >
+    {{ getDisplayedVariantForButton(btnDesc).label}}
+    <ng-container
+      *ngIf="false && getDisplayedVariantForButton(btnDesc).subLabel let subLabel"
+    >
+      <br>
+      <ion-note>
+        {{subLabel}}
+      </ion-note>
+    </ng-container>
     <!-- TODO (press)="setNumVal(n + .5)"-->
-    {{(numVal === n + 0.5) ? numVal : n}}
+<!--    {{(numVal === n + 0.5) ? numVal : n}}-->
 
   </ion-button>
 </div>
