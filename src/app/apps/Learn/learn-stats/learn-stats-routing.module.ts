@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LearnStatsPage } from './learn-stats.page';
+import {HttpClientModule} from '@angular/common/http'
 
 const routes: Routes = [
   {
@@ -11,7 +12,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    HttpClientModule,
+  ],
   exports: [RouterModule],
 })
 export class LearnStatsPageRoutingModule {}
