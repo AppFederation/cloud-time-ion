@@ -2,11 +2,18 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
-import {countBy, groupBy, minBy} from 'lodash-es'
+import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
-import {importanceDescriptors, ImportanceDescriptors, importanceDescriptorsArrayFromHighest, LearnItem, Rating} from '../models/LearnItem'
+import {
+  importanceDescriptors,
+  ImportanceDescriptors,
+  importanceDescriptorsArray,
+  importanceDescriptorsArrayFromHighest,
+  LearnItem,
+  Rating,
+} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
 import {LearnItem$} from '../models/LearnItem$'
@@ -45,8 +52,26 @@ export class QuizStatus {
     public itemsLeftToday?: number,
     public isNextItemInFuture?: boolean,
     public estimatedMsLeft?: DurationMs,
-    public itemsLeftByImportance?: CountsByImportance,
+    // public itemsLeftByImportance?: CountsByImportance,
+    public itemsLeftByImportance?: any,
+    /* TODO: undefined */
+    public itemsLeftByImportanceAtLeast = QuizStatus.countsAtLeastImportance(itemsLeftByImportance),
   ) {}
+
+  private static countsAtLeastImportance(itemsLeftByImportance: any) {
+    const ret = {} as any
+    let idx = 0
+    for ( let imp of importanceDescriptorsArray ) {
+      let sum = 0
+      for ( let internalIdx = idx; internalIdx < importanceDescriptorsArray.length; internalIdx ++ ) {
+        const impInternal = importanceDescriptorsArray[internalIdx]
+        sum += itemsLeftByImportance[impInternal.id] ?? 0
+      }
+      idx++
+      ret[imp.id] = sum
+    }
+    return ret
+  }
 }
 
 
@@ -189,7 +214,8 @@ export class QuizService {
     /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
        http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
     **/
-    const effectiveImportance = item.importance?.numeric ?? importanceDescriptors.medium.numeric
+    const mediumNumeric = importanceDescriptors.medium.numeric
+    const effectiveImportance = (item.importance?.numeric ?? mediumNumeric) / mediumNumeric
     const interval = hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
       / effectiveImportance /* TODO: this should actually appear before some old stuff, to de-clutter */
     const ret = whenLastTouched.toMillis() + interval
