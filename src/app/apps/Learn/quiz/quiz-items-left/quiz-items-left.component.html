@@ -1,0 +1,43 @@
+<!--qS: {{quizStatus | json}}-->
+
+<ng-container
+  *ngIf="quizStatus else loading"
+>
+  <span>
+    | left:
+    <strong style="font-size: 130%; color: white">{{ quizStatus ?. itemsLeft }}</strong>
+    | next 12h:
+    {{ quizStatus ?. itemsLeftToday }}
+  </span>
+  {{ (quizStatus ?. itemsLeftByImportance) | json }}
+  <table>
+    <tr >
+      <td
+        *ngFor="let importance of importancesArray"
+      >
+        {{importance.abbrev}}
+      </td>
+    </tr>
+    <tr >
+      <td
+        *ngFor="let importance of importancesArray"
+      >
+        {{quizStatus !. itemsLeftByImportance ! [importance.id !]}}
+      </td>
+    </tr>
+    <tr>
+      <td
+        *ngFor="let importance of importancesArray"
+      >
+        {{quizStatus !. itemsLeftByImportanceAtLeast ! [importance.id !] }}
+      </td>
+    </tr>
+
+  </table>
+</ng-container>
+
+<ng-template #loading>
+  Loading...
+</ng-template>
+
+

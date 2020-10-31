@@ -18,6 +18,7 @@ import {TimersPageModule} from '../../../timers/timers.module'
 import {ShowAnswerAndRateComponent} from './show-answer-and-rate/show-answer-and-rate.component'
 import {CongratsQuizFinishedComponent} from './quiz-finished/congrats-quiz-finished/congrats-quiz-finished.component'
 import {QuizFinishedComponent} from './quiz-finished/quiz-finished.component'
+import {QuizItemsLeftComponent} from './quiz-items-left/quiz-items-left.component'
 
 const routes: Routes = [
   {
@@ -40,15 +41,16 @@ const routes: Routes = [
     EditorModule,
     TimeModule,
   ],
-  declarations: [
-    QuizPage,
-    QuizItemDetailsComponent,
-    QuizTipsComponent,
-    QuizOptionsComponent,
-    ShowAnswerAndRateComponent,
-    CongratsQuizFinishedComponent,
-    QuizFinishedComponent,
-  ],
+    declarations: [
+        QuizPage,
+        QuizItemDetailsComponent,
+        QuizTipsComponent,
+        QuizOptionsComponent,
+        ShowAnswerAndRateComponent,
+        CongratsQuizFinishedComponent,
+        QuizFinishedComponent,
+        QuizItemsLeftComponent,
+    ],
 })
 export class QuizPageModule {
 }
