@@ -1,9 +1,10 @@
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
-import {debugLog} from '../../utils/log'
+import {debugLog, errorAlert} from '../../utils/log'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 import {DurationMs, TimeMsEpoch} from '../../utils/type-utils'
 import {PatchableObservable} from '../../utils/rxUtils'
+import {convertToHtmlIfNeeded} from '../../utils/html-utils'
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
 
@@ -49,6 +50,10 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
         try {
           this.isApplyingFromDb = true
           // debugLog(`ViewSyncer this.formGroup.patchValue(dataFromDb)`, this.fieldNameHack)
+          // convert plain to HTML:
+          if ( this.fieldNameHack ) {
+            (dataFromDb as any)[this.fieldNameHack] = convertToHtmlIfNeeded((dataFromDb as any)[this.fieldNameHack])
+          }
           this.formGroup.patchValue(dataFromDb) // TODO: handle nullish
           this.lastValFromDb = dataFromDb
         } finally {
@@ -57,6 +62,8 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       }
     })
     this.formGroup.valueChanges.subscribe(newValue => {
+      // errorAlert(`ViewSyncer won't save: hack for prevent rich text for now`)
+      // return; // hack for prevent rich for now
       if ( this.requireExplicitInitialValueTrigger && ! this.initialDataArrivalWasSetExplicitly ) {
         return
       }

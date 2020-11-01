@@ -2,11 +2,18 @@ import { Injectable } from '@angular/core';
 import {LearnDoService} from './learn-do.service'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 
-import {minBy} from 'lodash-es'
+import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
-import {LearnItem, Rating} from '../models/LearnItem'
+import {
+  importanceDescriptors,
+  ImportanceDescriptors,
+  importanceDescriptorsArray,
+  importanceDescriptorsArrayFromHighest,
+  LearnItem,
+  Rating,
+} from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
 import {LearnItem$} from '../models/LearnItem$'
@@ -36,6 +43,8 @@ export class QuizOptions {
   }
 }
 
+export type CountsByImportance = { [key in keyof ImportanceDescriptors]: number}
+
 export class QuizStatus {
   constructor(
     public itemsLeft: number,
@@ -43,7 +52,26 @@ export class QuizStatus {
     public itemsLeftToday?: number,
     public isNextItemInFuture?: boolean,
     public estimatedMsLeft?: DurationMs,
+    // public itemsLeftByImportance?: CountsByImportance,
+    public itemsLeftByImportance?: any,
+    /* TODO: undefined */
+    public itemsLeftByImportanceAtLeast = QuizStatus.countsAtLeastImportance(itemsLeftByImportance),
   ) {}
+
+  private static countsAtLeastImportance(itemsLeftByImportance: any) {
+    const ret = {} as any
+    let idx = 0
+    for ( let imp of importanceDescriptorsArray ) {
+      let sum = 0
+      for ( let internalIdx = idx; internalIdx < importanceDescriptorsArray.length; internalIdx ++ ) {
+        const impInternal = importanceDescriptorsArray[internalIdx]
+        sum += itemsLeftByImportance[impInternal.id] ?? 0
+      }
+      idx++
+      ret[imp.id] = sum
+    }
+    return ret
+  }
 }
 
 
@@ -88,7 +116,8 @@ export class QuizService {
       }
       // filter remaining until now
       const nowMs: TimeMsEpoch = Date.now()
-      const pendingItems: LearnItem$[] = item$s.filter(item$ => {
+
+      let pendingItems: LearnItem$[] = item$s.filter(item$ => {
         const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
         // if ( ! (typeof msEpochRepetition === 'number') ) {
         //   return false
@@ -103,13 +132,14 @@ export class QuizService {
       /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
          summarize - estimatedTimeLeft
        */
-      const nextItem$ = minBy(item$s,
-        (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
+      let nextItem$ = this.findPendingItemOfHighestImportance(pendingItems)
       const retStatus = new QuizStatus(
         pendingItems.length,
         nextItem$,
         pendingItemsTodayCount,
         isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
+        undefined,
+        countBy(pendingItems, (item) => item.currentVal?.importance?.id) as CountsByImportance,
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
@@ -124,6 +154,21 @@ export class QuizService {
       //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
     },
   ).pipe(shareReplay(1))
+
+  private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
+    let nextItem$: LearnItem$ | undefined = undefined
+    for (let importance of importanceDescriptorsArrayFromHighest) {
+      const filteredByImportance = pendingItems.filter(item => (item.val?.importance?.id ?? importanceDescriptors.medium.id) === importance.id)
+      // TODO: performance: could reuse itemsLeftByImportance from QuizStatus, instead of filtering (oh, but those are just counts; but could replace by groupBy; OTOH, we don't need all of the arrays, just the non-empty one with highest importance)
+      if (filteredByImportance.length) {
+        // TODO: performance: maybe combine filter and minBy into something like minByIf, to just iterate once
+        nextItem$ = nextItem$ = minBy(filteredByImportance,
+          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
+        break
+      }
+    }
+    return nextItem$
+  }
 
   calculateIntervalHours2(rating: Rating): Duration {
     return this.calculateIntervalHours(rating, this.options$?.lastVal !)
@@ -166,7 +211,14 @@ export class QuizService {
       return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
     }
 
-    const ret = whenLastTouched.toMillis() + hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
+    /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
+       http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
+    **/
+    const mediumNumeric = importanceDescriptors.medium.numeric
+    const effectiveImportance = (item.importance?.numeric ?? mediumNumeric) / mediumNumeric
+    const interval = hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
+      / effectiveImportance /* TODO: this should actually appear before some old stuff, to de-clutter */
+    const ret = whenLastTouched.toMillis() + interval
     return ret
 
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)

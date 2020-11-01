@@ -1,6 +1,6 @@
 {
   "name": "Cloud Time extension",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Allows quickly adding tasks to learning app",
   "manifest_version": 2,
   "icons": {

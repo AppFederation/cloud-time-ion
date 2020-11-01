@@ -37,6 +37,7 @@
 <ion-content #ionContent
              [scrollX]="true"
 >
+
   <div
     style="margin: 6px"
   >
@@ -47,20 +48,19 @@
 
 <!--    <app-quiz-tips-->
 <!--    ></app-quiz-tips>-->
+    <!-- TODO extract `status$ | async` with ngIf let -->
 
-    <p>
+    <p *ngIf="(status$ | async) let quizStatus">
       <ion-note style="text-transform: uppercase">
         next repetition:
         <app-time-point
-          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch((status$ | async) ?. nextItem$))"
+          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(quizStatus ?. nextItem$))"
         ></app-time-point>
 
-        <span>
-          | left:
-          <strong style="font-size: 130%; color: white">{{ ( status$ | async ) ?. itemsLeft }}</strong>
-          | next 12h:
-          {{ ( status$ | async ) ?. itemsLeftToday }}
-        </span>
+        <app-quiz-items-left
+          [quizStatus]="quizStatus"
+        ></app-quiz-items-left>
+
       </ion-note>
     </p>
 

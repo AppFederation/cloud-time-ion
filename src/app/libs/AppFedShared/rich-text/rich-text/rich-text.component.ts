@@ -6,6 +6,9 @@ import {debugLog} from '../../utils/log'
 
 /**
  * http://ckeditor.github.io/editor-recommendations/about/
+ *
+ * https://medium.engineering/why-contenteditable-is-terrible-122d8a40e480
+ *
  **/
 @Component({
   selector: 'app-rich-text',
@@ -69,7 +72,8 @@ export class RichTextComponent implements OnInit {
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
-      '[contenteditable] ::marker { color: red } ' +
+      '[contenteditable] ::marker { color: var(--secondary); ' +
+        '/* does not seem to work: */ text-shadow: 2px 2px #ffffff; } ' +
       `blockquote { border-left: 3px gray solid; padding-left: 6px; margin-left: 20px } `
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border

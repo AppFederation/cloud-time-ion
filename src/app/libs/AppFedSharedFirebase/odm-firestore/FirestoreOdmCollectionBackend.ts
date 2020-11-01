@@ -5,7 +5,7 @@ import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
-import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
+import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
 
 
@@ -31,17 +31,20 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         .where('owner', '==', this.authService.authUser$.lastVal!.uid)
         .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
-        // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
-        // FIXME: let the service process in batch, for performance
-        for ( let change of snapshot.docChanges() ) {
-          if ( change.type === 'added' ) {
-            this.listener?.onAdded(change.doc.id, change.doc.data() as TRaw)
-          } else if ( change.type === 'modified') {
-            this.listener?.onModified(change.doc.id, change.doc.data() as TRaw)
-          } else if ( change.type === 'removed') {
-            this.listener?.onRemoved(change.doc.id)
+          // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+          // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
+          for ( let change of snapshot.docChanges() ) {
+            const docId = change.doc.id
+            const docData = change.doc.data()
+            // this.setOwnerIfNeeded(docData, docId)
+            if ( change.type === 'added' ) {
+              this.listener?.onAdded(docId, docData as TRaw)
+            } else if ( change.type === 'modified') {
+              this.listener?.onModified(docId, docData as TRaw)
+            } else if ( change.type === 'removed') {
+              this.listener?.onRemoved(docId)
+            }
           }
-        }
         this.listener?.onFinishedProcessingChangeSet()
 
         // FIXME: only emit after processing finished
@@ -53,6 +56,24 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     })
   }
 
+  private setOwnerIfNeeded(docData: firebase.firestore.DocumentData, docId: string) {
+    if (this.collectionName === `JournalEntry`) {
+      const existingOwner = docData?.owner
+      const karolOwner = `7Tbg0SwakaVoCXHlu1rniHQ6gwz1`
+      if (!existingOwner) {
+        debugLog(this.collectionName + ` no owner `, existingOwner, docId)
+        this.itemDoc(docId).update({owner: karolOwner}).then(() => {
+          debugLog(`finished updating owner`, docId)
+        })
+      } else {
+        // debugLog(this.collectionName + ` yes owner `, docId, existingOwner)
+        if (existingOwner !== karolOwner) {
+          errorAlert(`some other owner!!`, `docId:`, docId, `owner: `, existingOwner)
+        }
+      }
+    }
+  }
+
   deleteWithoutConfirmation(itemId: OdmItemId) {
     ignorePromise(this.itemDoc(itemId).delete())
   }
@@ -62,7 +83,12 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       errorAlert('id cannot be ' + id)
     }
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
-    return this.itemDoc(id).set(item/*.toDbFormat()*/)
+    try {
+      const retPromise = this.itemDoc(id).set(item/*.toDbFormat()*/)
+      return retPromise
+    } catch (error: any) {
+      throw errorAlertAndThrow(`saveNowToDb error: `, error, item, id)
+    }
     // FIXME: update() to patch
 
     // https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes

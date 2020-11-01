@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {errorAlert} from '../utils/log'
 
 export class SyncStatus {
   pendingUploadsCount ? : number
@@ -24,6 +25,8 @@ export class SyncStatusService {
     promise.then(() => {
       this.pendingPromises.delete(promise)
       this.emitSyncStatus()
+    }).catch((error: any) => {
+      errorAlert(`Unable to save: `, error)
     })
   }
 

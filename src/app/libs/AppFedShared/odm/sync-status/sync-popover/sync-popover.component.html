@@ -29,14 +29,14 @@
 >
   Not logged in.
   <ion-button
-    (click)="authService.logInViaGoogle()"
+    (click)="logIn()"
   >LOG IN</ion-button>
 
 </ng-template>
 
 <ion-button
-  *ngIf="(authService.authUser$ | async)"
-  (click)="authService.logout()"
+  (click)="logOut()"
+  size="small"
 >
   LOG OUT
 </ion-button>

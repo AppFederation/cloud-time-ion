@@ -20,7 +20,7 @@
   ></app-audio-visualizer>
 </ion-button>
 <ion-button
-  (click)="releaseMic()"
+  (click)="stopRecordingIfNeededAndReleaseMic()"
   [hidden]="! stream"
 >
   X
