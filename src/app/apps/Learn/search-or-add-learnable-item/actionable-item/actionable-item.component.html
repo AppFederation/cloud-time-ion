@@ -5,7 +5,7 @@
 >
   <span
     style="color: var(--primary)"
-    *ngIf="item.importance?.numeric || 1; let importanceNum"
+    *ngIf="item.importance?.numeric || '-'; let importanceNum"
   >
     {{importanceNum}}x
   </span>
