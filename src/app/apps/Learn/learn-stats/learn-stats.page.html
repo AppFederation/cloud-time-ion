@@ -9,11 +9,10 @@
 
 <ion-content>
 
-  <pre>
-    <!--    {{items$ | async | json}}-->
-  </pre>
+  <p>
+    Data points: {{(items$ | async)?.length}}
+  </p>
 
   <stacked-interactive-chart [data]="data"></stacked-interactive-chart>
-
 
 </ion-content>
