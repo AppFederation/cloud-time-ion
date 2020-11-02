@@ -46,6 +46,10 @@ export class QuizOptions {
 export type CountsByImportance = { [key in keyof ImportanceDescriptors]: number}
 
 export class QuizStatus {
+
+  public itemsLeftByImportanceAtLeast: any = QuizStatus.countsAtLeastImportance(this.itemsLeftByImportance)
+  public itemsCountByImportanceAtLeast: any = QuizStatus.countsAtLeastImportance(this.itemsCountByImportance)
+
   constructor(
     public itemsLeft: number,
     public nextItem$?: LearnItem$,
@@ -55,10 +59,10 @@ export class QuizStatus {
     // public itemsLeftByImportance?: CountsByImportance,
     public itemsLeftByImportance?: any,
     /* TODO: undefined */
-    public itemsLeftByImportanceAtLeast = QuizStatus.countsAtLeastImportance(itemsLeftByImportance),
+    public itemsCountByImportance?: any,
   ) {}
 
-  private static countsAtLeastImportance(itemsLeftByImportance: any) {
+  private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
     const ret = {} as any
     let idx = 0
     for ( let imp of importanceDescriptorsArray ) {
@@ -102,12 +106,13 @@ export class QuizService {
 
   /** TODO make into a member field to ensure no-one calls this spuriously by accident */
   readonly quizStatus$: Observable<QuizStatus> = combineLatest(
+    // TODO:  take into account: this.isWaitingForNextItem = true ; and set to false once new item provided; might need to change approach to a more pull-based
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
     (this.learnDoService.localItems$.pipe(
       throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
     ),
-    timer(0, secondsAsMs(3)),
+    timer(0, secondsAsMs(3) /* FIXME make the timer longer for performance/battery */),
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
@@ -139,7 +144,8 @@ export class QuizService {
         pendingItemsTodayCount,
         isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
         undefined,
-        countBy(pendingItems, (item) => item.currentVal?.importance?.id) as CountsByImportance,
+        countBy(pendingItems, (item) => item.val?.importance?.id) as CountsByImportance,
+        countBy(item$s, (item) => item.val?.importance?.id) as CountsByImportance,
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
