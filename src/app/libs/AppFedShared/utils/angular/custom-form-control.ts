@@ -19,7 +19,7 @@ export abstract class CustomFormControl<TVal> implements ControlValueAccessor {
   }
 
   fireOnChange($event: TVal ) {
-    this.onChange($event);
+    this.onChange ?. ($event);
   }
 
   setDisabledState( isDisabled : boolean ) : void {
