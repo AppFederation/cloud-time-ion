@@ -14,8 +14,11 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {User} from 'firebase'
 import {FormControl} from '@angular/forms'
 import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
-import {debounceTime} from 'rxjs/operators'
+import {debounceTime, distinct, distinctUntilChanged, map, tap} from 'rxjs/operators'
+import {LingueeService} from '../natural-langs/linguee.service'
+import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
 
+/** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
   selector: 'app-search-or-add-learnable-item',
   templateUrl: './search-or-add-learnable-item.page.html',
@@ -23,6 +26,7 @@ import {debounceTime} from 'rxjs/operators'
 })
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
+  /** TODO: rename to searchStripped */
   search: string = ''
   htmlSearch ? : string = undefined
   searchFormControl = new FormControl()
@@ -42,11 +46,17 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
     public authService: AuthService,
+    public lingueeService: LingueeService,
+    public merriamWebsterDictService: MerriamWebsterDictService,
   ) { }
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
       debounceTime(100),
+      // tap(debugLog),
+      // map(stripHtml), // TODO but need to not destroy html
+      // TODO: strip too coz maybe adding a space should not make a difference
+      distinctUntilChanged(),
     ).subscribe(val => {
       this.htmlSearch = val
       val = stripHtml(val)
@@ -107,14 +117,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   add(string?: string, isTask?: boolean) {
     console.log('add: ', string)
-    string = string || this.htmlSearch || this.search
-    if ( !string ) {
-      return
-    }
-
-    if (! (string || '').trim().length ) {
-      return
-    }
+    string = string ?? this.htmlSearch ?? this.search ?? ``
+    // if ( !string ) {
+    //   return // FIXME: allow creating empty --> ?? ``
+    // }
+    //
+    // if (! (string || '').trim().length ) {
+    //   return // FIXME: allow creating empty
+    // }
 
     const newItem = this.createItemFromInputString(string, isTask)
     if ( newItem ) {
@@ -131,21 +141,25 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   createItemFromInputString(string: string, isTask?: boolean) {
-    if ( ! string ?. trim() ) {
-      return
-    }
+    // if ( ! string ?. trim() ) {
+    //   return
+    // }
     const QQ = /<-->|<->|----/ // <> - pascal not-equal
     const QA = /---/ // |-->/ // removed -- because it exists in command line options and html comments
     // --> - end of XML/HTML comment
     const overlay: Partial<LearnItemSidesVals> = {}
     if ( string.match(QQ) ) {
       const split = splitAndTrim(string, QQ)
+      debugLog(`splitAndTrim`, split)
       overlay.question = split[0]
       overlay.question2 = split[1]
       if ( split[2] ) {
         overlay.question3 = split[2]
       }
     } else if ( string.match(QA) ) {
+      // something here is causing leading empty paragraph:
+      // <p> </p>
+      // <p>aaa</p>
       const split = splitAndTrim(string, QA)
       overlay.question = split[0]
       overlay.answer = split[1]
@@ -158,11 +172,12 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     } else {
       overlay.title = (string || '')./*?.*/trim() /*?? null*/
     }
-    return Object.assign({
+    return {
       owner: this.authUserId,
       whenAdded: new Date(),
       isTask: isTask ? true : null,
-    }, overlay)
+      ...overlay,
+    }
   }
 
   addTask() {
@@ -170,6 +185,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   addToLearn() {
+    // this.lingueeService.doIt(this.search).then()
+    // this.merriamWebsterDictService.doIt(this.search)
+
     this.add(undefined, false)
   }
 
