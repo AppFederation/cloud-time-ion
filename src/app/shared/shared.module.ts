@@ -5,6 +5,7 @@ import {RichTextComponent} from '../libs/AppFedShared/rich-text/rich-text/rich-t
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {RichTextViewComponent} from '../libs/AppFedShared/rich-text/rich-text-view/rich-text-view.component'
 import {CommonModule} from '@angular/common'
+import {ImportanceComponent} from '../libs/AppFedShared/importance/importance.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -28,6 +29,7 @@ let imports = [
     declarations: [
       RichTextComponent,
       RichTextViewComponent,
+      ImportanceComponent,
     ],
 })
 export class SharedModule {
