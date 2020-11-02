@@ -10,7 +10,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
-import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {StatsHistoryService} from './stats-history.service'
 
 /** split into part that goes into DB */
@@ -44,6 +44,10 @@ export class LearnStatsService {
       if ( ! item$s ) {
         return undefined
       }
+      const count = item$s ?. length
+      if ( count >= 3400 * 2 ) {
+        errorAlert(`item$s ?. length - items probably duplicated; bug`, item$s ?. length)
+      }
       const items: (LearnItem|undefined|null)[] = item$s.map(item$ => item$.currentVal)
       return {
         countWithRatingEqual: this.getCountWithRatingEqual(items),
@@ -66,7 +70,7 @@ export class LearnStatsService {
     private learnDoService: LearnDoService,
     private statsHistoryService: StatsHistoryService,
   ) {
-    debugLog(`statsToSave init`)
+    // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(
       throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(2)),
@@ -83,11 +87,12 @@ export class LearnStatsService {
       }),
       distinctUntilChanged((stats1, stats2) => {
         const equal = isEqual(stats1, stats2)
-        debugLog(`statsToSave$ isEqual`, equal, stats1, stats2)
+        // TODO: measure time somewhere here, coz hanging on mobile.
+        // debugLog(`statsToSave$ isEqual`, equal, stats1, stats2)
         return equal
       }),
       tap(stats => {
-        debugLog(`statsToSave$`, stats)
+        // debugLog(`statsToSave$`, stats)
       })
     ).subscribe((stats) => {
       this.statsHistoryService.newValue(stats)
