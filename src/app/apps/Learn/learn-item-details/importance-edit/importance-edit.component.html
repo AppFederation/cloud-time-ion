@@ -1,5 +1,10 @@
 {{(item$.val$ | async)?.importance?.id}}
 
+<apf-numeric-picker
+  [buttonDescriptors]="importanceButtonsDesc"
+  [formControl]="formControls.importance"
+></apf-numeric-picker>
+
 <ion-item>
 
   <ion-label>Importance</ion-label>
@@ -16,8 +21,3 @@
     </ion-select-option>
   </ion-select>
 </ion-item>
-
-<apf-numeric-picker
-  [buttonDescriptors]="importanceButtonsDesc"
-  [formControl]="formControls.importance"
-></apf-numeric-picker>
