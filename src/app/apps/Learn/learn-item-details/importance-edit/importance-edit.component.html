@@ -1,4 +1,4 @@
-{{(item$.val$ | async)?.importance | json}}
+{{(item$.val$ | async)?.importance?.id}}
 
 <ion-item>
 
@@ -19,4 +19,5 @@
 
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"
+  [formControl]="formControls.importance"
 ></apf-numeric-picker>
