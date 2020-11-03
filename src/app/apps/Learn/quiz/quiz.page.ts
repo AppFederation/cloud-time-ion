@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {QuizService, QuizStatus} from '../core/quiz.service'
 import {Observable} from 'rxjs'
 import {PopoverController} from '@ionic/angular'
 import {QuizTimerPopoverComponent} from './quiz-timer-popover/quiz-timer-popover.component'
 import {LearnItem$} from '../models/LearnItem$'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {Subject} from 'rxjs/internal/Subject'
+import {map, withLatestFrom} from 'rxjs/operators'
 
 
 @Component({
@@ -12,7 +14,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
   templateUrl: './quiz.page.html',
   styleUrls: ['./quiz.page.sass'],
 })
-export class QuizPage implements OnInit {
+export class QuizPage implements OnInit, AfterViewInit  {
 
   item$: LearnItem$ | undefined
 
@@ -21,10 +23,19 @@ export class QuizPage implements OnInit {
 
   status$ = this.quizService.quizStatus$
 
+  nextItem$WhenRequested = this.quizService.nextItem$WhenRequested
+
   constructor(
     public quizService: QuizService,
     public popoverController: PopoverController,
   ) {
+  }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    this.quizService.requestNextItem()
   }
 
   async onClickTimer(event: any) {
@@ -35,10 +46,6 @@ export class QuizPage implements OnInit {
       mode: 'ios' /* TODO */,
     });
     return await popover.present();
-  }
-
-
-  ngOnInit() {
   }
 
   nowMs() {

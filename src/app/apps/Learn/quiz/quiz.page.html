@@ -72,7 +72,7 @@
     <div>
       <!-- *ngIf="! ( status$ | async ) ?. isNextItemInFuture" -->
       <app-quiz-item-details
-        *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
+        *ngFor="let item$ of [ nextItem$WhenRequested | async ]"
         [item$]="item$"
         [ionContent]="ionContent"
       ><!-- the entire component will be swapped on new item -->
@@ -90,7 +90,7 @@
 </ion-content>
 <ion-footer>
   <app-show-answer-and-rate
-    *ngFor="let item$ of [ (status$ | async) ?. nextItem$ ]"
+    *ngFor="let item$ of [ nextItem$WhenRequested | async ]"
     [item$]="item$"
   ></app-show-answer-and-rate>
 

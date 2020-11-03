@@ -18,15 +18,16 @@ import {
 import {Observable,of, from } from 'rxjs';
 import {LearnItem$} from '../models/LearnItem$'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
-import {DurationMs, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
+import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
-import {debounceTime, shareReplay} from 'rxjs/operators'
+import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs'
 import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
+import {Subject} from 'rxjs/internal/Subject'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -87,6 +88,8 @@ export class QuizService {
   options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
     new QuizOptions(false, true), 'QuizOptions'
   )
+
+  private isNextItemRequested = true
 
   get options$(): CachedSubject<QuizOptions> { return this.options2$.locallyVisibleChanges$ }
 
@@ -161,6 +164,32 @@ export class QuizService {
     },
   ).pipe(shareReplay(1))
 
+  nextItemRequests$ = new Subject<void>()
+
+  nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
+    map(status => status?.nextItem$),
+    filter((item) => !! item && this.isNextItemRequested),
+    tap(() => {
+      debugLog(`nextItem$WhenRequested ver2`)
+      this.isNextItemRequested = false
+    }),
+    shareReplay(1),
+  )
+
+  // nextItem$WhenRequested: Observable<LearnItem$ | undefined> = this.nextItemRequests$.pipe(
+  //   tap(x => debugLog(`nextItemRequests$`, x)),
+  //   shareReplay(1),
+  //   withLatestFrom(this.quizStatus$.pipe(
+  //     filter(status => !! status.nextItem$),
+  //     tap(x => debugLog(`withLatestFrom filter`, x)),
+  //     shareReplay(1),
+  //   )),
+  //   map((merged: [void, QuizStatus]) => merged[1].nextItem$),
+  //   shareReplay(1),
+  //   tap(x => debugLog(`nextItem$WhenRequested`, x))
+  // )
+
+
   private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
     let nextItem$: LearnItem$ | undefined = undefined
     for (let importance of importanceDescriptorsArrayFromHighest) {
@@ -233,7 +262,6 @@ export class QuizService {
   toggleShowAnswer() {
     this.showAnswer$.next(! this.showAnswer$.lastVal)
     this.showHint$.next(false)
-
   }
 
   toggleShowHint() {
@@ -243,5 +271,11 @@ export class QuizService {
   onNewQuestion() {
     this.showAnswer$.next(false)
     this.showHint$.next(false)
+  }
+
+  requestNextItem() {
+    debugLog(`requestNextItem()`)
+    this.isNextItemRequested = true
+    this.nextItemRequests$.next()
   }
 }

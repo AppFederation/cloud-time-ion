@@ -6,6 +6,7 @@ import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numer
 import {LearnItem$} from '../../models/LearnItem$'
 import {QuizService} from '../../core/quiz.service'
 import {Subscription} from 'rxjs'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 @Component({
   selector: 'app-quiz-item-details',
@@ -15,7 +16,7 @@ import {Subscription} from 'rxjs'
 export class QuizItemDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
-  item$ ? : LearnItem$ | null
+  item$ ? : LearnItem$ | nullish
 
   @Input()
   ionContent: any

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {QuizService} from '../../core/quiz.service'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 @Component({
   selector: 'app-show-answer-and-rate',
@@ -10,7 +11,7 @@ import {LearnItem$} from '../../models/LearnItem$'
 })
 export class ShowAnswerAndRateComponent implements OnInit {
 
-  @Input() item$ ? : LearnItem$
+  @Input() item$ ? : LearnItem$ | nullish
 
   public selfRating: NumericPickerVal | undefined = undefined
 
@@ -44,6 +45,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   applyAndNext() {
     this.item$ ?. setNewSelfRating(this.selfRating !)
+    this.quizService.requestNextItem()
   }
 
 }
