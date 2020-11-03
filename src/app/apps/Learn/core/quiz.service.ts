@@ -101,11 +101,14 @@ export class QuizService {
     private learnDoService: LearnDoService,
     private optionsService: OptionsService,
   ) {
+    this.nextItemRequests$.next()
   }
 
   setOptions(newOptions: QuizOptions) {
     this.options$.next(newOptions)
   }
+
+  nextItemRequests$ = new CachedSubject<void>()
 
   /** TODO make into a member field to ensure no-one calls this spuriously by accident */
   readonly quizStatus$: Observable<QuizStatus> = combineLatest(
@@ -115,7 +118,10 @@ export class QuizService {
     (this.learnDoService.localItems$.pipe(
       throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
     ),
-    timer(0, secondsAsMs(3) /* FIXME make the timer longer for performance/battery */),
+    combineLatest(
+      timer(0, secondsAsMs(20) /* FIXME make the timer longer for performance/battery */),
+      this.nextItemRequests$,
+    ),
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
@@ -164,18 +170,18 @@ export class QuizService {
     },
   ).pipe(shareReplay(1))
 
-  nextItemRequests$ = new Subject<void>()
 
   nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
     map(status => status?.nextItem$),
     filter((item) => !! item && this.isNextItemRequested),
     tap(() => {
       debugLog(`nextItem$WhenRequested ver2`)
-      this.isNextItemRequested = false
+      this.isNextItemRequested = false // too imperative style, but quick workaround for now
     }),
     shareReplay(1),
   )
 
+  // could combine the nextItemRequests$ with timer operator
   // nextItem$WhenRequested: Observable<LearnItem$ | undefined> = this.nextItemRequests$.pipe(
   //   tap(x => debugLog(`nextItemRequests$`, x)),
   //   shareReplay(1),
