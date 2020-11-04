@@ -1,4 +1,4 @@
-{{(item$.val$ | async)?.importance?.id}}
+{{((item$.val$ | async)?.importance?.id) || '-' }}
 
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"
