@@ -82,7 +82,10 @@ export class ItemSideComponent implements OnInit {
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
-      '[contenteditable] ::marker { color: red } '
+      '[contenteditable] ::marker { color: var(--secondary) } ' +
+      `ul { padding-inline-start: 25px; }` +
+      `ol { padding-inline-start: 25px; }`
+
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
       [contenteditable] a { color: #98aed9 }
@@ -138,14 +141,15 @@ export class ItemSideComponent implements OnInit {
   }
 
   isDependencySatisfied(): boolean {
-    if ( ! this.side?.dependsOn ) {
-      return true
-    } else {
-      // debugLog(`isDependencySatisfied`, this.side, this.formControls[this.side.dependsOn.id]?.value?.trim(), this.formControls)
-      return !! (this.item$?.currentVal?.[this.side.dependsOn.id as keyof LearnItem] as any as string)?.trim()
-      // return this.formControls[this.side.dependsOn.id]?.value
-      // return !! (this.formControls[this.side.dependsOn.id]?.value?.trim())
-    }
+    return true // for convenience if I want to cut&paste directly to a field e.g. question2
+    // if ( ! this.side?.dependsOn ) {
+    //   return true
+    // } else {
+    //   // debugLog(`isDependencySatisfied`, this.side, this.formControls[this.side.dependsOn.id]?.value?.trim(), this.formControls)
+    //   return !! (this.item$?.currentVal?.[this.side.dependsOn.id as keyof LearnItem] as any as string)?.trim()
+    //   // return this.formControls[this.side.dependsOn.id]?.value
+    //   // return !! (this.formControls[this.side.dependsOn.id]?.value?.trim())
+    // }
   }
 
   onChangeEditor($event: any) {

@@ -40,7 +40,7 @@ export abstract class OdmService2<
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
      And itemsJustList$ for just changes of list, without reporting changes of individual item data-s
      */
-  localItems$ = new CachedSubject<TOdmItem$[]>([])
+  localItems$ = new CachedSubject<TOdmItem$[]>([] /* TODO: make undefined  initially to (force) distinguish loading (and null -> error) from empty list */)
 
   get items$() { return this.localItems$ }
 

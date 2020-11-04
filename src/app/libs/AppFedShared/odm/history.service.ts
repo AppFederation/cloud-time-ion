@@ -27,7 +27,7 @@ export class HistoryService<TInMem, TRaw = TInMem>
     // val.when = timestamp
     // TODO: throttle and distinctUntilChanged
     const histItem = new OdmItem$2(this as any, undefined, {})
-    debugLog(`HistoryService newValue`, val)
+    // debugLog(`HistoryService newValue`, val)
     histItem.patchNow(toSave)
     // this.createOdmItem$ForExisting(uuid)
   }

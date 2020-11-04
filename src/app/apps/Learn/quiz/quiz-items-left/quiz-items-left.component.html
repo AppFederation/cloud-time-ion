@@ -58,6 +58,7 @@
       <td
         *ngFor="let importance of importancesArray"
       >
+        <!-- those could be clickable to set corresponding filter on list -->
         {{quizStatus !. itemsCountByImportanceAtLeast ! [importance.id !] }}
       </td>
     </tr>
