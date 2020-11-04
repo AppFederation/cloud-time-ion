@@ -119,7 +119,7 @@ export class QuizService {
       throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
     ),
     combineLatest(
-      timer(0, secondsAsMs(20) /* FIXME make the timer longer for performance/battery */),
+      timer(0, secondsAsMs(60) /* FIXME make the timer longer for performance/battery */),
       this.nextItemRequests$,
     ),
       // this.learnDoService.localItems$,
@@ -171,16 +171,20 @@ export class QuizService {
   ).pipe(shareReplay(1))
 
 
+  /** too imperative style, but quick workaround for now, in the face of withLatestFrom approach not showing quiz item on page load */
   nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
     map(status => status?.nextItem$),
     filter((item) => !! item && this.isNextItemRequested),
     tap(() => {
       debugLog(`nextItem$WhenRequested ver2`)
-      this.isNextItemRequested = false // too imperative style, but quick workaround for now
+      this.isNextItemRequested = false
     }),
     shareReplay(1),
   )
 
+  /* ==== Approach with withLatestFrom - worked when pressing Apply&Next button, but NOT showing any quiz item at the loading of quiz page.
+   * Maybe putting it with combineLatest with timer has already helped. Need testing. I leave it like that for now.
+   * Need to get deeper into understanding semantics of when pipes before someone subscribes, multiple subscribers, and shareReplay(1) */
   // could combine the nextItemRequests$ with timer operator
   // nextItem$WhenRequested: Observable<LearnItem$ | undefined> = this.nextItemRequests$.pipe(
   //   tap(x => debugLog(`nextItemRequests$`, x)),
