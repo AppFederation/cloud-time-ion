@@ -7,6 +7,7 @@ import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
 import {EditorComponent} from '@tinymce/tinymce-angular'
+import {RichTextEditComponent} from '../../../../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
 
 export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
 
@@ -19,9 +20,11 @@ export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
 })
 export class ItemSideComponent implements OnInit {
 
-  @Input() item$ ! : LearnItem$
+  @Input()
+  item$ ! : LearnItem$
 
-  @Input() side ! : Side | nullish
+  @Input()
+  side ! : Side | nullish
 
   formControls ! : SideFormControlsDict
 
@@ -29,11 +32,9 @@ export class ItemSideComponent implements OnInit {
 
   editorOpened = false
 
-  get editorViewChild(): EditorComponent {
-    return null // FIXME
+  @ViewChild(RichTextEditComponent)
+  editorViewChild ! : RichTextEditComponent
 
-    // return this._editorViewChild
-  }
 
   get formControl() {
     return this.formControls[this.side!.id]
@@ -71,7 +72,7 @@ export class ItemSideComponent implements OnInit {
   focusEditor() {
     setTimeout(() => {
       // debugLog(`focusEditor`, this.editorViewChild)
-      this.editorViewChild?.editor.focus()
+      this.editorViewChild ?. focusEditor()
     }, 10)
   }
 

@@ -117,11 +117,12 @@ export class RichTextEditComponent implements OnInit {
   focusEditor() {
     setTimeout(() => {
       // debugLog(`focusEditor`, this.editorViewChild)
-      this.editorViewChild?.editor.focus()
+      this.editorViewChild ?. editor ?. focus()
     }, 10)
   }
 
   onFocus(b: any) {
     debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
   }
+
 }
