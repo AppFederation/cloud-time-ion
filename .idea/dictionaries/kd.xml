@@ -17,6 +17,7 @@
       <w>contenteditable</w>
       <w>cordova</w>
       <w>deepl</w>
+      <w>descr</w>
       <w>deviceready</w>
       <w>dvisor</w>
       <w>ebbinghaus</w>
@@ -28,6 +29,7 @@
       <w>hilitecolor</w>
       <w>homescreen</w>
       <w>hypomania</w>
+      <w>importances</w>
       <w>innotopic</w>
       <w>inputmode</w>
       <w>insertdatetime</w>
@@ -51,6 +53,7 @@
       <w>syncer</w>
       <w>tinymce</w>
       <w>vals</w>
+      <w>vconcat</w>
       <w>visualblocks</w>
       <w>vlid</w>
       <w>webmanifest</w>
