@@ -7,14 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { LearnStatsPageRoutingModule } from './learn-stats-routing.module';
 
 import { LearnStatsPage } from './learn-stats.page';
-import {SharedModule} from '../shared/shared.module'
+import {LearnSharedModule} from '../shared/learn-shared.module'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule,
+    LearnSharedModule,
     LearnStatsPageRoutingModule
   ],
   declarations: [LearnStatsPage]

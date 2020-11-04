@@ -1,4 +1,4 @@
-{{((item$.val$ | async)?.importance?.id) || '-' }}
+{{((item$.val$ | async)?.importance?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}
 
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"

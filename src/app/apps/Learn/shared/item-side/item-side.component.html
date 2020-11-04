@@ -23,24 +23,10 @@
     [side]="side"
   ></app-side-label>
 
-  <editor
-    #editor
-    [init]="tinyMceInit"
-    [inline]="true"
-    [formControl]="formControl"
-    (ngModelChange)="onChangeEditor($event)"
-    (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
-  >
-    <!-- FIXME:     modelEvents="change input undo redo nodechange" causes patching when opening details page -->
-    <!--     (onSetContent)="logEditor('onSetContent')"
-    (onPostRender)="logEditor('onPostRender')"
-    -->
-    <!-- events: https://www.tiny.cloud/docs/advanced/events/#init
-      * Init -- actually called last?
-      * SetContent
-    -->
-
-  </editor>
+  <app-rich-text-edit
+    [viewSyncer]="viewSyncer"
+    [formControl1]="formControl"
+  ></app-rich-text-edit>
 
 </div>
 

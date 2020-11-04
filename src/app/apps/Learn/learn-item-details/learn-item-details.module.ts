@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { LearnItemDetailsPage } from './learn-item-details.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
-import {SharedModule} from '../shared/shared.module'
+import {LearnSharedModule} from '../shared/learn-shared.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {LearnItemDetailsHintsComponent} from './learn-item-details-hints/learn-item-details-hints.component'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
@@ -30,7 +30,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     OdmModule,
     RatingsModule,
-    SharedModule,
+    LearnSharedModule,
     EditorModule,
     TimeModule,
   ],

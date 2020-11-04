@@ -25,9 +25,11 @@ export class RichTextEditComponent implements OnInit {
 
   private _editorViewChild: EditorComponent | undefined
 
+  /* TODO rename editorWasOrIsOpened */
   editorOpened = false
 
-  @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
+  @ViewChild(EditorComponent)
+  set editorViewChild(ed: EditorComponent | undefined) {
     if ( ed ) {
       setTimeout(() => {
         this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
@@ -74,7 +76,7 @@ export class RichTextEditComponent implements OnInit {
       '[contenteditable] li { padding-top: 6px; } ' +
       '[contenteditable] ::marker { color: var(--secondary); ' +
         '/* does not seem to work: */ text-shadow: 2px 2px #ffffff; } ' +
-      `blockquote { border-left: 3px gray solid; padding-left: 6px; margin-left: 20px } ` +
+      `blockquote { border-left: 3px var(--secondary) solid; padding-left: 6px; margin-left: 20px } ` + /* TODO: extract standard rich text css into global const for -edit and -view */
       `ul { padding-inline-start: 20px; }` +
       `ol { padding-inline-start: 20px; }`
     /* https://www.tiny.cloud/docs/configure/content-appearance/
@@ -119,4 +121,7 @@ export class RichTextEditComponent implements OnInit {
     }, 10)
   }
 
+  onFocus(b: any) {
+    debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
+  }
 }
