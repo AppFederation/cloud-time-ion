@@ -57,14 +57,10 @@
       </div>
 
       <ion-button
-        [hidden]="! hasSearchText()"
-        [disabled]="! hasSearchText()"
         (click)="addTask()"
       >ADD TASK</ion-button>
 
       <ion-button
-        [hidden]="! hasSearchText()"
-        [disabled]="! hasSearchText()"
         (click)="addToLearn()"
       >ADD TO LEARN</ion-button>
       <ion-text style="color: gray">
@@ -115,7 +111,6 @@
   </ng-container>
 
   <ng-template #loggedIn>
-
 
     <ion-virtual-scroll
       [items]="filteredItems"
