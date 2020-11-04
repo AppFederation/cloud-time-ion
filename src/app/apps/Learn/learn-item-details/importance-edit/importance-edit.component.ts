@@ -9,7 +9,7 @@ import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedI
 
 function impBtnVariant(label: string, descr: ImportanceDescriptor) {
   return btnVariant({
-    value: descr,
+    value: descr /* FIXME*/,
     label: label,
     subLabel: descr.id.replace(`_`, ` `),
     id: descr.id,
@@ -20,9 +20,9 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
       impBtnVariant(`↓`, importanceDescriptors.somewhat_low),
-      impBtnVariant(`↓↓`, importanceDescriptors.low),
-      impBtnVariant(`↓↓↓`, importanceDescriptors.very_low),
-      impBtnVariant(`↓↓↓↓`, importanceDescriptors.extremely_low),
+      impBtnVariant(`↓ ↓`, importanceDescriptors.low),
+      impBtnVariant(`↓ ↓ ↓`, importanceDescriptors.very_low),
+      impBtnVariant(`↓ ↓ ↓ ↓`, importanceDescriptors.extremely_low),
       // inspiration for various kinds of arrows: https://en.wikipedia.org/wiki/Arrow_(symbol)#Arrows_in_Unicode
     ],
   }),
@@ -41,9 +41,10 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
       impBtnVariant(`!`, importanceDescriptors.somewhat_high),
-      impBtnVariant(`!!`, importanceDescriptors.high),
-      impBtnVariant(`!!!`, importanceDescriptors.very_high),
-      impBtnVariant(`!!!!`, importanceDescriptors.extremely_high),
+      impBtnVariant(`! ! `, importanceDescriptors.high),
+      impBtnVariant(`! ! !`, importanceDescriptors.very_high),
+      impBtnVariant(`! ! ! !`, importanceDescriptors.extremely_high),
+      impBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
     ]
   }),
 ])
