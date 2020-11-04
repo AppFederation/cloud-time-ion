@@ -1,4 +1,7 @@
 
+/** TODO: rename to countIf or countWhere ?
+ * Lodash's countBy is more like groupCountBy (grouping)
+ */
 export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number {
   let count = 0
   for ( let item of arr ) {

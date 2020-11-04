@@ -12,10 +12,13 @@ export function convertToHtmlIfNeeded(htmlOrPlainString?: string | null) {
   if ( ! htmlOrPlainString ) {
     return htmlOrPlainString
   }
+  if ( typeof htmlOrPlainString !== 'string' ) {
+    return htmlOrPlainString
+  }
   if ( ! htmlOrPlainString?.match(/^\s*<\w+>.*/) ) {
     // console.log('convertToHtmlIfNeeded is plaintext:', htmlOrPlainString)
     htmlOrPlainString = '<p></p>' /* just to mark it as html */ +
-      htmlOrPlainString.replace(/\n/g, `<br>`)
+      htmlOrPlainString.replace?.(/\n/g, `<br>`)
   } else {
     // console.log('convertToHtmlIfNeeded is html:', htmlOrPlainString)
   }
