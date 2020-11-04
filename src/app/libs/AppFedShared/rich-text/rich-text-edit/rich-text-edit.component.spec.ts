@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RichTextComponent } from './rich-text.component';
+import { RichTextEditComponent } from './rich-text-edit.component';
 
 describe('RichTextComponent', () => {
-  let component: RichTextComponent;
-  let fixture: ComponentFixture<RichTextComponent>;
+  let component: RichTextEditComponent;
+  let fixture: ComponentFixture<RichTextEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RichTextComponent ],
+      declarations: [ RichTextEditComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RichTextComponent);
+    fixture = TestBed.createComponent(RichTextEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

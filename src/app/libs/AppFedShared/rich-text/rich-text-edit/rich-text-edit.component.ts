@@ -11,11 +11,11 @@ import {debugLog} from '../../utils/log'
  *
  **/
 @Component({
-  selector: 'app-rich-text',
-  templateUrl: './rich-text.component.html',
-  styleUrls: ['./rich-text.component.sass'],
+  selector: 'app-rich-text-edit',
+  templateUrl: './rich-text-edit.component.html',
+  styleUrls: ['./rich-text-edit.component.sass'],
 })
-export class RichTextComponent implements OnInit {
+export class RichTextEditComponent implements OnInit {
 
   @Input() viewSyncer ! : ViewSyncer
 
@@ -118,6 +118,5 @@ export class RichTextComponent implements OnInit {
       this.editorViewChild?.editor.focus()
     }, 10)
   }
-
 
 }
