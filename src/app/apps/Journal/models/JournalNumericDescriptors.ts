@@ -65,6 +65,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   health = jnd({
     isShortListed: true,
   })
+  pain = jnd({})
   productivity = jnd({
     isShortListed: true,
   })
@@ -111,6 +112,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* TODO: esteem / respect from others, */
   guilt = jnd({lowerIsBetter: true}) /* mental state group */
   shame = jnd({lowerIsBetter: true}) /* mental state group */
+  selfishness = jnd({lowerIsBetter: true, searchTerms: [`ego`, `egoism`], antonym: [`altruism`, `selflessness`]}) /* mental state group */
+  competitiveness = jnd({moderateIsBetter: true}) /* mental state group */
+  skill = jnd({})
+  caution = jnd({moderateIsBetter: true, searchTerms: [`carefulness`], antonym: [`recklessness`, `carelessness`]})
   passion = jnd()
   adventure = jnd()
   exploration = jnd()
@@ -259,8 +264,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   moderation = jnd({searchTerms: [`junkie`], antonym: `excess`})
   junkie = jnd({})
-  desire = jnd({searchTerms: [`wanting`]})
-  greed = jnd({})
+  desire = jnd({searchTerms: [`wanting`,  /* is it the same as desire? but for sure related */ /* but "desire" has some carnal/sexual connotations" */]})
+  greed = jnd({moderateIsBetter: true})
 
   'delaying of gratification' = jnd()
   relationships = jnd({
@@ -321,6 +326,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   growth = jnd({
     isShortListed: true,
   })
+
+  // TODO: ego,
+  // TODO pride, modesty
 
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
