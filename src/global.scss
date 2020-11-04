@@ -23,6 +23,10 @@ html {
 }
 
 :root {
+
+  --secondary: darkorange;
+  --primary: violet /* FIXME: Ionic color */;
+
   //--ion-background-color: lightgreen;
   //--ion-color-primary: orange;
 }
@@ -30,5 +34,12 @@ html {
 .action-icon {
   cursor: pointer;
   user-select: none;
-  padding: 3px;
+  padding: 2px;
+  color: orange;
+}
+
+ul, ol {
+  ::marker {
+    color: var(--secondary)
+  }
 }
