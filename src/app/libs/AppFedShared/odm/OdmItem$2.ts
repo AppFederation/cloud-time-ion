@@ -1,7 +1,7 @@
 /** Object-Document/Database Mapping item */
 import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
-import {debugLog} from "../utils/log";
+import {debugLog, errorAlert} from "../utils/log";
 import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
@@ -16,6 +16,15 @@ export class OdmInMemItem {
 }
 
 export type OdmPatch<TData> = DictPatch<TData>
+
+export function convertUndefinedFieldValsToNull(obj: any) {
+  for ( let key of Object.keys(obj) ) {
+    if ( obj[key] === undefined ) {
+      obj[key] = null
+    }
+  }
+  return obj
+}
 
 /** Maybe have another conversion like OdmItem$W - W meaning writable,
  * to not confuse with real observables; or another special char like EUR - editable, funny pun.
@@ -106,6 +115,10 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch) {
+    convertUndefinedFieldValsToNull(patch)
+    convertUndefinedFieldValsToNull(this.currentVal) // quick hack for undefined in importance
+    // errorAlert(`patchThrottled is disabled coz of plain->html testing`, patch)
+    // return; // HACK
     if ( ! this.resolveFuncPendingThrottled ) {
       const promise = new Promise((resolveFunc) => {
         this.resolveFuncPendingThrottled = resolveFunc
