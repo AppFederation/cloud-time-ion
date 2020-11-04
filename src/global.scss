@@ -18,6 +18,10 @@
   user-select: text;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   //--ion-background-color: lightgreen;
   //--ion-color-primary: orange;
