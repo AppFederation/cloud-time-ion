@@ -73,7 +73,7 @@ export class ImportanceDescriptors implements Dict<any> {
 
 export const importanceDescriptors = new ImportanceDescriptors()
 
-export const importanceDescriptorsArray = dictToArrayWithIds(importanceDescriptors as Dict<any>)
+export const importanceDescriptorsArray = dictToArrayWithIds(importanceDescriptors as Dict<ImportanceDescriptor>)
 
 export const importanceDescriptorsArrayFromHighest = importanceDescriptorsArray.slice().reverse()
 
@@ -234,6 +234,10 @@ export class LearnItem extends OdmInMemItem {
       const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
       return sideVal && sideVal.toLowerCase().includes(search)
     })
+  }
+
+  getEffectiveImportance() {
+    return this.importance // ?? maybe return medium
   }
 }
 

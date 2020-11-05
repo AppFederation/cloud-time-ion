@@ -16,6 +16,7 @@
 
       <td
         *ngFor="let importance of importancesArray"
+        [ngClass]="{ highlight: isCurrentDisplayed(importance) }"
       >
         {{importance.abbrev}}
       </td>
@@ -25,6 +26,7 @@
 
       <td
         *ngFor="let importance of importancesArray"
+        [ngClass]="{ highlight: isCurrentDisplayed(importance) }"
       >
         {{quizStatus !. itemsLeftByImportance ! [importance.id !]}}
       </td>

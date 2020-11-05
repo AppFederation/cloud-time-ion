@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
-import {QuizStatus} from '../../core/quiz.service'
-import {importanceDescriptors, importanceDescriptorsArray} from '../../models/LearnItem'
+import {QuizService, QuizStatus} from '../../core/quiz.service'
+import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../models/LearnItem'
+import {LearnItem$} from '../../models/LearnItem$'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 @Component({
   selector: 'app-quiz-items-left',
@@ -15,8 +17,20 @@ export class QuizItemsLeftComponent implements OnInit {
   @Input() @Required()
   quizStatus ! : QuizStatus
 
-  constructor() { }
+  private itemDisplayed: LearnItem$ | nullish
 
-  ngOnInit() {}
+  constructor(
+    public quizService: QuizService
+  ) { }
 
+  ngOnInit() {
+    this.quizService.nextItem$WhenRequested.subscribe(item => {
+      this.itemDisplayed = item
+    })
+  }
+
+  isCurrentDisplayed(importance: ImportanceDescriptor): boolean {
+    return this.itemDisplayed ?. val ?. getEffectiveImportance() ?. id === importance?.id
+    // return this.quizService.nextItem$WhenRequested.
+  }
 }

@@ -174,7 +174,7 @@ export class QuizService {
   /** too imperative style, but quick workaround for now, in the face of withLatestFrom approach not showing quiz item on page load */
   nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
     map(status => status?.nextItem$),
-    filter((item) => !! item && this.isNextItemRequested),
+    filter((item) => !! item && this.isNextItemRequested /* hack (via external field) ? */),
     tap(() => {
       debugLog(`nextItem$WhenRequested ver2`)
       this.isNextItemRequested = false

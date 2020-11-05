@@ -130,7 +130,7 @@ export class RichTextEditComponent implements OnInit {
     this.editorService.status$.next({
       textEditorFocused: b
     })
-    debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
+    // debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
   }
 
 }
