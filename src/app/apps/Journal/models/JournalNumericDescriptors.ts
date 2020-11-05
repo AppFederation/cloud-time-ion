@@ -161,6 +161,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     searchTerms: ['nutrition', 'food', 'eating'],
     isShortListed: true,
   })
+  overeating = jnd({
+    searchTerms: ['gorging', 'food', 'eating'],
+    isShortListed: true /* this will be personalised later */,
+    lowerIsBetter: true,
+  }) // other stuff for food/diet: eating sweets, eating junk foods, eating late/night
   rest = jnd({antonym: 'tired', searchTerms: [`Somnolence`, `sleepy` /* Note; someone searches sleepy, but the might want to distinguish tired */]})
   /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
   'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
