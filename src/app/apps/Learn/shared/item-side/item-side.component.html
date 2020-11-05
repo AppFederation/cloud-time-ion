@@ -3,6 +3,7 @@
   *ngIf="side && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
   (click)="editorOpened = true; focusEditor()"
   color="gray"
+  [ngClass]="{ answerBorder: side.id === answerDescr.id }"
 >
   <app-side-icon
     [side]="side"

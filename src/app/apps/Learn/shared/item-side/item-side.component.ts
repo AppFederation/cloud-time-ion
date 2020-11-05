@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Side, SidesDefs} from '../../core/sidesDefs'
+import {Side, sidesDefs, SidesDefs} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {FormControl, FormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
@@ -19,6 +19,8 @@ export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
   styleUrls: ['./item-side.component.sass'],
 })
 export class ItemSideComponent implements OnInit {
+
+  answerDescr = sidesDefs.answer
 
   @Input()
   item$ ! : LearnItem$

@@ -27,6 +27,10 @@ html {
   --secondary: darkorange;
   --primary: violet /* FIXME: Ionic color */;
 
+  --answerBorderColor: #003b00;
+  //--answerBorderColorDark: darken(var(--answerBorderColor), 0);
+  --answerBorderColorDark: #002d00;
+
   //--ion-background-color: lightgreen;
   //--ion-color-primary: orange;
 }
