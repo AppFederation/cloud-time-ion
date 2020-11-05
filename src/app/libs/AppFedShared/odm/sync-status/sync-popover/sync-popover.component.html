@@ -6,7 +6,9 @@
 
 {{(authService.authUser$ | async)?.email}}
 
-<p>
+<p
+  *ngIf="(authService.authUser$ | async) else notLoggedIn"
+>
   <ng-container
     *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount let count; else allSynced"
   >
@@ -21,6 +23,16 @@
   </ng-template>
 
 </p>
+
+<ng-template
+  #notLoggedIn
+>
+  Not logged in.
+  <ion-button
+    (click)="logIn()"
+  >LOG IN</ion-button>
+
+</ng-template>
 
 <ion-button
   (click)="logOut()"

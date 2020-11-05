@@ -43,3 +43,9 @@ ul, ol {
     color: var(--secondary)
   }
 }
+
+html {
+  min-width: 500px;
+  max-width: auto;
+  min-height: 500px;
+}

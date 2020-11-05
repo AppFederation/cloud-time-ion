@@ -35,5 +35,6 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 
 electron/app
+/.idea/compiler.xml
 
 /env

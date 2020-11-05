@@ -1,0 +1,32 @@
+{
+  "name": "Cloud Time extension",
+  "version": "1.1",
+  "description": "Allows quickly adding tasks to learning app",
+  "manifest_version": 2,
+  "icons": {
+    "78": "assets/icon/LifeSuite.png"
+  },
+  "permissions": [
+    "activeTab",
+    "webNavigation",
+    "contextMenus",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  "background": {
+    "page": "background.html",
+    "persistent": true
+  },
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Y"
+      }
+    }
+  },
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com https://apis.google.com https://cdnjs.cloudflare.com https://cdn.tiny.cloud chrome-extension://d3js.org/d3.v3.min.js object-src 'self'"
+}
