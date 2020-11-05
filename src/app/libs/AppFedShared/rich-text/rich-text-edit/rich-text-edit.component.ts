@@ -3,6 +3,7 @@ import {ViewSyncer} from '../../odm/ui/ViewSyncer'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 import {FormControl} from '@angular/forms'
 import {debugLog} from '../../utils/log'
+import {EditorService} from './editor.service'
 
 /**
  * http://ckeditor.github.io/editor-recommendations/about/
@@ -102,7 +103,10 @@ export class RichTextEditComponent implements OnInit {
   }
 
 
-  constructor() { }
+  constructor(
+    public editorService: EditorService,
+  ) { }
+
 
   ngOnInit() {}
 
@@ -123,6 +127,9 @@ export class RichTextEditComponent implements OnInit {
   }
 
   onFocus(b: any) {
+    this.editorService.status$.next({
+      textEditorFocused: b
+    })
     debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
   }
 

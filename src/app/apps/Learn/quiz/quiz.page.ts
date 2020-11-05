@@ -7,6 +7,7 @@ import {LearnItem$} from '../models/LearnItem$'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {Subject} from 'rxjs/internal/Subject'
 import {map, withLatestFrom} from 'rxjs/operators'
+import {EditorService} from '../../../libs/AppFedShared/rich-text/rich-text-edit/editor.service'
 
 
 @Component({
@@ -28,6 +29,7 @@ export class QuizPage implements OnInit, AfterViewInit  {
   constructor(
     public quizService: QuizService,
     public popoverController: PopoverController,
+    public editorService: EditorService,
   ) {
   }
 

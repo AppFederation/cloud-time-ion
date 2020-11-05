@@ -92,6 +92,7 @@
   <app-show-answer-and-rate
     *ngFor="let item$ of [ nextItem$WhenRequested | async ]"
     [item$]="item$"
+    [hidden]="(editorService.status$ | async) ?. textEditorFocused"
   ></app-show-answer-and-rate>
 
 </ion-footer>
