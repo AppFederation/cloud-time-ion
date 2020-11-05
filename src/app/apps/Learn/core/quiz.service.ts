@@ -66,14 +66,19 @@ export class QuizStatus {
   private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
     const ret = {} as any
     let idx = 0
+    let previousFilledVal: number | undefined = undefined
     for ( let imp of importanceDescriptorsArray ) {
       let sum = 0
       for ( let internalIdx = idx; internalIdx < importanceDescriptorsArray.length; internalIdx ++ ) {
         const impInternal = importanceDescriptorsArray[internalIdx]
         sum += itemsLeftByImportance[impInternal.id] ?? 0
       }
+      // const previousIdx = idx - 1
+      if ( /*previousIdx < 0 || */ (previousFilledVal !== sum ) ) {
+        ret[imp.id] = sum
+        previousFilledVal = sum
+      }
       idx++
-      ret[imp.id] = sum
     }
     return ret
   }
