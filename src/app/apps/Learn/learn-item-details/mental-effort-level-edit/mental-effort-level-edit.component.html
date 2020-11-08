@@ -1,0 +1,8 @@
+<hr>
+
+{{((item$.val$ | async) ?. mentalLevelEstimate ?. id)?.replace('_', ' ')?.toUpperCase() || '-' }}
+
+<apf-numeric-picker
+  [buttonDescriptors]="buttonsDesc"
+  [formControl]="formControls[fieldName]"
+></apf-numeric-picker>
