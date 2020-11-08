@@ -4,8 +4,14 @@ import {Descriptors} from './descriptors'
 
 export type FunLevelDescriptor = any
 
-export const funDescriptors = new Descriptors<FunLevelDescriptor>(
-  new IntensityDescriptors()
+export class FunLevelDescriptors extends IntensityDescriptors<FunLevelDescriptor> {
+
+}
+
+export const funLevels = new FunLevelDescriptors()
+
+export const funLevelsDescriptors = new Descriptors<FunLevelDescriptor>(
+  funLevels,
 )
 
 

@@ -31,6 +31,11 @@ export class LearnItem extends OdmInMemItem {
     numeric: number,
   }
 
+  funEstimate? : {
+    id: keyof ImportanceDescriptors,
+    numeric: number,
+  }
+
   // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
   // idea: quizTotalMs ?: DurationMs
 

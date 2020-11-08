@@ -1,14 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LearnItem} from '../../models/LearnItem'
 import {FormControl, FormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {SideFormControlsDict} from '../../shared/item-side/item-side.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/fields/importance.model'
 
-function impBtnVariant(label: string, descr: ImportanceDescriptor) {
+export function intensityBtnVariant(label: string, descr: any) {
   return btnVariant({
     value: descr /* FIXME*/,
     label: label,
@@ -20,32 +18,27 @@ function impBtnVariant(label: string, descr: ImportanceDescriptor) {
 const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
-      impBtnVariant(`↓`, importanceDescriptors.somewhat_low),
-      impBtnVariant(`↓ ↓`, importanceDescriptors.low),
-      impBtnVariant(`↓ ↓ ↓`, importanceDescriptors.very_low),
-      impBtnVariant(`↓ ↓ ↓ ↓`, importanceDescriptors.extremely_low),
+      intensityBtnVariant(`↓`, importanceDescriptors.somewhat_low),
+      intensityBtnVariant(`↓ ↓`, importanceDescriptors.low),
+      intensityBtnVariant(`↓ ↓ ↓`, importanceDescriptors.very_low),
+      intensityBtnVariant(`↓ ↓ ↓ ↓`, importanceDescriptors.extremely_low),
       // inspiration for various kinds of arrows: https://en.wikipedia.org/wiki/Arrow_(symbol)#Arrows_in_Unicode
     ],
   }),
   btn({
     btnVariants: [
-      impBtnVariant(`~`, importanceDescriptors.medium),
-      impBtnVariant(`?`, importanceDescriptors.unknown),
-      // unset is actually no button highlighted and hence no label
-      // btnVariant({
-      //   value: importanceDescriptors.unknown,
-      //   label: `-`,
-      //   id: importanceDescriptors.medium
-      // }),
+      intensityBtnVariant(`~`, importanceDescriptors.medium),
+      intensityBtnVariant(`?`, importanceDescriptors.unknown),
+      // unset is actually no button highlighted and hence no label --> undefined
     ]
   }),
   btn({
     btnVariants: [
-      impBtnVariant(`!`, importanceDescriptors.somewhat_high),
-      impBtnVariant(`! ! `, importanceDescriptors.high),
-      impBtnVariant(`! ! !`, importanceDescriptors.very_high),
-      impBtnVariant(`! ! ! !`, importanceDescriptors.extremely_high),
-      impBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
+      intensityBtnVariant(`!`, importanceDescriptors.somewhat_high),
+      intensityBtnVariant(`! ! `, importanceDescriptors.high),
+      intensityBtnVariant(`! ! !`, importanceDescriptors.very_high),
+      intensityBtnVariant(`! ! ! !`, importanceDescriptors.extremely_high),
+      intensityBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
     ]
   }),
 ])
@@ -60,8 +53,6 @@ export class ImportanceEditComponent implements OnInit {
 
   importanceButtonsDesc = importanceButtonsDesc
 
-  importanceDescriptorsArray = importanceDescriptorsArray
-
   formGroup ! : FormGroup
 
   formControls = {
@@ -70,20 +61,20 @@ export class ImportanceEditComponent implements OnInit {
 
   viewSyncer ! : ViewSyncer
 
-  @Input() @Required()
+  @Input()
+  @Required()
   public item$ ! : LearnItem$
 
   constructor() { }
 
   ngOnInit() {
     this.formGroup = new FormGroup(this.formControls)
-    this.viewSyncer = new ViewSyncer(this.formGroup, this.item$, false, 'importance') /* TODO might need to ignore other fields from db */
-    // const origPatchFn = this.item$.patchThrottled
-    // this.item$.patchThrottled = function() {
-    //   console.log(`importance patchThrottled args `, arguments)
-    //   // origPatchFn()
-    // }
-
+    this.viewSyncer = new ViewSyncer(
+      this.formGroup,
+      this.item$,
+      false,
+      'importance'
+    ) /* TODO might need to ignore other fields from db */
   }
 
 }

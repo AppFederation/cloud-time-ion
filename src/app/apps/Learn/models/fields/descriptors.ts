@@ -1,5 +1,6 @@
 import {Dict, dictToArrayWithIds} from '../../../../libs/AppFedShared/utils/dictionary-utils'
 
+/** Name: DescriptorsGROUP ? */
 export class Descriptors<TDescriptor> {
 
   constructor(

@@ -3,7 +3,7 @@ import {IntensityDescriptors} from './intensity.model'
 
 export type ImportanceDescriptor = any
 
-export type ImportanceDescriptors = IntensityDescriptors
+export type ImportanceDescriptors = IntensityDescriptors<ImportanceDescriptor>
 
 export const importanceDescriptors: ImportanceDescriptors = new IntensityDescriptors()
 

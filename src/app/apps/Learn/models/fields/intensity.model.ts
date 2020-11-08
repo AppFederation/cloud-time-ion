@@ -1,13 +1,14 @@
 import {Dict} from '../../../../libs/AppFedShared/utils/dictionary-utils'
 
-export function intensity(x: any): { numeric: number, abbrev: string } & { id: keyof IntensityDescriptors } {
+export function intensity(x: any): { numeric: number, abbrev: string } & { id: keyof IntensityDescriptors<any> } {
   return x
 }
 
 const midIntensityNumeric = 5
 
-/** Note: importance, not priority; priority is calculated based on other factors like estimations, deadlines, free time, FUN, etc. */
-export class IntensityDescriptors implements Dict<any> {
+/** Name: like  IntensityDescriptorsDICT
+ * Note: importance, not priority; priority is calculated based on other factors like estimations, deadlines, free time, FUN, etc. */
+export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /* unset -> null; for querying; should have highest effective importance, to force to decide */
   undefined
     = intensity({numeric: midIntensityNumeric, abbrev: `-`}) // 0    BTN
