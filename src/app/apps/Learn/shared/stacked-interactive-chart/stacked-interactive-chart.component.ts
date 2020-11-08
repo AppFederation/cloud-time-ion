@@ -22,7 +22,7 @@ interface VegaLiteEncodingPoint {
 
 
 interface VegaLiteVconcat {
-  width?: number,
+  width?: number | string /* | 'container'*/,
   mark: string,
   encoding: {
     x?: VegaLiteEncodingPoint,
