@@ -74,6 +74,9 @@ export class SidesDefs {
   comments = side({
     ask: false,
   })
+  time_estimate = side({
+    ask: false,
+  })
   pl = side({
     defaultLang: 'pl-PL',
     flag: `pl`,

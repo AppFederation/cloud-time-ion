@@ -40,7 +40,7 @@ export class LearnItem extends OdmInMemItem {
   // idea: quizTotalMs ?: DurationMs
 
   /* FIXME: this should not be optional */
-  joinedSides?() {
+  joinedSides ? () {
     // this seems very slow
     // const answerSides = this.getSidesWithAnswers()
     return sidesDefsArray.map(side => {
@@ -94,7 +94,7 @@ export class LearnItem extends OdmInMemItem {
     return ret
   }
 
-  public getSideVal(side?: Side | nullish): string|undefined|null {
+  public getSideVal(side ? : Side | nullish): string|undefined|null {
     if ( ! side ) {
       return null
     }
