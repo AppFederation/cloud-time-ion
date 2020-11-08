@@ -1,3 +1,15 @@
+import {IntensityDescriptors} from './intensity.model'
+import {Descriptors} from './descriptors'
+
+
+export type FunLevelDescriptor = any
+
+export const funDescriptors = new Descriptors<FunLevelDescriptor>(
+  new IntensityDescriptors()
+)
+
+
+// === old:
 
 export class FunDescriptors {
   disgusting        = 0 // 0    BTN
