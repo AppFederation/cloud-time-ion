@@ -7,10 +7,6 @@ import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {
-  importanceDescriptors,
-  ImportanceDescriptors,
-  importanceDescriptorsArray,
-  importanceDescriptorsArrayFromHighest,
   LearnItem,
 
 } from '../models/LearnItem'
@@ -29,6 +25,7 @@ import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../models/self-rating.model'
+import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/importance.model'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */

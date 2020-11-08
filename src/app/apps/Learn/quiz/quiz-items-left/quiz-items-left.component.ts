@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {QuizService, QuizStatus} from '../../core/quiz.service'
-import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../models/LearnItem'
 import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../models/importance.model'
 
 @Component({
   selector: 'app-quiz-items-left',

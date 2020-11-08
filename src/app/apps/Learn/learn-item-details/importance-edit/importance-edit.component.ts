@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, LearnItem} from '../../models/LearnItem'
+import {LearnItem} from '../../models/LearnItem'
 import {FormControl, FormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {SideFormControlsDict} from '../../shared/item-side/item-side.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/importance.model'
 
 function impBtnVariant(label: string, descr: ImportanceDescriptor) {
   return btnVariant({
