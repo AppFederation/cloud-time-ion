@@ -3,7 +3,7 @@ import {HistoryService} from '../../../libs/AppFedShared/odm/history.service'
 import {StoredLearnStats} from './learn-stats.service'
 import {LearnItemId} from '../models/LearnItem'
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
-import {Rating} from '../models/self-rating.model'
+import {Rating} from '../models/fields/self-rating.model'
 
 export class QuizAnswer extends OdmInMemItem {
   // learnItem: LearnItemId

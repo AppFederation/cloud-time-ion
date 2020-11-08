@@ -1,4 +1,4 @@
-import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Dict, dictToArrayWithIds} from '../../../../libs/AppFedShared/utils/dictionary-utils'
 import {IntensityDescriptors} from './intensity.model'
 
 export type ImportanceDescriptor = any

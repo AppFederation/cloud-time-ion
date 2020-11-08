@@ -6,7 +6,7 @@ import {SideFormControlsDict} from '../../shared/item-side/item-side.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/importance.model'
+import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/fields/importance.model'
 
 function impBtnVariant(label: string, descr: ImportanceDescriptor) {
   return btnVariant({

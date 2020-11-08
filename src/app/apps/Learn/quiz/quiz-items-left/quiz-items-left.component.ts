@@ -3,7 +3,7 @@ import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.dec
 import {QuizService, QuizStatus} from '../../core/quiz.service'
 import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
-import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../models/importance.model'
+import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../models/fields/importance.model'
 
 @Component({
   selector: 'app-quiz-items-left',

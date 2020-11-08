@@ -24,8 +24,8 @@ import {interval} from 'rxjs'
 import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 import {Subject} from 'rxjs/internal/Subject'
-import {Rating} from '../models/self-rating.model'
-import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/importance.model'
+import {Rating} from '../models/fields/self-rating.model'
+import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */

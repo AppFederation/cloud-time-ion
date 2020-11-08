@@ -3,8 +3,8 @@ import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../core/sidesDefs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {Rating} from './self-rating.model'
-import {ImportanceDescriptors} from './importance.model'
+import {Rating} from './fields/self-rating.model'
+import {ImportanceDescriptors} from './fields/importance.model'
 
 export type LearnItemId = OdmItemId<LearnItem>
 

@@ -1,4 +1,4 @@
-import {Dict} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Dict} from '../../../../libs/AppFedShared/utils/dictionary-utils'
 
 export function intensity(x: any): { numeric: number, abbrev: string } & { id: keyof IntensityDescriptors } {
   return x
