@@ -13,7 +13,7 @@
     *ngFor="let descriptor of numDescriptors"
   >
     <apf-numeric-picker
-      *ngIf="descriptor?.isShortListed || showAll || descriptor.matchesSearch(search)"
+      *ngIf="descriptor ?. isShortListed || showAll || (isSearchEntered && descriptor.matchesSearch(search))"
       [hidden]="! descriptor.matchesSearch(search)"
       (numericValue)="onChangeNumericValue($event, descriptor)"
       [numFieldDef]="descriptor"
@@ -26,7 +26,7 @@
 <ion-button
   (click)="showAny = ! showAny"
 >
-  SHOW RATINGS
+  SHOW CORE RATINGS
 </ion-button>
 
 <ion-button
