@@ -2,20 +2,11 @@ import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../core/sidesDefs'
-import {DurationMs, nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Rating} from './self-rating.model'
 
 export type LearnItemId = OdmItemId<LearnItem>
-export type Rating = number
-
-export class SelfRatingDescriptors {
-  none = 0
-  little = 0.5 // or "bad"
-  decent = 1
-  good = 1.5
-  very_good = 2.0
-  obvious = 3 // or 2.5
-}
 
 export function intensity(x: any): {numeric: number, abbrev: string} & { id: keyof ImportanceDescriptors} {
   return x
