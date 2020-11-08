@@ -216,7 +216,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private reFilter() {
-    this.filteredItems = this.items.filter(item => this.matchesSearch(item))
+    this.filteredItems = this.items.filter(
+      item => this.matchesSearch(item)
+      // && item.isTask && item.funEstimate
+    )
   }
 
   hasSearchText() {
