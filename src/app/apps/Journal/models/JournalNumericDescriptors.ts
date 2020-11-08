@@ -1,5 +1,6 @@
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {UiFieldDef} from './JournalTextDescriptors'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export interface ILateInit {
   lateInit(): any
@@ -10,8 +11,22 @@ export interface ILateInitWithMorph<TMorphInto> {
   lateInitAndMorph(): TMorphInto
 }
 
+export function includes(searchIn: string | string[] | nullish , searchStringPreprocessed: string): boolean | nullish {
+  if ( typeof searchIn === `string` ) {
+    return searchIn ?. toLowerCase() ?. includes(searchStringPreprocessed)
+  } else {
+    return searchIn ?. some(s => includes(s, searchStringPreprocessed))
+  }
+}
+
 export class JournalNumericDescriptor extends UiFieldDef {
+
   isShortListed?: boolean
+
+  searchTerms?: string | string[]
+
+  antonym?: string | string[]
+
 
   get title() {
     return this.id
@@ -24,7 +39,12 @@ export class JournalNumericDescriptor extends UiFieldDef {
   }
 
   matchesSearch(search: string) {
-    return this.id !. toLowerCase().includes(search.toLowerCase())
+    search = search ?. trim() ?. toLowerCase()
+    if ( includes(this.antonym, search) ) {
+      return true
+    }
+    return includes(this.id, search)
+      || includes(this.searchTerms, search)
   }
 }
 
@@ -60,6 +80,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   mood = jnd({
     searchTerms: [`happiness`, `happy`],
+    antonym: [`sad`, `depressed`],
     isShortListed: true,
   })
   health = jnd({
@@ -133,6 +154,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'annoyance' = jnd({lowerIsBetter: true,})
   anger = jnd({lowerIsBetter: true,})
   hate = jnd({lowerIsBetter: true,})
+  modesty = jnd({antonym: [`hubris`, `arrogance`]})
   aggression = jnd({lowerIsBetter: true,})
   testosterone = jnd({moderateIsBetter: true})
   manliness = jnd({moderateIsBetter: true /* coz machismo ;) */})
