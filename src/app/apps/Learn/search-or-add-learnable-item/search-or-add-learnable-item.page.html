@@ -63,6 +63,7 @@
       <ion-button
         (click)="addToLearn()"
       >ADD TO LEARN</ion-button>
+      <ion-icon style="align-self: center; padding: 6px" class="action-icon" name="filter"></ion-icon>
       <ion-text style="color: gray">
         <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
         {{ items?.length }}
