@@ -13,10 +13,10 @@ const levels = funLevels
 const buttonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
-      intensityBtnVariant(`😒`, levels.somewhat_low),
-      intensityBtnVariant(`😒😒`, levels.low),
-      intensityBtnVariant(`😒😒😒`, levels.very_low),
-      intensityBtnVariant(`😒😒😒😒`, levels.extremely_low),
+      intensityBtnVariant(`😡` /*😒*/, levels.somewhat_low),
+      intensityBtnVariant(`😡😡`, levels.low),
+      intensityBtnVariant(`😡😡😡`, levels.very_low),
+      intensityBtnVariant(`😡😡😡😡`, levels.extremely_low),
       // inspiration for various kinds of arrows: https://en.wikipedia.org/wiki/Arrow_(symbol)#Arrows_in_Unicode
     ],
   }),

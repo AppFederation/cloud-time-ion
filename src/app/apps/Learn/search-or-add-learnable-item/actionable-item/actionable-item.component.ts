@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {sidesDefs, sidesDefsArray} from '../../core/sidesDefs'
 import {LearnItem} from '../../models/LearnItem'
+import {funLevelsDescriptors} from '../../models/fields/fun-level.model'
 
 
 @Component({
@@ -43,5 +44,13 @@ export class ActionableItemComponent implements OnInit {
     return this.joinedSides()
       ?.replace('<p>', ' ')
       ?.replace('</p>', ' ')
+  }
+
+  getFunLevelDescriptor() {
+    const funEstimateVal = this.item.funEstimate
+    if ( funEstimateVal ) {
+      return funLevelsDescriptors.descriptors[funEstimateVal.id]
+    }
+    return undefined
   }
 }

@@ -26,31 +26,31 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
    */
 
   extremely_low
-    = intensity({numeric: 0.5, abbrev: `XL`}) // this is better than off, coz it might re-occur at some point if I have a lot of time for learning, so I don't forget about it.
+    = intensity({numeric: 0.5, abbrev: `XL`, icons: `😡😡😡😡`}) // this is better than off, coz it might re-occur at some point if I have a lot of time for learning, so I don't forget about it.
   very_low
-    = intensity({numeric: 1, abbrev: `VL`}) // 0.5
+    = intensity({numeric: 1, abbrev: `VL`, icons: `😡😡😡`}) // 0.5
   low
-    = intensity({numeric: 2, abbrev: `Lo`}) // 1    BTN
+    = intensity({numeric: 2, abbrev: `Lo`, icons: `😡😡`}) // 1    BTN
   // somewhat / a bit low; SLP
   somewhat_low
-    = intensity({numeric: 4, abbrev: `SL`})
+    = intensity({numeric: 4, abbrev: `SL`, icons: `😡`})
   /* default between low and medium ? somewhat low? */
   medium
-    = intensity({numeric: midIntensityNumeric, abbrev: `Md`, id: `medium` /* hack */}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
+    = intensity({numeric: midIntensityNumeric, abbrev: `Md`, icons: `~`, id: `medium` /* hack */}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
   // somewhat / a bit high; darkened up-chevron; SHP
   somewhat_high
-    = intensity({numeric: 7, abbrev: `SH`})
+    = intensity({numeric: 7, abbrev: `SH`, icons: `😊`})
   high
-    = intensity({numeric: 10, abbrev: `Hi`}) // 2   BTN
+    = intensity({numeric: 10, abbrev: `Hi`, icons: `😊😊`}) // 2   BTN
   very_high
-    = intensity({numeric: 20, abbrev: `VH`}) /* just 4 times more than unspecified?? --> 10 times?
+    = intensity({numeric: 20, abbrev: `VH`, icons: `😊😊😊`}) /* just 4 times more than unspecified?? --> 10 times?
    /* just 4 times more than unspecified?? --> 10 times?
       20 times higher than very_low seems ok
    */ // 2.5 / 3
   extremely_high
-    = intensity({numeric: 40, abbrev: `XH`})
+    = intensity({numeric: 40, abbrev: `XH`, icons: `😊😊😊😊`})
   testing_extremely_high
-    = intensity({numeric: 100, abbrev: `T`})
+    = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
   // it gives 10 level total now
 
   // Icons: up arrow (chevron), double up arrow, etc., medium: wavy, or flat line, or {up&down (but smth visually simple might be better)
