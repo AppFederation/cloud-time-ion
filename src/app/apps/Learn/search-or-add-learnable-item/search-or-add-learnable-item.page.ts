@@ -17,6 +17,10 @@ import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinct, distinctUntilChanged, map, tap} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
+import {SyncPopoverComponent} from '../../../libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
+import {PopoverController} from '@ionic/angular'
+import {ListOptionsComponent} from './list-options/list-options.component'
+import {ListOptions} from './list-options'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -25,6 +29,8 @@ import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.s
   styleUrls: ['./search-or-add-learnable-item.page.scss'],
 })
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
+
+  listOptions?: ListOptions
 
   /** TODO: rename to searchStripped */
   search: string = ''
@@ -48,6 +54,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
+    public popoverController: PopoverController,
   ) { }
 
   ngOnInit() {
@@ -64,19 +71,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
-    // this.coll.get().subscribe(items => {
-    //   // console.log('get(): items2 items.docs.length', items.docs.length)
-    // })
-
-    // this.coll.snapshotChanges().subscribe(items => {
-    //   // this.items = items.map(doc => {
-    //   //   const documentData = doc.data()
-    //   //   documentData.id = doc.id
-    //   //   return documentData as LearnItem
-    //   // })
-    //   // this.items = sortBy(this.items, field<LearnItem>(`whenAdded`)).reverse()
-    //   // console.log(`snapshotChanges`, items.length)
-    // })
     this.authService.authUser$.subscribe(user => {
         if ( user ) {
           this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
@@ -87,7 +81,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
             this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
 
             this.reFilter()
-
             // this.patchOwnersIfNecessary(user, items)
           })
         }
@@ -224,5 +217,16 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   hasSearchText() {
     return !! this.search?.trim();
+  }
+
+  async onClickListOptions(event: any) {
+
+    const popover = await this.popoverController.create({
+      component: ListOptionsComponent,
+      event: event,
+      translucent: true,
+      mode: 'ios',
+    });
+    return await popover.present();
   }
 }

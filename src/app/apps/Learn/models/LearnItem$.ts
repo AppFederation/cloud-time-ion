@@ -6,6 +6,7 @@ import {LearnItem} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, importanceDescriptors} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
 
 export class Quiz {
   // status$: {
@@ -46,7 +47,8 @@ export class LearnItem$
     return this.val ?. importance ?? importanceDescriptors.medium
   }
 
-  getEffectiveFunLevel() {
+  getEffectiveFunLevel(): Distribution {
+    return 999
     // return this.importance // ?? maybe return medium
   }
 
@@ -54,7 +56,8 @@ export class LearnItem$
     // return this.importance // ?? maybe return medium
   }
 
-  getEffectiveRoi() {
+  getEffectiveRoi(): Distribution {
+    return 999 // FIXME
     // return this.importance // ?? maybe return medium
   }
 
