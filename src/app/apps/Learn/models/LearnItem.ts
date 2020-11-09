@@ -166,9 +166,6 @@ export class LearnItem extends OdmInMemItem {
     })
   }
 
-  getEffectiveImportance() {
-    return this.importance // ?? maybe return medium
-  }
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}

@@ -30,7 +30,7 @@ export class QuizItemsLeftComponent implements OnInit {
   }
 
   isCurrentDisplayed(importance: ImportanceDescriptor): boolean {
-    return this.itemDisplayed ?. val ?. getEffectiveImportance() ?. id === importance?.id
+    return this.itemDisplayed ?. getEffectiveImportance() ?. id === importance?.id
     // return this.quizService.nextItem$WhenRequested.
   }
 }

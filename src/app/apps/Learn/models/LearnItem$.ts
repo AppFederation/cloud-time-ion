@@ -3,6 +3,9 @@ import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem} from './LearnItem'
+import {IntensityDescriptors} from './fields/intensity.model'
+import {ImportanceDescriptor, importanceDescriptors} from './fields/importance.model'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export class Quiz {
   // status$: {
@@ -37,6 +40,22 @@ export class LearnItem$
       selfRatingsCount: (item?.selfRatingsCount || 0) + 1,
     })
 
+  }
+
+  getEffectiveImportance(): ImportanceDescriptor | nullish {
+    return this.val ?. importance ?? importanceDescriptors.medium
+  }
+
+  getEffectiveFunLevel() {
+    // return this.importance // ?? maybe return medium
+  }
+
+  getEffectiveMentalEffort() {
+    // return this.importance // ?? maybe return medium
+  }
+
+  getEffectiveRoi() {
+    // return this.importance // ?? maybe return medium
   }
 
 }
