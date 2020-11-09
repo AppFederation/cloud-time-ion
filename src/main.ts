@@ -11,7 +11,7 @@ if (environment.production) {
 
 if (ChromeExtensionService.isApplicationRunAsChromeExtension()) {
   const html = document.getElementsByTagName('html');
-  html[0].classList.add('extension');
+  html[0].classList.add('chrome-extension');
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
