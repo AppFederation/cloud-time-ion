@@ -48,7 +48,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
       20 times higher than very_low seems ok
    */ // 2.5 / 3
   extremely_high
-    = intensity({numeric: 40, abbrev: `XH`, icons: `😊😊😊😊`})
+    = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`})
   testing_extremely_high
     = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
   // it gives 10 level total now
