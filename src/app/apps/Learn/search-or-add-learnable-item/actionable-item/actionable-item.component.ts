@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {sidesDefs, sidesDefsArray} from '../../core/sidesDefs'
 import {LearnItem} from '../../models/LearnItem'
 import {funLevelsDescriptors} from '../../models/fields/fun-level.model'
+import {importanceDescriptors} from '../../models/fields/importance.model'
 
 
 @Component({
@@ -50,6 +51,14 @@ export class ActionableItemComponent implements OnInit {
     const funEstimateVal = this.item.funEstimate
     if ( funEstimateVal ) {
       return funLevelsDescriptors.descriptors[funEstimateVal.id]
+    }
+    return undefined
+  }
+
+  getImportanceDescriptor() {
+    const val = this.item.importance
+    if ( val ) {
+      return importanceDescriptors[val.id]
     }
     return undefined
   }

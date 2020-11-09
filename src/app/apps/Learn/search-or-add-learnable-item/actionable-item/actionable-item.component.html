@@ -7,10 +7,10 @@
     style="color: var(--primary)"
     *ngIf="item.importance?.numeric || '-'; let importanceNum"
   >
-    {{importanceNum}}x
+    {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
 
-  {{getFunLevelDescriptor() ?. icons}}
+  {{getFunLevelDescriptor() ?. icons }}
 
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
