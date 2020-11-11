@@ -96,6 +96,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private setItemsAndSort(items: any[]) {
+    const durationGetter = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
     items = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     debugLog(`listOptions`, listOptions)
@@ -103,10 +104,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( preset === `lastModified` || preset === `allTasks` ) {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
     } else if ( preset === `quickest` ) {
-      this.items = sortBy(items, (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999)//.reverse()
+      this.items = sortBy(items, durationGetter)//.reverse()
     } else {
-      this.items = sortBy(items, [`importance.numeric`, `funEstimate.numeric`
-        /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/]).reverse()
+      this.items = sortBy(items, [
+        `importance.numeric`,
+        `funEstimate.numeric`,
+        durationGetter
+        /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
+      ]).reverse()
     }
     // TODO: sort ascending by effectiveTimeEstimate
 
