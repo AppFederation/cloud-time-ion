@@ -13,9 +13,15 @@
     Data points: {{(items$ | async)?.length}}
   </p>
 
+
   <stacked-interactive-chart
     style="width: 100%; display: block"
     [data]="data"
   ></stacked-interactive-chart>
+
+<!--  <pre>-->
+<!--    {{items$ | async | json}}-->
+<!--  </pre>-->
+
 
 </ion-content>
