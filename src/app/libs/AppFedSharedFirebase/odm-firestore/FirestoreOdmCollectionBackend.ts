@@ -1,8 +1,7 @@
 import {OdmCollectionBackend} from "../../AppFedShared/odm/OdmCollectionBackend";
-import {Injectable, Injector} from "@angular/core";
+import {Injector} from "@angular/core";
 import {AngularFirestore, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
 import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
-import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
@@ -62,7 +61,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       const karolOwner = `7Tbg0SwakaVoCXHlu1rniHQ6gwz1`
       if (!existingOwner) {
         debugLog(this.collectionName + ` no owner `, existingOwner, docId)
-        this.itemDoc(docId).update({owner: karolOwner}).then(() => {
+        this.itemDoc(docId).update({
+          owner: karolOwner
+        }).then(() => {
           debugLog(`finished updating owner`, docId)
         })
       } else {

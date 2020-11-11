@@ -87,27 +87,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     })
   }
 
-  private patchOwnersIfNecessary(user: User, items: any[]) {
-    debugLog(`patchOwnersIfNecessary:`)
-
-    if ((!this.patchingOwnerHasRun) && (user.uid === `7Tbg0SwakaVoCXHlu1rniHQ6gwz1`)) {
-      let count = 0
-      for (let item of items) {
-        debugLog(`owner`, item.owner)
-        if ((!item.owner) || item.owner === `zzzowner` || item.owner === `5cXdqI2HKIYgbqWlJ8Pm372UpcI2`) {
-          this.coll.doc(item.id).update({
-            owner: user.uid,
-          })
-          if (count % 10 === 0) {
-            debugLog(`patching owner`, count)
-          }
-          ++count
-        }
-      }
-      this.patchingOwnerHasRun = true
-    }
-  }
-
   add(string?: string, isTask?: boolean) {
     console.log('add: ', string)
     string = string ?? this.htmlSearch ?? this.search ?? ``
