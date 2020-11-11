@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LocalOptionsPatchableObservable} from '../../core/options.service'
 import {ListOptionsData} from '../list-options'
 import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'

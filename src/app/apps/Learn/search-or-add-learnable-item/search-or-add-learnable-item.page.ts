@@ -83,6 +83,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
+    /* this will go away when migrated to ODM: */
     this.authService.authUser$.subscribe(user => {
         if ( user ) {
           this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
@@ -99,7 +100,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     items = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     debugLog(`listOptions`, listOptions)
-    if (listOptions ?. preset === `lastModified`) {
+    if ( listOptions ?. preset === `lastModified` || listOptions ?. preset === `allTasks` ) {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
     } else {
       this.items = sortBy(items, [`importance.numeric`, `funEstimate.numeric`
@@ -126,7 +127,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( newItem ) {
       debugLog(`add item:`, newItem)
       this.syncStatusService.handleSavingPromise(
-        this.coll.add(newItem))
+        this.coll.add(newItem) /* This will go away when migrated to ODM */ )
       this.clearInput()
     }
   }
@@ -215,13 +216,16 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   private reFilter() {
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
-    if ( opts ?. preset === `lastModified` ) {
+    if (opts?.preset === `lastModified`) {
       this.filteredItems = this.items.filter(
         item =>
           this.matchesSearch(item)
-          // && item.isTask
-          // && item.importance
-          // && item.isTask && item.funEstimate
+      )
+    } else if (opts?.preset === `allTasks`) {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.isTask
       )
     } else {
       this.filteredItems = this.items.filter(
