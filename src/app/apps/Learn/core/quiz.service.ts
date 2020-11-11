@@ -26,6 +26,7 @@ import {LocalOptionsPatchableObservable, OptionsService} from './options.service
 import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../models/fields/self-rating.model'
 import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
+import {FormControl} from '@angular/forms'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -37,7 +38,8 @@ export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
-    public powBaseX100: number = 3
+    public powBaseX100: number = 3,
+    public skipTasks: boolean = true,
   ) {
   }
 }
@@ -129,7 +131,10 @@ export class QuizService {
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
       if ( quizOptions.onlyWithQA ) {
-        item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
+        item$s = item$s.filter(item => item.val ?. hasQAndA() )
+      } // TODO: performance - join the .filters
+      if ( quizOptions.skipTasks ) {
+        item$s = item$s.filter(item => ! (item.val ?. isTask) )
       }
       // filter remaining until now
       const nowMs: TimeMsEpoch = Date.now()

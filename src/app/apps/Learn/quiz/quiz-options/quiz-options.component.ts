@@ -16,6 +16,7 @@ export class QuizOptionsComponent implements OnInit {
   controls = {
     dePrioritizeNewMaterial: new FormControl(false),
     onlyWithQA: new FormControl(true),
+    skipTasks: new FormControl(true),
     powBaseX100: new FormControl()
   }
 
