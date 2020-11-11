@@ -12,11 +12,11 @@ export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number
   return count
 }
 
-export function isNotNullish(x: any) {
+export function isNotNullish(x: any) /* TODO type guard */ {
   return (x !== null) && (x !== undefined)
 }
 
-export function isNullish(x: any) {
+export function isNullish(x: any): x is (null | undefined) {
   return (x === null) || (x === undefined)
 }
 

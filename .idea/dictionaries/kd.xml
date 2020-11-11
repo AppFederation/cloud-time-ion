@@ -16,6 +16,7 @@
       <w>cloudtime</w>
       <w>contenteditable</w>
       <w>cordova</w>
+      <w>damerau</w>
       <w>deepl</w>
       <w>descr</w>
       <w>deviceready</w>
@@ -33,6 +34,7 @@
       <w>innotopic</w>
       <w>inputmode</w>
       <w>insertdatetime</w>
+      <w>jaro</w>
       <w>keyvalue</w>
       <w>linguee</w>
       <w>mins</w>
