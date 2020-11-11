@@ -98,6 +98,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   private setItemsAndSort(items: any[]) {
     const durationGetter
       = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const durationGetterReverse
+      = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetter
       = (item: LearnItem) => item.importance?.numeric ?? -99999
     const funGetter
@@ -114,11 +116,17 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.items = sortBy(items, roiGetter).reverse()
     } else if ( preset === `quickest` ) {
       this.items = sortBy(items, durationGetter)//.reverse()
+    } else if ( preset === `importantQuick` ) {
+      this.items = sortBy(items, [
+        importanceGetter,
+        durationGetterReverse /* duration before fun*/,
+        funGetter,
+      ]).reverse()
     } else {
       this.items = sortBy(items, [
         importanceGetter,
         funGetter,
-        durationGetter
+        durationGetterReverse
         /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
       ]).reverse()
     }
