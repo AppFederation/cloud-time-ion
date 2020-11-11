@@ -15,6 +15,7 @@ import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 import {ImportanceEditComponent} from './importance-edit/importance-edit.component'
 import {FunLevelEditComponent} from './fun-level-edit/fun-level-edit.component'
 import {MentalEffortLevelEditComponent} from './mental-effort-level-edit/mental-effort-level-edit.component'
+import {ItemClassEditComponent} from './item-class-edit/item-class-edit.component'
 
 const routes: Routes = [
   {
@@ -36,6 +37,6 @@ const routes: Routes = [
     EditorModule,
     TimeModule,
   ],
-  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent, FunLevelEditComponent, MentalEffortLevelEditComponent, MentalEffortLevelEditComponent],
+  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent, FunLevelEditComponent, MentalEffortLevelEditComponent, MentalEffortLevelEditComponent, ItemClassEditComponent],
 })
 export class LearnItemDetailsPageModule {}
