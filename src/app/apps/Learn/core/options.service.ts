@@ -14,7 +14,7 @@ export class LocalOptionsPatchableObservable<TOptions> implements PatchableObser
     public defaultValue: TOptions,
     public localStorageKey = 'LifeSuite_options'
   ) {
-    this.locallyVisibleChanges$.next(JSON.parse(localStorage.getItem(localStorageKey) ?? 'undefined') ?? defaultValue)
+    this.locallyVisibleChanges$.next(JSON.parse(localStorage.getItem(localStorageKey) ?? '{}') ?? defaultValue)
   }
 
 
