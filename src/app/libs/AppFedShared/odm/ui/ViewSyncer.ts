@@ -34,7 +34,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
      * if necessary (or maybe just use FormControls always to avoid hassle with FormGroup; but to consider: whole form validation, but could be
      * independent from ViewSyncer (just grouping the FormControl-s independently from ViewSyncer / OdmFieldViewSyncer)
      * or PatchableObservableViewSyncer, to make it independent from ODM */
-    public fieldNameHack ? : keyof TItemInMem)
+    public fieldNameHack ? : keyof NonNullable<TItemInMem>)
   {
     // console.log('ViewSyncer ctor', item$, item$.id)
     this.item$.locallyVisibleChanges$.subscribe((dataFromDb: TItemInMem | undefined | null) => {

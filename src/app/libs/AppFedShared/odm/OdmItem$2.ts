@@ -5,6 +5,7 @@ import {debugLog, errorAlert} from "../utils/log";
 import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {nullish} from '../utils/type-utils'
 
 export type UserId = string
 
@@ -50,7 +51,7 @@ export class OdmItem$2<
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
   >
-  implements PatchableObservable<TInMemData, TMemPatch>
+  implements PatchableObservable<TInMemData | nullish, TMemPatch>
 {
 
   /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"

@@ -31,7 +31,7 @@ export type DictPatch<TData> = Partial<TData>
 
 export interface PatchableObservable<TInMemData, TMemPatch = DictPatch<TInMemData>> {
 
-  locallyVisibleChanges$: CachedSubject<TInMemData | undefined | null>
+  locallyVisibleChanges$: CachedSubject<TInMemData>
 
   patchThrottled(patch: TMemPatch): void
 
