@@ -96,7 +96,9 @@ export class QuizService {
 
   private isNextItemRequested = true
 
-  get options$(): CachedSubject<QuizOptions> { return this.options2$.locallyVisibleChanges$ }
+  get options$(): CachedSubject<QuizOptions | nullish> {
+    return this.options2$.locallyVisibleChanges$
+  }
 
   showAnswer$ = new CachedSubject<boolean>(false)
 
