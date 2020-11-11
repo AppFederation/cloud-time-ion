@@ -5,6 +5,8 @@ import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Rating} from './fields/self-rating.model'
 import {ImportanceDescriptors} from './fields/importance.model'
+import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
+import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
@@ -26,22 +28,25 @@ export class LearnItem extends OdmInMemItem {
   /** synonyms: worth
    * storing both name and numeric value, in case it changes in the future
    */
-  importance? : {
+  importance ? : {
     id: keyof ImportanceDescriptors,
     numeric: number,
   }
 
-  funEstimate? : {
+  funEstimate ? : {
     id: keyof ImportanceDescriptors,
     numeric: number,
   }
 
-  mentalLevelEstimate? : {
+  mentalLevelEstimate ? : {
     id: keyof ImportanceDescriptors,
     numeric: number,
   }
 
-  // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
+  time_estimate ? : string
+
+
+    // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
   // idea: quizTotalMs ?: DurationMs
 
   /* FIXME: this should not be optional */
@@ -164,6 +169,10 @@ export class LearnItem extends OdmInMemItem {
       const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
       return sideVal && sideVal.toLowerCase().includes(search)
     })
+  }
+
+  getDurationEstimateMs() {
+    return parseDurationToMs(stripHtml(this.time_estimate) ?. trim())
   }
 
 }

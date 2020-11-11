@@ -58,7 +58,13 @@
         ><ion-icon name="close-outline"></ion-icon></ion-button>
       </div>
 
+      <!--
+        https://medium.com/madewithply/ionic-4-long-press-gestures-96cf1e44098b
+        https://forum.ionicframework.com/t/ionic-5-long-press-gesture-example/188746/2
+        https://ionicframework.com/docs/utilities/gestures
+      -->
       <ion-button
+        (press)="addTask()"
         (click)="addTask()"
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;TASK</ion-button>
 
