@@ -336,6 +336,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     lowerIsBetter: true,
   })
   'balance' = jnd()
+  'harmony' = jnd()
   'allergy' = jnd()
   'food allergies' = jnd()
   freedom = jnd()

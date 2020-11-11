@@ -14,7 +14,7 @@ TASKS:
   ALL TASKS
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button (click)="setPreset('roi')">
   <div style="flex-flow: column">
     <div>  best ROI</div>
     <ion-note style="font-size: 66%; color: #cacaca">
@@ -34,6 +34,41 @@ TASKS:
 
 <ion-button (click)="setPreset('quickest')">
   shortest
+</ion-button>
+
+<ion-button (click)="setPreset('notEstimated')">
+  not estimated
+</ion-button>
+
+<ion-button (click)="setPreset('estimated')">
+  estimated
+</ion-button>
+
+
+<ion-button [disabled]="true">
+  <div style="flex-flow: column">
+    <div>needs doing</div>
+    <ion-note style="font-size: 66%; color: #cacaca">
+      not done nor cancelled
+    </ion-note>
+  </div>
+</ion-button>
+
+<ion-button [disabled]="true">
+  <div style="flex-flow: column">
+    <div>can do</div>
+    <ion-note style="font-size: 66%; color: #cacaca">
+      deps satisfied & not blocked
+    </ion-note>
+  </div>
+</ion-button>
+
+<ion-button [disabled]="true">
+  started
+</ion-button>
+
+<ion-button [disabled]="true">
+  blocked
 </ion-button>
 
 

@@ -3,6 +3,7 @@ import {sidesDefs, sidesDefsArray} from '../../core/sidesDefs'
 import {LearnItem} from '../../models/LearnItem'
 import {funLevelsDescriptors} from '../../models/fields/fun-level.model'
 import {importanceDescriptors} from '../../models/fields/importance.model'
+import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 
 
 @Component({
@@ -61,5 +62,9 @@ export class ActionableItemComponent implements OnInit {
       return importanceDescriptors[val.id]
     }
     return undefined
+  }
+
+  editEstimate() {
+    debugLog(`editEstimate()`)
   }
 }

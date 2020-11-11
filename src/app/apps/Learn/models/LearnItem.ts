@@ -43,6 +43,7 @@ export class LearnItem extends OdmInMemItem {
     numeric: number,
   }
 
+  /** keep in mind also: time-boxing */
   time_estimate ? : string
 
 
@@ -175,6 +176,17 @@ export class LearnItem extends OdmInMemItem {
     return parseDurationToMs(stripHtml(this.time_estimate) ?. trim())
   }
 
+  getRoi() {
+    const durationEstimateMs = this.getDurationEstimateMs()
+    if ( ! durationEstimateMs ) {
+      return undefined
+    }
+    const importance = this.importance?.numeric
+    if ( ! importance ) {
+      return undefined
+    }
+    return importance / durationEstimateMs
+  }
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}

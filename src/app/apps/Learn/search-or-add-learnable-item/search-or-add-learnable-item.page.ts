@@ -96,19 +96,28 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private setItemsAndSort(items: any[]) {
-    const durationGetter = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const durationGetter
+      = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const importanceGetter
+      = (item: LearnItem) => item.importance?.numeric ?? -99999
+    const funGetter
+      = (item: LearnItem) => item.funEstimate?.numeric ?? -99999
+    const roiGetter
+      = (item: LearnItem) => item.getRoi() ?? -99999
     items = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     debugLog(`listOptions`, listOptions)
     const preset = listOptions ?. preset
     if ( preset === `lastModified` || preset === `allTasks` ) {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+    } else if ( preset === `roi` ) {
+      this.items = sortBy(items, roiGetter).reverse()
     } else if ( preset === `quickest` ) {
       this.items = sortBy(items, durationGetter)//.reverse()
     } else {
       this.items = sortBy(items, [
-        `importance.numeric`,
-        `funEstimate.numeric`,
+        importanceGetter,
+        funGetter,
         durationGetter
         /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
       ]).reverse()
@@ -223,16 +232,38 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   private reFilter() {
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
-    if (opts?.preset === `lastModified`) {
+    const preset = opts?.preset
+    if (preset === `lastModified`) {
       this.filteredItems = this.items.filter(
         item =>
           this.matchesSearch(item)
       )
-    } else if (opts?.preset === `allTasks`) {
+    } else if (preset === 'roi') {
       this.filteredItems = this.items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
+          && item.time_estimate
+      )
+    } else if (preset === `allTasks`) {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.isTask
+      )
+    } else if (preset === `notEstimated`) {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.isTask
+          && ! item.getDurationEstimateMs()
+      )
+    } else if (preset === `estimated`) {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.isTask
+          && item.getDurationEstimateMs()
       )
     } else {
       this.filteredItems = this.items.filter(
