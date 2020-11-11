@@ -8,7 +8,6 @@ import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
-import {QuizService} from '../core/quiz.service'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {User} from 'firebase'
@@ -17,10 +16,11 @@ import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinct, distinctUntilChanged, map, tap} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
-import {SyncPopoverComponent} from '../../../libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
 import {PopoverController} from '@ionic/angular'
 import {ListOptionsComponent} from './list-options/list-options.component'
-import {ListOptions} from './list-options'
+import {ListOptions, ListOptionsData} from './list-options'
+import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
+import {LocalOptionsPatchableObservable} from '../core/options.service'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -32,6 +32,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   listOptions?: ListOptions
 
+  listOptions$P = new LocalOptionsPatchableObservable<ListOptionsData>({
+      preset: `lastModified`
+    }
+  )
+
   /** TODO: rename to searchStripped */
   search: string = ''
   htmlSearch ? : string = undefined
@@ -40,22 +45,29 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
-  private patchingOwnerHasRun = false
 
   showOldEditor = false
 
 
-  get authUserId() { return this.authService.authUser$.lastVal?.uid }
+  get authUserId() {
+    return this.authService.authUser$.lastVal?.uid
+  }
 
   constructor(
     protected angularFirestore: AngularFirestore,
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
+    protected journalEntriesService: JournalEntriesService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
     public popoverController: PopoverController,
-  ) { }
+  ) {
+    this.listOptions$P.locallyVisibleChanges$.subscribe(options => {
+      this.setItemsAndSort(this.items)
+      this.reFilter()
+    })
+  }
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
@@ -77,14 +89,26 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
             , coll => coll.where(`owner`, `==`, user?.uid))
           // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
           this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-            items = items.map(item => Object.assign(new LearnItem(), item))
-            this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
-
-            this.reFilter()
-            // this.patchOwnersIfNecessary(user, items)
+            this.setItemsAndSort(items)
           })
         }
     })
+  }
+
+  private setItemsAndSort(items: any[]) {
+    items = items.map(item => Object.assign(new LearnItem(), item))
+    const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
+    debugLog(`listOptions`, listOptions)
+    if (listOptions ?. preset === `lastModified`) {
+      this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+    } else {
+      this.items = sortBy(items, [`importance.numeric`, `funEstimate.numeric`
+        /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/]).reverse()
+    }
+    // TODO: sort ascending by effectiveTimeEstimate
+
+    this.reFilter()
+    // this.patchOwnersIfNecessary(user, items)
   }
 
   add(string?: string, isTask?: boolean) {
@@ -112,6 +136,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     this.searchFormControl.setValue('')
   }
 
+  /** maybe this could be moved to model class ---> actually service */
   createItemFromInputString(string: string, isTask?: boolean) {
     // if ( ! string ?. trim() ) {
     //   return
@@ -172,6 +197,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     return item.id
   }
 
+  /** can be removed coz belongs in model class */
   matchesSearch(item: LearnItem) {
     // if ( item.hasQAndA() ) {
     //   return false
@@ -188,10 +214,24 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private reFilter() {
-    this.filteredItems = this.items.filter(
-      item => this.matchesSearch(item)
-      // && item.isTask && item.funEstimate
-    )
+    const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
+    if ( opts ?. preset === `lastModified` ) {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          // && item.isTask
+          // && item.importance
+          // && item.isTask && item.funEstimate
+      )
+    } else {
+      this.filteredItems = this.items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.isTask
+          && item.importance
+          && item.funEstimate
+      )
+    }
   }
 
   hasSearchText() {
@@ -199,9 +239,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   async onClickListOptions(event: any) {
-
     const popover = await this.popoverController.create({
       component: ListOptionsComponent,
+      componentProps: {
+        listOptions$P: this.listOptions$P
+      },
       event: event,
       translucent: true,
       mode: 'ios',

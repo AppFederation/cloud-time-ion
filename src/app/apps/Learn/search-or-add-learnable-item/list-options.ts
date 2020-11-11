@@ -6,9 +6,13 @@ export class ValueRestriction {
 
 
 export class FieldFilter<TItem> {
-  fieldName: keyof TItem
+  // fieldName: keyof TItem
 
   // valueRestriction: ValueRestriction<> --> predicate
+}
+
+export class ListOptionsData {
+  preset ! : string
 }
 
 export class ListOptions {

@@ -17,8 +17,10 @@
       ></app-quiz-button>
 
       <ion-buttons slot="end">
-        <ion-icon class="action-icon" name="bar-chart-outline" slot="end" [routerLink]="['/learn/stats']"></ion-icon>
-        <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
+        <ion-icon class="action-icon" name="bar-chart-outline" slot="end"
+                  [routerLink]="['/learn/stats']"></ion-icon>
+        <ion-icon class="action-icon" name="pencil" slot="end"
+                  [routerLink]="['/journal/write/new']"></ion-icon>
 
         <odm-sync-status></odm-sync-status>
       </ion-buttons>
@@ -36,7 +38,7 @@
         (keyup.meta.enter)="addToLearn(); $event.stopPropagation()"
         (keyup.alt.enter)="addToLearn(); $event.stopPropagation()"
         (keyup.control.enter)="addToLearn(); $event.stopPropagation()"
-      > <!-- TODO: Fix alt+enter -->
+      >
         <app-search-or-add-text-editor
           [formControl1]="searchFormControl"
         ></app-search-or-add-text-editor>
@@ -91,18 +93,6 @@
 <!--  <app-toggle option="listFilterItemNeedProcessing"-->
 <!--  >Need Processing</app-toggle>-->
 
-<!--  <ion-textarea-->
-<!--    [(ngModel)]="search"-->
-<!--    placeholder="Search or add"-->
-<!--    debounce="100"-->
-<!--    inputmode="search"-->
-<!--    [rows]="2"-->
-<!--    (keyup.enter)="add()"-->
-<!--  ></ion-textarea>-->
-
-
-<!--  coll.valueChanges() length: {{(coll.valueChanges() | async)?.length}}-->
-<!--  <ion-item *ngFor="let item of (coll.valueChanges() | async)">-->
 
 <!--  <ng-container *ngFor="let item of items; trackBy: trackByFn">-->
 <!--    <app-actionable-item-->

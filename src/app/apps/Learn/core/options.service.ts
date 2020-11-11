@@ -18,7 +18,7 @@ export class LocalOptionsPatchableObservable<TOptions> implements PatchableObser
   }
 
 
-  locallyVisibleChanges$: CachedSubject<any | undefined | null> = new CachedSubject<TOptions>({} as TOptions)
+  locallyVisibleChanges$: CachedSubject<TOptions | undefined | null> = new CachedSubject<TOptions | undefined | null>({} as TOptions)
 
   patchThrottled(patchToApply: DictPatch<any>): void {
     this.locallyVisibleChanges$.next(patch(this.locallyVisibleChanges$.lastVal, patchToApply))
