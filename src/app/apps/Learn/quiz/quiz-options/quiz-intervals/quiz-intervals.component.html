@@ -1,5 +1,12 @@
 <table
 >
+  <ng-container
+    *ngFor="let rating of ratings"
+  >
+    <td>
+      {{ rating }}
+    </td>
+  </ng-container>
 
   <ng-container
     *ngFor="let importance of importances"
@@ -8,11 +15,10 @@
       *ngFor="let rating of ratings"
     >
       <td
+        *ngIf="getIntervalDays(rating, importance) <= 10 * 365"
       >
-        <!--         *ngIf="getIntervalDays(rating, importance) <= 10 * 365"
- -->
         <!--<strong>{{rating}}:</strong>-->
-        {{ getIntervalDays(rating, importance)?.toFixed(1) }}
+        {{ getIntervalDays(rating, importance) ?. toFixed(1) }}
         <span style='color: gray'>d </span>
         <span> </span>
       </td>
@@ -21,6 +27,4 @@
 
   </tr></ng-container>
 
-
 </table>
-
