@@ -58,17 +58,21 @@ export class SidesDefs {
   question2 = side({
     defaultLang: 'en-US',
     dependsOn: this.question,
+    onlyForLearn,
   })
   question3 = side({
     defaultLang: 'en-US',
-    dependsOn: this.question2
+    dependsOn: this.question2,
+    onlyForLearn,
   })
   hint = side({
     isHint: true,
+    onlyForLearn,
   })
   hint_2 = side({
     isHint: true,
-    dependsOn: this.hint
+    dependsOn: this.hint,
+    onlyForLearn,
   })
   answer = side({
     defaultLang: 'en-US',
@@ -84,6 +88,9 @@ export class SidesDefs {
     ask: false,
   })
   time_estimate = side({
+    ask: false,
+  })
+  money_estimate = side({
     ask: false,
   })
   status = side({
@@ -113,7 +120,7 @@ export class SidesDefs {
   es = side({
     defaultLang: 'es-ES',
     flag: `es`,
-    onlyForLearn
+    onlyForLearn,
   })
   de_gender_article = side({
     defaultLang: 'de-DE',
@@ -139,19 +146,22 @@ export class SidesDefs {
     defaultLang: 'pt-PT',
     ask: false /* not asking German for now, to force recall */,
     flag: `pt`,
-    onlyForLearn
+    onlyForLearn,
+    hideByDefault,
   })
   fr = side({
     defaultLang: 'fr-FR',
     ask: false /* not asking German for now, to force recall */,
     flag: `fr`,
-    onlyForLearn
+    onlyForLearn,
+    hideByDefault,
   })
   it = side({
     defaultLang: 'it-IT',
     ask: false /* not asking German for now, to force recall */,
     flag: `it`,
-    onlyForLearn
+    onlyForLearn,
+    hideByDefault,
   })
   nl = side({
     defaultLang: 'nl-NL',
