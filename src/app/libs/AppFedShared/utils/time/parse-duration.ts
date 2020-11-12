@@ -12,7 +12,7 @@ export function parseDurationToMs(s ? : string): DurationMs | nullish {
     // debugLog(`parseDurationToMs match hours`, match)
     return (+match[1] ?? 0) * 3600_000
   }
-  match = s ?. match(/(\d+)\s*(m|min|mins|minutes)\b/i)
+  match = s ?. match(/(\d+)\s*(|m|min|mins|minutes)\b/i)
   if ( match ) {
     // debugLog(`parseDurationToMs match mins`, match)
     return (+match[1] ?? 0) * 60_000
