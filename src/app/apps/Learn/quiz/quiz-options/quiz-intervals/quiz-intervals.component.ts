@@ -14,4 +14,7 @@ export class QuizIntervalsComponent implements OnInit {
 
   ngOnInit() {}
 
+  getIntervalDays(rating: number) {
+    return this.quizService.calculateIntervalHours2(rating) / 24
+  }
 }
