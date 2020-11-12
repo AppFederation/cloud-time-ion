@@ -239,7 +239,10 @@ export class QuizService {
   }
 
 
-  calculateIntervalHours2(rating: Rating): Duration {
+  calculateIntervalHours2(rating: Rating, importance?: ImportanceVal): Duration {
+    if ( importance ) {
+      return this.quizIntervalCalculator.calculateIntervalHoursWithImportance(rating, this.options$?.lastVal !, importance)
+    }
     return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
   }
 
