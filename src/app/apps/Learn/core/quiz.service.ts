@@ -7,6 +7,7 @@ import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {
+  ImportanceVal,
   LearnItem,
 
 } from '../models/LearnItem'
@@ -26,12 +27,11 @@ import {LocalOptionsPatchableObservable, OptionsService} from './options.service
 import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../models/fields/self-rating.model'
 import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
-import {FormControl} from '@angular/forms'
+import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
 export type Duration = number
-
 
 
 export class QuizOptions {
@@ -89,6 +89,8 @@ export class QuizStatus {
   providedIn: 'root'
 })
 export class QuizService {
+
+  quizIntervalCalculator = new QuizIntervalCalculator()
 
   options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
     new QuizOptions(false, true), 'QuizOptions'
@@ -161,7 +163,7 @@ export class QuizService {
         pendingItems.length,
         nextItem$,
         pendingItemsTodayCount,
-        isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
+        nextItem$ ? isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)) : undefined,
         undefined,
         countBy(pendingItems, (item) => item.val?.importance?.id) as CountsByImportance,
         countBy(item$s, (item) => item.val?.importance?.id) as CountsByImportance,
@@ -225,59 +227,26 @@ export class QuizService {
     return nextItem$
   }
 
-  calculateIntervalHours2(rating: Rating): Duration {
-    return this.calculateIntervalHours(rating, this.options$?.lastVal !)
+  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$): TimeMsEpoch {
+    return item$?.quiz?.calculateWhenNextRepetitionMsEpoch(this.options$.lastVal)
   }
 
-  calculateIntervalHours(rating: Rating, quizOptions: QuizOptions): Duration {
-    // debugLog(`calculateIntervalHours`, quizOptions)
-
-    // TODO: consider a kind of LIFO to prioritize minute periods (for them to not be at mercy of smth delayed from days ago); Coz the difference between 1 minute and say 10 hours is much bigger than 10 hours and 11 hours
-    // TODO: (right now the app is ok at relative priority/frequency, but necessarily too good at determining the exact time spacing
-    // 0 => 1 min
-    // 0.5 => few hours
-    //
-    // Ebbinghaus forgetting curve (related; but this equation is about time, not probability)
-    // TODO: !!!! when rating zero, make it one minute (as in Anki), so that it goes in front of whatever stuff might have been there from previous days
-    if ( rating === 0 ) {
-      return 30/3600 // 30 seconds (could try 1 minute)
-    }
-    return 12 * Math.pow(((quizOptions.powBaseX100 ?? 300) / 100) ?? 3.5, rating || 0)
-  }
-
-  /** This could be a method of LearnItem$ */
-  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined): TimeMsEpoch {
-    const dePrioritizeNewMaterial = this.options$.lastVal !. dePrioritizeNewMaterial
-    // TODO: extract into strategy pattern class LearnAlgorithm or RepetitionAlgorithm
+  calculateWhenNextRepetitionMsEpochOrNullish(item$: LearnItem$ | nullish): TimeMsEpoch | nullish {
     if ( ! item$ ) {
-      return 0
+      return item$
     }
-    const item = item$.currentVal
-    if ( ! item ) {
-      return 0
-    }
-    const whenLastTouched: OdmTimestamp | null =
-      item.whenLastSelfRated ||
-      // item.whenLastModified || /* garbled by accidental patching of all items */
-      (dePrioritizeNewMaterial ? null : item.whenAdded) // ||
-      // item.whenCreated /* garbled by accidental patching of all items */
-
-    if ( ! whenLastTouched ) {
-      return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
-    }
-
-    /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
-       http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
-    **/
-    const mediumNumeric = importanceDescriptors.medium.numeric
-    const effectiveImportance = (item.importance?.numeric ?? mediumNumeric) / mediumNumeric
-    const interval = hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
-      / effectiveImportance /* TODO: this should actually appear before some old stuff, to de-clutter */
-    const ret = whenLastTouched.toMillis() + interval
-    return ret
-
-    // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
+    return this.calculateWhenNextRepetitionMsEpoch(item$)
   }
+
+
+  calculateIntervalHours2(rating: Rating): Duration {
+    return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
+  }
+
+  // calculateIntervalHours3(rating: Rating, importance: ImportanceVal, quizOptions: QuizOptions): Duration {
+  //   return this.calculateIntervalHours(rating, this.options$?.lastVal !)
+  // }
+
 
   toggleShowAnswer() {
     this.showAnswer$.next(! this.showAnswer$.lastVal)

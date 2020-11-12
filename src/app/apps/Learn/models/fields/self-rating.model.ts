@@ -1,4 +1,5 @@
 export type Rating = number
+export type SelfRating = Rating
 
 export class SelfRatingDescriptors {
   none = 0

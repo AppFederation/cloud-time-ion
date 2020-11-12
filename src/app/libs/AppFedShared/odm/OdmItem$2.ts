@@ -58,7 +58,7 @@ export class OdmItem$2<
    * or realizing we don't have access
    * or empty value arrived
    **/
-  currentVal: TInMemData | undefined | null = undefined
+  currentVal: TInMemData | nullish = undefined
 
 
   get val() { return this.currentVal }
@@ -67,9 +67,9 @@ export class OdmItem$2<
 
   private resolveFuncPendingThrottled?: (value?: (PromiseLike<any> | any)) => void
 
-  public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
-  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
-  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined | null>()
+  public locallyVisibleChanges$ = new CachedSubject<TInMemData | nullish>()
+  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | nullish>()
+  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }

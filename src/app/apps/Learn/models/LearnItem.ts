@@ -7,12 +7,27 @@ import {Rating} from './fields/self-rating.model'
 import {ImportanceDescriptors} from './fields/importance.model'
 import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
+import {QuizzableData} from './quiz'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
+export type PositiveInt = number
+
+export type IntensityVal = {
+  id: keyof ImportanceDescriptors,
+  numeric: number,
+}
+
+export type HtmlString = string
+
+
+export type ImportanceVal = IntensityVal
+export type FunVal = IntensityVal
+export type MentalLevelVal = IntensityVal
+
 
 /** LearnDoItemData */
-export class LearnItem extends OdmInMemItem {
+export class LearnItem extends OdmInMemItem implements QuizzableData {
   id?: LearnItemId
   whenAdded ! : OdmTimestamp
   title?: string
@@ -22,29 +37,25 @@ export class LearnItem extends OdmInMemItem {
   lastSelfRating?: Rating
   whenLastSelfRated?: OdmTimestamp
 
+  // isMarkedAsSelectedOrUnselected ? : boolean
+  isSelectedOrUnselected ? : boolean
 
-  selfRatingsCount?: number
+
+  selfRatingsCount?: PositiveInt
 
   /** synonyms: worth
    * storing both name and numeric value, in case it changes in the future
    */
-  importance ? : {
-    id: keyof ImportanceDescriptors,
-    numeric: number,
-  }
+  importance ? : ImportanceVal
 
-  funEstimate ? : {
-    id: keyof ImportanceDescriptors,
-    numeric: number,
-  }
+  funEstimate ? : FunVal
 
-  mentalLevelEstimate ? : {
-    id: keyof ImportanceDescriptors,
-    numeric: number,
-  }
+  mentalLevelEstimate ? : MentalLevelVal
 
   /** keep in mind also: time-boxing */
-  time_estimate ? : string
+  time_estimate ? : HtmlString
+
+  money_estimate ? : HtmlString
 
 
     // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */

@@ -8,6 +8,8 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {Subject} from 'rxjs/internal/Subject'
 import {map, withLatestFrom} from 'rxjs/operators'
 import {EditorService} from '../../../libs/AppFedShared/rich-text/rich-text-edit/editor.service'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 
 
 @Component({
@@ -54,7 +56,10 @@ export class QuizPage implements OnInit, AfterViewInit  {
     return Date.now()
   }
 
-  newDate(number: number) {
+  newDate(number: number | nullish) {
+    if ( isNullish(number) ) {
+      return number
+    }
     return new Date(number)
   }
 

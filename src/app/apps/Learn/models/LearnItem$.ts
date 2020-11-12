@@ -7,18 +7,24 @@ import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, importanceDescriptors} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
+import {Quiz, Quizzable$} from './quiz'
 
-export class Quiz {
-  // status$: {
-  //   whenNextRepetition: Date
-  //   isInFuture: boolean
-  // }
-}
+// export class Quiz {
+//   // status$: {
+//   //   whenNextRepetition: Date
+//   //   isInFuture: boolean
+//   // }
+// }
 
 export class LearnItem$
-  extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService>
+  extends OdmItem$2<
+      LearnItem$,
+      LearnItem,
+      LearnItem,
+      LearnDoService>
+  implements Quizzable$
 {
-  quiz = new Quiz() // medium-coupling?
+  quiz = new Quiz(this) // medium-coupling?
 
   // TODO: operations should actually be performed on certain Version, for versioning, drafts, branches, conflict detection/resolution
 
@@ -60,5 +66,7 @@ export class LearnItem$
     return 999 // FIXME
     // return this.importance // ?? maybe return medium
   }
+
+  // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
 
 }

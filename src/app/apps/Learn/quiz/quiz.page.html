@@ -54,7 +54,7 @@
       <ion-note style="text-transform: uppercase">
         next repetition:
         <app-time-point
-          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpoch(quizStatus ?. nextItem$))"
+          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpochOrNullish(quizStatus ?. nextItem$))"
         ></app-time-point>
 
         <app-quiz-items-left
