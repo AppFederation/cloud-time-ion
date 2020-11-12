@@ -97,7 +97,10 @@ export class ItemSideComponent implements OnInit {
     }
   }
 
-  isVisible(item: LearnItem): boolean {
+  isVisible(item: LearnItem | nullish): boolean {
+    if ( ! item ) {
+      return false
+    }
     if ( this.side ?. hideByDefault ) {
       return false
     }
