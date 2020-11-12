@@ -35,14 +35,16 @@
 
 <ion-content>
 
-  <app-learn-item-details-hints
-  ></app-learn-item-details-hints>
 
   <ng-container
     *ngIf="(item$.locallyVisibleChanges$ | async) else notLoaded"
   >
+    <app-learn-item-details-hints
+      [hidden]="(val$ | async) ?. isTask"
+    ></app-learn-item-details-hints>
 
-<!--    <div>-->
+
+    <!--    <div>-->
 <!--      <ion-label>IMPORTANCE&lt;!&ndash;note: not priority; could also be called "impact" &ndash;&gt;</ion-label>-->
 <!--      <app-self-rating></app-self-rating>-->
 <!--    </div>-->
@@ -69,6 +71,7 @@
     ></app-mental-effort-level-edit>
 
     <app-self-rating
+      [hidden]="(val$ | async) ?. isTask"
       [item$]="item$"
     ></app-self-rating>
 
@@ -96,7 +99,7 @@
   </ng-container>
 
   <ng-template #notLoaded>
-    Loading...
+    <div style="margin: 20px">Loading...</div>
   </ng-template>
 
 </ion-content>

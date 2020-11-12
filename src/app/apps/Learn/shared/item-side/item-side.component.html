@@ -1,6 +1,6 @@
 
 <ion-button
-  *ngIf="side && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
+  *ngIf="side && isVisible(item$.val$ | async) && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
   (click)="editorOpened = true; focusEditor()"
   color="gray"
   [ngClass]="{ answerBorder: side.id === answerDescr.id }"
@@ -16,7 +16,7 @@
 
 <div
   style="margin-left: 4px"
-  *ngIf="side && (editorOpened || formControl.value)"
+  *ngIf="side && isVisible(item$.val$ | async) && (editorOpened || formControl.value)"
   (click)="focusEditor()"
 > <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
 

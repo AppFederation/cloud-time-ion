@@ -6,12 +6,15 @@ export type SideId = keyof SidesDefs
 export class Side {
 
   id ! : SideId
+  _title ? : string
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
-  defaultLang?: string // = 'en-US'
+  defaultLang ? : string // = 'en-US'
   flag?: string
   flagTransparent?: boolean
   dependsOn ? : Side
   isHint ? : boolean
+  onlyForLearn ? : boolean
+  hideByDefault ? : boolean
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -23,7 +26,7 @@ export class Side {
   }
 
   get title () {
-    return this.id ?. replace(/_/g, ' ')
+    return this._title ?? this.id ?. replace(/_/g, ' ')
   }
 }
 
@@ -40,6 +43,9 @@ export type SideDecl = Omit<Side, 'id'|'title'>
 function side(param: SideDecl): Side {
   return Object.assign(new Side(), param)
 }
+
+const onlyForLearn = true
+const hideByDefault = true
 
 export class SidesDefs {
   title = side({
@@ -74,73 +80,99 @@ export class SidesDefs {
   comments = side({
     ask: false,
   })
+  benefits = side({
+    ask: false,
+  })
   time_estimate = side({
     ask: false,
+  })
+  status = side({
+    ask: false,
+  })
+  percent_done = side({
+    ask: false,
+    _title: `% done`,
   })
   pl = side({
     defaultLang: 'pl-PL',
     flag: `pl`,
+    onlyForLearn
   })
   en = side({
     defaultLang: 'en-US',
     flag: `gb`,
+    onlyForLearn
   })
   es_gender_article = side({
     defaultLang: 'es-ES',
     ask: false,
     flag: `es`,
     flagTransparent: true,
+    onlyForLearn
   })
   es = side({
     defaultLang: 'es-ES',
     flag: `es`,
+    onlyForLearn
   })
   de_gender_article = side({
     defaultLang: 'de-DE',
     ask: false,
     flag: `de`,
     flagTransparent: true,
+    onlyForLearn
   })
   de = side({
     defaultLang: 'de-DE',
     ask: false /* not asking German for now, to force recall */,
     flag: `de`,
+    onlyForLearn
   })
   de_example = side({
     defaultLang: 'de-DE',
     ask: false /* not asking German for now, to force recall */,
     flag: `de`,
     flagTransparent: true,
+    onlyForLearn
   })
   pt = side({
     defaultLang: 'pt-PT',
     ask: false /* not asking German for now, to force recall */,
     flag: `pt`,
+    onlyForLearn
   })
   fr = side({
     defaultLang: 'fr-FR',
     ask: false /* not asking German for now, to force recall */,
     flag: `fr`,
+    onlyForLearn
   })
   it = side({
     defaultLang: 'it-IT',
     ask: false /* not asking German for now, to force recall */,
     flag: `it`,
+    onlyForLearn
   })
   nl = side({
     defaultLang: 'nl-NL',
     ask: false /* not asking German for now, to force recall */,
     flag: `nl`,
+    onlyForLearn,
+    hideByDefault,
   })
   ru = side({
     defaultLang: 'ru-RU',
     ask: false,
     flag: `ru`,
+    hideByDefault,
+    onlyForLearn,
   })
   cmn = side({
     defaultLang: 'cmn',
     ask: false,
     flag: `cn`,
+    hideByDefault,
+    onlyForLearn,
   })
   // IDEA: extra info that is not necessary for maximum self-rating ; could be ignored for scroll / buttons purposes
 }

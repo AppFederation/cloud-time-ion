@@ -96,4 +96,14 @@ export class ItemSideComponent implements OnInit {
       debugLog(`onChangeEditor empty`, $event)
     }
   }
+
+  isVisible(item: LearnItem): boolean {
+    if ( this.side ?. hideByDefault ) {
+      return false
+    }
+    if ( item.isTask ) {
+      return ! this.side?.onlyForLearn
+    }
+    return true
+  }
 }
