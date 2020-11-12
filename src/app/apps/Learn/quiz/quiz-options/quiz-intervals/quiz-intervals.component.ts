@@ -11,6 +11,7 @@ import {ImportanceVal} from '../../../models/LearnItem'
 export class QuizIntervalsComponent implements OnInit {
 
   importances = importanceDescriptorsArray
+  ratings = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10]
 
   constructor(
     public quizService: QuizService,
@@ -19,6 +20,6 @@ export class QuizIntervalsComponent implements OnInit {
   ngOnInit() {}
 
   getIntervalDays(rating: number, importance: ImportanceVal) {
-    return this.quizService.calculateIntervalHours2(rating, importance) / 24
+    return this.quizService.calculateIntervalMs(rating, importance) / 24 / 3600 / 1000
   }
 }

@@ -18,7 +18,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
 import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs'
@@ -239,9 +239,9 @@ export class QuizService {
   }
 
 
-  calculateIntervalHours2(rating: Rating, importance?: ImportanceVal): Duration {
+  calculateIntervalMs(rating: Rating, importance?: ImportanceVal): DurationMs {
     if ( importance ) {
-      return this.quizIntervalCalculator.calculateIntervalHoursWithImportance(rating, this.options$?.lastVal !, importance)
+      return this.quizIntervalCalculator.calculateIntervalMs(rating, this.options$?.lastVal !, importance)
     }
     return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
   }

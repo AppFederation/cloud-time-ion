@@ -2,7 +2,7 @@ import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Rating} from './fields/self-rating.model'
 import {ImportanceVal, PositiveInt} from './LearnItem'
 import {QuizOptions} from '../core/quiz.service'
-import {nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
+import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
 
 
@@ -56,11 +56,11 @@ export class Quiz {
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
   }
 
-  private calculateInterval(itemVal: QuizzableData, quizOptions: QuizOptions | nullish) {
+  private calculateInterval(itemVal: QuizzableData, quizOptions: QuizOptions | nullish): DurationMs {
     /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
        http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
     **/
-    return this.quizIntervalCalculator.calculateIntervalHoursWithImportance(
+    return this.quizIntervalCalculator.calculateIntervalMs(
       itemVal.lastSelfRating, quizOptions, itemVal.importance
     )
   }

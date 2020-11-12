@@ -9,7 +9,7 @@ import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
-import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
 import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {StatsHistoryService} from './stats-history.service'
 
