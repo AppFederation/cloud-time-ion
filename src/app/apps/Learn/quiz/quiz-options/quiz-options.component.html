@@ -38,12 +38,8 @@
     <ion-label slot="end">quicker</ion-label>
   </ion-range>
 </div>
-<!--QUICKER <-> MORE DILIGENT-->
 
-<span
-  *ngFor="let rating of [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10]"
->
-  <strong>{{rating}}:</strong> {{ ( quizService.calculateIntervalHours2(rating) / 24 ).toFixed(1) }} <span style='color: gray'>d </span>
-  <span> </span>
-</span>
+<app-quiz-intervals
+></app-quiz-intervals>
+
 

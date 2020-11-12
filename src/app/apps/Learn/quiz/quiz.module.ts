@@ -19,6 +19,7 @@ import {ShowAnswerAndRateComponent} from './show-answer-and-rate/show-answer-and
 import {CongratsQuizFinishedComponent} from './quiz-finished/congrats-quiz-finished/congrats-quiz-finished.component'
 import {QuizFinishedComponent} from './quiz-finished/quiz-finished.component'
 import {QuizItemsLeftComponent} from './quiz-items-left/quiz-items-left.component'
+import {QuizIntervalsComponent} from './quiz-options/quiz-intervals/quiz-intervals.component'
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ const routes: Routes = [
         CongratsQuizFinishedComponent,
         QuizFinishedComponent,
         QuizItemsLeftComponent,
+        QuizIntervalsComponent,
     ],
 })
 export class QuizPageModule {
