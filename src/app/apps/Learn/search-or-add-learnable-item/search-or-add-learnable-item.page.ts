@@ -192,7 +192,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         overlay.question3 = split[3]
       }
     } else {
-      overlay.title = (string || '')./*?.*/trim() /*?? null*/
+      overlay.title = (string ?? '')./*?.*/trim() /*?? null*/
     }
     return {
       owner: this.authUserId,
