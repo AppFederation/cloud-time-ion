@@ -6,6 +6,7 @@ import {RichTextViewComponent} from '../libs/AppFedShared/rich-text/rich-text-vi
 import {CommonModule} from '@angular/common'
 import {ImportanceComponent} from '../libs/AppFedShared/importance/importance.component'
 import {RichTextEditComponent} from '../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
+import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/duration/duration.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -21,15 +22,17 @@ let imports = [
     EditorModule,
   ],
     exports: [
-      imports,
-      RichTextEditComponent,
-      RichTextViewComponent,
+        imports,
+        RichTextEditComponent,
+        RichTextViewComponent,
+        DurationComponent,
     ],
     providers: [],
     declarations: [
-      RichTextEditComponent,
-      RichTextViewComponent,
-      ImportanceComponent,
+        RichTextEditComponent,
+        RichTextViewComponent,
+        ImportanceComponent,
+        DurationComponent,
     ],
 })
 export class SharedModule {

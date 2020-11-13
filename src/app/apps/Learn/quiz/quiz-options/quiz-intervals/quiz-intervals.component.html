@@ -15,12 +15,11 @@
       *ngFor="let rating of ratings"
     >
       <td
-        *ngIf="getIntervalDays(rating, importance) <= 10 * 365"
+        *ngIf="getIntervalDays(rating, importance) <= 5 * 365"
       >
         <!--<strong>{{rating}}:</strong>-->
-        {{ getIntervalDays(rating, importance) ?. toFixed(1) }}
-        <span style='color: gray'>d </span>
-        <span> </span>
+        <app-duration [intervalDays]="getIntervalDays(rating, importance)"
+        ></app-duration>
       </td>
 
     </ng-container>
