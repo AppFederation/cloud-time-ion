@@ -100,6 +100,24 @@ export class SidesDefs {
     ask: false,
     _title: `% done`,
   })
+  start_before = side({
+    ask: false,
+  })
+  start_after = side({
+    ask: false,
+  })
+  finish_before = side({
+    ask: false,
+  })
+  finish_after = side({
+    ask: false,
+  })
+  deps_to_start = side({
+    ask: false,
+  })
+  deps_to_finish = side({
+    ask: false,
+  })
   pl = side({
     defaultLang: 'pl-PL',
     flag: `pl`,
