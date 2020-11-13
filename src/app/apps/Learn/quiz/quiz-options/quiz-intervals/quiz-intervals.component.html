@@ -1,16 +1,26 @@
 <table
 >
-  <ng-container
-    *ngFor="let rating of ratings"
-  >
-    <td>
-      {{ rating }}
-    </td>
-  </ng-container>
+  <tr>
+    <td></td>
+    <td></td>
+    <ng-container
+      *ngFor="let rating of ratings"
+    >
+      <td class="ratingLabel">
+        {{ rating }}
+      </td>
+    </ng-container>
+  </tr>
 
   <ng-container
     *ngFor="let importance of importances"
   ><tr>
+    <td class="ion-color-primary" style="color: var(--primary)">
+      {{importance.abbrev}}
+    </td>
+    <td class="ion-color-primary" style="color: var(--secondary)">
+      {{importance.numeric}}x
+    </td>
     <ng-container
       *ngFor="let rating of ratings"
     >
@@ -25,5 +35,18 @@
     </ng-container>
 
   </tr></ng-container>
+
+  <tr>
+    <td></td>
+    <td></td>
+    <ng-container
+      *ngFor="let rating of ratings"
+    >
+      <td class="ratingLabel">
+        {{ rating }}
+      </td>
+    </ng-container>
+  </tr>
+
 
 </table>
