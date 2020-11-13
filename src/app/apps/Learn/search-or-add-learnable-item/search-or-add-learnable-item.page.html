@@ -117,7 +117,7 @@
   <ng-template #loggedIn>
 
 
-    <ion-virtual-scroll
+<!--    <ion-virtual-scroll
       [items]="filteredItems"
       [approxItemHeight]="31"
       [trackBy]="trackByFn"
@@ -126,9 +126,27 @@
         <app-actionable-item
           [item]="currItem"
         ></app-actionable-item>
-        <!-- [hidden]="! matchesSearch(currItem)"-->
+        &lt;!&ndash; [hidden]="! matchesSearch(currItem)"&ndash;&gt;
       </div>
-    </ion-virtual-scroll>
+    </ion-virtual-scroll>-->
+
+    <ion-list>
+      <ng-container
+        *ngFor="let item$ of filteredItems?.slice(0, currentlyDisplayedElements); trackBy: trackByFn"
+      >
+        <app-actionable-item
+          [item]="item$"
+        ></app-actionable-item>
+      </ng-container>
+    </ion-list>
+
+    <ion-button (click)="loadMore()" *ngIf="currentlyDisplayedElements < filteredItems.length">
+      Load More
+    </ion-button>
+
+    <ion-button (click)="loadAll()" *ngIf="currentlyDisplayedElements < filteredItems.length">
+      Load All
+    </ion-button>
 
     <!--
        ion-virtual-scroll BUGS:

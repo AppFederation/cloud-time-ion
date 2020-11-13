@@ -17,6 +17,7 @@ import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinct, distinctUntilChanged, map, tap} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
+import {DataGeneratorService} from '../../../generators/data-generator.service'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -34,6 +35,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
+  currentlyDisplayedElements: number = 20;
   private patchingOwnerHasRun = false
 
   showOldEditor = false
@@ -77,21 +79,24 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     //   // this.items = sortBy(this.items, field<LearnItem>(`whenAdded`)).reverse()
     //   // console.log(`snapshotChanges`, items.length)
     // })
-    this.authService.authUser$.subscribe(user => {
-        if ( user ) {
-          this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-            , coll => coll.where(`owner`, `==`, user?.uid))
-          // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
-          this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-            items = items.map(item => Object.assign(new LearnItem(), item))
-            this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+    // this.authService.authUser$.subscribe(user => {
+    //     if ( user ) {
+    //       this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
+    //         , coll => coll.where(`owner`, `==`, user?.uid))
+    //       // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
+    //       this.coll.valueChanges({idField: 'id'}).subscribe(items => {
+    //         items = items.map(item => Object.assign(new LearnItem(), item))
+    //         this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+    //
+    //         this.reFilter()
+    //
+    //         // this.patchOwnersIfNecessary(user, items)
+    //       })
+    //     }
+    // })
 
-            this.reFilter()
-
-            // this.patchOwnersIfNecessary(user, items)
-          })
-        }
-    })
+    // Load fake data:
+    this.items = DataGeneratorService.generateLearnItemList(3000);
   }
 
   private patchOwnersIfNecessary(user: User, items: any[]) {
@@ -221,5 +226,13 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   hasSearchText() {
     return !! this.search?.trim();
+  }
+
+  loadMore() {
+    this.currentlyDisplayedElements += 20;
+  }
+
+  loadAll() {
+    this.currentlyDisplayedElements = this.filteredItems.length;
   }
 }
