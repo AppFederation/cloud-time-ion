@@ -10,6 +10,10 @@ echo dot star
 
 # cp -r ./.* $dst
 
+# https://stackoverflow.com/a/14789400/170451
+# https://gist.github.com/macmladen/75817cc47f4ddf0a18f0
+# https://linux.die.net/man/1/rsync
+
 rsync -av --progress . $dst  \
     --exclude '**/node_modules'  \
     --exclude platforms
