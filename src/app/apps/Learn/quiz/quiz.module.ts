@@ -21,6 +21,7 @@ import {QuizFinishedComponent} from './quiz-finished/quiz-finished.component'
 import {QuizItemsLeftComponent} from './quiz-items-left/quiz-items-left.component'
 import {QuizIntervalsComponent} from './quiz-options/quiz-intervals/quiz-intervals.component'
 import {SharedModule} from '../../../shared/shared.module'
+import {QuizDiligenceLevelComponent} from './quiz-options/quiz-diligence-level/quiz-diligence-level.component'
 
 const routes: Routes = [
   {
@@ -44,17 +45,18 @@ const routes: Routes = [
     TimeModule,
     SharedModule,
   ],
-    declarations: [
-        QuizPage,
-        QuizItemDetailsComponent,
-        QuizTipsComponent,
-        QuizOptionsComponent,
-        ShowAnswerAndRateComponent,
-        CongratsQuizFinishedComponent,
-        QuizFinishedComponent,
-        QuizItemsLeftComponent,
-        QuizIntervalsComponent,
-    ],
+  declarations: [
+    QuizPage,
+    QuizItemDetailsComponent,
+    QuizTipsComponent,
+    QuizOptionsComponent,
+    ShowAnswerAndRateComponent,
+    CongratsQuizFinishedComponent,
+    QuizFinishedComponent,
+    QuizItemsLeftComponent,
+    QuizIntervalsComponent,
+    QuizDiligenceLevelComponent,
+  ],
 })
 export class QuizPageModule {
 }
