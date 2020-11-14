@@ -1,17 +1,30 @@
 import {Dict} from '../../../../libs/AppFedShared/utils/dictionary-utils'
+import {debugLog} from '../../../../libs/AppFedShared/utils/log'
+
+
+const midIntensityNum = 5
 
 export function intensity(x: any): { numeric: number, abbrev: string } & { id: keyof IntensityDescriptors<any> } {
-  return x
+  const ret = {
+    ...x,
+    /** WIP; only for importance for quiz; does not yet work for <= Low (>100%)
+     * will be useful when I gather quiz answers data (probabilities of forgetting, given time interval from last repetition.
+     * And then I can define the forgetting curve better (could be specific to given person and even to given question)
+     * Mid 50 %; SH 35 %; Hi 25 %; VH 12.5 %; XH 5 %
+     * */
+    desiredPercentProbabilityOfForgetting: 50 / ( x.numeric / midIntensityNum )
+  }
+  debugLog(`intensity`, ret)
+  return ret
 }
 
-const midIntensityNumeric = 5
 
 /** Name: like  IntensityDescriptorsDICT
  * Note: importance, not priority; priority is calculated based on other factors like estimations, deadlines, free time, FUN, etc. */
 export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /* unset -> null; for querying; should have highest effective importance, to force to decide */
   undefined
-    = intensity({numeric: midIntensityNumeric, abbrev: `-`}) // 0    BTN
+    = intensity({numeric: midIntensityNum, abbrev: `-`}) // 0    BTN
   off
     = intensity({numeric: 0, abbrev: `✕`}) // 0    BTN
   unknown
@@ -36,7 +49,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 4, abbrev: `SL`, icons: `😡`})
   /* default between low and medium ? somewhat low? */
   medium
-    = intensity({numeric: midIntensityNumeric, abbrev: `Md`, icons: `~`, id: `medium` /* hack */}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
+    = intensity({numeric: midIntensityNum, abbrev: `Md`, icons: `~`, id: `medium` /* hack */}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
   // somewhat / a bit high; darkened up-chevron; SHP
   somewhat_high
     = intensity({numeric: 7, abbrev: `SH`, icons: `😊`})
