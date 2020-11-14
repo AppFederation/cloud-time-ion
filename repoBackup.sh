@@ -42,6 +42,8 @@ git add ".*" "*"
 
 git pull origin "$branchName"
 
+# Could also have a branch version *rebased* on develop
+
 git commit -m "$branchName `date`"
 
 git push origin HEAD:AutoBackup
