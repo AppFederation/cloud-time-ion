@@ -9,11 +9,14 @@ import {nullish} from '../utils/type-utils'
 
 export type UserId = string
 
-export class OdmInMemItem {
+export class OdmInMemItemWriteOnce {
   public whenCreated?: OdmTimestamp
-  public whenLastModified?: OdmTimestamp
   public isDeleted?: OdmTimestamp
   public owner?: UserId
+}
+
+export class OdmInMemItem extends OdmInMemItemWriteOnce {
+  public whenLastModified?: OdmTimestamp
 }
 
 export type OdmPatch<TData> = DictPatch<TData>

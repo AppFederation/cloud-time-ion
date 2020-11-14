@@ -2,10 +2,16 @@ import {Injectable, Injector} from '@angular/core';
 import {HistoryService} from '../../../libs/AppFedShared/odm/history.service'
 import {StoredLearnStats} from './learn-stats.service'
 import {LearnItemId} from '../models/LearnItem'
-import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
+import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
 
-export class QuizAnswer extends OdmInMemItem {
+export class QuizAnswer extends OdmInMemItemWriteOnce {
+  // itemId
+  // selfRating: Rating
+  // importance: ImportanceVal
+  // answer: HtmlString
+
+
   // learnItem: LearnItemId
   // selfRating: Rating
   // could be also category
