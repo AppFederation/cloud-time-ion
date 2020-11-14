@@ -27,7 +27,7 @@ echo dot star
 time rsync -av --progress "$src"/ "$dst"  \
     --exclude '**/node_modules'  \
     --exclude platforms \
-#    --exclude .git \
+    --exclude .git \
 
 cd "$dst"
 
