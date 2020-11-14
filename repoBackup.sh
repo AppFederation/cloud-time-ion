@@ -36,6 +36,8 @@ time rsync -a "$src"/ "$dst"  \
 
 cd "$dst"
 
+echo "======== GIT ====== "
+
 git add ".*" "*"
 
 git pull origin "$branchName"
