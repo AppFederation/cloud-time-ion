@@ -29,6 +29,10 @@ time rsync -av --progress "$src"/ "$dst"  \
     --exclude platforms \
     --exclude .git \
 
+#    --exclude node_modules  \
+#    --exclude electron/node_modules  \
+
+
 cd "$dst"
 
 git add ".*" "*"
@@ -39,6 +43,4 @@ git commit -m "$branchName `date`"
 
 git push origin HEAD:AutoBackup
 
-#    --exclude node_modules  \
-#    --exclude electron/node_modules  \
 
