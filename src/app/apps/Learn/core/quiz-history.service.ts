@@ -10,7 +10,9 @@ export class QuizAnswer extends OdmInMemItemWriteOnce {
   // selfRating: Rating
   // importance: ImportanceVal
   // answer: HtmlString
-
+  // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
+  // OR quizOptions: QuizOptions
+  // timeToAnswer: DurationMs
 
   // learnItem: LearnItemId
   // selfRating: Rating
