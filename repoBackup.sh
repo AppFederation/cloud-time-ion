@@ -2,7 +2,15 @@
 
 shopt -s extglob
 
-dst=/S/Backups/test-repo-backup
+set -x
+
+src="$(pwd)"
+dstParent=/A/Backups/RepoAutoBackup
+dst="$dstParent/$src"
+
+branchName="AutoBackup"
+
+mkdir -p "$dst"
 
 # cp -r ./!(node_modules|electron) $dst
 
@@ -14,10 +22,23 @@ echo dot star
 # https://gist.github.com/macmladen/75817cc47f4ddf0a18f0
 # https://linux.die.net/man/1/rsync
 
-rsync -av --progress . $dst  \
+# trailing / in "$src"/ needed to not create sub-dir of same name
+
+time rsync -av --progress "$src"/ "$dst"  \
     --exclude '**/node_modules'  \
-    --exclude platforms
+    --exclude platforms \
+    --exclude .git \
 
 #    --exclude node_modules  \
 #    --exclude electron/node_modules  \
 
+
+cd "$dst"
+
+git add ".*" "*"
+
+git pull origin "$branchName"
+
+git commit -m "$branchName `date`"
+
+git push origin HEAD:AutoBackup
