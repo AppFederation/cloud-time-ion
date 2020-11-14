@@ -42,7 +42,7 @@ echo "======== GIT ====== "
 
 git add ".*" "*"
 
-git pull origin "$branchName"
+# git pull origin "$branchName"
 
 # Could also have a branch version *rebased* on develop
 
