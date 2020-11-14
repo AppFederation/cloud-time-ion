@@ -42,5 +42,3 @@ git pull origin "$branchName"
 git commit -m "$branchName `date`"
 
 git push origin HEAD:AutoBackup
-
-
