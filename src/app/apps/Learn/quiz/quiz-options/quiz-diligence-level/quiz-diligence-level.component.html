@@ -1,0 +1,13 @@
+<div style="display: flex; flex-direction: row; align-items: center">
+  <ion-range
+    [min]="110"
+    [max]="6000"
+    [pin]="true"
+    [step]="1"
+    [formControl]="control"
+  >
+    <ion-note slot="start">{{ (control.value / 100)?.toFixed(3) }}</ion-note>
+    <ion-label slot="start">more<br>diligent</ion-label>
+    <ion-label slot="end">quicker</ion-label>
+  </ion-range>
+</div>

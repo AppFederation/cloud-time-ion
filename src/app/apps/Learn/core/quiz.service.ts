@@ -38,7 +38,7 @@ export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
-    public powBaseX100: number = 3,
+    public powBaseX100: number = 300,
     public skipTasks: boolean = true,
   ) {
   }
