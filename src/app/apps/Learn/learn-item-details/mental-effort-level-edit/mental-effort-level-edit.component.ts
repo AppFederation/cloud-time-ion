@@ -34,7 +34,7 @@ const buttonsDesc = new ButtonsDescriptor<any, string>([
       intensityBtnVariant(`🧠🧠`, levels.high),
       intensityBtnVariant(`🧠🧠🧠`, levels.very_high),
       intensityBtnVariant(`🧠🧠🧠🧠`, levels.extremely_high),
-      intensityBtnVariant(`X-T-Mental`, levels.testing_extremely_high),
+      // intensityBtnVariant(`X-T-Mental`, levels.testing_extremely_high),
     ]
   }),
 ])
