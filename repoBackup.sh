@@ -48,6 +48,8 @@ git add ".*" "*"
 
 git commit -m "$branchName `date`"
 
+# https://askubuntu.com/questions/755535/how-do-i-highlight-a-word-or-a-phrase-in-a-commands-output
+
 git push origin HEAD:AutoBackup
 
 git status
