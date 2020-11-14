@@ -14,7 +14,7 @@ mkdir -p "$dst"
 
 # cp -r ./!(node_modules|electron) $dst
 
-echo dot star
+#echo dot star
 
 # cp -r ./.* $dst
 
