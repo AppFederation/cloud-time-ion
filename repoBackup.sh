@@ -24,8 +24,8 @@ echo dot star
 
 # trailing / in "$src"/ needed to not create sub-dir of same name
 
-# --progress
-time rsync -av "$src"/ "$dst"  \
+# --progress -v
+time rsync -a "$src"/ "$dst"  \
     --exclude '**/node_modules'  \
     --exclude platforms \
     --exclude .git \
