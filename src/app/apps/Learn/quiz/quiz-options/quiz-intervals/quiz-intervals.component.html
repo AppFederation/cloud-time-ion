@@ -25,6 +25,7 @@
       *ngFor="let rating of ratings"
     >
       <td
+        [ngClass]="{ cellHilight: isHilight(importance, rating) }"
         *ngIf="getIntervalDays(rating, importance) <= 5 * 365"
       >
         <!--<strong>{{rating}}:</strong>-->
