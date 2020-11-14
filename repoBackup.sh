@@ -30,6 +30,8 @@ time rsync -a "$src"/ "$dst"  \
     --exclude platforms \
     --exclude .git \
 
+    # for first copy, do not `--exclude .git`; but maybe always syncing .git could give me a kind of automatic rebase on develop; then maybe push -f  (but need to think how to preserve the incremental commits)
+
 #    --exclude node_modules  \
 #    --exclude electron/node_modules  \
 
