@@ -77,7 +77,7 @@ function processHEX(val: string) {
 export function updateSpitter(color1: string, color2: string, steps: number): string[] {
   let val1RGB = processValue(color1);
   let val2RGB = processValue(color2);
-  let colors = [
+  let colors: any[] = [
     // somewhere to dump gradient
   ];
 
