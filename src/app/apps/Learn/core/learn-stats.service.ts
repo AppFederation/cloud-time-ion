@@ -75,7 +75,7 @@ export class LearnStatsService {
     // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(
-      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(0.0001)),
+      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(10/*0.0001*/)),
       filter(item$s => {
         return !! item$s?.length; // skip the initial val that appears before data is loaded
       }),
@@ -85,7 +85,14 @@ export class LearnStatsService {
           countByDims = countByMulti(item$s, [
             item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
             item$ => item$.val?.hasAudio ? 'audio' : `noAudio`,
-            item$ => item$.val?.importance?.id /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous */,
+            item$ => item$.val?.importance?.id /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
+                should this be effective value?
+                TODO + fun
+                TODO + mental level
+                TODO + estimated time
+                TODO + status
+                TODO the extended stats might be added e.g. daily
+             */,
             item$ => item$.val?.lastSelfRating,
           ])
         } catch (e) {
