@@ -3,6 +3,7 @@ import {QuizService} from '../../core/quiz.service'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {QuizHistoryService} from '../../core/quiz-history.service'
 
 @Component({
   selector: 'app-show-answer-and-rate',
@@ -23,6 +24,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   constructor(
     public quizService: QuizService,
+    public quizHistoryService: QuizHistoryService,
   ) { }
 
 
@@ -44,7 +46,15 @@ export class ShowAnswerAndRateComponent implements OnInit {
   // }
 
   applyAndNext() {
-    this.item$ ?. setNewSelfRating(this.selfRating !)
+    const newRating = this.selfRating
+    this.quizHistoryService.onAnswer(
+      /* Maybe move this into setNewSelfRating, however this is also called from non-quiz */
+      {
+        itemId: this.item$ !. id !,
+        selfRating: newRating,
+      }
+    )
+    this.item$ ?. setNewSelfRating(newRating !)
     this.quizService.requestNextItem()
   }
 

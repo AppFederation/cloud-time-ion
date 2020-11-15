@@ -165,6 +165,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   determination = jnd({idealValue: 7.5,
     isShortListed: true,
   })
+  resilience = jnd({isShortListed: true})
+  strength = jnd({isShortListed: true})
+  // TODO physical strength, mental strength
+  // TODO power / influence
   energy = jnd({idealValue: 8.5,
     isShortListed: true,
     antonym: [`tiredness`, `tired`, `apathy`] /* Note: also in "rest" */

@@ -5,9 +5,13 @@ import {LearnItemId} from '../models/LearnItem'
 import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
 
-export class QuizAnswer extends OdmInMemItemWriteOnce {
-  // itemId
-  // selfRating: Rating
+export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
+
+  itemId ! : LearnItemId
+
+  /** Undefined will mean skipping */
+  selfRating: Rating | undefined
+
   // importance: ImportanceVal
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
@@ -30,18 +34,22 @@ export class QuizAnswer extends OdmInMemItemWriteOnce {
 @Injectable({
   providedIn: 'root'
 })
-export class QuizHistoryService extends HistoryService<QuizAnswer> {
+export class QuizHistoryService extends HistoryService<QuizAnswerForHistory> {
 
   constructor(
     protected injector: Injector,
   ) {
     super(
       injector,
-      'QuizHistory',
+      'QuizAnswersHistory',
       // {
       //   loadAll: false,
       // }
       // TODO: indicate to not load all items, to not slow down (especially on app start)
     )
+  }
+
+  onAnswer(param: QuizAnswerForHistory) {
+    this.newValue(param)
   }
 }
