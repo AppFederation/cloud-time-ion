@@ -16,7 +16,10 @@ export class HistoryService<TInMem, TRaw = TInMem>
     protected injector: Injector,
     public className: string,
   ) {
-    super(injector, className)
+    super(injector, className, {
+      dontLoadAllAutomatically: true,
+      dontStoreWhenModified: true,
+    })
   }
 
   public newValue(val: TInMem) {

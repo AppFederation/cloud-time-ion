@@ -2,10 +2,22 @@ import {Injectable, Injector} from '@angular/core';
 import {HistoryService} from '../../../libs/AppFedShared/odm/history.service'
 import {StoredLearnStats} from './learn-stats.service'
 import {LearnItemId} from '../models/LearnItem'
-import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
+import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
 
-export class QuizAnswer extends OdmInMemItem {
+export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
+
+  itemId ! : LearnItemId
+
+  /** Undefined will mean skipping */
+  selfRating: Rating | undefined
+
+  // importance: ImportanceVal
+  // answer: HtmlString
+  // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
+  // OR quizOptions: QuizOptions
+  // timeToAnswer: DurationMs
+
   // learnItem: LearnItemId
   // selfRating: Rating
   // could be also category
@@ -22,18 +34,22 @@ export class QuizAnswer extends OdmInMemItem {
 @Injectable({
   providedIn: 'root'
 })
-export class QuizHistoryService extends HistoryService<QuizAnswer> {
+export class QuizHistoryService extends HistoryService<QuizAnswerForHistory> {
 
   constructor(
     protected injector: Injector,
   ) {
     super(
       injector,
-      'QuizHistory',
+      'QuizAnswersHistory',
       // {
       //   loadAll: false,
       // }
       // TODO: indicate to not load all items, to not slow down (especially on app start)
     )
+  }
+
+  onAnswer(param: QuizAnswerForHistory) {
+    this.newValue(param)
   }
 }

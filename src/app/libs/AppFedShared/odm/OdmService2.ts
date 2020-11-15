@@ -8,6 +8,11 @@ import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 
+export class OdmServiceOpts {
+  dontLoadAllAutomatically = false
+  dontStoreWhenModified = false
+}
+
 export abstract class OdmService2<
   TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData,
@@ -53,6 +58,7 @@ export abstract class OdmService2<
   protected constructor(
     protected injector: Injector,
     public className: string,
+    public opts ? : OdmServiceOpts,
   ) {
     this.setBackendListener()
     // this.subscribeToBackendCollection();
