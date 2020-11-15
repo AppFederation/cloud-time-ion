@@ -8,13 +8,16 @@ Array.prototype.last ??= function (this : string) {
   return this[this.length - 1]
 };
 
+
 export function incrementByPath(obj: any, path: string[]): any {
   let subObj = obj
   for ( let i = 0; i < path.length - 1; ++i ) {
     let curKey = path[i]
     let newSubObj = subObj[curKey]
+    // put-if-absent:
     if ( ! newSubObj ) {
-      subObj[curKey] = {}
+      newSubObj = {}
+      subObj[curKey] = newSubObj
     }
     subObj = newSubObj
   }
