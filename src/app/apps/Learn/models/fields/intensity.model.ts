@@ -4,7 +4,9 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 
 const midIntensityNum = 5
 
-export function intensity(x: any): { numeric: number, abbrev: string } & { id: keyof IntensityDescriptors<any> } {
+export type IntensityDescriptor = { numeric: number, abbrev: string, shortId: string } & { id: keyof IntensityDescriptors<any> }
+
+export function intensity(x: any): IntensityDescriptor {
   const ret = {
     ...x,
     /** WIP; only for importance for quiz; does not yet work for <= Low (>100%)
@@ -24,13 +26,14 @@ export function intensity(x: any): { numeric: number, abbrev: string } & { id: k
 export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /* unset -> null; for querying; should have highest effective importance, to force to decide */
   undefined
-    = intensity({numeric: midIntensityNum, abbrev: `-`}) // 0    BTN
+    = intensity({numeric: midIntensityNum, abbrev: `-`, shortId: `Udf`}) // 0    BTN
   off
-    = intensity({numeric: 0, abbrev: `✕`}) // 0    BTN
+    = intensity({numeric: 0, abbrev: `✕`, shortId: `Off`}) // 0    BTN
   unknown
     = intensity({
     numeric: 50 /* a bit higher than extremely_high, to force decision later; but lower than effective numerical for unset */,
     abbrev: `?`, /* / `?` */
+    shortId: `Unk`
   })
   /* TODO: unknown / undecided = {} // different than off, medium or unset - meaning I went through it already (so it's not unset); #Workflow
    and I could not decide; e.g. I was lacking information at this point or did not have enough info. Example: watching some video which might, or might not be important. Need to first skim through it (which is a detour from going through a lot of items quickly)
@@ -39,29 +42,29 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
    */
 
   extremely_low
-    = intensity({numeric: 0.5, abbrev: `XL`, icons: `😡😡😡😡`}) // this is better than off, coz it might re-occur at some point if I have a lot of time for learning, so I don't forget about it.
+    = intensity({numeric: 0.5, abbrev: `XL`, icons: `😡😡😡😡`, shortId: `XLo`}) // this is better than off, coz it might re-occur at some point if I have a lot of time for learning, so I don't forget about it.
   very_low
-    = intensity({numeric: 1, abbrev: `VL`, icons: `😡😡😡`}) // 0.5
+    = intensity({numeric: 1, abbrev: `VL`, icons: `😡😡😡`, shortId: `VLo`}) // 0.5
   low
-    = intensity({numeric: 2, abbrev: `Lo`, icons: `😡😡`}) // 1    BTN
+    = intensity({numeric: 2, abbrev: `Lo`, icons: `😡😡`, shortId: `Lo`}) // 1    BTN
   // somewhat / a bit low; SLP
   somewhat_low
-    = intensity({numeric: 4, abbrev: `SL`, icons: `😡`})
+    = intensity({numeric: 4, abbrev: `SL`, icons: `😡`, shortId: `SLo`})
   /* default between low and medium ? somewhat low? */
   medium
-    = intensity({numeric: midIntensityNum, abbrev: `Md`, icons: `~`, id: `medium` /* hack */}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
+    = intensity({numeric: midIntensityNum, abbrev: `Md`, icons: `~`, id: `medium` /* hack */, shortId: `Med`}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
   // somewhat / a bit high; darkened up-chevron; SHP
   somewhat_high
-    = intensity({numeric: 7, abbrev: `SH`, icons: `😊`})
+    = intensity({numeric: 7, abbrev: `SH`, icons: `😊`, shortId: `SHi`})
   high
-    = intensity({numeric: 10, abbrev: `Hi`, icons: `😊😊`}) // 2   BTN
+    = intensity({numeric: 10, abbrev: `Hi`, icons: `😊😊`, shortId: `Hi`}) // 2   BTN
   very_high
-    = intensity({numeric: 20, abbrev: `VH`, icons: `😊😊😊`}) /* just 4 times more than unspecified?? --> 10 times?
+    = intensity({numeric: 20, abbrev: `VH`, icons: `😊😊😊`, shortId: `VHi`}) /* just 4 times more than unspecified?? --> 10 times?
    /* just 4 times more than unspecified?? --> 10 times?
       20 times higher than very_low seems ok
    */ // 2.5 / 3
   extremely_high
-    = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`})
+    = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`, shortId: `XHi`})
   // testing_extremely_high
   //   = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
   // it gives 10 level total now

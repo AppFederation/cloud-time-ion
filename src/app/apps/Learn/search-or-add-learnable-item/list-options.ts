@@ -28,8 +28,8 @@ export class ListOptions {
 
 /* refactor into compareByField -- too error prone to accidentally use different fields */
 const compareImportance = (item1: LearnItem$, item2: LearnItem$) => item1.getEffectiveImportanceNumeric() - item2.getEffectiveImportanceNumeric()
-const compareRoi = (item1: LearnItem$, item2: LearnItem$) => item1.getEffectiveRoi() - item2.getEffectiveRoi()
-const compareFunLevel = (item1: LearnItem$, item2: LearnItem$) => item1.getEffectiveFunLevel() - item2.getEffectiveFunLevel()
+const compareRoi = (item1: LearnItem$, item2: LearnItem$) => (item1.getEffectiveRoi() ?? 999) - (item2.getEffectiveRoi() ?? 999)
+// const compareFunLevel = (item1: LearnItem$, item2: LearnItem$) => item1.getEffectiveFunLevel() - item2.getEffectiveFunLevel()
 
 // const compareRecentlyModifiedOrAdded = (item1: LearnItem$, item2: LearnItem$) => // TODO item1.val?.whenLastModified - item2.getEffectiveFunLevel()
 

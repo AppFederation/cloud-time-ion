@@ -12,6 +12,9 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   /** Undefined will mean skipping */
   selfRating: Rating | undefined
 
+  // deviceId: string
+  // geo: ...
+  // appVersion: ... (+timestamp)
   // importance: ImportanceVal
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }

@@ -1,8 +1,11 @@
 import {IntensityDescriptors} from './intensity.model'
 import {Descriptors} from './descriptors'
+import {ImportanceVal} from '../LearnItem'
 
 
 export type FunLevelDescriptor = any
+
+export type FunLevelVal = ImportanceVal
 
 export class FunLevelDescriptors extends IntensityDescriptors<FunLevelDescriptor> {
 
@@ -12,6 +15,7 @@ export const funLevels = new FunLevelDescriptors()
 
 export const funLevelsDescriptors = new Descriptors<FunLevelDescriptor>(
   funLevels,
+  'fun'
 )
 
 

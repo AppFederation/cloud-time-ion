@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../../../auth/auth.service'
 import {SyncStatusService} from '../../sync-status.service'
+import {StatsHistoryService} from '../../../../../apps/Learn/core/stats-history.service'
+import {LearnStatsService} from '../../../../../apps/Learn/core/learn-stats.service'
 
 @Component({
   selector: 'app-sync-popover',
@@ -12,6 +14,7 @@ export class SyncPopoverComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public syncStatusService: SyncStatusService,
+    public learnStatsService: LearnStatsService,
   ) { }
 
   ngOnInit() {}
