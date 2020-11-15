@@ -50,7 +50,11 @@ export class LearnItem$
   }
 
   getEffectiveImportance(): ImportanceDescriptor | nullish {
-    return this.val ?. importance ?? importanceDescriptors.medium
+    return this.val ?. importance ?? importanceDescriptors.undefined
+  }
+
+  getEffectiveImportanceNumeric(): number {
+    return ( this.val ?. importance ?? importanceDescriptors.medium ) ?. numeric
   }
 
   getEffectiveFunLevel(): Distribution {
