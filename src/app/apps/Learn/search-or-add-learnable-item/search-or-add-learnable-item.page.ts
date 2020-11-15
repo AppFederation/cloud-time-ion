@@ -95,15 +95,16 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     })
   }
 
+  /** TODO: move to class ListProcessing */
   private setItemsAndSort(items: any[]) {
     const durationGetter
       = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
     const durationGetterReverse
       = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetter
-      = (item: LearnItem) => item.importance?.numeric ?? -99999
+      = (item: LearnItem) => item.importance?.numeric ?? -99999 /* TODO get descriptor by id later */
     const funGetter
-      = (item: LearnItem) => item.funEstimate?.numeric ?? -99999
+      = (item: LearnItem) => item.funEstimate?.numeric ?? -99999 /* TODO get descriptor by id later */
     const roiGetter
       = (item: LearnItem) => item.getRoi() ?? -99999
     items = items.map(item => Object.assign(new LearnItem(), item))
@@ -238,6 +239,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     this.reFilter()
   }
 
+  /** TODO: move to class ListProcessing ; can be just 1:1 for now */
   private reFilter() {
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
     const preset = opts?.preset
