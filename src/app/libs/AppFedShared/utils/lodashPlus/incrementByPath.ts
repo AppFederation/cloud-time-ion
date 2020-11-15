@@ -1,5 +1,7 @@
+
 declare global {
   interface Array<T> {
+    /** https://esdiscuss.org/topic/array-prototype-last */
     last() : T;
   }
 }
@@ -9,6 +11,8 @@ Array.prototype.last ??= function (this : string) {
 };
 
 
+/** TODO: write setByPath and getByPath too
+ * later try to use keyof and T[K][K2] */
 export function incrementByPath(obj: any, path: string[]): any {
   let subObj = obj
   for ( let i = 0; i < path.length - 1; ++i ) {
