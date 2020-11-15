@@ -100,8 +100,8 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       not really, coz editing adding chars also does not sync the last chars until losing editor focus / could be related to throttleTime vs debounce?
      */
     if ( this.fieldNameHack && this.initialDataArrived ) {
-      const lastValFromDbElement = this.lastValFromDb?.[this.fieldNameHack]
-      const newDataFromDbElement = newDataFromDb?.[this.fieldNameHack]
+      const lastValFromDbElement = (this.lastValFromDb as any)?.[this.fieldNameHack]
+      const newDataFromDbElement = (newDataFromDb as any)?.[this.fieldNameHack]
       if ( lastValFromDbElement === newDataFromDbElement ) {
         // console.log(`shouldApplyFromDb: lastValFromDbElement equal`, this.fieldNameHack, lastValFromDbElement, newDataFromDbElement)
         return false

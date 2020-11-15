@@ -21,10 +21,10 @@
       "dom"
     ],
 
-    // ======= Strictness / checks:
-    "strictNullChecks": true,
-    "noImplicitAny" : true,
-    "strict": true
+//    // ======= Strictness / checks:
+//    "strictNullChecks": true,
+//    "noImplicitAny" : true,
+//    "strict": true
   },
 
   "angularCompilerOptions": {

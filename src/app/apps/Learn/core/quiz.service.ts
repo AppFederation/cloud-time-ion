@@ -233,7 +233,7 @@ export class QuizService {
 
   calculateWhenNextRepetitionMsEpochOrNullish(item$: LearnItem$ | nullish): TimeMsEpoch | nullish {
     if ( ! item$ ) {
-      return item$
+      return item$ as nullish
     }
     return this.calculateWhenNextRepetitionMsEpoch(item$)
   }

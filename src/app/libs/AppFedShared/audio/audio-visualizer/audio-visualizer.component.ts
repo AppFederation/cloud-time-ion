@@ -58,7 +58,7 @@ export class AudioVisualizerComponent implements OnInit, OnDestroy {
       // also, don't have to deal with the 127 values
       // console.log(`vis`, this.dataArray)
       this.array = Array.from(this.dataArray)
-    }, 50)
+    }, 50) as unknown as number
 
   }
 

@@ -12,6 +12,7 @@ import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppF
 import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
 import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {StatsHistoryService} from './stats-history.service'
+import {countByMulti} from '../../../libs/AppFedShared/utils/lodashPlus/countByMulti'
 
 /** split into part that goes into DB */
 export class LearnStats {
@@ -29,9 +30,10 @@ export class LearnStats {
 
 export class StoredLearnStats {
   /* equivalent to countWithRatingEqual */
-  countByRating?: Dictionary<number> = {}
-  countWithQA?: number
-  countWithAudio?: number
+  countByRating ? : Dictionary<number> = {}
+  countWithQA ? : number
+  countWithAudio ? : number
+  countByDims ? : any
 }
 
 @Injectable({
@@ -73,15 +75,27 @@ export class LearnStatsService {
     // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(
-      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(2)),
+      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(0.0001)),
       filter(item$s => {
         return !! item$s?.length; // skip the initial val that appears before data is loaded
       }),
       map(item$s => {
+        let countByDims = {}
+        try {
+          countByDims = countByMulti(item$s, [
+            item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
+            item$ => item$.val?.hasAudio ? 'audio' : `noAudio`,
+            item$ => item$.val?.importance?.id /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous */,
+            item$ => item$.val?.lastSelfRating,
+          ])
+        } catch (e) {
+          errorAlert(`countByDims error`, e)
+        }
         const ret: StoredLearnStats = {
           countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal)),
           countWithQA: countBy2(item$s, item$ => !! item$.val?.hasQAndA()),
           countWithAudio: countBy2(item$s, item$ => !! item$.val?.hasAudio),
+          countByDims
         }
         return ret
       }),

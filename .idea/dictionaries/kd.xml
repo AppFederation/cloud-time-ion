@@ -27,6 +27,7 @@
       <w>firebaseapp</w>
       <w>forecolor</w>
       <w>formatselect</w>
+      <w>freqs</w>
       <w>hilight</w>
       <w>hilitecolor</w>
       <w>homescreen</w>
@@ -44,8 +45,10 @@
       <w>nodechange</w>
       <w>notif</w>
       <w>notifs</w>
+      <w>numerics</w>
       <w>numlist</w>
       <w>outdent</w>
+      <w>perc</w>
       <w>powściągliwość</w>
       <w>prolly</w>
       <w>quizzable</w>
@@ -54,6 +57,7 @@
       <w>selectall</w>
       <w>signup</w>
       <w>smth</w>
+      <w>spitter</w>
       <w>syncer</w>
       <w>tinymce</w>
       <w>vals</w>

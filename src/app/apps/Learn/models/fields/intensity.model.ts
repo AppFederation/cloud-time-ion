@@ -14,7 +14,7 @@ export function intensity(x: any): { numeric: number, abbrev: string } & { id: k
      * */
     desiredPercentProbabilityOfForgetting: 50 / ( x.numeric / midIntensityNum )
   }
-  debugLog(`intensity`, ret)
+  // debugLog(`intensity`, ret)
   return ret
 }
 

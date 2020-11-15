@@ -13,7 +13,7 @@ describe('CachedSubject', () => {
 
   it('subscribe() retrieves value put *after* subscribing', () => {
     const cachedSubject = new CachedSubject<string>()
-    let valFromSubscribe = null
+    let valFromSubscribe: string | null = null
     cachedSubject.subscribe((val) => {
       valFromSubscribe = val
     })
@@ -24,7 +24,7 @@ describe('CachedSubject', () => {
     expect(cachedSubject.lastVal).toBe('someVal')
 
     // main ASSERT:
-    expect(valFromSubscribe).toBe('someVal')
+    expect(valFromSubscribe).toBe('someVal' as any)
   })
 
   it('subscribe() retrieves value put *before* subscribing (like ReplaySubject)', () => {
@@ -36,13 +36,13 @@ describe('CachedSubject', () => {
 
     // ==== ACT :
     cachedSubject.subscribe((val) => {
-      valFromSubscribe = val
+      valFromSubscribe = val as any
     })
 
     expect(cachedSubject.lastVal).toBe('someVal')
 
     // main ASSERT:
-    expect(valFromSubscribe).toBe('someVal')
+    expect(valFromSubscribe).toBe('someVal' as any)
   })
 
 })
