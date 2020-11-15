@@ -35,7 +35,7 @@ describe('TimeViewComponent', () => {
     }
   }
 
-  function expectElemText(selector: string, expected: string, msg: string) {
+  function expectElemText(selector: string, expected: string | null, msg: string) {
     if ( expected === '.') {
       expected = null
     }

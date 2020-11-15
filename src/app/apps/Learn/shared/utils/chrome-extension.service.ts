@@ -9,6 +9,6 @@ export class ChromeExtensionService {
 
   // https://stackoverflow.com/questions/7507277/detecting-if-code-is-being-run-as-a-chrome-extension
   public static isApplicationRunAsChromeExtension(): boolean {
-    return !!window.chrome?.runtime?.getManifest?.()?.background;
+    return !!(window as any).chrome?.runtime?.getManifest?.()?.background;
   }
 }

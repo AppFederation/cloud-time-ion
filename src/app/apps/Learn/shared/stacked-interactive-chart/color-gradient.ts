@@ -104,7 +104,7 @@ export function updateSpitter(color1: string, color2: string, steps: number): st
     let clampedB = (valClampRGB[2] > 0)
       ? pad((Math.round(valClampRGB[2] / 100 * (stepsPerc * (i + 1)))).toString(16), 2)
       : pad((Math.round((val1RGB[2] + (valClampRGB[2]) / 100 * (stepsPerc * (i + 1))))).toString(16), 2);
-    colors[i] = [
+    (colors as any)[i] = [
       '#',
       clampedR,
       clampedG,
