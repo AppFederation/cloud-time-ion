@@ -75,7 +75,7 @@ export class LearnStatsService {
     // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(
-      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(0.01/*10*//*0.0001*/)),
+      throttleTimeWithLeadingTrailing_ReallyThrottle(minutesAsMs(2/*10*//*0.0001*/)),
       filter(item$s => {
         return ! ! item$s?.length; // skip the initial val that appears before data is loaded
       }),
@@ -89,7 +89,7 @@ export class LearnStatsService {
         return equal
       }),
       tap(stats => {
-        debugLog(`statsToSave$`, stats)
+        debugLog(`statsToSave$`, stats, JSON.stringify(stats))
         if ( stats ) {
           this.statsHistoryService.newValue(stats)
         }
@@ -103,11 +103,14 @@ export class LearnStatsService {
     }
     let countByDims = {}
     try {
+      // https://en.wikipedia.org/wiki/OLAP_cube
+      // Firestore Maximum depth of fields in a map or array	20 - https://firebase.google.com/docs/firestore/quotas
       countByDims = countByMulti(item$s, [
         item$ => item$.val?.isTask ? 'task' : `notTask`,
         item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
         item$ => item$.val?.hasAudio ? 'audio' : `noAudio`,
-        item$ => item$.getEffectiveRoi() + '_Roi',
+        // item$ => item$.getEffectiveRoi() + '_Roi',
+        item$ => item$.val?.getDurationEstimateMs() + '_ms_est',
         item$ => item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
                 should this be effective value?
                 TODO + fun
@@ -117,6 +120,8 @@ export class LearnStatsService {
                 TODO + categories
                 TODO the extended stats might be added e.g. daily
              */,
+        item$ => item$.getEffectiveFunShortIdSuffixed(),
+        item$ => item$.getEffectiveMentalLevelShortIdSuffixed(),
         item$ => (item$.val?.lastSelfRating ?? 'udf') + '_Rating',
       ])
     } catch (e) {
@@ -137,6 +142,8 @@ export class LearnStatsService {
     if ( item$s ?. length ) {
       const stats = this.makeStatsFromItems(item$s)
       if ( stats ) {
+        const jsonStr = JSON.stringify(stats.countByDims)
+        debugLog(`saveStatsFromItemsNow`, jsonStr.length, jsonStr)
         this.statsHistoryService.newValue(stats)
       }
     }

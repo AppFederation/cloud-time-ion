@@ -9,6 +9,8 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
 import {Quiz, Quizzable$} from './quiz'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
+import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
 
 // export class Quiz {
 //   // status$: {
@@ -59,17 +61,19 @@ export class LearnItem$
     return ( this.val ?. importance ?? importanceDescriptors.medium ) ?. numeric
   }
 
-  getEffectiveFunLevel(): Distribution {
-    return 999
+  getEffectiveFunLevel(): FunLevelVal {
+    return this.val ?. funEstimate ?? funLevelsDescriptors.descriptors.undefined
     // return this.importance // ?? maybe return medium
   }
 
   getEffectiveMentalEffort() {
+    return this.val ?. mentalLevelEstimate ?? mentalEffortLevels.undefined
     // return this.importance // ?? maybe return medium
   }
 
-  getEffectiveRoi(): Distribution {
-    return 999 // FIXME
+  getEffectiveRoi(): Distribution | undefined {
+    return this.val ?. getRoi()
+    // return 999 // FIXME
     // return this.importance // ?? maybe return medium
   }
 
@@ -90,4 +94,11 @@ export class LearnItem$
 
   // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
 
+  getEffectiveFunShortIdSuffixed(): string {
+    return funLevelsDescriptors.getWithUnderscoreSuffix(this.getEffectiveFunLevel())
+  }
+
+  getEffectiveMentalLevelShortIdSuffixed(): string {
+    return mentalEffortLevelsDescriptors.getWithUnderscoreSuffix(this.getEffectiveMentalEffort())
+  }
 }

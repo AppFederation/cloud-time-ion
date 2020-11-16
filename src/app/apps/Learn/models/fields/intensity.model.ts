@@ -4,7 +4,7 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 
 const midIntensityNum = 5
 
-type IntensityDescriptor = { numeric: number, abbrev: string, shortId: string } & { id: keyof IntensityDescriptors<any> }
+export type IntensityDescriptor = { numeric: number, abbrev: string, shortId: string } & { id: keyof IntensityDescriptors<any> }
 
 export function intensity(x: any): IntensityDescriptor {
   const ret = {
