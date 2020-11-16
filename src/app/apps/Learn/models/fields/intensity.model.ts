@@ -26,7 +26,7 @@ export function intensity(x: any): IntensityDescriptor {
 export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /* unset -> null; for querying; should have highest effective importance, to force to decide */
   undefined
-    = intensity({numeric: midIntensityNum, abbrev: `-`, shortId: `Udf`}) // 0    BTN
+    = intensity({numeric: midIntensityNum, abbrev: `-`, shortId: ``}) // 0    BTN
   off
     = intensity({numeric: 0, abbrev: `✕`, shortId: `Off`}) // 0    BTN
   unknown

@@ -101,16 +101,22 @@ export class LearnStatsService {
     if ( ! item$s ?. length ) {
       return
     }
+    const multiDimRows = this.makeMultiDimRows(item$s)
+    debugLog(`multiDimRows`, JSON.stringify(multiDimRows).length, JSON.stringify(multiDimRows), multiDimRows)
     let countByDims = {}
     try {
       // https://en.wikipedia.org/wiki/OLAP_cube
       // Firestore Maximum depth of fields in a map or array	20 - https://firebase.google.com/docs/firestore/quotas
+      const udf = ''
       countByDims = countByMulti(item$s, [
+        item$ => item$.getEffectiveMentalLevelShortIdSuffixed(),
         item$ => item$.val?.isTask ? 'task' : `notTask`,
+        item$ => (item$.val?.lastSelfRating ?? udf) + '_Rtg',
+        item$ => (item$.val?.getDurationEstimateMs() ?? udf) + '_est',
         item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
-        item$ => item$.val?.hasAudio ? 'audio' : `noAudio`,
+        item$ => item$.val?.hasAudio ? 'au' : `noAu`,
+        item$ => item$.getEffectiveFunShortIdSuffixed(),
         // item$ => item$.getEffectiveRoi() + '_Roi',
-        item$ => item$.val?.getDurationEstimateMs() + '_ms_est',
         item$ => item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
                 should this be effective value?
                 TODO + fun
@@ -120,9 +126,7 @@ export class LearnStatsService {
                 TODO + categories
                 TODO the extended stats might be added e.g. daily
              */,
-        item$ => item$.getEffectiveFunShortIdSuffixed(),
-        item$ => item$.getEffectiveMentalLevelShortIdSuffixed(),
-        item$ => (item$.val?.lastSelfRating ?? 'udf') + '_Rating',
+        () => 'fakeLong',
       ])
     } catch (e) {
       errorAlert(`countByDims error`, e)
@@ -147,5 +151,29 @@ export class LearnStatsService {
         this.statsHistoryService.newValue(stats)
       }
     }
+  }
+
+  private makeMultiDimRows(item$s: LearnItem$[]) {
+    return countBy(item$s, (item$) => {
+      return JSON.stringify([
+        item$.val?.isTask,
+        item$.val?.hasQAndA(),
+        item$.val?.hasAudio,
+        // item$ => item$.getEffectiveRoi() + '_Roi',
+        item$.val?.getDurationEstimateMs(),
+        item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
+                should this be effective value?
+                TODO + fun
+                TODO + mental level
+                TODO + estimated time
+                TODO + status
+                TODO + categories
+                TODO the extended stats might be added e.g. daily
+             */,
+        item$.getEffectiveFunShortIdSuffixed(),
+        item$.getEffectiveMentalLevelShortIdSuffixed(),
+        item$.val?.lastSelfRating ?? 'udf'
+      ])
+    })
   }
 }
