@@ -12,5 +12,5 @@ export const mentalEffortLevels = new MentalEffortLevelDescriptors()
 
 export const mentalEffortLevelsDescriptors = new Descriptors<MentalEffortLevelDescriptor>(
   mentalEffortLevels,
-  'mental',
+  'mntl',
 )
