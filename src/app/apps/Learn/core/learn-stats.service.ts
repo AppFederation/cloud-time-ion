@@ -112,7 +112,7 @@ export class LearnStatsService {
         item$ => item$.getEffectiveMentalLevelShortIdSuffixed(),
         item$ => item$.val?.isTask ? 'task' : `notTask`,
         item$ => (item$.val?.lastSelfRating ?? udf) + '_Rtg',
-        item$ => (item$.val?.getDurationEstimateMs() ?? udf) + '_est',
+        item$ => (item$.val?.getDurationEstimateMinutes() ?? udf) + '_est',
         item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
         item$ => item$.val?.hasAudio ? 'au' : `noAu`,
         item$ => item$.getEffectiveFunShortIdSuffixed(),
@@ -126,7 +126,7 @@ export class LearnStatsService {
                 TODO + categories
                 TODO the extended stats might be added e.g. daily
              */,
-        () => 'fakeLong',
+        // () => 'fakeLong',
       ])
     } catch (e) {
       errorAlert(`countByDims error`, e)
@@ -160,7 +160,7 @@ export class LearnStatsService {
         item$.val?.hasQAndA(),
         item$.val?.hasAudio,
         // item$ => item$.getEffectiveRoi() + '_Roi',
-        item$.val?.getDurationEstimateMs(),
+        item$.val?.getDurationEstimateMinutes(),
         item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
                 should this be effective value?
                 TODO + fun

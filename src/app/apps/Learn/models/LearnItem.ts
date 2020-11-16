@@ -187,6 +187,15 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return parseDurationToMs(stripHtml(this.time_estimate) ?. trim())
   }
 
+  getDurationEstimateMinutes() {
+    const parseDurationToMs1: number | null | undefined = parseDurationToMs(stripHtml(this.time_estimate) ?. trim())
+    if ( parseDurationToMs1 ) {
+      return parseDurationToMs1 / 60_000
+    } else {
+      return parseDurationToMs1
+    }
+  }
+
   getRoi() {
     const durationEstimateMs = this.getDurationEstimateMs()
     if ( ! durationEstimateMs ) {
