@@ -7,6 +7,7 @@ import {OdmItem$2, OdmPatch} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
+import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -55,6 +56,8 @@ export abstract class OdmService2<
 
   authService = this.injector.get(AuthService)
 
+  geoLocationService = this.injector.get(ApfGeoLocationService)
+
   protected constructor(
     protected injector: Injector,
     public className: string,
@@ -70,6 +73,24 @@ export abstract class OdmService2<
 
   saveNowToDb(itemToSave: TOdmItem$) {
     itemToSave.onModified()
+    let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
+    debugLog(`geo`, geo)
+    if ( geo ) {
+      geo = {
+        accuracy: geo.accuracy ?? null,
+        altitude: geo.altitude ?? null,
+        altitudeAccuracy: geo.altitudeAccuracy ?? null,
+        heading: geo.heading ?? null,
+        lat: geo.latitude ?? null,
+        lng: geo.longitude ?? null,
+        speed: geo.speed ?? null,
+        timestamp: this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. timestamp
+      }
+    } else {
+      geo = null
+    }
+    (itemToSave.val as any).whereCreated ??= geo;
+    (itemToSave.val as any).whereLastModified = geo
     // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
     const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
