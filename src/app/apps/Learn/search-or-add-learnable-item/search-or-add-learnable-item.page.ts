@@ -35,7 +35,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   coll ! : AngularFirestoreCollection<any>
   items: LearnItem[] = []
   filteredItems: LearnItem[] = []
-  currentlyDisplayedElements: number = 20;
+  currentlyDisplayedElements: number = 100;
   private patchingOwnerHasRun = false
 
   showOldEditor = false
@@ -96,7 +96,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // })
 
     // Load fake data:
-    this.items = DataGeneratorService.generateLearnItemList(3000);
+    this.items = DataGeneratorService.generateLearnItemList(5000);
   }
 
   private patchOwnersIfNecessary(user: User, items: any[]) {
@@ -201,10 +201,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     console.log(`alt enter`)
   }
 
-  trackByFn(index: number, item: LearnItem) {
-    return item.id
-  }
-
   matchesSearch(item: LearnItem) {
     // if ( item.hasQAndA() ) {
     //   return false
@@ -229,7 +225,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   loadMore() {
-    this.currentlyDisplayedElements += 20;
+    this.currentlyDisplayedElements += 100;
   }
 
   loadAll() {

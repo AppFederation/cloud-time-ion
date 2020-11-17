@@ -130,15 +130,8 @@
       </div>
     </ion-virtual-scroll>-->
 
-    <ion-list>
-      <ng-container
-        *ngFor="let item$ of filteredItems?.slice(0, currentlyDisplayedElements); trackBy: trackByFn"
-      >
-        <app-actionable-item
-          [item]="item$"
-        ></app-actionable-item>
-      </ng-container>
-    </ion-list>
+    <simple-list [items]="filteredItems?.slice(0, currentlyDisplayedElements)">
+    </simple-list>
 
     <ion-button (click)="loadMore()" *ngIf="currentlyDisplayedElements < filteredItems.length">
       Load More

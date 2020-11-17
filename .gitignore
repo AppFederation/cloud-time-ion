@@ -37,4 +37,5 @@ UserInterfaceState.xcuserstate
 electron/app
 
 /env
-/.idea
+/.idea/shelf
+/.idea/compiler.xml

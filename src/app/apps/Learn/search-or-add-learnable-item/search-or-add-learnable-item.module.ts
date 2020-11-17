@@ -17,6 +17,7 @@ import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
+import {SimpleListComponent} from './item-lists/simple-list/simple-list.component'
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
         TestItemComponent,
         LearnStatsComponent,
         SearchOrAddTextEditorComponent,
+        SimpleListComponent,
     ],
 })
 export class SearchOrAddLearnableItemPageModule {}
