@@ -4,6 +4,7 @@ import {StoredLearnStats} from './learn-stats.service'
 import {LearnItemId} from '../models/LearnItem'
 import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
+import {QuizOptions} from './quiz.service'
 
 export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
@@ -18,7 +19,9 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   // importance: ImportanceVal
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
-  // OR quizOptions: QuizOptions
+
+  quizOptions ? : QuizOptions
+
   // timeToAnswer: DurationMs
 
   // learnItem: LearnItemId
