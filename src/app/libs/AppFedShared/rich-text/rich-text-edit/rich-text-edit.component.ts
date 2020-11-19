@@ -3,6 +3,7 @@ import {ViewSyncer} from '../../odm/ui/ViewSyncer'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 import {FormControl} from '@angular/forms'
 import {debugLog} from '../../utils/log'
+import {EditorService} from './editor.service'
 
 /**
  * http://ckeditor.github.io/editor-recommendations/about/
@@ -11,11 +12,11 @@ import {debugLog} from '../../utils/log'
  *
  **/
 @Component({
-  selector: 'app-rich-text',
-  templateUrl: './rich-text.component.html',
-  styleUrls: ['./rich-text.component.sass'],
+  selector: 'app-rich-text-edit',
+  templateUrl: './rich-text-edit.component.html',
+  styleUrls: ['./rich-text-edit.component.sass'],
 })
-export class RichTextComponent implements OnInit {
+export class RichTextEditComponent implements OnInit {
 
   @Input() viewSyncer ! : ViewSyncer
 
@@ -25,9 +26,11 @@ export class RichTextComponent implements OnInit {
 
   private _editorViewChild: EditorComponent | undefined
 
+  /* TODO rename editorWasOrIsOpened */
   editorOpened = false
 
-  @ViewChild(EditorComponent) set editorViewChild(ed: EditorComponent | undefined) {
+  @ViewChild(EditorComponent)
+  set editorViewChild(ed: EditorComponent | undefined) {
     if ( ed ) {
       setTimeout(() => {
         this.editorOpened = true /* prevent tinymce side editor from disappearing after deleting content:
@@ -63,7 +66,8 @@ export class RichTextComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customInsertButton selectall copy paste | undo redo | formatselect | blockquote bold italic underline forecolor backcolor | \
+      'customInsertButton selectall copy paste | undo redo | blockquote bold italic underline forecolor backcolor | \
+      formatselect | \
       alignleft aligncenter alignright alignjustify | \
       bullist numlist outdent indent | removeformat | help',
     skin: 'oxide-dark',
@@ -74,7 +78,9 @@ export class RichTextComponent implements OnInit {
       '[contenteditable] li { padding-top: 6px; } ' +
       '[contenteditable] ::marker { color: var(--secondary); ' +
         '/* does not seem to work: */ text-shadow: 2px 2px #ffffff; } ' +
-      `blockquote { border-left: 3px gray solid; padding-left: 6px; margin-left: 20px } `
+      `blockquote { border-left: 3px var(--secondary) solid; padding-left: 6px; margin-left: 20px } ` + /* TODO: extract standard rich text css into global const for -edit and -view */
+      `ul { padding-inline-start: 20px; }` +
+      `ol { padding-inline-start: 20px; }`
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
       [contenteditable] a { color: #98aed9 }
@@ -97,7 +103,10 @@ export class RichTextComponent implements OnInit {
   }
 
 
-  constructor() { }
+  constructor(
+    public editorService: EditorService,
+  ) { }
+
 
   ngOnInit() {}
 
@@ -113,9 +122,15 @@ export class RichTextComponent implements OnInit {
   focusEditor() {
     setTimeout(() => {
       // debugLog(`focusEditor`, this.editorViewChild)
-      this.editorViewChild?.editor.focus()
+      this.editorViewChild ?. editor ?. focus()
     }, 10)
   }
 
+  onFocus(b: any) {
+    this.editorService.status$.next({
+      textEditorFocused: b
+    })
+    // debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
+  }
 
 }

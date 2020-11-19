@@ -1,3 +1,13 @@
 td
-  padding: 3px
-  text-align: right
+  padding: 2px
+  text-align: center
+  background-color: #1c1c1c
+  border: 2px solid #121212 /* hack for bg color */
+  border-radius: 3px // does not work; try: https://stackoverflow.com/questions/13514593/table-cell-background-color-and-round-corners
+
+tr>:nth-child(1)
+  background-color: inherit
+  opacity: 60%
+
+.highlight
+  background-color: darkblue

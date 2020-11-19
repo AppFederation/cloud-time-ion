@@ -5,7 +5,11 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    // ======= Strictness / checks:
+    "strictNullChecks": false,
+    "noImplicitAny" : false,
+    "strict": false
   },
   "files": [
     "test.ts",

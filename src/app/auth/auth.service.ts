@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import {errorAlert} from '../libs/AppFedShared/utils/log'
 import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {User} from 'firebase'
+import {ChromeExtensionService} from '../apps/Learn/shared/utils/chrome-extension.service'
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +45,8 @@ export class AuthService {
 
   logout() {
     this._userIsAuthenticated = false;
-    return this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut();
+    this.authUser$.next(null)
   }
 
   signUpWithEmailAndPassword(email: string, password: string) {
@@ -62,12 +64,21 @@ export class AuthService {
   }
 
   logInViaGoogle() {
-    const authProvider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth
-      .signInWithPopup(authProvider)
-      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
-        /* TODO: emit authUser$ */
-      )
-      .catch(error => errorAlert('Error logging in via Google ' + error));
+    if (ChromeExtensionService.isApplicationRunAsChromeExtension()) {
+      // @ts-ignore
+      chrome.runtime.sendMessage({
+        command: 'login'
+      }, (response) => {
+        console.log('Log  in response===', response);
+      });
+    } else {
+      const authProvider = new firebase.auth.GoogleAuthProvider();
+      return this.afAuth.auth
+        .signInWithPopup(authProvider)
+        .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
+          /* TODO: emit authUser$ */
+        )
+        .catch(error => errorAlert('Error logging in via Google ' + error));
+    }
   }
 }

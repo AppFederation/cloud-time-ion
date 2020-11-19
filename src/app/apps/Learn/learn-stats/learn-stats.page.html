@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
     </ion-buttons>
-    <ion-title>learn-stats</ion-title>
+    <ion-title>Chart</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,6 +13,15 @@
     Data points: {{(items$ | async)?.length}}
   </p>
 
-  <stacked-interactive-chart [data]="data"></stacked-interactive-chart>
+
+  <stacked-interactive-chart
+    style="width: 100%; display: block"
+    [data]="data"
+  ></stacked-interactive-chart>
+
+<!--  <pre>-->
+<!--    {{items$ | async | json}}-->
+<!--  </pre>-->
+
 
 </ion-content>

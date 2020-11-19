@@ -12,7 +12,7 @@
 
   <div
     #answers
-    style="border: 3px darkgreen solid; border-radius: 6px; padding: 6px"
+    style="border: 3px var(--answerBorderColor) solid; border-radius: 6px; padding: 6px"
     *ngIf="(showHint$ | async) || (showAnswer$ | async)"
   >
     <ng-container

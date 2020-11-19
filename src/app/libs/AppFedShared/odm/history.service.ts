@@ -16,7 +16,10 @@ export class HistoryService<TInMem, TRaw = TInMem>
     protected injector: Injector,
     public className: string,
   ) {
-    super(injector, className)
+    super(injector, className, {
+      dontLoadAllAutomatically: true,
+      dontStoreWhenModified: true,
+    })
   }
 
   public newValue(val: TInMem) {
@@ -27,7 +30,7 @@ export class HistoryService<TInMem, TRaw = TInMem>
     // val.when = timestamp
     // TODO: throttle and distinctUntilChanged
     const histItem = new OdmItem$2(this as any, undefined, {})
-    debugLog(`HistoryService newValue`, val)
+    // debugLog(`HistoryService newValue`, val)
     histItem.patchNow(toSave)
     // this.createOdmItem$ForExisting(uuid)
   }

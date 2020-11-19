@@ -17,8 +17,10 @@
       ></app-quiz-button>
 
       <ion-buttons slot="end">
-        <ion-icon class="action-icon" name="bar-chart-outline" slot="end" [routerLink]="['/learn/stats']"></ion-icon>
-        <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
+        <ion-icon class="action-icon" name="bar-chart-outline" slot="end"
+                  [routerLink]="['/learn/stats']"></ion-icon>
+        <ion-icon class="action-icon" name="pencil" slot="end"
+                  [routerLink]="['/journal/write/new']"></ion-icon>
 
         <odm-sync-status></odm-sync-status>
       </ion-buttons>
@@ -36,7 +38,7 @@
         (keyup.meta.enter)="addToLearn(); $event.stopPropagation()"
         (keyup.alt.enter)="addToLearn(); $event.stopPropagation()"
         (keyup.control.enter)="addToLearn(); $event.stopPropagation()"
-      > <!-- TODO: Fix alt+enter -->
+      >
         <app-search-or-add-text-editor
           [formControl1]="searchFormControl"
         ></app-search-or-add-text-editor>
@@ -56,17 +58,32 @@
         ><ion-icon name="close-outline"></ion-icon></ion-button>
       </div>
 
-      <ion-button
-        [hidden]="! hasSearchText()"
-        [disabled]="! hasSearchText()"
-        (click)="addTask()"
-      >ADD TASK</ion-button>
+      <!--
+        https://medium.com/madewithply/ionic-4-long-press-gestures-96cf1e44098b
+        https://forum.ionicframework.com/t/ionic-5-long-press-gesture-example/188746/2
+        https://ionicframework.com/docs/utilities/gestures
+      -->
+      &nbsp;<ion-checkbox></ion-checkbox>&nbsp;
 
       <ion-button
-        [hidden]="! hasSearchText()"
-        [disabled]="! hasSearchText()"
+        (press)="addTask()"
+        (click)="addTask()"
+      ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;TASK</ion-button>
+
+      <ion-button
         (click)="addToLearn()"
-      >ADD TO LEARN</ion-button>
+      ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;LEARN</ion-button>
+
+      <ion-button
+      ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;JOURNAL</ion-button>
+
+      <ion-icon
+        style="align-self: stretch; padding: 10px"
+        class="action-icon"
+        name="filter"
+        (click)="onClickListOptions($event)"
+      ></ion-icon>
+
       <ion-text style="color: gray">
         <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
         {{ items?.length }}
@@ -84,18 +101,6 @@
 <!--  <app-toggle option="listFilterItemNeedProcessing"-->
 <!--  >Need Processing</app-toggle>-->
 
-<!--  <ion-textarea-->
-<!--    [(ngModel)]="search"-->
-<!--    placeholder="Search or add"-->
-<!--    debounce="100"-->
-<!--    inputmode="search"-->
-<!--    [rows]="2"-->
-<!--    (keyup.enter)="add()"-->
-<!--  ></ion-textarea>-->
-
-
-<!--  coll.valueChanges() length: {{(coll.valueChanges() | async)?.length}}-->
-<!--  <ion-item *ngFor="let item of (coll.valueChanges() | async)">-->
 
 <!--  <ng-container *ngFor="let item of items; trackBy: trackByFn">-->
 <!--    <app-actionable-item-->
@@ -116,7 +121,6 @@
 
   <ng-template #loggedIn>
 
-
 <!--    <ion-virtual-scroll
       [items]="filteredItems"
       [approxItemHeight]="31"
@@ -126,7 +130,7 @@
         <app-actionable-item
           [item]="currItem"
         ></app-actionable-item>
-        &lt;!&ndash; [hidden]="! matchesSearch(currItem)"&ndash;&gt;
+        [hidden]="! matchesSearch(currItem)"
       </div>
     </ion-virtual-scroll>-->
 

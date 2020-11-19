@@ -14,6 +14,7 @@ import {RouterModule} from '@angular/router'
 import {ProcessButtonComponent} from './process-button/process-button.component'
 import {StackedInteractiveChartComponent} from './stacked-interactive-chart/stacked-interactive-chart.component'
 import {SideIconComponent} from './side-icon/side-icon.component'
+import {SharedModule} from '../../../shared/shared.module'
 
 const exports = [
   SelfRatingComponent,
@@ -38,10 +39,11 @@ const exports = [
     EditorModule,
     ReactiveFormsModule,
     RouterModule,
+    SharedModule,
   ],
   exports: [
     exports,
     ProcessButtonComponent,
   ],
 })
-export class SharedModule { }
+export class LearnSharedModule { }

@@ -38,6 +38,8 @@ export class JournalTextDescriptors {
   static instance = new JournalTextDescriptors()
 
   general = d()
+  /** temporary for retrospective */
+  text = d()
   positive = d({
     icon: `thumbs-up-outline`
   })

@@ -1,5 +1,6 @@
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
+<ion-checkbox></ion-checkbox>
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
@@ -7,13 +8,18 @@
     style="color: var(--primary)"
     *ngIf="item.importance?.numeric || '-'; let importanceNum"
   >
-    {{importanceNum}}x
+    {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
+
+  {{getFunLevelDescriptor() ?. icons }}
 
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
+
+  &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
+
   &nbsp;
   <app-play-button
     *ngIf="item.hasAudio"

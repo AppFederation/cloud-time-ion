@@ -1,19 +1,19 @@
-import {DurationMs, TimeMsEpoch} from './type-utils'
+import {DurationMs, TimeMsEpoch} from '../type-utils'
 
 // export function getEndOfDay() {
 //   // return new
 // }
 
 export function hoursAsMs(hours: number): DurationMs {
-  return hours * 3600_000;
+  return hours * 3600_000 as DurationMs;
 }
 
 export function minutesAsMs(minutes: number): DurationMs {
-  return minutes * 60_000;
+  return minutes * 60_000 as DurationMs;
 }
 
 export function secondsAsMs(seconds: number): DurationMs {
-  return seconds * 1000;
+  return seconds * 1000 as DurationMs;
 }
 
 export function isInFuture(timeMsEpoch: TimeMsEpoch) {

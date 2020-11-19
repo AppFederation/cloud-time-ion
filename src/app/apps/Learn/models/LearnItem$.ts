@@ -2,19 +2,32 @@ import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {LearnItem} from './LearnItem'
+import {ImportanceVal, LearnItem} from './LearnItem'
+import {IntensityDescriptors} from './fields/intensity.model'
+import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
+import {Quiz, Quizzable$} from './quiz'
+import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
+import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
 
-export class Quiz {
-  // status$: {
-  //   whenNextRepetition: Date
-  //   isInFuture: boolean
-  // }
-}
+// export class Quiz {
+//   // status$: {
+//   //   whenNextRepetition: Date
+//   //   isInFuture: boolean
+//   // }
+// }
 
 export class LearnItem$
-  extends OdmItem$2<LearnItem$, LearnItem, LearnItem, LearnDoService>
+  extends OdmItem$2<
+      LearnItem$,
+      LearnItem,
+      LearnItem,
+      LearnDoService>
+  implements Quizzable$
 {
-  quiz = new Quiz() // medium-coupling?
+  quiz = new Quiz(this) // medium-coupling?
 
   // TODO: operations should actually be performed on certain Version, for versioning, drafts, branches, conflict detection/resolution
 
@@ -38,5 +51,45 @@ export class LearnItem$
     })
 
   }
+
+  /* TODO return descriptor */
+  getEffectiveImportance(): ImportanceVal {
+    return this.val ?. importance ?? importanceDescriptors.undefined
+  }
+
+  getEffectiveImportanceNumeric(): number {
+    return ( this.val ?. importance ?? importanceDescriptors.medium ) ?. numeric
+  }
+
+  getEffectiveFunLevel(): FunLevelVal {
+    return this.val ?. funEstimate ?? funLevelsDescriptors.descriptors.undefined
+    // return this.importance // ?? maybe return medium
+  }
+
+  getEffectiveMentalEffort() {
+    return this.val ?. mentalLevelEstimate ?? mentalEffortLevels.undefined
+    // return this.importance // ?? maybe return medium
+  }
+
+  // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
+
+  getEffectiveRoi(): Distribution | undefined {
+    return this.val ?. getRoi()
+    // return 999 // FIXME
+    // return this.importance // ?? maybe return medium
+  }
+
+  getEffectiveImportanceShortId() {
+    return importanceDescriptors2.getShortId(this.getEffectiveImportance())
+  }
+
+  getEffectiveFunShortId(): string {
+    return funLevelsDescriptors.getShortId(this.getEffectiveFunLevel())
+  }
+
+  getEffectiveMentalLevelShortId(): string {
+    return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
+  }
+
 
 }

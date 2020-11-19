@@ -16,7 +16,9 @@
       <w>cloudtime</w>
       <w>contenteditable</w>
       <w>cordova</w>
+      <w>damerau</w>
       <w>deepl</w>
+      <w>descr</w>
       <w>deviceready</w>
       <w>dvisor</w>
       <w>ebbinghaus</w>
@@ -25,32 +27,42 @@
       <w>firebaseapp</w>
       <w>forecolor</w>
       <w>formatselect</w>
+      <w>freqs</w>
+      <w>hilight</w>
       <w>hilitecolor</w>
       <w>homescreen</w>
       <w>hypomania</w>
+      <w>importances</w>
       <w>innotopic</w>
       <w>inputmode</w>
       <w>insertdatetime</w>
+      <w>jaro</w>
       <w>keyvalue</w>
       <w>linguee</w>
       <w>mins</w>
+      <w>mntl</w>
       <w>msapplication</w>
       <w>mtiaaky</w>
       <w>nodechange</w>
       <w>notif</w>
       <w>notifs</w>
+      <w>numerics</w>
       <w>numlist</w>
       <w>outdent</w>
+      <w>perc</w>
       <w>powściągliwość</w>
       <w>prolly</w>
+      <w>quizzable</w>
       <w>removeformat</w>
       <w>searchreplace</w>
       <w>selectall</w>
       <w>signup</w>
       <w>smth</w>
+      <w>spitter</w>
       <w>syncer</w>
       <w>tinymce</w>
       <w>vals</w>
+      <w>vconcat</w>
       <w>visualblocks</w>
       <w>vlid</w>
       <w>webmanifest</w>

@@ -21,6 +21,10 @@ export class JournalNumericFieldsComponent implements OnInit {
 
   showAll = false
 
+  get isSearchEntered() {
+    return this.search ?. trim() ?. length
+  }
+
   constructor() { }
 
   ngOnInit() {}

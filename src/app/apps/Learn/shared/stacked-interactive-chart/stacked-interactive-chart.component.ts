@@ -22,7 +22,7 @@ interface VegaLiteEncodingPoint {
 
 
 interface VegaLiteVconcat {
-  width?: number,
+  width?: number | string /* | 'container'*/,
   mark: string,
   encoding: {
     x?: VegaLiteEncodingPoint,
@@ -44,7 +44,7 @@ const DEMO_CHART = {
   // "data": {"values": Array.from(dataToSingleValues(dataGenerator(30, new Date().getTime() / 1000)))},
   "data": {"name": "data", "values": []},
   "vconcat": [{
-    "width": 480,
+    "width": "container",
     "mark": "area",
     "encoding": {
       "x": {
@@ -56,7 +56,7 @@ const DEMO_CHART = {
       "y": {"field": "count", "aggregate": "sum"},
     }
   }, {
-    "width": 480,
+    "width": "container",
     "height": 60,
     "mark": "area",
     "selection": {

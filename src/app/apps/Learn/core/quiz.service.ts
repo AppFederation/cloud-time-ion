@@ -7,12 +7,9 @@ import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {
-  importanceDescriptors,
-  ImportanceDescriptors,
-  importanceDescriptorsArray,
-  importanceDescriptorsArrayFromHighest,
+  ImportanceVal,
   LearnItem,
-  Rating,
+
 } from '../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
@@ -21,25 +18,28 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time-utils'
+import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
 import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs'
 import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 import {Subject} from 'rxjs/internal/Subject'
+import {Rating} from '../models/fields/self-rating.model'
+import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
+import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
 export type Duration = number
 
 
-
 export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
-    public powBaseX100: number = 3
+    public powBaseX100: number = 300,
+    public skipTasks: boolean = true,
   ) {
   }
 }
@@ -66,14 +66,19 @@ export class QuizStatus {
   private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
     const ret = {} as any
     let idx = 0
+    let previousFilledVal: number | undefined = undefined
     for ( let imp of importanceDescriptorsArray ) {
       let sum = 0
       for ( let internalIdx = idx; internalIdx < importanceDescriptorsArray.length; internalIdx ++ ) {
         const impInternal = importanceDescriptorsArray[internalIdx]
         sum += itemsLeftByImportance[impInternal.id] ?? 0
       }
+      // const previousIdx = idx - 1
+      if ( /*previousIdx < 0 || */ (previousFilledVal !== sum ) ) {
+        ret[imp.id] = sum
+        previousFilledVal = sum
+      }
       idx++
-      ret[imp.id] = sum
     }
     return ret
   }
@@ -85,13 +90,17 @@ export class QuizStatus {
 })
 export class QuizService {
 
+  quizIntervalCalculator = new QuizIntervalCalculator()
+
   options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
     new QuizOptions(false, true), 'QuizOptions'
   )
 
   private isNextItemRequested = true
 
-  get options$(): CachedSubject<QuizOptions> { return this.options2$.locallyVisibleChanges$ }
+  get options$(): CachedSubject<QuizOptions> {
+    return this.options2$.locallyVisibleChanges$
+  }
 
   showAnswer$ = new CachedSubject<boolean>(false)
 
@@ -119,14 +128,17 @@ export class QuizService {
       throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
     ),
     combineLatest(
-      timer(0, secondsAsMs(20) /* FIXME make the timer longer for performance/battery */),
+      timer(0, secondsAsMs(60) /* FIXME make the timer longer for performance/battery */),
       this.nextItemRequests$,
     ),
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
       if ( quizOptions.onlyWithQA ) {
-        item$s = item$s.filter(item => item.currentVal ?. hasQAndA())
+        item$s = item$s.filter(item => item.val ?. hasQAndA() )
+      } // TODO: performance - join the .filters
+      if ( quizOptions.skipTasks ) {
+        item$s = item$s.filter(item => ! (item.val ?. isTask) )
       }
       // filter remaining until now
       const nowMs: TimeMsEpoch = Date.now()
@@ -151,7 +163,7 @@ export class QuizService {
         pendingItems.length,
         nextItem$,
         pendingItemsTodayCount,
-        isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)),
+        nextItem$ ? isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)) : undefined,
         undefined,
         countBy(pendingItems, (item) => item.val?.importance?.id) as CountsByImportance,
         countBy(item$s, (item) => item.val?.importance?.id) as CountsByImportance,
@@ -171,16 +183,20 @@ export class QuizService {
   ).pipe(shareReplay(1))
 
 
+  /** too imperative style, but quick workaround for now, in the face of withLatestFrom approach not showing quiz item on page load */
   nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
     map(status => status?.nextItem$),
-    filter((item) => !! item && this.isNextItemRequested),
+    filter((item) => !! item && this.isNextItemRequested /* hack (via external field) ? */),
     tap(() => {
       debugLog(`nextItem$WhenRequested ver2`)
-      this.isNextItemRequested = false // too imperative style, but quick workaround for now
+      this.isNextItemRequested = false
     }),
     shareReplay(1),
   )
 
+  /* ==== Approach with withLatestFrom - worked when pressing Apply&Next button, but NOT showing any quiz item at the loading of quiz page.
+   * Maybe putting it with combineLatest with timer has already helped. Need testing. I leave it like that for now.
+   * Need to get deeper into understanding semantics of when pipes before someone subscribes, multiple subscribers, and shareReplay(1) */
   // could combine the nextItemRequests$ with timer operator
   // nextItem$WhenRequested: Observable<LearnItem$ | undefined> = this.nextItemRequests$.pipe(
   //   tap(x => debugLog(`nextItemRequests$`, x)),
@@ -211,59 +227,29 @@ export class QuizService {
     return nextItem$
   }
 
-  calculateIntervalHours2(rating: Rating): Duration {
-    return this.calculateIntervalHours(rating, this.options$?.lastVal !)
+  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$): TimeMsEpoch {
+    return item$?.quiz?.calculateWhenNextRepetitionMsEpoch(this.options$.lastVal)
   }
 
-  calculateIntervalHours(rating: Rating, quizOptions: QuizOptions): Duration {
-    // debugLog(`calculateIntervalHours`, quizOptions)
-
-    // TODO: consider a kind of LIFO to prioritize minute periods (for them to not be at mercy of smth delayed from days ago); Coz the difference between 1 minute and say 10 hours is much bigger than 10 hours and 11 hours
-    // TODO: (right now the app is ok at relative priority/frequency, but necessarily too good at determining the exact time spacing
-    // 0 => 1 min
-    // 0.5 => few hours
-    //
-    // Ebbinghaus forgetting curve (related; but this equation is about time, not probability)
-    // TODO: !!!! when rating zero, make it one minute (as in Anki), so that it goes in front of whatever stuff might have been there from previous days
-    if ( rating === 0 ) {
-      return 30/3600 // 30 seconds (could try 1 minute)
-    }
-    return 12 * Math.pow(((quizOptions.powBaseX100 ?? 300) / 100) ?? 3.5, rating || 0)
-  }
-
-  /** This could be a method of LearnItem$ */
-  calculateWhenNextRepetitionMsEpoch(item$: LearnItem$ | null | undefined): TimeMsEpoch {
-    const dePrioritizeNewMaterial = this.options$.lastVal !. dePrioritizeNewMaterial
-    // TODO: extract into strategy pattern class LearnAlgorithm or RepetitionAlgorithm
+  calculateWhenNextRepetitionMsEpochOrNullish(item$: LearnItem$ | nullish): TimeMsEpoch | nullish {
     if ( ! item$ ) {
-      return 0
+      return item$ as nullish
     }
-    const item = item$.currentVal
-    if ( ! item ) {
-      return 0
-    }
-    const whenLastTouched: OdmTimestamp | null =
-      item.whenLastSelfRated ||
-      // item.whenLastModified || /* garbled by accidental patching of all items */
-      (dePrioritizeNewMaterial ? null : item.whenAdded) // ||
-      // item.whenCreated /* garbled by accidental patching of all items */
-
-    if ( ! whenLastTouched ) {
-      return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
-    }
-
-    /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
-       http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
-    **/
-    const mediumNumeric = importanceDescriptors.medium.numeric
-    const effectiveImportance = (item.importance?.numeric ?? mediumNumeric) / mediumNumeric
-    const interval = hoursAsMs(this.calculateIntervalHours(item.lastSelfRating || 0, this.options$.lastVal !))
-      / effectiveImportance /* TODO: this should actually appear before some old stuff, to de-clutter */
-    const ret = whenLastTouched.toMillis() + interval
-    return ret
-
-    // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
+    return this.calculateWhenNextRepetitionMsEpoch(item$)
   }
+
+
+  calculateIntervalMs(rating: Rating, importance?: ImportanceVal): DurationMs {
+    if ( importance ) {
+      return this.quizIntervalCalculator.calculateIntervalMs(rating, this.options$?.lastVal !, importance)
+    }
+    return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
+  }
+
+  // calculateIntervalHours3(rating: Rating, importance: ImportanceVal, quizOptions: QuizOptions): Duration {
+  //   return this.calculateIntervalHours(rating, this.options$?.lastVal !)
+  // }
+
 
   toggleShowAnswer() {
     this.showAnswer$.next(! this.showAnswer$.lastVal)

@@ -1,5 +1,6 @@
 import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {UiFieldDef} from './JournalTextDescriptors'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 export interface ILateInit {
   lateInit(): any
@@ -10,8 +11,22 @@ export interface ILateInitWithMorph<TMorphInto> {
   lateInitAndMorph(): TMorphInto
 }
 
+export function includes(searchIn: string | string[] | nullish , searchStringPreprocessed: string): boolean | nullish {
+  if ( typeof searchIn === `string` ) {
+    return searchIn ?. toLowerCase() ?. includes(searchStringPreprocessed)
+  } else {
+    return searchIn ?. some(s => includes(s, searchStringPreprocessed))
+  }
+}
+
 export class JournalNumericDescriptor extends UiFieldDef {
+
   isShortListed?: boolean
+
+  searchTerms?: string | string[]
+
+  antonym?: string | string[]
+
 
   get title() {
     return this.id
@@ -24,7 +39,12 @@ export class JournalNumericDescriptor extends UiFieldDef {
   }
 
   matchesSearch(search: string) {
-    return this.id !. toLowerCase().includes(search.toLowerCase())
+    search = search ?. trim() ?. toLowerCase()
+    if ( includes(this.antonym, search) ) {
+      return true
+    }
+    return includes(this.id, search)
+      || includes(this.searchTerms, search)
   }
 }
 
@@ -60,11 +80,13 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   mood = jnd({
     searchTerms: [`happiness`, `happy`],
+    antonym: [`sad`, `depressed`],
     isShortListed: true,
   })
   health = jnd({
     isShortListed: true,
   })
+  pain = jnd({isShortListed: true})
   productivity = jnd({
     isShortListed: true,
   })
@@ -111,6 +133,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* TODO: esteem / respect from others, */
   guilt = jnd({lowerIsBetter: true}) /* mental state group */
   shame = jnd({lowerIsBetter: true}) /* mental state group */
+  selfishness = jnd({lowerIsBetter: true, searchTerms: [`ego`, `egoism`], antonym: [`altruism`, `selflessness`]}) /* mental state group */
+  competitiveness = jnd({moderateIsBetter: true}) /* mental state group */
+  skill = jnd({})
+  caution = jnd({moderateIsBetter: true, searchTerms: [`carefulness`], antonym: [`recklessness`, `carelessness`]})
   passion = jnd()
   adventure = jnd()
   exploration = jnd()
@@ -128,6 +154,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'annoyance' = jnd({lowerIsBetter: true,})
   anger = jnd({lowerIsBetter: true,})
   hate = jnd({lowerIsBetter: true,})
+  modesty = jnd({antonym: [`hubris`, `arrogance`]})
   aggression = jnd({lowerIsBetter: true,})
   testosterone = jnd({moderateIsBetter: true})
   manliness = jnd({moderateIsBetter: true /* coz machismo ;) */})
@@ -138,6 +165,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   determination = jnd({idealValue: 7.5,
     isShortListed: true,
   })
+  resilience = jnd({isShortListed: true})
+  strength = jnd({isShortListed: true})
+  // TODO physical strength, mental strength
+  // TODO power / influence
   energy = jnd({idealValue: 8.5,
     isShortListed: true,
     antonym: [`tiredness`, `tired`, `apathy`] /* Note: also in "rest" */
@@ -156,6 +187,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     searchTerms: ['nutrition', 'food', 'eating'],
     isShortListed: true,
   })
+  overeating = jnd({
+    searchTerms: ['gorging', 'food', 'eating'],
+    isShortListed: true /* this will be personalised later */,
+    lowerIsBetter: true,
+  }) // other stuff for food/diet: eating sweets, eating junk foods, eating late/night
   rest = jnd({antonym: 'tired', searchTerms: [`Somnolence`, `sleepy` /* Note; someone searches sleepy, but the might want to distinguish tired */]})
   /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
   'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
@@ -259,8 +295,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   moderation = jnd({searchTerms: [`junkie`], antonym: `excess`})
   junkie = jnd({})
-  desire = jnd({searchTerms: [`wanting`]})
-  greed = jnd({})
+  desire = jnd({searchTerms: [`wanting`,  /* is it the same as desire? but for sure related */ /* but "desire" has some carnal/sexual connotations" */]})
+  greed = jnd({moderateIsBetter: true})
 
   'delaying of gratification' = jnd()
   relationships = jnd({
@@ -304,6 +340,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     lowerIsBetter: true,
   })
   'balance' = jnd()
+  'harmony' = jnd()
   'allergy' = jnd()
   'food allergies' = jnd()
   freedom = jnd()
@@ -321,6 +358,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   growth = jnd({
     isShortListed: true,
   })
+
+  // TODO: ego,
+  // TODO pride, modesty
 
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)

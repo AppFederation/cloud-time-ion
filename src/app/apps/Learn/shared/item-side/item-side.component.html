@@ -1,8 +1,9 @@
 
 <ion-button
-  *ngIf="side && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
+  *ngIf="side && isVisible(item$.val$ | async) && (! formControl.value) && ! editorOpened && isDependencySatisfied()"
   (click)="editorOpened = true; focusEditor()"
   color="gray"
+  [ngClass]="{ answerBorder: side.id === answerDescr.id }"
 >
   <app-side-icon
     [side]="side"
@@ -15,7 +16,7 @@
 
 <div
   style="margin-left: 4px"
-  *ngIf="side && (editorOpened || formControl.value)"
+  *ngIf="side && isVisible(item$.val$ | async) && (editorOpened || formControl.value)"
   (click)="focusEditor()"
 > <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
 
@@ -23,24 +24,10 @@
     [side]="side"
   ></app-side-label>
 
-  <editor
-    #editor
-    [init]="tinyMceInit"
-    [inline]="true"
-    [formControl]="formControl"
-    (ngModelChange)="onChangeEditor($event)"
-    (onInit)="logEditor('tinyMce <editor (onInit)...'); viewSyncer.onInitialDataWasSet()"
-  >
-    <!-- FIXME:     modelEvents="change input undo redo nodechange" causes patching when opening details page -->
-    <!--     (onSetContent)="logEditor('onSetContent')"
-    (onPostRender)="logEditor('onPostRender')"
-    -->
-    <!-- events: https://www.tiny.cloud/docs/advanced/events/#init
-      * Init -- actually called last?
-      * SetContent
-    -->
-
-  </editor>
+  <app-rich-text-edit
+    [viewSyncer]="viewSyncer"
+    [formControl1]="formControl"
+  ></app-rich-text-edit>
 
 </div>
 

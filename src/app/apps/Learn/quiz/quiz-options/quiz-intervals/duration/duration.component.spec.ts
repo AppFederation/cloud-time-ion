@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RichTextComponent } from './rich-text.component';
+import { DurationComponent } from './duration.component';
 
-describe('RichTextComponent', () => {
-  let component: RichTextComponent;
-  let fixture: ComponentFixture<RichTextComponent>;
+describe('DurationComponent', () => {
+  let component: DurationComponent;
+  let fixture: ComponentFixture<DurationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RichTextComponent ],
+      declarations: [ DurationComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RichTextComponent);
+    fixture = TestBed.createComponent(DurationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

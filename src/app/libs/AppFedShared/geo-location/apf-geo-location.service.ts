@@ -14,23 +14,29 @@ const geolocationOptions = {
 // @Logger()
 export class ApfGeoLocationService {
 
-  public geoLocation$ = new CachedSubject<any>()
+  public readonly geoLocation$ = new CachedSubject<{
+    currentPosition: Position,
+  }>()
 
   constructor() {
     this.initGeoLocationCallback();
   }
 
   private initGeoLocationCallback() {
+    /* TODO: privacy settings */
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(loc => {
+      const successCallback = (loc: Position) => {
         debugLog('ApfGeoLocation: getCurrentPosition', loc)
         this.geoLocation$.next({
           currentPosition: loc,
         })
         // xyzTestGlobal()
-      }, (error) => {
+      }
+      const errorCallback = (error: any) => {
         apfLogger(this).error('ApfGeoLocationService geoLocation error', error)
-      }, geolocationOptions);
+      }
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback, geolocationOptions);
+      navigator.geolocation.watchPosition(successCallback, errorCallback, geolocationOptions);
     } else {
       apfErrLog(this, 'navigator.geolocation', navigator.geolocation)
     }

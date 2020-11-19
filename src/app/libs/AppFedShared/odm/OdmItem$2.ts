@@ -1,21 +1,34 @@
 /** Object-Document/Database Mapping item */
 import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
-import {debugLog} from "../utils/log";
+import {debugLog, errorAlert} from "../utils/log";
 import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {nullish} from '../utils/type-utils'
 
 export type UserId = string
 
-export class OdmInMemItem {
+export class OdmInMemItemWriteOnce {
   public whenCreated?: OdmTimestamp
-  public whenLastModified?: OdmTimestamp
   public isDeleted?: OdmTimestamp
   public owner?: UserId
 }
 
+export class OdmInMemItem extends OdmInMemItemWriteOnce {
+  public whenLastModified?: OdmTimestamp
+}
+
 export type OdmPatch<TData> = DictPatch<TData>
+
+export function convertUndefinedFieldValsToNull(obj: any) {
+  for ( let key of Object.keys(obj) ) {
+    if ( obj[key] === undefined ) {
+      obj[key] = null
+    }
+  }
+  return obj
+}
 
 /** Maybe have another conversion like OdmItem$W - W meaning writable,
  * to not confuse with real observables; or another special char like EUR - editable, funny pun.
@@ -41,14 +54,14 @@ export class OdmItem$2<
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
   >
-  implements PatchableObservable<TInMemData, TMemPatch>
+  implements PatchableObservable<TInMemData | nullish, TMemPatch>
 {
 
   /** consider renaming to just `val` or `data`; undefined means not yet loaded; null means deleted (or perhaps losing access, e.g. via changing permissions -> "No longer available"
    * or realizing we don't have access
    * or empty value arrived
    **/
-  currentVal: TInMemData | undefined | null = undefined
+  currentVal: TInMemData | nullish = undefined
 
 
   get val() { return this.currentVal }
@@ -57,9 +70,9 @@ export class OdmItem$2<
 
   private resolveFuncPendingThrottled?: (value?: (PromiseLike<any> | any)) => void
 
-  public locallyVisibleChanges$ = new CachedSubject<TInMemData | undefined | null>()
-  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | undefined | null>()
-  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | undefined | null>()
+  public locallyVisibleChanges$ = new CachedSubject<TInMemData | nullish>()
+  public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | nullish>()
+  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
@@ -106,6 +119,10 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch) {
+    convertUndefinedFieldValsToNull(patch)
+    convertUndefinedFieldValsToNull(this.currentVal) // quick hack for undefined in importance
+    // errorAlert(`patchThrottled is disabled coz of plain->html testing`, patch)
+    // return; // HACK
     if ( ! this.resolveFuncPendingThrottled ) {
       const promise = new Promise((resolveFunc) => {
         this.resolveFuncPendingThrottled = resolveFunc

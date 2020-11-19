@@ -14,7 +14,7 @@ export type Dictionary<T> = Dict<T>
 
 export function getDictionaryValuesAsArray<TItem>(dictionary: Dict<TItem>): TItem[] {
   // console.log('getDictionaryValuesAsArray dictionary', dictionary)
-  const values = [];
+  const values: any[] = [];
   if (dictionary) {
     for (const key of Object.getOwnPropertyNames(dictionary)) {
       // if (dictionary.hasOwnProperty(key)) {
@@ -59,6 +59,11 @@ export function mapFields(srcObj: any, mapFunc: any) {
   }
   return ret
 }
+
+export function mapEntriesToArray(srcObj: any, mapFunc: (entry: [string, any]) => any) {
+  return Object.entries(srcObj).map(mapFunc)
+}
+
 
 export function mapFieldsToFormControls(srcObj: any) {
   return mapFields(srcObj, () => {

@@ -1,8 +1,7 @@
 import {OdmCollectionBackend} from "../../AppFedShared/odm/OdmCollectionBackend";
-import {Injectable, Injector} from "@angular/core";
+import {Injector} from "@angular/core";
 import {AngularFirestore, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
 import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
-import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
@@ -27,8 +26,12 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
 
       // This could cause the race condition of items uninitialized when going from another route
+      const userId = this.authService.authUser$.lastVal!.uid
+      if ( ! userId ) {
+        errorAlert(`FirestoreOdmCollectionBackend before query - no userId`)
+      }
       this.angularFirestore.firestore.collection(this.collectionName)
-        .where('owner', '==', this.authService.authUser$.lastVal!.uid)
+        .where('owner', '==', userId)
         .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
           // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
@@ -62,7 +65,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       const karolOwner = `7Tbg0SwakaVoCXHlu1rniHQ6gwz1`
       if (!existingOwner) {
         debugLog(this.collectionName + ` no owner `, existingOwner, docId)
-        this.itemDoc(docId).update({owner: karolOwner}).then(() => {
+        this.itemDoc(docId).update({
+          owner: karolOwner
+        }).then(() => {
           debugLog(`finished updating owner`, docId)
         })
       } else {

@@ -4,21 +4,41 @@
 >Stats</span>
 
 <ng-container
+  *ngIf="(stats$ | async) let learnStats"
+>
+
+<ng-container
   *ngIf="showStats"
 >
   &nbsp;
-  <b>Q&A:</b>{{ (stats$ | async) ?. countWithQA | json }}
-  <b>Audio:</b>{{ (stats$ | async) ?. countWithAudio | json }}
-  <b>0+:</b>{{ (stats$ | async) ?. countWithRatingPresent }}
-  <b>0.5+:</b>{{ (stats$ | async) ?. atLeast05 | json }}
-  <b>1+:</b>{{ (stats$ | async) ?. atLeast1 | json }}
-  <b>1.5+:</b>{{ (stats$ | async) ?. atLeast1_5 | json }}
-  <b>2+:</b>{{ (stats$ | async) ?. atLeast2 | json }}
+  <b>Q&A:</b>
+  {{ learnStats ?. countWithQA | json }}
+
+  <b>Audio:</b>
+  {{ learnStats ?. countWithAudio | json }}
+
+  <b>0+:</b>
+  {{ learnStats ?. countWithRatingPresent }}
+
+  <b>0.5+:</b>
+  {{ learnStats ?. atLeast05 | json }}
+
+  <b>1+:</b>
+  {{ learnStats ?. atLeast1 | json }}
+
+  <b>1.5+:</b>
+  {{ learnStats ?. atLeast1_5 | json }}
+
+  <b>2+:</b>
+  {{ learnStats ?. atLeast2 | json }}
 
   <span
-    *ngFor="let kv of ((stats$ | async) ?. countWithRatingEqual) ! | keyvalue"
+    *ngFor="let kv of (learnStats ?. countWithRatingEqual) ! | keyvalue"
   >
     <b>{{kv.key?.replace('undefined', '-')}}:</b> {{kv.value}}
 
   </span>
 </ng-container>
+
+</ng-container>
+

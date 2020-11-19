@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {nullish} from '../../utils/type-utils'
 
 @Component({
   selector: 'app-time-point',
@@ -7,7 +8,9 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TimePointComponent implements OnInit {
 
-  @Input() time ? : Date
+  @Input()
+  time ? : Date | nullish
+
   dayNames = [
     // 0 steht für Sonntag
     `Sun`, `Mon`, `Tue`, `Wed`, `Thu`, `Fri`, `Sat`,

@@ -14,7 +14,7 @@ import {JournalEntry} from '../models/JournalEntry'
 })
 export class JournalEntriesListPage implements OnInit {
 
-  useVirtualScroll = false
+  useVirtualScroll = true
 
   // itemsTest$ = of(    Array(100).fill(0).map((val) => {
   //     return 'test'+val

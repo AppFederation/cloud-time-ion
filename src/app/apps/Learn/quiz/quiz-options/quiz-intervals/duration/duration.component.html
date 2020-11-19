@@ -1,0 +1,23 @@
+<ng-container
+  *ngIf="intervalDays; let days"
+>
+  <ng-container
+    *ngIf="days < 30; else months"
+  >
+    {{ days ?. toFixed(1) }}
+    <br>
+    <span class="timeUnit">d </span>
+    <span> </span>
+  </ng-container>
+
+  <ng-template
+    #months
+  >
+    {{ getMonths() ?. toFixed(1) }}
+    <br>
+    <span class="timeUnit">m </span>
+    <span> </span>
+   </ng-template>
+</ng-container>
+
+

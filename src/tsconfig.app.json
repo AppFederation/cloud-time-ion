@@ -2,12 +2,19 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": []
+    "types": [
+      "chrome"
+    ],
+    // ======= Strictness / checks:
+    "strictNullChecks": true,
+    "noImplicitAny" : true,
+    "strict": true
   },
   "files": [
     "main.ts",
     "polyfills.ts",
-    "zone-flags.ts"
+    "zone-flags.ts",
+    "background/background.ts"
   ],
   "include": [
     "src/**/*.d.ts"

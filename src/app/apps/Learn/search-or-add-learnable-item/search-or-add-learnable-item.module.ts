@@ -10,7 +10,7 @@ import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {ActionableItemComponent} from './actionable-item/actionable-item.component'
 import {MicComponent} from './mic/mic.component'
 import {AngularFireStorageModule} from '@angular/fire/storage'
-import {SharedModule} from '../shared/shared.module'
+import {LearnSharedModule} from '../shared/learn-shared.module'
 import {TestItemComponent} from './test-item/test-item.component'
 import {LearnStatsComponent} from './learn-stats/learn-stats.component'
 import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search-or-add-text-editor.component'
@@ -18,6 +18,7 @@ import {EditorModule} from '@tinymce/tinymce-angular'
 import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 import {SimpleListComponent} from './item-lists/simple-list/simple-list.component'
+import {ListOptionsComponent} from './list-options/list-options.component'
 
 const routes: Routes = [
   {
@@ -34,12 +35,12 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         OdmModule,
         AngularFireStorageModule,
-        SharedModule,
+        LearnSharedModule,
         SharedModule2,
         EditorModule,
         ReactiveFormsModule,
         AudioModule,
-        SharedModule,
+        LearnSharedModule,
     ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,
@@ -49,6 +50,7 @@ const routes: Routes = [
         LearnStatsComponent,
         SearchOrAddTextEditorComponent,
         SimpleListComponent,
+        ListOptionsComponent,
     ],
 })
 export class SearchOrAddLearnableItemPageModule {}

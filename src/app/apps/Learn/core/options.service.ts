@@ -14,15 +14,17 @@ export class LocalOptionsPatchableObservable<TOptions> implements PatchableObser
     public defaultValue: TOptions,
     public localStorageKey = 'LifeSuite_options'
   ) {
-    this.locallyVisibleChanges$.next(JSON.parse(localStorage.getItem(localStorageKey) || '{}') ?? defaultValue)
+    const fromLocalStorage = localStorage.getItem(localStorageKey)
+    const initialToEmit = fromLocalStorage ? JSON.parse(fromLocalStorage) : defaultValue
+    this.locallyVisibleChanges$.next( initialToEmit ?? defaultValue )
   }
 
 
-  locallyVisibleChanges$: CachedSubject<any | undefined | null> = new CachedSubject<TOptions>({} as TOptions)
+  locallyVisibleChanges$: CachedSubject<TOptions> = new CachedSubject<TOptions>({} as TOptions)
 
   patchThrottled(patchToApply: DictPatch<any>): void {
     this.locallyVisibleChanges$.next(patch(this.locallyVisibleChanges$.lastVal, patchToApply))
-    debugLog(`localStorage.setItem`, patchToApply)
+    // debugLog(`localStorage.setItem`, patchToApply)
     localStorage.setItem(this.localStorageKey, JSON.stringify(this.val))
   }
 

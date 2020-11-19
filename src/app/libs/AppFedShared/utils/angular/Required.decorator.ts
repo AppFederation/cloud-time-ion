@@ -24,7 +24,7 @@ export function Required(/*bindingPropertyName?: string*/) {
     key: string | symbol,
     // descriptor: PropertyDescriptor
   ) {
-    console.log(`Required 2`, arguments, `target`, target)
+    // console.log(`Required 2`, arguments, `target`, target)
     const NG_ON_ON_INIT_NAME = 'ngOnInit';
 
     /** ngOnInit might not be implemented by this component */

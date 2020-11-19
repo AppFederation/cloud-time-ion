@@ -8,7 +8,7 @@ import {IonicModule} from '@ionic/angular';
 import {QuizPage} from './quiz.page';
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.module'
-import {SharedModule} from '../shared/shared.module'
+import {LearnSharedModule} from '../shared/learn-shared.module'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {QuizItemDetailsComponent} from './quiz-item-details/quiz-item-details.component'
@@ -19,6 +19,9 @@ import {ShowAnswerAndRateComponent} from './show-answer-and-rate/show-answer-and
 import {CongratsQuizFinishedComponent} from './quiz-finished/congrats-quiz-finished/congrats-quiz-finished.component'
 import {QuizFinishedComponent} from './quiz-finished/quiz-finished.component'
 import {QuizItemsLeftComponent} from './quiz-items-left/quiz-items-left.component'
+import {QuizIntervalsComponent} from './quiz-options/quiz-intervals/quiz-intervals.component'
+import {SharedModule} from '../../../shared/shared.module'
+import {QuizDiligenceLevelComponent} from './quiz-options/quiz-diligence-level/quiz-diligence-level.component'
 
 const routes: Routes = [
   {
@@ -36,21 +39,24 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     OdmModule,
     RatingsModule,
-    SharedModule,
+    LearnSharedModule,
     TimeModule,
     EditorModule,
     TimeModule,
+    SharedModule,
   ],
-    declarations: [
-        QuizPage,
-        QuizItemDetailsComponent,
-        QuizTipsComponent,
-        QuizOptionsComponent,
-        ShowAnswerAndRateComponent,
-        CongratsQuizFinishedComponent,
-        QuizFinishedComponent,
-        QuizItemsLeftComponent,
-    ],
+  declarations: [
+    QuizPage,
+    QuizItemDetailsComponent,
+    QuizTipsComponent,
+    QuizOptionsComponent,
+    ShowAnswerAndRateComponent,
+    CongratsQuizFinishedComponent,
+    QuizFinishedComponent,
+    QuizItemsLeftComponent,
+    QuizIntervalsComponent,
+    QuizDiligenceLevelComponent,
+  ],
 })
 export class QuizPageModule {
 }

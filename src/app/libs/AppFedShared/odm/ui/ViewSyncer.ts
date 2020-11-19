@@ -34,7 +34,7 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
      * if necessary (or maybe just use FormControls always to avoid hassle with FormGroup; but to consider: whole form validation, but could be
      * independent from ViewSyncer (just grouping the FormControl-s independently from ViewSyncer / OdmFieldViewSyncer)
      * or PatchableObservableViewSyncer, to make it independent from ODM */
-    public fieldNameHack ? : keyof TItemInMem)
+    public fieldNameHack ? : keyof NonNullable<TItemInMem>)
   {
     // console.log('ViewSyncer ctor', item$, item$.id)
     this.item$.locallyVisibleChanges$.subscribe((dataFromDb: TItemInMem | undefined | null) => {
@@ -100,8 +100,8 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
       not really, coz editing adding chars also does not sync the last chars until losing editor focus / could be related to throttleTime vs debounce?
      */
     if ( this.fieldNameHack && this.initialDataArrived ) {
-      const lastValFromDbElement = this.lastValFromDb?.[this.fieldNameHack]
-      const newDataFromDbElement = newDataFromDb?.[this.fieldNameHack]
+      const lastValFromDbElement = (this.lastValFromDb as any)?.[this.fieldNameHack]
+      const newDataFromDbElement = (newDataFromDb as any)?.[this.fieldNameHack]
       if ( lastValFromDbElement === newDataFromDbElement ) {
         // console.log(`shouldApplyFromDb: lastValFromDbElement equal`, this.fieldNameHack, lastValFromDbElement, newDataFromDbElement)
         return false
