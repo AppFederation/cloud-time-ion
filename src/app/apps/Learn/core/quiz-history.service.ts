@@ -14,6 +14,8 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   /** Undefined will mean skipping */
   selfRating: Rating | undefined
 
+  userAgent ? : string
+
   // deviceId: string
   // geo: ...
   // appVersion: ... (+timestamp)

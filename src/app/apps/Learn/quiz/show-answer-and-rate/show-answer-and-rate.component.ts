@@ -56,6 +56,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
         itemId: this.item$ !. id !,
         selfRating: newRating,
         quizOptions: this.quizService.options$.lastVal,
+        userAgent: navigator.userAgent /* could be in lower level odm service */
       }
     )
     this.item$ ?. setNewSelfRating(newRating !)
