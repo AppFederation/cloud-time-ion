@@ -9,8 +9,9 @@
 
   <ion-button
     *ngFor="let btnDesc of buttonDescriptors.buttons"
-    style="flex-basis: 0; flex-grow: 1; font-size: 13px; height: 3rem"
+    style="flex-basis: 0; flex-grow: 1; font-size: 11px; height: 3rem"
     [ngClass]="{selectedMood: isSelected(btnDesc)}"
+    size="small"
     (click)="onButtonClick(btnDesc)"
   >
     {{ getDisplayedVariantForButton(btnDesc).label}}
