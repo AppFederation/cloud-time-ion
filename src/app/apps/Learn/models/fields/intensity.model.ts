@@ -26,7 +26,7 @@ export function intensity(x: any): IntensityDescriptor {
 export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /* unset -> null; for querying; should have highest effective importance, to force to decide */
   undefined
-    = intensity({numeric: midIntensityNum, abbrev: `-`, shortId: ``}) // 0    BTN
+    = intensity({numeric: midIntensityNum, abbrev: `-`, shortId: `_`}) // 0    BTN
   off
     = intensity({numeric: 0, abbrev: `✕`, shortId: `Off`}) // 0    BTN
   unknown
@@ -65,8 +65,8 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
    */ // 2.5 / 3
   extremely_high
     = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`, shortId: `XHi`})
-  // testing_extremely_high
-  //   = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
+  testing_extremely_high
+    = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
   // it gives 10 level total now
 
   // Icons: up arrow (chevron), double up arrow, etc., medium: wavy, or flat line, or {up&down (but smth visually simple might be better)

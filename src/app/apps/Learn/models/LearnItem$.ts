@@ -4,7 +4,7 @@ import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {ImportanceVal, LearnItem} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
-import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors} from './fields/importance.model'
+import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
 import {Quiz, Quizzable$} from './quiz'
@@ -71,34 +71,25 @@ export class LearnItem$
     // return this.importance // ?? maybe return medium
   }
 
+  // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
+
   getEffectiveRoi(): Distribution | undefined {
     return this.val ?. getRoi()
     // return 999 // FIXME
     // return this.importance // ?? maybe return medium
   }
 
-  getEffectiveImportanceAbbrev() {
-    const effectiveImportance = this.getEffectiveImportance()
-    // if ( ! effectiveImportance || effectiveImportance === importanceDescriptors.undefined) {
-    //   return 'Udf_Imp'
-    // } else {
-      const idStr = effectiveImportance.id
-      const importanceDescriptor = importanceDescriptors[idStr]
-    const shortId = importanceDescriptor ?. shortId
-    // if ( ! shortId ) {
-    //   debugLog(`no shortId`, shortId, importanceDescriptor, this.val?.importance)
-    // }
-    return shortId + '_Imp'
-    // }
+  getEffectiveImportanceShortId() {
+    return importanceDescriptors2.getShortId(this.getEffectiveImportance())
   }
 
-  // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
-
-  getEffectiveFunShortIdSuffixed(): string {
-    return funLevelsDescriptors.getWithUnderscoreSuffix(this.getEffectiveFunLevel())
+  getEffectiveFunShortId(): string {
+    return funLevelsDescriptors.getShortId(this.getEffectiveFunLevel())
   }
 
-  getEffectiveMentalLevelShortIdSuffixed(): string {
-    return mentalEffortLevelsDescriptors.getWithUnderscoreSuffix(this.getEffectiveMentalEffort())
+  getEffectiveMentalLevelShortId(): string {
+    return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
   }
+
+
 }

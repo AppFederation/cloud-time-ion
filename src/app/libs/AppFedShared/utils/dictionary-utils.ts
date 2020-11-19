@@ -60,6 +60,11 @@ export function mapFields(srcObj: any, mapFunc: any) {
   return ret
 }
 
+export function mapEntriesToArray(srcObj: any, mapFunc: (entry: [string, any]) => any) {
+  return Object.entries(srcObj).map(mapFunc)
+}
+
+
 export function mapFieldsToFormControls(srcObj: any) {
   return mapFields(srcObj, () => {
     return new FormControl()
