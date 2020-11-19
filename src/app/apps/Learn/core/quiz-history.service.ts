@@ -5,6 +5,7 @@ import {LearnItemId} from '../models/LearnItem'
 import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
 import {QuizOptions} from './quiz.service'
+import {DurationMs} from '../../../libs/AppFedShared/utils/type-utils'
 
 export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
@@ -12,6 +13,8 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
   /** Undefined will mean skipping */
   selfRating: Rating | undefined
+
+  userAgent ? : string
 
   // deviceId: string
   // geo: ...
@@ -21,6 +24,10 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
 
   quizOptions ? : QuizOptions
+
+  msToShowAnswer ? : DurationMs
+  msToSelfRate ? : DurationMs
+  msToApplyAndNext ? : DurationMs
 
   // timeToAnswer: DurationMs
 
