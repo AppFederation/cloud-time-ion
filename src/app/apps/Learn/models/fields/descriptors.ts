@@ -2,6 +2,7 @@ import {Dict, dictToArrayWithIds} from '../../../../libs/AppFedShared/utils/dict
 import {IntensityVal} from '../LearnItem'
 import {funLevelsDescriptors} from './fun-level.model'
 import {IntensityDescriptor, IntensityDescriptors} from './intensity.model'
+import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 
 /** Name: DescriptorsGROUP ? */
 export class Descriptors<TDescriptor extends IntensityDescriptor = IntensityDescriptor> {
@@ -17,8 +18,19 @@ export class Descriptors<TDescriptor extends IntensityDescriptor = IntensityDesc
 
   arrayFromHighest = this.array.slice().reverse()
 
+  getShortId(val: IntensityVal): string {
+    return this.getDescriptorFromVal(val).shortId
+  }
+
+  getDescriptorFromVal(val: IntensityVal): TDescriptor {
+    const descriptor = this.descriptors[val.id /* later I can store & use shortId as id */]
+    if ( ! descriptor ) {
+      errorAlert(`getDescriptorFromVal cannot get descriptor for value `, val)
+    }
+    return descriptor
+  }
+
   getWithUnderscoreSuffix(val: IntensityVal): string {
-    return this.descriptors[val.id /* later I can store & use shortId as id */]
-      .shortId + '_' + this.suffix
+    return this.getShortId(val) + '_' + this.suffix
   }
 }

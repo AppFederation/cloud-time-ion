@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {countBy, isEqual} from 'lodash-es'
+import {countBy, flatten, isEqual} from 'lodash-es'
 import {LearnItem} from '../models/LearnItem'
 import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
-import {Dictionary} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Dictionary, mapEntriesToArray} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
 import {Observable} from 'rxjs'
@@ -13,6 +13,7 @@ import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time/ti
 import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {StatsHistoryService} from './stats-history.service'
 import {countByMulti} from '../../../libs/AppFedShared/utils/lodashPlus/countByMulti'
+import {Accessor, getByAccessor} from '../../../libs/AppFedShared/utils/lodashPlus/getByAccessor'
 
 /** split into part that goes into DB */
 export class LearnStats {
@@ -33,8 +34,37 @@ export class StoredLearnStats {
   countByRating ? : Dictionary<number> = {}
   countWithQA ? : number
   countWithAudio ? : number
+  countByDimsFieldIds ? : string[]
   countByDims ? : any
+  countByDimsRows ? : any
 }
+
+export type NamedAccessor = [string, Accessor<LearnItem$, any>]
+
+const udf = ''
+
+/** Keep in mind: Firestore limits to 10 (20?) levels --- https://firebase.google.com/docs/firestore/quotas
+ * TODO: isDone */
+const accessorsFields: Array<NamedAccessor> = [
+  ['isTask', item$ => item$.val?.isTask ?? udf],
+  ['importance', item$ => item$.getEffectiveImportanceShortId()] /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
+                should this be effective value?
+                TODO + status
+                TODO + categories
+                TODO the extended stats might be added e.g. daily
+             */,
+  ['fun', item$ => item$.getEffectiveFunShortId()],
+  ['mental', item$ => item$.getEffectiveMentalLevelShortId()],
+  ['selfRating', item$ => (item$.val?.lastSelfRating ?? udf) ?? udf],
+  ['estMinutes', item$ => (item$.val?.getDurationEstimateMinutes() ?? udf)],
+  ['hasQA', item$ => item$.val?.hasQAndA() ?? udf],
+  ['hasAudio', item$ => item$.val?.hasAudio ?? udf],
+  // ['roi', item$ => item$.getEffectiveRoi() + '_Roi'],
+  // () => 'fakeLong',
+]
+
+const accessorsFieldsIds: string[] = accessorsFields.map(acc => acc[0])
+
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +119,7 @@ export class LearnStatsService {
         return equal
       }),
       tap(stats => {
-        debugLog(`statsToSave$`, stats, JSON.stringify(stats))
+        debugLog(`statsToSave$`)
         if ( stats ) {
           this.statsHistoryService.newValue(stats)
         }
@@ -101,33 +131,18 @@ export class LearnStatsService {
     if ( ! item$s ?. length ) {
       return
     }
-    const multiDimRows = this.makeMultiDimRows(item$s)
-    debugLog(`multiDimRows`, JSON.stringify(multiDimRows).length, JSON.stringify(multiDimRows), multiDimRows)
+    let multiDimRowsFlattened: any[] = []
+    try {
+      multiDimRowsFlattened = flatten(this.makeMultiDimRows(item$s))
+      debugLog(`multiDimRowsFlattened json len`, JSON.stringify(multiDimRowsFlattened).length)
+    } catch (e) {
+      errorAlert(`makeMultiDimRows error`, e)
+    }
     let countByDims = {}
     try {
       // https://en.wikipedia.org/wiki/OLAP_cube
       // Firestore Maximum depth of fields in a map or array	20 - https://firebase.google.com/docs/firestore/quotas
-      const udf = ''
-      countByDims = countByMulti(item$s, [
-        item$ => item$.getEffectiveMentalLevelShortIdSuffixed(),
-        item$ => item$.val?.isTask ? 'task' : `notTask`,
-        item$ => (item$.val?.lastSelfRating ?? udf) + '_Rtg',
-        item$ => (item$.val?.getDurationEstimateMs() ?? udf) + '_est',
-        item$ => item$.val?.hasQAndA() ? 'qA' : `noQa`,
-        item$ => item$.val?.hasAudio ? 'au' : `noAu`,
-        item$ => item$.getEffectiveFunShortIdSuffixed(),
-        // item$ => item$.getEffectiveRoi() + '_Roi',
-        item$ => item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
-                should this be effective value?
-                TODO + fun
-                TODO + mental level
-                TODO + estimated time
-                TODO + status
-                TODO + categories
-                TODO the extended stats might be added e.g. daily
-             */,
-        () => 'fakeLong',
-      ])
+      // countByDims = countByMulti(item$s, accessorsFields)
     } catch (e) {
       errorAlert(`countByDims error`, e)
     }
@@ -135,7 +150,9 @@ export class LearnStatsService {
       countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal)),
       countWithQA: countBy2(item$s, item$ => !!item$.val?.hasQAndA()),
       countWithAudio: countBy2(item$s, item$ => !!item$.val?.hasAudio),
-      countByDims,
+      countByDimsFieldIds: accessorsFieldsIds,
+      // countByDims,
+      countByDimsRows: multiDimRowsFlattened
     }
     return ret
   }
@@ -146,34 +163,21 @@ export class LearnStatsService {
     if ( item$s ?. length ) {
       const stats = this.makeStatsFromItems(item$s)
       if ( stats ) {
-        const jsonStr = JSON.stringify(stats.countByDims)
-        debugLog(`saveStatsFromItemsNow`, jsonStr.length, jsonStr)
         this.statsHistoryService.newValue(stats)
       }
     }
   }
 
-  private makeMultiDimRows(item$s: LearnItem$[]) {
-    return countBy(item$s, (item$) => {
-      return JSON.stringify([
-        item$.val?.isTask,
-        item$.val?.hasQAndA(),
-        item$.val?.hasAudio,
-        // item$ => item$.getEffectiveRoi() + '_Roi',
-        item$.val?.getDurationEstimateMs(),
-        item$.getEffectiveImportanceAbbrev() /* TODO: abbrev; if I have smth like VHImp, VHFun, I could have it non-ambiguous
-                should this be effective value?
-                TODO + fun
-                TODO + mental level
-                TODO + estimated time
-                TODO + status
-                TODO + categories
-                TODO the extended stats might be added e.g. daily
-             */,
-        item$.getEffectiveFunShortIdSuffixed(),
-        item$.getEffectiveMentalLevelShortIdSuffixed(),
-        item$.val?.lastSelfRating ?? 'udf'
-      ])
+  private makeMultiDimRows(item$s: LearnItem$[]): Array<any[]> {
+    const countsDict = countBy(item$s, (item$) => {
+      return JSON.stringify(accessorsFields.map(acc => {
+        return getByAccessor(item$, acc[1])
+      }))
     })
+    const ret = mapEntriesToArray(countsDict, entry => [ ...JSON.parse(entry[0]), entry[1]
+      /* count is last, to not disrupt the order between values and array of keys */])
+
+    // console.log(`makeMultiDimRows json length: `, JSON.stringify(ret).length)
+    return ret
   }
 }
