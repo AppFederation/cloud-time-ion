@@ -18,7 +18,7 @@ export class QuizAnswersService {
       this.answerBeingPrepared = new QuizAnswerForHistory()
       this.answerBeingPrepared.itemId = status.nextItem$.id
       this.whenQuestionShowed = new Date()
-      // FIXME:
+      // FIXME: finish
     })
   }
 }
