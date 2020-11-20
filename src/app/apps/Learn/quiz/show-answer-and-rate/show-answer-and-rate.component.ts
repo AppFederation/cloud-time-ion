@@ -49,18 +49,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
   // }
 
   applyAndNext() {
-    const newRating = this.selfRating
-    this.quizHistoryService.onAnswer(
-      /* TODO Maybe move this into setNewSelfRating, however this is also called from non-quiz */
-      {
-        itemId: this.item$ !. id !,
-        selfRating: newRating,
-        quizOptions: this.quizService.options$.lastVal,
-        userAgent: navigator.userAgent /* could be in lower level odm service */
-      }
-    )
-    this.item$ ?. setNewSelfRating(newRating !)
-    this.quizService.requestNextItem()
+    this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
   }
 
 }
