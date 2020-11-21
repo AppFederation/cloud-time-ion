@@ -109,7 +109,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       = (item: LearnItem) => item.getRoi() ?? -99999
     items = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
-    debugLog(`listOptions`, listOptions)
+    // debugLog(`listOptions`, listOptions)
     const preset = listOptions ?. preset
     if ( preset === `lastModified` || preset === `allTasks` ) {
       this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()

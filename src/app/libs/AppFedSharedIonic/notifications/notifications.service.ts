@@ -36,7 +36,7 @@ export class NotificationsService {
     public injector: Injector,
       // private localNotifications: LocalNotifications
   ) {
-    debugLog('NotificationsService ctor')
+    // debugLog('NotificationsService ctor')
     if ( this.platform.is('cordova') ) {
       this.notificationsService = injector.get(CordovaNotificationsService)
     } else {

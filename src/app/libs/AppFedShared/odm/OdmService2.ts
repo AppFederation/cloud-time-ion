@@ -74,7 +74,7 @@ export abstract class OdmService2<
   saveNowToDb(itemToSave: TOdmItem$) {
     itemToSave.onModified()
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
-    debugLog(`geo`, geo)
+    // debugLog(`geo`, geo)
     if ( geo ) {
       geo = {
         accuracy: geo.accuracy ?? null,

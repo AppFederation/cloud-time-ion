@@ -37,7 +37,7 @@ export class TimerNotificationsService {
     private modalController: ModalController,
     private timerEndedService: TimerEndedService,
   ) {
-    debugLog('TimerNotificationsService ctor')
+    // debugLog('TimerNotificationsService ctor')
     this.timersService.localItems$.subscribe(timers => {
       // debugLog('TimerNotificationsService localItems$.subscribe')
       this.clearTimeouts()
