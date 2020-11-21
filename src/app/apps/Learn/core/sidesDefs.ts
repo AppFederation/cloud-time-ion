@@ -87,6 +87,9 @@ export class SidesDefs {
   benefits = side({
     ask: false,
   })
+  requirements = side({
+    ask: false,
+  })
   time_estimate = side({
     ask: false,
   })

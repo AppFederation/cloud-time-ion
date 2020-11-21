@@ -26,7 +26,7 @@ export class ApfGeoLocationService {
     /* TODO: privacy settings */
     if (navigator.geolocation) {
       const successCallback = (loc: Position) => {
-        debugLog('ApfGeoLocation: getCurrentPosition', loc)
+        // debugLog('ApfGeoLocation: getCurrentPosition', loc)
         this.geoLocation$.next({
           currentPosition: loc,
         })
