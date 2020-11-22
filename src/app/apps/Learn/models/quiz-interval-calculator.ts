@@ -31,8 +31,14 @@ export class QuizIntervalCalculator {
   ) {
     const mediumImportanceNum = importanceDescriptors.medium.numeric
     const effectiveImportance = (importance?.numeric ?? mediumImportanceNum) / mediumImportanceNum
+
+    const scaleByImp = quizOptions?.scaleIntervalsByImportance ?? 1
     return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? 0, quizOptions))
-      / effectiveImportance /* TODO: this should actually appear before some old stuff, to de-clutter */
+      / this.calculateMultiplierToScaleByImportance(scaleByImp, effectiveImportance) /* TODO: this should actually appear before some old stuff, to de-clutter */
   }
 
+  private calculateMultiplierToScaleByImportance(scaleByImp: number, effectiveImportance: number) {
+    return 1 + scaleByImp * (effectiveImportance - 1)
+    // later this could be based on probability of forgetting (e.g. Medium: 50%, XH: 5%)
+  }
 }

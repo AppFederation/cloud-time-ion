@@ -205,6 +205,10 @@ export class SidesDefs {
     hideByDefault,
     onlyForLearn,
   })
+  short_id = side({
+    ask: false,
+  })
+
   // IDEA: extra info that is not necessary for maximum self-rating ; could be ignored for scroll / buttons purposes
 }
 
