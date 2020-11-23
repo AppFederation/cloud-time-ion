@@ -8,6 +8,8 @@ import {ImportanceDescriptors} from './fields/importance.model'
 import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
 import {QuizzableData} from './quiz'
+import {FunDescriptors} from './fields/fun-level.model'
+import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
@@ -22,8 +24,13 @@ export type HtmlString = string
 
 
 export type ImportanceVal = IntensityVal
+export type ImportanceId = keyof ImportanceDescriptors
+
 export type FunVal = IntensityVal
+export type FunLevelId = keyof FunDescriptors
+
 export type MentalLevelVal = IntensityVal
+export type MentalLevelId = keyof MentalEffortLevelDescriptors
 
 
 /** LearnDoItemData */

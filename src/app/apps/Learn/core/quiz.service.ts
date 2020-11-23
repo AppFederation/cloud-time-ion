@@ -166,8 +166,8 @@ export class QuizService {
         pendingItemsTodayCount,
         nextItem$ ? isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)) : undefined,
         undefined,
-        countBy(pendingItems, (item) => item.val?.importance?.id) as CountsByImportance,
-        countBy(item$s, (item) => item.val?.importance?.id) as CountsByImportance,
+        countBy(pendingItems, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
+        countBy(item$s, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
@@ -216,7 +216,7 @@ export class QuizService {
   private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
     let nextItem$: LearnItem$ | undefined = undefined
     for (let importance of importanceDescriptorsArrayFromHighest) {
-      const filteredByImportance = pendingItems.filter(item => (item.val?.importance?.id ?? importanceDescriptors.medium.id) === importance.id)
+      const filteredByImportance = pendingItems.filter(item$ => (item$.getEffectiveImportanceId()) === importance.id)
       // TODO: performance: could reuse itemsLeftByImportance from QuizStatus, instead of filtering (oh, but those are just counts; but could replace by groupBy; OTOH, we don't need all of the arrays, just the non-empty one with highest importance)
       if (filteredByImportance.length) {
         // TODO: performance: maybe combine filter and minBy into something like minByIf, to just iterate once
@@ -246,11 +246,6 @@ export class QuizService {
     }
     return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
   }
-
-  // calculateIntervalHours3(rating: Rating, importance: ImportanceVal, quizOptions: QuizOptions): Duration {
-  //   return this.calculateIntervalHours(rating, this.options$?.lastVal !)
-  // }
-
 
   toggleShowAnswer() {
     this.showAnswer$.next(! this.showAnswer$.lastVal)

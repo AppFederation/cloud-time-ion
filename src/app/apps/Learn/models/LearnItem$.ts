@@ -2,7 +2,7 @@ import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {ImportanceVal, LearnItem} from './LearnItem'
+import {ImportanceId, ImportanceVal, LearnItem} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -79,6 +79,10 @@ export class LearnItem$
     // return this.importance // ?? maybe return medium
   }
 
+  getEffectiveImportanceId(): ImportanceId {
+    return this.getEffectiveImportance() ?. id
+  }
+
   getEffectiveImportanceShortId() {
     return importanceDescriptors2.getShortId(this.getEffectiveImportance())
   }
@@ -90,6 +94,5 @@ export class LearnItem$
   getEffectiveMentalLevelShortId(): string {
     return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
   }
-
 
 }
