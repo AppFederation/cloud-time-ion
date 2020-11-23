@@ -20,6 +20,10 @@ export function isNullish(x: any): x is (null | undefined) {
   return (x === null) || (x === undefined)
 }
 
+export function isNullishOrEmptyOrBlank(x: any) {
+  return ( x === null ) || ( x === undefined ) || ! ( x ?. trim() ?. length )
+}
+
 export function countNotNullishBy<T>(arr: T[], getterFn: (item: T) => any): number {
   return countBy2(arr, item => isNotNullish(getterFn(item)))
 }

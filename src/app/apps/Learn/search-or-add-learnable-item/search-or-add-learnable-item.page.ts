@@ -102,7 +102,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const durationGetterReverse
       = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetter
-      = (item: LearnItem) => item.importance?.numeric ?? -99999 /* TODO get descriptor by id later */
+      = (item: LearnItem) => item.importance?.numeric ?? -99999 /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetter
       = (item: LearnItem) => item.funEstimate?.numeric ?? -99999 /* TODO get descriptor by id later */
     const roiGetter
