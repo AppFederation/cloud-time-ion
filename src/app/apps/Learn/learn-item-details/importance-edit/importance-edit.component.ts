@@ -29,6 +29,7 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
     btnVariants: [
       intensityBtnVariant(`~`, importanceDescriptors.medium),
       intensityBtnVariant(`?`, importanceDescriptors.unknown),
+      intensityBtnVariant(`-`, importanceDescriptors.undefined /* TODO: isUnset: true */),
       // unset is actually no button highlighted and hence no label --> undefined
     ]
   }),

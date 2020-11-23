@@ -78,10 +78,16 @@ export class SidesDefs {
     defaultLang: 'en-US',
     ask: false,
   })
+  description = side({
+    ask: false,
+  })
   /* first EN and PL to be more likely to ask from languages that I know already */
   examples = side({
   })
   comments = side({
+    ask: false,
+  })
+  execution_hints = side({
     ask: false,
   })
   benefits = side({
