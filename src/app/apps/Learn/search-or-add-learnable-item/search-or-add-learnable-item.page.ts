@@ -74,7 +74,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(100),
+      // debounceTime(1000),
+      throttleTime(200, async, { leading: false, trailing: true}),
       // tap(debugLog),
       // map(stripHtml), // TODO but need to not destroy html
       // TODO: strip too coz maybe adding a space should not make a difference
