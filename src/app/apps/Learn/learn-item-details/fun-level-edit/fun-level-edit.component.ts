@@ -6,6 +6,7 @@ import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.dec
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {FunLevelDescriptor, funLevels, funLevelsDescriptors} from '../../models/fields/fun-level.model'
 import {intensityBtnVariant} from '../importance-edit/importance-edit.component'
+import {importanceDescriptors} from '../../models/fields/importance.model'
 
 
 const levels = funLevels
@@ -24,6 +25,7 @@ const buttonsDesc = new ButtonsDescriptor<any, string>([
     btnVariants: [
       intensityBtnVariant(`~`, levels.medium),
       intensityBtnVariant(`?`, levels.unknown),
+      intensityBtnVariant(`-`, levels.undefined /* TODO: isUnset: true */),
       // unset is actually no button highlighted and hence no label --> undefined
     ]
   }),
@@ -33,6 +35,7 @@ const buttonsDesc = new ButtonsDescriptor<any, string>([
       intensityBtnVariant(`😊😊`, levels.high),
       intensityBtnVariant(`😊😊😊`, levels.very_high),
       intensityBtnVariant(`😊😊😊😊`, levels.extremely_high),
+
       // intensityBtnVariant(`X-T-Fun`, levels.testing_extremely_high),
     ]
   }),

@@ -7,6 +7,7 @@ import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.dec
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {intensityBtnVariant} from '../importance-edit/importance-edit.component'
 import {mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
+import {importanceDescriptors} from '../../models/fields/importance.model'
 
 
 const levels = mentalEffortLevels
@@ -25,6 +26,7 @@ const buttonsDesc = new ButtonsDescriptor<any, string>([
     btnVariants: [
       intensityBtnVariant(`~`, levels.medium),
       intensityBtnVariant(`?`, levels.unknown),
+      intensityBtnVariant(`-`, levels.undefined /* TODO: isUnset: true */),
       // unset is actually no button highlighted and hence no label --> undefined
     ]
   }),
