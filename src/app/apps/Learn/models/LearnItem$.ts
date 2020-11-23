@@ -11,6 +11,7 @@ import {Quiz, Quizzable$} from './quiz'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
 import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
+import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 
 // export class Quiz {
 //   // status$: {
@@ -52,9 +53,11 @@ export class LearnItem$
 
   }
 
-  /* TODO return descriptor */
+  /* TODO return descriptor always */
   getEffectiveImportance(): ImportanceVal {
-    return this.val ?. importance ?? importanceDescriptors.undefined
+    return this.val ?. importance
+      ?? this.getEffectiveImportanceByCategories()
+      ?? importanceDescriptors.undefined
   }
 
   getEffectiveImportanceNumeric(): number {
@@ -95,4 +98,9 @@ export class LearnItem$
     return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
   }
 
+  private getEffectiveImportanceByCategories() {
+    if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
+      return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
+    }
+  }
 }

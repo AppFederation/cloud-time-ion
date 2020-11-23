@@ -35,6 +35,7 @@ export type MentalLevelId = keyof MentalEffortLevelDescriptors
 
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem implements QuizzableData {
+
   id?: LearnItemId
   whenAdded ! : OdmTimestamp
   title?: string
@@ -63,6 +64,9 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   time_estimate ? : HtmlString
 
   money_estimate ? : HtmlString
+
+  /** quick hack for category field__de */
+  de ? : HtmlString
 
 
     // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
