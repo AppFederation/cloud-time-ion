@@ -16,10 +16,12 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
   userAgent ? : string
 
-  // deviceId: string
+  // deviceId: string --> userAgent
   // geo: ...
-  // appVersion: ... (+timestamp)
-  // importance: ImportanceVal
+  // appVersion: ... (+timestamp) +git describe [--tags]
+  // TODO importance: ImportanceVal
+  // TODO fun
+  // TODO mental level
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
 
@@ -29,10 +31,6 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   msToSelfRate ? : DurationMs
   msToApplyAndNext ? : DurationMs
 
-  // timeToAnswer: DurationMs
-
-  // learnItem: LearnItemId
-  // selfRating: Rating
   // could be also category
 
   // also stores:
@@ -55,10 +53,6 @@ export class QuizHistoryService extends HistoryService<QuizAnswerForHistory> {
     super(
       injector,
       'QuizAnswersHistory',
-      // {
-      //   loadAll: false,
-      // }
-      // TODO: indicate to not load all items, to not slow down (especially on app start)
     )
   }
 
