@@ -67,6 +67,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
 
   /** quick hack for category field__de */
   de ? : HtmlString
+  en ? : HtmlString
+  es ? : HtmlString
 
 
     // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
