@@ -26,7 +26,12 @@ import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../models/fields/self-rating.model'
-import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
+import {
+  ImportanceDescriptors,
+  importanceDescriptors,
+  importanceDescriptorsArray,
+  importanceDescriptorsArrayFromHighestNumeric,
+} from '../models/fields/importance.model'
 import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
@@ -215,7 +220,7 @@ export class QuizService {
 
   private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
     let nextItem$: LearnItem$ | undefined = undefined
-    for (let importance of importanceDescriptorsArrayFromHighest) {
+    for (let importance of importanceDescriptorsArrayFromHighestNumeric) {
       const filteredByImportance = pendingItems.filter(item$ => (item$.getEffectiveImportanceId()) === importance.id)
       // TODO: performance: could reuse itemsLeftByImportance from QuizStatus, instead of filtering (oh, but those are just counts; but could replace by groupBy; OTOH, we don't need all of the arrays, just the non-empty one with highest importance)
       if (filteredByImportance.length) {
