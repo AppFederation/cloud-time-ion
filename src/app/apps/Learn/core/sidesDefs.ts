@@ -9,12 +9,22 @@ export class Side {
   _title ? : string
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang ? : string // = 'en-US'
+  icon?: string
   flag?: string
   flagTransparent?: boolean
   dependsOn ? : Side
   isHint ? : boolean
   onlyForLearn ? : boolean
   hideByDefault ? : boolean
+
+  get iconFullPath() {
+    if ( ! this.icon ) {
+      return undefined
+    }
+    return (this.icon?.startsWith(`assets/`) ? '' : `assets/icons/`)
+      + this.icon
+      // + (this.icon?.endsWith(`.svg`) ? '' : '.svg') cannot use now coz using ion-icon
+  }
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -25,6 +35,13 @@ export class Side {
     }
   }
 
+  init() {
+    if ( this.flag ) {
+      this.icon ??= `assets/countries/` + this.flag + '.svg'
+    }
+    return this
+  }
+
   get title () {
     return this._title ?? this.id ?. replace(/_/g, ' ')
   }
@@ -32,7 +49,7 @@ export class Side {
 
 export type SideVal = string | nullish
 
-export type SideDecl = Omit<Side, 'id'|'title'>
+export type SideDecl = Omit<Side, 'id'|'title' | 'init' | 'iconFullPath'> // TODO: Exclude<Omit<Side, 'id'|'title'>, Function>
 
 /*
  stuff like Artikel, example as extra fields.
@@ -41,7 +58,7 @@ export type SideDecl = Omit<Side, 'id'|'title'>
 * */
 
 function side(param: SideDecl): Side {
-  return Object.assign(new Side(), param)
+  return Object.assign(new Side(), param).init()
 }
 
 const onlyForLearn = true
@@ -97,6 +114,8 @@ export class SidesDefs {
     ask: false,
   })
   time_estimate = side({
+    icon: `stopwatch-outline`,
+    _title: `~time`,
     ask: false,
   })
   money_estimate = side({
