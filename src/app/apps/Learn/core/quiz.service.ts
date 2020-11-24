@@ -39,6 +39,7 @@ import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 export type Duration = number
 
 
+/** FIXME: keep in mind that if options existed, they will not be overridden, and will be missing fields; so should {...defaultOptions, ...options}*/
 export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,

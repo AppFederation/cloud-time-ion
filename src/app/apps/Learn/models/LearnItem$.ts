@@ -56,7 +56,7 @@ export class LearnItem$
   /* TODO return descriptor always */
   getEffectiveImportance(): ImportanceVal {
     return this.val ?. importance
-      ?? this.getEffectiveImportanceByCategories()
+      ?? this.getImportanceFromCategories()
       ?? importanceDescriptors.undefined
   }
 
