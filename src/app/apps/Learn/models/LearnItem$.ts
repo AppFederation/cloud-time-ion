@@ -56,7 +56,7 @@ export class LearnItem$
   /* TODO return descriptor always */
   getEffectiveImportance(): ImportanceVal {
     return this.val ?. importance
-      ?? this.getEffectiveImportanceByCategories()
+      ?? this.getImportanceFromCategories()
       ?? importanceDescriptors.undefined
   }
 
@@ -98,7 +98,13 @@ export class LearnItem$
     return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
   }
 
-  private getEffectiveImportanceByCategories() {
+  private getImportanceFromCategories() {
+    if ( ! isNullishOrEmptyOrBlank(this.val?.en) ) {
+      return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
+    }
+    if ( ! isNullishOrEmptyOrBlank(this.val?.es) ) {
+      return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
+    }
     if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
       return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
     }
