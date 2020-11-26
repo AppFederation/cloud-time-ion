@@ -109,6 +109,7 @@ export class SidesDefs {
   })
   benefits = side({
     ask: false,
+    icon: 'thumbs-up-outline',
   })
   requirements = side({
     ask: false,
@@ -136,9 +137,11 @@ export class SidesDefs {
   })
   finish_before = side({
     ask: false,
+    icon: `calendar-outline`,
   })
   finish_after = side({
     ask: false,
+    icon: `calendar-outline`,
   })
   deps_to_start = side({
     ask: false,
