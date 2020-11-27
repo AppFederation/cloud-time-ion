@@ -106,6 +106,7 @@ export class LearnItem$
       return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
     }
     if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
+      // TODO: check if it is question/answer side
       return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
     }
   }

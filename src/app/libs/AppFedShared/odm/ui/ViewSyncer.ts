@@ -3,7 +3,7 @@ import {OdmItem$2} from '../OdmItem$2'
 import {debugLog, errorAlert} from '../../utils/log'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 import {DurationMs, TimeMsEpoch} from '../../utils/type-utils'
-import {PatchableObservable} from '../../utils/rxUtils'
+import {PatchableObservable, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../utils/rxUtils'
 import {convertToHtmlIfNeeded} from '../../utils/html-utils'
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
@@ -61,7 +61,9 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
         }
       }
     })
-    this.formGroup.valueChanges.subscribe(newValue => {
+    this.formGroup.valueChanges.pipe(
+      throttleTimeWithLeadingTrailing_ReallyThrottle(1500 as (number & {unit: 'ms'}))
+    ).subscribe(newValue => {
       // errorAlert(`ViewSyncer won't save: hack for prevent rich text for now`)
       // return; // hack for prevent rich for now
       if ( this.requireExplicitInitialValueTrigger && ! this.initialDataArrivalWasSetExplicitly ) {

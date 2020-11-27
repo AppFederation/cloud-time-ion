@@ -1,13 +1,23 @@
-<div style="display: flex; flex-direction: row; align-items: center">
+<div style="display: flex; flex-direction: column; align-items: stretch">
+  <div style="display: flex; flex-direction: row">
+    <ion-label>not scaled</ion-label>
+    <div style="flex-grow: 1"
+    ></div>
+    <ion-note
+    >{{ (control.value)?.toFixed(3) }}
+    </ion-note>
+    <div style="flex-grow: 1"
+    ></div>
+
+    <ion-label>scaled</ion-label>
+  </div>
+
   <ion-range
     [min]="0"
     [max]="3"
-    [pin]="true"
+    [pin]="false"
     [step]="0.01"
     [formControl]="control"
   >
-    <ion-note slot="start">{{ (control.value / 1)?.toFixed(3) }}</ion-note>
-    <ion-label slot="start">not scaled</ion-label>
-    <ion-label slot="end">scaled</ion-label>
   </ion-range>
 </div>
