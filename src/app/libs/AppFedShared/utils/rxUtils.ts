@@ -3,12 +3,13 @@ import {async} from 'rxjs';
 import {Observable} from 'rxjs'
 import {CachedSubject} from './cachedSubject2/CachedSubject2'
 import {OdmPatch} from '../odm/OdmItem$2'
+import {DurationMs} from './type-utils'
 
-export function throttleTimeWithLeadingTrailing<T>(timeMs: number) {
+export function throttleTimeWithLeadingTrailing<T>(timeMs: DurationMs) {
   return debounceTime(timeMs)
 }
 
-export function throttleTimeWithLeadingTrailing_ReallyThrottle<T>(timeMs: number) {
+export function throttleTimeWithLeadingTrailing_ReallyThrottle<T>(timeMs: DurationMs) {
   /* throttleTime appears to not work (fires immediately?)
     potentially related: https://github.com/ReactiveX/rxjs/issues/3712
 
