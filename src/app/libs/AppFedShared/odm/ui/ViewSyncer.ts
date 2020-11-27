@@ -61,7 +61,9 @@ export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any
         }
       }
     })
-    this.formGroup.valueChanges.pipe(throttleTimeWithLeadingTrailing_ReallyThrottle(1500 as (number & {unit: 'ms'}))).subscribe(newValue => {
+    this.formGroup.valueChanges.pipe(
+      throttleTimeWithLeadingTrailing_ReallyThrottle(1500 as (number & {unit: 'ms'}))
+    ).subscribe(newValue => {
       // errorAlert(`ViewSyncer won't save: hack for prevent rich text for now`)
       // return; // hack for prevent rich for now
       if ( this.requireExplicitInitialValueTrigger && ! this.initialDataArrivalWasSetExplicitly ) {
