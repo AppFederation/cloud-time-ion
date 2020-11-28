@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds, mapEntriesToArray, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 function status(x ? : any): StatusDef {
-  return x
+  return x ?? {}
 }
 
 export type IconDef = string

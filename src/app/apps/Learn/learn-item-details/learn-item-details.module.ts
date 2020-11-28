@@ -40,6 +40,15 @@ const routes: Routes = [
     TimeModule,
     SharedModule,
   ],
-  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent, FunLevelEditComponent, MentalEffortLevelEditComponent, MentalEffortLevelEditComponent, ItemClassEditComponent, StatusesEditComponent],
+  declarations: [
+    LearnItemDetailsPage,
+    LearnItemDetailsHintsComponent,
+    ImportanceEditComponent,
+    FunLevelEditComponent,
+    MentalEffortLevelEditComponent,
+    MentalEffortLevelEditComponent,
+    ItemClassEditComponent,
+    StatusesEditComponent,
+  ],
 })
 export class LearnItemDetailsPageModule {}
