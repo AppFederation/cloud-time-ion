@@ -1,3 +1,5 @@
+<ion-checkbox>Filter</ion-checkbox>
+
 <ion-button (click)="setPreset('lastModified')">
   last added / modified
 </ion-button>
@@ -26,7 +28,7 @@ TASKS:
   <div style="flex-flow: column">
     <div>  best ROI</div>
     <ion-note style="font-size: 66%; color: #cacaca">
-      can skip importance levels
+      can skip importance levels; closest to be done
     </ion-note>
   </div>
 
@@ -77,6 +79,10 @@ TASKS:
 
 <ion-button [disabled]="true">
   next milestones
+</ion-button>
+
+<ion-button [disabled]="true">
+  started
 </ion-button>
 
 <ion-button [disabled]="true">
