@@ -1,7 +1,10 @@
 <ng-container *ngFor="let choosable of allPossible">
 
-  <ion-button>
-    {{choosable . title || choosable . name || choosable . id || choosable}}
+  <ion-button
+    (click)="onClick(choosable)"
+    [ngClass]="{ chosen: isChosen(choosable) }"
+  >
+    {{ getTitle(choosable) }}
   </ion-button>
 
 </ng-container>
