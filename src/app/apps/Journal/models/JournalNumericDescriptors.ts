@@ -2,6 +2,8 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
+const lowerIsBetter = true
+
 export interface ILateInit {
   lateInit(): any
 }
@@ -151,6 +153,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     searchTerms: [`tranquility`],
     antonym: `drama`,
   })
+  drama = jnd({lowerIsBetter, })
   'annoyance' = jnd({lowerIsBetter: true,})
   anger = jnd({lowerIsBetter: true,})
   hate = jnd({lowerIsBetter: true,})
