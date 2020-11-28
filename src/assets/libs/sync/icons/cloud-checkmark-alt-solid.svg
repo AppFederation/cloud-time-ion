@@ -1,3 +1,22 @@
-<svg width="640" height="512" viewBox="0 0 640 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M537.6 226.6C541.7 215.9 544 204.2 544 192C544 139 501 96 448 96C428.3 96 409.9 102 394.7 112.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192C96 194.7 96.1 197.4 96.2 200.1C40.2 219.8 0 273.2 0 336C0 415.5 64.5 480 144 480H512C582.7 480 640 422.7 640 352C640 290.1 596 238.4 537.6 226.6ZM144.626 306.659L249.571 411.605C255.876 417.91 266.099 417.91 272.404 411.605L458.077 225.932C464.382 219.627 464.382 209.404 458.077 203.099L435.244 180.266C428.939 173.961 418.716 173.961 412.411 180.266L260.988 331.689L190.292 260.993C183.987 254.687 173.763 254.687 167.458 260.993L144.626 283.826C138.321 290.132 138.321 300.354 144.626 306.659Z" fill="orange"/>
+<svg width="640" height="512" viewBox="0 0 645 517" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="MyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="5%" stop-color="orange" stop-opacity="100%"/>
+      <stop offset="95%" stop-color="orange" stop-opacity="60%"/>
+    </linearGradient>
+
+    <filter id="f4" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
+<!--      <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="matrixOut"/>-->
+<!--      <feColorMatrix id="recolor"  type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" result="white-glow"/>-->
+
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                     values="1 0 0 0  0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="20" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
+  <path
+    filter="url(#f4)"
+    fill-rule="evenodd" clip-rule="evenodd" d="M537.6 226.6C541.7 215.9 544 204.2 544 192C544 139 501 96 448 96C428.3 96 409.9 102 394.7 112.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192C96 194.7 96.1 197.4 96.2 200.1C40.2 219.8 0 273.2 0 336C0 415.5 64.5 480 144 480H512C582.7 480 640 422.7 640 352C640 290.1 596 238.4 537.6 226.6ZM144.626 306.659L249.571 411.605C255.876 417.91 266.099 417.91 272.404 411.605L458.077 225.932C464.382 219.627 464.382 209.404 458.077 203.099L435.244 180.266C428.939 173.961 418.716 173.961 412.411 180.266L260.988 331.689L190.292 260.993C183.987 254.687 173.763 254.687 167.458 260.993L144.626 283.826C138.321 290.132 138.321 300.354 144.626 306.659Z" fill="url(#MyGradient)"/>
 </svg>

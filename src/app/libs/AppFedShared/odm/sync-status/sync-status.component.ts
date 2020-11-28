@@ -12,6 +12,8 @@ import {AuthService} from '../../../../auth/auth.service'
 })
 export class SyncStatusComponent implements OnInit {
 
+  showShadow = true
+
   get pendingUploadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingUploadsCount))}
 
   get syncStatus$() { return this.syncStatusService.syncStatus$ }
