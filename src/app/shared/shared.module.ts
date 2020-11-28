@@ -7,6 +7,7 @@ import {CommonModule} from '@angular/common'
 import {ImportanceComponent} from '../libs/AppFedShared/importance/importance.component'
 import {RichTextEditComponent} from '../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
 import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/duration/duration.component'
+import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -26,6 +27,7 @@ let imports = [
         RichTextEditComponent,
         RichTextViewComponent,
         DurationComponent,
+        ChooserComponent,
     ],
     providers: [],
     declarations: [
@@ -33,6 +35,7 @@ let imports = [
         RichTextViewComponent,
         ImportanceComponent,
         DurationComponent,
+        ChooserComponent,
     ],
 })
 export class SharedModule {
