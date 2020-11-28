@@ -16,6 +16,7 @@ import {ImportanceEditComponent} from './importance-edit/importance-edit.compone
 import {FunLevelEditComponent} from './fun-level-edit/fun-level-edit.component'
 import {MentalEffortLevelEditComponent} from './mental-effort-level-edit/mental-effort-level-edit.component'
 import {ItemClassEditComponent} from './item-class-edit/item-class-edit.component'
+import {StatusesEditComponent} from './statuses-edit/statuses-edit.component'
 import {SharedModule} from '../../../shared/shared.module'
 
 const routes: Routes = [
@@ -39,6 +40,6 @@ const routes: Routes = [
     TimeModule,
     SharedModule,
   ],
-  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent, FunLevelEditComponent, MentalEffortLevelEditComponent, MentalEffortLevelEditComponent, ItemClassEditComponent],
+  declarations: [LearnItemDetailsPage, LearnItemDetailsHintsComponent, ImportanceEditComponent, FunLevelEditComponent, MentalEffortLevelEditComponent, MentalEffortLevelEditComponent, ItemClassEditComponent, StatusesEditComponent],
 })
 export class LearnItemDetailsPageModule {}
