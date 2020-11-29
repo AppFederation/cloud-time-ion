@@ -134,7 +134,7 @@ export class LearnStatsService {
     let multiDimRowsFlattened: any[] = []
     try {
       multiDimRowsFlattened = flatten(this.makeMultiDimRows(item$s))
-      debugLog(`multiDimRowsFlattened json len`, JSON.stringify(multiDimRowsFlattened).length)
+      debugLog(`multiDimRowsFlattened JSON.stringify string len`, JSON.stringify(multiDimRowsFlattened).length)
     } catch (e) {
       errorAlert(`makeMultiDimRows error`, e)
     }
