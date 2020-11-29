@@ -134,16 +134,8 @@
       </div>
     </ion-virtual-scroll>-->
 
-    <simple-list [items]="filteredItems?.slice(0, currentlyDisplayedElements)">
-    </simple-list>
-
-    <ion-button (click)="loadMore()" *ngIf="currentlyDisplayedElements < filteredItems.length">
-      Load More
-    </ion-button>
-
-    <ion-button (click)="loadAll()" *ngIf="currentlyDisplayedElements < filteredItems.length">
-      Load All
-    </ion-button>
+    <virtual-list [items]="filteredItems">
+    </virtual-list>
 
     <!--
        ion-virtual-scroll BUGS:

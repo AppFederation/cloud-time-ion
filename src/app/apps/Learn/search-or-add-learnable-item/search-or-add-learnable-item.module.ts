@@ -19,6 +19,9 @@ import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 import {SimpleListComponent} from './item-lists/simple-list/simple-list.component'
 import {ListOptionsComponent} from './list-options/list-options.component'
+import {VirtualListComponent} from './item-lists/virtual-list/virtual-list.component'
+import {ScrollingModule} from '@angular/cdk/scrolling'
+import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling'
 
 const routes: Routes = [
   {
@@ -28,20 +31,22 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        RouterModule.forChild(routes),
-        OdmModule,
-        AngularFireStorageModule,
-        LearnSharedModule,
-        SharedModule2,
-        EditorModule,
-        ReactiveFormsModule,
-        AudioModule,
-        LearnSharedModule,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild(routes),
+    OdmModule,
+    AngularFireStorageModule,
+    LearnSharedModule,
+    SharedModule2,
+    EditorModule,
+    ReactiveFormsModule,
+    AudioModule,
+    LearnSharedModule,
+    ScrollingModule,
+    ExperimentalScrollingModule
+  ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,
         ActionableItemComponent,
@@ -50,6 +55,7 @@ const routes: Routes = [
         LearnStatsComponent,
         SearchOrAddTextEditorComponent,
         SimpleListComponent,
+        VirtualListComponent,
         ListOptionsComponent,
     ],
 })
