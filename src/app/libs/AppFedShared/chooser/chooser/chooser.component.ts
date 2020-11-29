@@ -2,6 +2,11 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {Required} from '../../utils/angular/Required.decorator'
 import {CachedSubject} from '../../utils/cachedSubject2/CachedSubject2'
 
+/** Considerations:
+ * - acting on multiple selected items:
+ *   - tri-state checkbox (yes, no, ~)
+ * - using in filters (also yes no ~)
+ * */
 @Component({
   selector: 'app-chooser',
   templateUrl: './chooser.component.html',
