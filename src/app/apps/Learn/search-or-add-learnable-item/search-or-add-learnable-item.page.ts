@@ -103,6 +103,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
    *   - so maybe the presets should just be written based on how they differ from default (e.g. importance, fun (, ...defaults); fun, roi (, ...defaults))
    * */
   private setItemsAndSort(items: any[]) {
+    const urgencyGetter = (item: LearnItem) => {
+      return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
+    }
     const durationGetter
       = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
     const durationGetterReverse
@@ -138,6 +141,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
           * but bucket them by order of magnitude, taking into account estimated time
           * and within those buckets, sort by importance;
           * also deps to start, deps to finish */
+        urgencyGetter,
         importanceGetter,
         /* TODO: take into account */
         roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
@@ -158,6 +162,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     } else if ( preset === `funImportant` ) {
       this.items = sortBy(items, [
         funGetter,
+        /* urgency maybe at second place; coz when user opts to choose fun, fun is the most urgent, probably, to relax */
         importanceGetter,
         roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
