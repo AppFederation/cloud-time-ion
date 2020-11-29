@@ -257,7 +257,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   }
 
   getEffectiveDeferrability(): Deferrability {
-    return this.getDeferrability() ?? ( daysAsMs(30) as Deferrability )
+    return this.getDeferrability()
+      ?? ( daysAsMs(365) as Deferrability /* assuming we can do all stuff we entered in one year; unless specified as something more far away in time */ )
   }
 
   getNearestDateForUrgency(): Date | nullish {
