@@ -6,6 +6,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../models/LearnItem$'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {SelfRating} from '../models/fields/self-rating.model'
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class QuizAnswersService {
   onApplyAndNext(item$: LearnItem$, selfRating: NumericPickerVal) {
     this.answer !. quizOptions = this.quizService.options$.lastVal !
     this.answer !. msToApplyAndNext = msElapsedTillNowSince(this.whenQuestionShowed !)
-    this.answer !. selfRating = selfRating
+    this.answer !. selfRating = selfRating as SelfRating
 
     this.quizHistoryService.onAnswer(
       this.answer !

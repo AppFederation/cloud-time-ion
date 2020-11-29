@@ -4,6 +4,10 @@ import {DurationMs, TimeMsEpoch} from '../type-utils'
 //   // return new
 // }
 
+export function daysAsMs(hours: number): DurationMs {
+  return hours * 24 * 3600_000 as DurationMs;
+}
+
 export function hoursAsMs(hours: number): DurationMs {
   return hours * 3600_000 as DurationMs;
 }

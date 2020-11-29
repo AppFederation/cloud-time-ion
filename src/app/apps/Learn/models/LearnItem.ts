@@ -10,10 +10,19 @@ import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-dur
 import {QuizzableData} from './quiz'
 import {FunDescriptors} from './fields/fun-level.model'
 import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
+import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
+import {parseDate} from '../../../libs/AppFedShared/utils/time/parse-date'
+import {maxBy} from 'lodash-es'
+import {Deferrability, Urgency} from './planning-prioritizing.model'
+import {daysAsMs, hoursAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
-export type PositiveInt = number
+
+export type PositiveInt = number & {constraint: 'positive int'}
+
+/** TOdo name NonNegativeInt */
+export type PositiveIntOrZero = number // & {constraint: 'positive int or zero'}
 
 export type IntensityVal = {
   id: keyof ImportanceDescriptors,
@@ -48,8 +57,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   // isMarkedAsSelectedOrUnselected ? : boolean
   isSelectedOrUnselected ? : boolean
 
-
-  selfRatingsCount?: PositiveInt
+  /** storing zero could be useful for querying for stuff that was not yet rated */
+  selfRatingsCount ? : PositiveIntOrZero
 
   /** synonyms: worth
    * storing both name and numeric value, in case it changes in the future
@@ -64,6 +73,10 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   time_estimate ? : HtmlString
 
   money_estimate ? : HtmlString
+
+  start_before ? : string
+
+  finish_before ? : string
 
   /** quick hack for category field__de */
   de ? : HtmlString
@@ -98,6 +111,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   //   return this.getSidesWithAnswers().map(side => this.getSideVal(side))
   // }
 
+  /** TODO: move to Quiz */
   public getSidesWithAnswers(): Side[] {
     const ret: Side [] = []
     let foundQuestionBefore = false
@@ -118,6 +132,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return ret
   }
 
+  /** TODO: move to Quiz */
   public getSidesWithHints(): Side[] {
     const ret: Side [] = []
     for (let side of sidesDefsHintsArray) {
@@ -136,6 +151,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return (this as any)[side.id] ?. trim ?. ()
   }
 
+  /** TODO: move to Quiz */
   getQuestionOrAnyString() {
     const question = this.getQuestion()
     if ( question ) {
@@ -144,10 +160,12 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     // second attempt, without `ask` requirement
   }
 
+  /** TODO: move to Quiz */
   getQuestion(): SideVal {
     return this.getSideVal(this.getSideWithQuestion())
   }
 
+  /** TODO: move to Quiz */
   getSideWithQuestionOrFirstNonEmpty(): Side | null {
     return this.getSideWithQuestion()
       ?? this.getFirstNonEmptySide()
@@ -173,6 +191,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return ! this.hasQAndA()
   }
 
+  /** TODO: move to Quiz */
   public getSideWithQuestion(): Side | null {
     for (let side of sidesDefsArray) {
       if (side.ask) {
@@ -221,6 +240,36 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
       return undefined
     }
     return importance / durationEstimateMs
+  }
+
+
+  /* NOTE: will apply to Learn too (e.g. to master certain material before/after some date, it will be prioritized). */
+  getDeferrability(): Deferrability | nullish {
+    const date = this.getNearestDateForUrgency()
+    if ( date ) {
+      const msNow = Date.now()
+      const msDiff = date.getTime() - msNow
+      return msDiff as Deferrability
+      // overdue should have high urgency
+    } else {
+      return date
+    }
+  }
+
+  getEffectiveDeferrability(): Deferrability {
+    return this.getDeferrability() ?? ( daysAsMs(30) as Deferrability )
+  }
+
+  getNearestDateForUrgency(): Date | nullish {
+    return this.getStartBeforeDate() ?? this.getFinishBeforeDate()
+  }
+
+  getFinishBeforeDate(): Date | nullish {
+    return parseDate(this.finish_before)
+  }
+
+  getStartBeforeDate(): Date | nullish {
+    return parseDate(this.start_before)
   }
 }
 

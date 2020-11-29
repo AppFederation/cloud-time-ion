@@ -104,7 +104,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
    * */
   private setItemsAndSort(items: any[]) {
     const urgencyGetter = (item: LearnItem) => {
-      return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
+      return item.getEffectiveDeferrability()
+      // return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
+      // cannot-yet-start (via startAfter) could have negative urgency
     }
     const durationGetter
       = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
@@ -152,6 +154,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       ]).reverse()
     } else if ( preset === `funRoi` ) {
       this.items = sortBy(items, [
+        urgencyGetter /* the ROI is in avoiding stress and complications by doing things ahead of time */,
         funGetter /* kinda part of ROI */,
         roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
