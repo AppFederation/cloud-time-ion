@@ -105,6 +105,11 @@ export class Statuses {
     shortListed: true,
   })
 
+  awaiting_delivery = status({
+    searchTerms: [`package`, `postal`],
+    shortListed: true,
+  })
+
   draft = status({
     shortListed: true,
   })
