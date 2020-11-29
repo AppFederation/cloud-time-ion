@@ -25,8 +25,10 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
 
+
   quizOptions ? : QuizOptions
 
+  // TODO: msToHint
   msToShowAnswer ? : DurationMs
   msToSelfRate ? : DurationMs
   msToApplyAndNext ? : DurationMs

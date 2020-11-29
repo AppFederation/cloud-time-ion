@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {QuizAnswerForHistory, QuizHistoryService} from './quiz-history.service'
 import {QuizService} from './quiz.service'
-import {msElapsedTillNowSince} from '../../../libs/AppFedShared/utils/time/time-utils'
+import {msElapsedTillNowSince} from '../../../libs/AppFedShared/utils/time/date-time-utils'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../models/LearnItem$'
