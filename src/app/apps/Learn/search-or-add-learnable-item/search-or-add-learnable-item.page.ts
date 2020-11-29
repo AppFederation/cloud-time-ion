@@ -95,7 +95,13 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     })
   }
 
-  /** TODO: move to class ListProcessing */
+  /** TODO: move to class ListProcessing
+   *
+   * ==== General:
+   * - probably all sort criteria should always be listed (some of them grouped into e.g. ROI), just changing order,
+   *   otherwise we leave ex-aequo resolution to chance (or defaulting to last-modified)
+   *   - so maybe the presets should just be written based on how they differ from default (e.g. importance, fun (, ...defaults); fun, roi (, ...defaults))
+   * */
   private setItemsAndSort(items: any[]) {
     const durationGetter
       = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
@@ -147,6 +153,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
           Take into account %done, for real remaining cost
         */,
         mentalGetterAscending /* kinda part of ROI */,
+        importanceGetter,
       ]).reverse()
     } else if ( preset === `funImportant` ) {
       this.items = sortBy(items, [
