@@ -102,9 +102,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const durationGetterReverse
       = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetter
-      = (item: LearnItem) => item.importance?.numeric ?? -99999 /* TODO get descriptor by id later: getEffectiveImportance() */
+      = (item: LearnItem) => item.importance ?. numeric ?? -99999 /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetter
-      = (item: LearnItem) => item.funEstimate?.numeric ?? -99999 /* TODO get descriptor by id later */
+      = (item: LearnItem) => item.funEstimate ?. numeric ?? -99999 /* TODO get descriptor by id later */
+    const mentalGetterAscending
+      = (item: LearnItem) => item.mentalLevelEstimate?.numeric ?? 99999 /* TODO get descriptor by id later */
     const roiGetter
       = (item: LearnItem) => item.getRoi() ?? -99999
     items = items.map(item => Object.assign(new LearnItem(), item))
@@ -117,11 +119,19 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.items = sortBy(items, roiGetter).reverse()
     } else if ( preset === `quickest` ) {
       this.items = sortBy(items, durationGetter)//.reverse()
-    } else if ( preset === `importantQuick` ) {
+    } else if ( preset === `funQuickEasy` ) {
+      this.items = sortBy(items, [
+        funGetter,
+        durationGetterReverse /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
+        mentalGetterAscending,
+        importanceGetter,
+      ])//.reverse()
+    } else if ( preset === `importance_roi` ) {
       this.items = sortBy(items, [
         importanceGetter,
-        durationGetterReverse /* duration before fun*/,
-        funGetter,
+        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced */,
+        mentalGetterAscending /* kinda part of ROI */,
+        funGetter /* kinda part of ROI */,
       ]).reverse()
     } else {
       this.items = sortBy(items, [
@@ -280,8 +290,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         item =>
           this.matchesSearch(item)
           && item.isTask
-          && item.importance
-          && item.funEstimate
+          // && item.importance
+          // && item.funEstimate
       )
     }
   }
