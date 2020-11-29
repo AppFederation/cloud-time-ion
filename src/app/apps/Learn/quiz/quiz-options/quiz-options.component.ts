@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {Form, FormControl, FormGroup} from '@angular/forms'
 import {QuizOptions, QuizService} from '../../core/quiz.service'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {OptionsService} from '../../core/options.service'
+import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
 
 @Component({
   selector: 'app-quiz-options',
@@ -13,12 +14,13 @@ export class QuizOptionsComponent implements OnInit {
 
 
   /* TODO use some options syncer util, maybe OptionsFormControl directive */
-  controls = {
+  controls: { [k in keyof QuizOptions]: FormControl} = {
     dePrioritizeNewMaterial: new FormControl(false),
     onlyWithQA: new FormControl(true),
     skipTasks: new FormControl(true),
-    powBaseX100: new FormControl()
-  }
+    powBaseX100: new FormControl(),
+    scaleIntervalsByImportance: new FormControl(1),
+}
 
   formGroup = new FormGroup(this.controls)
 
@@ -28,7 +30,9 @@ export class QuizOptionsComponent implements OnInit {
     public quizService: QuizService,
     public optionsService: OptionsService,
   ) {
-    this.formGroup.valueChanges.subscribe((options: QuizOptions) => {
+    this.formGroup.valueChanges.pipe(
+      throttleTimeWithLeadingTrailing_ReallyThrottle(200)
+    ).subscribe((options: QuizOptions) => {
       this.quizService.setOptions(options)
     })
     // this.formGroup.setValue({

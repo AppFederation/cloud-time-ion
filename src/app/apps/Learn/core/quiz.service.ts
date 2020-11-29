@@ -18,7 +18,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
+import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
 import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
 import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs'
@@ -26,7 +26,12 @@ import {timer} from 'rxjs'
 import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
 import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../models/fields/self-rating.model'
-import {ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray, importanceDescriptorsArrayFromHighest} from '../models/fields/importance.model'
+import {
+  ImportanceDescriptors,
+  importanceDescriptors,
+  importanceDescriptorsArray,
+  importanceDescriptorsArrayFromHighestNumeric,
+} from '../models/fields/importance.model'
 import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
@@ -34,12 +39,14 @@ import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 export type Duration = number
 
 
+/** FIXME: keep in mind that if options existed, they will not be overridden, and will be missing fields; so should {...defaultOptions, ...options}*/
 export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
     public powBaseX100: number = 300,
     public skipTasks: boolean = true,
+    public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
   ) {
   }
 }
@@ -165,8 +172,8 @@ export class QuizService {
         pendingItemsTodayCount,
         nextItem$ ? isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)) : undefined,
         undefined,
-        countBy(pendingItems, (item) => item.val?.importance?.id) as CountsByImportance,
-        countBy(item$s, (item) => item.val?.importance?.id) as CountsByImportance,
+        countBy(pendingItems, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
+        countBy(item$s, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
@@ -214,8 +221,8 @@ export class QuizService {
 
   private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
     let nextItem$: LearnItem$ | undefined = undefined
-    for (let importance of importanceDescriptorsArrayFromHighest) {
-      const filteredByImportance = pendingItems.filter(item => (item.val?.importance?.id ?? importanceDescriptors.medium.id) === importance.id)
+    for (let importance of importanceDescriptorsArrayFromHighestNumeric) {
+      const filteredByImportance = pendingItems.filter(item$ => (item$.getEffectiveImportanceId()) === importance.id)
       // TODO: performance: could reuse itemsLeftByImportance from QuizStatus, instead of filtering (oh, but those are just counts; but could replace by groupBy; OTOH, we don't need all of the arrays, just the non-empty one with highest importance)
       if (filteredByImportance.length) {
         // TODO: performance: maybe combine filter and minBy into something like minByIf, to just iterate once
@@ -245,11 +252,6 @@ export class QuizService {
     }
     return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
   }
-
-  // calculateIntervalHours3(rating: Rating, importance: ImportanceVal, quizOptions: QuizOptions): Duration {
-  //   return this.calculateIntervalHours(rating, this.options$?.lastVal !)
-  // }
-
 
   toggleShowAnswer() {
     this.showAnswer$.next(! this.showAnswer$.lastVal)

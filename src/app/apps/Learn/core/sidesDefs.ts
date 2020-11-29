@@ -9,12 +9,22 @@ export class Side {
   _title ? : string
   /* could be overridden per card or per-user; e.g. some titles could be in german, others in English */
   defaultLang ? : string // = 'en-US'
+  icon?: string
   flag?: string
   flagTransparent?: boolean
   dependsOn ? : Side
   isHint ? : boolean
   onlyForLearn ? : boolean
   hideByDefault ? : boolean
+
+  get iconFullPath() {
+    if ( ! this.icon ) {
+      return undefined
+    }
+    return (this.icon?.startsWith(`assets/`) ? '' : `assets/icons/`)
+      + this.icon
+      // + (this.icon?.endsWith(`.svg`) ? '' : '.svg') cannot use now coz using ion-icon
+  }
 
   /* TODO: rename to `question` */
   ask?: boolean // = true
@@ -25,6 +35,13 @@ export class Side {
     }
   }
 
+  init() {
+    if ( this.flag ) {
+      this.icon ??= `assets/countries/` + this.flag + '.svg'
+    }
+    return this
+  }
+
   get title () {
     return this._title ?? this.id ?. replace(/_/g, ' ')
   }
@@ -32,7 +49,7 @@ export class Side {
 
 export type SideVal = string | nullish
 
-export type SideDecl = Omit<Side, 'id'|'title'>
+export type SideDecl = Omit<Side, 'id'|'title' | 'init' | 'iconFullPath'> // TODO: Exclude<Omit<Side, 'id'|'title'>, Function>
 
 /*
  stuff like Artikel, example as extra fields.
@@ -41,7 +58,7 @@ export type SideDecl = Omit<Side, 'id'|'title'>
 * */
 
 function side(param: SideDecl): Side {
-  return Object.assign(new Side(), param)
+  return Object.assign(new Side(), param).init()
 }
 
 const onlyForLearn = true
@@ -78,16 +95,28 @@ export class SidesDefs {
     defaultLang: 'en-US',
     ask: false,
   })
+  description = side({
+    ask: false,
+  })
   /* first EN and PL to be more likely to ask from languages that I know already */
   examples = side({
   })
   comments = side({
     ask: false,
   })
+  execution_hints = side({
+    ask: false,
+  })
   benefits = side({
+    ask: false,
+    icon: 'thumbs-up-outline',
+  })
+  requirements = side({
     ask: false,
   })
   time_estimate = side({
+    icon: `stopwatch-outline`,
+    _title: `~time`,
     ask: false,
   })
   money_estimate = side({
@@ -108,9 +137,11 @@ export class SidesDefs {
   })
   finish_before = side({
     ask: false,
+    icon: `calendar-outline`,
   })
   finish_after = side({
     ask: false,
+    icon: `calendar-outline`,
   })
   deps_to_start = side({
     ask: false,
@@ -202,6 +233,10 @@ export class SidesDefs {
     hideByDefault,
     onlyForLearn,
   })
+  short_id = side({
+    ask: false,
+  })
+
   // IDEA: extra info that is not necessary for maximum self-rating ; could be ignored for scroll / buttons purposes
 }
 

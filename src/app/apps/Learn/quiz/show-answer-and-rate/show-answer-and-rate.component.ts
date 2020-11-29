@@ -4,6 +4,7 @@ import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numer
 import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizHistoryService} from '../../core/quiz-history.service'
+import {QuizAnswersService} from '../../core/quiz-answers.service'
 
 @Component({
   selector: 'app-show-answer-and-rate',
@@ -25,6 +26,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
   constructor(
     public quizService: QuizService,
     public quizHistoryService: QuizHistoryService,
+    public quizAnswersService: QuizAnswersService,
   ) { }
 
 
@@ -32,6 +34,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   showAnswer() {
     this.quizService.toggleShowAnswer()
+    this.quizAnswersService.onShowAnswer()
     // https://www.w3schools.com/jsref/met_element_scrollintoview.asp
     // this.scrollToBottom()
     // window.scrollTo(0,document.body.scrollHeight);
@@ -46,17 +49,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
   // }
 
   applyAndNext() {
-    const newRating = this.selfRating
-    this.quizHistoryService.onAnswer(
-      /* Maybe move this into setNewSelfRating, however this is also called from non-quiz */
-      {
-        itemId: this.item$ !. id !,
-        selfRating: newRating,
-        quizOptions: this.quizService.options$.lastVal,
-      }
-    )
-    this.item$ ?. setNewSelfRating(newRating !)
-    this.quizService.requestNextItem()
+    this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
   }
 
 }

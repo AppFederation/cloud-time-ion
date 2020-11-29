@@ -1,13 +1,24 @@
-<div style="display: flex; flex-direction: row; align-items: center">
+<div style="display: flex; flex-direction: column; align-items: stretch">
+  <div style="display: flex; flex-direction: row">
+    <ion-label>more diligent
+    </ion-label>
+    <div style="flex-grow: 1"
+    ></div>
+    <ion-note
+    >{{ (control.value / 100)?.toFixed(3) }}
+    </ion-note>
+    <div style="flex-grow: 1"
+    ></div>
+
+    <ion-label>quicker</ion-label>
+  </div>
+
   <ion-range
     [min]="110"
     [max]="6000"
-    [pin]="true"
+    [pin]="false"
     [step]="1"
     [formControl]="control"
   >
-    <ion-note slot="start">{{ (control.value / 100)?.toFixed(3) }}</ion-note>
-    <ion-label slot="start">more<br>diligent</ion-label>
-    <ion-label slot="end">quicker</ion-label>
   </ion-range>
 </div>

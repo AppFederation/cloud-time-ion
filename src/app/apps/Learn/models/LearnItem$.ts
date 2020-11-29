@@ -2,7 +2,7 @@ import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {ImportanceVal, LearnItem} from './LearnItem'
+import {ImportanceId, ImportanceVal, LearnItem} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -11,6 +11,7 @@ import {Quiz, Quizzable$} from './quiz'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
 import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
+import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 
 // export class Quiz {
 //   // status$: {
@@ -52,9 +53,11 @@ export class LearnItem$
 
   }
 
-  /* TODO return descriptor */
+  /* TODO return descriptor always */
   getEffectiveImportance(): ImportanceVal {
-    return this.val ?. importance ?? importanceDescriptors.undefined
+    return this.val ?. importance
+      ?? this.getImportanceFromCategories()
+      ?? importanceDescriptors.undefined
   }
 
   getEffectiveImportanceNumeric(): number {
@@ -79,6 +82,10 @@ export class LearnItem$
     // return this.importance // ?? maybe return medium
   }
 
+  getEffectiveImportanceId(): ImportanceId {
+    return this.getEffectiveImportance() ?. id
+  }
+
   getEffectiveImportanceShortId() {
     return importanceDescriptors2.getShortId(this.getEffectiveImportance())
   }
@@ -91,5 +98,16 @@ export class LearnItem$
     return mentalEffortLevelsDescriptors.getShortId(this.getEffectiveMentalEffort())
   }
 
-
+  private getImportanceFromCategories() {
+    if ( ! isNullishOrEmptyOrBlank(this.val?.en) ) {
+      return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
+    }
+    if ( ! isNullishOrEmptyOrBlank(this.val?.es) ) {
+      return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
+    }
+    if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
+      // TODO: check if it is question/answer side
+      return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
+    }
+  }
 }

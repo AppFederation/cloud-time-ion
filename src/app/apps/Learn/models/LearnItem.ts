@@ -8,6 +8,8 @@ import {ImportanceDescriptors} from './fields/importance.model'
 import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
 import {QuizzableData} from './quiz'
+import {FunDescriptors} from './fields/fun-level.model'
+import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
@@ -22,12 +24,18 @@ export type HtmlString = string
 
 
 export type ImportanceVal = IntensityVal
+export type ImportanceId = keyof ImportanceDescriptors
+
 export type FunVal = IntensityVal
+export type FunLevelId = keyof FunDescriptors
+
 export type MentalLevelVal = IntensityVal
+export type MentalLevelId = keyof MentalEffortLevelDescriptors
 
 
 /** LearnDoItemData */
 export class LearnItem extends OdmInMemItem implements QuizzableData {
+
   id?: LearnItemId
   whenAdded ! : OdmTimestamp
   title?: string
@@ -56,6 +64,11 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   time_estimate ? : HtmlString
 
   money_estimate ? : HtmlString
+
+  /** quick hack for category field__de */
+  de ? : HtmlString
+  en ? : HtmlString
+  es ? : HtmlString
 
 
     // idea: quizAvgMs ?: DurationMs /* can be calculated via quizTotalMs / selfRatingsCount, but we store for querying purposes */
@@ -196,6 +209,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     }
   }
 
+  /** TODO: ROI could also take into account mental effort (maybe even fun), money (as also if something is more expensive, the decision requires more mental effort, time;
+   * more likely to get postponed */
   getRoi() {
     const durationEstimateMs = this.getDurationEstimateMs()
     if ( ! durationEstimateMs ) {

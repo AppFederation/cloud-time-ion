@@ -19,6 +19,7 @@ export interface QuizzableData {
 export interface Quizzable$ {
   // val$: PatchableObservable<QuizzableData | nullish>
   val: QuizzableData | nullish
+  getEffectiveImportance(): ImportanceVal
 }
 
 export class Quiz {
@@ -49,19 +50,19 @@ export class Quiz {
     if ( ! whenLastTouched ) {
       return dePrioritizeNewMaterial ? new Date(2199, 1, 1).getTime() : 0 // Date.now() + 365 * 24 * 3600 * 1000 : 0 // 1970
     }
-    const interval = this.calculateInterval(itemVal, quizOptions)
+    const interval = this.calculateInterval(this.quizzable$, quizOptions)
     const ret = whenLastTouched.toMillis() + interval
     return ret
 
     // TODO: could store this in DB, so that I can make faster firestore queries later, sort by next repetition time (although what if the algorithm changes...)
   }
 
-  private calculateInterval(itemVal: QuizzableData, quizOptions: QuizOptions | nullish): DurationMs {
+  private calculateInterval(itemVal: Quizzable$, quizOptions: QuizOptions | nullish): DurationMs {
     /* in the future this might be `..priority... ?? ...importance...` for life-wide vs in-the-moment (priority overrides; importance as fallback)
        http://localhost:4207/learn/item/f3kXRceky6eoJ3adB45S
     **/
     return this.quizIntervalCalculator.calculateIntervalMs(
-      itemVal.lastSelfRating, quizOptions, itemVal.importance
+      itemVal.val?.lastSelfRating, quizOptions, itemVal.getEffectiveImportance()
     )
   }
 

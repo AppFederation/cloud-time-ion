@@ -20,3 +20,11 @@ export function isInFuture(timeMsEpoch: TimeMsEpoch) {
   return timeMsEpoch > Date.now();
 }
 
+export function durationMs(ms: number) {
+  return ms as number & {unit: 'ms'}
+}
+
+export function msElapsedTillNowSince(from: Date): DurationMs {
+  return durationMs(Date.now() - from.getTime())
+}
+

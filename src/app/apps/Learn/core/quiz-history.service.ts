@@ -5,6 +5,7 @@ import {LearnItemId} from '../models/LearnItem'
 import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../models/fields/self-rating.model'
 import {QuizOptions} from './quiz.service'
+import {DurationMs} from '../../../libs/AppFedShared/utils/type-utils'
 
 export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
@@ -13,19 +14,25 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
   /** Undefined will mean skipping */
   selfRating: Rating | undefined
 
-  // deviceId: string
+  userAgent ? : string
+
+  // deviceId: string --> userAgent
   // geo: ...
-  // appVersion: ... (+timestamp)
-  // importance: ImportanceVal
+  // appVersion: ... (+timestamp) +git describe [--tags]
+  // TODO importance: ImportanceVal
+  // TODO fun
+  // TODO mental level
   // answer: HtmlString
   // quizDiligence: { powBase: number, id? : QuizDiligenceLevelId }
 
+
   quizOptions ? : QuizOptions
 
-  // timeToAnswer: DurationMs
+  // TODO: msToHint
+  msToShowAnswer ? : DurationMs
+  msToSelfRate ? : DurationMs
+  msToApplyAndNext ? : DurationMs
 
-  // learnItem: LearnItemId
-  // selfRating: Rating
   // could be also category
 
   // also stores:
@@ -48,10 +55,6 @@ export class QuizHistoryService extends HistoryService<QuizAnswerForHistory> {
     super(
       injector,
       'QuizAnswersHistory',
-      // {
-      //   loadAll: false,
-      // }
-      // TODO: indicate to not load all items, to not slow down (especially on app start)
     )
   }
 

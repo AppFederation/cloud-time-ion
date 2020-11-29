@@ -1,7 +1,16 @@
 <img
   alt="{{side.title}}"
-  *ngIf="side ?.flag "
-  src="assets/countries/{{side.flag}}.svg"
+  *ngIf="side ?. flag "
+  src="{{side.iconFullPath}}"
   height="14px"
-  style="opacity: {{side.flagTransparent ? 0.3 : 1}}"
+  style="opacity: {{side.flagTransparent ? 0.3 : 1}}; color: white"
 >
+<!--<svg style="color: green">-->
+<!--  <use xlink:href="{{side.iconFullPath}}"></use>-->
+<!--</svg>-->
+<ion-icon
+  *ngIf="! side ?. flag && side.icon"
+  name="{{side.icon}}"
+  color="primary"
+></ion-icon>
+<!--"{{side.iconFullPath}}"-->

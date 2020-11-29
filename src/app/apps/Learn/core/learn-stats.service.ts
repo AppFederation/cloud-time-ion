@@ -9,7 +9,7 @@ import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
-import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
+import {minutesAsMs, secondsAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
 import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {StatsHistoryService} from './stats-history.service'
 import {countByMulti} from '../../../libs/AppFedShared/utils/lodashPlus/countByMulti'
@@ -134,7 +134,7 @@ export class LearnStatsService {
     let multiDimRowsFlattened: any[] = []
     try {
       multiDimRowsFlattened = flatten(this.makeMultiDimRows(item$s))
-      debugLog(`multiDimRowsFlattened json len`, JSON.stringify(multiDimRowsFlattened).length)
+      debugLog(`multiDimRowsFlattened JSON.stringify string len`, JSON.stringify(multiDimRowsFlattened).length)
     } catch (e) {
       errorAlert(`makeMultiDimRows error`, e)
     }
