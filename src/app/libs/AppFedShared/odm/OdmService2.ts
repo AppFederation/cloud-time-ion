@@ -33,7 +33,8 @@ export abstract class OdmService2<
   >
 {
 
-  /* Unused? */
+  /* Unused?
+  * TODO: more specific name, like throttle to db or ui */
   throttleIntervalMs = 500
 
   // TODO: throttleLocalUiMs = 200
@@ -61,7 +62,7 @@ export abstract class OdmService2<
   protected constructor(
     protected injector: Injector,
     public className: string,
-    public opts ? : OdmServiceOpts,
+    public opts : OdmServiceOpts = new OdmServiceOpts(),
   ) {
     this.setBackendListener()
     // this.subscribeToBackendCollection();
@@ -109,46 +110,51 @@ export abstract class OdmService2<
 
   private setBackendListener() {
     const service = this /* MUST use instead of `this`; but could change it to object literal with arrow functions */
-    this.odmCollectionBackend.setListener({
-      onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
-        let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
-        // debugLog('setBackendListener onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
+    // TODO: this should probably trigger collection listening in backend coll
 
-        // service.obtainOdmItem$(addedItemId) TODO
+    // FIXME: start listener when someone subscribes to items$, e.g. chart QuizHistory
 
-        let items = service.localItems$.lastVal;
-        // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
-        //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
-        // }
+    if ( ! this.opts?.dontLoadAllAutomatically /* || true*/) {
+      this.odmCollectionBackend.setListener({
+        onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
+          let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
+          // debugLog('setBackendListener onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
+
+          // service.obtainOdmItem$(addedItemId) TODO
+
+          let items = service.localItems$.lastVal;
+          // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
+          //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+          // }
           existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
           items!.push(existingItem)
-        // } else {
+          // } else {
           // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
           // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-        // }
-        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-      },
-      onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
-        // debugLog('setBackendListener onModified', ...arguments)
-        let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
-        let existingItem = service.getItem$ById(modifiedItemId)
-        if ( existingItem && existingItem.applyDataFromDbAndEmit ) {
-          existingItem.applyDataFromDbAndEmit(convertedItemData)
-        } else {
-          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
+          // }
+          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+        },
+        onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
+          // debugLog('setBackendListener onModified', ...arguments)
+          let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
+          let existingItem = service.getItem$ById(modifiedItemId)
+          if ( existingItem && existingItem.applyDataFromDbAndEmit ) {
+            existingItem.applyDataFromDbAndEmit(convertedItemData)
+          } else {
+            console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
+          }
+          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+        },
+        onRemoved(removedItemId: TItemId) {
+          service.localItems$.lastVal = service.localItems$ !. lastVal !. filter(item => item.id !== removedItemId)
+          // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
+          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+        },
+        onFinishedProcessingChangeSet() {
+          service.emitLocalItems()
         }
-        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-      },
-      onRemoved(removedItemId: TItemId) {
-        service.localItems$.lastVal = service.localItems$ !. lastVal !. filter(item => item.id !== removedItemId)
-        // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
-        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-      },
-      onFinishedProcessingChangeSet() {
-        service.emitLocalItems()
-      }
-
-    })
+      })
+    }
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */
