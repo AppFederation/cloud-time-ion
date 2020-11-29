@@ -24,26 +24,41 @@ TASKS:
   nearest deadlines
 </ion-button>
 
+<ion-button (click)="setPreset('importance_roi')">
+  <div style="flex-flow: column">
+    <div>
+      importance, roi
+    </div>
+    <ion-note class="preset-note">
+      -mental, fun; default
+    </ion-note>
+  </div>
+</ion-button>
+
 <ion-button (click)="setPreset('roi')">
   <div style="flex-flow: column">
     <div>  best ROI</div>
-    <ion-note style="font-size: 66%; color: #cacaca">
+    <ion-note class="preset-note">
       can skip importance levels; closest to be done
     </ion-note>
   </div>
 
 </ion-button>
 
-<ion-button (click)="setPreset('importantQuick')">
-  important quick
-</ion-button>
-
 <ion-button (click)="setPreset('funQuickEasy')">
   fun, quick & easy
 </ion-button>
 
+<ion-button (click)="setPreset('funRoi')">
+  fun, ROI
+</ion-button>
+
+<ion-button (click)="setPreset('funImportant')">
+  fun, importance
+</ion-button>
+
 <ion-button [disabled]="true">
-  fun & challenging
+  fun & challenging (bad roi / prio?)
 </ion-button>
 
 <ion-button (click)="setPreset('quickest')">
@@ -62,7 +77,7 @@ TASKS:
 <ion-button [disabled]="true">
   <div style="flex-flow: column">
     <div>needs doing</div>
-    <ion-note style="font-size: 66%; color: #cacaca">
+    <ion-note class="preset-note">
       not done nor cancelled
     </ion-note>
   </div>
@@ -71,7 +86,7 @@ TASKS:
 <ion-button [disabled]="true">
   <div style="flex-flow: column">
     <div>can do</div>
-    <ion-note style="font-size: 66%; color: #cacaca">
+    <ion-note class="preset-note">
       deps satisfied & not blocked
     </ion-note>
   </div>

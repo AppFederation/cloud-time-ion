@@ -209,6 +209,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     }
   }
 
+  /** TODO: ROI could also take into account mental effort (maybe even fun), money (as also if something is more expensive, the decision requires more mental effort, time;
+   * more likely to get postponed */
   getRoi() {
     const durationEstimateMs = this.getDurationEstimateMs()
     if ( ! durationEstimateMs ) {
