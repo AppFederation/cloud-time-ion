@@ -49,8 +49,16 @@ TASKS:
   fun, quick & easy
 </ion-button>
 
+<ion-button (click)="setPreset('funRoi')">
+  fun, ROI
+</ion-button>
+
+<ion-button (click)="setPreset('funImportant')">
+  fun, importance
+</ion-button>
+
 <ion-button [disabled]="true">
-  fun & challenging
+  fun & challenging (bad roi / prio?)
 </ion-button>
 
 <ion-button (click)="setPreset('quickest')">

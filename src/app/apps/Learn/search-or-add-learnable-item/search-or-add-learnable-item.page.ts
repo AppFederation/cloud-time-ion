@@ -126,12 +126,12 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         mentalGetterAscending,
         importanceGetter,
       ])//.reverse()
-    } else if ( preset === `importance_roi` ) {
-      /* === this is the DEFAULT */
+    } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
       this.items = sortBy(items, [
-        /* TODO: take into account nearest deadlines (start/finish before); but bucket them by order of magnitude, taking into account estimated time
-        *  and within those buckets, sort by importance;
-        * also deps to start, deps to finish */
+        /* TODO: take into account nearest deadlines (start/finish before);
+          * but bucket them by order of magnitude, taking into account estimated time
+          * and within those buckets, sort by importance;
+          * also deps to start, deps to finish */
         importanceGetter,
         /* TODO: take into account */
         roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
@@ -139,6 +139,23 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         */,
         mentalGetterAscending /* kinda part of ROI */,
         funGetter /* kinda part of ROI */,
+      ]).reverse()
+    } else if ( preset === `funRoi` ) {
+      this.items = sortBy(items, [
+        funGetter /* kinda part of ROI */,
+        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
+          Take into account %done, for real remaining cost
+        */,
+        mentalGetterAscending /* kinda part of ROI */,
+      ]).reverse()
+    } else if ( preset === `funImportant` ) {
+      this.items = sortBy(items, [
+        funGetter,
+        importanceGetter,
+        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
+          Take into account %done, for real remaining cost
+        */,
+        mentalGetterAscending /* kinda part of ROI */,
       ]).reverse()
     } else {
       this.items = sortBy(items, [
