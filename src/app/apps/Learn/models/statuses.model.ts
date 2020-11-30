@@ -113,7 +113,7 @@ export class Statuses {
 
   awaiting_delivery = status({
     searchTerms: [`package`, `postal`],
-    shortListed: true,
+    isDoableNow: false,
   })
 
   draft = status({
