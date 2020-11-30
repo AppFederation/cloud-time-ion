@@ -2,7 +2,7 @@ import {Rating, SelfRating} from './fields/self-rating.model'
 import {Duration, QuizOptions} from '../core/quiz.service'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {importanceDescriptors} from './fields/importance.model'
-import {hoursAsMs} from '../../../libs/AppFedShared/utils/time/time-utils'
+import {hoursAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
 import {ImportanceVal} from './LearnItem'
 
 export class QuizIntervalCalculator {
@@ -33,7 +33,7 @@ export class QuizIntervalCalculator {
     const effectiveImportance = (importance?.numeric ?? mediumImportanceNum) / mediumImportanceNum
 
     const scaleByImp = quizOptions?.scaleIntervalsByImportance ?? 1
-    return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? 0, quizOptions))
+    return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? (0 as SelfRating), quizOptions))
       / this.calculateMultiplierToScaleByImportance(scaleByImp, effectiveImportance) /* TODO: this should actually appear before some old stuff, to de-clutter */
   }
 

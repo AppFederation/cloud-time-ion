@@ -103,79 +103,103 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
    *   - so maybe the presets should just be written based on how they differ from default (e.g. importance, fun (, ...defaults); fun, roi (, ...defaults))
    * */
   private setItemsAndSort(items: any[]) {
-    const urgencyGetter = (item: LearnItem) => {
-      return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
+    const urgencyGetterDescending = (item: LearnItem) => {
+      return item.getEffectiveDeferrability()
+      // return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
+      // cannot-yet-start (via startAfter) could have negative urgency
     }
-    const durationGetter
-      = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
-    const durationGetterReverse
+    // const durationGetter
+    //   = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const deadlineAscending
+      = (item: LearnItem) => item?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
+    const maybeDoableGetterDescending
+      = (item: LearnItem) => ! item?.isMaybeDoableNow()
+    const durationGetterDescending
       = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
-    const importanceGetter
-      = (item: LearnItem) => item.importance ?. numeric ?? -99999 /* TODO get descriptor by id later: getEffectiveImportance() */
-    const funGetter
-      = (item: LearnItem) => item.funEstimate ?. numeric ?? -99999 /* TODO get descriptor by id later */
+    const importanceGetterDescending
+      = (item: LearnItem) => - (item.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
+    const funGetterDescending
+      = (item: LearnItem) => - (item.funEstimate ?. numeric ?? -99999) /* TODO get descriptor by id later */
     const mentalGetterAscending
       = (item: LearnItem) => item.mentalLevelEstimate?.numeric ?? 99999 /* TODO get descriptor by id later */
-    const roiGetter
-      = (item: LearnItem) => item.getRoi() ?? -99999
+    const roiGetterDescending
+      = (item: LearnItem) => - (item.getRoi() ?? -99999)
     items = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     // debugLog(`listOptions`, listOptions)
     const preset = listOptions ?. preset
     if ( preset === `lastModified` || preset === `allTasks` ) {
-      this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+        this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+    } else if ( preset === `nearest_deadlines` ) {
+      this.items = sortBy(items, [
+        deadlineAscending,
+      ])
     } else if ( preset === `roi` ) {
-      this.items = sortBy(items, roiGetter).reverse()
+      this.items = sortBy(items, [
+        maybeDoableGetterDescending,
+        urgencyGetterDescending /* the ROI is in avoiding stress and complications by doing things ahead of time */,
+        roiGetterDescending,
+      ])
     } else if ( preset === `quickest` ) {
-      this.items = sortBy(items, durationGetter)//.reverse()
+      this.items = sortBy(items,
+        [
+          maybeDoableGetterDescending,
+          maybeDoableGetterDescending,
+          durationGetterDescending,
+        ]
+      )
     } else if ( preset === `funQuickEasy` ) {
       this.items = sortBy(items, [
-        funGetter,
-        durationGetterReverse /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
+        maybeDoableGetterDescending,
+        funGetterDescending,
+        durationGetterDescending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
         mentalGetterAscending,
-        importanceGetter,
-      ])//.reverse()
+        importanceGetterDescending,
+      ])
     } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         /* TODO: take into account nearest deadlines (start/finish before);
           * but bucket them by order of magnitude, taking into account estimated time
           * and within those buckets, sort by importance;
           * also deps to start, deps to finish */
-        urgencyGetter,
-        importanceGetter,
+        urgencyGetterDescending,
+        importanceGetterDescending,
         /* TODO: take into account */
-        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
+        roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
         */,
         mentalGetterAscending /* kinda part of ROI */,
-        funGetter /* kinda part of ROI */,
-      ]).reverse()
+        funGetterDescending /* kinda part of ROI */,
+      ])
     } else if ( preset === `funRoi` ) {
       this.items = sortBy(items, [
-        funGetter /* kinda part of ROI */,
-        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
+        maybeDoableGetterDescending,
+        funGetterDescending /* kinda part of ROI */,
+        roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
         */,
         mentalGetterAscending /* kinda part of ROI */,
-        importanceGetter,
-      ]).reverse()
-    } else if ( preset === `funImportant` ) {
+        importanceGetterDescending,
+      ])
+    } else if ( preset === `funImportant` /*  importance -> ignoring ROI*/ ) {
       this.items = sortBy(items, [
-        funGetter,
+        maybeDoableGetterDescending,
+        funGetterDescending,
         /* urgency maybe at second place; coz when user opts to choose fun, fun is the most urgent, probably, to relax */
-        importanceGetter,
-        roiGetter /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
+        importanceGetterDescending,
+        roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
         */,
         mentalGetterAscending /* kinda part of ROI */,
-      ]).reverse()
+      ])
     } else {
       this.items = sortBy(items, [
-        importanceGetter,
-        funGetter,
-        durationGetterReverse
+        importanceGetterDescending,
+        funGetterDescending,
+        durationGetterDescending
         /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
-      ]).reverse()
+      ])
     }
     // TODO: sort ascending by effectiveTimeEstimate
 

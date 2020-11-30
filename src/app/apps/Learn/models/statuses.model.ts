@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds, mapEntriesToArray, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 function status(x ? : any): StatusDef {
-  return x ?? {}
+  return Object.assign(new StatusDef(), x ?? {})
 }
 
 export type IconDef = string
@@ -16,6 +16,8 @@ export class StatusDecl {
   subStatuses ? : Dict<StatusDef> = {}
 
   isDoableNow ? = true
+  /** e.g. for kanban, finishing tasks */
+  isStarted ? = true
   isMaybeDoableInFuture ? = true
   isDone ? = false
   /** Try .tsx */
@@ -46,11 +48,19 @@ export class StatusDef extends StatusDecl {
  * */
 export class Statuses {
 
-  undefined = status()
+  undefined = status({
+    isDoableNow: undefined,
+    isStarted: undefined,
+  })
 
-  not_sure = status()
+  not_sure = status({
+    isStarted: null,
+  })
 
-  unknown = status()
+  unknown = status({
+    isDoableNow: null,
+    isStarted: null,
+  })
 
   /** but more on item's side: canBeFinished (no unsatisfied deps);
    * could be virtual effective status
@@ -59,11 +69,15 @@ export class Statuses {
    * - perhaps not mutually exclusive with suspended
    * */
   can_be_started = status({
-    comments: `(Virtual status) No unfinished dependencies-to-start`
+    isDoableNow: true,
+    comments: `(Virtual status) No unfinished dependencies-to-start`,
+    isStarted: false,
   })
 
 
   not_started = status({
+    isDoableNow: true,
+    isStarted: false,
   })
 
   started = status({
@@ -97,12 +111,19 @@ export class Statuses {
     comments: [`Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`]
   })
 
+  refining = status({})
+
   in_review = status({
     shortListed: true,
   })
 
   in_testing = status({
     shortListed: true,
+  })
+
+  awaiting_delivery = status({
+    searchTerms: [`package`, `postal`],
+    isDoableNow: false,
   })
 
   draft = status({
@@ -131,13 +152,16 @@ export class Statuses {
     subStatuses: subStatuses({
       internally: status(),
       externally: status(),
-    })
+    }),
+    /** later need to `??` properties like isStarted when multiple statuses */
+    isStarted: undefined,
   })
 
   suspended = status({
     /* does NOT imply started */
     searchTerms: `paused`,
     isDoableNow: false,
+    isStarted: undefined,
     // isMaybeDoableInFuture: true,
   })
 
@@ -156,10 +180,11 @@ export class Statuses {
     shortListed: true,
     isDoableNow: false,
     isMaybeDoableInFuture: false,
+    isStarted: undefined,
   })
 
 }
 
-export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>)
+export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>) as any as Statuses
 
-export const statusesArray = dictToArrayWithIds(statuses)
+export const statusesArray = dictToArrayWithIds(statuses as any as Dict<StatusDecl>)

@@ -5,15 +5,25 @@ import {Side, SidesDefs, sidesDefsArray, sidesDefsHintsArray, SideVal} from '../
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Rating} from './fields/self-rating.model'
 import {ImportanceDescriptors} from './fields/importance.model'
-import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
+import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
 import {QuizzableData} from './quiz'
 import {FunDescriptors} from './fields/fun-level.model'
 import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
+import {isNotNullish, isNullish, isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
+import {parseDate} from '../../../libs/AppFedShared/utils/time/parse-date'
+import {Deferrability, Urgency} from './planning-prioritizing.model'
+import {daysAsMs, hoursAsMs, isInFuture, isInThePastOrNullish} from '../../../libs/AppFedShared/utils/time/date-time-utils'
+import {StatusDef, statuses} from './statuses.model'
+import {Dict} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 export type LearnItemId = OdmItemId<LearnItem>
 
-export type PositiveInt = number
+
+export type PositiveInt = number & {constraint: 'positive int'}
+
+/** TOdo name NonNegativeInt */
+export type PositiveIntOrZero = number // & {constraint: 'positive int or zero'}
 
 export type IntensityVal = {
   id: keyof ImportanceDescriptors,
@@ -40,6 +50,9 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   whenAdded ! : OdmTimestamp
   title?: string
   isTask?: boolean
+
+  status: string | nullish
+
   hasAudio?: true | null
   whenDeleted?: Date
   lastSelfRating?: Rating
@@ -48,8 +61,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   // isMarkedAsSelectedOrUnselected ? : boolean
   isSelectedOrUnselected ? : boolean
 
-
-  selfRatingsCount?: PositiveInt
+  /** storing zero could be useful for querying for stuff that was not yet rated */
+  selfRatingsCount ? : PositiveIntOrZero
 
   /** synonyms: worth
    * storing both name and numeric value, in case it changes in the future
@@ -64,6 +77,12 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   time_estimate ? : HtmlString
 
   money_estimate ? : HtmlString
+
+  start_after ? : string
+
+  start_before ? : string
+
+  finish_before ? : string
 
   /** quick hack for category field__de */
   de ? : HtmlString
@@ -98,6 +117,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   //   return this.getSidesWithAnswers().map(side => this.getSideVal(side))
   // }
 
+  /** TODO: move to Quiz */
   public getSidesWithAnswers(): Side[] {
     const ret: Side [] = []
     let foundQuestionBefore = false
@@ -118,6 +138,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return ret
   }
 
+  /** TODO: move to Quiz */
   public getSidesWithHints(): Side[] {
     const ret: Side [] = []
     for (let side of sidesDefsHintsArray) {
@@ -136,6 +157,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return (this as any)[side.id] ?. trim ?. ()
   }
 
+  /** TODO: move to Quiz */
   getQuestionOrAnyString() {
     const question = this.getQuestion()
     if ( question ) {
@@ -144,10 +166,12 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     // second attempt, without `ask` requirement
   }
 
+  /** TODO: move to Quiz */
   getQuestion(): SideVal {
     return this.getSideVal(this.getSideWithQuestion())
   }
 
+  /** TODO: move to Quiz */
   getSideWithQuestionOrFirstNonEmpty(): Side | null {
     return this.getSideWithQuestion()
       ?? this.getFirstNonEmptySide()
@@ -173,6 +197,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return ! this.hasQAndA()
   }
 
+  /** TODO: move to Quiz */
   public getSideWithQuestion(): Side | null {
     for (let side of sidesDefsArray) {
       if (side.ask) {
@@ -222,6 +247,60 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     }
     return importance / durationEstimateMs
   }
+
+
+  /* NOTE: will apply to Learn too (e.g. to master certain material before/after some date, it will be prioritized). */
+  getDeferrability(): Deferrability | nullish {
+    const date = this.getNearestDateForUrgency()
+    if ( date ) {
+      const msNow = Date.now()
+      const msDiff = date.getTime() - msNow
+      return msDiff as Deferrability
+      // overdue should have high urgency
+    } else {
+      return date
+    }
+  }
+
+  getEffectiveDeferrability(): Deferrability {
+    return this.getDeferrability()
+      ?? ( daysAsMs(365) as Deferrability /* assuming we can do all stuff we entered in one year; unless specified as something more far away in time */ )
+  }
+
+  getNearestDateForUrgency(): Date | nullish {
+    return this.getStartBeforeDate() ?? this.getFinishBeforeDate()
+  }
+
+  private getStartAfterDate(): Date | nullish {
+    return parseDate(this.start_after)
+  }
+
+  getFinishBeforeDate(): Date | nullish {
+    return parseDate(this.finish_before)
+  }
+
+  getStartBeforeDate(): Date | nullish {
+    return parseDate(this.start_before)
+  }
+
+  getStatus(): StatusDef {
+    const statusId = htmlToId(this.status)
+    if ( isNotNullish(statusId) ) {
+      const statusByKey = (statuses as any as Dict<StatusDef>) [ statusId ]
+      if ( ! statusByKey ) {
+        return statuses.unknown
+      }
+      return statusByKey
+    } else {
+      return statuses.undefined
+    }
+  }
+
+  isMaybeDoableNow(): boolean | nullish {
+    return isInThePastOrNullish(this.getStartAfterDate() ?. getTime())
+      && (this.getStatus().isDoableNow ?? true /* since "maybe" */)
+  }
+
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
