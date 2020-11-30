@@ -44,8 +44,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     AudioModule,
     LearnSharedModule,
+    ExperimentalScrollingModule,
     ScrollingModule,
-    ExperimentalScrollingModule
   ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,

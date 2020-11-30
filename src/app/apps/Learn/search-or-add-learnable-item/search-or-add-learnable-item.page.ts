@@ -88,19 +88,19 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.onChangeSearch(val)
     })
     /* this will go away when migrated to ODM: */
-    // this.authService.authUser$.subscribe(user => {
-    //     if ( user ) {
-    //       this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-    //         , coll => coll.where(`owner`, `==`, user?.uid))
-    //       // /*, coll => coll.wher(`whenDeleted`, `==`, null)*/)
-    //       this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-    //         this.setItemsAndSort(items)
-    //       })
-    //     }
-    // })
+    this.authService.authUser$.subscribe(user => {
+        if ( user ) {
+          this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
+            , coll => coll.where(`owner`, `==`, user?.uid))
+          // /*, coll => coll.wher(`whenDeleted`, `==`, null)*/)
+          this.coll.valueChanges({idField: 'id'}).subscribe(items => {
+            this.setItemsAndSort(items)
+          })
+        }
+    })
 
     // Load fake data:
-    this.items = DataGeneratorService.generateLearnItemList(5000);
+    // this.items = DataGeneratorService.generateLearnItemList(30);
   }
 
   /** TODO: move to class ListProcessing
