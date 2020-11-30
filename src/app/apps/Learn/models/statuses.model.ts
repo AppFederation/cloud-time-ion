@@ -16,6 +16,8 @@ export class StatusDecl {
   subStatuses ? : Dict<StatusDef> = {}
 
   isDoableNow ? = true
+  /** e.g. for kanban, finishing tasks */
+  isStarted ? = true
   isMaybeDoableInFuture ? = true
   isDone ? = false
   /** Try .tsx */
@@ -48,12 +50,16 @@ export class Statuses {
 
   undefined = status({
     isDoableNow: undefined,
+    isStarted: undefined,
   })
 
-  not_sure = status()
+  not_sure = status({
+    isStarted: null,
+  })
 
   unknown = status({
     isDoableNow: null,
+    isStarted: null,
   })
 
   /** but more on item's side: canBeFinished (no unsatisfied deps);
@@ -64,12 +70,14 @@ export class Statuses {
    * */
   can_be_started = status({
     isDoableNow: true,
-    comments: `(Virtual status) No unfinished dependencies-to-start`
+    comments: `(Virtual status) No unfinished dependencies-to-start`,
+    isStarted: false,
   })
 
 
   not_started = status({
     isDoableNow: true,
+    isStarted: false,
   })
 
   started = status({
@@ -102,6 +110,8 @@ export class Statuses {
   rushing = status({
     comments: [`Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`]
   })
+
+  refining = status({})
 
   in_review = status({
     shortListed: true,
@@ -142,13 +152,16 @@ export class Statuses {
     subStatuses: subStatuses({
       internally: status(),
       externally: status(),
-    })
+    }),
+    /** later need to `??` properties like isStarted when multiple statuses */
+    isStarted: undefined,
   })
 
   suspended = status({
     /* does NOT imply started */
     searchTerms: `paused`,
     isDoableNow: false,
+    isStarted: undefined,
     // isMaybeDoableInFuture: true,
   })
 
@@ -167,6 +180,7 @@ export class Statuses {
     shortListed: true,
     isDoableNow: false,
     isMaybeDoableInFuture: false,
+    isStarted: undefined,
   })
 
 }
