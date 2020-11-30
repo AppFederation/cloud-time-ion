@@ -110,6 +110,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     }
     // const durationGetter
     //   = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const maybeDoableGetterDescending
+      = (item: LearnItem) => ! item?.isMaybeDoableNow()
     const durationGetterDescending
       = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetterDescending
@@ -128,17 +130,21 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
     } else if ( preset === `roi` ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         urgencyGetterDescending /* the ROI is in avoiding stress and complications by doing things ahead of time */,
         roiGetterDescending,
       ])
     } else if ( preset === `quickest` ) {
       this.items = sortBy(items,
         [
+          maybeDoableGetterDescending,
+          maybeDoableGetterDescending,
           durationGetterDescending,
         ]
       )
     } else if ( preset === `funQuickEasy` ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         funGetterDescending,
         durationGetterDescending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
         mentalGetterAscending,
@@ -146,6 +152,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       ])
     } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         /* TODO: take into account nearest deadlines (start/finish before);
           * but bucket them by order of magnitude, taking into account estimated time
           * and within those buckets, sort by importance;
@@ -161,6 +168,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       ])
     } else if ( preset === `funRoi` ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         funGetterDescending /* kinda part of ROI */,
         roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
@@ -170,6 +178,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       ])
     } else if ( preset === `funImportant` /*  importance -> ignoring ROI*/ ) {
       this.items = sortBy(items, [
+        maybeDoableGetterDescending,
         funGetterDescending,
         /* urgency maybe at second place; coz when user opts to choose fun, fun is the most urgent, probably, to relax */
         importanceGetterDescending,

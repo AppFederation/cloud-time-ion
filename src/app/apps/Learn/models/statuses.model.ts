@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds, mapEntriesToArray, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
 
 function status(x ? : any): StatusDef {
-  return x ?? {}
+  return Object.assign(new StatusDef(), x ?? {})
 }
 
 export type IconDef = string
@@ -46,11 +46,15 @@ export class StatusDef extends StatusDecl {
  * */
 export class Statuses {
 
-  undefined = status()
+  undefined = status({
+    isDoableNow: undefined,
+  })
 
   not_sure = status()
 
-  unknown = status()
+  unknown = status({
+    isDoableNow: null,
+  })
 
   /** but more on item's side: canBeFinished (no unsatisfied deps);
    * could be virtual effective status
@@ -59,11 +63,13 @@ export class Statuses {
    * - perhaps not mutually exclusive with suspended
    * */
   can_be_started = status({
+    isDoableNow: true,
     comments: `(Virtual status) No unfinished dependencies-to-start`
   })
 
 
   not_started = status({
+    isDoableNow: true,
   })
 
   started = status({
@@ -165,6 +171,6 @@ export class Statuses {
 
 }
 
-export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>)
+export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>) as any as Statuses
 
-export const statusesArray = dictToArrayWithIds(statuses)
+export const statusesArray = dictToArrayWithIds(statuses as any as Dict<StatusDecl>)
