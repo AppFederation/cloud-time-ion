@@ -1,9 +1,9 @@
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
-<ion-checkbox></ion-checkbox>
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
+  <ion-checkbox></ion-checkbox>
   <span
     style="color: var(--primary)"
     *ngIf="item.importance?.numeric || '-'; let importanceNum"
