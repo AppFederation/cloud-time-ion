@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 // import sortBy from 'lodash/sortBy'
-import {sortBy, countBy} from 'lodash-es'
+import {sortBy} from 'lodash-es'
 // import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {sidesDefsArray} from '../core/sidesDefs'
@@ -20,6 +20,8 @@ import {ListOptionsComponent} from './list-options/list-options.component'
 import {ListOptions, ListOptionsData} from './list-options'
 import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
+import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
+import {Router} from '@angular/router'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -61,6 +63,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
     public popoverController: PopoverController,
+    public router: Router,
   ) {
     this.listOptions$P.locallyVisibleChanges$.subscribe(options => {
       this.setItemsAndSort(this.items)
@@ -209,6 +212,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   add(string?: string, isTask?: boolean) {
     console.log('add: ', string)
+
+    if ( this.isTextEmpty() ) {
+      const val = new LearnItem()
+      val.isTask = !! isTask
+      const learnItem$ = this.learnDoService.add(val)
+      this.router.navigateByUrl('learn/item/' + learnItem$.id)
+      return
+    }
     string = this.getUserString(string)
     // if ( !string ) {
     //   return // FIXME: allow creating empty --> ?? ``
@@ -381,5 +392,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // TODO: if empty, go to journal entry details page
     this.journalEntriesService.add(this.getUserString())
     this.clearInput()
+  }
+
+  isTextEmpty() {
+    return isNullishOrEmptyOrBlank(this.getUserString())
   }
 }

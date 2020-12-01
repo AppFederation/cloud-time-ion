@@ -24,7 +24,7 @@ export function isNullish(x: any)
   return (x === null) || (x === undefined)
 }
 
-export function isNullishOrEmptyOrBlank(x: any) {
+export function isNullishOrEmptyOrBlank(x: any): boolean {
   return ( x === null ) || ( x === undefined ) || ! ( x ?. trim() ?. length )
 }
 
