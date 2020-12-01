@@ -18,7 +18,8 @@ export class ActionableItemComponent implements OnInit {
 
   @Input() item ! : LearnItem
 
-  @Input() index ? : number
+  @Input() index ! : number
+
   // @Input() search: string
 
   // @Input() set item(i: LearnItem) {
