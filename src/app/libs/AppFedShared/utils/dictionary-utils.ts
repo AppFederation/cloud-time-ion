@@ -52,10 +52,10 @@ export function dictToArrayWithIds<TItem>(dictionary: Dict<TItem>, idKeyName: st
   return arr
 }
 
-export function mapFields(srcObj: any, mapFunc: any) {
+export function mapFields<K extends string = string, V = any, MV = any>(srcObj: Dict<V>, mapFunc: (key: K, val: V) => MV) {
   const ret: any = {}
   for ( let key of Object.keys(srcObj) ) {
-    ret[key] = mapFunc(key, srcObj[key])
+    ret[key] = mapFunc(key as K, srcObj[key])
   }
   return ret
 }
