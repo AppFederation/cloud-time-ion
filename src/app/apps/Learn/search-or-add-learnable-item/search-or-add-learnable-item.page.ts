@@ -384,6 +384,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       event: event,
       translucent: true,
       mode: 'ios',
+      cssClass: `my-popover`,
     });
     return await popover.present();
   }
