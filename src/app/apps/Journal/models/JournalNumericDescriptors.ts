@@ -2,7 +2,9 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
+const moderateIsBetter = true
 const lowerIsBetter = true
+const specifyDuration = true
 
 export interface ILateInit {
   lateInit(): any
@@ -58,6 +60,7 @@ type JndParams = {
   unit?: string;
   lowerIsBetter?: true,
   moderateIsBetter?: true,
+  specifyDuration ? : true,
   idealValue?: number,
   /* not yet implemented */
   searchTerms?: string | string[],
@@ -91,16 +94,22 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   pain = jnd({isShortListed: true})
   productivity = jnd({
     isShortListed: true,
+    specifyDuration,
   })
   creativity = jnd()
   ideas = jnd()
-  execution = jnd()
-  procrastination = jnd()
+  execution = jnd({
+    specifyDuration,
+  })
+  procrastination = jnd({
+    specifyDuration,
+  })
   excitement = jnd({
     searchTerms: [ `enthusiasm`],
     idealValue: 8 /* excessive excitement can cause `tension` */,
     antonym: [`boredom?`, `apathy`],
     isShortListed: true,
+    specifyDuration,
   })
   motivation = jnd({
     isShortListed: true,
@@ -112,7 +121,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   achievements = jnd({
     isShortListed: true,
   })
-  success = jnd() /* prolly search term on achievements? */
+  success = jnd({
+    searchTerms: `achievement`
+  }) /* prolly search term on achievements? */
   // !!! TODO: those could/should be the ones from my big virtuous circle drawing!!!
 
   /* ==== End of default shortlist of fields "to fill in a hurry".
@@ -127,6 +138,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'assertiveness' = jnd()
   'flow state' = jnd({
     isShortListed: true,
+    specifyDuration,
   })
   'self-esteem' = jnd({
     searchTerms: [`feeling of self-worth`, `self-respect`],
@@ -152,6 +164,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'calmness' = jnd({
     searchTerms: [`tranquility`],
     antonym: `drama`,
+    specifyDuration
   })
   drama = jnd({lowerIsBetter, })
   'annoyance' = jnd({lowerIsBetter: true,})
@@ -203,6 +216,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   'sleep regularity' = jnd({searchTerms: `sleep pattern`})
   'sleep quantity' = jnd({
+    specifyDuration,
     unit: 'hours',
   })
   caffeine = jnd({lowerIsBetter: true})
@@ -266,6 +280,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     antonym: `distraction`,
     searchTerms: [`distractions`],
     isShortListed: true,
+    specifyDuration,
   })
   clarity = jnd({
     isShortListed: true,
@@ -273,7 +288,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'clear thinking' = jnd({
     isShortListed: true,
   })
-  planning = jnd()
+  planning = jnd({
+    specifyDuration,
+  })
   'time tracking' = jnd()
   courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd()
@@ -282,7 +299,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     antonym: 'doubts',
     isShortListed: true,
   })
-  'music enjoyment' = jnd()
+  'music enjoyment' = jnd({
+    specifyDuration,
+  })
   'music quantity' = jnd({lowerIsBetter: true})
   'music volume' = jnd({lowerIsBetter: true})
   long_term_thinking = jnd()
@@ -312,14 +331,28 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   relationships_with_family = jnd()
   relationships_with_close_family = jnd()
   relationships_with_distant_family = jnd()
-  alcohol = jnd({lowerIsBetter: true,})
+  alcohol = jnd({
+    lowerIsBetter: true,
+    specifyDuration,
+  })
   hangover_intensity = jnd({lowerIsBetter: true,})
   'physical exercises' = jnd({
     isShortListed: true,
   })
+  /** TODO sport as sub-element of exercises */
   sport = jnd({
     isShortListed: true,
+    specifyDuration,
   })
+  bicycle = jnd({
+    specifyDuration,
+  })
+  hiking = jnd({
+    specifyDuration,
+  })
+
+  /*end sport subelements*/
+
   sex = jnd({moderateIsBetter: true,})
   weather = jnd()
 
@@ -331,6 +364,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   ergonomy = jnd({moderateIsBetter: true,})
   learning = jnd({
     isShortListed: true,
+    specifyDuration,
   })
   memory = jnd()
   'memory recall' = jnd()
@@ -338,6 +372,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   gaming = jnd({
     unit: 'hours',
     lowerIsBetter: true,
+    specifyDuration,
   })
   'skin itch' = jnd({
     lowerIsBetter: true,
@@ -355,7 +390,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   visualizing = jnd({moderateIsBetter: true})
   long_term_vision = jnd({moderateIsBetter: true, searchTerms: `long-term vision`})
   fun = jnd()
-  entertainment = jnd({moderateIsBetter: true})
+  entertainment = jnd({moderateIsBetter, specifyDuration})
   'guilt-free entertainment' = jnd({moderateIsBetter: true})
   'nostalgia' = jnd({moderateIsBetter: true})
   growth = jnd({

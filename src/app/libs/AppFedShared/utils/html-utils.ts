@@ -16,7 +16,7 @@ export function htmlToId(html: string | nullish): IdString | nullish {
   if ( isNullish(html) ) {
     return html
   }
-  return stripHtml(html) ?. replace(/ /, '_') as IdString
+  return stripHtml(html) ?. toLowerCase() ?. replace(/ /, '_') as IdString
 }
 
 export function convertToHtmlIfNeeded(htmlOrPlainString?: string | null) {
