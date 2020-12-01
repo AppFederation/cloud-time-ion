@@ -3,7 +3,15 @@
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
-  <ion-checkbox></ion-checkbox>
+  <!-- TODO extract component SelectionCheckboxComponent -->
+  <ion-checkbox
+    (click)="$event.stopPropagation()"
+  ></ion-checkbox>
+  <span
+    style="color: var(--secondary); font-size: 10px; opacity: 50%"
+  >
+    {{index+1}}.
+  </span>
   <span
     style="color: var(--primary)"
     *ngIf="item.importance?.numeric || '-'; let importanceNum"
