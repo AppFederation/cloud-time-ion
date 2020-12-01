@@ -10,13 +10,20 @@ import {isNotNullish} from '../../../libs/AppFedShared/utils/utils'
 
 export type JournalEntryId = OdmItemId<JournalEntry>
 
+export type JournalFieldVal = string
+
 /* Or: "metrics" */
 export interface JournalCompositeFieldVal {
   numVal: NumericPickerVal
   // later: comments, maybe lastModified etc.
 }
 
+
+
 export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
+
+  general ?: JournalFieldVal
+
   constructor(
     // odmService: OdmService<JournalEntry>,
     // id?: OdmItemId<JournalEntry>,

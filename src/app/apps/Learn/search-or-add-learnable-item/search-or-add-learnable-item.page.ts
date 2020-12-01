@@ -209,7 +209,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   add(string?: string, isTask?: boolean) {
     console.log('add: ', string)
-    string = string ?? this.htmlSearch ?? this.search ?? ``
+    string = this.getUserString(string)
     // if ( !string ) {
     //   return // FIXME: allow creating empty --> ?? ``
     // }
@@ -225,6 +225,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         this.coll.add(newItem) /* This will go away when migrated to ODM */ )
       this.clearInput()
     }
+  }
+
+  private getUserString(string?: string) {
+    return string ?? this.htmlSearch ?? this.search ?? ``
   }
 
   clearInput() {
@@ -371,5 +375,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       mode: 'ios',
     });
     return await popover.present();
+  }
+
+  addToJournal() {
+    // TODO: if empty, go to journal entry details page
+    this.journalEntriesService.add(this.getUserString())
+    this.clearInput()
   }
 }
