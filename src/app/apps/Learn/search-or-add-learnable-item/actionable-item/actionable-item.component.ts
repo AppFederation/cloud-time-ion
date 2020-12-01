@@ -17,6 +17,9 @@ export class ActionableItemComponent implements OnInit {
   sidesDefsArray = sidesDefsArray
 
   @Input() item ! : LearnItem
+
+  @Input() index ! : number
+
   // @Input() search: string
 
   // @Input() set item(i: LearnItem) {

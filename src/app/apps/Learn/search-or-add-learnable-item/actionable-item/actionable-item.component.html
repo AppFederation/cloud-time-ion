@@ -8,6 +8,11 @@
     (click)="$event.stopPropagation()"
   ></ion-checkbox>
   <span
+    style="color: var(--secondary); font-size: 10px; opacity: 50%"
+  >
+    {{index+1}}.
+  </span>
+  <span
     style="color: var(--primary)"
     *ngIf="item.importance?.numeric || '-'; let importanceNum"
   >

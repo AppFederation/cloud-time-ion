@@ -127,8 +127,9 @@
       [approxItemHeight]="31"
       [trackBy]="trackByFn"
     >
-      <div *virtualItem="let currItem">
+      <div *virtualItem="let currItem; let i = index">
         <app-actionable-item
+          [index]="i"
           [item]="currItem"
         ></app-actionable-item>
         <!-- [hidden]="! matchesSearch(currItem)"-->
