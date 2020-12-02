@@ -5,14 +5,13 @@ import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.serv
 import {sortBy} from 'lodash-es'
 // import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
-import {sidesDefsArray} from '../core/sidesDefs'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {FormControl} from '@angular/forms'
 import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
-import {debounceTime, distinct, distinctUntilChanged, map, tap} from 'rxjs/operators'
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
 import {PopoverController} from '@ionic/angular'
@@ -210,14 +209,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // this.patchOwnersIfNecessary(user, items)
   }
 
-  add(string?: string, isTask?: boolean) {
+  add(string?: string, isTask?: boolean, navInto?: boolean) {
     console.log('add: ', string)
 
     if ( this.isTextEmpty() ) {
       const val = new LearnItem()
       val.isTask = !! isTask
       const learnItem$ = this.learnDoService.add(val)
-      this.router.navigateByUrl('learn/item/' + learnItem$.id)
+      this.navigateIntoItem(learnItem$.id)
       return
     }
     string = this.getUserString(string)
@@ -232,10 +231,18 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const newItem = this.createItemFromInputString(string, isTask)
     if ( newItem ) {
       debugLog(`add item:`, newItem)
-      this.syncStatusService.handleSavingPromise(
-        this.coll.add(newItem) /* This will go away when migrated to ODM */ )
+      const item$ = this.learnDoService.add(newItem as any as LearnItem)
+      // this.syncStatusService.handleSavingPromise(
+      //   this.coll.add(newItem) /* This will go away when migrated to ODM */ )
       this.clearInput()
+      if ( navInto ) {
+        this.navigateIntoItem(item$.id)
+      }
     }
+  }
+
+  private navigateIntoItem(id: string) {
+    this.router.navigateByUrl('learn/item/' + id)
   }
 
   private getUserString(string?: string) {
@@ -289,17 +296,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   addTask(navInto?: boolean) {
-    if ( navInto ) {
-      window.alert(`navInto`)
-    }
-    this.add(undefined, true)
+    this.add(undefined, true, navInto)
   }
 
-  addToLearn() {
+  addToLearn(navInto?: boolean) {
     // this.lingueeService.doIt(this.search).then()
     // this.merriamWebsterDictService.doIt(this.search)
 
-    this.add(undefined, false)
+    this.add(undefined, false, navInto)
   }
 
   @HostListener('window:keyup.alt.enter', ['$event'])
