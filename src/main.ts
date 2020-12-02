@@ -4,6 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import {ChromeExtensionService} from './app/apps/Learn/shared/utils/chrome-extension.service'
+import 'hammerjs'
 
 if (environment.production) {
   enableProdMode();

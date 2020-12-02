@@ -288,7 +288,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     }
   }
 
-  addTask() {
+  addTask(navInto?: boolean) {
+    if ( navInto ) {
+      window.alert(`navInto`)
+    }
     this.add(undefined, true)
   }
 
