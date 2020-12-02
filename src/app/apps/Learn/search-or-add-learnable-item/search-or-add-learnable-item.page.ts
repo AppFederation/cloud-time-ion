@@ -216,7 +216,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       const val = new LearnItem()
       val.isTask = !! isTask
       const learnItem$ = this.learnDoService.add(val)
-      this.navigateIntoItem(learnItem$.id)
+      this.navigateIntoItem(learnItem$.id !)
       return
     }
     string = this.getUserString(string)
@@ -236,7 +236,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       //   this.coll.add(newItem) /* This will go away when migrated to ODM */ )
       this.clearInput()
       if ( navInto ) {
-        this.navigateIntoItem(item$.id)
+        this.navigateIntoItem(item$.id !)
       }
     }
   }
