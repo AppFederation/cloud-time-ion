@@ -66,10 +66,11 @@ export class RichTextEditComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customInsertButton selectall copy paste | undo redo | blockquote bold italic underline strikethrough forecolor backcolor | \
+      'customMarkBtn bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
+      selectall copy paste | undo redo | \
       formatselect | \
-      alignleft aligncenter alignright alignjustify | \
-      bullist numlist outdent indent | removeformat | help',
+      alignleft aligncenter alignright alignjustify ' /* align is probably quite useless for notes */ +
+      ' | removeformat | help',
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
@@ -91,7 +92,7 @@ export class RichTextEditComponent implements OnInit {
           // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/
           this.highlightSelected(editor)
         });
-      editor.ui.registry.addButton('customInsertButton', {
+      editor.ui.registry.addButton('customMarkBtn', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
         text: 'MARK',
         onAction: () => {

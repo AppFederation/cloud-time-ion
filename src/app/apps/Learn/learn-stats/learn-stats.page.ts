@@ -14,7 +14,7 @@ function* dataToSingleValues(dataset: (StoredLearnStats & OdmInMemItem)[]) {
     // const dateToBePutToSet = date.toISOString()
     const dateToBePutToSet = ''+date
     if ( dates.has(dateToBePutToSet) ) {
-      debugLog(`dates.has(date)`, dateToBePutToSet)
+      // debugLog(`dates.has(date)`, dateToBePutToSet)
       continue
     } else {
       dates.add(dateToBePutToSet)
