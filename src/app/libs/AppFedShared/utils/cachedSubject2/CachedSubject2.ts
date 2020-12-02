@@ -11,6 +11,8 @@ export class CachedSubject<T> extends Subject<T> {
   /** Useful for e.g. determining in UI if initial data set has arrived (distinguish from initial empty) */
   public hasEmitted = false
 
+  private onSubscribeCallBack ? : () => void
+
   constructor(initialVal ? : T) {
     super()
     if ( initialVal ) {
@@ -34,6 +36,12 @@ export class CachedSubject<T> extends Subject<T> {
     if ( this.hasEmitted ) {
       subscriber.next(this.lastVal)
     }
+    this.onSubscribeCallBack ?. ()
     return subscription;
+  }
+
+  onSubscribe(callBack: () => void) {
+    this.onSubscribeCallBack = callBack
+    return this
   }
 }
