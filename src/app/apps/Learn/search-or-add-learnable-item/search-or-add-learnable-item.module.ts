@@ -18,6 +18,7 @@ import {EditorModule} from '@tinymce/tinymce-angular'
 import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 import {ListOptionsComponent} from './list-options/list-options.component'
+import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
 
 const routes: Routes = [
   {
@@ -41,14 +42,15 @@ const routes: Routes = [
         AudioModule,
         LearnSharedModule,
     ],
-    declarations: [
-        SearchOrAddLearnableItemPageComponent,
-        ActionableItemComponent,
-        MicComponent,
-        TestItemComponent,
-        LearnStatsComponent,
-        SearchOrAddTextEditorComponent,
-        ListOptionsComponent,
-    ],
+  declarations: [
+    SearchOrAddLearnableItemPageComponent,
+    ActionableItemComponent,
+    MicComponent,
+    TestItemComponent,
+    LearnStatsComponent,
+    SearchOrAddTextEditorComponent,
+    ListOptionsComponent,
+    SelectionCheckboxComponent,
+  ],
 })
 export class SearchOrAddLearnableItemPageModule {}
