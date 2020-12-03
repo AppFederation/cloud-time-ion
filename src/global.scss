@@ -73,6 +73,7 @@ ul, ol {
 }
 
 .my-popover {
-  --min-width: 900px;
+  --min-width: 300px;
+  --max-width: 500px;
   //background: #FFF;
 }
