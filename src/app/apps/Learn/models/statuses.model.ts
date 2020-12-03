@@ -1,13 +1,17 @@
-import {Dict, dictToArrayWithIds, mapEntriesToArray, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Dict, dictToArrayWithIds, mapEntriesToArray, mapFields, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
-function status(x ? : any): StatusDef {
-  return Object.assign(new StatusDef(), x ?? {})
+function status(x ? : StatusDecl): StatusDef {
+  return Object.assign(new StatusDef(), x ?? {}).init()
 }
 
 export type IconDef = string
 
 function subStatuses(subStatuses: Dict<StatusDecl>): Dict<StatusDef> {
-  return setIdsFromKeys(subStatuses as any as Dict<StatusDecl>)
+  return mapFields(
+      setIdsFromKeys(subStatuses as any as Dict<StatusDecl>),
+      (key: string, decl) => status(decl)
+  )
 }
 
 export class StatusDecl {
@@ -15,17 +19,24 @@ export class StatusDecl {
   shortListed ? = false
   subStatuses ? : Dict<StatusDef> = {}
 
-  isDoableNow ? = true
+  isDoableNow ? : boolean | nullish = true
   /** e.g. for kanban, finishing tasks */
-  isStarted ? = true
+  isStarted ? : boolean | nullish = true
   isMaybeDoableInFuture ? = true
   isDone ? = false
   /** Try .tsx */
   icon ? : IconDef
+  searchTerms ? : string | string[]
+  comments ? : string
 }
 
 export class StatusDef extends StatusDecl {
+  initialized = false
 
+  init() {
+    this.initialized = true
+    return this as StatusDef & {initialized: true}
+  }
 }
 
 /**
@@ -81,7 +92,7 @@ export class Statuses {
   })
 
   started = status({
-    searchTerms: `doing`,
+    searchTerms: [`doing`, `in progress`, `executing`],
     shortListed: true,
 
     subStatuses: subStatuses({
@@ -108,7 +119,7 @@ export class Statuses {
 
 
   rushing = status({
-    comments: [`Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`]
+    comments: `Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`,
   })
 
   refining = status({})
