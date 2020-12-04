@@ -4,6 +4,8 @@ import {LearnItem} from '../../models/LearnItem'
 import {funLevelsDescriptors} from '../../models/fields/fun-level.model'
 import {importanceDescriptors} from '../../models/fields/importance.model'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
+import {SelectionManager} from '../SelectionManager'
+import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 
 
 @Component({
@@ -16,7 +18,20 @@ export class ActionableItemComponent implements OnInit {
 
   sidesDefsArray = sidesDefsArray
 
-  @Input() item ! : LearnItem
+  _item ! : LearnItem
+
+  @Required()
+  @Input() selection ! : SelectionManager
+
+  @Input() set item(item: LearnItem) {
+    if ( this._item ) {
+      console.log('set item to new one')
+    }
+
+    this._item = item
+  }
+
+  get item() { return this._item }
 
   @Input() index ! : number
 

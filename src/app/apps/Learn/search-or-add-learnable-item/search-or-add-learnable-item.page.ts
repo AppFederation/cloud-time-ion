@@ -21,6 +21,7 @@ import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
+import {SelectionManager} from './SelectionManager'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -47,6 +48,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   filteredItems: LearnItem[] = []
 
   showOldEditor = false
+
+  selection = new SelectionManager()
 
 
   get authUserId() {

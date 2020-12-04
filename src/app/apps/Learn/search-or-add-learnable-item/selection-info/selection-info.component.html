@@ -1,0 +1,9 @@
+<ng-container
+  *ngIf="(selection.selected$ | async) ?. size; let count"
+>
+  <span
+    (click)="onClick($event)"
+  >
+      {{count}} selected
+  </span>
+</ng-container>

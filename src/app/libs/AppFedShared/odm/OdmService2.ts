@@ -8,6 +8,7 @@ import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
+import {LearnItemId} from '../../../apps/Learn/models/LearnItem'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -197,4 +198,9 @@ export abstract class OdmService2<
   itemsCount() {
     return this.mapIdToItem$.size
   }
+
+  deleteAll(toDelete: Set<LearnItemId>) {
+
+  }
+
 }
