@@ -64,6 +64,9 @@
         https://ionicframework.com/docs/utilities/gestures
       -->
       &nbsp;<ion-checkbox></ion-checkbox>&nbsp;
+      <app-selection-info
+        [selection]="selection"
+      ></app-selection-info>
 
       <ion-button
         (press)="addTask(true)"
@@ -132,6 +135,7 @@
         <app-actionable-item
           [index]="i"
           [item]="currItem"
+          [selection]="selection"
         ></app-actionable-item>
         <!-- [hidden]="! matchesSearch(currItem)"-->
       </div>

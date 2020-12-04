@@ -19,6 +19,7 @@ import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 import {ListOptionsComponent} from './list-options/list-options.component'
 import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
+import {SelectionInfoComponent} from './selection-info/selection-info.component'
 
 const routes: Routes = [
   {
@@ -51,6 +52,7 @@ const routes: Routes = [
     SearchOrAddTextEditorComponent,
     ListOptionsComponent,
     SelectionCheckboxComponent,
+    SelectionInfoComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}
