@@ -24,7 +24,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
   }
 
   deleteWithoutConfirmation(itemId: OdmItemId) {
-    ignorePromise(this.itemDoc(itemId).delete())
+    return this.itemDoc(itemId).delete()
   }
 
   saveNowToDb(item: TRaw, id: string): Promise<any> {

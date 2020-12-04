@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {SelectionManager} from '../SelectionManager'
 import {PopoverController} from '@ionic/angular'
-import {SyncPopoverComponent} from '../../../../libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
 import {SelectionPopupComponent} from '../selection-popup/selection-popup.component'
 
 @Component({
@@ -36,4 +35,7 @@ export class SelectionInfoComponent implements OnInit {
     return await popover.present();
   }
 
+  unselectAll() {
+    this.selection.unselectAll()
+  }
 }

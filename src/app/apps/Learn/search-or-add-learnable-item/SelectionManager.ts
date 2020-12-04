@@ -2,9 +2,9 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 
 export class SelectionManager<T = any> {
 
-  selected = new Set<T>()
+  get selected() { return this.selected$.lastVal as Set<T> }
 
-  selected$ = new CachedSubject<Set<T>>()
+  selected$ = new CachedSubject<Set<T>>(new Set<T>())
 
   setSelected(x: T, selected: boolean) {
     console.log(`setSelected`, selected)
@@ -14,5 +14,9 @@ export class SelectionManager<T = any> {
       this.selected.delete(x)
     }
     this.selected$.nextWithCache(this.selected)
+  }
+
+  unselectAll() {
+    this.selected$.nextWithCache(new Set<T>())
   }
 }
