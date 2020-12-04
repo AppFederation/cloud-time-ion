@@ -112,6 +112,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     }
     // const durationGetter
     //   = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
+    const whenLastTouchedDescending
+      = (item: LearnItem) => - (item?.whenLastModified ?? item?.whenAdded ?? item?.whenCreated)?.toMillis()
     const deadlineAscending
       = (item: LearnItem) => item?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
     const maybeDoableGetterDescending
@@ -131,7 +133,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // debugLog(`listOptions`, listOptions)
     const preset = listOptions ?. preset
     if ( preset === `lastModified` || preset === `allTasks` ) {
-        this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+        // this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
+        this.items = sortBy(items, whenLastTouchedDescending)
     } else if ( preset === `nearest_deadlines` ) {
       this.items = sortBy(items, [
         deadlineAscending,
