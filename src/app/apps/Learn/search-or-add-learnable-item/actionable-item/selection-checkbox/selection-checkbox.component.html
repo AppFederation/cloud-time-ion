@@ -1,3 +1,4 @@
-<p>
-  selection-checkbox works!
-</p>
+<ion-checkbox
+  (click)="$event.stopPropagation()"
+  (ionChange)="selection.setSelected(null, $event.detail.checked)"
+></ion-checkbox>

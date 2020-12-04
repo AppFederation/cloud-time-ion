@@ -8,10 +8,13 @@ import {CustomFormControl} from '../../../AppFedShared/utils/angular/custom-form
 export class ButtonVariantDescriptor<TVal = any, TLabel = string | number> {
   constructor(
     public value: TVal,
-    public label: TLabel,
-    public id: string | number,
-    public subLabel?: string,
-  ) {}
+    public label ? : TLabel,
+    public id ? : string | number,
+    public subLabel ? : string,
+  ) {
+    this.label ??= this.value as any as TLabel
+    this.id ??= this.value as any
+  }
 }
 
 export class ButtonDescriptor<TVal = any, TLabel = string | number> {

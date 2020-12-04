@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Selection} from '../../selection'
 
 @Component({
   selector: 'app-selection-checkbox',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./selection-checkbox.component.sass'],
 })
 export class SelectionCheckboxComponent implements OnInit {
+
+  selection = new Selection()
 
   constructor() { }
 

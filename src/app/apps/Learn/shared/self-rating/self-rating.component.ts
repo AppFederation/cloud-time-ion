@@ -1,7 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {
+  btn,
+  btnVariant,
+  ButtonsDescriptor,
+  ButtonVariantDescriptor,
+  NumericPickerVal,
+} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem$} from '../../models/LearnItem$'
+import {intensityBtnVariant} from '../../learn-item-details/importance-edit/importance-edit.component'
 
 @Component({
   selector: 'app-self-rating',
@@ -9,6 +16,34 @@ import {LearnItem$} from '../../models/LearnItem$'
   styleUrls: ['./self-rating.component.sass'],
 })
 export class SelfRatingComponent implements OnInit {
+
+  buttonDescriptors = new ButtonsDescriptor<number, string>([
+    btn({
+      btnVariants: [
+        new ButtonVariantDescriptor(0),
+        new ButtonVariantDescriptor(0.5),
+        new ButtonVariantDescriptor(0.25),
+        new ButtonVariantDescriptor(0.75),
+      ],
+    }),
+    btn({
+      btnVariants: [
+        new ButtonVariantDescriptor(1),
+        new ButtonVariantDescriptor(1.5),
+        new ButtonVariantDescriptor(1.25),
+        new ButtonVariantDescriptor(1.75),
+      ]
+    }),
+    btn({
+      btnVariants: [
+        new ButtonVariantDescriptor(2),
+        new ButtonVariantDescriptor(2.5),
+        new ButtonVariantDescriptor(2.25),
+        new ButtonVariantDescriptor(2.75),
+      ]
+    }),
+  ])
+
 
   @Input()
   item$ ? : LearnItem$

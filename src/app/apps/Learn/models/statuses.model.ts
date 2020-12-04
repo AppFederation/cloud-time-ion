@@ -92,7 +92,7 @@ export class Statuses {
   })
 
   started = status({
-    searchTerms: `doing`,
+    searchTerms: [`doing`, `in progress`, `executing`],
     shortListed: true,
 
     subStatuses: subStatuses({

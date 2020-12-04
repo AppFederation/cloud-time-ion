@@ -1,12 +1,11 @@
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
-   [routerLink]="['/learn/item/'+item.id]"
+     [routerLink]="['/learn/item/'+item.id]"
 >
   <!-- TODO extract component SelectionCheckboxComponent -->
-  <ion-checkbox
-    (click)="$event.stopPropagation()"
-  ></ion-checkbox>
+  <app-selection-checkbox
+  ></app-selection-checkbox>
   <span
     style="color: var(--secondary); font-size: 10px; opacity: 50%"
   >
