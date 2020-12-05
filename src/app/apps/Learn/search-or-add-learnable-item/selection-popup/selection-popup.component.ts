@@ -22,8 +22,9 @@ export class SelectionPopupComponent implements OnInit {
   ngOnInit() {}
 
   async askDelete() {
+    const effectivelySelected = this.selection.getEffectivelySelected()
     const alert = await this.alertController.create({
-      header: `Delete ${this.selection.selected.size} items ?`,
+      header: `Delete ${effectivelySelected.length} items ?`,
       message: 'This <b>cannot</b> be undone',
       buttons: [
         {
@@ -33,7 +34,7 @@ export class SelectionPopupComponent implements OnInit {
         }, {
           text: 'DELETE',
           handler: async () => {
-            this.itemsService.deleteAll(this.selection.selected)
+            this.itemsService.deleteAll(new Set(effectivelySelected))
             this.selection.unselectAll()
             // this.doc.update({
             //   whenDeleted: new Date(),

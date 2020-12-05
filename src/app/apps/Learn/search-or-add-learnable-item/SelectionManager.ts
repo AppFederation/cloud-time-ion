@@ -19,8 +19,18 @@ export class SelectionManager<T = any> {
   setAllSelected(selected: boolean) {
     this.isAllSelected = selected
     // this.selected$.nextWithCache()
-    this.effectiveSelectedCount$.nextWithCache(this.allPossibleToSelect.length)
+    this.emitEffective()
+  }
+
+  private emitEffective() {
+    this.effectiveSelectedCount$.nextWithCache(this.getEffectiveSelectedCount())
     this.effectiveSelectionChange$.nextWithCache()
+  }
+
+  private getEffectiveSelectedCount(): number {
+    return this.isAllSelected ?
+      this.allPossibleToSelect.length
+      : this.selected.size
   }
 
   setSelected(x: T, selected: boolean) {
@@ -31,11 +41,12 @@ export class SelectionManager<T = any> {
       this.selected.delete(x)
     }
     this.selected$.nextWithCache(this.selected)
+    this.emitEffective()
   }
 
   unselectAll() {
     this.selected$.nextWithCache(new Set<T>())
-    this.effectiveSelectionChange$.nextWithCache()
+    this.emitEffective()
   }
 
   /** or "Specifically" */
@@ -45,5 +56,18 @@ export class SelectionManager<T = any> {
 
   isEffectivelySelected(x: T) {
     return this.isAllSelected || this.isExplicitlySelected(x)
+  }
+
+  setAllPossibleToSelect(x: T[]) {
+    this.allPossibleToSelect = x
+    this.emitEffective()
+  }
+
+  getEffectivelySelected(): T[] {
+    if ( this.isAllSelected ) {
+      return this.allPossibleToSelect
+    } else {
+      return Array.from(this.selected)
+    }
   }
 }

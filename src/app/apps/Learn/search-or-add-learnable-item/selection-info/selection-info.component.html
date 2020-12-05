@@ -7,7 +7,7 @@
 
 </ion-checkbox>&nbsp;
 <ng-container
-  *ngIf="(selection.selected$ | async) ?. size; let count"
+  *ngIf="(selection.effectiveSelectedCount$ | async); let count"
 >
   <span
     class="action-icon"

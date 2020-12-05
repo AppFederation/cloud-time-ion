@@ -341,40 +341,43 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   private reFilter() {
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
     const preset = opts?.preset
+
+    const items = this.items.filter(item => ! item.whenDeleted)
+
     if (preset === `lastModified`) {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
       )
     } else if (preset === 'roi') {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
           && item.time_estimate
       )
     } else if (preset === `allTasks`) {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
       )
     } else if (preset === `notEstimated`) {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
           && ! item.getDurationEstimateMs()
       )
     } else if (preset === `estimated`) {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
           && item.getDurationEstimateMs()
       )
     } else {
-      this.filteredItems = this.items.filter(
+      this.filteredItems = items.filter(
         item =>
           this.matchesSearch(item)
           && item.isTask
@@ -382,6 +385,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
           // && item.funEstimate
       )
     }
+    this.selection.setAllPossibleToSelect(this.filteredItems.map(item => item.id))
   }
 
   hasSearchText() {
