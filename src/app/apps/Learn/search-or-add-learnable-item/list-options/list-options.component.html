@@ -18,6 +18,8 @@
 
 TASKS:
 
+  ==== Executing (vs processing) :
+
 <ion-button (click)="setPreset('allTasks')">
   ALL TASKS
 </ion-button>
@@ -67,8 +69,14 @@ TASKS:
   shortest
 </ion-button>
 
+==== Processing (todo move up before executing?) :
+  Separate tab / tree-branch ?
 <ion-button (click)="setPreset('notEstimated')">
   not estimated
+</ion-button>
+
+<ion-button [disabled]="true">
+  missing metadata <!-- should probably be tree with sub-items; like fun, mental, etc. -->
 </ion-button>
 
 <ion-button (click)="setPreset('estimated')">
