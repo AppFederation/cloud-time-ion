@@ -21,6 +21,7 @@ import {ListOptionsComponent} from './list-options/list-options.component'
 import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
 import {SelectionInfoComponent} from './selection-info/selection-info.component'
 import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
+import {LearnItemDetailsPageModule} from '../learn-item-details/learn-item-details.module'
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         AudioModule,
         LearnSharedModule,
+        LearnItemDetailsPageModule,
     ],
   declarations: [
     SearchOrAddLearnableItemPageComponent,
