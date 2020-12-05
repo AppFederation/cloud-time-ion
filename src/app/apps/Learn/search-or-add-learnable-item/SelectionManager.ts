@@ -19,4 +19,8 @@ export class SelectionManager<T = any> {
   unselectAll() {
     this.selected$.nextWithCache(new Set<T>())
   }
+
+  isSelected(x: T) {
+    return this.selected.has(x)
+  }
 }

@@ -25,7 +25,7 @@ export class ActionableItemComponent implements OnInit {
 
   @Input() set item(item: LearnItem) {
     if ( this._item ) {
-      console.log('set item to new one')
+      // console.log('set item to new one')
     }
 
     this._item = item
