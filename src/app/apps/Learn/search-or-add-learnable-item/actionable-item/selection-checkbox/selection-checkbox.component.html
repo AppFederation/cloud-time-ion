@@ -1,4 +1,5 @@
 <ion-checkbox
   (click)="$event.stopPropagation()"
-  (ionChange)="setSelected($event)"
+  [formControl]="viewSyncer.formControl"
 ></ion-checkbox>
+

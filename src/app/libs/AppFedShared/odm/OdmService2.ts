@@ -8,8 +8,10 @@ import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
-import {LearnItemId} from '../../../apps/Learn/models/LearnItem'
+import {LearnItem, LearnItemId} from '../../../apps/Learn/models/LearnItem'
 import {OdmItemHistoryService} from './odm-item-history-service'
+import {DictPatch} from '../utils/rxUtils'
+import {isNotNullish} from '../utils/utils'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -227,4 +229,27 @@ export abstract class OdmService2<
     }
   }
 
+  patchThrottledById(id: TItemId, patch: TMemPatch) {
+    console.log(`patchThrottledById, `, id, patch)
+    // TODO: reverse and implement here to not have to acquire OdmItem$ in case updating massive number of items
+    const item$ById = this.getItem$ById(id)
+    const subHack: {subscription?: any} = {}
+    subHack.subscription = item$ById.val$.subscribe((val) => {
+      console.log(`patchThrottledById, item$ById.val$.subscribe`, id, patch, val)
+      if ( isNotNullish(val) ) {
+        setTimeout /* ensure subscription */(() => {
+          subHack.subscription.unsubscribe()
+          /* hack to have the Item$ initialized; coz patchThrottled is not using firestore incremental update(), but set() */
+          return item$ById.patchThrottled(patch)
+        })
+      }
+    })
+  }
+
+  patchThrottledMultipleByIds(itemIds: TItemId[], patch: TMemPatch) {
+    // TODO: transaction?
+    for ( const id of itemIds) {
+      this.patchThrottledById(id, patch)
+    }
+  }
 }

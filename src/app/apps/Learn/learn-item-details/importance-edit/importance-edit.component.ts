@@ -5,6 +5,9 @@ import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/fields/importance.model'
+import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
+import {LearnItem} from '../../models/LearnItem'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 export function intensityBtnVariant(label: string, descr: any) {
   return btnVariant({
@@ -64,7 +67,7 @@ export class ImportanceEditComponent implements OnInit {
 
   @Input()
   @Required()
-  public item$ ! : LearnItem$
+  public item$ ! : PatchableObservable<LearnItem | nullish>
 
   constructor() { }
 

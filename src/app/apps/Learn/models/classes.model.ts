@@ -47,7 +47,7 @@ export class ItemClasses {
   })
 
   aspect = itemClass({
-    searchTerms: `concern`,
+    searchTerms: `cross-cutting concern`,
   })
 
   field = itemClass({
@@ -71,6 +71,8 @@ export class ItemClasses {
     * But in some sense all things can be worked on continuously, e.g. by refining, editing.
     * --> hence everything is time-trackable */
   })
+
+  checklist = itemClass({})
 
   task = itemClass({
     searchTerms: `to do`,
@@ -111,6 +113,11 @@ export class ItemClasses {
   theme = itemClass()
 
   organization = itemClass()
+  department = itemClass()
+  role = itemClass()
+
+  shopping_list = itemClass()
+  recipe = itemClass()
 
   person = itemClass({
     subClasses: subClasses({

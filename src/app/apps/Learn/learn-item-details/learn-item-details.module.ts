@@ -28,29 +28,32 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    OdmModule,
-    RatingsModule,
-    LearnSharedModule,
-    EditorModule,
-    TimeModule,
-    SharedModule,
-  ],
-  declarations: [
-    LearnItemDetailsPage,
-    LearnItemDetailsHintsComponent,
-    ImportanceEditComponent,
-    FunLevelEditComponent,
-    MentalEffortLevelEditComponent,
-    MentalEffortLevelEditComponent,
-    ItemClassEditComponent,
-    ItemClassToLearnEditComponent,
-    StatusesEditComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        OdmModule,
+        RatingsModule,
+        LearnSharedModule,
+        EditorModule,
+        TimeModule,
+        SharedModule,
+    ],
+    declarations: [
+        LearnItemDetailsPage,
+        LearnItemDetailsHintsComponent,
+        ImportanceEditComponent,
+        FunLevelEditComponent,
+        MentalEffortLevelEditComponent,
+        MentalEffortLevelEditComponent,
+        ItemClassEditComponent,
+        ItemClassToLearnEditComponent,
+        StatusesEditComponent,
+    ],
+    exports: [
+        ImportanceEditComponent,
+    ],
 })
 export class LearnItemDetailsPageModule {}

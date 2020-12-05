@@ -38,4 +38,13 @@ export class SelectionInfoComponent implements OnInit {
   unselectAll() {
     this.selection.unselectAll()
   }
+
+  onChangeCheckBox(event: any) {
+    console.log(`onChangeCheckBox`, event)
+    const checked = event.detail.checked
+    // if ( checked ) {
+      this.selection.setAllSelected(checked)
+    // }
+    // this.selection.
+  }
 }

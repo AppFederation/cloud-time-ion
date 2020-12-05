@@ -4,3 +4,19 @@
   DELETE
 </ion-button>
 
+<ion-button
+  (click)="edit()"
+>
+  EDIT SELECTED
+</ion-button>
+
+<ng-container
+  *ngIf="isEditing"
+>
+
+  <app-importance-edit
+    [item$]="multiSelectItems$"
+  ></app-importance-edit>
+
+</ng-container>
+
