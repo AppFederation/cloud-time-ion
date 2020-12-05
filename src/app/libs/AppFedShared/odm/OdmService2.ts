@@ -90,7 +90,13 @@ export abstract class OdmService2<
   }
 
   deleteWithoutConfirmation(item: TOdmItem$) {
-    this.odmCollectionBackend.deleteWithoutConfirmation(item.id !)
+    this.deleteWithoutConfirmationById(item.id ! as TItemId)
+  }
+
+  deleteWithoutConfirmationById(itemId: TItemId) {
+    this.syncStatusService.handleSavingPromise(
+      this.odmCollectionBackend.deleteWithoutConfirmation(itemId),
+    )
   }
 
   saveNowToDb(itemToSave: TOdmItem$) {
@@ -212,4 +218,13 @@ export abstract class OdmService2<
   itemsCount() {
     return this.mapIdToItem$.size
   }
+
+  deleteAll(toDelete: Set<TItemId>) {
+    // TODO: delete audio too
+    for ( let idToDelete of toDelete) {
+      console.log(`!!! idToDelete`, idToDelete)
+      this.deleteWithoutConfirmationById(idToDelete)
+    }
+  }
+
 }
