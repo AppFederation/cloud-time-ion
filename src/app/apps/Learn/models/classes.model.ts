@@ -87,7 +87,9 @@ export class ItemClasses {
   toLearn = itemClass({
     searchTerms: `memorize`,
     subClasses: subClasses({
-      toChangeBehavior: itemClass()
+      toChangeBehavior: itemClass({
+        searchTerms: `to reform`,
+      })
     }),
   })
 
