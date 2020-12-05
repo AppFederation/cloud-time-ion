@@ -34,6 +34,7 @@ export class SelectionPopupComponent implements OnInit {
           text: 'DELETE',
           handler: async () => {
             this.itemsService.deleteAll(this.selection.selected)
+            this.selection.unselectAll()
             // this.doc.update({
             //   whenDeleted: new Date(),
             // })

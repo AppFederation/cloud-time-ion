@@ -35,6 +35,7 @@ export class SelectionManager<T = any> {
 
   unselectAll() {
     this.selected$.nextWithCache(new Set<T>())
+    this.effectiveSelectionChange$.nextWithCache()
   }
 
   /** or "Specifically" */
