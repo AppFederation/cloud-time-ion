@@ -13,6 +13,9 @@ function subClasses(subStatuses: Dict<ClassDecl>): Dict<ClassDef> {
   )
 }
 
+/* TO Keep inn mind: extensional and intensional
+* https://en.wikipedia.org/wiki/Sense_and_reference
+*  */
 export class ClassDecl {
   /* later: pinned / hidden by user  */
   shortListed ? = false
@@ -43,8 +46,42 @@ export class ItemClasses {
     searchTerms: `meta-class`,
   })
 
+  aspect = itemClass({
+    searchTerms: `concern`,
+  })
+
+  field = itemClass({
+    searchTerms: [`property`, `attribute`],
+  })
+
+  funLevel = itemClass({
+  })
+
+  mentalLevel = itemClass({
+  })
+
+  importanceLevel = itemClass({
+  })
+
+  // TODO: audio
+
+  actionable_item = itemClass({
+    /* TODO: subclassess here;
+    *   distinguish start-finish type and continuously-workable-on;
+    * But in some sense all things can be worked on continuously, e.g. by refining, editing.
+    * --> hence everything is time-trackable */
+  })
+
   task = itemClass({
     searchTerms: `to do`,
+  })
+
+  bug = itemClass({
+    searchTerms: `error`,
+  })
+
+  bug_report = itemClass({
+    searchTerms: `error report`,
   })
 
   toLearn = itemClass({
@@ -61,10 +98,15 @@ export class ItemClasses {
   feature = itemClass()
 
   project  = itemClass()
+  product  = itemClass()
+  module  = itemClass()
+  component  = itemClass()
 
   category  = itemClass()
 
   milestone = itemClass()
+  epic = itemClass()
+  theme = itemClass()
 
   organization = itemClass()
 
