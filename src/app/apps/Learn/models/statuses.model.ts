@@ -194,6 +194,11 @@ export class Statuses {
     isStarted: undefined,
   })
 
+  /* ==== Other:
+    - duplicates
+    - follow-ups (Asana)
+  * */
+
 }
 
 export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>) as any as Statuses

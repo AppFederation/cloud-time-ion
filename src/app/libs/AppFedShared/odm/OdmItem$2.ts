@@ -140,6 +140,7 @@ export class OdmItem$2<
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
     this.odmService.emitLocalItems()
+    this.odmService.itemHistoryService.onPatch(this, patch)
   }
 
   // patchFieldThrottled(fieldKey: keyof TInMemData, fieldPatch: TInMemData[fieldKey]) {

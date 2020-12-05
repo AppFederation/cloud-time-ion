@@ -9,6 +9,7 @@ import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
 import {LearnItemId} from '../../../apps/Learn/models/LearnItem'
+import {OdmItemHistoryService} from './odm-item-history-service'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -31,6 +32,8 @@ export abstract class OdmService2<
   TRawPatch extends
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
+  THistSrv extends OdmItemHistoryService =
+    OdmItemHistoryService //<TInMemData, TRawData, TOdmItem$, TMemPatch, TRawPatch>
   >
 {
 
@@ -65,6 +68,8 @@ export abstract class OdmService2<
   authService = this.injector.get(AuthService)
 
   geoLocationService = this.injector.get(ApfGeoLocationService)
+
+  itemHistoryService = new OdmItemHistoryService()
 
   protected constructor(
     protected injector: Injector,
