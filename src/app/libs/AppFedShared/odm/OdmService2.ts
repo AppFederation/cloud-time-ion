@@ -16,6 +16,15 @@ export class OdmServiceOpts {
   dontStoreWhenModified = false
 }
 
+/* TODO rename to OdmItemsService / list service (but also tree) ?
+* Responsibilities:
+* - holding items in memory
+* - converting between db/mem
+* - type safety via generics
+* - notifying listeners about whole list change
+* . - and individual items changes (via OdmItem$)
+* - sub-classes inherit to wrap, provide domain/business logic
+* */
 export abstract class OdmService2<
   TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData,

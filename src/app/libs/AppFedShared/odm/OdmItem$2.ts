@@ -139,6 +139,7 @@ export class OdmItem$2<
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
+    /* TODO move to odmService.onPatched(this, patch) */
     this.odmService.emitLocalItems()
     this.odmService.itemHistoryService.onPatch(this, patch)
   }

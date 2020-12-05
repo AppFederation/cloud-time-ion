@@ -1,11 +1,11 @@
 import {Dict, dictToArrayWithIds, mapEntriesToArray, mapFields, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {IconDef} from './icon'
 
 function status(x ? : StatusDecl): StatusDef {
   return Object.assign(new StatusDef(), x ?? {}).init()
 }
 
-export type IconDef = string
 
 function subStatuses(subStatuses: Dict<StatusDecl>): Dict<StatusDef> {
   return mapFields(

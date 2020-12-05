@@ -18,6 +18,7 @@ import {MentalEffortLevelEditComponent} from './mental-effort-level-edit/mental-
 import {ItemClassEditComponent} from './item-class-edit/item-class-edit.component'
 import {StatusesEditComponent} from './statuses-edit/statuses-edit.component'
 import {SharedModule} from '../../../shared/shared.module'
+import {ItemClassToLearnEditComponent} from './item-class-to-learn-edit/item-class-edit.component'
 
 const routes: Routes = [
   {
@@ -48,6 +49,7 @@ const routes: Routes = [
     MentalEffortLevelEditComponent,
     MentalEffortLevelEditComponent,
     ItemClassEditComponent,
+    ItemClassToLearnEditComponent,
     StatusesEditComponent,
   ],
 })
