@@ -26,7 +26,7 @@ export class SelectionCheckboxComponent implements OnInit, AfterViewInit {
   }
 
   private setCheckedIfPossible() {
-    const isSel = this.selection.isSelected(this.itemId)
+    const isSel = this.selection.isEffectivelySelected(this.itemId)
     if ( this.checkBox ) {
       // would not need this if FormControl
       // could have used smth like ViewSyncer with FormControl (with flexible functions to observe/set, instead of relying on PatchableObservable face); simplifying logic here
@@ -38,7 +38,7 @@ export class SelectionCheckboxComponent implements OnInit, AfterViewInit {
 
   get itemId() { return this._itemId }
 
-  @ViewChild(IonCheckbox) checkBox: IonCheckbox
+  @ViewChild(IonCheckbox) checkBox ! : IonCheckbox
 
   constructor() { }
 
@@ -47,7 +47,7 @@ export class SelectionCheckboxComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.setCheckedIfPossible()
-    this.selection.selected$.subscribe(() => {
+    this.selection.effectiveSelectionChange$.subscribe(() => {
       if ( ! this.isSetting ) {
         try {
           this.isSetting = true

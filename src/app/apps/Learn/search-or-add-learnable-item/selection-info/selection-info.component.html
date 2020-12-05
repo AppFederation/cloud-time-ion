@@ -1,4 +1,7 @@
 &nbsp;<ion-checkbox
+  [indeterminate]="false"
+  [checked]="false"
+  (ionChange)="onChangeCheckBox($event)"
   (press)="unselectAll()"
 >
 
