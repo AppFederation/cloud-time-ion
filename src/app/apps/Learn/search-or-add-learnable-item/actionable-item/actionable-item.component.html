@@ -27,6 +27,8 @@
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
+  <span *ngIf="item.isTask && item.isToLearn">, &nbsp;</span>
+  <ion-note *ngIf="item.isToLearn">TO LEARN</ion-note>
 
   &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
 

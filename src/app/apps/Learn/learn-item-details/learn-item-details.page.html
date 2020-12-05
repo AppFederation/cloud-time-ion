@@ -53,10 +53,23 @@
 <!--      <ion-label>FUN&lt;!&ndash;note: not priority; could also be called "impact" &ndash;&gt;</ion-label>-->
 <!--      <app-self-rating></app-self-rating>-->
 <!--    </div>-->
+    CREATED <app-time-point
+      [time]="item$?.val?.whenCreated?.toDate()"
+    ></app-time-point>
+    MODIFIED <app-time-point
+      [time]="item$?.val?.whenLastModified?.toDate()"
+    ></app-time-point>
 
-    <app-item-class-edit
-      [item$]="item$"
-    ></app-item-class-edit>
+    <div style="display: flex; flex-direction: row; width: 100%">
+      <app-item-class-edit
+        style="flex-grow: 1"
+        [item$]="item$"
+      ></app-item-class-edit>
+      <app-item-class-to-learn-edit
+        style="flex-grow: 1"
+        [item$]="item$"
+      ></app-item-class-to-learn-edit>
+    </div>
 
     <app-importance-edit
       [item$]="item$"
@@ -70,9 +83,9 @@
       [item$]="item$"
     ></app-mental-effort-level-edit>
 
-    <app-statuses-edit
-      [item$]="item$"
-    ></app-statuses-edit>
+<!--    <app-statuses-edit-->
+<!--      [item$]="item$"-->
+<!--    ></app-statuses-edit>-->
 
     <app-self-rating
       [hidden]="(val$ | async) ?. isTask"
