@@ -2,7 +2,7 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 
 export class SelectionManager<T = any> {
 
-  private isAllSelected: boolean
+  private isAllSelected = false
 
   get selected() { return this.selected$.lastVal as Set<T> }
 
@@ -14,7 +14,7 @@ export class SelectionManager<T = any> {
 
   isAllEffectivelySelected$ = new CachedSubject<boolean>(false)
 
-  allPossibleToSelect = []
+  allPossibleToSelect: T[] = []
 
   setAllSelected(selected: boolean) {
     this.isAllSelected = selected
