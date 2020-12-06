@@ -239,7 +239,7 @@ export abstract class OdmService2<
       if ( isNotNullish(val) ) {
         setTimeout /* ensure subscription */(() => {
           subHack.subscription.unsubscribe()
-          /* hack to have the Item$ initialized */
+          /* hack to have the Item$ initialized; coz patchThrottled is not using firestore incremental update(), but set() */
           return item$ById.patchThrottled(patch)
         })
       }

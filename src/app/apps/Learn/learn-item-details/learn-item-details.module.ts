@@ -12,13 +12,13 @@ import {LearnSharedModule} from '../shared/learn-shared.module'
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {LearnItemDetailsHintsComponent} from './learn-item-details-hints/learn-item-details-hints.component'
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
-import {ImportanceEditComponent} from './importance-edit/importance-edit.component'
 import {FunLevelEditComponent} from './fun-level-edit/fun-level-edit.component'
 import {MentalEffortLevelEditComponent} from './mental-effort-level-edit/mental-effort-level-edit.component'
 import {ItemClassEditComponent} from './item-class-edit/item-class-edit.component'
 import {StatusesEditComponent} from './statuses-edit/statuses-edit.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {ItemClassToLearnEditComponent} from './item-class-to-learn-edit/item-class-edit.component'
+import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
 
 const routes: Routes = [
   {
@@ -40,20 +40,17 @@ const routes: Routes = [
         EditorModule,
         TimeModule,
         SharedModule,
+        EditSharedModule,
     ],
     declarations: [
         LearnItemDetailsPage,
         LearnItemDetailsHintsComponent,
-        ImportanceEditComponent,
         FunLevelEditComponent,
         MentalEffortLevelEditComponent,
         MentalEffortLevelEditComponent,
         ItemClassEditComponent,
         ItemClassToLearnEditComponent,
         StatusesEditComponent,
-    ],
-    exports: [
-        ImportanceEditComponent,
-    ],
+    ]
 })
 export class LearnItemDetailsPageModule {}
