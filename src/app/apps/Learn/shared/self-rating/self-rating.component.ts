@@ -8,7 +8,7 @@ import {
 } from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem$} from '../../models/LearnItem$'
-import {intensityBtnVariant} from '../../learn-item-details/importance-edit/importance-edit.component'
+import {intensityBtnVariant} from '../../../../libs/LifeSuiteShared/edit-shared/importance-edit/importance-edit.component'
 
 @Component({
   selector: 'app-self-rating',

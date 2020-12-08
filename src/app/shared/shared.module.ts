@@ -23,7 +23,7 @@ let imports = [
     EditorModule,
   ],
     exports: [
-        imports,
+        ... imports,
         RichTextEditComponent,
         RichTextViewComponent,
         DurationComponent,
