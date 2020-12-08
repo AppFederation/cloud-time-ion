@@ -23,6 +23,7 @@ import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
 import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -304,7 +305,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     }
   }
 
-  private applyImportanceFromText(stringEviscerated: string, overlay: Partial<LearnItemSidesVals & LearnItem>) {
+  private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
     /*==*/ if (stringEviscerated?.startsWith(`!!!!`)) {
       overlay.importance = importanceDescriptors.extremely_high
     } else if (stringEviscerated?.startsWith(`!!!`)) {
