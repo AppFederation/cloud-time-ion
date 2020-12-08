@@ -10,7 +10,7 @@ import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {FormControl} from '@angular/forms'
-import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
+import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
@@ -22,6 +22,7 @@ import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
 import {SelectionManager} from './SelectionManager'
+import {importanceDescriptors} from '../models/fields/importance.model'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -262,13 +263,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   /** maybe this could be moved to model class ---> actually service */
   createItemFromInputString(string: string, isTask?: boolean) {
+    const stringEviscerated = stripHtml(string)?.trim()
     // if ( ! string ?. trim() ) {
     //   return
     // }
     const QQ = /<-->|<->|----/ // <> - pascal not-equal
     const QA = /---/ // |-->/ // removed -- because it exists in command line options and html comments
     // --> - end of XML/HTML comment
-    const overlay: Partial<LearnItemSidesVals> = {}
+    const overlay: Partial<LearnItemSidesVals & LearnItem> = {}
     if ( string.match(QQ) ) {
       const split = splitAndTrim(string, QQ)
       debugLog(`splitAndTrim`, split)
@@ -292,6 +294,15 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       }
     } else {
       overlay.title = (string ?? '')./*?.*/trim() /*?? null*/
+    }
+    if ( stringEviscerated?.startsWith(`!!!!`) ) {
+      overlay.importance = importanceDescriptors.extremely_high
+    } else if ( stringEviscerated?.startsWith(`!!!`) ) {
+      overlay.importance = importanceDescriptors.very_high
+    } else if ( stringEviscerated?.startsWith(`!!`) ) {
+      overlay.importance = importanceDescriptors.high
+    } else if ( stringEviscerated?.startsWith(`!`) ) {
+      overlay.importance = importanceDescriptors.somewhat_high
     }
     return {
       owner: this.authUserId,
