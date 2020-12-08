@@ -295,20 +295,24 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     } else {
       overlay.title = (string ?? '')./*?.*/trim() /*?? null*/
     }
-    if ( stringEviscerated?.startsWith(`!!!!`) ) {
-      overlay.importance = importanceDescriptors.extremely_high
-    } else if ( stringEviscerated?.startsWith(`!!!`) ) {
-      overlay.importance = importanceDescriptors.very_high
-    } else if ( stringEviscerated?.startsWith(`!!`) ) {
-      overlay.importance = importanceDescriptors.high
-    } else if ( stringEviscerated?.startsWith(`!`) ) {
-      overlay.importance = importanceDescriptors.somewhat_high
-    }
+    this.applyImportanceFromText(stringEviscerated, overlay)
     return {
       owner: this.authUserId,
       whenAdded: new Date(),
       isTask: isTask ? true : null,
       ...overlay,
+    }
+  }
+
+  private applyImportanceFromText(stringEviscerated: string, overlay: Partial<LearnItemSidesVals & LearnItem>) {
+    /*==*/ if (stringEviscerated?.startsWith(`!!!!`)) {
+      overlay.importance = importanceDescriptors.extremely_high
+    } else if (stringEviscerated?.startsWith(`!!!`)) {
+      overlay.importance = importanceDescriptors.very_high
+    } else if (stringEviscerated?.startsWith(`!!`)) {
+      overlay.importance = importanceDescriptors.high
+    } else if (stringEviscerated?.startsWith(`!`)) {
+      overlay.importance = importanceDescriptors.somewhat_high
     }
   }
 
