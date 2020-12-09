@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {QuizAnswerForHistory, QuizHistoryService} from './quiz-history.service'
 import {QuizService} from './quiz.service'
 import {msElapsedTillNowSince} from '../../../libs/AppFedShared/utils/time/date-time-utils'
-import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {catchReportDontRethrow, debugLog} from '../../../libs/AppFedShared/utils/log'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../models/LearnItem$'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {SelfRating} from '../models/fields/self-rating.model'
+
 
 @Injectable({
   providedIn: 'root'
@@ -39,14 +40,20 @@ export class QuizAnswersService {
   }
 
   onApplyAndNext(item$: LearnItem$, selfRating: NumericPickerVal) {
-    this.answer !. quizOptions = this.quizService.options$.lastVal !
-    this.answer !. msToApplyAndNext = msElapsedTillNowSince(this.whenQuestionShowed !)
-    this.answer !. selfRating = selfRating as SelfRating
-
-    this.quizHistoryService.onAnswer(
-      this.answer !
-    )
+    this.storeAnswerForHistory(selfRating)
     item$ ?. setNewSelfRating(selfRating !)
     this.quizService.requestNextItem()
+  }
+
+  private storeAnswerForHistory(selfRating: number) {
+    catchReportDontRethrow('storeAnswerForHistory', () => {
+      this.answer !.quizOptions = Object.assign({}, this.quizService.options$.lastVal !)
+      this.answer !.msToApplyAndNext = msElapsedTillNowSince(this.whenQuestionShowed !)
+      this.answer !.selfRating = selfRating as SelfRating
+
+      this.quizHistoryService.onAnswer(
+        this.answer !,
+      )
+    })
   }
 }
