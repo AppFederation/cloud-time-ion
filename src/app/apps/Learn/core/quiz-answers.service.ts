@@ -5,7 +5,6 @@ import {msElapsedTillNowSince} from '../../../libs/AppFedShared/utils/time/date-
 import {catchReportDontRethrow, debugLog} from '../../../libs/AppFedShared/utils/log'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../models/LearnItem$'
-import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {SelfRating} from '../models/fields/self-rating.model'
 
 
@@ -35,8 +34,21 @@ export class QuizAnswersService {
   }
 
   onShowAnswer() {
-    this.answer !. msToShowAnswer = msElapsedTillNowSince(this.whenQuestionShowed !)
+    this.answer !. msToShowAnswer = this.getMsSinceQuestionShowed()
     debugLog(`onShowAnswer`, this.answer)
+  }
+
+  onShowHint() {
+    this.answer !. msToShowHint = this.getMsSinceQuestionShowed()
+  }
+
+  onSelfRate() {
+    this.answer !. msToSelfRate = this.getMsSinceQuestionShowed()
+  }
+
+
+  private getMsSinceQuestionShowed() {
+    return msElapsedTillNowSince(this.whenQuestionShowed !)
   }
 
   onApplyAndNext(item$: LearnItem$, selfRating: NumericPickerVal) {
@@ -48,7 +60,7 @@ export class QuizAnswersService {
   private storeAnswerForHistory(selfRating: number) {
     catchReportDontRethrow('storeAnswerForHistory', () => {
       this.answer !.quizOptions = Object.assign({}, this.quizService.options$.lastVal !)
-      this.answer !.msToApplyAndNext = msElapsedTillNowSince(this.whenQuestionShowed !)
+      this.answer !.msToApplyAndNext = this.getMsSinceQuestionShowed()
       this.answer !.selfRating = selfRating as SelfRating
 
       this.quizHistoryService.onAnswer(
@@ -56,4 +68,5 @@ export class QuizAnswersService {
       )
     })
   }
+
 }

@@ -28,7 +28,7 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 
   quizOptions ? : QuizOptions
 
-  // TODO: msToHint
+  msToShowHint ? : DurationMs
   msToShowAnswer ? : DurationMs
   msToSelfRate ? : DurationMs
   msToApplyAndNext ? : DurationMs
