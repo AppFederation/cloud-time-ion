@@ -29,6 +29,14 @@ export function errorAlertAndThrow(...args: any) {
   throw new Error(args)
 }
 
+export function catchReportDontRethrow(doingWhat: string, func: () => void) {
+  try {
+    func()
+  } catch(exception) {
+    errorAlert(`error while executing '`, doingWhat, `'`, exception)
+  }
+}
+
 
 // idea: debugLogFirst / debugLogEveryX
 
