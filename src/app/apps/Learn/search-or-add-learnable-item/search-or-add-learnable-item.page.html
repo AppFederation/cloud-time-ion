@@ -125,6 +125,8 @@
 
   <ng-template #loggedIn>
 
+    <p style="margin: 10px" *ngIf="! this.filteredItems?.length">NOTHING FOUND</p>
+
     <ion-virtual-scroll
       [items]="filteredItems"
       [approxItemHeight]="31"
