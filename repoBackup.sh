@@ -60,6 +60,7 @@ function backupRepo () {
 
   git pull --no-edit origin AutoBackup # in case history diverged
 
+  echo "================================ GIT PUSH: "
   set -x
   git push origin HEAD:AutoBackup
 
