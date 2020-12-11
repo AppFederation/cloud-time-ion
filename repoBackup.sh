@@ -63,6 +63,7 @@ function backupRepo () {
   echo "================================ GIT PUSH: "
   set -x
   git push origin HEAD:AutoBackup
+  echo "================================ END GIT PUSH"
 
   git status
 }
@@ -71,9 +72,9 @@ function backupRepo () {
 backupAllRepos() {
   backupRepo "/A/R/O/OrYoL"
 
-   backupRepo "/A/R/InnoTopic/InnoTopic_Website" # FIXME /A/R/InnoTopic/InnoTopic_Website : 2 SUBMODULES
-   backupRepo "/A/R/InnoTopic/InnoTopic_Website/InnoTopicWebsite/src/app/TopicFriendsShared"
-   backupRepo "/A/R/InnoTopic/InnoTopic_Website/svg-conversions"
+  backupRepo "/A/R/InnoTopic/InnoTopic_Website" # FIXME /A/R/InnoTopic/InnoTopic_Website : 2 SUBMODULES
+  backupRepo "/A/R/InnoTopic/InnoTopic_Website/InnoTopicWebsite/src/app/TopicFriendsShared"
+  backupRepo "/A/R/InnoTopic/InnoTopic_Website/svg-conversions"
 
   backupRepo "/A/R/FlexLife/LifeSense2"
 #  backupRepo "$(pwd)"
