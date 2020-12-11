@@ -720,6 +720,9 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return this.itemData
   }
 
+  getId() {
+    return this.itemId
+  }
 }
 
 export abstract class OryTreeListener {

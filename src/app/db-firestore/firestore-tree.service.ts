@@ -29,7 +29,7 @@ import 'firebase/firestore';
 
 console.log('firebase1', firebase1)
 
-const firebaseApp = firebase1.initializeApp({
+export const firebaseApp = firebase1.initializeApp({
   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
   authDomain: 'oryol-app.firebaseapp.com',
   databaseURL: 'https://oryol-app.firebaseio.com',
@@ -44,7 +44,7 @@ console.log('firebaseApp', firebaseApp)
 
 // Initialize Cloud Firestore through Firebase
 // const firestore1 = firebase1.firestore();
-const firestore1 = firebaseApp.firestore();
+export const firestore1 = firebaseApp.firestore();
 const db = firestore1;
 firestore1.settings({
   // timestampsInSnapshots: true,

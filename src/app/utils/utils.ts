@@ -10,7 +10,7 @@ export function defined(x) {
   return ! nullOrUndef(x)
 }
 
-const uuidv4 = require('uuid/v4');
+export const uuidv4 = require('uuid/v4');
 
 
 function applyNegativeOffsetIfNecessary(caretPos, length) {
