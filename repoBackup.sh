@@ -45,7 +45,7 @@ function backupRepo () {
 
   echo "======== GIT ====== "
 
-  git remote -v
+#  git remote -v
 
 #  git add ".*" "*"
   git add --all #".*" "*"
