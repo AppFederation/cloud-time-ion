@@ -33,7 +33,7 @@ function backupRepo () {
   time rsync -a "$src"/ "$dst"  \
       --exclude '**/node_modules'  \
       --exclude platforms \
-      --exclude .git \
+      # --exclude .git \
 
       # for first copy, do not `--exclude .git`; but maybe always syncing .git could give me a kind of automatic rebase on develop; then maybe push -f  (but need to think how to preserve the incremental commits)
 
@@ -45,7 +45,7 @@ function backupRepo () {
 
   echo "======== GIT ====== "
 
-  git remote -v
+#  git remote -v
 
 #  git add ".*" "*"
   git add --all #".*" "*"
