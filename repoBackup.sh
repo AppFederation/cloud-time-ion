@@ -5,6 +5,7 @@ shopt -s extglob
 # set -x
 
 function backupRepo () {
+  set +x
   src="$1"
   echo "============================================"
   echo "============================================ REPO ${src}"
@@ -59,6 +60,7 @@ function backupRepo () {
 
   git pull --no-edit origin AutoBackup # in case history diverged
 
+  set -x
   git push origin HEAD:AutoBackup
 
   git status
