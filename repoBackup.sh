@@ -14,7 +14,7 @@ mkdir -p "$dst"
 
 # cp -r ./!(node_modules|electron) $dst
 
-echo dot star
+#echo dot star
 
 # cp -r ./.* $dst
 
@@ -24,10 +24,13 @@ echo dot star
 
 # trailing / in "$src"/ needed to not create sub-dir of same name
 
-time rsync -av --progress "$src"/ "$dst"  \
+# --progress -v
+time rsync -a "$src"/ "$dst"  \
     --exclude '**/node_modules'  \
     --exclude platforms \
     --exclude .git \
+
+    # for first copy, do not `--exclude .git`; but maybe always syncing .git could give me a kind of automatic rebase on develop; then maybe push -f  (but need to think how to preserve the incremental commits)
 
 #    --exclude node_modules  \
 #    --exclude electron/node_modules  \
@@ -35,10 +38,18 @@ time rsync -av --progress "$src"/ "$dst"  \
 
 cd "$dst"
 
+echo "======== GIT ====== "
+
 git add ".*" "*"
 
-git pull origin "$branchName"
+# git pull origin "$branchName"
+
+# Could also have a branch version *rebased* on develop
 
 git commit -m "$branchName `date`"
 
+# https://askubuntu.com/questions/755535/how-do-i-highlight-a-word-or-a-phrase-in-a-commands-output
+
 git push origin HEAD:AutoBackup
+
+git status
