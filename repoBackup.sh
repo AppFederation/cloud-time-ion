@@ -4,12 +4,16 @@ shopt -s extglob
 
 # set -x
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 function backupRepo () {
+  echo -e "\033[1;31m This is red text \033[0m"
   set +x
   src="$1"
-  echo "============================================"
-  echo "============================================ REPO ${src}"
-  echo "============================================"
+  echo -e "\033[1;31m============================================"
+  echo -e "${RED}============================================ REPO ${src}"
+  echo -e "============================================${NC}"
   dstParent=/A/Backups/RepoAutoBackup
   dst="$dstParent/$src"
 
