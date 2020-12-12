@@ -306,13 +306,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
-    /*==*/ if (stringEviscerated?.startsWith(`!!!!`)) {
+    const s = stringEviscerated
+    /*==*/ if (s?.startsWith(`!!!!`) || s?.endsWith(`!!!!`)) {
       overlay.importance = importanceDescriptors.extremely_high
-    } else if (stringEviscerated?.startsWith(`!!!`)) {
+    } else if (s?.startsWith(`!!!`) || s?.endsWith(`!!!`)) {
       overlay.importance = importanceDescriptors.very_high
-    } else if (stringEviscerated?.startsWith(`!!`)) {
+    } else if (s?.startsWith(`!!`) || s?.endsWith(`!!`)) {
       overlay.importance = importanceDescriptors.high
-    } else if (stringEviscerated?.startsWith(`!`)) {
+    } else if (s?.startsWith(`!`) || s?.endsWith(`!`)) {
       overlay.importance = importanceDescriptors.somewhat_high
     }
   }
