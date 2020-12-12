@@ -74,6 +74,7 @@ export class ActionableItemComponent implements OnInit {
     return undefined
   }
 
+  /* FIXME: move to Item class */
   getImportanceDescriptor() {
     const val = this.item.importance
     if ( val ) {

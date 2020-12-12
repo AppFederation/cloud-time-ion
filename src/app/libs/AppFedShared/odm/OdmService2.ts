@@ -3,7 +3,7 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2, OdmPatch} from './OdmItem$2'
+import {OdmItem$2, OdmPatch, ModificationOpts} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
@@ -101,8 +101,11 @@ export abstract class OdmService2<
     )
   }
 
-  saveNowToDb(itemToSave: TOdmItem$) {
-    itemToSave.onModified()
+  saveNowToDb(itemToSave: TOdmItem$/*, modificationOpts?: ModificationOpts*/) {
+    /* note: not doing itemToSave.setWhenLastModified(),
+    * coz too late coz throttle handler (which calls this) does not have modificationOpts
+    * pending: *where*modified to be moved to Item$ */
+
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
     // debugLog(`geo`, geo)
     if ( geo ) {
@@ -120,7 +123,7 @@ export abstract class OdmService2<
       geo = null
     }
     (itemToSave.val as any).whereCreated ??= geo;
-    (itemToSave.val as any).whereLastModified = geo
+    (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
     // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
     const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)

@@ -50,11 +50,13 @@ export class LearnItem$
       lastSelfRating: newEffectiveRating as SelfRating,
       whenLastSelfRated: OdmBackend.nowTimestamp(),
       selfRatingsCount: ((item?.selfRatingsCount || 0) + 1) as PositiveIntOrZero,
+    }, {
+      dontSetWhenLastModified: true
     })
 
   }
 
-  /* TODO return descriptor always */
+  /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
   getEffectiveImportance(): ImportanceVal {
     return this.val ?. importance
       ?? this.getImportanceFromCategories()

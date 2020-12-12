@@ -3,7 +3,7 @@
 <div style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
      [routerLink]="['/learn/item/'+item.id]"
 >
-  <!-- TODO extract component SelectionCheckboxComponent -->
+
   <app-selection-checkbox
     [selection]="selection"
     [itemId]="item.id !"
@@ -27,8 +27,8 @@
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
   <ion-note *ngIf="item.isTask">TASK</ion-note>
-  <span *ngIf="item.isTask && item.isToLearn">, &nbsp;</span>
-  <ion-note *ngIf="item.isToLearn">TO LEARN</ion-note>
+  <span *ngIf="item.isTask && item.isEffectivelyToLearn()">, &nbsp;</span>
+  <ion-note *ngIf="item.isEffectivelyToLearn()">LEARN</ion-note>
 
   &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
 
