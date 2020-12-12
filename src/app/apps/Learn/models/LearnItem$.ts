@@ -50,6 +50,8 @@ export class LearnItem$
       lastSelfRating: newEffectiveRating as SelfRating,
       whenLastSelfRated: OdmBackend.nowTimestamp(),
       selfRatingsCount: ((item?.selfRatingsCount || 0) + 1) as PositiveIntOrZero,
+    }, {
+      dontSetWhenLastModified: true
     })
 
   }
