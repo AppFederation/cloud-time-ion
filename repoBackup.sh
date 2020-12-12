@@ -10,6 +10,7 @@ Blue='\033[0;34m'
 Green='\033[0;32m'
 
 echo 'Hello World!' | sed $'s/World/\e[1m&\e[0m/'
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 
 function backupRepo () {
   # echo -e "\033[1;31m This is red text \033[0m"
