@@ -133,10 +133,8 @@ export class OdmItem$2<
       this.odmService.syncStatusService.handleSavingPromise(promise)
     }
     this.setIdAndWhenCreatedIfNecessary()
+    this.setLastModifiedIfNecessary(modificationOpts) // before the patching, in case patch contains modification fields
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
-    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      this.setWhenLastModified()
-    }
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -144,6 +142,13 @@ export class OdmItem$2<
     /* TODO move to odmService.onPatched(this, patch) */
     this.odmService.emitLocalItems()
     this.odmService.itemHistoryService.onPatch(this, patch)
+  }
+
+  private setLastModifiedIfNecessary(modificationOpts: ModificationOpts | nullish ) {
+    if ( ! ( modificationOpts?.dontSetWhenLastModified ?? false ) ) {
+      this.setWhenLastModified()
+      // TODO: move whereLastModified from service
+    }
   }
 
   // patchFieldThrottled(fieldKey: keyof TInMemData, fieldPatch: TInMemData[fieldKey]) {
@@ -157,10 +162,8 @@ export class OdmItem$2<
 
   patchNow(patch: OdmPatch<TInMemData>, modificationOpts?: ModificationOpts) {
     this.setIdAndWhenCreatedIfNecessary()
+    this.setLastModifiedIfNecessary(modificationOpts)
     Object.assign(this.currentVal, patch)
-    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      this.setWhenLastModified()
-    }
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -195,6 +198,8 @@ export class OdmItem$2<
   }
 
   setWhenLastModified() {
+    debugLog(`setWhenLastModified`, this)
+    console.trace(`setWhenLastModified`, this)
     this.currentVal ! . whenLastModified = OdmBackend.nowTimestamp()
   }
 
@@ -209,8 +214,9 @@ export class OdmItem$2<
   }
 
   /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */
-  saveNowToDb() {
+  saveNowToDb(modificationOpts?: ModificationOpts) {
     this.setIdAndWhenCreatedIfNecessary()
+    this.setLastModifiedIfNecessary(modificationOpts)
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
   }

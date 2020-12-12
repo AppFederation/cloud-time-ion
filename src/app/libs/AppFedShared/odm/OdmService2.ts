@@ -101,10 +101,10 @@ export abstract class OdmService2<
     )
   }
 
-  saveNowToDb(itemToSave: TOdmItem$, modificationOpts?: ModificationOpts) {
-    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      itemToSave.setWhenLastModified()
-    }
+  saveNowToDb(itemToSave: TOdmItem$/*, modificationOpts?: ModificationOpts*/) {
+    /* note: not doing itemToSave.setWhenLastModified(),
+    * coz too late coz throttle handler (which calls this) does not have modificationOpts
+    * pending: *where*modified to be moved to Item$ */
 
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
     // debugLog(`geo`, geo)
@@ -123,7 +123,7 @@ export abstract class OdmService2<
       geo = null
     }
     (itemToSave.val as any).whereCreated ??= geo;
-    (itemToSave.val as any).whereLastModified = geo
+    (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
     // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
     const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
