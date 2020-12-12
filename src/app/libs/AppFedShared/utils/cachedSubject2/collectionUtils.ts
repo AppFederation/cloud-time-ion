@@ -6,7 +6,7 @@ export type CompareFunc<T> = (o1: T, o2: T) => number
 export type CompareFuncs<T> = Array<CompareFunc<T>>
 
 export function compareByManyFuncs<T>(o1: T | nullish, o2: T, funcs: CompareFuncs<T>): number {
-  if ( isNullish(o1) && ! isNullish(o2) ) {
+  if ( isNullish(o1) /*&& ! isNullish(o2)*/ ) {
     return 1
   }
   for (let func of funcs) {
@@ -18,13 +18,17 @@ export function compareByManyFuncs<T>(o1: T | nullish, o2: T, funcs: CompareFunc
   return 0
 }
 
+export type Predicate<T> = (x: T) => boolean
+
 export function findPreferred<
   T,
-  TPred extends (x: T) => boolean
-    = (x: T) => boolean >
+  TPred extends
+    Predicate<T> =
+    Predicate<T> >
 (
   collection: Array<T> | nullish,
   preconditionFunc: TPred,
+  /* TODO: afterElement: T -- for processing next element after the one we are in currently */
   compareFuncs: CompareFuncs<T>,
 ) : T | undefined
 {
