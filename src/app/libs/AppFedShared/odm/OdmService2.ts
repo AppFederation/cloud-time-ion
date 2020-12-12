@@ -103,7 +103,7 @@ export abstract class OdmService2<
 
   saveNowToDb(itemToSave: TOdmItem$, modificationOpts?: ModificationOpts) {
     if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      itemToSave.onModified()
+      itemToSave.setWhenLastModified()
     }
 
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;

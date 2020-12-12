@@ -135,7 +135,7 @@ export class OdmItem$2<
     this.setIdAndWhenCreatedIfNecessary()
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      this.onModified()
+      this.setWhenLastModified()
     }
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
@@ -159,7 +159,7 @@ export class OdmItem$2<
     this.setIdAndWhenCreatedIfNecessary()
     Object.assign(this.currentVal, patch)
     if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
-      this.onModified()
+      this.setWhenLastModified()
     }
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
@@ -194,7 +194,7 @@ export class OdmItem$2<
     // return dbFormat
   }
 
-  onModified() {
+  setWhenLastModified() {
     this.currentVal ! . whenLastModified = OdmBackend.nowTimestamp()
   }
 
