@@ -34,7 +34,7 @@ export class SelectionManager<T = any> {
   }
 
   setSelected(x: T, selected: boolean) {
-    console.log(`setSelected`, selected)
+    // console.log(`setSelected`, selected)
     if ( selected ) {
       this.selected.add(x)
     } else {
