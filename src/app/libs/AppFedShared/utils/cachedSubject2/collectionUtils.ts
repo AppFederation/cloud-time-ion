@@ -1,4 +1,22 @@
 import {nullish} from '../type-utils'
+import {isNullish} from '../utils'
+
+export type CompareFunc<T> = (o1: T, o2: T) => number
+
+export type CompareFuncs<T> = Array<CompareFunc<T>>
+
+export function compareByManyFuncs<T>(o1: T | nullish, o2: T, funcs: CompareFuncs<T>): number {
+  if ( isNullish(o1) && ! isNullish(o2) ) {
+    return 1
+  }
+  for (let func of funcs) {
+    let funcRet = func(o1, o2)
+    if ( funcRet !== 0 ) {
+      return funcRet
+    }
+  }
+  return 0
+}
 
 export function findPreferred<
   T,
@@ -7,20 +25,24 @@ export function findPreferred<
 (
   collection: Array<T> | nullish,
   preconditionFunc: TPred,
-  preferredConditionFunc: TPred,
+  compareFuncs: CompareFuncs<T>,
 ) : T | undefined
 {
   if ( ! collection ) {
     return undefined
   }
-  let found: T | undefined = undefined
+  let bestFound: T | undefined = undefined
   for ( const elem of collection ) {
     if ( preconditionFunc (elem) ) {
-      if ( preferredConditionFunc(elem) ) {
-        return elem // return immediately
+      const compareResult = compareByManyFuncs(bestFound, elem, compareFuncs)
+      if ( compareResult > 0 ) {
+        bestFound = elem
       }
-      found = elem // mark, but keep searching
+      // if ( preferredConditionFunc(elem) ) {
+      //   return elem // return immediately
+      // }
+      // found = elem // mark, but keep searching
     }
   }
-  return found
+  return bestFound
 }

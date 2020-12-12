@@ -198,8 +198,8 @@ export class OdmItem$2<
   }
 
   setWhenLastModified() {
-    debugLog(`setWhenLastModified`, this)
-    console.trace(`setWhenLastModified`, this)
+    // debugLog(`setWhenLastModified`, this)
+    // console.trace(`setWhenLastModified`, this)
     this.currentVal ! . whenLastModified = OdmBackend.nowTimestamp()
   }
 
