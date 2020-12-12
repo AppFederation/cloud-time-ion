@@ -4,9 +4,12 @@ shopt -s extglob
 
 # set -x
 
-RED='\033[0;31m'
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 NC='\033[0m' # No Color
 Blue='\033[0;34m'
+Green='\033[0;32m'
+
+echo 'Hello World!' | sed $'s/World/\e[1m&\e[0m/'
 
 function backupRepo () {
   # echo -e "\033[1;31m This is red text \033[0m"
@@ -67,7 +70,8 @@ function backupRepo () {
 
   echo "================================ GIT PUSH: "
   # set -x
-  git push origin HEAD:AutoBackup
+  git push origin HEAD:AutoBackup | sed $'s/Already up to date./\$Green&$NC/'
+
   echo "================================ END GIT PUSH"
 
   git status
