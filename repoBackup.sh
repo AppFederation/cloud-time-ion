@@ -30,7 +30,7 @@ function backupRepo () {
   # trailing / in "$src"/ needed to not create sub-dir of same name
 
   # --progress -v
-  time rsync -a "$src"/ "$dst"  \
+  rsync -a "$src"/ "$dst"  \
       --exclude '**/node_modules'  \
       --exclude platforms \
       --exclude .git \
