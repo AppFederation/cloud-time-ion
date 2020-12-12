@@ -195,7 +195,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   }
 
   public needsProcessing(): boolean {
-    return ! this.hasQAndA()
+    return ! this.hasQAndA() && this.isEffectivelyToLearn()
   }
 
   /** TODO: move to Quiz */
@@ -302,6 +302,9 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
       && (this.getStatus().isDoableNow ?? true /* since "maybe" */)
   }
 
+  public isEffectivelyToLearn() {
+    return this.isToLearn || ! this.isTask
+  }
 }
 
 export type LearnItemSidesVals = {[sideKey in keyof SidesDefs]: string}
