@@ -3,7 +3,7 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2, OdmPatch} from './OdmItem$2'
+import {OdmItem$2, OdmPatch, ModificationOpts} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
@@ -101,8 +101,11 @@ export abstract class OdmService2<
     )
   }
 
-  saveNowToDb(itemToSave: TOdmItem$) {
-    itemToSave.onModified()
+  saveNowToDb(itemToSave: TOdmItem$, modificationOpts?: ModificationOpts) {
+    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
+      itemToSave.onModified()
+    }
+
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
     // debugLog(`geo`, geo)
     if ( geo ) {

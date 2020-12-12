@@ -21,6 +21,10 @@ export class OdmInMemItem extends OdmInMemItemWriteOnce {
 
 export type OdmPatch<TData> = DictPatch<TData>
 
+export interface ModificationOpts {
+  dontSetWhenLastModified?: boolean
+}
+
 export function convertUndefinedFieldValsToNull(obj: any) {
   for ( let key of Object.keys(obj) ) {
     if ( obj[key] === undefined ) {
@@ -118,10 +122,9 @@ export class OdmItem$2<
       .replace(/:/g, '.') + '_') as TItemId  // hack
   }
 
-  patchThrottled(patch: TMemPatch) {
+  patchThrottled(patch: TMemPatch, modificationOpts?: ModificationOpts) {
     convertUndefinedFieldValsToNull(patch)
     convertUndefinedFieldValsToNull(this.currentVal) // quick hack for undefined in importance
-    // errorAlert(`patchThrottled is disabled coz of plain->html testing`, patch)
     // return; // HACK
     if ( ! this.resolveFuncPendingThrottled ) {
       const promise = new Promise((resolveFunc) => {
@@ -129,12 +132,11 @@ export class OdmItem$2<
       })
       this.odmService.syncStatusService.handleSavingPromise(promise)
     }
-    // console.log(`patchThrottled`)
     this.setIdAndWhenCreatedIfNecessary()
-    // debugLog('patchThrottled ([save])', patch)
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
-    this.onModified()
-    // console.log(`patchThrottled`)
+    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
+      this.onModified()
+    }
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -153,10 +155,12 @@ export class OdmItem$2<
 
   // TODO: patchFieldsDeeplyLevel1 -- deeply LEVEL 1 -- for type safety
 
-  patchNow(patch: OdmPatch<TInMemData>) {
+  patchNow(patch: OdmPatch<TInMemData>, modificationOpts?: ModificationOpts) {
     this.setIdAndWhenCreatedIfNecessary()
     Object.assign(this.currentVal, patch)
-    this.onModified()
+    if ( ! (modificationOpts ?. dontSetWhenLastModified ?? false) ) {
+      this.onModified()
+    }
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
