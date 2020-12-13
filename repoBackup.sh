@@ -4,12 +4,21 @@ shopt -s extglob
 
 # set -x
 
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+NC='\033[0m' # No Color
+Blue='\033[0;34m'
+Green='\033[0;32m'
+
+echo 'Hello World!' | sed $'s/World/\e[1m&\e[0m/'
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+
 function backupRepo () {
+  # echo -e "\033[1;31m This is red text \033[0m"
   set +x
   src="$1"
-  echo "============================================"
-  echo "============================================ REPO ${src}"
-  echo "============================================"
+  echo -e "${Blue}============================================"
+  echo -e "============================================ REPO ${src}"
+  echo -e "============================================${NC}"
   dstParent=/A/Backups/RepoAutoBackup
   dst="$dstParent/$src"
 
@@ -30,7 +39,7 @@ function backupRepo () {
   # trailing / in "$src"/ needed to not create sub-dir of same name
 
   # --progress -v
-  time rsync -a "$src"/ "$dst"  \
+  rsync -a "$src"/ "$dst"  \
       --exclude '**/node_modules'  \
       --exclude platforms \
       --exclude .git \
@@ -45,7 +54,7 @@ function backupRepo () {
 
   echo "======== GIT ====== "
 
-  git remote -v
+#  git remote -v
 
 #  git add ".*" "*"
   git add --all #".*" "*"
@@ -61,8 +70,9 @@ function backupRepo () {
   git pull --no-edit origin AutoBackup # in case history diverged
 
   echo "================================ GIT PUSH: "
-  set -x
-  git push origin HEAD:AutoBackup
+  # set -x
+  git push origin HEAD:AutoBackup 2>&1 | sed $'s/date/\e[1m&\e[0m/'  #sed $'s/Already up to date./\$Green&$NC/'
+
   echo "================================ END GIT PUSH"
 
   git status
