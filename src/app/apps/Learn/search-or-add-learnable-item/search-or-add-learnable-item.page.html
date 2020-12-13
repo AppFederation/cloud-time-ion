@@ -89,8 +89,8 @@
       ></ion-icon>
 
       <ion-text style="color: gray">
-        <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
-        {{ items?.length }}
+        <span *ngIf="filteredItem$s?.length !== item$s?.length">{{filteredItem$s?.length}} /</span>
+        {{ item$s?.length }}
         <app-learn-stats></app-learn-stats>
       </ion-text>
     </div>
@@ -125,13 +125,13 @@
 
   <ng-template #loggedIn>
 
-    <p style="margin: 10px" *ngIf="! this.filteredItems?.length">
+    <p style="margin: 10px" *ngIf="! this.filteredItem$s?.length">
       NOTHING FOUND
       <!-- TODO distinguish loading (and not logged in) -->
     </p>
 
     <ion-virtual-scroll
-      [items]="filteredItems"
+      [items]="filteredItem$s"
       [approxItemHeight]="31"
       [trackBy]="trackByFn"
     >

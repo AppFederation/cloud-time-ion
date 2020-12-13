@@ -24,6 +24,7 @@ import {Router} from '@angular/router'
 import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {LearnItem$} from '../models/LearnItem$'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -46,8 +47,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   searchFormControl = new FormControl()
 
   coll ! : AngularFirestoreCollection<any>
-  items: LearnItem[] = []
-  filteredItems: LearnItem[] = []
+
+  item$s: LearnItem$[] = []
+
+  filteredItem$s: LearnItem$[] = []
 
   showOldEditor = false
 
@@ -70,7 +73,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     public router: Router,
   ) {
     this.listOptions$P.locallyVisibleChanges$.subscribe(options => {
-      this.setItemsAndSort(this.items)
+      this.setItemsAndSort(this.item$s)
       this.reFilter()
     })
   }
@@ -89,17 +92,20 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
-    /* this will go away when migrated to ODM: */
-    this.authService.authUser$.subscribe(user => {
-        if ( user ) {
-          this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-            , coll => coll.where(`owner`, `==`, user?.uid))
-          // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
-          this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-            this.setItemsAndSort(items)
-          })
-        }
+    this.learnDoService.localItems$.subscribe(item$s => {
+      this.setItemsAndSort(item$s)
     })
+    /* this will go away when migrated to ODM: */
+    // this.authService.authUser$.subscribe(user => {
+    //     if ( user ) {
+    //       this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
+    //         , coll => coll.where(`owner`, `==`, user?.uid))
+    //       // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
+    //       this.coll.valueChanges({idField: 'id'}).subscribe(items => {
+    //         this.setItemsAndSort(items)
+    //       })
+    //     }
+    // })
   }
 
   /** TODO: move to class ListProcessing
@@ -109,49 +115,49 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
    *   otherwise we leave ex-aequo resolution to chance (or defaulting to last-modified)
    *   - so maybe the presets should just be written based on how they differ from default (e.g. importance, fun (, ...defaults); fun, roi (, ...defaults))
    * */
-  private setItemsAndSort(items: any[]) {
-    const urgencyGetterDescending = (item: LearnItem) => {
-      return item.getEffectiveDeferrability()
+  private setItemsAndSort(item$s: LearnItem$[]) {
+    const urgencyGetterDescending = (item: LearnItem$) => {
+      return item.val?.getEffectiveDeferrability()
       // return 0 /* TODO: importance / "calendar" time left to start/finish * time required to finish (including dependencies, sub-tasks) */
       // cannot-yet-start (via startAfter) could have negative urgency
     }
     // const durationGetter
     //   = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
     const whenLastTouchedDescending
-      = (item: LearnItem) => - (item?.whenLastModified ?? item?.whenAdded ?? item?.whenCreated)?.toMillis()
+      = (item: LearnItem$) => - ((item.val?.whenLastModified ?? item.val?.whenAdded ?? item.val?.whenCreated)?.toMillis() ?? 0)
     const deadlineAscending
-      = (item: LearnItem) => item?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
+      = (item: LearnItem$) => item.val?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
     const maybeDoableGetterDescending
-      = (item: LearnItem) => ! item?.isMaybeDoableNow()
+      = (item: LearnItem$) => ! item.val?.isMaybeDoableNow()
     const durationGetterDescending
-      = (item: LearnItem) => - (item.getDurationEstimateMs() ?? 999_999_999)
+      = (item: LearnItem$) => - (item.val?.getDurationEstimateMs() ?? 999_999_999)
     const importanceGetterDescending
-      = (item: LearnItem) => - (item.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
+      = (item: LearnItem$) => - (item.val?.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetterDescending
-      = (item: LearnItem) => - (item.funEstimate ?. numeric ?? -99999) /* TODO get descriptor by id later */
+      = (item: LearnItem$) => - (item.val?.funEstimate ?. numeric ?? -99999) /* TODO get descriptor by id later */
     const mentalGetterAscending
-      = (item: LearnItem) => item.mentalLevelEstimate?.numeric ?? 99999 /* TODO get descriptor by id later */
+      = (item: LearnItem$) => item.val?.mentalLevelEstimate?.numeric ?? 99999 /* TODO get descriptor by id later */
     const roiGetterDescending
-      = (item: LearnItem) => - (item.getRoi() ?? -99999)
-    items = items.map(item => Object.assign(new LearnItem(), item))
+      = (item: LearnItem$) => - (item.val?.getRoi() ?? -99999)
+    // item$s = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     // debugLog(`listOptions`, listOptions)
     const preset = listOptions ?. preset
     if ( preset === `lastModified` || preset === `allTasks` ) {
         // this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
-        this.items = sortBy(items, whenLastTouchedDescending)
+        this.item$s = sortBy(item$s, whenLastTouchedDescending)
     } else if ( preset === `nearest_deadlines` ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         deadlineAscending,
       ])
     } else if ( preset === `roi` ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         urgencyGetterDescending /* the ROI is in avoiding stress and complications by doing things ahead of time */,
         roiGetterDescending,
       ])
     } else if ( preset === `quickest` ) {
-      this.items = sortBy(items,
+      this.item$s = sortBy(item$s,
         [
           maybeDoableGetterDescending,
           maybeDoableGetterDescending,
@@ -159,7 +165,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         ]
       )
     } else if ( preset === `funQuickEasy` ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         funGetterDescending,
         durationGetterDescending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
@@ -167,7 +173,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         importanceGetterDescending,
       ])
     } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         /* TODO: take into account nearest deadlines (start/finish before);
           * but bucket them by order of magnitude, taking into account estimated time
@@ -183,7 +189,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         funGetterDescending /* kinda part of ROI */,
       ])
     } else if ( preset === `funRoi` ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         funGetterDescending /* kinda part of ROI */,
         roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
@@ -193,7 +199,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         importanceGetterDescending,
       ])
     } else if ( preset === `funImportant` /*  importance -> ignoring ROI*/ ) {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         funGetterDescending,
         /* urgency maybe at second place; coz when user opts to choose fun, fun is the most urgent, probably, to relax */
@@ -204,7 +210,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         mentalGetterAscending /* kinda part of ROI */,
       ])
     } else {
-      this.items = sortBy(items, [
+      this.item$s = sortBy(item$s, [
         importanceGetterDescending,
         funGetterDescending,
         durationGetterDescending
@@ -213,7 +219,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     }
     // TODO: sort ascending by effectiveTimeEstimate
 
-    this.reFilter()
+    this.reFilter() // FIXME: filter should go before sort, for performance
     // this.patchOwnersIfNecessary(user, items)
   }
 
@@ -339,15 +345,15 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   /** can be removed coz belongs in model class */
-  matchesSearch(item: LearnItem) {
+  matchesSearch(item$: LearnItem$) {
     // if ( item.hasQAndA() ) {
     //   return false
     // }
     // strip html: https://stackoverflow.com/questions/822452/strip-html-from-text-javascript
-    if ( ! item ) {
+    if ( ! item$?.val ) {
       return false
     }
-    return item.matchesSearch(this.search)
+    return item$.val?.matchesSearch(this.search)
   }
 
   onChangeSearch($event: string) {
@@ -359,50 +365,50 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
     const preset = opts?.preset
 
-    const items = this.items.filter(item => ! item.whenDeleted)
+    const items = this.item$s.filter(item => ! item.val?.whenDeleted)
 
     if (preset === `lastModified`) {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
       )
     } else if (preset === 'roi') {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
-          && item.isTask
-          && item.time_estimate
+          && item.val?.isTask
+          && item.val?.time_estimate
       )
     } else if (preset === `allTasks`) {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
-          && item.isTask
+          && item.val?.isTask
       )
     } else if (preset === `notEstimated`) {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
-          && item.isTask
-          && ! item.getDurationEstimateMs()
+          && item.val?.isTask
+          && ! item.val?.getDurationEstimateMs()
       )
     } else if (preset === `estimated`) {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
-          && item.isTask
-          && item.getDurationEstimateMs()
+          && item.val?.isTask
+          && item.val?.getDurationEstimateMs()
       )
     } else {
-      this.filteredItems = items.filter(
+      this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
-          && item.isTask
+          && item.val?.isTask
           // && item.importance
           // && item.funEstimate
       )
     }
-    this.selection.setAllPossibleToSelect(this.filteredItems.map(item => item.id))
+    this.selection.setAllPossibleToSelect(this.filteredItem$s.map(item => item.id))
   }
 
   hasSearchText() {

@@ -56,7 +56,7 @@ export class LearnItem$
 
   }
 
-  /* TODO return descriptor always */
+  /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
   getEffectiveImportance(): ImportanceVal {
     return this.val ?. importance
       ?? this.getImportanceFromCategories()
