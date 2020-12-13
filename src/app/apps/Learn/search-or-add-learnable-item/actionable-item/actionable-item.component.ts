@@ -56,7 +56,7 @@ export class ActionableItemComponent implements OnInit {
   ngOnInit() {}
 
   joinedSides() {
-    return this.item?.val?.joinedSides()
+    return this.item?.val?.joinedSides?.()
     // this seems very slow
     // return LearnItem?.prototype?.joinedSides?.call(this.item) // this.item.joinedSides()
     // TODO: why possibly undefined? (error after strict settings )
