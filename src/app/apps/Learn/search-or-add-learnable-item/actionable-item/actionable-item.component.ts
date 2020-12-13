@@ -6,6 +6,7 @@ import {importanceDescriptors} from '../../models/fields/importance.model'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {SelectionManager} from '../SelectionManager'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
+import {LearnItem$} from '../../models/LearnItem$'
 
 
 @Component({
@@ -18,12 +19,12 @@ export class ActionableItemComponent implements OnInit {
 
   sidesDefsArray = sidesDefsArray
 
-  _item ! : LearnItem
+  _item ! : LearnItem$
 
   @Required()
   @Input() selection ! : SelectionManager
 
-  @Input() set item(item: LearnItem) {
+  @Input() set item(item: LearnItem$) {
     if ( this._item ) {
       // console.log('set item to new one')
     }
@@ -55,8 +56,9 @@ export class ActionableItemComponent implements OnInit {
   ngOnInit() {}
 
   joinedSides() {
+    return this.item?.val?.joinedSides?.()
     // this seems very slow
-    return LearnItem?.prototype?.joinedSides?.call(this.item) // this.item.joinedSides()
+    // return LearnItem?.prototype?.joinedSides?.call(this.item) // this.item.joinedSides()
     // TODO: why possibly undefined? (error after strict settings )
   }
 
@@ -67,7 +69,7 @@ export class ActionableItemComponent implements OnInit {
   }
 
   getFunLevelDescriptor() {
-    const funEstimateVal = this.item.funEstimate
+    const funEstimateVal = this.item.val?.funEstimate
     if ( funEstimateVal ) {
       return funLevelsDescriptors.descriptors[funEstimateVal.id]
     }
@@ -76,7 +78,7 @@ export class ActionableItemComponent implements OnInit {
 
   /* FIXME: move to Item class */
   getImportanceDescriptor() {
-    const val = this.item.importance
+    const val = this.item.val?.importance
     if ( val ) {
       return importanceDescriptors[val.id]
     }

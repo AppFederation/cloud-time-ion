@@ -16,7 +16,7 @@
   </span>
   <span
     style="color: var(--primary)"
-    *ngIf="item.importance?.numeric || '-'; let importanceNum"
+    *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
   >
     {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
@@ -26,21 +26,21 @@
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
-  <ion-note *ngIf="item.isTask">TASK</ion-note>
-  <span *ngIf="item.isTask && item.isEffectivelyToLearn()">, &nbsp;</span>
-  <ion-note *ngIf="item.isEffectivelyToLearn()">LEARN</ion-note>
+  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
+  <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
+  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
   &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
 
   &nbsp;
   <app-play-button
-    *ngIf="item.hasAudio"
+    *ngIf="item.val?.hasAudio"
     [item]="item"
     [itemId]="item.id"
   ></app-play-button>
 
   <span style="color: orange">
-    {{ item.lastSelfRating }}
+    {{ item.val?.lastSelfRating }}
   </span>
 
   <!--  <ng-container-->
