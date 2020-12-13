@@ -33,7 +33,7 @@ export class QuizIntervalCalculator {
     const effectiveImportance = (importance?.numeric ?? mediumImportanceNum) / mediumImportanceNum
 
     const scaleByImp = quizOptions?.scaleIntervalsByImportance ?? 1
-    return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? 0, quizOptions))
+    return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? (0 as SelfRating), quizOptions))
       / this.calculateMultiplierToScaleByImportance(scaleByImp, effectiveImportance) /* TODO: this should actually appear before some old stuff, to de-clutter */
   }
 

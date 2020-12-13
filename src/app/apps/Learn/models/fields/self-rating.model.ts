@@ -1,4 +1,7 @@
-export type Rating = number
+import {PositiveIntOrZero} from '../LearnItem'
+
+export type Rating = PositiveIntOrZero
+
 export type SelfRating = Rating
 
 export class SelfRatingDescriptors {

@@ -1,12 +1,22 @@
 <!--<ng-container *ngIf="item"> &lt;!&ndash; hack for item being undefined in ion virtual scroll &ndash;&gt;-->
 
-<ion-checkbox></ion-checkbox>
 <div class="fadeIn" style="margin-left: 5px; padding: 5px; border-bottom: solid #222222 2px;"
    [routerLink]="['/learn/item/'+item.id]"
 >
+
+  <app-selection-checkbox
+    [selection]="selection"
+    [itemId]="item.id !"
+  ></app-selection-checkbox>
+
+  <span
+    style="color: var(--secondary); font-size: 10px; opacity: 50%"
+  >
+    {{index+1}}.
+  </span>
   <span
     style="color: var(--primary)"
-    *ngIf="item.importance?.numeric || '-'; let importanceNum"
+    *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
   >
     {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
@@ -16,19 +26,21 @@
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
-  <ion-note *ngIf="item.isTask">TASK</ion-note>
+  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
+  <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
+  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
   &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
 
   &nbsp;
   <app-play-button
-    *ngIf="item.hasAudio"
+    *ngIf="item.val?.hasAudio"
     [item]="item"
     [itemId]="item.id"
   ></app-play-button>
 
   <span style="color: orange">
-    {{ item.lastSelfRating }}
+    {{ item.val?.lastSelfRating }}
   </span>
 
   <!--  <ng-container-->

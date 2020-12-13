@@ -54,7 +54,7 @@
 
     <!-- https://stackblitz.com/edit/cdk-virtual-scroll-simple-autosize?file=package.json -->
     <cdk-virtual-scroll-viewport
-      class="example-viewport" style="height: 500px" autosize  [minBufferPx]="1500" [maxBufferPx]="4500">
+      class="example-viewport" style="height: 100%" autosize  [minBufferPx]="1500" [maxBufferPx]="4500">
       <!--autosize-->
       <!-- [itemSize]="90" -->
       <div
@@ -64,6 +64,9 @@
                        let last = last;
                        let even = even;
                        let odd = odd;"> <!-- TODO trackBy -->
+        <!-- TODO: /A/R/FlexLife/cloud-time-ion/node_modules/@angular/cdk-experimental/scrolling/auto-size-virtual-scroll.d.ts
+            AutoSizeVirtualScrollStrategy
+        -->
         <!--    <div *cdkVirtualFor="let item of ['1', '2', '3'];-->
         <!--                       let index = index;-->
         <!--                       let count = count;-->

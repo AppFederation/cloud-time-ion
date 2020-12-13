@@ -1,11 +1,22 @@
-export function stripHtml(html?: string | null) {
-  if ( ! html ) {
+import {nullish} from './type-utils'
+import {isNullish} from './utils'
+import {IdString} from '../odm/OdmItemId'
+
+export function stripHtml(html?: string | nullish): string | nullish {
+  if ( isNullish(html) ) {
     return html
   }
   const doc = new DOMParser().parseFromString(html, 'text/html');
   return doc.body.textContent || '';
 
   // TODO: to consider: href links for searching
+}
+
+export function htmlToId(html: string | nullish): IdString | nullish {
+  if ( isNullish(html) ) {
+    return html
+  }
+  return stripHtml(html) ?. toLowerCase() ?. replace(/ /, '_') as IdString
 }
 
 export function convertToHtmlIfNeeded(htmlOrPlainString?: string | null) {
@@ -24,4 +35,5 @@ export function convertToHtmlIfNeeded(htmlOrPlainString?: string | null) {
   }
   return htmlOrPlainString;
 }
+
 

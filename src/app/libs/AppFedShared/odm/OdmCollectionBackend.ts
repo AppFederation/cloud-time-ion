@@ -38,7 +38,7 @@ export abstract class OdmCollectionBackend<
 
   abstract saveNowToDb(item: TRaw, id: string): Promise<any>
 
-  abstract deleteWithoutConfirmation(itemId: OdmItemId): void
+  abstract deleteWithoutConfirmation(itemId: OdmItemId): Promise<any>
 
   public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>) {
     this.listener = listener

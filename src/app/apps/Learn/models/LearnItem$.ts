@@ -2,7 +2,7 @@ import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {ImportanceId, ImportanceVal, LearnItem} from './LearnItem'
+import {ImportanceId, ImportanceVal, LearnItem, PositiveInt, PositiveIntOrZero} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -12,6 +12,7 @@ import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
 import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
+import {SelfRating} from './fields/self-rating.model'
 
 // export class Quiz {
 //   // status$: {
@@ -46,14 +47,16 @@ export class LearnItem$
     }
 
     this.patchThrottled({
-      lastSelfRating: newEffectiveRating,
+      lastSelfRating: newEffectiveRating as SelfRating,
       whenLastSelfRated: OdmBackend.nowTimestamp(),
-      selfRatingsCount: (item?.selfRatingsCount || 0) + 1,
+      selfRatingsCount: ((item?.selfRatingsCount || 0) + 1) as PositiveIntOrZero,
+    }, {
+      dontSetWhenLastModified: true
     })
 
   }
 
-  /* TODO return descriptor always */
+  /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
   getEffectiveImportance(): ImportanceVal {
     return this.val ?. importance
       ?? this.getImportanceFromCategories()
@@ -99,15 +102,15 @@ export class LearnItem$
   }
 
   private getImportanceFromCategories() {
+    if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
+      // TODO: check if it is question/answer side
+      return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
+    } /* German first to override */
     if ( ! isNullishOrEmptyOrBlank(this.val?.en) ) {
       return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
     }
     if ( ! isNullishOrEmptyOrBlank(this.val?.es) ) {
       return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
-    }
-    if ( ! isNullishOrEmptyOrBlank(this.val?.de) ) {
-      // TODO: check if it is question/answer side
-      return importanceDescriptors.low // quick hack; TODO: read importance from category items and find max
     }
   }
 }

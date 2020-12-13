@@ -5,7 +5,7 @@ import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {intensityBtnVariant} from '../importance-edit/importance-edit.component'
+import {intensityBtnVariant} from '../../../../libs/LifeSuiteShared/edit-shared/importance-edit/importance-edit.component'
 import {mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
 import {importanceDescriptors} from '../../models/fields/importance.model'
 

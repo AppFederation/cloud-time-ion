@@ -1,10 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms'
-import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {LearnItem$} from '../../models/LearnItem$'
-import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
-import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../models/fields/importance.model'
+import {ViewSyncer} from '../../../AppFedShared/odm/ui/ViewSyncer'
+import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
+import {Required} from '../../../AppFedShared/utils/angular/Required.decorator'
+import {btn, btnVariant, ButtonsDescriptor} from '../../../AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptorsArray} from '../../../../apps/Learn/models/fields/importance.model'
+import {PatchableObservable} from '../../../AppFedShared/utils/rxUtils'
+import {LearnItem} from '../../../../apps/Learn/models/LearnItem'
+import {nullish} from '../../../AppFedShared/utils/type-utils'
 
 export function intensityBtnVariant(label: string, descr: any) {
   return btnVariant({
@@ -64,7 +67,7 @@ export class ImportanceEditComponent implements OnInit {
 
   @Input()
   @Required()
-  public item$ ! : LearnItem$
+  public item$ ! : PatchableObservable<LearnItem | nullish>
 
   constructor() { }
 

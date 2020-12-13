@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LearnItem} from '../../../models/LearnItem'
+import {LearnItem$} from '../../../models/LearnItem$'
+import {SelectionManager} from '../../SelectionManager'
 
 @Component({
   selector: 'virtual-list',
@@ -9,13 +10,15 @@ import {LearnItem} from '../../../models/LearnItem'
 export class VirtualListComponent implements OnInit {
 
   @Input()
-  items: LearnItem[] | undefined;
+  items: LearnItem$[] | undefined;
+
+  public selectionManager: SelectionManager = new SelectionManager<any>();
 
   constructor() { }
 
   ngOnInit() { }
 
-  trackByFn(index: number, item: LearnItem) {
+  trackByFn(index: number, item: LearnItem$) {
     return item.id
   }
 }

@@ -3,17 +3,30 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2, OdmPatch} from './OdmItem$2'
+import {OdmItem$2, OdmPatch, ModificationOpts} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
+import {LearnItem, LearnItemId} from '../../../apps/Learn/models/LearnItem'
+import {OdmItemHistoryService} from './odm-item-history-service'
+import {DictPatch} from '../utils/rxUtils'
+import {isNotNullish} from '../utils/utils'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
   dontStoreWhenModified = false
 }
 
+/* TODO rename to OdmItemsService / list service (but also tree) ?
+* Responsibilities:
+* - holding items in memory
+* - converting between db/mem
+* - type safety via generics
+* - notifying listeners about whole list change
+* . - and individual items changes (via OdmItem$)
+* - sub-classes inherit to wrap, provide domain/business logic
+* */
 export abstract class OdmService2<
   TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData,
@@ -30,6 +43,8 @@ export abstract class OdmService2<
   TRawPatch extends
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
+  THistSrv extends OdmItemHistoryService =
+    OdmItemHistoryService //<TInMemData, TRawData, TOdmItem$, TMemPatch, TRawPatch>
   >
 {
 
@@ -47,7 +62,13 @@ export abstract class OdmService2<
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
      And itemsJustList$ for just changes of list, without reporting changes of individual item data-s
      */
-  localItems$ = new CachedSubject<TOdmItem$[]>([] /* TODO: make undefined  initially to (force) distinguish loading (and null -> error) from empty list */)
+  localItems$ = new CachedSubject<TOdmItem$[]>([] /* TODO: make undefined  initially to (force) distinguish loading (and null -> error) from empty list */
+    // TODO: onSubscribe : set flag (in CachedSubject.subscribersCount, call setListener )
+  ).onSubscribe(() => {
+    this.setBackendListener()
+  })
+
+  private backendListenerWasSet = false
 
   get items$() { return this.localItems$ }
 
@@ -59,21 +80,32 @@ export abstract class OdmService2<
 
   geoLocationService = this.injector.get(ApfGeoLocationService)
 
+  itemHistoryService = new OdmItemHistoryService()
+
   protected constructor(
     protected injector: Injector,
     public className: string,
     public opts : OdmServiceOpts = new OdmServiceOpts(),
   ) {
-    this.setBackendListener()
+    this.setBackendListenerIfNecessary()
     // this.subscribeToBackendCollection();
   }
 
   deleteWithoutConfirmation(item: TOdmItem$) {
-    this.odmCollectionBackend.deleteWithoutConfirmation(item.id !)
+    this.deleteWithoutConfirmationById(item.id ! as TItemId)
   }
 
-  saveNowToDb(itemToSave: TOdmItem$) {
-    itemToSave.onModified()
+  deleteWithoutConfirmationById(itemId: TItemId) {
+    this.syncStatusService.handleSavingPromise(
+      this.odmCollectionBackend.deleteWithoutConfirmation(itemId),
+    )
+  }
+
+  saveNowToDb(itemToSave: TOdmItem$/*, modificationOpts?: ModificationOpts*/) {
+    /* note: not doing itemToSave.setWhenLastModified(),
+    * coz too late coz throttle handler (which calls this) does not have modificationOpts
+    * pending: *where*modified to be moved to Item$ */
+
     let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
     // debugLog(`geo`, geo)
     if ( geo ) {
@@ -91,7 +123,7 @@ export abstract class OdmService2<
       geo = null
     }
     (itemToSave.val as any).whereCreated ??= geo;
-    (itemToSave.val as any).whereLastModified = geo
+    (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
     // debugLog('saveNowToDb', itemToSave)
     const dbFormat = itemToSave.toDbFormat()
     const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
@@ -108,53 +140,62 @@ export abstract class OdmService2<
     return item$
   }
 
+  private setBackendListenerIfNecessary() {
+    if ( ! this.opts?.dontLoadAllAutomatically /* || true*/) {
+      this.setBackendListener()
+    }
+  }
+
   private setBackendListener() {
+    if ( this.backendListenerWasSet ) {
+      return
+    }
     const service = this /* MUST use instead of `this`; but could change it to object literal with arrow functions */
     // TODO: this should probably trigger collection listening in backend coll
 
-    // FIXME: start listener when someone subscribes to items$, e.g. chart QuizHistory
+    // !!!! FIXME: start listener when someone subscribes to items$, e.g. chart QuizHistory
 
-    if ( ! this.opts?.dontLoadAllAutomatically /* || true*/) {
-      this.odmCollectionBackend.setListener({
-        onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
-          let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
-          // debugLog('setBackendListener onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
+    this.odmCollectionBackend.setListener({
+      onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
 
-          // service.obtainOdmItem$(addedItemId) TODO
+        let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
+        // debugLog('setBackendListenerIfNecessary onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
 
-          let items = service.localItems$.lastVal;
-          // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
-          //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
-          // }
-          existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-          items!.push(existingItem)
-          // } else {
-          // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
-          // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-          // }
-          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-        },
-        onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
-          // debugLog('setBackendListener onModified', ...arguments)
-          let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
-          let existingItem = service.getItem$ById(modifiedItemId)
-          if ( existingItem && existingItem.applyDataFromDbAndEmit ) {
-            existingItem.applyDataFromDbAndEmit(convertedItemData)
-          } else {
-            console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
-          }
-          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-        },
-        onRemoved(removedItemId: TItemId) {
-          service.localItems$.lastVal = service.localItems$ !. lastVal !. filter(item => item.id !== removedItemId)
-          // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
-          // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
-        },
-        onFinishedProcessingChangeSet() {
-          service.emitLocalItems()
+        // service.obtainOdmItem$(addedItemId) TODO
+
+        let items = service.localItems$.lastVal;
+        // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
+        //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+        // }
+        existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
+        items!.push(existingItem)
+        // } else {
+        // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
+        // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
+        // }
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
+        // debugLog('setBackendListenerIfNecessary onModified', ...arguments)
+        let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
+        let existingItem = service.getItem$ById(modifiedItemId)
+        if (existingItem && existingItem.applyDataFromDbAndEmit) {
+          existingItem.applyDataFromDbAndEmit(convertedItemData)
+        } else {
+          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
         }
-      })
-    }
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onRemoved(removedItemId: TItemId) {
+        service.localItems$.lastVal = service.localItems$ !.lastVal !.filter(item => item.id !== removedItemId)
+        // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onFinishedProcessingChangeSet() {
+        service.emitLocalItems()
+      },
+    })
+    this.backendListenerWasSet = true
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */
@@ -181,5 +222,37 @@ export abstract class OdmService2<
 
   itemsCount() {
     return this.mapIdToItem$.size
+  }
+
+  deleteAll(toDelete: Set<TItemId>) {
+    // TODO: delete audio too
+    for ( let idToDelete of toDelete) {
+      console.log(`!!! idToDelete`, idToDelete)
+      this.deleteWithoutConfirmationById(idToDelete)
+    }
+  }
+
+  patchThrottledById(id: TItemId, patch: TMemPatch) {
+    console.log(`patchThrottledById, `, id, patch)
+    // TODO: reverse and implement here to not have to acquire OdmItem$ in case updating massive number of items
+    const item$ById = this.getItem$ById(id)
+    const subHack: {subscription?: any} = {}
+    subHack.subscription = item$ById.val$.subscribe((val) => {
+      console.log(`patchThrottledById, item$ById.val$.subscribe`, id, patch, val)
+      if ( isNotNullish(val) ) {
+        setTimeout /* ensure subscription */(() => {
+          subHack.subscription.unsubscribe()
+          /* hack to have the Item$ initialized; coz patchThrottled is not using firestore incremental update(), but set() */
+          return item$ById.patchThrottled(patch)
+        })
+      }
+    })
+  }
+
+  patchThrottledMultipleByIds(itemIds: TItemId[], patch: TMemPatch) {
+    // TODO: transaction?
+    for ( const id of itemIds) {
+      this.patchThrottledById(id, patch)
+    }
   }
 }

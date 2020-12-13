@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LearnItem} from '../../../models/LearnItem'
+import {LearnItem$} from '../../../models/LearnItem$'
 
 @Component({
   selector: 'simple-list',
@@ -9,13 +9,13 @@ import {LearnItem} from '../../../models/LearnItem'
 export class SimpleListComponent implements OnInit {
 
   @Input()
-  items: LearnItem[] | undefined = []
+  items: LearnItem$[] | undefined = []
 
   constructor() { }
 
   ngOnInit() {}
 
-  trackByFn(index: number, item: LearnItem) {
+  trackByFn(index: number, item: LearnItem$) {
     return item.id
   }
 

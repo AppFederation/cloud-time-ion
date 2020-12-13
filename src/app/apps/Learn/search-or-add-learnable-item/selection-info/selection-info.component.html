@@ -1,0 +1,18 @@
+&nbsp;<ion-checkbox
+  [indeterminate]="false"
+  [checked]="false"
+  (ionChange)="onChangeCheckBox($event)"
+  (press)="unselectAll()"
+>
+
+</ion-checkbox>&nbsp;
+<ng-container
+  *ngIf="(selection.effectiveSelectedCount$ | async); let count"
+>
+  <span
+    class="action-icon"
+    style="text-decoration: underline"
+    (click)="onClick($event)"
+  >
+      {{count}} SELECTED</span>
+</ng-container>

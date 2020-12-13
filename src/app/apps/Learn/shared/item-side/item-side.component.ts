@@ -104,7 +104,7 @@ export class ItemSideComponent implements OnInit {
     if ( this.side ?. hideByDefault ) {
       return false
     }
-    if ( item.isTask ) {
+    if ( item.isTask && ! item.isToLearn ) {
       return ! this.side?.onlyForLearn
     }
     return true

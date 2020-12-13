@@ -35,7 +35,7 @@
     <app-self-rating
       [autoSave]="false"
       [item$]="(quizStatus$ | async) ?. nextItem$ !"
-      (numericValue)="selfRating = $event"
+      (numericValue)="selfRating = $event; quizAnswersService.onSelfRate()"
     ></app-self-rating>
 
     <ion-button

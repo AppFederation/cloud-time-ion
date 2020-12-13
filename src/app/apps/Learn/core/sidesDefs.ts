@@ -143,6 +143,9 @@ export class SidesDefs {
     ask: false,
     icon: `calendar-outline`,
   })
+  sub_tasks = side({
+    ask: false,
+  })
   deps_to_start = side({
     ask: false,
   })

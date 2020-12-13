@@ -34,7 +34,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   showAnswer() {
     this.quizService.toggleShowAnswer()
-    this.quizAnswersService.onShowAnswer()
+    this.quizAnswersService.onShowAnswer() // TODO maybe move to quizService. ...
     // https://www.w3schools.com/jsref/met_element_scrollintoview.asp
     // this.scrollToBottom()
     // window.scrollTo(0,document.body.scrollHeight);
@@ -43,6 +43,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   showHint() {
     this.quizService.toggleShowHint()
+    this.quizAnswersService.onShowHint() // TODO maybe move to quizService. ...
   }
 
   // onChangeSelfRating($event: NumericPickerVal) {

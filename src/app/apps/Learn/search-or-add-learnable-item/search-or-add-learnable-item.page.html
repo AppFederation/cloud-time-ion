@@ -63,18 +63,22 @@
         https://forum.ionicframework.com/t/ionic-5-long-press-gesture-example/188746/2
         https://ionicframework.com/docs/utilities/gestures
       -->
-      &nbsp;<ion-checkbox></ion-checkbox>&nbsp;
+      <app-selection-info
+        [selection]="selection"
+      ></app-selection-info>
 
       <ion-button
-        (press)="addTask()"
+        (press)="addTask(true)"
         (click)="addTask()"
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;TASK</ion-button>
 
       <ion-button
+        (press)="addToLearn(true)"
         (click)="addToLearn()"
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;LEARN</ion-button>
 
       <ion-button
+        (click)="addToJournal()"
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;JOURNAL</ion-button>
 
       <ion-icon
@@ -85,8 +89,8 @@
       ></ion-icon>
 
       <ion-text style="color: gray">
-        <span *ngIf="filteredItems?.length !== items?.length">{{filteredItems?.length}} /</span>
-        {{ items?.length }}
+        <span *ngIf="filteredItem$s?.length !== item$s?.length">{{filteredItem$s?.length}} /</span>
+        {{ item$s?.length }}
         <app-learn-stats></app-learn-stats>
       </ion-text>
     </div>
@@ -121,20 +125,27 @@
 
   <ng-template #loggedIn>
 
-<!--    <ion-virtual-scroll
-      [items]="filteredItems"
-      [approxItemHeight]="31"
-      [trackBy]="trackByFn"
-    >
-      <div *virtualItem="let currItem">
-        <app-actionable-item
-          [item]="currItem"
-        ></app-actionable-item>
-        [hidden]="! matchesSearch(currItem)"
-      </div>
-    </ion-virtual-scroll>-->
+    <p style="margin: 10px" *ngIf="! this.filteredItem$s?.length">
+      NOTHING FOUND
+      <!-- TODO distinguish loading (and not logged in) -->
+    </p>
 
-    <virtual-list [items]="filteredItems">
+<!--    <ion-virtual-scroll-->
+<!--      [items]="filteredItem$s"-->
+<!--      [approxItemHeight]="31"-->
+<!--      [trackBy]="trackByFn"-->
+<!--    >-->
+<!--      <div *virtualItem="let currItem; let i = index">-->
+<!--        <app-actionable-item-->
+<!--          [index]="i"-->
+<!--          [item]="currItem"-->
+<!--          [selection]="selection"-->
+<!--        ></app-actionable-item>-->
+<!--        &lt;!&ndash; [hidden]="! matchesSearch(currItem)"&ndash;&gt;-->
+<!--      </div>-->
+<!--    </ion-virtual-scroll>-->
+
+    <virtual-list [items]="filteredItem$s">
     </virtual-list>
 
     <!--

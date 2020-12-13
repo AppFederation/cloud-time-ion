@@ -22,6 +22,10 @@ import {ListOptionsComponent} from './list-options/list-options.component'
 import {VirtualListComponent} from './item-lists/virtual-list/virtual-list.component'
 import {ScrollingModule} from '@angular/cdk/scrolling'
 import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling'
+import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
+import {SelectionInfoComponent} from './selection-info/selection-info.component'
+import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
+import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
 
 const routes: Routes = [
   {
@@ -46,6 +50,7 @@ const routes: Routes = [
     LearnSharedModule,
     ExperimentalScrollingModule,
     ScrollingModule,
+    EditSharedModule,
   ],
     declarations: [
         SearchOrAddLearnableItemPageComponent,
@@ -57,6 +62,9 @@ const routes: Routes = [
         SimpleListComponent,
         VirtualListComponent,
         ListOptionsComponent,
+        SelectionCheckboxComponent,
+        SelectionInfoComponent,
+        SelectionPopupComponent,
     ],
 })
 export class SearchOrAddLearnableItemPageModule {}

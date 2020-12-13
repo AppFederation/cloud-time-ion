@@ -1,13 +1,17 @@
-import {Dict, dictToArrayWithIds, mapEntriesToArray, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {Dict, dictToArrayWithIds, mapEntriesToArray, mapFields, setIdsFromKeys} from '../../../libs/AppFedShared/utils/dictionary-utils'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {IconDef} from './icon'
 
-function status(x ? : any): StatusDef {
-  return x ?? {}
+function status(x ? : StatusDecl): StatusDef {
+  return Object.assign(new StatusDef(), x ?? {}).init()
 }
 
-export type IconDef = string
 
 function subStatuses(subStatuses: Dict<StatusDecl>): Dict<StatusDef> {
-  return setIdsFromKeys(subStatuses as any as Dict<StatusDecl>)
+  return mapFields(
+      setIdsFromKeys(subStatuses as any as Dict<StatusDecl>),
+      (key: string, decl) => status(decl)
+  )
 }
 
 export class StatusDecl {
@@ -15,15 +19,24 @@ export class StatusDecl {
   shortListed ? = false
   subStatuses ? : Dict<StatusDef> = {}
 
-  isDoableNow ? = true
+  isDoableNow ? : boolean | nullish = true
+  /** e.g. for kanban, finishing tasks */
+  isStarted ? : boolean | nullish = true
   isMaybeDoableInFuture ? = true
   isDone ? = false
   /** Try .tsx */
   icon ? : IconDef
+  searchTerms ? : string | string[]
+  comments ? : string
 }
 
 export class StatusDef extends StatusDecl {
+  initialized = false
 
+  init() {
+    this.initialized = true
+    return this as StatusDef & {initialized: true}
+  }
 }
 
 /**
@@ -46,11 +59,19 @@ export class StatusDef extends StatusDecl {
  * */
 export class Statuses {
 
-  undefined = status()
+  undefined = status({
+    isDoableNow: undefined,
+    isStarted: undefined,
+  })
 
-  not_sure = status()
+  not_sure = status({
+    isStarted: null,
+  })
 
-  unknown = status()
+  unknown = status({
+    isDoableNow: null,
+    isStarted: null,
+  })
 
   /** but more on item's side: canBeFinished (no unsatisfied deps);
    * could be virtual effective status
@@ -59,15 +80,19 @@ export class Statuses {
    * - perhaps not mutually exclusive with suspended
    * */
   can_be_started = status({
-    comments: `(Virtual status) No unfinished dependencies-to-start`
+    isDoableNow: true,
+    comments: `(Virtual status) No unfinished dependencies-to-start`,
+    isStarted: false,
   })
 
 
   not_started = status({
+    isDoableNow: true,
+    isStarted: false,
   })
 
   started = status({
-    searchTerms: `doing`,
+    searchTerms: [`doing`, `in progress`, `executing`],
     shortListed: true,
 
     subStatuses: subStatuses({
@@ -94,8 +119,10 @@ export class Statuses {
 
 
   rushing = status({
-    comments: [`Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`]
+    comments: `Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`,
   })
+
+  refining = status({})
 
   in_review = status({
     shortListed: true,
@@ -103,6 +130,11 @@ export class Statuses {
 
   in_testing = status({
     shortListed: true,
+  })
+
+  awaiting_delivery = status({
+    searchTerms: [`package`, `postal`],
+    isDoableNow: false,
   })
 
   draft = status({
@@ -131,13 +163,16 @@ export class Statuses {
     subStatuses: subStatuses({
       internally: status(),
       externally: status(),
-    })
+    }),
+    /** later need to `??` properties like isStarted when multiple statuses */
+    isStarted: undefined,
   })
 
   suspended = status({
     /* does NOT imply started */
     searchTerms: `paused`,
     isDoableNow: false,
+    isStarted: undefined,
     // isMaybeDoableInFuture: true,
   })
 
@@ -156,10 +191,16 @@ export class Statuses {
     shortListed: true,
     isDoableNow: false,
     isMaybeDoableInFuture: false,
+    isStarted: undefined,
   })
+
+  /* ==== Other:
+    - duplicates
+    - follow-ups (Asana)
+  * */
 
 }
 
-export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>)
+export const statuses = setIdsFromKeys(new Statuses() as any as Dict<StatusDecl>) as any as Statuses
 
-export const statusesArray = dictToArrayWithIds(statuses)
+export const statusesArray = dictToArrayWithIds(statuses as any as Dict<StatusDecl>)

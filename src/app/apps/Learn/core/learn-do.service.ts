@@ -36,4 +36,10 @@ export class LearnDoService extends OdmService2<
     return new LearnItem$(this, itemId, inMemVal)
   }
 
+  add(val?: LearnItem) {
+    const learnItem$ = new LearnItem$(this, undefined, val ?? new LearnItem())
+    learnItem$.saveNowToDb()
+    return learnItem$
+  }
+
 }

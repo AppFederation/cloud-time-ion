@@ -32,7 +32,10 @@ export class ItemProcessingService {
       // item$ => item$?.currentVal?.hasAudio ?? false,
       item$ => item$?.currentVal?.needsProcessing() ?? false,
       // item$ => true,
-      item$ => item$?.currentVal?.hasAudio ?? false,
+      [
+        (item$1, item$2) => item$2.getEffectiveImportanceNumeric() - item$1.getEffectiveImportanceNumeric(),
+        (item$1, item$2) => (item$2?.currentVal?.hasAudio ? 1 : 0) - (item$1?.currentVal?.hasAudio ? 1 : 0),
+      ]
     )
   }
 
@@ -43,6 +46,5 @@ export class ItemProcessingService {
     console.log(`found`, found)
     return found
   }
-
 
 }
