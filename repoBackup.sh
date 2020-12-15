@@ -70,7 +70,7 @@ function backupRepo () {
   git pull --no-edit origin refs/heads/AutoBackup # in case history diverged
 
   echo "================================ GIT PUSH: "
-  set -x
+  #set -x
   git push origin HEAD:refs/heads/AutoBackup 2>&1 | sed $'s/Everything up-to-date/\e[32m&\e[0m/'  #sed $'s/Already up to date./\$Green&$NC/'
 
   echo "================================ END GIT PUSH"
