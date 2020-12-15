@@ -1,6 +1,7 @@
 <ion-list>
-  <ng-container *ngFor="let item of items; trackBy: trackByFn">
-    <app-actionable-item [item]="item">
+  <ng-container *ngFor="let item of items; index as index; trackBy: trackByFn">
+    <app-actionable-item [item]="item"
+                         [index]="index">
     </app-actionable-item>
   </ng-container>
 </ion-list>

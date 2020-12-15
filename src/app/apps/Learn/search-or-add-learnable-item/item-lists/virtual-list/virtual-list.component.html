@@ -1,7 +1,8 @@
 <cdk-virtual-scroll-viewport style="height: 100%" autosize [minBufferPx]="1500" [maxBufferPx]="4500">
-    <ng-container *cdkVirtualFor="let item of items; trackBy: trackByFn">
+    <ng-container *cdkVirtualFor="let item of items; index as index; trackBy: trackByFn">
       <app-actionable-item
         [item]="item"
+        [index]="index"
         [selection]="selectionManager">
       </app-actionable-item>
     </ng-container>
