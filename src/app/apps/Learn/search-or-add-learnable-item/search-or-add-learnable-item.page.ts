@@ -54,7 +54,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   filteredItem$s: LearnItem$[] = []
 
-  currentlyDisplayedElements: number = 100;
   private patchingOwnerHasRun = false
 
   showOldEditor = false
@@ -114,7 +113,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // })
 
     // Load fake data:
-    // this.items = DataGeneratorService.generateLearnItemList(30);
+    // this.item$s = DataGeneratorService.generateLearnItemList(30);
   }
 
   /** TODO: move to class ListProcessing
@@ -423,14 +422,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   hasSearchText() {
     return !! this.search?.trim();
-  }
-
-  loadMore() {
-    this.currentlyDisplayedElements += 100;
-  }
-
-  loadAll() {
-    this.currentlyDisplayedElements = this.filteredItem$s.length;
   }
 
   async onClickListOptions(event: any) {

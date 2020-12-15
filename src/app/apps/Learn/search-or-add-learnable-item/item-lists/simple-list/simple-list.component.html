@@ -1,7 +1,12 @@
 <ion-list>
-  <ng-container *ngFor="let item of items; index as index; trackBy: trackByFn">
+  <ng-container *ngFor="let item of items.slice(0, this.currentlyDisplayedElements); index as index; trackBy: trackByFn">
     <app-actionable-item [item]="item"
-                         [index]="index">
+                         [index]="index"
+                         [selection]="selectionManager">
     </app-actionable-item>
   </ng-container>
+
+  <ion-button (click)="loadMore()" *ngIf="this.currentlyDisplayedElements < this.items.length">Load more</ion-button>
+  <ion-button (click)="loadAll()" *ngIf="this.currentlyDisplayedElements < this.items.length">Load all</ion-button>
+
 </ion-list>
