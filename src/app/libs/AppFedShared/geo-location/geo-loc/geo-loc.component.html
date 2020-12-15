@@ -1,0 +1,9 @@
+<a
+  *ngIf="geoLoc"
+  href="http://maps.google.com/maps?z=12&t=m&q=loc:{{geoLoc?.lat}}+{{geoLoc?.lng}}"
+>GEO</a>
+<!--href="https://www.google.com/maps/place/@{{geoLoc?.lat}},{{geoLoc?.lng}}"-->
+
+<!--
+https://www.google.com/maps/place/36%C2%B043'50.3%22N+4%C2%B029'44.8%22W/@36.7306303,-4.4979737,17z/data=!3m1!4b1!4m6!3m5!1s0x0:0x0!7e2!8m2!3d36.7306255!4d-4.495785
+-->

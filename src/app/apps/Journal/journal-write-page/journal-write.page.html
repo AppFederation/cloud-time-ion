@@ -47,6 +47,7 @@
     <p><app-time-point [time]="itemVal?.whenCreated?.toDate()"></app-time-point></p>
 <!--    <p>{{journalEntry?.whenCreated?.toISOString() || journalEntry.id}}</p>-->
   </div>
+  <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
 
   <app-journal-numeric-fields
     [journalEntry$]="item$"
