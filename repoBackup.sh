@@ -67,7 +67,7 @@ function backupRepo () {
 
   # https://askubuntu.com/questions/755535/how-do-i-highlight-a-word-or-a-phrase-in-a-commands-output
 
-  git pull --no-edit origin AutoBackup # in case history diverged
+  git pull --no-edit origin refs/heads/AutoBackup # in case history diverged
 
   echo "================================ GIT PUSH: "
   set -x
