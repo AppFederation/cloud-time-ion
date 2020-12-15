@@ -38,3 +38,5 @@ electron/app
 /.idea/compiler.xml
 
 /env
+/.idea/shelf
+/.idea/compiler.xml

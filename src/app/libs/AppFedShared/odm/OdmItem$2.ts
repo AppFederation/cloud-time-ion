@@ -17,6 +17,7 @@ export class OdmInMemItemWriteOnce {
 
 export class OdmInMemItem extends OdmInMemItemWriteOnce {
   public whenLastModified?: OdmTimestamp
+  public whereCreated?: any
 }
 
 export type OdmPatch<TData> = DictPatch<TData>

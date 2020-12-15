@@ -10,8 +10,8 @@ import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
 import {FormControl} from '@angular/forms'
+import {debounceTime, distinct, distinctUntilChanged, map, tap, throttleTime} from 'rxjs/operators'
 import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
 import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.service'
 import {PopoverController} from '@ionic/angular'
@@ -19,6 +19,8 @@ import {ListOptionsComponent} from './list-options/list-options.component'
 import {ListOptions, ListOptionsData} from './list-options'
 import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
+import {DataGeneratorService} from '../../../generators/data-generator.service'
+import {async} from 'rxjs/internal/scheduler/async'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
 import {SelectionManager} from './SelectionManager'
@@ -52,6 +54,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   filteredItem$s: LearnItem$[] = []
 
+  currentlyDisplayedElements: number = 100;
+  private patchingOwnerHasRun = false
+
   showOldEditor = false
 
   selection = new SelectionManager()
@@ -80,7 +85,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(100),
+      // debounceTime(1000),
+      throttleTime(200, async, { leading: false, trailing: true}),
       // tap(debugLog),
       // map(stripHtml), // TODO but need to not destroy html
       // TODO: strip too coz maybe adding a space should not make a difference
@@ -106,6 +112,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     //       })
     //     }
     // })
+
+    // Load fake data:
+    // this.items = DataGeneratorService.generateLearnItemList(30);
   }
 
   /** TODO: move to class ListProcessing
@@ -129,8 +138,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       = (item: LearnItem$) => item.val?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
     const maybeDoableGetterDescending
       = (item: LearnItem$) => ! item.val?.isMaybeDoableNow()
-    const durationGetterDescending
-      = (item: LearnItem$) => - (item.val?.getDurationEstimateMs() ?? 999_999_999)
+    const durationGetterAscending
+      = (item: LearnItem$) => item.val?.getDurationEstimateMs() ?? 999_999_999
     const importanceGetterDescending
       = (item: LearnItem$) => - (item.val?.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetterDescending
@@ -160,15 +169,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.item$s = sortBy(item$s,
         [
           maybeDoableGetterDescending,
-          maybeDoableGetterDescending,
-          durationGetterDescending,
+          durationGetterAscending,
         ]
       )
     } else if ( preset === `funQuickEasy` ) {
       this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         funGetterDescending,
-        durationGetterDescending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
+        durationGetterAscending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
         mentalGetterAscending,
         importanceGetterDescending,
       ])
@@ -213,7 +221,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.item$s = sortBy(item$s, [
         importanceGetterDescending,
         funGetterDescending,
-        durationGetterDescending
+        durationGetterAscending
         /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
       ])
     }
@@ -362,6 +370,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   /** TODO: move to class ListProcessing ; can be just 1:1 for now */
   private reFilter() {
+    console.log(`Refiltering list`);
     const opts = this.listOptions$P.locallyVisibleChanges$.lastVal
     const preset = opts?.preset
 
@@ -413,6 +422,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   hasSearchText() {
     return !! this.search?.trim();
+  }
+
+  loadMore() {
+    this.currentlyDisplayedElements += 100;
+  }
+
+  loadAll() {
+    this.currentlyDisplayedElements = this.filteredItem$s.length;
   }
 
   async onClickListOptions(event: any) {

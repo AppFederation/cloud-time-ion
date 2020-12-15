@@ -8,6 +8,7 @@ import {ImportanceComponent} from '../libs/AppFedShared/importance/importance.co
 import {RichTextEditComponent} from '../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
 import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/duration/duration.component'
 import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.component'
+import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -22,21 +23,23 @@ let imports = [
     ...imports,
     EditorModule,
   ],
-    exports: [
-        ... imports,
-        RichTextEditComponent,
-        RichTextViewComponent,
-        DurationComponent,
-        ChooserComponent,
-    ],
+  exports: [
+    ...imports,
+    RichTextEditComponent,
+    RichTextViewComponent,
+    DurationComponent,
+    ChooserComponent,
+    GeoLocComponent,
+  ],
     providers: [],
-    declarations: [
-        RichTextEditComponent,
-        RichTextViewComponent,
-        ImportanceComponent,
-        DurationComponent,
-        ChooserComponent,
-    ],
+  declarations: [
+    RichTextEditComponent,
+    RichTextViewComponent,
+    ImportanceComponent,
+    DurationComponent,
+    ChooserComponent,
+    GeoLocComponent,
+  ],
 })
 export class SharedModule {
 }
