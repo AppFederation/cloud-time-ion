@@ -71,7 +71,7 @@ function backupRepo () {
 
   echo "================================ GIT PUSH: "
   set -x
-  git push origin HEAD:AutoBackup 2>&1 | sed $'s/date/\e[1m&\e[0m/'  #sed $'s/Already up to date./\$Green&$NC/'
+  git push origin HEAD:AutoBackup 2>&1 | sed $'s/Everything up-to-date/\u001b[32m&\e[0m/'  #sed $'s/Already up to date./\$Green&$NC/'
 
   echo "================================ END GIT PUSH"
 
