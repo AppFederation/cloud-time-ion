@@ -2,6 +2,8 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 
 export class SelectionManager<T = any> {
 
+  public isSelectionActive = false
+
   private isAllSelected = false
 
   get selected() { return this.selected$.lastVal as Set<T> }
