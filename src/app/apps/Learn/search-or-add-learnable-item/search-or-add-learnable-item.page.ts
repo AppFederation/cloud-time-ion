@@ -161,6 +161,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         [
           maybeDoableGetterDescending,
           durationGetterAscending,
+          /* TODO: here sort by duration *maximum* value in distribution, to avoid potential rabbit holes */
+          roiGetterDescending,
         ]
       )
     } else if ( preset === `funQuickEasy` ) {
