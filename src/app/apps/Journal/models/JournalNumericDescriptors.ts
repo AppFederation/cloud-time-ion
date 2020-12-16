@@ -115,6 +115,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     isShortListed: true,
   })
   ambition = jnd({
+    searchTerms: [ `audacity`, `dreaming_big` ],
   })
   urgency = jnd()
   sense_of_urgency = jnd()
@@ -180,9 +181,13 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'irritability' = jnd({lowerIsBetter: true,})
   determination = jnd({idealValue: 7.5,
     isShortListed: true,
+    searchTerms: [`resolve`]
   })
   resilience = jnd({isShortListed: true})
   strength = jnd({isShortListed: true})
+  self_reliance = jnd({isShortListed: true})
+  responsibility = jnd({isShortListed: true, searchTerms: [`responsableness`, `responsibleness`]})
+  reliability = jnd({isShortListed: true, searchTerms: [`trustworthiness`], antonym: [`flaky`, `flakiness`]})
   // TODO physical strength, mental strength
   // TODO power / influence
   energy = jnd({idealValue: 8.5,
@@ -192,7 +197,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   hypomania = jnd({moderateIsBetter: true})
   hope = jnd({
     isShortListed: true,
-  })
+  })// merge optimism, hope?
   optimism = jnd({
     isShortListed: true,
   })
@@ -204,7 +209,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     isShortListed: true,
   })
   overeating = jnd({
-    searchTerms: ['gorging', 'food', 'eating'],
+    searchTerms: ['gorging', 'food', 'eating too much'],
     isShortListed: true /* this will be personalised later */,
     lowerIsBetter: true,
   }) // other stuff for food/diet: eating sweets, eating junk foods, eating late/night
@@ -399,6 +404,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   growth = jnd({
     isShortListed: true,
   })
+  efficiency = jnd()
+  effectiveness = jnd()
 
   // TODO: ego,
   // TODO pride, modesty
