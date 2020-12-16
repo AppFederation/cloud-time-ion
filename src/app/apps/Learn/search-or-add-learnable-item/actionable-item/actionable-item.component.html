@@ -5,6 +5,7 @@
 >
 
   <app-selection-checkbox
+    *ngIf="selection.isSelectionActive"
     [selection]="selection"
     [itemId]="item.id !"
   ></app-selection-checkbox>
