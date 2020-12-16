@@ -74,6 +74,18 @@ function jnd(antonymOrData?: JndParams) {
 export class UiFieldDefs {
 }
 
+/* related to variable Belohnung */
+export const slogans = [
+  `It's like Ben Franklin's method, only better.`,
+  `Play the Game of Life`,
+  `What gets measured, gets managed. - Peter Drucker`,
+  `Self-accountability`,
+  `Don't lose track of... tracking.`,
+  `To self-improve, You first need to self-assess.`,
+  `Are You aware of Self-awareness?`,
+  `A numeric self-rating is worth more than ... some quantity of words.`,
+]
+
 /** TODO: each numerical descriptor should have a text comment (some sort of "..." or comment bubble button which would expand comment field) */
 export class JournalNumericDescriptors extends UiFieldDefs {
 
@@ -171,10 +183,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'annoyance' = jnd({lowerIsBetter: true,})
   anger = jnd({lowerIsBetter: true,})
   hate = jnd({lowerIsBetter: true,})
-  modesty = jnd({antonym: [`hubris`, `arrogance`]})
+  modesty = jnd({antonym: [`hubris`, `arrogance`, `bragging`, `showing off`, `egomania`]})
   aggression = jnd({lowerIsBetter: true,})
   testosterone = jnd({moderateIsBetter: true})
   manliness = jnd({moderateIsBetter: true /* coz machismo ;) */})
+  // TODO: feminine-ness...
   /** could be a search term on another one like calmness / resourcefulness */
   'overwhelm' = jnd({lowerIsBetter: true,})
   'resourcefulness' = jnd()
