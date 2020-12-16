@@ -26,6 +26,7 @@ import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/s
 import {SelectionInfoComponent} from './selection-info/selection-info.component'
 import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
 import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
+import {ItemListSwitcherComponent} from './item-lists/item-list-switcher/item-list-switcher.component'
 
 const routes: Routes = [
   {
@@ -52,19 +53,20 @@ const routes: Routes = [
     ScrollingModule,
     EditSharedModule,
   ],
-    declarations: [
-        SearchOrAddLearnableItemPageComponent,
-        ActionableItemComponent,
-        MicComponent,
-        TestItemComponent,
-        LearnStatsComponent,
-        SearchOrAddTextEditorComponent,
-        SimpleListComponent,
-        VirtualListComponent,
-        ListOptionsComponent,
-        SelectionCheckboxComponent,
-        SelectionInfoComponent,
-        SelectionPopupComponent,
-    ],
+  declarations: [
+    SearchOrAddLearnableItemPageComponent,
+    ActionableItemComponent,
+    MicComponent,
+    TestItemComponent,
+    LearnStatsComponent,
+    SearchOrAddTextEditorComponent,
+    SimpleListComponent,
+    VirtualListComponent,
+    ListOptionsComponent,
+    SelectionCheckboxComponent,
+    SelectionInfoComponent,
+    SelectionPopupComponent,
+    ItemListSwitcherComponent,
+  ],
 })
 export class SearchOrAddLearnableItemPageModule {}

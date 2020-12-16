@@ -11,15 +11,19 @@ import {SimpleListProperties} from './simple-list-properties'
 export class SimpleListComponent implements OnInit {
 
   @Input()
-  items: LearnItem$[] | undefined = []
+  items: LearnItem$[];
 
   public selectionManager: SelectionManager = new SelectionManager<any>();
 
   currentlyDisplayedElements: number = SimpleListProperties.INITIAL_ITEM_COUNT;
 
-  constructor() { }
+  constructor() {
+    this.items = [];
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.items = this.items === undefined ? [] : this.items;
+  }
 
   trackByFn(index: number, item: LearnItem$) {
     return item.id

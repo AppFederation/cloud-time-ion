@@ -16,7 +16,9 @@ export class VirtualListComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.items = this.items == undefined ? [] : this.items;
+  }
 
   trackByFn(index: number, item: LearnItem$) {
     return item.id

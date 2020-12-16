@@ -22,7 +22,7 @@ import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {DataGeneratorService} from '../../../generators/data-generator.service'
 import {async} from 'rxjs/internal/scheduler/async'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
-import {Router} from '@angular/router'
+import {Data, Router} from '@angular/router'
 import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -70,6 +70,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     protected syncStatusService: SyncStatusService,
     protected learnDoService: LearnDoService,
     protected journalEntriesService: JournalEntriesService,
+    protected dataGeneratorService: DataGeneratorService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
@@ -97,9 +98,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
-    this.learnDoService.localItems$.subscribe(item$s => {
-      this.setItemsAndSort(item$s)
-    })
+    // this.learnDoService.localItems$.subscribe(item$s => {
+    //   this.setItemsAndSort(item$s)
+    // })
     /* this will go away when migrated to ODM: */
     // this.authService.authUser$.subscribe(user => {
     //     if ( user ) {
@@ -113,7 +114,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // })
 
     // Load fake data:
-    // this.item$s = DataGeneratorService.generateLearnItemList(30);
+    this.item$s = this.dataGeneratorService.generateLearnItemList(3000);
   }
 
   /** TODO: move to class ListProcessing
