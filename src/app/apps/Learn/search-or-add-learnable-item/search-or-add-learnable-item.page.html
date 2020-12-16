@@ -130,23 +130,20 @@
       <!-- TODO distinguish loading (and not logged in) -->
     </p>
 
-<!--    <ion-virtual-scroll-->
-<!--      [items]="filteredItem$s"-->
-<!--      [approxItemHeight]="31"-->
-<!--      [trackBy]="trackByFn"-->
-<!--    >-->
-<!--      <div *virtualItem="let currItem; let i = index">-->
-<!--        <app-actionable-item-->
-<!--          [index]="i"-->
-<!--          [item]="currItem"-->
-<!--          [selection]="selection"-->
-<!--        ></app-actionable-item>-->
-<!--        &lt;!&ndash; [hidden]="! matchesSearch(currItem)"&ndash;&gt;-->
-<!--      </div>-->
-<!--    </ion-virtual-scroll>-->
-
-    <virtual-list [items]="filteredItem$s">
-    </virtual-list>
+    <ion-virtual-scroll
+      [items]="filteredItem$s"
+      [approxItemHeight]="31"
+      [trackBy]="trackByFn"
+    >
+      <div *virtualItem="let currItem; let i = index">
+        <app-actionable-item
+          [index]="i"
+          [item]="currItem"
+          [selection]="selection"
+        ></app-actionable-item>
+        <!-- [hidden]="! matchesSearch(currItem)"-->
+      </div>
+    </ion-virtual-scroll>
 
     <!--
        ion-virtual-scroll BUGS:

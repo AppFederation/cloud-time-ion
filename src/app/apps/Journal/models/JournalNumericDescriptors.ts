@@ -129,7 +129,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* ==== End of default shortlist of fields "to fill in a hurry".
     Here could be "show more button */
 
-  'liking life' = jnd({searchTerms: `life appreciation`})
+  'liking life' = jnd({searchTerms: [`life appreciation`, `gratefulness`]})
   'enjoyment of current activity' = jnd()
   'engagement' = jnd()
   'empathy' = jnd()
@@ -274,6 +274,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   punctuality = jnd()
   cleanliness = jnd()
+  obsessiveness = jnd()
+  compulsions = jnd()
   grooming = jnd()
   order = jnd({antonym: 'chaos'})
   focus = jnd({
@@ -325,11 +327,12 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     isShortListed: true,
   })
   relationships_with_friends = jnd()
+  relationships_with_best_friends = jnd()
   relationships_with_partner = jnd()
   relationships_at_home = jnd()
   relationships_with_coworkers = jnd()
   relationships_with_family = jnd()
-  relationships_with_close_family = jnd()
+  relationships_with_close_family = jnd() // parents
   relationships_with_distant_family = jnd()
   alcohol = jnd({
     lowerIsBetter: true,

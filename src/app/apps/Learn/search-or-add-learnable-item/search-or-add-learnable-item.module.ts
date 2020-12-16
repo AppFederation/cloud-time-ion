@@ -17,11 +17,7 @@ import {SearchOrAddTextEditorComponent} from './search-or-add-text-editor/search
 import {EditorModule} from '@tinymce/tinymce-angular'
 import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
-import {SimpleListComponent} from './item-lists/simple-list/simple-list.component'
 import {ListOptionsComponent} from './list-options/list-options.component'
-import {VirtualListComponent} from './item-lists/virtual-list/virtual-list.component'
-import {ScrollingModule} from '@angular/cdk/scrolling'
-import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling'
 import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
 import {SelectionInfoComponent} from './selection-info/selection-info.component'
 import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
@@ -35,36 +31,32 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes),
-    OdmModule,
-    AngularFireStorageModule,
-    LearnSharedModule,
-    SharedModule2,
-    EditorModule,
-    ReactiveFormsModule,
-    AudioModule,
-    LearnSharedModule,
-    ExperimentalScrollingModule,
-    ScrollingModule,
-    EditSharedModule,
-  ],
-    declarations: [
-        SearchOrAddLearnableItemPageComponent,
-        ActionableItemComponent,
-        MicComponent,
-        TestItemComponent,
-        LearnStatsComponent,
-        SearchOrAddTextEditorComponent,
-        SimpleListComponent,
-        VirtualListComponent,
-        ListOptionsComponent,
-        SelectionCheckboxComponent,
-        SelectionInfoComponent,
-        SelectionPopupComponent,
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        OdmModule,
+        AngularFireStorageModule,
+        LearnSharedModule,
+        SharedModule2,
+        EditorModule,
+        ReactiveFormsModule,
+        AudioModule,
+        LearnSharedModule,
+        EditSharedModule,
     ],
+  declarations: [
+    SearchOrAddLearnableItemPageComponent,
+    ActionableItemComponent,
+    MicComponent,
+    TestItemComponent,
+    LearnStatsComponent,
+    SearchOrAddTextEditorComponent,
+    ListOptionsComponent,
+    SelectionCheckboxComponent,
+    SelectionInfoComponent,
+    SelectionPopupComponent,
+  ],
 })
 export class SearchOrAddLearnableItemPageModule {}
