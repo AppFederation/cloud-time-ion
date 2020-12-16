@@ -1,0 +1,14 @@
+<ion-virtual-scroll
+  [items]="items"
+  [approxItemHeight]="31"
+  [trackBy]="trackByFn"
+>
+  <div *virtualItem="let currItem; let i = index">
+    <app-actionable-item
+      [index]="i"
+      [item]="currItem"
+      [selection]="selectionManager"
+    ></app-actionable-item>
+    <!-- [hidden]="! matchesSearch(currItem)"-->
+  </div>
+</ion-virtual-scroll>
