@@ -9,11 +9,22 @@ import {RichTextEditComponent} from '../libs/AppFedShared/rich-text/rich-text-ed
 import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/duration/duration.component'
 import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.component'
 import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
+import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
 
 let imports = [
   ReactiveFormsModule,
   FormsModule,
 ];
+
+const declarations = [
+  RichTextEditComponent,
+  RichTextViewComponent,
+  ImportanceComponent,
+  DurationComponent,
+  ChooserComponent,
+  GeoLocComponent,
+  OptionsComponent,
+]
 
 @NgModule({
     entryComponents: [],
@@ -25,21 +36,10 @@ let imports = [
   ],
   exports: [
     ...imports,
-    RichTextEditComponent,
-    RichTextViewComponent,
-    DurationComponent,
-    ChooserComponent,
-    GeoLocComponent,
+    ...declarations,
   ],
-    providers: [],
-  declarations: [
-    RichTextEditComponent,
-    RichTextViewComponent,
-    ImportanceComponent,
-    DurationComponent,
-    ChooserComponent,
-    GeoLocComponent,
-  ],
+  providers: [],
+  declarations: declarations,
 })
 export class SharedModule {
 }
