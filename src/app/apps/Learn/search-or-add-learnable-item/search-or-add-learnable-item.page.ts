@@ -138,8 +138,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       = (item: LearnItem$) => item.val?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
     const maybeDoableGetterDescending
       = (item: LearnItem$) => ! item.val?.isMaybeDoableNow()
-    const durationGetterDescending
-      = (item: LearnItem$) => - (item.val?.getDurationEstimateMs() ?? 999_999_999)
+    const durationGetterAscending
+      = (item: LearnItem$) => item.val?.getDurationEstimateMs() ?? 999_999_999
     const importanceGetterDescending
       = (item: LearnItem$) => - (item.val?.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetterDescending
@@ -169,15 +169,16 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.item$s = sortBy(item$s,
         [
           maybeDoableGetterDescending,
-          maybeDoableGetterDescending,
-          durationGetterDescending,
+          durationGetterAscending,
+          /* TODO: here sort by duration *maximum* value in distribution, to avoid potential rabbit holes */
+          roiGetterDescending,
         ]
       )
     } else if ( preset === `funQuickEasy` ) {
       this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
         funGetterDescending,
-        durationGetterDescending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
+        durationGetterAscending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
         mentalGetterAscending,
         importanceGetterDescending,
       ])
@@ -222,7 +223,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.item$s = sortBy(item$s, [
         importanceGetterDescending,
         funGetterDescending,
-        durationGetterDescending
+        durationGetterAscending
         /* TODO ROI*//*, /!*`whenModified`, *!/ `whenAdded`*/
       ])
     }

@@ -4,7 +4,15 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 
 const midIntensityNum = 5
 
-export type IntensityDescriptor = { numeric: number, abbrev: string, shortId: string } & { id: keyof IntensityDescriptors<any> }
+export type IntensityDescriptor = {
+  numeric: number,
+  abbrev: string,
+  shortId: string,
+  icons?: string,
+  isDebug?: boolean,
+} & {
+  id: keyof IntensityDescriptors<any>
+}
 
 export function intensity(x: any): IntensityDescriptor {
   const ret = {
@@ -66,7 +74,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   extremely_high
     = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`, shortId: `XHi`})
   testing_extremely_high
-    = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`})
+    = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`, isDebug: true})
   // it gives 10 level total now
 
   // Icons: up arrow (chevron), double up arrow, etc., medium: wavy, or flat line, or {up&down (but smth visually simple might be better)

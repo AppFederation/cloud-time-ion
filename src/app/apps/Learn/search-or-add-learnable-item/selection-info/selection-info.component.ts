@@ -35,15 +35,27 @@ export class SelectionInfoComponent implements OnInit {
     return await popover.present();
   }
 
-  unselectAll() {
+  unselectAllAndHideCheckboxes() {
     this.selection.unselectAll()
+    this.selection.isSelectionActive = false
   }
 
   onChangeCheckBox(event: any) {
     console.log(`onChangeCheckBox`, event)
     const checked = event.detail.checked
+    const selection = this.selection
+    if ( checked ) {
+      if ( selection.isSelectionActive ) {
+        selection.setAllSelected(checked)
+      } else {
+        selection.isSelectionActive = true
+      }
+    } else {
+      selection.setAllSelected(false)
+    }
     // if ( checked ) {
-      this.selection.setAllSelected(checked)
+
+      // selection.setAllSelected(checked)
     // }
     // this.selection.
   }

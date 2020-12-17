@@ -11,7 +11,7 @@ import {SelfRating} from '../../../models/fields/self-rating.model'
 })
 export class QuizIntervalsComponent implements OnInit {
 
-  importances = importanceDescriptorsArray
+  importances = importanceDescriptorsArray.filter(imp => !imp.isDebug)
   ratings = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, /*7, 8, 9, 10*/]
 
   hiLightCell = {

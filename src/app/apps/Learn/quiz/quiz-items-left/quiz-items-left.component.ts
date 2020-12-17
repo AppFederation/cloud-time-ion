@@ -12,7 +12,7 @@ import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray}
 })
 export class QuizItemsLeftComponent implements OnInit {
 
-  importancesArray = importanceDescriptorsArray
+  importancesArray = importanceDescriptorsArray.filter(imp => !imp.isDebug)
 
   @Input() @Required()
   quizStatus ! : QuizStatus

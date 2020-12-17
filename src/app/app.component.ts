@@ -1,12 +1,15 @@
 import {Component, HostListener} from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import {Platform, PopoverController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {TimerNotificationsService} from "./core/timer-notifications.service";
 import {SyncStatusService} from './libs/AppFedShared/odm/sync-status.service'
 import {LearnStatsService} from './apps/Learn/core/learn-stats.service'
 import {AuthService} from './auth/auth.service'
+import {OptionsService} from './apps/Learn/core/options.service'
+import {SyncPopoverComponent} from './libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
+import {OptionsComponent} from './libs/AppFedShared/options/options.component'
 
 @Component({
   selector: 'app-root',
@@ -21,6 +24,8 @@ export class AppComponent {
     private authService  /* force the service to run */: AuthService,
     private learnStatsService  /* force the service to run */: LearnStatsService,
     public syncStatusService: SyncStatusService,
+    public optionsService: OptionsService,
+    public popoverController: PopoverController,
   ) {
     this.initializeApp();
   }
@@ -31,8 +36,23 @@ export class AppComponent {
       this.statusBar.overlaysWebView(false)
 
       this.splashScreen.hide();
+      this.setupOptionsHandler()
       console.log('initializeApp ...')
     });
+  }
+
+  private setupOptionsHandler() {
+    this.optionsService.openOptions$.subscribe(async (isOpen) => {
+      if (isOpen) {
+        const popover = await this.popoverController.create({
+          component: OptionsComponent,
+          event: event,
+          translucent: true,
+          mode: 'ios',
+        });
+        return await popover.present();
+      }
+    })
   }
 
   @HostListener('window:beforeunload', ['$event'])
