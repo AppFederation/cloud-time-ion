@@ -3,6 +3,7 @@ import {AuthService} from '../../../../../auth/auth.service'
 import {SyncStatusService} from '../../sync-status.service'
 import {StatsHistoryService} from '../../../../../apps/Learn/core/stats-history.service'
 import {LearnStatsService} from '../../../../../apps/Learn/core/learn-stats.service'
+import {OptionsService} from '../../../../../apps/Learn/core/options.service'
 
 @Component({
   selector: 'app-sync-popover',
@@ -15,6 +16,7 @@ export class SyncPopoverComponent implements OnInit {
     public authService: AuthService,
     public syncStatusService: SyncStatusService,
     public learnStatsService: LearnStatsService,
+    public optionsService: OptionsService,
   ) { }
 
   ngOnInit() {}
@@ -25,5 +27,9 @@ export class SyncPopoverComponent implements OnInit {
 
   logOut() {
     this.authService.logout()
+  }
+
+  openOptions() {
+    this.optionsService.openOptions()
   }
 }
