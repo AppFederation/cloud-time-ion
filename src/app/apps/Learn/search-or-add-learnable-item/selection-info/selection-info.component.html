@@ -2,9 +2,8 @@
   [indeterminate]="false"
   [checked]="false"
   (ionChange)="onChangeCheckBox($event)"
-  (click)="selection.isSelectionActive = true"
-  (press)="unselectAll()"
->
+  (press)="unselectAllAndHideCheckboxes()"
+> <!--  (tap)="selection.isSelectionActive = true"-->
 
 </ion-checkbox>&nbsp;
 <ng-container

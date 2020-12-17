@@ -21,7 +21,10 @@ export class HammerConfig extends HammerGestureConfig {
     // I will only use the swap gesture so
     // I will deactivate the others to avoid overlaps
     'pinch': { enable: false },
-    'rotate': { enable: false }
+    'rotate': { enable: false },
+    press: {
+      time: 1000,
+    }
   }
 }
 

@@ -2,6 +2,7 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
+const isShortListed = true
 const moderateIsBetter = true
 const lowerIsBetter = true
 const specifyDuration = true
@@ -53,6 +54,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
 }
 
 type JndParams = {
+  acronym?: string | string[],
   antonym?: string | string[],
   minLabel?: string,
   maxLabel?: string,
@@ -313,7 +315,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   'time tracking' = jnd()
   courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
-  outcome_independence = jnd()
+  outcome_independence = jnd({isShortListed, acronym: `OI`})
   confidence = jnd({antonym: 'doubts'})
   'self-confidence' = jnd({
     antonym: 'doubts',
