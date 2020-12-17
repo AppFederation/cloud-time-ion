@@ -98,9 +98,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
-    // this.learnDoService.localItems$.subscribe(item$s => {
-    //   this.setItemsAndSort(item$s)
-    // })
+    this.learnDoService.localItems$.subscribe(item$s => {
+      this.setItemsAndSort(item$s)
+    })
     /* this will go away when migrated to ODM: */
     // this.authService.authUser$.subscribe(user => {
     //     if ( user ) {
@@ -114,7 +114,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     // })
 
     // Load fake data:
-    this.item$s = this.dataGeneratorService.generateLearnItemList(3000);
+    // this.item$s = this.dataGeneratorService.generateLearnItemList(3000);
   }
 
   /** TODO: move to class ListProcessing
