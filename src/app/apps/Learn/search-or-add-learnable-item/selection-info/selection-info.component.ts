@@ -35,8 +35,9 @@ export class SelectionInfoComponent implements OnInit {
     return await popover.present();
   }
 
-  unselectAll() {
+  unselectAllAndHideCheckboxes() {
     this.selection.unselectAll()
+    this.selection.isSelectionActive = false
   }
 
   onChangeCheckBox(event: any) {
