@@ -27,6 +27,7 @@ import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
+import {SelectionManager} from './SelectionManager'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -109,18 +110,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         })
       }
     })
-
-    /* this will go away when migrated to ODM: */
-    // this.authService.authUser$.subscribe(user => {
-    //     if ( user ) {
-    //       this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-    //         , coll => coll.where(`owner`, `==`, user?.uid))
-    //       // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
-    //       this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-    //         this.setItemsAndSort(items)
-    //       })
-    //     }
-    // })
   }
 
   /** TODO: move to class ListProcessing
@@ -140,6 +129,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     //   = (item: LearnItem) => item.getDurationEstimateMs() ?? 999_999_999
     const whenLastTouchedDescending
       = (item: LearnItem$) => - ((item.val?.whenLastModified ?? item.val?.whenAdded ?? item.val?.whenCreated)?.toMillis() ?? 0)
+    const whenCreatedAscending
+      = (item: LearnItem$) => (item.val?.whenAdded ?? item.val?.whenCreated)?.toMillis() ?? 0
     const deadlineAscending
       = (item: LearnItem$) => item.val?.getNearestDateForUrgency()?.getTime() ?? new Date(2099, 1,1).getTime()
     const maybeDoableGetterDescending
@@ -161,6 +152,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     if ( preset === `lastModified` || preset === `allTasks` ) {
         // this.items = sortBy(items, field<LearnItem>(`whenAdded`)).reverse()
         this.item$s = sortBy(item$s, whenLastTouchedDescending)
+    } else if ( preset === `whenCreated` ) {
+      this.item$s = sortBy(item$s, [
+        whenCreatedAscending,
+      ])
     } else if ( preset === `nearest_deadlines` ) {
       this.item$s = sortBy(item$s, [
         deadlineAscending,
@@ -385,6 +380,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const items = this.item$s.filter(item => ! item.val?.whenDeleted)
 
     if (preset === `lastModified`) {
+      this.filteredItem$s = items.filter(
+        item =>
+          this.matchesSearch(item)
+      )
+    } if (preset === `whenCreated`) {
       this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
