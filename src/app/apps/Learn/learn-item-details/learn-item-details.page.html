@@ -3,33 +3,33 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
     </ion-buttons>
+    <div style="display: inline-flex; align-items: center; width: 100%">
+      <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
+      <!--        <ion-button routerLink="/learn"><&lt;!&ndash; TODO: create component back-icon &ndash;&gt;</ion-button>-->
 
-    <ion-title>
-      <div style="display: inline-flex; align-items: center; width: 100%">
-        <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
-<!--        <ion-button routerLink="/learn"><&lt;!&ndash; TODO: create component back-icon &ndash;&gt;</ion-button>-->
-
-        <div style="flex-grow: 1; display: flex; align-items: center">
-<!--          &nbsp; CARD DETAILS-->
-        </div>
-
-        <app-time-passing
-          style="font-size: 80%; margin-right: 3px"
-          [isCountDown]="false"
-        ></app-time-passing>
-
-        <app-process-button
-        ></app-process-button>
-
-        <app-quiz-button
-        ></app-quiz-button>
-
-        {{title}}
-
-        <odm-sync-status></odm-sync-status>
-
+      <div style="flex-grow: 1; display: flex; align-items: center">
+        <!--          &nbsp; CARD DETAILS-->
       </div>
-    </ion-title>
+
+      <app-time-passing
+        style="font-size: 80%; margin-right: 3px"
+        [isCountDown]="false"
+      ></app-time-passing>
+
+      <app-process-button
+      ></app-process-button>
+
+      <app-quiz-button
+      ></app-quiz-button>
+
+      {{title}}
+
+      <odm-sync-status></odm-sync-status>
+
+    </div>
+<!--    <ion-title>-->
+<!--      -->
+<!--    </ion-title>-->
   </ion-toolbar>
 </ion-header>
 
