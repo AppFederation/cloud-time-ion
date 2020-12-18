@@ -383,7 +383,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         item =>
           this.matchesSearch(item)
       )
-    } if (preset === `whenCreated`) {
+    } else if (preset === `whenCreated`) {
       this.filteredItem$s = items.filter(
         item =>
           this.matchesSearch(item)
