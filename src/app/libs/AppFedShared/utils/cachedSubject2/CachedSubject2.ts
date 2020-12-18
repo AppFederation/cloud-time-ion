@@ -16,7 +16,7 @@ export class CachedSubject<T> extends Subject<T> {
 
   constructor(initialVal ? : T) {
     super()
-    if ( isNotNullish(initialVal) ) {
+    if ( initialVal !== undefined ) {
       this.next(initialVal)
     }
   }
