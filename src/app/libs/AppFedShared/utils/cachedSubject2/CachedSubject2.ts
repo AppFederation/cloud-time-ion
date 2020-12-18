@@ -1,4 +1,5 @@
 import {Subject, Subscriber, Subscription} from 'rxjs';
+import {isNotNullish} from '../utils'
 
 /** Similar to ReplaySubject<T>, but storing only 1 previous cached value.
  * This version is implemented without using ReplaySubject internally. */
@@ -15,7 +16,7 @@ export class CachedSubject<T> extends Subject<T> {
 
   constructor(initialVal ? : T) {
     super()
-    if ( initialVal ) {
+    if ( isNotNullish(initialVal) ) {
       this.next(initialVal)
     }
   }
