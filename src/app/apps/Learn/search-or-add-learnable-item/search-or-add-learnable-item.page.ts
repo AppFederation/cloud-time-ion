@@ -95,17 +95,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     this.learnDoService.localItems$.subscribe(item$s => {
       this.setItemsAndSort(item$s)
     })
-    /* this will go away when migrated to ODM: */
-    // this.authService.authUser$.subscribe(user => {
-    //     if ( user ) {
-    //       this.coll = this.angularFirestore.collection</*LearnItem*/ any>('LearnItem'
-    //         , coll => coll.where(`owner`, `==`, user?.uid))
-    //       // /*, coll => coll.where(`whenDeleted`, `==`, null)*/)
-    //       this.coll.valueChanges({idField: 'id'}).subscribe(items => {
-    //         this.setItemsAndSort(items)
-    //       })
-    //     }
-    // })
   }
 
   /** TODO: move to class ListProcessing
