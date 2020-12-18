@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 /** Visual representation of importance (e.g. icon) */
 @Component({
-  selector: 'app-importance-edit',
+  selector: 'app-importance',
   templateUrl: './importance.component.html',
   styleUrls: ['./importance.component.sass'],
 })
