@@ -27,7 +27,6 @@ import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
-import {SelectionManager} from './SelectionManager'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
