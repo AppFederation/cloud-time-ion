@@ -10,6 +10,7 @@ import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/
 import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.component'
 import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
 import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
+import {GeneratedContentOptionsComponent} from '../libs/AppFedShared/options/generated-content-options/generated-content-options.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -24,6 +25,7 @@ const declarations = [
   ChooserComponent,
   GeoLocComponent,
   OptionsComponent,
+  GeneratedContentOptionsComponent,
 ]
 
 @NgModule({

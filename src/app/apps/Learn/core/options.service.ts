@@ -36,6 +36,7 @@ export class LocalOptionsPatchableObservable<TOptions> implements PatchableObser
 export class OptionsService {
 
   openOptions$ = new CachedSubject(false)
+  generatedData$ = new CachedSubject(false);
 
   // options$ = new LocalOptionsPatchableObservable<LifeSuiteOptions>(
   //   new LifeSuiteOptions()
@@ -48,5 +49,9 @@ export class OptionsService {
 
   openOptions() {
     this.openOptions$.nextWithCache(true)
+  }
+
+  toggleGeneratedData(isSelected: boolean) {
+    this.generatedData$.nextWithCache(isSelected)
   }
 }

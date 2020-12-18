@@ -18,7 +18,7 @@ import {PopoverController} from '@ionic/angular'
 import {ListOptionsComponent} from './list-options/list-options.component'
 import {ListOptions, ListOptionsData} from './list-options'
 import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
-import {LocalOptionsPatchableObservable} from '../core/options.service'
+import {LocalOptionsPatchableObservable, OptionsService} from '../core/options.service'
 import {DataGeneratorService} from '../../../generators/data-generator.service'
 import {async} from 'rxjs/internal/scheduler/async'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
@@ -71,6 +71,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     protected learnDoService: LearnDoService,
     protected journalEntriesService: JournalEntriesService,
     protected dataGeneratorService: DataGeneratorService,
+    protected optionsService: OptionsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
@@ -98,9 +99,17 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.search = val
       this.onChangeSearch(val)
     })
-    this.learnDoService.localItems$.subscribe(item$s => {
-      this.setItemsAndSort(item$s)
+
+    this.optionsService.generatedData$.subscribe(isGeneratedDataSelected => {
+      if (isGeneratedDataSelected) {
+        this.setItemsAndSort(this.dataGeneratorService.generateLearnItemList(3000))
+      } else {
+        this.learnDoService.localItems$.subscribe(item$s => {
+          this.setItemsAndSort(item$s)
+        })
+      }
     })
+
     /* this will go away when migrated to ODM: */
     // this.authService.authUser$.subscribe(user => {
     //     if ( user ) {
@@ -112,9 +121,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     //       })
     //     }
     // })
-
-    // Load fake data:
-    // this.item$s = this.dataGeneratorService.generateLearnItemList(3000);
   }
 
   /** TODO: move to class ListProcessing
