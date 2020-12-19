@@ -70,6 +70,8 @@ export abstract class OdmService2<
 
   private backendListenerWasSet = false
 
+  public itemsLoaded = false
+
   get items$() { return this.localItems$ }
 
   mapIdToItem$ = new Map<TItemId, TOdmItem$>()
@@ -217,6 +219,7 @@ export abstract class OdmService2<
   }
 
   emitLocalItems() {
+    this.itemsLoaded = true
     this.localItems$.next(this.localItems$!.lastVal !)
   }
 
