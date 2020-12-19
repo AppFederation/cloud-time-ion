@@ -24,12 +24,14 @@ export class UiFieldDef implements ILateInit {
 
 
 export class JournalTextDescriptor extends UiFieldDef {
+  hide ? : boolean
 }
 
 
 function d(arg?: any) {
   const descriptor = new JournalTextDescriptor()
   descriptor.iconName = arg?.icon
+  descriptor.hide = arg?.hide
   return descriptor
 }
 
@@ -39,7 +41,9 @@ export class JournalTextDescriptors {
 
   general = d()
   /** temporary for retrospective */
-  text = d()
+  text = d({
+    hide: true
+  })
   positive = d({
     icon: `thumbs-up-outline`
   })
