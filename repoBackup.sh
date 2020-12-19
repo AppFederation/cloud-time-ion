@@ -80,6 +80,8 @@ function backupRepo () {
 
 
 backupAllRepos() {
+  backupRepo "/A/R/FlexLife/cloud-time-ion"
+
   backupRepo "/A/R/O/OrYoL"
 
   backupRepo "/A/R/InnoTopic/InnoTopic_Website" # FIXME /A/R/InnoTopic/InnoTopic_Website : 2 SUBMODULES
@@ -88,7 +90,6 @@ backupAllRepos() {
 
   backupRepo "/A/R/FlexLife/LifeSense2"
 #  backupRepo "$(pwd)"
-  backupRepo "/A/R/FlexLife/cloud-time-ion"
 }
 
 time backupAllRepos
