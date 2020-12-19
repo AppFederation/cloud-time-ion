@@ -1,9 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore'
-import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
-// import sortBy from 'lodash/sortBy'
 import {sortBy} from 'lodash-es'
-// import countBy from 'lodash/countBy'
 import {LearnDoService} from '../core/learn-do.service'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
@@ -46,8 +42,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   htmlSearch ? : string = undefined
   searchFormControl = new FormControl()
 
-  coll ! : AngularFirestoreCollection<any>
-
   item$s: LearnItem$[] = []
 
   filteredItem$s: LearnItem$[] = []
@@ -62,10 +56,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   constructor(
-    protected angularFirestore: AngularFirestore,
-    protected syncStatusService: SyncStatusService,
-    protected learnDoService: LearnDoService,
-    protected journalEntriesService: JournalEntriesService,
+    public learnDoService: LearnDoService,
+    public journalEntriesService: JournalEntriesService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
