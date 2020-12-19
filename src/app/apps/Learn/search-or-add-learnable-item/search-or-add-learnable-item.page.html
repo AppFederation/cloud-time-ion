@@ -125,9 +125,11 @@
 
   <ng-template #loggedIn>
 
-    <p style="margin: 10px" *ngIf="! this.filteredItem$s?.length">
+    <p style="margin: 10px" *ngIf="! learnDoService.itemsLoaded">
+      LOADING...
+    </p>
+    <p style="margin: 10px" *ngIf="learnDoService.itemsLoaded && ! this.filteredItem$s?.length">
       NOTHING FOUND
-      <!-- TODO distinguish loading (and not logged in) -->
     </p>
 
     <ion-virtual-scroll
