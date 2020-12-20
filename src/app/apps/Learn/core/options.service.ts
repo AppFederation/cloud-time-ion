@@ -52,6 +52,8 @@ export class OptionsService {
   }
 
   toggleGeneratedData(isSelected: boolean) {
-    this.generatedData$.nextWithCache(isSelected)
+    if (this.generatedData$.lastVal !== isSelected) {
+      this.generatedData$.nextWithCache(isSelected)
+    }
   }
 }
