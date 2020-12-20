@@ -2,7 +2,9 @@ import {Subject, Subscriber, Subscription} from 'rxjs';
 import {isNotNullish} from '../utils'
 
 /** Similar to ReplaySubject<T>, but storing only 1 previous cached value.
- * This version is implemented without using ReplaySubject internally. */
+ * This version is implemented without using ReplaySubject internally.
+ * Provides easy access to last emitted value, via `lastVal`.
+ */
 export class CachedSubject<T> extends Subject<T> {
 
   // private replaySubject = new ReplaySubject(1)
@@ -12,7 +14,7 @@ export class CachedSubject<T> extends Subject<T> {
   /** Useful for e.g. determining in UI if initial data set has arrived (distinguish from initial empty) */
   public hasEmitted = false
 
-  private onSubscribeCallBack ? : () => void
+  private onSubscribeCallBack ? : (subscriber: Subscriber<T>) => void
 
   constructor(initialVal ? : T) {
     super()
@@ -37,7 +39,7 @@ export class CachedSubject<T> extends Subject<T> {
     if ( this.hasEmitted ) {
       subscriber.next(this.lastVal)
     }
-    this.onSubscribeCallBack ?. ()
+    this.onSubscribeCallBack ?. (subscriber)
     return subscription;
   }
 
