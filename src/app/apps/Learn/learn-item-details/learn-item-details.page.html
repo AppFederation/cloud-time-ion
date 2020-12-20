@@ -35,30 +35,21 @@
 
 <ion-content>
 
-
   <ng-container
-    *ngIf="(item$.locallyVisibleChanges$ | async) else notLoaded"
+    *ngIf="(val$ | async) as itemVal else notLoaded"
   >
     <app-learn-item-details-hints
-      [hidden]="(val$ | async) ?. isTask"
+      [hidden]="itemVal ?. isTask"
     ></app-learn-item-details-hints>
 
-
-    <!--    <div>-->
-<!--      <ion-label>IMPORTANCE&lt;!&ndash;note: not priority; could also be called "impact" &ndash;&gt;</ion-label>-->
-<!--      <app-self-rating></app-self-rating>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <ion-label>FUN&lt;!&ndash;note: not priority; could also be called "impact" &ndash;&gt;</ion-label>-->
-<!--      <app-self-rating></app-self-rating>-->
-<!--    </div>-->
     CREATED <app-time-point
-      [time]="item$?.val?.whenCreated?.toDate()"
+      [time]="itemVal?.whenCreated?.toDate()"
     ></app-time-point>
     MODIFIED <app-time-point
-      [time]="item$?.val?.whenLastModified?.toDate()"
+      [time]="itemVal?.whenLastModified?.toDate()"
     ></app-time-point>
+
+    <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
 
     <div style="display: flex; flex-direction: row; width: 100%">
       <app-item-class-edit
@@ -88,20 +79,12 @@
 <!--    ></app-statuses-edit>-->
 
     <app-self-rating
-      [hidden]="(val$ | async) ?. isTask"
+      [hidden]="itemVal ?. isTask"
       [item$]="item$"
     ></app-self-rating>
 
-<!--    <ion-item>-->
-<!--      <ion-label>Type</ion-label>-->
-<!--      <ion-select [multiple]="true" cancelText="Nah" okText="Okay!">-->
-<!--        <ion-select-option value="task">Task</ion-select-option>-->
-<!--        <ion-select-option value="learn">Learn</ion-select-option>-->
-<!--      </ion-select>-->
-<!--    </ion-item>-->
-
     <app-play-button
-      [item]="val$ | async"
+      [item]="itemVal"
       [itemId]="item$.id"
     ></app-play-button>
 
