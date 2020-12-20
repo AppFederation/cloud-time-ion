@@ -35,7 +35,6 @@
 
 <ion-content>
 
-
   <ng-container
     *ngIf="(val$ | async) as itemVal else notLoaded"
   >
@@ -83,14 +82,6 @@
       [hidden]="itemVal ?. isTask"
       [item$]="item$"
     ></app-self-rating>
-
-<!--    <ion-item>-->
-<!--      <ion-label>Type</ion-label>-->
-<!--      <ion-select [multiple]="true" cancelText="Nah" okText="Okay!">-->
-<!--        <ion-select-option value="task">Task</ion-select-option>-->
-<!--        <ion-select-option value="learn">Learn</ion-select-option>-->
-<!--      </ion-select>-->
-<!--    </ion-item>-->
 
     <app-play-button
       [item]="itemVal"
