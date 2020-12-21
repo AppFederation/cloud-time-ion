@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {OptionsService} from '../../../../apps/Learn/core/options.service'
+import {LocalDebugOptionsService} from '../../../../apps/Learn/core/local-debug-options.service'
 
 @Component({
   selector: 'app-generated-content-options',
@@ -8,16 +8,18 @@ import {OptionsService} from '../../../../apps/Learn/core/options.service'
 })
 export class GeneratedContentOptionsComponent implements OnInit {
 
-  public isSelected = false;
+  public isSelected;
 
-  constructor(private optionsService: OptionsService) { }
+  constructor(private localDebugOptionsService: LocalDebugOptionsService) {
+    this.isSelected = localDebugOptionsService.getCurrentGeneratedDataValue();
+  }
 
   ngOnInit() {
-    this.optionsService.toggleGeneratedData(this.isSelected)
+    this.localDebugOptionsService.toggleGeneratedData(this.isSelected)
   }
 
   toggleGeneratedData() {
-    this.optionsService.toggleGeneratedData(this.isSelected)
+    this.localDebugOptionsService.toggleGeneratedData(this.isSelected)
   }
 
 }

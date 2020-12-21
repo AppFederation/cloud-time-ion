@@ -27,6 +27,7 @@ import {SelectionManager} from './SelectionManager'
 import {importanceDescriptors} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
+import {LocalDebugOptionsService} from '../core/local-debug-options.service'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -71,7 +72,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     protected learnDoService: LearnDoService,
     protected journalEntriesService: JournalEntriesService,
     protected dataGeneratorService: DataGeneratorService,
-    protected optionsService: OptionsService,
+    protected debugOptionsService: LocalDebugOptionsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
@@ -100,7 +101,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.onChangeSearch(val)
     })
 
-    this.optionsService.generatedData$.subscribe(isGeneratedDataSelected => {
+    this.debugOptionsService.generatedData$.subscribe(isGeneratedDataSelected => {
       if (isGeneratedDataSelected) {
         this.setItemsAndSort(this.dataGeneratorService.generateLearnItemList(3000))
       } else {
@@ -109,6 +110,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         })
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.debugOptionsService.generatedData$.unsubscribe();
   }
 
   /** TODO: move to class ListProcessing
