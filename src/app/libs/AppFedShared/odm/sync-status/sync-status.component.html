@@ -18,26 +18,40 @@
 <!--  as-->
   <img
     [ngClass]="{'action-icon': true }"
-    style="height: 25px; top: 0; left: 0"
-    src="assets/libs/sync/icons/cloud-checkmark-alt-solid.svg"
+    style="height: 25px; top: 0; left: 0; color: var(--secondary)"
+    src="assets/libs/sync/icons/cloud-upload-alt-solid1.svg"
     alt="all uploaded to cloud"> <!-- FIXME: a11y: change alt to depend if pending items -->
+
   <!-- position: absolute; top: 0; left: 0 -->
   <!-- { hide: (pendingUploadsCount$ | async), fade: true,  -->
   <div
     style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center"
   >
-    <div>
-      <span
-        [ngClass]="{ hide: ! (pendingUploadsCount$ | async), fade: true }"
-        style="margin-left: 3px; width: 1em; color: black"
+<!--    <div>-->
+<!--      <svg height="25px" viewBox="0 0 640 512" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--        <path fill-rule="evenodd" clip-rule="evenodd" d="M537.6 226.6C541.7 215.9 544 204.2 544 192C544 139 501 96 448 96C428.3 96 409.9 102 394.7 112.2C367 64.2 315.3 32 256 32C167.6 32 96 103.6 96 192C96 194.7 96.1 197.4 96.2 200.1C40.2 219.8 0 273.2 0 336C0 415.5 64.5 480 144 480H512C582.7 480 640 422.7 640 352C640 290.1 596 238.4 537.6 226.6ZM157.42 329.573L281.516 187.752V187.778C283.945 184.999 286.94 182.772 290.3 181.245C293.661 179.719 297.309 178.93 301 178.93C304.691 178.93 308.339 179.719 311.7 181.245C315.06 182.772 318.055 184.999 320.484 187.778L444.58 329.573C447.858 333.315 449.989 337.922 450.716 342.843C451.443 347.764 450.736 352.79 448.68 357.319C446.624 361.849 443.306 365.69 439.124 368.382C434.941 371.075 430.071 372.504 425.096 372.5H176.903C154.677 372.5 142.774 346.314 157.42 329.573Z" fill="#C4C4C4"/>-->
+<!--      </svg>-->
+
+      <img
+        [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
+        style="height: 25px; color: var(--secondary)"
+        src="assets/libs/sync/icons/cloud_checkmark.svg"
+        alt="all uploaded to cloud"
       >
-<!--               -->
-<!--        [ngClass]="{ hide: ! (pendingUploadsCount$ | async), fade: true }"-->
 
-        {{ (pendingUploadsCount$ | async) || '' }}
-      </span>
+<!--    </div>-->
+  </div>
+  <div
+    style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center"
+  >
+      <img
+        [ngClass]="{ hide: ! (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
+        style="height: 25px; color: var(--secondary)"
+        src="assets/libs/sync/icons/cloud_up_arrow.svg"
+        alt="pending uploads"
+      >
 
-    </div>
+<!--    </div>-->
   </div>
 </div>
 <!--bb-->
