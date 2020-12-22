@@ -8,7 +8,6 @@ import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
-import {LearnItem, LearnItemId} from '../../../apps/Learn/models/LearnItem'
 import {OdmItemHistoryService} from './odm-item-history-service'
 import {DictPatch} from '../utils/rxUtils'
 import {isNotNullish} from '../utils/utils'
@@ -70,6 +69,8 @@ export abstract class OdmService2<
 
   private backendListenerWasSet = false
 
+  public itemsLoaded = false
+
   get items$() { return this.localItems$ }
 
   mapIdToItem$ = new Map<TItemId, TOdmItem$>()
@@ -105,10 +106,17 @@ export abstract class OdmService2<
     /* note: not doing itemToSave.setWhenLastModified(),
     * coz too late coz throttle handler (which calls this) does not have modificationOpts
     * pending: *where*modified to be moved to Item$ */
+    this.addGeoConditionally(itemToSave)
+    // debugLog('saveNowToDb', itemToSave)
+    const dbFormat = itemToSave.toDbFormat()
+    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
+    this.syncStatusService.handleSavingPromise(promise)
+  }
 
-    let geo: any = this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. coords ;
+  private addGeoConditionally(itemToSave: TOdmItem$) {
+    let geo: any = this.geoLocationService.geoLocation$.lastVal?.currentPosition?.coords;
     // debugLog(`geo`, geo)
-    if ( geo ) {
+    if (geo) {
       geo = {
         accuracy: geo.accuracy ?? null,
         altitude: geo.altitude ?? null,
@@ -117,17 +125,15 @@ export abstract class OdmService2<
         lat: geo.latitude ?? null,
         lng: geo.longitude ?? null,
         speed: geo.speed ?? null,
-        timestamp: this.geoLocationService.geoLocation$.lastVal ?. currentPosition ?. timestamp
-      }
+        timestamp: this.geoLocationService.geoLocation$.lastVal?.currentPosition?.timestamp,
+      };
     } else {
       geo = null
     }
-    (itemToSave.val as any).whereCreated ??= geo;
-    (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
-    // debugLog('saveNowToDb', itemToSave)
-    const dbFormat = itemToSave.toDbFormat()
-    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
-    this.syncStatusService.handleSavingPromise(promise)
+    if ( geo ) {
+      (itemToSave.val as any).whereCreated ??= geo;
+      (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
+    }
   }
 
   public getItem$ById(id: TItemId): TOdmItem$ {
@@ -217,6 +223,7 @@ export abstract class OdmService2<
   }
 
   emitLocalItems() {
+    this.itemsLoaded = true
     this.localItems$.next(this.localItems$!.lastVal !)
   }
 
