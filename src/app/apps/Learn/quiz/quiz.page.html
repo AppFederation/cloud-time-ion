@@ -3,12 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      <div style="display: flex; align-items: center">
-        <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+<!--    <ion-title>-->
+<!--    </ion-title>-->
+
+    <div style="display: flex; align-items: center">
+      <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+
+      <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
 <!--        <ion-button routerLink="/learn"><</ion-button>-->
 
-        <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+        <app-search-toolbar></app-search-toolbar>
+
 
         <app-time-passing
           style="font-size: 66%"
@@ -29,7 +34,6 @@
         <odm-sync-status></odm-sync-status>
 
       </div>
-    </ion-title>
   </ion-toolbar>
 
 </ion-header>

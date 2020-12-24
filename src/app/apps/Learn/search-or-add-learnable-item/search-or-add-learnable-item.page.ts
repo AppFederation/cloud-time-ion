@@ -30,8 +30,6 @@ import {SelectionManager} from './SelectionManager'
 })
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
-  listOptions?: ListOptions
-
   listOptions$P = new LocalOptionsPatchableObservable<ListOptionsData>({
       preset: `lastModified`
     }
