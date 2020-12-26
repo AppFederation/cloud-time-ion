@@ -63,7 +63,7 @@
 
   <ion-fab *ngIf=showFab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button id='fabNewJournalEntry'
-                    (click)="newEntry()"
+                    (click)="newItem()"
     >
       <img src="assets/icon/CloudTime_Logo.svg" height="25rem">
     </ion-fab-button>
@@ -76,5 +76,18 @@
     Loading...
     // TODO: also "Please log in"
   </ng-template>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
+    <!--      +-->
+    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
+    <!--    </ion-fab-button>-->
+    <ion-fab-button id='fabNewItem' (click)="newItem()">
+      <ion-icon name="add-outline"></ion-icon>
+      <!--      <img src="assets/icon/CloudTime_Logo.svg" height="25rem">-->
+      <!--      +-->
+      <!--      <ion-icon name="add-circle"></ion-icon>-->
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
