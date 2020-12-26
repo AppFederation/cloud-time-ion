@@ -10,6 +10,7 @@ import {DurationComponent} from '../apps/Learn/quiz/quiz-options/quiz-intervals/
 import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.component'
 import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
 import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
+import {SearchToolbarComponent} from '../libs/search/search-toolbar/search-toolbar.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -37,9 +38,13 @@ const declarations = [
   exports: [
     ...imports,
     ...declarations,
+    SearchToolbarComponent,
   ],
   providers: [],
-  declarations: declarations,
+  declarations: [
+    declarations,
+    SearchToolbarComponent,
+  ],
 })
 export class SharedModule {
 }
