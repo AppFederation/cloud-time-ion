@@ -1,3 +1,26 @@
-<p>
-  journal-item-edit works!
-</p>
+<ng-container *ngIf="itemVal$ | async let itemVal else loading">
+
+  <div style="margin: 5px;">
+    Play the <b>Self-Improvement</b> game and its mini-games!
+    <ion-note>{{ fieldDescriptors.length }} fields</ion-note>
+    <p>
+      <app-time-point [time]="itemVal?.whenCreated?.toDate()"></app-time-point>
+      <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
+    </p>
+  </div>
+
+  <app-journal-numeric-fields
+    [journalEntry$]="item$P"
+  ></app-journal-numeric-fields>
+
+  <app-journal-text-fields
+    [journalEntry$]="item$P"
+  ></app-journal-text-fields>
+
+</ng-container>
+
+<ng-template #loading
+>
+  Loading...
+  // TODO: also "Please log in"
+</ng-template>
