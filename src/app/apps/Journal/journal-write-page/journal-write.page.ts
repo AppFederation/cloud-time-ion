@@ -69,8 +69,7 @@ export class JournalWritePage implements OnInit {
   }
 
   private setItem$(item$: JournalEntry$) {
-    // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields
-    this.item$ ?. saveNowToDb ?. ()
+    this.item$ ?. saveNowToDbIfNeeded ?. ()
     this.item$ = item$
     this.item$FakeArray = [ this.item$ ]
   }
