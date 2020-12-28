@@ -31,6 +31,7 @@
     "fullTemplateTypeCheck": true,
     "strictTemplates": true,
     "strictInjectionParameters": true,
+    "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   }

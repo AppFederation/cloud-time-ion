@@ -2,13 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {LearnItem$} from '../../../models/LearnItem$'
 import {SelectionManager} from '../../SelectionManager'
 import {SimpleListProperties} from './simple-list-properties'
+import {ItemListInterface} from '../item-list-interface'
 
 @Component({
   selector: 'simple-list',
   templateUrl: './simple-list.component.html',
   styleUrls: ['./simple-list.component.sass'],
 })
-export class SimpleListComponent implements OnInit {
+export class SimpleListComponent implements OnInit, ItemListInterface {
 
   @Input()
   items: LearnItem$[] | undefined;

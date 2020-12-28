@@ -1,9 +1,1 @@
-<!-- here comes the logic for switching between different lists, for now it is manually added -->
-<ion-virtual-list *ngIf="selectedListId === 'ionic-virtual-list'" [items]="items">
-</ion-virtual-list>
-
-<simple-list *ngIf="selectedListId === 'simple-list'" [items]="items">
-</simple-list>
-
-<virtual-list *ngIf="selectedListId === 'virtual-list'" [items]="items">
-</virtual-list>
+<ng-template listType></ng-template>

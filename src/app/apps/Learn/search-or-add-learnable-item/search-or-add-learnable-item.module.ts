@@ -27,7 +27,9 @@ import {SelectionInfoComponent} from './selection-info/selection-info.component'
 import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
 import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
 import {ItemListSwitcherComponent} from './item-lists/item-list-switcher/item-list-switcher.component'
-import {IonVirtualListComponent} from './item-lists/ion-virtual-list/ion-virtual-list.component'
+import {IonVirtualListComponent} from './item-lists/ion-virtual-list/ion-virtual-list.component';
+import { ListTypeDirective } from './item-lists/item-list-switcher/list-type.directive'
+import {BrowserModule} from '@angular/platform-browser'
 
 const routes: Routes = [
   {
@@ -69,6 +71,12 @@ const routes: Routes = [
     SelectionPopupComponent,
     ItemListSwitcherComponent,
     IonVirtualListComponent,
+    ListTypeDirective,
+  ],
+  entryComponents: [
+    IonVirtualListComponent,
+    SimpleListComponent,
+    VirtualListComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}

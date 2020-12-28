@@ -1,12 +1,19 @@
+import {Type} from '@angular/core'
+import {ItemListInterface} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/item-list-interface'
+import {IonVirtualListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/ion-virtual-list/ion-virtual-list.component'
+import {SimpleListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/simple-list/simple-list.component'
+import {VirtualListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/virtual-list/virtual-list.component'
+
 export class DisplayList {
   private constructor(public id: string,
-              public name: string) {
+                      public name: string,
+                      public component: Type<ItemListInterface>) {
   }
 
   public static displayLists = [
-      new DisplayList("ionic-virtual-list", "Ionic List"),
-      new DisplayList("simple-list", "Simple list"),
-      new DisplayList("virtual-list", "Virtual list")
+      new DisplayList("ionic-virtual-list", "Ionic List", IonVirtualListComponent),
+      new DisplayList("simple-list", "Simple list", SimpleListComponent),
+      new DisplayList("virtual-list", "Virtual list", VirtualListComponent)
   ];
 
   public static findById(id: string) {

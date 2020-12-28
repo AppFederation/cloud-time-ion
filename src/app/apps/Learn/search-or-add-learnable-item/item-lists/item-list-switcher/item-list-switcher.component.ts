@@ -1,25 +1,43 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {LearnItem$} from '../../../models/LearnItem$'
 import {LocalDebugOptionsService} from '../../../core/local-debug-options.service'
+import {ListTypeDirective} from './list-type.directive'
+import {ItemListInterface} from '../item-list-interface'
+import {DisplayList} from '../../../../../libs/AppFedShared/options/display-list-options/display-list'
 
 @Component({
   selector: 'item-list-switcher',
   templateUrl: './item-list-switcher.component.html',
   styleUrls: ['./item-list-switcher.component.sass'],
 })
-export class ItemListSwitcherComponent implements OnInit {
+export class ItemListSwitcherComponent implements OnInit, ItemListInterface {
 
   @Input()
   items: LearnItem$[] | undefined;
 
-  selectedListId = "";
+  @ViewChild(ListTypeDirective, {static: true})
+  listType: ListTypeDirective;
 
-  constructor(localDebugOptionsService: LocalDebugOptionsService) {
-    localDebugOptionsService.displayList$.subscribe(displayList => {
-      this.selectedListId = displayList.id;
-    });
+  currentDisplayList: DisplayList;
+
+  constructor(private localDebugOptionsService: LocalDebugOptionsService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.localDebugOptionsService.displayList$.subscribe(displayList => {
+      this.currentDisplayList = displayList;
+      this.reloadList(displayList)
+    });
 
+    this.localDebugOptionsService.generatedData$.subscribe(() => this.reloadList(this.currentDisplayList))
+  }
+
+  private reloadList(displayList: DisplayList) {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(displayList.component);
+    const viewContainerRef = this.listType.viewContainerRef;
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent<ItemListInterface>(componentFactory);
+    componentRef.instance.items = this.items;
+  }
 }
