@@ -1,0 +1,11 @@
+<div>
+  <ion-note color="secondary">Select list type to display:</ion-note>
+  <ion-list>
+    <ion-radio-group [value]="selectedDisplayList">
+      <ion-item *ngFor="let list of lists">
+        <ion-radio slot="end" [value]="list" (ionFocus)="onSelected(list)"></ion-radio>
+        <ion-label>{{list.name}}</ion-label>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</div>

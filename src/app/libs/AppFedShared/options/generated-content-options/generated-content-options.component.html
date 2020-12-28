@@ -1,4 +1,8 @@
 <div>
-  <ion-checkbox [(ngModel)]="isSelected" (ionChange)="toggleGeneratedData()"></ion-checkbox>
-  <ion-label>Generated data</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="isSelected" (ionChange)="toggleGeneratedData()" slot="end"></ion-checkbox>
+      <ion-label>Generated data</ion-label>
+    </ion-item>
+  </ion-list>
 </div>

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LearnItem$} from '../../../models/LearnItem$'
+import {LocalDebugOptionsService} from '../../../core/local-debug-options.service'
 
 @Component({
   selector: 'item-list-switcher',
@@ -11,7 +12,13 @@ export class ItemListSwitcherComponent implements OnInit {
   @Input()
   items: LearnItem$[] | undefined;
 
-  constructor() { }
+  selectedListId = "";
+
+  constructor(localDebugOptionsService: LocalDebugOptionsService) {
+    localDebugOptionsService.displayList$.subscribe(displayList => {
+      this.selectedListId = displayList.id;
+    });
+  }
 
   ngOnInit() {}
 

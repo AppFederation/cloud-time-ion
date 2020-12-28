@@ -11,6 +11,8 @@ import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.com
 import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
 import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
 import {GeneratedContentOptionsComponent} from '../libs/AppFedShared/options/generated-content-options/generated-content-options.component'
+import {DisplayListOptionsComponent} from '../libs/AppFedShared/options/display-list-options/display-list-options.component'
+import {LearnSharedModule} from '../apps/Learn/shared/learn-shared.module'
 
 let imports = [
   ReactiveFormsModule,
@@ -26,6 +28,7 @@ const declarations = [
   GeoLocComponent,
   OptionsComponent,
   GeneratedContentOptionsComponent,
+  DisplayListOptionsComponent,
 ]
 
 @NgModule({
