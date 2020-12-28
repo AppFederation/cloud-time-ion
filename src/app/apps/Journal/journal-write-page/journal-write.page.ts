@@ -7,7 +7,7 @@ import {JournalTextDescriptor, JournalTextDescriptors} from "../models/JournalTe
 import {NumericPickerVal} from "../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component";
 import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 import {JournalEntry$} from '../models/JournalEntry$'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 @Component({
@@ -19,30 +19,26 @@ export class JournalWritePage implements OnInit {
 
   public item$ ! : JournalEntry$
 
-  fieldDescriptors = JournalNumericDescriptors.instance.array
-
   /** annoying coz covers part of the last text field */
   showFab = false
 
   public itemId: JournalEntryId = this.activatedRoute.snapshot.params['itemId']
-
-  get itemVal$(): CachedSubject<JournalEntry | undefined | null> {
-    return this.item$.val$
-  }
+  item$Replacable ! : JournalEntry$
 
   constructor(
     public journalEntriesService: JournalEntriesService,
     public geoLocationService: ApfGeoLocationService,
     public activatedRoute: ActivatedRoute,
+    public router: Router,
   ) {
     debugLog(`this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
   }
 
   ngOnInit() {
-    this.newEntry();
+    this.initItem();
   }
 
-  public newEntry() {
+  public initItem() {
     if ( this.itemId === `new`) {
       // #UX: #Focus: having a special url for `new` entry could actually be good: when browser/page loads, we always start fresh, without getting distracted by what happened to be the previous entry
       // ... (which might be totally irrelevant and distracting now, since we want to write new entry and not make a retrospective
@@ -64,5 +60,10 @@ export class JournalWritePage implements OnInit {
     // .coords || null // FIXME: use on-save interceptor
 
     this.item$.patchThrottled(patch)
+  }
+
+  newItem() {
+    // this.item$Replacable
+    this.router.navigateByUrl(`/journal/write/new`)
   }
 }

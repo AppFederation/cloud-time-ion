@@ -33,8 +33,6 @@ import {LocalDebugOptionsService} from '../core/local-debug-options.service'
 })
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
-  listOptions?: ListOptions
-
   listOptions$P = new LocalOptionsPatchableObservable<ListOptionsData>({
       preset: `lastModified`
     }

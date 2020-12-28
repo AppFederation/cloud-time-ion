@@ -14,15 +14,17 @@ import {RatingsModule} from '../../../libs/AppFedSharedIonic/ratings/ratings.mod
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
 import {SharedModule} from '../../../shared/shared.module'
 import {JournalTextFieldComponent} from './journal-text-fields/journal-text-field/journal-text-field.component'
+import {JournalItemEditComponent} from './journal-item-edit/journal-item-edit.component'
 
 @NgModule({
-  declarations: [
-    JournalWritePage,
-    JournalNumericFieldsComponent,
-    JournalTextFieldsComponent,
-    JournalSituationsComponent,
-    JournalTextFieldComponent,
-  ],
+    declarations: [
+        JournalWritePage,
+        JournalNumericFieldsComponent,
+        JournalTextFieldsComponent,
+        JournalSituationsComponent,
+        JournalTextFieldComponent,
+        JournalItemEditComponent,
+    ],
   imports: [
     CommonModule,
     JournalWritePageRoutingModule,
