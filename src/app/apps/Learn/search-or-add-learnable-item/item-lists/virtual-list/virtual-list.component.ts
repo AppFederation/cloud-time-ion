@@ -17,7 +17,11 @@ export class VirtualListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.items = this.items == undefined ? [] : this.items;
+    this.items = this.safeItems();
+  }
+
+  safeItems() {
+    return this.items == undefined ? [] : this.items;
   }
 
   trackByFn(index: number, item: LearnItem$) {

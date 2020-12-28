@@ -11,7 +11,7 @@ import {SimpleListProperties} from './simple-list-properties'
 export class SimpleListComponent implements OnInit {
 
   @Input()
-  items: LearnItem$[];
+  items: LearnItem$[] | undefined;
 
   public selectionManager: SelectionManager = new SelectionManager<any>();
 
@@ -22,7 +22,11 @@ export class SimpleListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.items = this.items === undefined ? [] : this.items;
+    this.items = this.safeItems();
+  }
+
+  safeItems() {
+    return this.items == undefined ? [] : this.items;
   }
 
   trackByFn(index: number, item: LearnItem$) {
@@ -34,6 +38,6 @@ export class SimpleListComponent implements OnInit {
   }
 
   loadAll() {
-    this.currentlyDisplayedElements = this.items.length;
+    this.currentlyDisplayedElements = this.safeItems().length;
   }
 }
