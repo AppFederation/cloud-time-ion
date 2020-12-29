@@ -68,6 +68,9 @@ export class OdmItem$2<
    **/
   currentVal: TInMemData | nullish = undefined
 
+  /** Has patch that has not yet had a call to backend DB API (as opposed to not having been synchronized via network) */
+  hasPendingPatch = false
+
 
   get val() { return this.currentVal }
 
@@ -87,7 +90,7 @@ export class OdmItem$2<
     public id?: TItemId,
     initialInMemData?: TInMemData,
   ) {
-    if ( initialInMemData ) {
+    if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
       // DO NOT patch here, as it can create an infinite loop
       // this.patchNow(initialInMemData) // maybe should override rather than patch
@@ -103,6 +106,7 @@ export class OdmItem$2<
       */
       // FIXME: incremental patching
       this.odmService.saveNowToDb(this)
+      this.hasPendingPatch = false
       this.resolveFuncPendingThrottledIfNecessary()
     }) as any /* TODO investigate after strict */)
     // this.onModified()
@@ -136,6 +140,7 @@ export class OdmItem$2<
     this.setIdAndWhenCreatedIfNecessary()
     this.setLastModifiedIfNecessary(modificationOpts) // before the patching, in case patch contains modification fields
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
+    this.hasPendingPatch = true
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -216,11 +221,21 @@ export class OdmItem$2<
 
   /** Note: saveThrottled does not exist, because we prefer to use patch, for incremental saves of only the fields that have changed */
   saveNowToDb(modificationOpts?: ModificationOpts) {
+    console.log(`saveNowToDb`)
     this.setIdAndWhenCreatedIfNecessary()
     this.setLastModifiedIfNecessary(modificationOpts)
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
   }
+
+  public saveNowToDbIfNeeded() {
+    if ( this.hasPendingPatch ) {
+      this.saveNowToDb /* ...Force */()
+    }
+    // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields
+    // FIXME: check if has pending patches
+  }
+
 
   private resolveFuncPendingThrottledIfNecessary() {
     if (this.resolveFuncPendingThrottled) {

@@ -17,7 +17,7 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 })
 export class JournalWritePage implements OnInit {
 
-  public item$ ! : JournalEntry$
+  public item$ ? : JournalEntry$
 
   /** annoying coz covers part of the last text field */
   showFab = false
@@ -63,6 +63,7 @@ export class JournalWritePage implements OnInit {
   }
 
   newItem() {
+    this.item$?.saveNowToDbIfNeeded()
     // this.item$Replacable
     this.router.navigateByUrl(`/journal/write/new`)
     this.setItem$(new JournalEntry$(this.journalEntriesService, undefined, new JournalEntry()))

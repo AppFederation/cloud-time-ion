@@ -38,9 +38,4 @@ export class JournalEntry$ extends OdmItem$2<
     super.patchThrottled(patch);
   }
 
-  public saveNowToDbIfNeeded() {
-    // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields
-    // FIXME: check if has pending patches
-    this.saveNowToDb /* ...Force */()
-  }
 }
