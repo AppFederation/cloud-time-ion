@@ -133,6 +133,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   urgency = jnd()
   sense_of_urgency = jnd()
+  patience = jnd({searchTerms: [`patient`]})
   achievements = jnd({
     isShortListed: true,
   })
@@ -183,7 +184,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   drama = jnd({lowerIsBetter, })
   'annoyance' = jnd({lowerIsBetter: true,})
-  anger = jnd({lowerIsBetter: true,})
+  anger = jnd({lowerIsBetter: true, searchTerms: [`angry`, `pissed off`]})
   hate = jnd({lowerIsBetter: true,})
   modesty = jnd({antonym: [`hubris`, `arrogance`, `bragging`, `showing off`, `egomania`]})
   aggression = jnd({lowerIsBetter: true,})
@@ -202,6 +203,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   strength = jnd({isShortListed: true})
   self_reliance = jnd({isShortListed: true})
   responsibility = jnd({isShortListed: true, searchTerms: [`responsableness`, `responsibleness`]})
+  maturity = jnd({searchTerms: [`being grown up`]})
   reliability = jnd({isShortListed: true, searchTerms: [`trustworthiness`], antonym: [`flaky`, `flakiness`]})
   // TODO physical strength, mental strength
   // TODO power / influence
@@ -246,6 +248,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   relax = jnd({antonym: 'stressed'})
   satisfaction = jnd({antonym: 'frustrated'} /*?*/)
+  frustration = jnd({antonym: 'frustrated'} /*?*/)
   fulfillment = jnd({searchTerms: [`fulfilment` /* single l */]})
   meaning = jnd()
   purpose = jnd()
