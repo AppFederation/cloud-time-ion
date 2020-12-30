@@ -92,6 +92,8 @@ export class OdmItem$2<
   ) {
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
+      // TODO: this.hasPendingPatch = true ?
+
       // DO NOT patch here, as it can create an infinite loop
       // this.patchNow(initialInMemData) // maybe should override rather than patch
     }
@@ -229,7 +231,9 @@ export class OdmItem$2<
   }
 
   public saveNowToDbIfNeeded() {
-    if ( this.hasPendingPatch ) {
+    if ( this.hasPendingPatch
+      /* more like hasUserEnteredData */
+    ) {
       this.saveNowToDb /* ...Force */()
     }
     // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields
