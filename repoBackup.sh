@@ -80,6 +80,7 @@ function backupRepo () {
 
 
 backupAllRepos() {
+  backupRepo "/A/R/Learning/codility"
   backupRepo "/A/R/FlexLife/cloud-time-ion"
 
   backupRepo "/A/R/O/OrYoL"
