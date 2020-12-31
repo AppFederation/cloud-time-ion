@@ -25,7 +25,11 @@ export class TimePointComponent implements OnInit {
   ngOnInit() {}
 
   process(time ? : Date) {
-    return time ?. toISOString() ?. replace('T', ' ') ?. replace(/\.\d\d\dZ/gi, '')
+    try {
+      return time?.toISOString()?.replace('T', ' ')?.replace(/\.\d\d\dZ/gi, '')
+    } catch (e) {
+      return 'invalid-date'
+    }
     //
   }
 }
