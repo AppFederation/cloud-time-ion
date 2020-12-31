@@ -2,7 +2,7 @@ import {Type} from '@angular/core'
 import {ItemListInterface} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/item-list-interface'
 import {IonVirtualListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/ion-virtual-list/ion-virtual-list.component'
 import {SimpleListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/simple-list/simple-list.component'
-import {VirtualListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/virtual-list/virtual-list.component'
+import {CdkVirtualListComponent} from '../../../../apps/Learn/search-or-add-learnable-item/item-lists/cdk-virtual-list/cdk-virtual-list.component'
 
 export class DisplayList {
   private constructor(public id: string,
@@ -13,7 +13,7 @@ export class DisplayList {
   public static displayLists = [
       new DisplayList("ionic-virtual-list", "Ionic List", IonVirtualListComponent),
       new DisplayList("simple-list", "Simple list", SimpleListComponent),
-      new DisplayList("virtual-list", "Virtual list", VirtualListComponent)
+      new DisplayList("cdk-virtual-list", "Virtual list", CdkVirtualListComponent),
   ];
 
   public static findById(id: string) {

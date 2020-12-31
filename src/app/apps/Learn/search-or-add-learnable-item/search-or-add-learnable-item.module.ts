@@ -19,7 +19,7 @@ import {AudioModule} from '../../../libs/AppFedShared/audio/audio.module'
 import {SharedModule as SharedModule2} from '../../../shared/shared.module'
 import {SimpleListComponent} from './item-lists/simple-list/simple-list.component'
 import {ListOptionsComponent} from './list-options/list-options.component'
-import {VirtualListComponent} from './item-lists/virtual-list/virtual-list.component'
+import {CdkVirtualListComponent} from './item-lists/cdk-virtual-list/cdk-virtual-list.component'
 import {ScrollingModule} from '@angular/cdk/scrolling'
 import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling'
 import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/selection-checkbox.component'
@@ -64,7 +64,7 @@ const routes: Routes = [
     LearnStatsComponent,
     SearchOrAddTextEditorComponent,
     SimpleListComponent,
-    VirtualListComponent,
+    CdkVirtualListComponent,
     ListOptionsComponent,
     SelectionCheckboxComponent,
     SelectionInfoComponent,
@@ -76,7 +76,7 @@ const routes: Routes = [
   entryComponents: [
     IonVirtualListComponent,
     SimpleListComponent,
-    VirtualListComponent,
+    CdkVirtualListComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}

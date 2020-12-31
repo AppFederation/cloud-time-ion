@@ -11,16 +11,17 @@ export class DisplayListOptionsComponent implements OnInit {
 
   public lists = DisplayList.displayLists;
 
-  public selectedDisplayList: DisplayList;
+  public initialDisplayList: DisplayList;
 
   constructor(private localDebugOptionsService: LocalDebugOptionsService) {
-    this.selectedDisplayList = localDebugOptionsService.getCurrentDisplayListValue();
+    this.initialDisplayList = localDebugOptionsService.getCurrentDisplayListValue();
   }
 
   ngOnInit() {}
 
   onSelected(list: DisplayList) {
-    this.selectedDisplayList = list;
-    this.localDebugOptionsService.toggleDisplayList(this.selectedDisplayList);
+    console.log(`onSelectedList=${list.name}`);
+    //this.initialDisplayList = list;
+    this.localDebugOptionsService.toggleDisplayList(list);
   }
 }

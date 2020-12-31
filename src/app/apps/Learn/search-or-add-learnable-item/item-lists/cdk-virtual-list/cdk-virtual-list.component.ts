@@ -4,11 +4,11 @@ import {SelectionManager} from '../../SelectionManager'
 import {ItemListInterface} from '../item-list-interface'
 
 @Component({
-  selector: 'virtual-list',
-  templateUrl: './virtual-list.component.html',
-  styleUrls: ['./virtual-list.component.sass'],
+  selector: 'cdk-virtual-list',
+  templateUrl: './cdk-virtual-list.component.html',
+  styleUrls: ['./cdk-virtual-list.component.sass'],
 })
-export class VirtualListComponent implements OnInit, ItemListInterface {
+export class CdkVirtualListComponent implements OnInit, ItemListInterface {
 
   @Input()
   items: LearnItem$[] | undefined;
