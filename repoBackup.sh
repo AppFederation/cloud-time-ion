@@ -94,3 +94,5 @@ backupAllRepos() {
 }
 
 time backupAllRepos
+
+date
