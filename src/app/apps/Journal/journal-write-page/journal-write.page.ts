@@ -65,8 +65,9 @@ export class JournalWritePage implements OnInit {
   newItem() {
     this.item$?.saveNowToDbIfNeeded()
     // this.item$Replacable
-    this.router.navigateByUrl(`/journal/write/new`)
-    this.setItem$(new JournalEntry$(this.journalEntriesService, undefined, new JournalEntry()))
+    this.router.navigateByUrl(`/journal/write/new`).then(() => {
+      this.setItem$(new JournalEntry$(this.journalEntriesService, undefined, new JournalEntry()))
+    })
   }
 
   private setItem$(item$: JournalEntry$) {
