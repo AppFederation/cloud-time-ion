@@ -32,10 +32,13 @@ export class JournalWritePage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {
-    debugLog(`this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
+    debugLog(`JournalWritePage constructor this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
   }
 
   ngOnInit() {
+    debugLog(`JournalWritePage ngOnInit()`,
+      `itemId`, this.itemId,
+      `this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
     this.initItem();
   }
 
@@ -63,6 +66,10 @@ export class JournalWritePage implements OnInit {
   }
 
   newItem() {
+    debugLog(`JournalWritePage newItem()`,
+      `itemId`, this.itemId,
+      `this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
+
     this.item$?.saveNowToDbIfNeeded()
     // this.item$Replacable
     this.router.navigateByUrl(`/journal/write/new`).then(() => {
