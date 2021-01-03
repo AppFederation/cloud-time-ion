@@ -15,6 +15,11 @@
   >
     {{index+1}}.
   </span>
+
+  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
+  <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
+  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
+
   <span
     style="color: var(--primary)"
     *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
@@ -27,9 +32,6 @@
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
-  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
-  <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
-  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
   &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
 
