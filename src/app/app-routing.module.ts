@@ -35,7 +35,12 @@ const routes: Routes = [
     path: 'learn/stats',
     loadChildren: () => import('./apps/Learn/learn-stats/learn-stats.module').then( m => m.LearnStatsPageModule)
   },
-
+  {
+    path: '',
+    redirectTo: '/learn',
+    pathMatch: 'full'
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
