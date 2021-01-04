@@ -366,6 +366,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'physical exercises' = jnd({
     isShortListed: true,
   })
+  'physical fitness' = jnd({
+    isShortListed: true,
+  })
   /** TODO sport as sub-element of exercises */
   sport = jnd({
     isShortListed: true,
