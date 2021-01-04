@@ -1,14 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LearnItem$} from '../../../models/LearnItem$'
 import {SelectionManager} from '../../SelectionManager'
-import {ItemListInterface} from '../item-list-interface'
 
 @Component({
   selector: 'cdk-virtual-list',
   templateUrl: './cdk-virtual-list.component.html',
   styleUrls: ['./cdk-virtual-list.component.sass'],
 })
-export class CdkVirtualListComponent implements OnInit, ItemListInterface {
+export class CdkVirtualListComponent implements OnInit {
 
   @Input()
   items: LearnItem$[] | undefined;

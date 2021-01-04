@@ -1,1 +1,13 @@
-<ng-template listType></ng-template>
+<div [ngSwitch]="selectedListId">
+  <ion-virtual-list *ngSwitchCase="'ionic-virtual-list'" [items]="items">
+  </ion-virtual-list>
+
+  <simple-list *ngSwitchCase="'simple-list'" [items]="items">
+  </simple-list>
+
+  <cdk-virtual-list *ngSwitchCase="'cdk-virtual-list'" [items]="items">
+  </cdk-virtual-list>
+
+  <ion-virtual-list *ngSwitchDefault [items]="items">
+  </ion-virtual-list>
+</div>
