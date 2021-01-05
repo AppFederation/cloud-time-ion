@@ -5,7 +5,7 @@
       <ion-icon
         [size]="'25px'"
         [routerLink]="'/journal'"
-        (click)="item$.saveNowToDb()"
+        (click)="item$ ?. saveNowToDbIfNeeded()"
         name="arrow-back-outline"
         class="action-icon"
       ></ion-icon>
