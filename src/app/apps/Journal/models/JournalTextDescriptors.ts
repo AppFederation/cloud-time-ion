@@ -54,6 +54,8 @@ export class JournalTextDescriptors {
   // group the should*-s ?
 
   bottlenecks = d({ searchTerms: [`limiting factors`]})
+  enabling_factors = d({ searchTerms: [`factors`]})
+
   should = d()
 
   should_do_more = d({
