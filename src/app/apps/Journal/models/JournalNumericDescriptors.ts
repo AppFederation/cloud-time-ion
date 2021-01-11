@@ -2,6 +2,12 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
+// idea: later group them into key elements that have to be in balance:
+// e.g.:
+// - productivity
+// - excitement
+// - responsibility
+
 const isShortListed = true
 const moderateIsBetter = true
 const lowerIsBetter = true
@@ -203,9 +209,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     searchTerms: [`resolve`]
   })
   resilience = jnd({isShortListed: true})
+  striving = jnd({isShortListed: true})
   strength = jnd({isShortListed: true})
   self_reliance = jnd({isShortListed: true})
   responsibility = jnd({isShortListed: true, searchTerms: [`responsableness`, `responsibleness`]})
+  maturity = jnd({searchTerms: [`being grown up`]})
   reliability = jnd({isShortListed: true, searchTerms: [`trustworthiness`], antonym: [`flaky`, `flakiness`]})
   // TODO physical strength, mental strength
   // TODO power / influence
