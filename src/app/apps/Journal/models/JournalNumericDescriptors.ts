@@ -243,6 +243,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   rest = jnd({antonym: 'tired', searchTerms: [`Somnolence`, `sleepy` /* Note; someone searches sleepy, but the might want to distinguish tired */]})
   /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
   'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
+  'grogginess' = jnd({lowerIsBetter: true, searchTerms: [`groggy`]})
   'sleep quality' = jnd({
     isShortListed: true,
   })
@@ -258,6 +259,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   relax = jnd({antonym: 'stressed'})
   satisfaction = jnd({antonym: 'frustrated'} /*?*/)
+  frustration = jnd({antonym: 'frustrated'} /*?*/)
   fulfillment = jnd({searchTerms: [`fulfilment` /* single l */]})
   meaning = jnd()
   purpose = jnd()
