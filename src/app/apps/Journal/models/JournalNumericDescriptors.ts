@@ -324,6 +324,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'clear thinking' = jnd({
     isShortListed: true,
   })
+  'brainstorming' = jnd({} /* part of thinking / problem solving / troubleshooting */)
   planning = jnd({
     specifyDuration,
   })
@@ -374,6 +375,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   hangover_intensity = jnd({lowerIsBetter: true,})
   'physical exercises' = jnd({
+    isShortListed: true,
+  })
+  'physical fitness' = jnd({
     isShortListed: true,
   })
   /** TODO sport as sub-element of exercises */
