@@ -4,9 +4,10 @@ export class DisplayList {
   }
 
   public static displayLists = [
-      new DisplayList("ionic-virtual-list", "Ionic List"),
+      new DisplayList("ionic-virtual-list", "Ionic Virtual List"),
       new DisplayList("simple-list", "Simple list"),
-      new DisplayList("virtual-list", "Virtual list")
+      new DisplayList("cdk-virtual-list", " Cdk Virtual list"),
+      new DisplayList("intersection-observer-list", "IObserver list")
   ];
 
   public static findById(id: string) {

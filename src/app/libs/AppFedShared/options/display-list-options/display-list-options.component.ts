@@ -20,8 +20,6 @@ export class DisplayListOptionsComponent implements OnInit {
   ngOnInit() {}
 
   onSelected(list: DisplayList) {
-    console.log(`onSelectedList=${list.name}`);
-    //this.initialDisplayList = list;
     this.localDebugOptionsService.toggleDisplayList(list);
   }
 }

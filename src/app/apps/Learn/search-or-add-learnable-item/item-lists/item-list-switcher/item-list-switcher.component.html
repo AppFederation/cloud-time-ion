@@ -1,13 +1,12 @@
-<div [ngSwitch]="selectedListId">
-  <ion-virtual-list *ngSwitchCase="'ionic-virtual-list'" [items]="items">
-  </ion-virtual-list>
 
-  <simple-list *ngSwitchCase="'simple-list'" [items]="items">
-  </simple-list>
+<ion-virtual-list *ngIf="selectedListId === 'ionic-virtual-list'" [items]="items">
+</ion-virtual-list>
 
-  <cdk-virtual-list *ngSwitchCase="'cdk-virtual-list'" [items]="items">
-  </cdk-virtual-list>
+<simple-list *ngIf="selectedListId === 'simple-list'" [items]="items">
+</simple-list>
 
-  <ion-virtual-list *ngSwitchDefault [items]="items">
-  </ion-virtual-list>
-</div>
+<cdk-virtual-list *ngIf="selectedListId === 'cdk-virtual-list'" [items]="items">
+</cdk-virtual-list>
+
+<intersection-observer-list *ngIf="selectedListId === 'intersection-observer-list'" [items]="items">
+</intersection-observer-list>

@@ -28,6 +28,7 @@ import {SelectionPopupComponent} from './selection-popup/selection-popup.compone
 import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
 import {ItemListSwitcherComponent} from './item-lists/item-list-switcher/item-list-switcher.component'
 import {IonVirtualListComponent} from './item-lists/ion-virtual-list/ion-virtual-list.component'
+import {IntersectionObserverListComponent} from './item-lists/intersection-observer-list/intersection-observer-list.component'
 
 const routes: Routes = [
   {
@@ -69,6 +70,7 @@ const routes: Routes = [
     SelectionPopupComponent,
     ItemListSwitcherComponent,
     IonVirtualListComponent,
+    IntersectionObserverListComponent,
   ],
   entryComponents: [
     IonVirtualListComponent,
