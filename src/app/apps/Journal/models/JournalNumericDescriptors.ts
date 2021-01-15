@@ -2,6 +2,12 @@ import {Dict, dictToArrayWithIds} from '../../../libs/AppFedShared/utils/diction
 import {UiFieldDef} from './JournalTextDescriptors'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
+// idea: later group them into key elements that have to be in balance:
+// e.g.:
+// - productivity
+// - excitement
+// - responsibility
+
 const isShortListed = true
 const moderateIsBetter = true
 const lowerIsBetter = true
@@ -170,6 +176,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   passion = jnd()
   adventure = jnd()
   exploration = jnd()
+  travel = jnd()
   novelty = jnd()
   variety = jnd()
   'sense of wonder' = jnd()
@@ -417,6 +424,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   concern = jnd({moderateIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   anxiety = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   tension = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
+  relief = jnd() /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
   visualizing = jnd({moderateIsBetter: true})
   long_term_vision = jnd({moderateIsBetter: true, searchTerms: `long-term vision`})
   fun = jnd()
