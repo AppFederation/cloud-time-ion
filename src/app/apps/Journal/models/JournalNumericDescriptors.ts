@@ -441,6 +441,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   efficiency = jnd()
   effectiveness = jnd()
 
+  social_interactions = jnd({searchTerms: ['interacting with people']})
+
   // TODO: ego,
   // TODO pride, modesty
 
