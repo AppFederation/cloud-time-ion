@@ -58,6 +58,31 @@ export class RichTextEditComponent implements OnInit {
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
     ],
+    style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
+      { title: 'Headers', items: [
+          { title: 'h1', block: 'h1' },
+          { title: 'h2', block: 'h2' },
+          { title: 'h3', block: 'h3' },
+          { title: 'h4', block: 'h4' },
+          { title: 'h5', block: 'h5' },
+          { title: 'h6', block: 'h6' }
+        ] },
+
+      { title: 'Blocks', items: [
+          { title: 'p', block: 'p' },
+          { title: 'div', block: 'div' },
+          { title: 'pre', block: 'pre' }
+        ] },
+
+      { title: 'Containers', items: [
+          { title: 'section', block: 'section', wrapper: true, merge_siblings: false },
+          { title: 'article', block: 'article', wrapper: true, merge_siblings: false },
+          { title: 'blockquote', block: 'blockquote', wrapper: true },
+          { title: 'hgroup', block: 'hgroup', wrapper: true },
+          { title: 'aside', block: 'aside', wrapper: true },
+          { title: 'figure', block: 'figure', wrapper: true }
+        ] }
+    ],
     paste_data_images: true /* https://www.tiny.cloud/docs/plugins/paste/ */,
     paste_retain_style_properties: 'all', // https://www.tiny.cloud/docs/plugins/powerpaste/ - PowerPaste plugin - (30 eur/month?)
     /* https://www.tiny.cloud/pricing/ -- 30/month - BUT about pasting from Linguee - this should be automated by extension anyway, so probably not worth over-investing in tinymce for that
@@ -94,7 +119,7 @@ export class RichTextEditComponent implements OnInit {
         });
       editor.ui.registry.addButton('customMarkBtn', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
-        text: 'MARK',
+        text: 'MARK11',
         onAction: () => {
           this.highlightSelected(editor)
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
