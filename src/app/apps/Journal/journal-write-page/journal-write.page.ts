@@ -62,7 +62,7 @@ export class JournalWritePage implements OnInit {
       Object.assign({}, this.geoLocationService.geoLocation$.lastVal.currentPosition.coords)
     // .coords || null // FIXME: use on-save interceptor
 
-    this.item$.patchThrottled(patch)
+    this.item$ ?. patchThrottled(patch)
   }
 
   newItem() {
