@@ -24,7 +24,7 @@ export class JournalWritePage implements OnInit {
 
   public itemId: JournalEntryId = this.activatedRoute.snapshot.params['itemId']
 
-  private item$FakeArray ! : Array<JournalEntry$>
+  item$FakeArray ! : Array<JournalEntry$>
 
   constructor(
     public journalEntriesService: JournalEntriesService,
