@@ -107,7 +107,7 @@ export class RichTextEditComponent implements OnInit {
       `blockquote { border-left: 3px var(--secondary) solid; padding-left: 6px; margin-left: 20px } ` + /* TODO: extract standard rich text css into global const for -edit and -view */
       `ul { padding-inline-start: 20px; }` +
       `ol { padding-inline-start: 20px; }` +
-      `section { border: 2px solid darkorange; padding: 3px; margin: 2px; border-radius: 4px;  }`
+      `section { border: 2px solid #b02020; padding: 3px; margin: 2px; border-radius: 4px;  }`
       // `ul { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }` +
       + `ol { border-left: 2px solid #801010; }`
       // `ol { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }`
@@ -123,7 +123,7 @@ export class RichTextEditComponent implements OnInit {
         });
       editor.ui.registry.addButton('customMarkBtn', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
-        text: 'MARK11',
+        text: 'MARK',
         onAction: () => {
           this.highlightSelected(editor)
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');

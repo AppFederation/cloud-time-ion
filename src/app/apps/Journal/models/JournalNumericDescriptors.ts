@@ -209,6 +209,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     searchTerms: [`resolve`]
   })
   resilience = jnd({isShortListed: true})
+  striving = jnd({isShortListed: true})
   strength = jnd({isShortListed: true})
   self_reliance = jnd({isShortListed: true})
   responsibility = jnd({isShortListed: true, searchTerms: [`responsableness`, `responsibleness`]})
@@ -242,6 +243,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   rest = jnd({antonym: 'tired', searchTerms: [`Somnolence`, `sleepy` /* Note; someone searches sleepy, but the might want to distinguish tired */]})
   /** https://forum.wordreference.com/threads/drowsy-versus-sleepy.1010180/#post-14146420 */
   'sleepiness' = jnd({lowerIsBetter: true, searchTerms: [`drowsiness`, `drowsy`, `sleepy`, `Somnolence`]})
+  'grogginess' = jnd({lowerIsBetter: true, searchTerms: [`groggy`]})
   'sleep quality' = jnd({
     isShortListed: true,
   })
@@ -441,9 +443,12 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   social_interactions = jnd({searchTerms: ['interacting with people']})
 
+  introspection = jnd()
+  self_discovery = jnd()
+
 
   // TODO: ego,
-  // TODO pride, modesty
+  // TODO pride
 
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
