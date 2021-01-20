@@ -24,7 +24,7 @@ export class JournalWritePage implements OnInit {
 
   public itemId: JournalEntryId = this.activatedRoute.snapshot.params['itemId']
 
-  private item$FakeArray ! : Array<JournalEntry$>
+  item$FakeArray ! : Array<JournalEntry$>
 
   constructor(
     public journalEntriesService: JournalEntriesService,
@@ -62,7 +62,7 @@ export class JournalWritePage implements OnInit {
       Object.assign({}, this.geoLocationService.geoLocation$.lastVal.currentPosition.coords)
     // .coords || null // FIXME: use on-save interceptor
 
-    this.item$.patchThrottled(patch)
+    this.item$ ?. patchThrottled(patch)
   }
 
   newItem() {
