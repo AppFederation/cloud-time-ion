@@ -40,6 +40,7 @@
 </ion-header>
 <ion-content>
     <app-journal-item-edit
+      *ngFor="let item$ of item$FakeArray"
       [item$P]="item$"
     ></app-journal-item-edit>
 

@@ -26,16 +26,16 @@ export class JournalEntry$ extends OdmItem$2<
     const ret = {
         ...val,
         whenCreated: {
-          toDate: () => new Date(dateFromId
-          )
+          toDate: () => new Date(dateFromId)
         }
       }
       return ret as any
     }
   ))
 
-  patchThrottled(patch: OdmPatch<JournalEntry>) {
+  public patchThrottled(patch: OdmPatch<JournalEntry>) {
     // errorAlertAndThrow(`patchThrottled journal entry`)
     super.patchThrottled(patch);
   }
+
 }

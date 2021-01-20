@@ -17,13 +17,14 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 })
 export class JournalWritePage implements OnInit {
 
-  public item$ ! : JournalEntry$
+  public item$ ? : JournalEntry$
 
   /** annoying coz covers part of the last text field */
   showFab = false
 
   public itemId: JournalEntryId = this.activatedRoute.snapshot.params['itemId']
-  item$Replacable ! : JournalEntry$
+
+  private item$FakeArray ! : Array<JournalEntry$>
 
   constructor(
     public journalEntriesService: JournalEntriesService,
@@ -31,10 +32,13 @@ export class JournalWritePage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {
-    debugLog(`this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
+    debugLog(`JournalWritePage constructor this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
   }
 
   ngOnInit() {
+    debugLog(`JournalWritePage ngOnInit()`,
+      `itemId`, this.itemId,
+      `this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
     this.initItem();
   }
 
@@ -42,10 +46,9 @@ export class JournalWritePage implements OnInit {
     if ( this.itemId === `new`) {
       // #UX: #Focus: having a special url for `new` entry could actually be good: when browser/page loads, we always start fresh, without getting distracted by what happened to be the previous entry
       // ... (which might be totally irrelevant and distracting now, since we want to write new entry and not make a retrospective
-      this.item$ = new JournalEntry$(this.journalEntriesService, undefined, new JournalEntry())
-
+      this.newItem()
     } else {
-      this.item$ = this.journalEntriesService.getItem$ById(this.itemId)
+      this.setItem$(this.journalEntriesService.getItem$ById(this.itemId))
     }
     // this.journalEntry.saveNowToDb()
   }
@@ -63,7 +66,20 @@ export class JournalWritePage implements OnInit {
   }
 
   newItem() {
+    debugLog(`JournalWritePage newItem()`,
+      `itemId`, this.itemId,
+      `this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
+
+    this.item$?.saveNowToDbIfNeeded()
     // this.item$Replacable
-    this.router.navigateByUrl(`/journal/write/new`)
+    this.router.navigateByUrl(`/journal/write/new`).then(() => {
+      this.setItem$(new JournalEntry$(this.journalEntriesService, undefined, new JournalEntry()))
+    })
+  }
+
+  private setItem$(item$: JournalEntry$) {
+    this.item$ ?. saveNowToDbIfNeeded ?. ()
+    this.item$ = item$
+    this.item$FakeArray = [ this.item$ ]
   }
 }
