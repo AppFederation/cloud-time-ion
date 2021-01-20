@@ -443,8 +443,12 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   social_interactions = jnd({searchTerms: ['interacting with people']})
 
+  introspection = jnd()
+  self_discovery = jnd()
+
+
   // TODO: ego,
-  // TODO pride, modesty
+  // TODO pride
 
 
   array = dictToArrayWithIds(this as any as Dict<JournalNumericDescriptor>)
