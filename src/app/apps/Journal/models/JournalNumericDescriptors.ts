@@ -163,7 +163,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     specifyDuration,
   })
   'self-esteem' = jnd({
-    searchTerms: [`feeling of self-worth`, `self-respect`],
+    searchTerms: [`feeling of self-worth`, `self-respect`, `pride`],
     isShortListed: true,
   })
   /* TODO: esteem / respect from others, */
@@ -228,7 +228,13 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   optimism = jnd({
     isShortListed: true,
   })
+  reinterpretation = jnd({
+    isShortListed: true,
+  })
   progress = jnd({
+    isShortListed: true,
+  })
+  momentum = jnd({
     isShortListed: true,
   })
   diet = jnd({
@@ -329,7 +335,6 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     specifyDuration,
   })
   'time tracking' = jnd()
-  courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd({isShortListed, acronym: `OI`})
   confidence = jnd({antonym: 'doubts'})
   'self-confidence' = jnd({
@@ -445,6 +450,27 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   introspection = jnd()
   self_discovery = jnd()
+
+
+  // Brian Tracy (No Excuses, chapter 2)
+  courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
+  character = jnd(/** group */)
+  integrity = jnd()
+  consistency = jnd()
+  compassion = jnd()
+  generosity = jnd()
+  persistence = jnd()
+  friendliness = jnd({searchTerms: ['being nice']})
+  temperance = jnd()
+
+
+  honesty = jnd()
+  honor = jnd()
+  goals = jnd()
+  written_goals = jnd()
+  being_in_denial = jnd({lowerIsBetter})
+  delusions = jnd({lowerIsBetter})
+  delusions_of_grandeur = jnd({lowerIsBetter})
 
 
   // TODO: ego,

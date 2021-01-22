@@ -110,6 +110,7 @@ export class RichTextEditComponent implements OnInit {
       `section { border: 2px solid #b02020; padding: 3px; margin: 2px; border-radius: 4px;  }`
       // `ul { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }` +
       + `ol { border-left: 2px solid #801010; }`
+      + `ul { border-left: 2px solid #801010; }`
       // `ol { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }`
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
