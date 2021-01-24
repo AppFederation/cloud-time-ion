@@ -357,7 +357,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   mindfulness = jnd({
     isShortListed: true,
   })
-  moderation = jnd({searchTerms: [`junkie`], antonym: `excess`})
+  moderation = jnd({searchTerms: [`junkie`], antonym: [`excess`, `binge`, `binging`]})
   junkie = jnd({})
   desire = jnd({searchTerms: [`wanting`,  /* is it the same as desire? but for sure related */ /* but "desire" has some carnal/sexual connotations" */]})
   greed = jnd({moderateIsBetter: true})
@@ -466,7 +466,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   honesty = jnd()
   honor = jnd()
-  goals = jnd()
+  goals = jnd(/* FIXME: this collides with text descriptor */)
+  life_goals = jnd()
   written_goals = jnd()
   being_in_denial = jnd({lowerIsBetter})
   delusions = jnd({lowerIsBetter})
