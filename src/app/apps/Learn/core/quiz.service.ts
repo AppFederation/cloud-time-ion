@@ -278,8 +278,12 @@ export class QuizService {
   private filterByCategories(item$s: LearnItem$[]) {
     // const categories = [`health`, `interview`]
     const categories = [
-      // `codility`,
+      `codility`,
       `interview`,
+      `angular`,
+      `js`,
+      `html`,
+      `web`,
     ]
     // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
 
