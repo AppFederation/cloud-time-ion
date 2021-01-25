@@ -211,7 +211,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return null
   }
 
-  matchesSearch(search: string) {
+  public matchesSearch(search: string) {
     search = (search || '').trim().toLowerCase()
     if ( search.length === 0 ) {
       return true

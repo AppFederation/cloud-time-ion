@@ -21,6 +21,8 @@ import {SelfRating} from './fields/self-rating.model'
 //   // }
 // }
 
+export type ItemCategory = string
+
 export class LearnItem$
   extends OdmItem$2<
       LearnItem$,
@@ -112,5 +114,11 @@ export class LearnItem$
     if ( ! isNullishOrEmptyOrBlank(this.val?.es) ) {
       return importanceDescriptors.medium // quick hack; TODO: read importance from category items and find max
     }
+  }
+
+  public hasAnyCategory(categories: ItemCategory[]) {
+    return categories.some(category => {
+      return this.val?.matchesSearch(category)
+    })
   }
 }

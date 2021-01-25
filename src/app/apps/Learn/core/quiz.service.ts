@@ -150,6 +150,8 @@ export class QuizService {
       // filter remaining until now
       const nowMs: TimeMsEpoch = Date.now()
 
+      item$s = this.filterByCategories(item$s)
+
       let pendingItems: LearnItem$[] = item$s.filter(item$ => {
         const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
         // if ( ! (typeof msEpochRepetition === 'number') ) {
@@ -271,5 +273,20 @@ export class QuizService {
     debugLog(`requestNextItem()`)
     this.isNextItemRequested = true
     this.nextItemRequests$.next()
+  }
+
+  private filterByCategories(item$s: LearnItem$[]) {
+    // const categories = [`health`, `interview`]
+    const categories = [
+      // `codility`,
+      `interview`,
+    ]
+    // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
+
+    return item$s.filter(
+      (item$) => {
+        return item$.hasAnyCategory(categories)
+      }
+    )
   }
 }
