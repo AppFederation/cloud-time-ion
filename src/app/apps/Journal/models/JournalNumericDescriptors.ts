@@ -358,6 +358,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     isShortListed: true,
   })
   moderation = jnd({searchTerms: [`junkie`], antonym: [`excess`, `binge`, `binging`]})
+  addictions = jnd({lowerIsBetter})
+  withdrawal_syndrome = jnd({lowerIsBetter})
   junkie = jnd({})
   desire = jnd({searchTerms: [`wanting`,  /* is it the same as desire? but for sure related */ /* but "desire" has some carnal/sexual connotations" */]})
   greed = jnd({moderateIsBetter: true})
