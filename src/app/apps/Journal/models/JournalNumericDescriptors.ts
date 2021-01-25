@@ -38,6 +38,8 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
   antonym?: string | string[]
 
+  acronym?: string | string[]
+
 
   get title() {
     return this.id
@@ -56,6 +58,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
     }
     return includes(this.id, search)
       || includes(this.searchTerms, search)
+      || includes(this.acronym, search)
   }
 }
 
@@ -334,6 +337,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   planning = jnd({
     specifyDuration,
   })
+  prioritizing = jnd({})
+  return_on_investment = jnd({acronym: `ROI`})
   'time tracking' = jnd()
   outcome_independence = jnd({isShortListed, acronym: `OI`})
   confidence = jnd({antonym: 'doubts'})

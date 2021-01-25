@@ -33,6 +33,7 @@ import {
   importanceDescriptorsArrayFromHighestNumeric,
 } from '../models/fields/importance.model'
 import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
+import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../models/fields/mental-effort-level.model'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -141,16 +142,10 @@ export class QuizService {
       // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
-      if ( quizOptions.onlyWithQA ) {
-        item$s = item$s.filter(item => item.val ?. hasQAndA() )
-      } // TODO: performance - join the .filters
-      if ( quizOptions.skipTasks ) {
-        item$s = item$s.filter(item => ! (item.val ?. isTask) )
-      }
+      item$s = this.filterByOptions(quizOptions, item$s)
+
       // filter remaining until now
       const nowMs: TimeMsEpoch = Date.now()
-
-      item$s = this.filterByCategories(item$s)
 
       let pendingItems: LearnItem$[] = item$s.filter(item$ => {
         const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
@@ -191,6 +186,19 @@ export class QuizService {
     },
   ).pipe(shareReplay(1))
 
+
+  private filterByOptions(quizOptions: QuizOptions, item$s: LearnItem$[]) {
+    if (quizOptions.onlyWithQA) {
+      item$s = item$s.filter(item => item.val?.hasQAndA())
+    } // TODO: performance - join the .filters
+    if (quizOptions.skipTasks) {
+      item$s = item$s.filter(item => !(item.val?.isTask))
+    }
+
+    item$s = this.filterByCategories(item$s)
+    item$s = this.filterByMentalLevel(item$s)
+    return item$s
+  }
 
   /** too imperative style, but quick workaround for now, in the face of withLatestFrom approach not showing quiz item on page load */
   nextItem$WhenRequested: Observable<LearnItem$ | nullish> = this.quizStatus$.pipe(
@@ -285,12 +293,24 @@ export class QuizService {
       `html`,
       `web`,
     ]
+    // sleep
+    // health
+    // strategy
+
     // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
 
     return item$s.filter(
       (item$) => {
         return item$.hasAnyCategory(categories)
       }
+    )
+  }
+
+  private filterByMentalLevel(item$s: LearnItem$[]) {
+    return item$s.filter(
+      item$ =>
+        item$.getEffectiveMentalEffort().numeric
+        < mentalEffortLevels.somewhat_high.numeric
     )
   }
 }
