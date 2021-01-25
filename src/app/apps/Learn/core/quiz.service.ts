@@ -34,6 +34,7 @@ import {
 } from '../models/fields/importance.model'
 import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../models/fields/mental-effort-level.model'
+import {funLevels} from '../models/fields/fun-level.model'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -188,15 +189,18 @@ export class QuizService {
 
 
   private filterByOptions(quizOptions: QuizOptions, item$s: LearnItem$[]) {
+    // FIXME: perf: one .filter() call, with multiple predicates
     if (quizOptions.onlyWithQA) {
       item$s = item$s.filter(item => item.val?.hasQAndA())
     } // TODO: performance - join the .filters
     if (quizOptions.skipTasks) {
       item$s = item$s.filter(item => !(item.val?.isTask))
     }
-
-    item$s = this.filterByCategories(item$s)
     item$s = this.filterByMentalLevel(item$s)
+    item$s = this.filterByFunLevel(item$s)
+
+    // slowest: last?
+    // item$s = this.filterByCategories(item$s)
     return item$s
   }
 
@@ -286,13 +290,15 @@ export class QuizService {
   private filterByCategories(item$s: LearnItem$[]) {
     // const categories = [`health`, `interview`]
     const categories = [
-      `codility`,
-      `interview`,
-      `angular`,
-      `js`,
-      `html`,
-      `web`,
+      `#codility`,
+      `#interview`,
+      // `angular`,
+      // `js`,
+      // `html`,
+      // `web`,
     ]
+    // #Toptal
+    // #ForInterview
     // sleep
     // health
     // strategy
@@ -311,6 +317,14 @@ export class QuizService {
       item$ =>
         item$.getEffectiveMentalEffort().numeric
         < mentalEffortLevels.somewhat_high.numeric
+    )
+  }
+
+  private filterByFunLevel(item$s: LearnItem$[]) {
+    return item$s.filter(
+      item$ =>
+        item$.getEffectiveFunLevel().numeric
+        > funLevels.somewhat_high.numeric
     )
   }
 }
