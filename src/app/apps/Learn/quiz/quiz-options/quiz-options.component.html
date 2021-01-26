@@ -1,6 +1,15 @@
 
 <ion-item>
-  <ion-checkbox [formControl]="controls.dePrioritizeNewMaterial">
+  <ion-label>Categories</ion-label>
+  <ion-input
+    [formControl]="controls.categories"
+  ></ion-input>
+</ion-item>
+
+<ion-item>
+
+  <ion-checkbox
+    [formControl]="controls.dePrioritizeNewMaterial">
   </ion-checkbox>
   <ion-label>
     &nbsp; DE-PRIORITIZE NEW MATERIAL <!--{{dePrioritizeNewMaterial | json}}-->
