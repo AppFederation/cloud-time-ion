@@ -12,7 +12,6 @@ import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/A
 })
 export class QuizOptionsComponent implements OnInit {
 
-
   /* TODO use some options syncer util, maybe OptionsFormControl directive */
   controls: { [k in keyof QuizOptions]: FormControl} = {
     dePrioritizeNewMaterial: new FormControl(false),
@@ -20,11 +19,13 @@ export class QuizOptionsComponent implements OnInit {
     skipTasks: new FormControl(true),
     powBaseX100: new FormControl(),
     scaleIntervalsByImportance: new FormControl(1),
-}
+    categories: new FormControl('')
+  }
 
   formGroup = new FormGroup(this.controls)
 
-  viewSyncer = new ViewSyncer(this.formGroup, this.quizService.options2$, false, 'powBaseX100')
+  viewSyncer = new ViewSyncer(this.formGroup, this.quizService.options2$, false,
+    'powBaseX100' /* FIXME why just 1 field */)
 
   constructor(
     public quizService: QuizService,

@@ -49,6 +49,7 @@ export class QuizOptions {
     public powBaseX100: number = 300,
     public skipTasks: boolean = true,
     public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
+    public categories = '', // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
   ) {
   }
 }
@@ -196,11 +197,11 @@ export class QuizService {
     if (quizOptions.skipTasks) {
       item$s = item$s.filter(item => !(item.val?.isTask))
     }
-    item$s = this.filterByMentalLevel(item$s)
-    item$s = this.filterByFunLevel(item$s)
+    // item$s = this.filterByMentalLevel(item$s)
+    // item$s = this.filterByFunLevel(item$s)
 
     // slowest: last?
-    // item$s = this.filterByCategories(item$s)
+    item$s = this.filterByCategories(item$s, quizOptions)
     return item$s
   }
 
@@ -287,16 +288,17 @@ export class QuizService {
     this.nextItemRequests$.next()
   }
 
-  private filterByCategories(item$s: LearnItem$[]) {
+  private filterByCategories(item$s: LearnItem$[], quizOptions: QuizOptions) {
+    const categories: string[] = quizOptions.categories?.split(',') ?? []
     // const categories = [`health`, `interview`]
-    const categories = [
-      `#codility`,
-      `#interview`,
-      // `angular`,
-      // `js`,
-      // `html`,
-      // `web`,
-    ]
+    // const categories = [
+    //   `#codility`,
+    //   `#interview`,
+    //   // `angular`,
+    //   // `js`,
+    //   // `html`,
+    //   // `web`,
+    // ]
     // #Toptal
     // #ForInterview
     // sleep
@@ -304,12 +306,15 @@ export class QuizService {
     // strategy
 
     // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
+    if ( item$s.length > 0 ) {
+      item$s = item$s.filter(
+        (item$) => {
+          return item$.hasAnyCategory(categories)
+        }
+      )
+    }
 
-    return item$s.filter(
-      (item$) => {
-        return item$.hasAnyCategory(categories)
-      }
-    )
+    return item$s
   }
 
   private filterByMentalLevel(item$s: LearnItem$[]) {
