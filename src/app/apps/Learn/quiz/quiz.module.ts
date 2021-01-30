@@ -23,6 +23,7 @@ import {QuizIntervalsComponent} from './quiz-options/quiz-intervals/quiz-interva
 import {SharedModule} from '../../../shared/shared.module'
 import {QuizDiligenceLevelComponent} from './quiz-options/quiz-diligence-level/quiz-diligence-level.component'
 import {QuizIntervalImportanceScalingComponent} from './quiz-options/quiz-interval-importance-scaling/quiz-interval-importance-scaling.component'
+import {QuizCategoriesPickerComponent} from './quiz-categories-picker/quiz-categories-picker.component'
 
 const routes: Routes = [
   {
@@ -58,6 +59,7 @@ const routes: Routes = [
         QuizIntervalsComponent,
         QuizDiligenceLevelComponent,
         QuizIntervalImportanceScalingComponent,
+        QuizCategoriesPickerComponent,
     ],
 })
 export class QuizPageModule {
