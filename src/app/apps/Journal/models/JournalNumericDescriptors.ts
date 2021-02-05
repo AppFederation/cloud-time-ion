@@ -56,6 +56,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
     }
     return includes(this.id, search)
       || includes(this.searchTerms, search)
+      || includes(this.acronym, search)
   }
 }
 
