@@ -114,6 +114,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   health = jnd({
     isShortListed: true,
   })
+  mental_health = jnd({
+    isShortListed: true,
+  })
   pain = jnd({isShortListed: true})
   productivity = jnd({
     isShortListed: true,
