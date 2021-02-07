@@ -38,6 +38,8 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
   antonym?: string | string[]
 
+  acronym?: string | string[]
+
 
   get title() {
     return this.id
@@ -112,6 +114,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   health = jnd({
     isShortListed: true,
   })
+  mental_health = jnd({
+    isShortListed: true,
+  })
   pain = jnd({isShortListed: true})
   productivity = jnd({
     isShortListed: true,
@@ -125,8 +130,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   procrastination = jnd({
     specifyDuration,
   })
+  endorphins = jnd({
+    searchTerms: [ `runner's high`, 'endorphin rush'],
+  })
   excitement = jnd({
-    searchTerms: [ `enthusiasm`],
+    searchTerms: [ `enthusiasm, dopamine`],
     idealValue: 8 /* excessive excitement can cause `tension` */,
     antonym: [`boredom?`, `apathy`],
     isShortListed: true,
@@ -164,7 +172,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     specifyDuration,
   })
   'self-esteem' = jnd({
-    searchTerms: [`feeling of self-worth`, `self-respect`],
+    searchTerms: [`feeling of self-worth`, `self-respect`, `pride`],
     isShortListed: true,
   })
   /* TODO: esteem / respect from others, */
@@ -229,7 +237,13 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   optimism = jnd({
     isShortListed: true,
   })
+  reinterpretation = jnd({
+    isShortListed: true,
+  })
   progress = jnd({
+    isShortListed: true,
+  })
+  momentum = jnd({
     isShortListed: true,
   })
   diet = jnd({
@@ -329,8 +343,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   planning = jnd({
     specifyDuration,
   })
+  prioritizing = jnd({})
+  return_on_investment = jnd({acronym: `ROI`})
   'time tracking' = jnd()
-  courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
   outcome_independence = jnd({isShortListed, acronym: `OI`})
   confidence = jnd({antonym: 'doubts'})
   'self-confidence' = jnd({
@@ -353,7 +368,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   mindfulness = jnd({
     isShortListed: true,
   })
-  moderation = jnd({searchTerms: [`junkie`], antonym: `excess`})
+  moderation = jnd({searchTerms: [`junkie`], antonym: [`excess`, `binge`, `binging`]})
+  addictions = jnd({lowerIsBetter})
+  withdrawal_syndrome = jnd({lowerIsBetter})
   junkie = jnd({})
   desire = jnd({searchTerms: [`wanting`,  /* is it the same as desire? but for sure related */ /* but "desire" has some carnal/sexual connotations" */]})
   greed = jnd({moderateIsBetter: true})
@@ -446,6 +463,28 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   introspection = jnd()
   self_discovery = jnd()
+
+
+  // Brian Tracy (No Excuses, chapter 2)
+  courage = jnd({antonym: 'fear'}) // / confidence ;; BUT courage is a kind of fearlessness even when lacking CONFIDENCE
+  character = jnd(/** group */)
+  integrity = jnd()
+  consistency = jnd()
+  compassion = jnd()
+  generosity = jnd()
+  persistence = jnd()
+  friendliness = jnd({searchTerms: ['being nice']})
+  temperance = jnd()
+
+
+  honesty = jnd()
+  honor = jnd()
+  goals = jnd(/* FIXME: this collides with text descriptor */)
+  life_goals = jnd()
+  written_goals = jnd()
+  being_in_denial = jnd({lowerIsBetter})
+  delusions = jnd({lowerIsBetter})
+  delusions_of_grandeur = jnd({lowerIsBetter})
 
 
   // TODO: ego,
