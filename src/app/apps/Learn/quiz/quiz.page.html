@@ -7,7 +7,9 @@
 <!--    </ion-title>-->
 
     <div style="display: flex; align-items: center">
-      <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+      <ion-title>
+        <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+      </ion-title>
 
       <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
 <!--        <ion-button routerLink="/learn"><</ion-button>-->
@@ -27,13 +29,13 @@
 
           <ion-button (click)="showOptions = ! showOptions" size="large">
 
-            <ion-icon name="settings-outline" slot="icon-only"
+            <ion-icon class="action-icon" slot="icon-only" name="settings-outline"
 
             ></ion-icon> <!-- HERE-->
           </ion-button>
 
           <ion-button>
-            <ion-icon slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']"></ion-icon>
+            <ion-icon class="action-icon" slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']" ></ion-icon>
           </ion-button>
           <odm-sync-status></odm-sync-status>
         </ion-buttons>
