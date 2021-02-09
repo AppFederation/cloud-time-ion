@@ -392,6 +392,14 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
           && item.val?.isTask
           && item.val?.getDurationEstimateMs()
       )
+    } else if (preset === `tasks_by_importance_roi`) {
+      this.filteredItem$s = items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.val?.isTask
+          && item.getEffectiveImportance()
+          && item.getEffectiveRoi()
+      )
     } else if (preset === `learn_items_by_importance`) {
       this.filteredItem$s = items.filter(
         item =>

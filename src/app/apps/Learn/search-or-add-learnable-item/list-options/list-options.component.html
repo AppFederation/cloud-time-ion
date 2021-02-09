@@ -43,6 +43,10 @@ TASKS:
   ALL TASKS
 </ion-button>
 
+<ion-button (click)="setPreset('tasks_by_importance_roi')">
+  Importance, ROI
+</ion-button>
+
 <ion-button (click)="setPreset('nearest_deadlines')">
   nearest deadlines
 </ion-button>
@@ -69,7 +73,8 @@ TASKS:
       urgent, ROI
     </div>
     <ion-note class="preset-note">
-      can skip importance levels; closest to be done
+      can skip importance levels; closest to be done;
+      TODO: META/MANTRA first
     </ion-note>
   </div>
 

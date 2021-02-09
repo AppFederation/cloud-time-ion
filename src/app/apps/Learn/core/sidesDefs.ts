@@ -199,14 +199,14 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `pt`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   fr = side({
     defaultLang: 'fr-FR',
     ask: false /* not asking German for now, to force recall */,
     flag: `fr`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   it = side({
     defaultLang: 'it-IT',
@@ -220,20 +220,20 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `nl`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   ru = side({
     defaultLang: 'ru-RU',
     ask: false,
     flag: `ru`,
-    hideByDefault,
+    // hideByDefault,
     onlyForLearn,
   })
   cmn = side({
     defaultLang: 'cmn',
     ask: false,
     flag: `cn`,
-    hideByDefault,
+    // hideByDefault,
     onlyForLearn,
   })
   short_id = side({
