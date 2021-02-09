@@ -299,7 +299,11 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
     const s = stringEviscerated
-    /*==*/ if (s?.startsWith(`!!!!`) || s?.endsWith(`!!!!`)) {
+    /*==*/ if (s?.startsWith(`!!!!!!`) || s?.endsWith(`!!!!!!`)) {
+      overlay.importance = importanceDescriptors.mantra
+    } else if (s?.startsWith(`!!!!!`) || s?.endsWith(`!!!!!`)) {
+      overlay.importance = importanceDescriptors.meta
+    } else if (s?.startsWith(`!!!!`) || s?.endsWith(`!!!!`)) {
       overlay.importance = importanceDescriptors.extremely_high
     } else if (s?.startsWith(`!!!`) || s?.endsWith(`!!!`)) {
       overlay.importance = importanceDescriptors.very_high
@@ -389,6 +393,21 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
           this.matchesSearch(item)
           && item.val?.isTask
           && item.val?.getDurationEstimateMs()
+      )
+    } else if (preset === `tasks_by_importance_roi`) {
+      this.filteredItem$s = items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.val?.isTask
+          && item.getEffectiveImportance()
+          && item.getEffectiveRoi()
+      )
+    } else if (preset === `learn_items_by_importance`) {
+      this.filteredItem$s = items.filter(
+        item =>
+          this.matchesSearch(item)
+          && item.val?.isEffectivelyToLearn()
+          && item.getEffectiveImportance()
       )
     } else {
       this.filteredItem$s = items.filter(
