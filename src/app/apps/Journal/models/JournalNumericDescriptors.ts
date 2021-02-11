@@ -130,8 +130,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   procrastination = jnd({
     specifyDuration,
   })
+  endorphins = jnd({
+    searchTerms: [ `runner's high`, 'endorphin rush'],
+  })
   excitement = jnd({
-    searchTerms: [ `enthusiasm`],
+    searchTerms: [ `enthusiasm, dopamine`],
     idealValue: 8 /* excessive excitement can cause `tension` */,
     antonym: [`boredom?`, `apathy`],
     isShortListed: true,

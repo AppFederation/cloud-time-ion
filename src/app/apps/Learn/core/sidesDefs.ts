@@ -68,6 +68,9 @@ export class SidesDefs {
   title = side({
     defaultLang: 'en-US',
   })
+  /** definitely before execution hints - as per the policy to first get excited, instead of thinking of the multitude of chores in-between
+   * also it's often part of the title
+   * */
   question = side({
     defaultLang: 'en-US',
   })
@@ -104,12 +107,15 @@ export class SidesDefs {
   comments = side({
     ask: false,
   })
-  execution_hints = side({
+  categories = side({
     ask: false,
   })
   benefits = side({
     ask: false,
     icon: 'thumbs-up-outline',
+  })
+  execution_hints = side({
+    ask: false,
   })
   requirements = side({
     ask: false,

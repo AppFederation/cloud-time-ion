@@ -299,7 +299,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
     const s = stringEviscerated
-    /*==*/ if (s?.startsWith(`!!!!!`) || s?.endsWith(`!!!!!`)) {
+    /*==*/ if (s?.startsWith(`!!!!!!`) || s?.endsWith(`!!!!!!`)) {
+      overlay.importance = importanceDescriptors.mantra
+    } else if (s?.startsWith(`!!!!!`) || s?.endsWith(`!!!!!`)) {
       overlay.importance = importanceDescriptors.meta
     } else if (s?.startsWith(`!!!!`) || s?.endsWith(`!!!!`)) {
       overlay.importance = importanceDescriptors.extremely_high
