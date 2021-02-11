@@ -3,33 +3,44 @@
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      <div style="display: flex; align-items: center">
-        <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
+<!--    <ion-title>-->
+<!--    </ion-title>-->
+
+    <div style="display: flex; align-items: center">
+      <ion-title>
+        <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+      </ion-title>
+
+      <!--      <ion-button (click)="window.history.back()"><</ion-button>-->
 <!--        <ion-button routerLink="/learn"><</ion-button>-->
 
-        <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
+        <app-search-toolbar></app-search-toolbar>
+
 
         <app-time-passing
           style="font-size: 66%"
           [isCountDown]="false"
         ></app-time-passing>
+        <ion-buttons>
+          <ion-icon class="action-icon" slot="end" size="50"
+                    (click)="onClickTimer($event)"
+                    name="timer-outline"
+          ></ion-icon>
 
-        <ion-icon class="action-icon"
-                  (click)="onClickTimer($event)"
-                  name="timer-outline"
-        ></ion-icon>
+          <ion-button (click)="showOptions = ! showOptions" size="large">
 
-        <ion-icon class='action-icon' name="settings-outline"
-                  (click)="showOptions = ! showOptions">
-        ></ion-icon>
+            <ion-icon class="action-icon" slot="icon-only" name="settings-outline"
 
-        <ion-icon class="action-icon" name="bar-chart-outline" slot="end" [routerLink]="['/learn/stats']"></ion-icon>
+            ></ion-icon> <!-- HERE-->
+          </ion-button>
 
-        <odm-sync-status></odm-sync-status>
+          <ion-button>
+            <ion-icon class="action-icon" slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']" ></ion-icon>
+          </ion-button>
+          <odm-sync-status></odm-sync-status>
+        </ion-buttons>
 
       </div>
-    </ion-title>
   </ion-toolbar>
 
 </ion-header>
