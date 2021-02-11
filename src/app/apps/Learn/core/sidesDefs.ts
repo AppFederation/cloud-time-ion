@@ -26,7 +26,7 @@ export class Side {
       // + (this.icon?.endsWith(`.svg`) ? '' : '.svg') cannot use now coz using ion-icon
   }
 
-  /* TODO: rename to `question` */
+  /* TODO: rename to `question`; or askFrom or askAsQuestion; coz "ask" is confusing as "ask about" suggests that it might be the *answer* */
   ask?: boolean // = true
 
   constructor() {
@@ -74,6 +74,13 @@ export class SidesDefs {
   question = side({
     defaultLang: 'en-US',
   })
+  benefits = side({
+    ask: false,
+    icon: 'thumbs-up-outline',
+  })
+  categories = side({
+    ask: false,
+  })
   /** for a 2-way asking */
   question2 = side({
     defaultLang: 'en-US',
@@ -106,13 +113,6 @@ export class SidesDefs {
   })
   comments = side({
     ask: false,
-  })
-  categories = side({
-    ask: false,
-  })
-  benefits = side({
-    ask: false,
-    icon: 'thumbs-up-outline',
   })
   execution_hints = side({
     ask: false,
