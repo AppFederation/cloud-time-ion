@@ -80,6 +80,8 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   /** Frequently repeat and contemplate and improve; affirmations */
   mantra
     = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
+  meta_mantra
+    = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
   testing_extremely_high
     = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`, isDebug: true})
   // it gives 10 level total now
