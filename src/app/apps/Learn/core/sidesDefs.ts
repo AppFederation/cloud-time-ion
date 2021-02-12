@@ -26,7 +26,7 @@ export class Side {
       // + (this.icon?.endsWith(`.svg`) ? '' : '.svg') cannot use now coz using ion-icon
   }
 
-  /* TODO: rename to `question` */
+  /* TODO: rename to `question`; or askFrom or askAsQuestion; coz "ask" is confusing as "ask about" suggests that it might be the *answer* */
   ask?: boolean // = true
 
   constructor() {
@@ -68,8 +68,18 @@ export class SidesDefs {
   title = side({
     defaultLang: 'en-US',
   })
+  /** definitely before execution hints - as per the policy to first get excited, instead of thinking of the multitude of chores in-between
+   * also it's often part of the title
+   * */
   question = side({
     defaultLang: 'en-US',
+  })
+  benefits = side({
+    ask: false,
+    icon: 'thumbs-up-outline',
+  })
+  categories = side({
+    ask: false,
   })
   /** for a 2-way asking */
   question2 = side({
@@ -106,10 +116,6 @@ export class SidesDefs {
   })
   execution_hints = side({
     ask: false,
-  })
-  benefits = side({
-    ask: false,
-    icon: 'thumbs-up-outline',
   })
   requirements = side({
     ask: false,
@@ -199,14 +205,14 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `pt`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   fr = side({
     defaultLang: 'fr-FR',
     ask: false /* not asking German for now, to force recall */,
     flag: `fr`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   it = side({
     defaultLang: 'it-IT',
@@ -220,20 +226,20 @@ export class SidesDefs {
     ask: false /* not asking German for now, to force recall */,
     flag: `nl`,
     onlyForLearn,
-    hideByDefault,
+    // hideByDefault,
   })
   ru = side({
     defaultLang: 'ru-RU',
     ask: false,
     flag: `ru`,
-    hideByDefault,
+    // hideByDefault,
     onlyForLearn,
   })
   cmn = side({
     defaultLang: 'cmn',
     ask: false,
     flag: `cn`,
-    hideByDefault,
+    // hideByDefault,
     onlyForLearn,
   })
   short_id = side({
