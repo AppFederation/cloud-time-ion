@@ -44,6 +44,7 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
       intensityBtnVariant(`! ! ! !`, importanceDescriptors.extremely_high),
       intensityBtnVariant(`META!`, importanceDescriptors.meta),
       intensityBtnVariant(`MANTRA!`, importanceDescriptors.mantra),
+      intensityBtnVariant(`META-MANTRA!`, importanceDescriptors.meta_mantra),
       // intensityBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
     ]
   }),
