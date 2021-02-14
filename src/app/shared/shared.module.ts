@@ -11,6 +11,7 @@ import {ChooserComponent} from '../libs/AppFedShared/chooser/chooser/chooser.com
 import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc.component'
 import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
 import {SearchToolbarComponent} from '../libs/search/search-toolbar/search-toolbar.component'
+import {ImportanceBannerComponent} from '../apps/Learn/shared/importance-banner/importance-banner.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -35,16 +36,18 @@ const declarations = [
     ...imports,
     EditorModule,
   ],
-  exports: [
-    ...imports,
-    ...declarations,
-    SearchToolbarComponent,
-  ],
+    exports: [
+        ...imports,
+        ...declarations,
+        SearchToolbarComponent,
+        ImportanceBannerComponent,
+    ],
   providers: [],
-  declarations: [
-    declarations,
-    SearchToolbarComponent,
-  ],
+    declarations: [
+        declarations,
+        SearchToolbarComponent,
+        ImportanceBannerComponent,
+    ],
 })
 export class SharedModule {
 }
