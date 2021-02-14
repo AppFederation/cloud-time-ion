@@ -1,4 +1,11 @@
+<app-importance-banner
+>
+  <!--    [item$]="item$"-->
+
+</app-importance-banner>
+
 <div *ngIf="item$ else noItem">
+
 
   <app-play-button
     [item]="(itemVal$ | async) !"
