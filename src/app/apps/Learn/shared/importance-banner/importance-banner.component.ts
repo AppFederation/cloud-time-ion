@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LearnItem$} from '../../models/LearnItem$'
 
 @Component({
   selector: 'app-importance-banner',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./importance-banner.component.sass'],
 })
 export class ImportanceBannerComponent implements OnInit {
+
+  @Input()
+  item$ ! : LearnItem$
 
   constructor() { }
 
