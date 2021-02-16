@@ -2,6 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {JournalEntry, JournalEntryId} from "../models/JournalEntry";
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
 import {JournalEntry$} from '../models/JournalEntry$'
+import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,23 @@ export class JournalEntriesService extends OdmService2<
       injector,
       'JournalEntry'
     )
+    // this.stats()
+  }
+
+  public stats() {
+    this.localItems$.subscribe(items => {
+      const mapWordToCount = new Map<string, number>()
+      for ( let item of items ) {
+        const words = stripHtml(item.val.general) ?. split(/\W/) ?? []
+        // console.log('words', words)
+        for ( let word of words ) {
+          word = word . toLowerCase()
+          const number = mapWordToCount.get(word) ?? 0
+          mapWordToCount.set(word, number + 1)
+        }
+      }
+      console.log([...mapWordToCount.entries()].sort((a,b) => b[1] - a[1]))
+    })
   }
 
   protected convertFromDbFormat(dbItem: JournalEntry): JournalEntry {
