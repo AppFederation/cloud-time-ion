@@ -10,7 +10,9 @@
       ></ion-icon>
     </ion-buttons>
 
-    <ion-title>Timeline <ion-note>{{(journalEntriesService.localItems$ | async) ?. length}}</ion-note></ion-title>
+    <ion-title>Timeline <ion-note>
+      {{(items$Sorted | async) ?. length}} /
+      {{(journalEntriesService.localItems$ | async) ?. length}}</ion-note></ion-title>
 
     <ion-buttons slot="end">
       <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>

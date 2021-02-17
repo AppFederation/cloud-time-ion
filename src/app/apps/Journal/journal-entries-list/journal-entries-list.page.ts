@@ -25,9 +25,11 @@ export class JournalEntriesListPage implements OnInit {
   // itemsHack ? : JournalEntry$[]
   items$Sorted = this.items$.pipe(
     map((item$s: JournalEntry$[]) => {
-      return item$s.sort((item$1, item$2) => {
-        return ((item$2.val?.whenCreated ?? (item$2.val as any)?.whenAdded)?.toDate().getTime() ?? 0) -
+      return item$s.filter(x => (x.val?.importance?.numVal ?? 0) > 7)
+        .sort((item$1, item$2) => {
+        const number = ((item$2.val?.whenCreated ?? (item$2.val as any)?.whenAdded)?.toDate().getTime() ?? 0) -
           ((item$1.val?.whenCreated ?? (item$1.val as any)?.whenAdded)?.toDate().getTime() ?? 0)
+        return - number
       })
     })
   )
