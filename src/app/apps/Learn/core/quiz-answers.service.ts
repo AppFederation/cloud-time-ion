@@ -48,7 +48,11 @@ export class QuizAnswersService {
 
 
   private getMsSinceQuestionShowed() {
-    return msElapsedTillNowSince(this.whenQuestionShowed !)
+    if ( this.whenQuestionShowed ) {
+      return msElapsedTillNowSince(this.whenQuestionShowed !)
+    } else {
+      return 0
+    }
   }
 
   onApplyAndNext(item$: LearnItem$, selfRating: NumericPickerVal) {

@@ -17,6 +17,8 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   public selfRating: NumericPickerVal | undefined = undefined
 
+  hide = false
+
   get showAnswer$() { return this.quizService.showAnswer$ }
 
   get showHint$() { return this.quizService.showHint$ }
@@ -30,7 +32,11 @@ export class ShowAnswerAndRateComponent implements OnInit {
   ) { }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.showAnswer$.subscribe(showAnswer => {
+      this.hide = ! showAnswer
+    })
+  }
 
   showAnswer() {
     this.quizService.toggleShowAnswer()
@@ -53,4 +59,8 @@ export class ShowAnswerAndRateComponent implements OnInit {
     this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
   }
 
+  toggleHide() {
+    this.hide = ! this.hide
+
+  }
 }

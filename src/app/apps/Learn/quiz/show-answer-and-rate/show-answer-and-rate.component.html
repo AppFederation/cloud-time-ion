@@ -22,12 +22,17 @@
     style="font-size: 95%; color: white; margin-left: 3px; align-self: center"
     [isCountDown]="false"
   ></app-time-passing>
+  <div style="flex-grow: 1"></div>
+
+  <ion-button (click)="toggleHide()">^</ion-button>
+
 </div>
 
 
 <div
   *ngIf="(showAnswer$ | async) || (showHint$ | async)"
   style="display: block; order: 0"
+  [hidden]="hide"
 >
   <ng-container
     *ngIf="(showAnswer$ | async)"
@@ -46,5 +51,9 @@
     </ion-button>
 
   </ng-container>
+
+  <!-- TODO down-arrow to hide it, in case in case I want to edit.
+    OR: auto-hide in such a way, that it's not changing layout when text selected (maybe transparent click-through bottom bar?)
+  -->
 
 </div>
