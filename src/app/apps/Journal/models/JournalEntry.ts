@@ -24,6 +24,8 @@ export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
 
   general ?: JournalFieldVal
 
+  importance ?: NumericPickerVal
+
   constructor(
     // odmService: OdmService<JournalEntry>,
     // id?: OdmItemId<JournalEntry>,
