@@ -58,7 +58,14 @@ export class RichTextEditComponent implements OnInit {
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
     ],
+    formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format */
+      fancy: {inline: 'span', classes: 'fancy'}
+    },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
+      {
+        title: `Fancy`,
+        format: 'fancy',
+      },
       { title: 'Headers', items: [
           { title: 'h1', block: 'h1' },
           { title: 'h2', block: 'h2' },
@@ -99,6 +106,7 @@ export class RichTextEditComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
+    valid_classes: `fancy`,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
@@ -128,7 +136,7 @@ export class RichTextEditComponent implements OnInit {
         onAction: () => {
           this.highlightSelected(editor)
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
-        }
+        } /* for fancy: `mceToggleFormat` ? - https://www.tiny.cloud/docs/advanced/editor-command-identifiers/ */
       });
     }
   }
