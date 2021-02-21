@@ -58,7 +58,9 @@ export class RichTextEditComponent implements OnInit {
       'searchreplace visualblocks code fullscreen',
       'insertdatetime media table paste code help wordcount'
     ],
-    formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format */
+    formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
+      https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
+      */
       fancy: {inline: 'span', classes: 'fancy'}
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
