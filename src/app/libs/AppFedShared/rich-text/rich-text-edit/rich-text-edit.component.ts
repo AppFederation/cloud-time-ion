@@ -61,12 +61,17 @@ export class RichTextEditComponent implements OnInit {
     formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
       */
-      fancy: {inline: 'span', classes: 'fancy'}
+      fancy: {inline: 'span', classes: 'fancy'},
+      negative: {inline: 'span', classes: 'negative'},
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
       {
         title: `Fancy`,
         format: 'fancy',
+      },
+      {
+        title: `Negative`,
+        format: 'negative',
       },
       { title: 'Headers', items: [
           { title: 'h1', block: 'h1' },
