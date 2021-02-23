@@ -1,9 +1,8 @@
-<app-importance-banner
-  [item$]="item$"
->
-</app-importance-banner>
 
 <div *ngIf="item$ else noItem">
+  <app-importance-banner
+    [item$]="item$"
+  ></app-importance-banner>
 
 
   <app-play-button

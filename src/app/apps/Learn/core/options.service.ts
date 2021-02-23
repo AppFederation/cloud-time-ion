@@ -10,6 +10,10 @@ export class LocalOptionsPatchableObservable<TOptions> implements PatchableObser
     return this.locallyVisibleChanges$.lastVal
   }
 
+  get val$() {
+    return this.locallyVisibleChanges$
+  }
+
   constructor(
     public defaultValue: TOptions,
     public localStorageKey = 'LifeSuite_options'

@@ -46,7 +46,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    valid_classes: `fancy`,
+    valid_classes: `fancy negative`,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +

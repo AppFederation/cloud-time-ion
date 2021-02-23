@@ -49,6 +49,10 @@ export class RichTextEditComponent implements OnInit {
   tinyMceInit = {
     height: 500,
     menubar: true,
+    /** https://www.tiny.cloud/docs/mobile/#configuringmobile */
+    mobile: {
+      menubar: true
+    },
     toolbar_location: 'auto', // 'bottom', /* https://www.tiny.cloud/docs/configure/editor-appearance/ */
     toolbar_sticky: true,
     // menubar: false,
@@ -61,12 +65,17 @@ export class RichTextEditComponent implements OnInit {
     formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
       */
-      fancy: {inline: 'span', classes: 'fancy'}
+      fancy: {inline: 'span', classes: 'fancy'},
+      negative: {inline: 'span', classes: 'negative'},
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
       {
         title: `Fancy`,
         format: 'fancy',
+      },
+      {
+        title: `Negative`,
+        format: 'negative',
       },
       { title: 'Headers', items: [
           { title: 'h1', block: 'h1' },
@@ -108,7 +117,8 @@ export class RichTextEditComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    valid_classes: `fancy`,
+    /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
+    valid_classes: `fancy negative` /* TODO: also consider valid_elements / extended_valid_elements  - https://www.tiny.cloud/docs/configure/content-filtering/#exampleusingvalid_elements */,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +

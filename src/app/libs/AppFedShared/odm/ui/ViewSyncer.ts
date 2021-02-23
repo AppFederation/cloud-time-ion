@@ -5,6 +5,17 @@ import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 import {DurationMs, TimeMsEpoch} from '../../utils/type-utils'
 import {PatchableObservable, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../utils/rxUtils'
 import {convertToHtmlIfNeeded} from '../../utils/html-utils'
+import {TimelineListOptionsData} from '../../../../apps/Journal/journal-entries-list/journal-entries-list.page'
+import {JournalEntry} from '../../../../apps/Journal/models/JournalEntry'
+
+export function createViewSyncerForField<T>(patchableObservable: PatchableObservable<T>, fieldName: keyof T, formControl: FormControl) {
+  const formControls/*: { [key in keyof T]: FormControl} */: any = {}
+  formControls[fieldName] = formControl
+  const formGroup = new FormGroup(formControls)
+  const viewSyncer = new ViewSyncer(formGroup, patchableObservable, false,
+    fieldName)
+  return viewSyncer
+}
 
 export class ViewSyncer<TKey = string, TValue = any /* TODO */, TItemInMem = any> {
 

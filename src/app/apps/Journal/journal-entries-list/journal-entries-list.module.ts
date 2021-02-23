@@ -16,6 +16,7 @@ import {SharedModule} from '../../../shared/shared.module'
 import {ScrollingModule} from '@angular/cdk/scrolling'
 import { ScrollingModule as ExperimentalScrollingModule} from '@angular/cdk-experimental/scrolling';
 import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
+import {TimelineListOptionsComponent} from './timeline-list-options/timeline-list-options.component'
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {TimeModule} from '../../../libs/AppFedShared/time/time.module'
     JournalEntryListItemComponent,
     JournalNumFieldsViewComponent,
     JournalTextFieldsViewComponent,
+    TimelineListOptionsComponent,
   ],
 })
 export class JournalEntriesListPageModule {}

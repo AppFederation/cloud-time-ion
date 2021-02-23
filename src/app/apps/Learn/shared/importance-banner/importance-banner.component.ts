@@ -9,7 +9,7 @@ import {LearnItem$} from '../../models/LearnItem$'
 export class ImportanceBannerComponent implements OnInit {
 
   @Input()
-  item$ ! : LearnItem$
+  item$ ? : LearnItem$
 
   constructor() { }
 
