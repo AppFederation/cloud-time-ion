@@ -30,7 +30,7 @@ export class JournalEntriesService extends OdmService2<
     this.localItems$.subscribe(items => {
       const mapWordToCount = new Map<string, number>()
       for ( let item of items ) {
-        const words = stripHtml(item.val.general) ?. split(/\W/) ?? []
+        const words = stripHtml(item?.val?.general) ?. split(/\W/) ?? []
         // console.log('words', words)
         for ( let word of words ) {
           word = word . toLowerCase()
