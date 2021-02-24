@@ -21,7 +21,7 @@ export class TimelineListOptionsComponent implements OnInit {
   formControl = new FormControl()
 
   viewSyncer ! : ViewSyncer
-  formControls = { range: new FormControl()}
+  formControls = { range: new FormControl() }
 
 
   constructor() { }
