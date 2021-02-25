@@ -13,6 +13,7 @@
     [ngClass]="{selectedMood: isSelected(btnDesc)}"
     size="small"
     (click)="onButtonClick(btnDesc)"
+    [color]="btnDesc.color"
   >
     {{ getDisplayedVariantForButton(btnDesc).label}}
     <ng-container

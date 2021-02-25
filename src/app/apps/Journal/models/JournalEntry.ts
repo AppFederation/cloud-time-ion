@@ -48,8 +48,11 @@ export class JournalEntry extends OdmInMemItem /*OdmItem<JournalEntry>*/ {
 
   getCompositeFieldNumVal(field: JournalNumericDescriptor): number | undefined {
     const compositeVal = this.getCompositeField(field)
-    return compositeVal?.numVal
+    const numVal = compositeVal?.numVal
       ?? (compositeVal as any as number | undefined) /* compatibility with old */
+    if ( typeof numVal === 'number' ) {
+      return numVal
+    } return undefined
   }
 
   getTextFieldVal(field: JournalTextDescriptor): string | nullish {

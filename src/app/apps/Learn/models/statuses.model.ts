@@ -120,6 +120,7 @@ export class Statuses {
 
   rushing = status({
     comments: `Meaning sacrificing quality for time, e.g. to meet a deadline or satisfy and urgent need.`,
+    isDoableNow: true,
   })
 
   refining = status({})
@@ -139,10 +140,18 @@ export class Statuses {
 
   draft = status({
     shortListed: true,
+    searchTerms: `rough`,
   })
 
   prototype = status({
     shortListed: true,
+    searchTerms: `rough approximate`,
+  })
+
+  polished = status({
+    shortListed: true,
+    isDoableNow: false,
+    searchTerms: `optimized optimised`,
   })
 
   waiting = status({
@@ -169,7 +178,7 @@ export class Statuses {
   })
 
   suspended = status({
-    /* does NOT imply started */
+    comments: `Note: it does NOT imply started.`,
     searchTerms: `paused`,
     isDoableNow: false,
     isStarted: undefined,
