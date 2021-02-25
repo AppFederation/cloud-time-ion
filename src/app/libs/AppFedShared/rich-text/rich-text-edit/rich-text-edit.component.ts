@@ -49,6 +49,28 @@ export class RichTextEditComponent implements OnInit {
   tinyMceInit = {
     height: 500,
     menubar: true,
+    mobile: { /** https://www.tiny.cloud/docs/mobile/#configuringmobile */
+      /* TODO try toolbar_sticky in mobile: https://www.tiny.cloud/docs/configure/editor-appearance/#toolbar_sticky */
+      menubar: true /* https://www.tiny.cloud/docs/configure/editor-appearance/#menubar */,
+      // menubar_mode: 'scrolling',
+      // toolbar_mode: 'scrolling',
+      menu: { /* https://www.tiny.cloud/docs/configure/editor-appearance/#menu */
+        file: {title: 'File', items: 'newdocument restoredraft | preview | print '},
+        edit: {title: 'Edt', items: 'undo redo | cut copy paste | selectall | searchreplace'},
+        view: {title: 'View', items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen'},
+        insert: {
+          title: 'Ins',
+          items: 'image link media template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime'
+        },
+        format: {
+          title: 'Fmt',
+          items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align lineheight | forecolor backcolor | removeformat'
+        },
+        tools: {title: 'Tls', items: 'spellchecker spellcheckerlanguage | code wordcount'},
+        table: {title: 'Tbl', items: 'inserttable | cell row column | tableprops deletetable'},
+        help: { title: 'Hlp', items: 'help' }
+      }
+    },
     toolbar_location: 'auto', // 'bottom', /* https://www.tiny.cloud/docs/configure/editor-appearance/ */
     toolbar_sticky: true,
     // menubar: false,
@@ -113,7 +135,8 @@ export class RichTextEditComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    valid_classes: `fancy`,
+    /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
+    valid_classes: `fancy negative` /* TODO: also consider valid_elements / extended_valid_elements  - https://www.tiny.cloud/docs/configure/content-filtering/#exampleusingvalid_elements */,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
