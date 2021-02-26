@@ -16,9 +16,10 @@
     </ion-title>
 
     <ion-buttons slot="end"
-                 (click)="onClickListOptions($event)"
     >
-      <ion-button style="margin-right: -15px;">
+      <ion-button style="margin-right: -5px;"
+                  (click)="onClickListOptions($event)"
+      >
         <ion-icon
           class="action-icon"
           name="filter"
@@ -27,8 +28,10 @@
 
       </ion-button>
 
+      <ion-button [routerLink]="['/learn']">
+        <ion-icon class="action-color" name="book-outline" slot="icon-only"></ion-icon>
+      </ion-button>
 
-      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
 
       <odm-sync-status></odm-sync-status>
 
