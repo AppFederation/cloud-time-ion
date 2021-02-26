@@ -25,6 +25,7 @@ export class SelfRatingComponent implements OnInit {
         new ButtonVariantDescriptor(0.25),
         new ButtonVariantDescriptor(0.75),
       ],
+      color: 'danger',
     }),
     btn({
       btnVariants: [
@@ -32,7 +33,9 @@ export class SelfRatingComponent implements OnInit {
         new ButtonVariantDescriptor(1.5),
         new ButtonVariantDescriptor(1.25),
         new ButtonVariantDescriptor(1.75),
-      ]
+      ],
+      color: 'warning',
+
     }),
     btn({
       btnVariants: [
@@ -40,7 +43,8 @@ export class SelfRatingComponent implements OnInit {
         new ButtonVariantDescriptor(2.5),
         new ButtonVariantDescriptor(2.25),
         new ButtonVariantDescriptor(2.75),
-      ]
+      ],
+      color: 'success',
     }),
   ])
 

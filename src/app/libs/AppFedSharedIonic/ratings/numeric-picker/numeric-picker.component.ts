@@ -19,7 +19,8 @@ export class ButtonVariantDescriptor<TVal = any, TLabel = string | number> {
 
 export class ButtonDescriptor<TVal = any, TLabel = string | number> {
   constructor(
-    public btnVariants: ButtonVariantDescriptor<TVal, TLabel>[]
+    public btnVariants: ButtonVariantDescriptor<TVal, TLabel>[],
+    public color? : string,
   ) {}
 }
 
