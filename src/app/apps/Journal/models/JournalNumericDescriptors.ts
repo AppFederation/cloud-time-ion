@@ -311,6 +311,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   discipline = jnd({
     isShortListed: true,
   })
+  preparedness = jnd({
+    isShortListed: true,
+    searchTerms: [`readiness`],
+  })
   /** https://www.quora.com/Whats-the-difference-between-self-control-and-self-discipline */
   'self-discipline' = jnd()
   /** Self-discipline says go, and keep it going. Self-control is discipline in the face of pressure from an immediate urge, desire or compulsion. Self-control relates to delaying immediate gratification of the senses. Its struggle is the conflict between intellectual knowing and emotional desiring.Mar 29, 2003*/

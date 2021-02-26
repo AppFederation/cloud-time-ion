@@ -13,8 +13,11 @@
     [ngClass]="{selectedMood: isSelected(btnDesc)}"
     size="small"
     (click)="onButtonClick(btnDesc)"
-    [color]="btnDesc.color"
   >
+    <!--
+        [color]="btnDesc.color"
+        fill="outline"
+    -->
     {{ getDisplayedVariantForButton(btnDesc).label}}
     <ng-container
       *ngIf="false && getDisplayedVariantForButton(btnDesc).subLabel let subLabel"

@@ -42,6 +42,10 @@ html {
   color: orange;
 }
 
+.action-color {
+  color: orange;
+}
+
 ul, ol {
   ::marker {
     color: var(--secondary)
@@ -95,6 +99,11 @@ ul, ol {
 .negative {
   color: red;
   text-shadow: red 1px 1px 2px;
+}
+
+.warning {
+  color: yellow;
+  text-shadow: yellow 1px 1px 2px;
 }
 
 .tox-menubar {
