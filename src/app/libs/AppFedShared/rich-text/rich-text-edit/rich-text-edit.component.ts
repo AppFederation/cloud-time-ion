@@ -84,6 +84,7 @@ export class RichTextEditComponent implements OnInit {
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
       */
       fancy: {inline: 'span', classes: 'fancy'},
+      warning: {inline: 'span', classes: 'warning'},
       negative: {inline: 'span', classes: 'negative'},
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
@@ -94,6 +95,10 @@ export class RichTextEditComponent implements OnInit {
       {
         title: `Negative`,
         format: 'negative',
+      },
+      {
+        title: `Warning`,
+        format: 'warning',
       },
       { title: 'Headers', items: [
           { title: 'h1', block: 'h1' },
@@ -136,7 +141,7 @@ export class RichTextEditComponent implements OnInit {
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
     /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
-    valid_classes: `fancy negative` /* TODO: also consider valid_elements / extended_valid_elements  - https://www.tiny.cloud/docs/configure/content-filtering/#exampleusingvalid_elements */,
+    valid_classes: `fancy warning negative` /* TODO: also consider valid_elements / extended_valid_elements  - https://www.tiny.cloud/docs/configure/content-filtering/#exampleusingvalid_elements */,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +
