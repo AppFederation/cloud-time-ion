@@ -269,7 +269,8 @@ export class QuizService {
   }
 
   toggleShowAnswer() {
-    this.showAnswer$.next(! this.showAnswer$.lastVal)
+    const showAnswer = ! this.showAnswer$.lastVal
+    this.showAnswer$.next(showAnswer)
     this.showHint$.next(false)
   }
 
