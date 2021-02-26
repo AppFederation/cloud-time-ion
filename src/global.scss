@@ -42,6 +42,10 @@ html {
   color: orange;
 }
 
+.action-color {
+  color: orange;
+}
+
 ul, ol {
   ::marker {
     color: var(--secondary)
