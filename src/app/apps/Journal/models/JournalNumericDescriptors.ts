@@ -76,6 +76,8 @@ type JndParams = {
   /* not yet implemented */
   searchTerms?: string | string[],
   isShortListed?: boolean,
+  /** shortlisted by me, but not for general public */
+  isCustomShortListed?: boolean,
 }
 
 function jnd(antonymOrData?: JndParams) {
@@ -116,6 +118,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   mental_health = jnd({
     isShortListed: true,
+  })
+  blood_circulation = jnd({
+    isShortListed: true,
+    isCustomShortListed: true,
   })
   pain = jnd({isShortListed: true})
   productivity = jnd({
@@ -304,6 +310,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /** self-control? ... self-discipline */
   discipline = jnd({
     isShortListed: true,
+  })
+  preparedness = jnd({
+    isShortListed: true,
+    searchTerms: [`readiness`],
   })
   /** https://www.quora.com/Whats-the-difference-between-self-control-and-self-discipline */
   'self-discipline' = jnd()
