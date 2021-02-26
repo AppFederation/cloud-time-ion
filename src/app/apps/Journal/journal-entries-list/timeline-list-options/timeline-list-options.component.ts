@@ -21,12 +21,17 @@ export class TimelineListOptionsComponent implements OnInit {
   formControl = new FormControl()
 
   viewSyncer ! : ViewSyncer
+  formControls = { range: new FormControl() }
 
 
   constructor() { }
 
   ngOnInit() {
     this.viewSyncer = createViewSyncerForField(this.listOptions$P, 'sortAscending', this.formControl)
+
+    this.formControls.range.valueChanges.subscribe(value => {
+      console.log('value', value)
+    })
   }
 
 }
