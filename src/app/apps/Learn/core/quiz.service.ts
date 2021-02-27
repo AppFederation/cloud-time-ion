@@ -49,7 +49,9 @@ export class QuizOptions {
     public powBaseX100: number = 300,
     public skipTasks: boolean = true,
     public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
-    public categories = '', // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
+    public categories = '',
+    // TODO: priorityByImportances: 0 .. 1 -- 0 - ignore importances, 1 - items of highest importance go first
+    // in-between - probabilities
   ) {
   }
 }
@@ -146,16 +148,8 @@ export class QuizService {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
       item$s = this.filterByOptions(quizOptions, item$s)
 
-      // filter remaining until now
-      const nowMs: TimeMsEpoch = Date.now()
+      let pendingItems = this.filterByPendingRepetition(item$s)
 
-      let pendingItems: LearnItem$[] = item$s.filter(item$ => {
-        const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
-        // if ( ! (typeof msEpochRepetition === 'number') ) {
-        //   return false
-        // }
-        return msEpochRepetition <= nowMs
-      })
       const endOfDayMs = Date.now() + hoursAsMs(12)
       const pendingItemsTodayCount = countBy2(item$s, item$ => {
         const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
@@ -188,6 +182,20 @@ export class QuizService {
     },
   ).pipe(shareReplay(1))
 
+
+  private filterByPendingRepetition(item$s: LearnItem$[]) {
+    // filter remaining until now
+    const nowMs: TimeMsEpoch = Date.now()
+
+    let pendingItems: LearnItem$[] = item$s.filter(item$ => {
+      const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
+      // if ( ! (typeof msEpochRepetition === 'number') ) {
+      //   return false
+      // }
+      return msEpochRepetition <= nowMs
+    })
+    return pendingItems
+  }
 
   private filterByOptions(quizOptions: QuizOptions, item$s: LearnItem$[]) {
     // FIXME: perf: one .filter() call, with multiple predicates
