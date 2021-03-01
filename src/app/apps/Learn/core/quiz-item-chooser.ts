@@ -37,7 +37,11 @@ export class QuizItemChooser {
   }
 
   private pickRandomByImportance() {
-    // build map of importance-to-oldest-pending-item --
+
+    // initial prototype: can just evenly weighed random, and then achieve importance level "weight" by scaling intervals
+    // --- ehm it's not really gonna work coz there is lots of stuff in levels <= XH, but try anyway at first --> LEAN, save maybe 10-20minutes.
+
+    // build map of importance-to-oldest-pending-item -- exponentially; adding
     // build table of random-range-to-importance, checking which importances have a pending item
 
     // randomly pick importance
