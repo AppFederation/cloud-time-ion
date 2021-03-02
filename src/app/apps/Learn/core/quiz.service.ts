@@ -35,6 +35,7 @@ import {
 import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
 import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../models/fields/mental-effort-level.model'
 import {funLevels} from '../models/fields/fun-level.model'
+import {QuizItemChooser} from './quiz-item-chooser'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
@@ -104,6 +105,8 @@ export class QuizService {
 
   quizIntervalCalculator = new QuizIntervalCalculator()
 
+  quizItemChooser = new QuizItemChooser()
+
   options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
     new QuizOptions(false, true), 'QuizOptions'
   )
@@ -143,26 +146,16 @@ export class QuizService {
       timer(0, secondsAsMs(60) /* FIXME make the timer longer for performance/battery */),
       this.nextItemRequests$,
     ),
-      // this.learnDoService.localItems$,
     (quizOptions: QuizOptions, item$s: LearnItem$[]) => {
       // debugLog(`quizStatus$ combineLatest; FIXME this runs multiple times; use smth like publish() / shareReplay`)
       item$s = this.filterByOptions(quizOptions, item$s)
 
-      let pendingItems = this.filterByPendingRepetition(item$s)
-
-      const endOfDayMs = Date.now() + hoursAsMs(12)
-      const pendingItemsTodayCount = countBy2(item$s, item$ => {
-        const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
-        return msEpochRepetition <= endOfDayMs
-      }) /* If it's low, we could suggest adding new material, based on how much time user wants to spend per day */
-      /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
-         summarize - estimatedTimeLeft
-       */
-      let nextItem$ = this.findPendingItemOfHighestImportance(pendingItems)
+      let pendingItems = this.filterByIsPendingRepetition(item$s)
+      let nextItem$ = this.quizItemChooser.chooseItemFromPending(pendingItems, quizOptions)
       const retStatus = new QuizStatus(
         pendingItems.length,
         nextItem$,
-        pendingItemsTodayCount,
+        this.calculatePendingItemsTodayCount(item$s),
         nextItem$ ? isInFuture(this.calculateWhenNextRepetitionMsEpoch(nextItem$)) : undefined,
         undefined,
         countBy(pendingItems, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
@@ -170,20 +163,28 @@ export class QuizService {
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
-      // if ( retStatus.itemsLeft ) {
-      //   debugLog(`quiz: pendingItems`, retStatus.itemsLeft) // this logs a lot
-      // }
-
       return retStatus
 
-      // console.log(`this.learnDoService.localItems$.pipe item$s`, item$s.length)
       // return minBy(item$s,
       //   (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions.dePrioritizeNewMaterial))
     },
   ).pipe(shareReplay(1))
 
 
-  private filterByPendingRepetition(item$s: LearnItem$[]) {
+  private calculatePendingItemsTodayCount(item$s: LearnItem$[]) {
+    const endOfDayMs = Date.now() + hoursAsMs(12)
+    const pendingItemsTodayCount = countBy2(item$s, item$ => {
+      const msEpochRepetition = this.calculateWhenNextRepetitionMsEpoch(item$)
+      return msEpochRepetition <= endOfDayMs
+    }) /* If it's low, we could suggest adding new material, based on how much time user wants to spend per day */
+    /* TODO: performance: make util method countMatchingAndSummarizeAndReturnFirst to not allocate array and not traverse twice
+       summarize - estimatedTimeLeft
+     */
+    return pendingItemsTodayCount
+  }
+
+  /** Potentially move to QuizItemChooser or QuizItemsFilter... */
+  private filterByIsPendingRepetition(item$s: LearnItem$[]) {
     // filter remaining until now
     const nowMs: TimeMsEpoch = Date.now()
 
@@ -197,6 +198,7 @@ export class QuizService {
     return pendingItems
   }
 
+  /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByOptions(quizOptions: QuizOptions, item$s: LearnItem$[]) {
     // FIXME: perf: one .filter() call, with multiple predicates
     if (quizOptions.onlyWithQA) {
@@ -242,21 +244,6 @@ export class QuizService {
   // )
 
 
-  private findPendingItemOfHighestImportance(pendingItems: LearnItem$[]): LearnItem$ | undefined {
-    let nextItem$: LearnItem$ | undefined = undefined
-    for (let importance of importanceDescriptorsArrayFromHighestNumeric) {
-      const filteredByImportance = pendingItems.filter(item$ => (item$.getEffectiveImportanceId()) === importance.id)
-      // TODO: performance: could reuse itemsLeftByImportance from QuizStatus, instead of filtering (oh, but those are just counts; but could replace by groupBy; OTOH, we don't need all of the arrays, just the non-empty one with highest importance)
-      if (filteredByImportance.length) {
-        // TODO: performance: maybe combine filter and minBy into something like minByIf, to just iterate once
-        nextItem$ = nextItem$ = minBy(filteredByImportance,
-          (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$))
-        break
-      }
-    }
-    return nextItem$
-  }
-
   calculateWhenNextRepetitionMsEpoch(item$: LearnItem$): TimeMsEpoch {
     return item$?.quiz?.calculateWhenNextRepetitionMsEpoch(this.options$.lastVal)
   }
@@ -270,7 +257,7 @@ export class QuizService {
 
 
   calculateIntervalMs(rating: Rating, importance?: ImportanceVal): DurationMs {
-    if ( importance ) {
+    if ( importance ) { // TODO move this "if" into quizIntervalCalculator
       return this.quizIntervalCalculator.calculateIntervalMs(rating, this.options$?.lastVal !, importance)
     }
     return this.quizIntervalCalculator.calculateIntervalHours(rating, this.options$?.lastVal !)
@@ -297,6 +284,7 @@ export class QuizService {
     this.nextItemRequests$.next()
   }
 
+  /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByCategories(item$s: LearnItem$[], quizOptions: QuizOptions) {
     const categories: string[] = quizOptions.categories?.split(',') ?? []
     // const categories = [`health`, `interview`]
@@ -326,6 +314,7 @@ export class QuizService {
     return item$s
   }
 
+  /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByMentalLevel(item$s: LearnItem$[]) {
     return item$s.filter(
       item$ =>
@@ -334,6 +323,7 @@ export class QuizService {
     )
   }
 
+  /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByFunLevel(item$s: LearnItem$[]) {
     return item$s.filter(
       item$ =>
