@@ -61,10 +61,27 @@ export class QuizItemChooser {
   }
 
   private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
-    const weightSlider = 1
-    //
+    const weightSlider = 0.3
+    const importanceNumeric = fromMap[1].getEffectiveImportanceNumeric()
 
-    return fromMap[1].getEffectiveImportanceNumeric()
+    // - 1 = x * -1 - ...... 2 ^ -2x opposite to importance numeric
+    //   0 = x * 0.5 ..;. * 2 ^ -x - no weighting
+    //   1 = x * 1 - ..... * 2 ^ 0 weighting according to importance numeric
+    //  ~30 --- only highest importance
+    // the lower the value, the more anti-boredom
+
+    // NOTE: weights sum probably cannot be zero
+    // return 1;
+    // return fromMap[1].getEffectiveImportanceNumeric()
+    // return Math.pow( 2, fromMap[1].getEffectiveImportanceNumeric() * ( weightSlider - 1))
+
+    // return fromMap[1].getEffectiveImportanceNumeric() *
+    //   Math.pow( 2, fromMap[1].getEffectiveImportanceNumeric() * ( weightSlider - 1))
+
+    // return Math.pow( 1, fromMap[1].getEffectiveImportanceNumeric() * ( weightSlider - 1)) *
+    //   Math.pow( 2, fromMap[1].getEffectiveImportanceNumeric() * ( weightSlider - 1))
+
+    return Math.pow( importanceNumeric, weightSlider)
   }
 
   private testStatistically() {
