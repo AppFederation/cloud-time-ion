@@ -1,8 +1,10 @@
 import {LearnItem$} from '../models/LearnItem$'
-import {importanceDescriptorsArrayFromHighestNumeric} from '../models/fields/importance.model'
-import {minBy} from 'lodash-es'
+import {ImportanceDescriptor, importanceDescriptorsArrayFromHighestNumeric} from '../models/fields/importance.model'
+import {countBy, minBy} from 'lodash-es'
 import {TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {QuizOptions} from './quiz.service'
+import {countBy2, isNotNullish, minsGroupBy} from '../../../libs/AppFedShared/utils/utils'
+import {pickRandomWeighted} from '../../../libs/AppFedShared/utils/randomUtils'
 
 /**
  * TODO consider also QuizItemsFilter - for filtering, where this class would only choose the most suitable item for the current moment
@@ -10,9 +12,10 @@ import {QuizOptions} from './quiz.service'
 export class QuizItemChooser {
 
   chooseItemFromPending(pendingItems: LearnItem$[], quizOptions: QuizOptions) {
-    this.pickRandomByImportance()
+    this.testStatistically(pendingItems, quizOptions)
+    return this.pickRandomWeighedByImportance(pendingItems, quizOptions)
 
-    return this.findPendingItemOfHighestImportance(pendingItems, quizOptions)
+    // return this.findPendingItemOfHighestImportance(pendingItems, quizOptions)
   }
 
   private findPendingItemOfHighestImportance(pendingItems: LearnItem$[], quizOptions: QuizOptions): LearnItem$ | undefined {
@@ -36,16 +39,27 @@ export class QuizItemChooser {
     return item$?.quiz?.calculateWhenNextRepetitionMsEpoch(quizOptions)
   }
 
-  private pickRandomByImportance() {
+  private pickRandomWeighedByImportance(pendingItems: LearnItem$[], quizOptions: QuizOptions): LearnItem$ | undefined {
+    const mins = minsGroupBy(pendingItems,
+      (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$, quizOptions),
+      (item$: LearnItem$) => item$.getEffectiveImportanceNumeric(),
+    )
+    const weighted: Array<[number, LearnItem$]> = []
+    for ( let importance of importanceDescriptorsArrayFromHighestNumeric ) {
+      const fromMap = mins.get(importance.numeric)
+      if ( isNotNullish(fromMap) ) {
+        weighted.push([fromMap[1].getEffectiveImportanceNumeric(), fromMap[1]])
+      }
+    }
+    return pickRandomWeighted(weighted)
+  }
 
-    // initial prototype: can just evenly weighed random, and then achieve importance level "weight" by scaling intervals
-    // --- ehm it's not really gonna work coz there is lots of stuff in levels <= XH, but try anyway at first --> LEAN, save maybe 10-20minutes.
-
-    // build map of importance-to-oldest-pending-item -- exponentially; adding
-    // build table of random-range-to-importance, checking which importances have a pending item
-
-    // randomly pick importance
-    Math.random()
+  private testStatistically(pendingItems: LearnItem$[], quizOptions: QuizOptions) {
+    const arr: Array<LearnItem$|undefined> = []
+    for ( let i = 0; i < 10_000; ++ i ) {
+      arr.push(this.pickRandomWeighedByImportance(pendingItems, quizOptions))
+    }
+    console.log(`testStatistically`, countBy(arr, x => x ?. getEffectiveImportanceNumeric()))
 
   }
 }
