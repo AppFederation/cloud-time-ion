@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuizService} from '../../core/quiz.service'
+import {QuizService} from '../../core/quiz/quiz.service'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
-import {QuizHistoryService} from '../../core/quiz-history.service'
-import {QuizAnswersService} from '../../core/quiz-answers.service'
+import {QuizHistoryService} from '../../core/quiz/quiz-history.service'
+import {QuizAnswersService} from '../../core/quiz/quiz-answers.service'
 
 @Component({
   selector: 'app-show-answer-and-rate',

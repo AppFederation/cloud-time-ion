@@ -1,5 +1,5 @@
 import {Rating, SelfRating} from './fields/self-rating.model'
-import {Duration, QuizOptions} from '../core/quiz.service'
+import {Duration, QuizOptions} from '../core/quiz/quiz.service'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {importanceDescriptors} from './fields/importance.model'
 import {hoursAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'

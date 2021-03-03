@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {LearnDoService} from './learn-do.service'
-import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
+import {LearnDoService} from '../learn-do.service'
+import {OdmTimestamp} from '../../../../libs/AppFedShared/odm/OdmBackend'
 
 import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import * as _ from "lodash";
@@ -10,31 +10,31 @@ import {
   ImportanceVal,
   LearnItem,
 
-} from '../models/LearnItem'
+} from '../../models/LearnItem'
 
 import {Observable,of, from } from 'rxjs';
-import {LearnItem$} from '../models/LearnItem$'
-import {debugLog} from '../../../libs/AppFedShared/utils/log'
-import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
-import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-import {countBy2} from '../../../libs/AppFedShared/utils/utils'
-import {hoursAsMs, isInFuture, secondsAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
+import {LearnItem$} from '../../models/LearnItem$'
+import {debugLog} from '../../../../libs/AppFedShared/utils/log'
+import {DurationMs, nullish, TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
+import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {countBy2} from '../../../../libs/AppFedShared/utils/utils'
+import {hoursAsMs, isInFuture, secondsAsMs} from '../../../../libs/AppFedShared/utils/time/date-time-utils'
 import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
-import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../libs/AppFedShared/utils/rxUtils'
+import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {interval} from 'rxjs'
 import {timer} from 'rxjs'
-import {LocalOptionsPatchableObservable, OptionsService} from './options.service'
+import {LocalOptionsPatchableObservable, OptionsService} from '../options.service'
 import {Subject} from 'rxjs/internal/Subject'
-import {Rating} from '../models/fields/self-rating.model'
+import {Rating} from '../../models/fields/self-rating.model'
 import {
   ImportanceDescriptors,
   importanceDescriptors,
   importanceDescriptorsArray,
   importanceDescriptorsArrayFromHighestNumeric,
-} from '../models/fields/importance.model'
-import {QuizIntervalCalculator} from '../models/quiz-interval-calculator'
-import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../models/fields/mental-effort-level.model'
-import {funLevels} from '../models/fields/fun-level.model'
+} from '../../models/fields/importance.model'
+import {QuizIntervalCalculator} from '../../models/quiz-interval-calculator'
+import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
+import {funLevels} from '../../models/fields/fun-level.model'
 import {QuizItemChooser} from './quiz-item-chooser'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;

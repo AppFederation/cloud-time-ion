@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {QuizService} from '../../../core/quiz.service'
+import {QuizService} from '../../../core/quiz/quiz.service'
 import {ImportanceDescriptor, importanceDescriptors, importanceDescriptorsArray} from '../../../models/fields/importance.model'
 import {ImportanceVal} from '../../../models/LearnItem'
 import {SelfRating} from '../../../models/fields/self-rating.model'

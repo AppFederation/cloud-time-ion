@@ -1,10 +1,10 @@
-import {LearnItem$} from '../models/LearnItem$'
-import {ImportanceDescriptor, importanceDescriptorsArrayFromHighestNumeric} from '../models/fields/importance.model'
+import {LearnItem$} from '../../models/LearnItem$'
+import {ImportanceDescriptor, importanceDescriptorsArrayFromHighestNumeric} from '../../models/fields/importance.model'
 import {countBy, minBy} from 'lodash-es'
-import {TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
+import {TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizOptions} from './quiz.service'
-import {countBy2, isNotNullish, minsGroupBy} from '../../../libs/AppFedShared/utils/utils'
-import {pickRandomWeighted} from '../../../libs/AppFedShared/utils/randomUtils'
+import {countBy2, isNotNullish, minsGroupBy} from '../../../../libs/AppFedShared/utils/utils'
+import {pickRandomWeighted} from '../../../../libs/AppFedShared/utils/randomUtils'
 
 /**
  * TODO consider also QuizItemsFilter - for filtering, where this class would only choose the most suitable item for the current moment
@@ -18,7 +18,7 @@ export class QuizItemChooser {
   }
 
   chooseItemFromPending() {
-    this.testStatistically()
+    // this.testStatistically()
     return this.pickRandomWeighedByImportance()
 
     // return this.findPendingItemOfHighestImportance(pendingItems, quizOptions)

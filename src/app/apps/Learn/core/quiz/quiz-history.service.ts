@@ -1,11 +1,11 @@
 import {Injectable, Injector} from '@angular/core';
-import {HistoryService} from '../../../libs/AppFedShared/odm/history.service'
-import {StoredLearnStats} from './learn-stats.service'
-import {LearnItemId} from '../models/LearnItem'
-import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../libs/AppFedShared/odm/OdmItem$2'
-import {Rating} from '../models/fields/self-rating.model'
+import {HistoryService} from '../../../../libs/AppFedShared/odm/history.service'
+import {StoredLearnStats} from '../learn-stats.service'
+import {LearnItemId} from '../../models/LearnItem'
+import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../../libs/AppFedShared/odm/OdmItem$2'
+import {Rating} from '../../models/fields/self-rating.model'
 import {QuizOptions} from './quiz.service'
-import {DurationMs} from '../../../libs/AppFedShared/utils/type-utils'
+import {DurationMs} from '../../../../libs/AppFedShared/utils/type-utils'
 
 export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 

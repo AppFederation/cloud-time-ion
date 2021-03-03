@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {QuizService, QuizStatus} from '../core/quiz.service'
+import {QuizService, QuizStatus} from '../core/quiz/quiz.service'
 import {Observable} from 'rxjs'
 import {PopoverController} from '@ionic/angular'
 import {QuizTimerPopoverComponent} from './quiz-timer-popover/quiz-timer-popover.component'
