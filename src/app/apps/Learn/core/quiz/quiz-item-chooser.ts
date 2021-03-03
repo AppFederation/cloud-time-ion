@@ -54,10 +54,17 @@ export class QuizItemChooser {
     for ( let importance of importanceDescriptorsArrayFromHighestNumeric ) {
       const fromMap = mins.get(importance.numeric)
       if ( isNotNullish(fromMap) ) {
-        weighted.push([fromMap[1].getEffectiveImportanceNumeric(), fromMap[1]])
+        weighted.push([this.calculateProbabilityWeight(fromMap), fromMap[1]])
       }
     }
     return pickRandomWeighted(weighted)
+  }
+
+  private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
+    const weightSlider = 1
+    //
+
+    return fromMap[1].getEffectiveImportanceNumeric()
   }
 
   private testStatistically() {

@@ -22,8 +22,14 @@ export interface Quizzable$ {
   getEffectiveImportance(): ImportanceVal
 }
 
-/** QuizzableMixin? */
+/** QuizzableMixin?
+ * It's for
+ * - convenience: item$.quiz. ....
+ * - performance
+ * - separation of concerns within Item$
+ * */
 export class Quiz {
+
   constructor(
     // public injector: Injector,
     public quizzable$: Quizzable$,
