@@ -21,7 +21,8 @@ export class QuizIntervalCalculator {
     if ( rating === 0 ) {
       return 30 / 3600 // 30 seconds (could try 1 minute)
     }
-    return 12 * Math.pow(((quizOptions?.powBaseX100 ?? 300) / 100) ?? 3.5, rating ?? 0)
+    const powBase = ((quizOptions?.powBaseX100 ?? 300) / 100) ?? 3.5
+    return 12 * Math.pow(powBase, rating ?? 0)
   }
 
   calculateIntervalMs(
