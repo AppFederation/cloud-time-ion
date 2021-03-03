@@ -2,7 +2,7 @@
 /** TODO: rename to countIf or countWhere ?
  * Lodash's countBy is more like groupCountBy (grouping)
  */
-export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number {
+export function countBy2<T>(arr: Iterable<T>, conditionFn: (item: T) => boolean): number {
   let count = 0
   for ( let item of arr ) {
     if ( conditionFn(item) ) {
@@ -10,6 +10,27 @@ export function countBy2<T>(arr: T[], conditionFn: (item: T) => boolean): number
     }
   }
   return count
+}
+
+/** minimums per group
+ * numeric value is stored, as groupByFn() call might be costly (e.g. getEffectiveImportanceNumeric - might involve going over categories)
+ * */
+export function minsGroupBy<TItem, TGroup>(
+  iterable: Iterable<TItem>,
+  numFn: (item: TItem) => number,
+  groupByFn: (item: TItem) => TGroup
+): Map<TGroup, [number, TItem]>
+{
+  const retMap = new Map<TGroup, [number, TItem]> ()
+  for ( let item of iterable ) {
+    const num = numFn(item)
+    const grp = groupByFn(item)
+    const currMin = retMap.get(grp)
+    if ( currMin === undefined || num < currMin[0] ) {
+      retMap.set(grp, [num, item])
+    }
+  }
+  return retMap
 }
 
 export function isNotNullish<T>(x: T)
