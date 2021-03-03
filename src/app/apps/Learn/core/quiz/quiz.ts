@@ -1,8 +1,8 @@
-import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {Rating} from './fields/self-rating.model'
-import {ImportanceVal, PositiveInt, PositiveIntOrZero} from './LearnItem'
-import {QuizOptions} from '../core/quiz/quiz.service'
-import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
+import {OdmTimestamp} from '../../../../libs/AppFedShared/odm/OdmBackend'
+import {Rating} from '../../models/fields/self-rating.model'
+import {ImportanceVal, PositiveInt, PositiveIntOrZero} from '../../models/LearnItem'
+import {QuizOptions} from './quiz.service'
+import {DurationMs, nullish, TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
 
 
@@ -22,6 +22,7 @@ export interface Quizzable$ {
   getEffectiveImportance(): ImportanceVal
 }
 
+/** QuizzableMixin? */
 export class Quiz {
   constructor(
     // public injector: Injector,

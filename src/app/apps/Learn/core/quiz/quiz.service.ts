@@ -32,7 +32,7 @@ import {
   importanceDescriptorsArray,
   importanceDescriptorsArrayFromHighestNumeric,
 } from '../../models/fields/importance.model'
-import {QuizIntervalCalculator} from '../../models/quiz-interval-calculator'
+import {QuizIntervalCalculator} from './quiz-interval-calculator'
 import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
 import {funLevels} from '../../models/fields/fun-level.model'
 import {QuizItemChooser} from './quiz-item-chooser'

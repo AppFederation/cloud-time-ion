@@ -1,9 +1,9 @@
-import {Rating, SelfRating} from './fields/self-rating.model'
-import {Duration, QuizOptions} from '../core/quiz/quiz.service'
-import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {importanceDescriptors} from './fields/importance.model'
-import {hoursAsMs} from '../../../libs/AppFedShared/utils/time/date-time-utils'
-import {ImportanceVal} from './LearnItem'
+import {Rating, SelfRating} from '../../models/fields/self-rating.model'
+import {Duration, QuizOptions} from './quiz.service'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {importanceDescriptors} from '../../models/fields/importance.model'
+import {hoursAsMs} from '../../../../libs/AppFedShared/utils/time/date-time-utils'
+import {ImportanceVal} from '../../models/LearnItem'
 
 export class QuizIntervalCalculator {
 
