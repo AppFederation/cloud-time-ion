@@ -1,7 +1,7 @@
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Rating} from './fields/self-rating.model'
 import {ImportanceVal, PositiveInt, PositiveIntOrZero} from './LearnItem'
-import {QuizOptions} from '../core/quiz.service'
+import {QuizOptions} from '../core/quiz/quiz.service'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../libs/AppFedShared/utils/type-utils'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
 

@@ -4,7 +4,7 @@ import {LearnItem} from '../../models/LearnItem'
 import {Observable} from 'rxjs'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
-import {QuizService} from '../../core/quiz.service'
+import {QuizService} from '../../core/quiz/quiz.service'
 import {Subscription} from 'rxjs'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
