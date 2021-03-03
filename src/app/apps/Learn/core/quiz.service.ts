@@ -105,8 +105,6 @@ export class QuizService {
 
   quizIntervalCalculator = new QuizIntervalCalculator()
 
-  quizItemChooser = new QuizItemChooser()
-
   options2$ = new LocalOptionsPatchableObservable<QuizOptions>(
     new QuizOptions(false, true), 'QuizOptions'
   )
@@ -151,7 +149,10 @@ export class QuizService {
       item$s = this.filterByOptions(quizOptions, item$s)
 
       let pendingItems = this.filterByIsPendingRepetition(item$s)
-      let nextItem$ = this.quizItemChooser.chooseItemFromPending(pendingItems, quizOptions)
+
+      const quizItemChooser = new QuizItemChooser(pendingItems, quizOptions)
+
+      let nextItem$ = quizItemChooser.chooseItemFromPending()
       const retStatus = new QuizStatus(
         pendingItems.length,
         nextItem$,
