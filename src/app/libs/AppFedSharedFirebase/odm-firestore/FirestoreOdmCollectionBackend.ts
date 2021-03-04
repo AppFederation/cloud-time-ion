@@ -58,9 +58,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>) {
     super.setListener(listener);
-    debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
+    // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
-      debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
+      // debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
 
       // This could cause the race condition of items uninitialized when going from another route
       const userId = this.authService.authUser$.lastVal!.uid

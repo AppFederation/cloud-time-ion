@@ -190,7 +190,7 @@ export class RichTextEditComponent implements OnInit {
   }
 
   logEditor(msg: string) {
-    debugLog(`tinymce: `, msg)
+    // debugLog(`tinymce: `, msg)
   }
 
   focusEditor() {
