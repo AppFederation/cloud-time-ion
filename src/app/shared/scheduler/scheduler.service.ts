@@ -19,6 +19,7 @@ export class MindfulnessOptions {
  * - - note: for the fixed times, maybe better to use calendar [for now]
  * - - - but
  * - it might even consult next quiz item and e.g. determine if it's more important than e.g. mindfulness
+ * - automatic mode: could be bound to quiz's "Apply & Next" button
  * */
 @Injectable({
   providedIn: 'root'
