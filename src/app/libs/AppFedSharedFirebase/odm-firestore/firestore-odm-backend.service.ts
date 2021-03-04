@@ -5,6 +5,16 @@ import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 
+/**
+ *
+ * Alternatives from AWS:
+ * https://stackoverflow.com/questions/39589636/what-would-be-the-aws-equivalent-to-firebase-realtime-database
+ * https://aws.amazon.com/es/amplify/
+ * https://aws.amazon.com/es/appsync/
+ * https://dashbird.io/blog/aws-lambda-vs-firebase/
+ * DynamoDB somewhat
+ *
+ * */
 @Injectable()
 export class FirestoreOdmBackend extends OdmBackend {
 

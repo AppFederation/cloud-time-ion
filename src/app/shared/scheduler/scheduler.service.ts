@@ -9,6 +9,10 @@ export class MindfulnessOptions {
   // timesPerDay: DurationDistribution = 3
 
   // timePerWeek
+  // notificationOptions: {
+  //    leniency...
+  //    sound:
+  // }
 }
 
 /**
