@@ -28,7 +28,7 @@ import {JournalItemEditComponent} from './journal-item-edit/journal-item-edit.co
   imports: [
     CommonModule,
     JournalWritePageRoutingModule,
-    IonicModule.forRoot(),
+    IonicModule,
     FormsModule,
     OdmModule,
     RatingsModule,

@@ -13,7 +13,7 @@ import {IonicModule} from "@ionic/angular";
     CommonModule,
     OdmUiModule,
     RecipesModule,
-    IonicModule.forRoot()
+    IonicModule
   ]
 })
 export class RecipesPageModule { }

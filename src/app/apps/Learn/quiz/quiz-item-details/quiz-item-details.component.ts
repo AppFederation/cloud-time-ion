@@ -38,7 +38,7 @@ export class QuizItemDetailsComponent implements OnInit, OnDestroy, AfterViewIni
   constructor(
     public quizService: QuizService,
   ) {
-    debugLog('QuizItemDetailsComponent ctor')
+    // debugLog('QuizItemDetailsComponent ctor')
   }
 
   ngOnInit() {

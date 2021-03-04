@@ -90,7 +90,7 @@ export abstract class OdmService<
 
   private setBackendListener() {
     const service = this
-    debugLog(`BEFORE this.odmCollectionBackend.setListener({`, service.className)
+    // debugLog(`BEFORE this.odmCollectionBackend.setListener({`, service.className)
     this.odmCollectionBackend.setListener({
       // This could cause the race condition of items uninitialized when going from another route
       onAdded(addedItemId: OdmItemId<T>, newItemRawData: TRaw) {
