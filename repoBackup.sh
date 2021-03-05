@@ -85,13 +85,16 @@ backupAllRepos() {
   backupRepo "/A/R/FlexLife/cloud-time-ion"
 
   backupRepo "/A/R/O/OrYoL"
+  backupRepo "/A/R/TopicFriends"
 
   backupRepo "/A/R/InnoTopic/InnoTopic_Website" # FIXME /A/R/InnoTopic/InnoTopic_Website : 2 SUBMODULES
   backupRepo "/A/R/InnoTopic/InnoTopic_Website/InnoTopicWebsite/src/app/TopicFriendsShared"
   backupRepo "/A/R/InnoTopic/InnoTopic_Website/svg-conversions"
 
   backupRepo "/A/R/FlexLife/LifeSense2"
-#  backupRepo "$(pwd)"
+
+
+  #  backupRepo "$(pwd)"
 }
 
 time backupAllRepos
