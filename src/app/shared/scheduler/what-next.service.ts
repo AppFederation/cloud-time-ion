@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import {ReplaySubject} from 'rxjs'
 import {CachedSubject} from '../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {Router} from '@angular/router'
 
 
 export class MindfulnessOptions {
@@ -28,9 +29,25 @@ export class MindfulnessOptions {
 @Injectable({
   providedIn: 'root'
 })
-export class SchedulerService {
+export class WhatNextService {
 
   whatToDoNextUrl$ = new CachedSubject(`/what-next`)
 
-  constructor() { }
+  whenLastMindfulness: Date | undefined
+
+  constructor(
+    private router: Router,
+  ) { }
+
+  whatNext() {
+    const intervalMs = 3600 * 1000
+    // const intervalMs = 20 * 1000
+    if ( ! this.whenLastMindfulness
+        || (Date.now() - this.whenLastMindfulness.getTime()) > intervalMs
+    ) {
+      this.whenLastMindfulness = new Date()
+      this.router.navigateByUrl('/mindfulness')
+      console.log(`this.router.navigateByUrl('/mindfulness')`)
+    }
+  }
 }
