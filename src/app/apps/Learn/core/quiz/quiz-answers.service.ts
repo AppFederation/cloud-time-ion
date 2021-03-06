@@ -6,6 +6,7 @@ import {catchReportDontRethrow, debugLog} from '../../../../libs/AppFedShared/ut
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
 import {SelfRating} from '../../models/fields/self-rating.model'
+import {WhatNextService} from '../../../../shared/scheduler/what-next.service'
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class QuizAnswersService {
   constructor(
     private quizService: QuizService,
     private quizHistoryService: QuizHistoryService,
+    private whatNextService: WhatNextService,
   ) {
     this.quizService.quizStatus$.subscribe(status => {
       if ( status ?. nextItem$ ) {
@@ -58,6 +60,7 @@ export class QuizAnswersService {
   onApplyAndNext(item$: LearnItem$, selfRating: NumericPickerVal) {
     this.storeAnswerForHistory(selfRating)
     item$ ?. setNewSelfRating(selfRating !)
+    this.whatNextService.whatNext()
     this.quizService.requestNextItem()
   }
 
