@@ -15,7 +15,7 @@ let exports = [
   ],
   imports: [
     CommonModule,
-    IonicModule.forRoot()
+    IonicModule
   ],
   exports: exports
 })
