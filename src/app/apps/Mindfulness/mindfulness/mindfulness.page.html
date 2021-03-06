@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>MINDFULNESS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img src="assets/images/mindfulness/forest--photo-1542202229-7d93c33f5d07.jpeg" alt="A peaceful forest image">
+  <img src="assets/images/mindfulness/jocelyne-yvonne-MCpBIwisljo-unsplash.jpg" alt="A peaceful forest image">
+
+  <div class="fancy" style="margin: 8px">
+
+    <p>Relax</p>
+
+    <p>Breathe deeply.</p>
+
+    <p>Direct attention and awareness inwards.</p>
+
+  </div>
+
+  <!-- Idea: binaural beats -->
+  <!-- Idea: tranquil sounds -->
+  <!-- https://www.nytimes.com/guides/well/how-to-meditate#:~:text=Mindfulness%20meditation%20is%20the%20practice%20of%20actually%20being%20present%20in,present%20moment%20without%20any%20judgment. -->
+
+  <app-time-passing
+    style="opacity: 20%; display: block; font-size: 95%; color: white; margin-left: 3px; align-self: center; margin-top: 100px"
+    [isCountDown]="false"
+  ></app-time-passing>
+
+
+</ion-content>

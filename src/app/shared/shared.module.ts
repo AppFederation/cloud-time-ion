@@ -12,6 +12,8 @@ import {GeoLocComponent} from '../libs/AppFedShared/geo-location/geo-loc/geo-loc
 import {OptionsComponent} from '../libs/AppFedShared/options/options.component'
 import {SearchToolbarComponent} from '../libs/search/search-toolbar/search-toolbar.component'
 import {ImportanceBannerComponent} from '../apps/Learn/shared/importance-banner/importance-banner.component'
+import {WhatNextButtonComponent} from './what-next-button/what-next-button.component'
+import {RouterModule} from '@angular/router'
 
 let imports = [
   ReactiveFormsModule,
@@ -32,22 +34,25 @@ const declarations = [
     entryComponents: [],
   imports: [
     CommonModule,
-    IonicModule.forRoot(),
+    IonicModule,
     ...imports,
     EditorModule,
+    RouterModule,
   ],
-    exports: [
-        ...imports,
-        ...declarations,
-        SearchToolbarComponent,
-        ImportanceBannerComponent,
-    ],
+  exports: [
+    ...imports,
+    ...declarations,
+    SearchToolbarComponent,
+    ImportanceBannerComponent,
+    WhatNextButtonComponent,
+  ],
   providers: [],
-    declarations: [
-        declarations,
-        SearchToolbarComponent,
-        ImportanceBannerComponent,
-    ],
+  declarations: [
+    declarations,
+    SearchToolbarComponent,
+    ImportanceBannerComponent,
+    WhatNextButtonComponent,
+  ],
 })
 export class SharedModule {
 }

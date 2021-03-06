@@ -36,11 +36,23 @@ const routes: Routes = [
     loadChildren: () => import('./apps/Learn/learn-stats/learn-stats.module').then( m => m.LearnStatsPageModule)
   },
   {
+    path: 'what-next',
+    loadChildren: async () => (await import('./apps/Learn/what-next/what-next.module')).WhatNextPageModule
+  },
+  {
+    path: 'tutorial',
+    loadChildren: () => import('./shared/tutorial/tutorial.module').then( m => m.TutorialPageModule)
+  },
+  {
+    path: 'mindfulness',
+    loadChildren: () => import('./apps/Mindfulness/mindfulness/mindfulness.module').then( m => m.MindfulnessPageModule)
+  },
+  {
     path: '',
     redirectTo: '/learn',
     pathMatch: 'full'
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

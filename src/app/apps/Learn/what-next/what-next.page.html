@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>WHAT NEXT?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <p><ion-note>Idea: generate a day plan proposal, instead of just next item</ion-note></p>
+
+  How much time I have:
+  <ion-range></ion-range>
+
+  <ion-note><p>This will be automatically sorted depending on scheduling</p></ion-note>
+
+  <ion-button [disabled]="true">Automatic mode</ion-button>
+
+  <ion-button [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
+
+  <ion-button [disabled]="true">Physical Exercises (WITH TIMER)</ion-button>
+
+  <ion-button [disabled]="true">N-Minute rule</ion-button>
+
+  <ion-button [disabled]="true">Process Inboxes/TODOs</ion-button>
+
+  <ion-button [routerLink]="'/mindfulness'">Mindfulness</ion-button>
+
+  <app-quiz-button></app-quiz-button>
+
+  <ion-button [disabled]="true">Affirmations Quiz</ion-button>
+
+
+  <app-process-button></app-process-button>
+
+  <ion-button [disabled]="true">Learn</ion-button>
+
+  <div
+    style="border: 5px solid green"
+
+  >
+    <ion-button [disabled]="true">Plan
+    </ion-button>
+  </div>
+
+
+  <ion-button [routerLink]="'/learn'">Do tasks
+    <ion-note>TODO: link to items list with tasks preset; maybe some tasks stats times per importance, milestones, etc</ion-note>
+  </ion-button>
+
+  <ion-button [routerLink]="'/journal/write'">Write Journal</ion-button>
+
+  <ion-button [routerLink]="'/journal'">RETROSPECTIVE</ion-button>
+
+  <ion-button [disabled]="true">Execute routine</ion-button>
+
+  <ion-button [disabled]="true">Work on routines</ion-button>
+
+
+</ion-content>
