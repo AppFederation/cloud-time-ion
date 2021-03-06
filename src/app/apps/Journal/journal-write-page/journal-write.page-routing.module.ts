@@ -12,7 +12,8 @@ const routes: Routes = [
     // path: ':journalEntryId',
     path: ':itemId',
     component: JournalWritePage,
-  }
+  },
+  { path: '**', redirectTo: 'new' },
 ];
 
 @NgModule({

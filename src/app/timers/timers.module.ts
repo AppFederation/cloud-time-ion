@@ -21,7 +21,7 @@ import {OdmModule} from '../libs/AppFedShared/odm/odm.module'
     MomentModule,
     RouterModule.forChild([{path: '', component: TimersPageComponent}]),
     SharedModule,
-    IonicModule.forRoot(),
+    IonicModule,
     TimeModule,
     TimeIonicModule,
     OdmModule,

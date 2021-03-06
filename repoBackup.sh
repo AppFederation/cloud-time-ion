@@ -42,7 +42,7 @@ function backupRepo () {
   rsync -a "$src"/ "$dst"  \
       --exclude '**/node_modules'  \
       --exclude platforms \
-      --exclude .git \
+#      --exclude .git \
 
       # for first copy, do not `--exclude .git`; but maybe always syncing .git could give me a kind of automatic rebase on develop; then maybe push -f  (but need to think how to preserve the incremental commits)
 
@@ -85,13 +85,14 @@ backupAllRepos() {
   backupRepo "/A/R/FlexLife/cloud-time-ion"
 
   backupRepo "/A/R/O/OrYoL"
+  backupRepo "/A/R/TopicFriends"
 
   backupRepo "/A/R/InnoTopic/InnoTopic_Website" # FIXME /A/R/InnoTopic/InnoTopic_Website : 2 SUBMODULES
   backupRepo "/A/R/InnoTopic/InnoTopic_Website/InnoTopicWebsite/src/app/TopicFriendsShared"
   backupRepo "/A/R/InnoTopic/InnoTopic_Website/svg-conversions"
 
   backupRepo "/A/R/FlexLife/LifeSense2"
-#  backupRepo "$(pwd)"
+  backupRepo "$(pwd)"
 }
 
 time backupAllRepos

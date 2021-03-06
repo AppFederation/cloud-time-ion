@@ -16,6 +16,7 @@ export class Side {
   isHint ? : boolean
   onlyForLearn ? : boolean
   hideByDefault ? : boolean
+  searchTerms ? : string | string[]
 
   get iconFullPath() {
     if ( ! this.icon ) {
@@ -121,12 +122,15 @@ export class SidesDefs {
     ask: false,
   })
   time_estimate = side({
+    /* TODO: make sure user does not confuse with time-of-day */
     icon: `stopwatch-outline`,
     _title: `~time`,
     ask: false,
+    searchTerms: [`estimated time duration `],
   })
   money_estimate = side({
     ask: false,
+    searchTerms: [`estimated money cost`],
   })
   status = side({
     ask: false,

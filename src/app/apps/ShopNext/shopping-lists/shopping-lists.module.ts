@@ -21,7 +21,7 @@ const exports = [
   ],
   imports: [
     CommonModule,
-    IonicModule.forRoot(),
+    IonicModule,
     OdmUiModule,
     RouterModule,
   ],

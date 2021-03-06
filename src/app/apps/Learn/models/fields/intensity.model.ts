@@ -82,6 +82,8 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
   meta_mantra
     = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
+  /* TODO: current_focus - mostly for categories - temporarily *contextually* increase importance,
+      e.g. #SocialInteractions before going to a meetup etc., #Interview before interview, before exam, #Codility */
   testing_extremely_high
     = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`, isDebug: true})
   // it gives 10 level total now

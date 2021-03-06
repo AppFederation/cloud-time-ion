@@ -6,6 +6,7 @@ import {QuizOptions} from './quiz.service'
 import {countBy2, isNotNullish, minsGroupBy} from '../../../../libs/AppFedShared/utils/utils'
 import {pickRandomWeighted} from '../../../../libs/AppFedShared/utils/randomUtils'
 
+
 /**
  * TODO consider also QuizItemsFilter - for filtering, where this class would only choose the most suitable item for the current moment
  * */
@@ -86,7 +87,7 @@ export class QuizItemChooser {
 
   private testStatistically() {
     const arr: Array<LearnItem$|undefined> = []
-    for ( let i = 0; i < 10_000; ++ i ) {
+    for ( let i = 0; i < 1000; ++ i ) {
       arr.push(this.pickRandomWeighedByImportance())
     }
     console.log(`testStatistically`, countBy(arr, x => x ?. getEffectiveImportanceNumeric()))
