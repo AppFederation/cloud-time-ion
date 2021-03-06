@@ -74,7 +74,8 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   extremely_high
     = intensity({numeric: 50, abbrev: `XH`, icons: `😊😊😊😊`, shortId: `XHi`})
   /** To make the SYSTEM of learning & self-improvement & execution (tasks) work;
-   * infrastructure... */
+   * infrastructure...
+   * */
   meta
     = intensity({numeric: 100, abbrev: `Mt`, icons: `Meta`, shortId: `Mt`})
   /** Frequently repeat and contemplate and improve; affirmations */
@@ -83,7 +84,9 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   meta_mantra
     = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
   /* TODO: current_focus - mostly for categories - temporarily *contextually* increase importance,
-      e.g. #SocialInteractions before going to a meetup etc., #Interview before interview, before exam, #Codility */
+      e.g. #SocialInteractions before going to a meetup etc., #Interview before interview, before exam, #Codility
+       * difference from mantra: mantra is more about general-life-situation, than an even upcoming shortly
+      */
   testing_extremely_high
     = intensity({numeric: 100, abbrev: `T`, icons: `TX😊`, isDebug: true})
   // it gives 10 level total now
