@@ -7,6 +7,13 @@ import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 
 /**
  *
+ * Alternatives from AWS:
+ * https://stackoverflow.com/questions/39589636/what-would-be-the-aws-equivalent-to-firebase-realtime-database
+ * https://aws.amazon.com/es/amplify/
+ * https://aws.amazon.com/es/appsync/
+ * https://dashbird.io/blog/aws-lambda-vs-firebase/
+ * DynamoDB somewhat
+ *
  * Default/common queries params
  *  - read/owner (permission) - mandatory! coz otherwise permission error!
  *  - ...... You can use at most one **array-contains** clause per query. You can't combine array-contains with array-contains-any.
