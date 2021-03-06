@@ -10,20 +10,16 @@
 <!--      <ion-button color="primary" routerLink="/" > < </ion-button>-->
       <span style="flex-grow: 1"><!--Search or add--></span>
 
-      <app-process-button
-      ></app-process-button>
+      <app-what-next-button></app-what-next-button>
 
-      <app-quiz-button
-      ></app-quiz-button>
-
-      <ion-buttons slot="end">
+<!--      <ion-buttons slot="end">-->
         <ion-icon class="action-icon" name="bar-chart-outline" slot="end"
                   [routerLink]="['/learn/stats']"></ion-icon>
         <ion-icon class="action-icon" name="pencil" slot="end"
                   [routerLink]="['/journal/write/new']"></ion-icon>
 
         <odm-sync-status></odm-sync-status>
-      </ion-buttons>
+<!--      </ion-buttons>-->
 
     </div>
 

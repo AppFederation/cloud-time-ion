@@ -46,7 +46,7 @@ export class AppComponent {
       if (isOpen) {
         const popover = await this.popoverController.create({
           component: OptionsComponent,
-          event: event,
+          event: event /* FIXME some global event object */,
           translucent: true,
           mode: 'ios',
         });

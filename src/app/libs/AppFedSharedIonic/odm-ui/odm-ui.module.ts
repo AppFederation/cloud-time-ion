@@ -20,7 +20,7 @@ const exports = [
   exports: exports,
   imports: [
     CommonModule,
-    IonicModule.forRoot(),
+    IonicModule,
   ]
 })
 export class OdmUiModule { }

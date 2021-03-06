@@ -131,9 +131,9 @@ export abstract class OdmService2<
       geo = null
     }
     if ( geo ) {
-      (itemToSave.val as any).whereCreated ??= geo;
-      (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
     }
+    (itemToSave.val as any).whereCreated ??= geo;
+    (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
   }
 
   public getItem$ById(id: TItemId): TOdmItem$ {

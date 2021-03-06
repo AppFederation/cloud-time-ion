@@ -14,7 +14,7 @@ import {OdmModule} from "../../../libs/AppFedShared/odm/odm.module";
   imports: [
     CommonModule,
     OdmModule,
-    IonicModule.forRoot(),
+    IonicModule,
     ShoppingListsModule,
     // OdmUiModule,
   ]

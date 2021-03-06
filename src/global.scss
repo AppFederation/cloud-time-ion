@@ -94,6 +94,8 @@ ul, ol {
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.2em;
   font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
 }
 
 .negative {
@@ -106,3 +108,12 @@ ul, ol {
   text-shadow: yellow 1px 1px 2px;
 }
 
+.tox-menubar {
+  overflow-x: scroll;
+}
+
+//ion-button::part(native) {
+//  background-color: red;
+//  font-size: 212px;
+//  font-weight: 500;
+//}
