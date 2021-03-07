@@ -3,6 +3,8 @@
 <ng-container
   *ngIf="quizStatus else loading"
 >
+  <div style="overflow: scroll">
+
   <span>
     | left:
     <strong style="font-size: 130%; color: white">{{ quizStatus ?. itemsLeft }}</strong>
@@ -65,6 +67,9 @@
 
 
   </table>
+
+  </div>
+
 </ng-container>
 
 <ng-template #loading>
