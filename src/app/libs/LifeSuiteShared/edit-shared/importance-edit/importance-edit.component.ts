@@ -52,6 +52,11 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
       // intensityBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
     ]
   }),
+  btn({
+    btnVariants: [
+      intensityBtnVariant(`CF !`, importanceDescriptors.current_focus),
+    ]
+  }),
 ])
 
 
