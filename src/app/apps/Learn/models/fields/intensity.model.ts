@@ -83,6 +83,8 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
   meta_mantra
     = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
+  current_focus
+    = intensity({numeric: 1000, abbrev: `CF`, icons: `CF!`, shortId: `CF`})
   /* TODO: current_focus - mostly for categories - temporarily *contextually* increase importance,
       e.g. #SocialInteractions before going to a meetup etc., #Interview before interview, before exam, #Codility
        * difference from mantra: mantra is more about general-life-situation, than an even upcoming shortly
