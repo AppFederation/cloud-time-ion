@@ -11,6 +11,9 @@ export type UserId = string
 
 export class OdmInMemItemWriteOnce {
   public whenCreated?: OdmTimestamp
+  /** TODO maybe better status: 'normal'/null | 'del(eted)' | 'arch(ived)' - but also think of "other meaning of status", like "draft", "published" etc
+   * and whenDeleted, whenArchived
+   * */
   public isDeleted?: OdmTimestamp
   public owner?: UserId
 }
