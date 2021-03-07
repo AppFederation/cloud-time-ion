@@ -455,7 +455,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   worry = jnd({moderateIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   concern = jnd({moderateIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
   anxiety = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind */
-  tension = jnd({lowerIsBetter: true}) /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
+  tension = jnd({lowerIsBetter: true, searchTerms: [`tenseness`]}) /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
   relief = jnd() /* FIXME: de-duplicate; and with peace-of-mind; related to excessive excitement */
   visualizing = jnd({moderateIsBetter: true})
   long_term_vision = jnd({moderateIsBetter: true, searchTerms: `long-term vision`})
