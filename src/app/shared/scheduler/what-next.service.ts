@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {ReplaySubject} from 'rxjs'
 import {CachedSubject} from '../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {Router} from '@angular/router'
+import {minutesAsMs} from '../../libs/AppFedShared/utils/time/date-time-utils'
 
 
 export class MindfulnessOptions {
@@ -40,7 +41,7 @@ export class WhatNextService {
   ) { }
 
   whatNext() {
-    const intervalMs = 3600 * 1000
+    const intervalMs = minutesAsMs(20)
     // const intervalMs = 20 * 1000
     if ( ! this.whenLastMindfulness
         || (Date.now() - this.whenLastMindfulness.getTime()) > intervalMs
