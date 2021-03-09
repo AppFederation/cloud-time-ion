@@ -49,6 +49,8 @@ export class WhatNextService {
       this.whenLastMindfulness = new Date()
       this.router.navigateByUrl('/mindfulness')
       console.log(`this.router.navigateByUrl('/mindfulness')`)
+    } else {
+      this.router.navigateByUrl('/sleep')
     }
   }
 }
