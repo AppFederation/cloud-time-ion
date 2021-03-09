@@ -48,11 +48,16 @@ const routes: Routes = [
     loadChildren: () => import('./apps/Mindfulness/mindfulness/mindfulness.module').then( m => m.MindfulnessPageModule)
   },
   {
+    path: 'sleep',
+    loadChildren: () => import('./apps/sleep/sleep.module').then( m => m.SleepPageModule)
+  },
+  {
     path: '',
     redirectTo: '/learn',
     pathMatch: 'full'
   },
   { path: '**', redirectTo: '' },
+
 ];
 
 @NgModule({

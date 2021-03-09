@@ -4,6 +4,7 @@ import {ReplaySubject} from 'rxjs'
 import {CachedSubject} from '../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {Router} from '@angular/router'
 import {minutesAsMs} from '../../libs/AppFedShared/utils/time/date-time-utils'
+import {ignorePromise} from '../../libs/AppFedShared/utils/promiseUtils'
 
 
 export class MindfulnessOptions {
@@ -47,8 +48,14 @@ export class WhatNextService {
         || (Date.now() - this.whenLastMindfulness.getTime()) > intervalMs
     ) {
       this.whenLastMindfulness = new Date()
-      this.router.navigateByUrl('/mindfulness')
+      ignorePromise(this.router.navigateByUrl('/mindfulness'))
       console.log(`this.router.navigateByUrl('/mindfulness')`)
+    } else {
+      const h = new Date().getHours()
+      console.log('hours', h)
+      if ( h >= 2 && h <= 11 ) {
+        ignorePromise(this.router.navigateByUrl('/sleep'))
+      }
     }
   }
 }
