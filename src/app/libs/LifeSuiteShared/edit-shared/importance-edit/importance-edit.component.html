@@ -1,6 +1,16 @@
 {{((item$.locallyVisibleChanges$ | async)?.importance?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}
+<!-- FIXME: this is causing delay; do smth like item$.valImmediate$ -->
+
 
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"
   [formControl]="formControls.importance"
 ></apf-numeric-picker>
+
+<ion-item>
+  <ion-checkbox > <!-- [formControl]="formControls[fieldName]" -->
+  </ion-checkbox>
+  <ion-label>
+    &nbsp; CURRENT FOCUS
+  </ion-label>
+</ion-item>
