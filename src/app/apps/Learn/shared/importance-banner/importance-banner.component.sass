@@ -3,7 +3,7 @@
     letter-spacing: 1em
 
 \:host
-  animation: anim-spacing 1s ease-in-out forwards
+  animation: anim-spacing 1s ease-in-out forwards, anim-skew 1s ease-in-out forwards
   margin: auto
   padding: 10px
   display: block
@@ -13,3 +13,8 @@
   color: black
   font-weight: bold
   text-transform: uppercase
+  transform: skew(0deg,-20deg)
+
+@keyframes anim-skew
+  to
+    transform: skew(0deg,0deg)
