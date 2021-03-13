@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FancyTextComponent implements OnInit {
 
+  /* TODO: option / input if animated or not -- coz might be annoying/slowdown/battery-drain to user */
+
   constructor() { }
 
   ngOnInit() {}
