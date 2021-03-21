@@ -412,6 +412,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   sport = jnd({
     isShortListed: true,
     specifyDuration,
+    searchTerms: [`sports`],
   })
   bicycle = jnd({
     specifyDuration,
