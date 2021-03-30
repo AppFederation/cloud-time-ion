@@ -63,7 +63,9 @@ export class JournalNumericDescriptor extends UiFieldDef {
 }
 
 type JndParams = {
+  /** difference between acronyms and abbreviations and how they relate to initialisms.: https://examples.yourdictionary.com/examples-of-acronyms.html */
   acronym?: string | string[],
+  abbreviation?: string | string[],
   antonym?: string | string[],
   minLabel?: string,
   maxLabel?: string,
@@ -78,6 +80,9 @@ type JndParams = {
   isShortListed?: boolean,
   /** shortlisted by me, but not for general public */
   isCustomShortListed?: boolean,
+  /** Limiting factor */
+  isPersonalBottleneck?: boolean,
+  isPersonalSourceOfWorry?: boolean,
 }
 
 function jnd(antonymOrData?: JndParams) {
@@ -118,6 +123,39 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   mental_health = jnd({
     isShortListed: true,
+  })
+  kidney_pain_or_discomfort = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
+  blood_in_urine = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+    searchTerms: [`pee`, `bleeding`, `kidney`]
+  })
+  back_pain = jnd({
+    lowerIsBetter: true,
+  })
+  buttocks_pain = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    searchTerms: [`chair`, `sitting`]
+  })
+  foot_pain = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+  })
+  foot_numbness = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+  })
+  drinking_liquids = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
   })
   blood_circulation = jnd({
     isShortListed: true,
@@ -267,6 +305,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'grogginess' = jnd({lowerIsBetter: true, searchTerms: [`groggy`]})
   'sleep quality' = jnd({
     isShortListed: true,
+    isPersonalBottleneck: true,
   })
   'sleep regularity' = jnd({searchTerms: `sleep pattern`})
   'sleep quantity' = jnd({
@@ -424,6 +463,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /*end sport subelements*/
 
   sex = jnd({moderateIsBetter: true,})
+  premenstrual_syndrome = jnd({
+    acronym: 'PMS',
+    searchTerms: ['PMS', 'menstruation']
+  })
   weather = jnd()
 
   delegating = jnd()
@@ -470,7 +513,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   efficiency = jnd()
   effectiveness = jnd()
 
-  social_interactions = jnd({searchTerms: ['interacting with people']})
+  social_interactions = jnd({searchTerms: ['interacting with people', 'meetings']})
 
   introspection = jnd()
   self_discovery = jnd()
