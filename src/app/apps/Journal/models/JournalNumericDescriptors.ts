@@ -78,6 +78,7 @@ type JndParams = {
   /* not yet implemented */
   searchTerms?: string | string[],
   isShortListed?: boolean,
+  isMetadata?: boolean,
   /** shortlisted by me, but not for general public */
   isCustomShortListed?: boolean,
   /** Limiting factor */
@@ -109,8 +110,18 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   static instance = new JournalNumericDescriptors()
 
+  confidentiality = jnd({subTitle: `of this journal entry`, minLabel: `advertised`/*public, published*/, maxLabel: `top-secret` /* encryption */,
+    searchTerms: [`secret secrecy private privacy discreet discretion discrete`],
+    /* 6: discrete; e.g. NSFW but nothing too deeply revealing about one's self */
+    /* 7: private */
+    /* default : 5 ?*/
+    isShortListed: true,
+    isMetadata: true,
+  })
+
   importance = jnd({subTitle: `of this journal entry`, minLabel: `routine`, maxLabel: `revolution`,
     isShortListed: true,
+    isMetadata: true,
   })
 
   mood = jnd({
@@ -328,12 +339,14 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     lowerIsBetter: true,
   })
   'cravings for computer games' = jnd({
+    searchTerms: [`video gaming cravings temptations`],
     lowerIsBetter: true,
   })
   'thinking_about_computer_games' = jnd({
     lowerIsBetter: true,
   })
   'cravings for food' = jnd({
+    searchTerms: [`munchies`, `eat`, `temptations`],
     lowerIsBetter: true,
   })
   'cravings for alcohol' = jnd({
