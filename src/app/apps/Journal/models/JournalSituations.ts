@@ -1,3 +1,5 @@
+
+/* events, states, occurrences */
 export class JournalSituationDefs {
   woke_up: any
   got_up: any

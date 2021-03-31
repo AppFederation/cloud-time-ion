@@ -135,6 +135,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   mental_health = jnd({
     isShortListed: true,
   })
+  left_chest_pain = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
   kidney_pain_or_discomfort = jnd({
     isPersonalBottleneck: true,
     isPersonalSourceOfWorry: true,
