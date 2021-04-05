@@ -70,6 +70,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
    */
   importance ? : ImportanceVal
 
+  importanceCurrent ? : ImportanceVal
+
   funEstimate ? : FunVal
 
   mentalLevelEstimate ? : MentalLevelVal

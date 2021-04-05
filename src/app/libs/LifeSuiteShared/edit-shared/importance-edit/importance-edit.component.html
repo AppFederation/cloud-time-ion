@@ -7,10 +7,18 @@
   [formControl]="formControls.importance"
 ></apf-numeric-picker>
 
-<ion-item>
-  <ion-checkbox > <!-- [formControl]="formControls[fieldName]" -->
-  </ion-checkbox>
-  <ion-label>
-    &nbsp; CURRENT FOCUS
-  </ion-label>
-</ion-item>
+
+CURRENT IMPORTANCE: {{((item$.locallyVisibleChanges$ | async)?.importanceCurrent?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}
+<apf-numeric-picker
+  [buttonDescriptors]="importanceButtonsDesc"
+  [formControl]="formControlsCurrent.importanceCurrent"
+></apf-numeric-picker>
+
+
+<!--<ion-item>-->
+<!--  <ion-checkbox > &lt;!&ndash; [formControl]="formControls[fieldName]" &ndash;&gt;-->
+<!--  </ion-checkbox>-->
+<!--  <ion-label>-->
+<!--    &nbsp; CURRENT FOCUS-->
+<!--  </ion-label>-->
+<!--</ion-item>-->

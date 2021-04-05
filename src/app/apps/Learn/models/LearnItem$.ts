@@ -60,7 +60,8 @@ export class LearnItem$
 
   /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
   getEffectiveImportance(): ImportanceVal {
-    return this.val ?. importance
+    return this.val ?. importanceCurrent
+      ?? this.val ?. importance
       ?? this.getImportanceFromCategories()
       ?? importanceDescriptors.undefined
   }

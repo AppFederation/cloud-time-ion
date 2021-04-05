@@ -71,11 +71,19 @@ export class ImportanceEditComponent implements OnInit {
 
   formGroup ! : FormGroup
 
+  formGroupCurrent ! : FormGroup
+
   formControls = {
     importance: new FormControl(),
   }
 
+  formControlsCurrent = {
+    importanceCurrent: new FormControl(),
+  }
+
   viewSyncer ! : ViewSyncer
+
+  viewSyncerCurrent ! : ViewSyncer
 
   @Input()
   @Required()
@@ -91,6 +99,15 @@ export class ImportanceEditComponent implements OnInit {
       false,
       'importance'
     ) /* TODO might need to ignore other fields from db */
+
+
+    this.formGroupCurrent = new FormGroup(this.formControlsCurrent)
+    this.viewSyncerCurrent = new ViewSyncer(
+      this.formGroupCurrent,
+      this.item$,
+      false,
+      'importanceCurrent'
+    )
   }
 
 }
