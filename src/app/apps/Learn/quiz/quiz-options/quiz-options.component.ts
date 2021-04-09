@@ -19,6 +19,7 @@ export class QuizOptionsComponent implements OnInit {
     skipTasks: new FormControl(true),
     powBaseX100: new FormControl(),
     scaleIntervalsByImportance: new FormControl(1),
+    focusLevelProbabilities: new FormControl(1),
     categories: new FormControl('')
   }
 

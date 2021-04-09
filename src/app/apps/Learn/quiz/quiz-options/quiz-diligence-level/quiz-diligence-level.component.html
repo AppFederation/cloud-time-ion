@@ -1,24 +1,10 @@
-<div style="display: flex; flex-direction: column; align-items: stretch">
-  <div style="display: flex; flex-direction: row">
-    <ion-label>more diligent
-    </ion-label>
-    <div style="flex-grow: 1"
-    ></div>
-    <ion-note
-    >{{ (control.value / 100)?.toFixed(2) }}
-    </ion-note>
-    <div style="flex-grow: 1"
-    ></div>
+<app-slider
+  [minLabel]="'more diligent'"
+  [maxLabel]="'quicker'"
+  [minVal]="110"
+  [maxVal]="1500"
+  [scale]="100"
+  [control]="control"
+>
+</app-slider>
 
-    <ion-label>quicker</ion-label>
-  </div>
-
-  <ion-range
-    [min]="110"
-    [max]="1500"
-    [pin]="false"
-    [step]="1"
-    [formControl]="control"
-  >
-  </ion-range>
-</div>

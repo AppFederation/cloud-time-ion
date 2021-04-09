@@ -1,0 +1,11 @@
+<app-slider
+  [minLabel]="'reverse focus'"
+  [maxLabel]="'more focused'"
+  [minVal]="-12"
+  [maxVal]="12"
+  [step]="0.01"
+  [control]="control"
+>
+</app-slider>
+
+{{ ( (quizStatus$ | async) ?. chooserParams ?. probabilitiesByImportance ) | json }}

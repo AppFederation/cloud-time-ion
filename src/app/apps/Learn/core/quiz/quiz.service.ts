@@ -50,6 +50,7 @@ export class QuizOptions {
     public powBaseX100: number = 300,
     public skipTasks: boolean = true,
     public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
+    public focusLevelProbabilities = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
     public categories = '',
     // TODO: priorityByImportances: 0 .. 1 -- 0 - ignore importances, 1 - items of highest importance go first
     // in-between - probabilities
@@ -74,6 +75,7 @@ export class QuizStatus {
     public itemsLeftByImportance?: any,
     /* TODO: undefined */
     public itemsCountByImportance?: any,
+    public chooserParams?: any,
   ) {}
 
   private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
@@ -152,7 +154,9 @@ export class QuizService {
 
       const quizItemChooser = new QuizItemChooser(pendingItems, quizOptions)
 
-      let nextItem$ = quizItemChooser.chooseItemFromPending()
+      let chooserOutput = quizItemChooser.chooseItemFromPending()
+      const nextItem$ = chooserOutput.item
+
       const retStatus = new QuizStatus(
         pendingItems.length,
         nextItem$,
@@ -161,6 +165,7 @@ export class QuizService {
         undefined,
         countBy(pendingItems, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
         countBy(item$s, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
+        chooserOutput.chooserParams
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 
@@ -283,6 +288,8 @@ export class QuizService {
     debugLog(`QuizService: requestNextItem()`)
     this.isNextItemRequested = true
     this.nextItemRequests$.next()
+
+    /// whatnext
   }
 
   /** Potentially move to QuizItemChooser or QuizItemsFilter... */
