@@ -298,8 +298,26 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   }
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
-    const s = stringEviscerated
-    /*==*/ if (s?.startsWith(`!!!!!!!`) || s?.endsWith(`!!!!!!!`)) {
+    const s = stringEviscerated?.toUpperCase()
+    /*==*/ if (s?.startsWith(`CF!`) || s?.endsWith(`CF!`)) {
+      overlay.importance = importanceDescriptors.current_focus
+    } else if (s?.startsWith(`BF!`) || s?.endsWith(`BF!`)
+        || s?.startsWith(`BF !`) || s?.endsWith(`BF !`)
+    ) {
+      overlay.importance = importanceDescriptors.basic_functioning
+    } else if (s?.startsWith(`CFMM!`) || s?.endsWith(`CFMM!`)
+        || s?.startsWith(`CFMTM!`) || s?.endsWith(`CFMTM!`)
+        || s?.startsWith(`CFMTMTR!`) || s?.endsWith(`CFMTMTR!`)
+        || s?.startsWith(`CFMETAMANTRA!`) || s?.endsWith(`CFMETAMANTRA!`)
+    ) {
+      overlay.importance = importanceDescriptors.current_focus_meta_mantra
+    } else if (s?.startsWith(`CFM!`) || s?.endsWith(`CFM!`)
+        || s?.startsWith(`CFMT!`) || s?.endsWith(`CFMT!`)
+        || s?.startsWith(`CFMTR!`) || s?.endsWith(`CFMTR!`)
+        || s?.startsWith(`CFMANTRA!`) || s?.endsWith(`CFMANTRA!`)
+    ) {
+      overlay.importance = importanceDescriptors.current_focus_mantra
+    } else if (s?.startsWith(`!!!!!!!`) || s?.endsWith(`!!!!!!!`)) {
       overlay.importance = importanceDescriptors.meta_mantra
     } else if (s?.startsWith(`!!!!!!`) || s?.endsWith(`!!!!!!`)) {
       overlay.importance = importanceDescriptors.mantra

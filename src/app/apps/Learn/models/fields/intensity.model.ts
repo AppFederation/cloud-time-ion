@@ -80,11 +80,37 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 100, abbrev: `Mt`, icons: `Meta`, shortId: `Mt`})
   /** Frequently repeat and contemplate and improve; affirmations */
   mantra
-    = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
+    = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`,
+        description: `
+          MUST be concise and well-written and optimized.\n
+          MUST get to a point where I can memorize the whole exact text and recite it smoothly.\n
+        `
+  })
   meta_mantra
-    = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
+    = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`,
+        description: `
+          Items that directly help to establish MANTRA.\n
+        `
+  })
   current_focus
-    = intensity({numeric: 1000, abbrev: `CF`, icons: `CF!`, shortId: `CF`})
+    = intensity({numeric: 1000, abbrev: `CF`, icons: `CF!`, shortId: `CF`,
+        description: `SHOULD do every day. Can be a bit longer, with some deeper reflections.\nTODO: maybe maybe switch current_focus order with meta/mantra/meta-mantra ?`
+  })
+  current_focus_mantra
+    = intensity({numeric: 2000, abbrev: `CFMtr`, icons: `CFMtr!`, shortId: `CFMtr`,
+        description: `MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
+  })
+  current_focus_meta_mantra
+    = intensity({numeric: 5000, abbrev: `CFMtMtr`, icons: `CFMtMtr!`, shortId: `CFMtMtr`,
+        description: `Current Focus items, that directly help to establish MANTRA. MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
+  })
+  basic_functioning
+    = intensity({numeric: 10000, abbrev: `BF`, icons: `BF!`, shortId: `BF`,
+        description: `Basic functioning. To even want, and be able to, do *anything*.`,
+  })
+  /* TODO: current focus urgent, day / week /
+    Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category
+  *   */
   /* TODO: current_focus - mostly for categories - temporarily *contextually* increase importance,
       e.g. #SocialInteractions before going to a meetup etc., #Interview before interview, before exam, #Codility
        * difference from mantra: mantra is more about general-life-situation, than an even upcoming shortly

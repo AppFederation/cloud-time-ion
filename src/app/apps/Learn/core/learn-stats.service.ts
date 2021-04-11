@@ -136,7 +136,7 @@ export class LearnStatsService {
       multiDimRowsFlattened = flatten(this.makeMultiDimRows(item$s))
       // debugLog(`multiDimRowsFlattened JSON.stringify string len`, JSON.stringify(multiDimRowsFlattened).length)
     } catch (e) {
-      errorAlert(`makeMultiDimRows error`, e)
+      errorAlert(`Error saving stats time-series: makeMultiDimRows error`, e)
     }
     let countByDims = {}
     try {
@@ -144,7 +144,7 @@ export class LearnStatsService {
       // Firestore Maximum depth of fields in a map or array	20 - https://firebase.google.com/docs/firestore/quotas
       // countByDims = countByMulti(item$s, accessorsFields)
     } catch (e) {
-      errorAlert(`countByDims error`, e)
+      errorAlert(`Error saving stats time-series: countByDims error`, e)
     }
     const ret: StoredLearnStats = {
       countByRating: this.getCountWithRatingEqual(item$s.map(item$ => item$.currentVal)),
