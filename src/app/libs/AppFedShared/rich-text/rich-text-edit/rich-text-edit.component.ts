@@ -4,6 +4,7 @@ import {EditorComponent} from '@tinymce/tinymce-angular'
 import {FormControl} from '@angular/forms'
 import {debugLog} from '../../utils/log'
 import {EditorService} from './editor.service'
+import {richTextEditCommon} from './RichTextEditCommon'
 
 /**
  * http://ckeditor.github.io/editor-recommendations/about/
@@ -86,6 +87,8 @@ export class RichTextEditComponent implements OnInit {
       fancy: {inline: 'span', classes: 'fancy'},
       warning: {inline: 'span', classes: 'warning'},
       negative: {inline: 'span', classes: 'negative'},
+      positive: {inline: 'span', classes: 'positive'},
+      concept: {inline: 'span', classes: 'concept'},
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
       {
@@ -99,6 +102,14 @@ export class RichTextEditComponent implements OnInit {
       {
         title: `Warning`,
         format: 'warning',
+      },
+      {
+        title: `Positive`,
+        format: 'positive',
+      },
+      {
+        title: `Concept`,
+        format: 'concept',
       },
       { title: 'Headers', items: [
           { title: 'h1', block: 'h1' },
@@ -141,7 +152,7 @@ export class RichTextEditComponent implements OnInit {
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
     /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
-    valid_classes: `fancy warning negative` /* TODO: also consider valid_elements / extended_valid_elements  - https://www.tiny.cloud/docs/configure/content-filtering/#exampleusingvalid_elements */,
+    valid_classes: richTextEditCommon.valid_classes,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +

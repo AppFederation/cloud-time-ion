@@ -25,7 +25,7 @@ html {
 :root {
 
   --secondary: darkorange;
-  --primary: violet /* FIXME: Ionic color */;
+  --primary: --ion-color-primary /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;
   //--answerBorderColorDark: darken(var(--answerBorderColor), 0);
@@ -88,12 +88,42 @@ ul, ol {
 }
 
 .fancy {
- text-shadow: orange 1px 1px 2px;
-  background: radial-gradient(#fff, #bbf);
+  text-shadow: var(--ion-color-primary) 1px 1px 2px;
+  //text-shadow: #428CFFFF 1px 1px 2px;
+  //background: linear-gradient(#fff, #666);
+  background: linear-gradient(var(--ion-color-primary), #666);
+  //background: linear-gradient(#428CFFFF, #666);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.2em;
   font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
+  transform: skew(5deg);
+}
+
+.positive {
+  text-shadow: green 1px 1px 2px;
+  background: linear-gradient(#fff, #666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
+  //transform: skew(15deg);
+}
+
+.concept {
+  text-shadow: white 1px 1px 2px;
+  background: linear-gradient(#fff, #666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
+  //transform: skew(15deg);
 }
 
 .negative {
@@ -106,3 +136,12 @@ ul, ol {
   text-shadow: yellow 1px 1px 2px;
 }
 
+.tox-menubar {
+  overflow-x: scroll;
+}
+
+//ion-button::part(native) {
+//  background-color: red;
+//  font-size: 212px;
+//  font-weight: 500;
+//}
