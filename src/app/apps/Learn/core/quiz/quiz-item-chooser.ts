@@ -65,7 +65,8 @@ export class QuizItemChooser {
   }
 
   private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
-    const weightSlider = 1.05 // 0.3
+    // const weightSlider = 1.05 /* 50% */ // 0.3
+    const weightSlider = 3 // 0.3
     const importanceNumeric = fromMap[1].getEffectiveImportanceNumeric()
 
     // - 1 = x * -1 - ...... 2 ^ -2x opposite to importance numeric

@@ -3,6 +3,7 @@ import {FormControl} from '@angular/forms'
 import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
 import {RichTextInterceptorService} from '../../shared/utils/rich-text-interceptor.service'
 import {ChromeExtensionService} from '../../shared/utils/chrome-extension.service'
+import {richTextEditCommon} from '../../../../libs/AppFedShared/rich-text/rich-text-edit/RichTextEditCommon'
 
 @Component({
   selector: 'app-search-or-add-text-editor',
@@ -46,7 +47,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     skin: 'oxide-dark',
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
-    valid_classes: `fancy warning negative`,
+    valid_classes: richTextEditCommon.valid_classes,
     content_style:
       '[contenteditable] { padding-left: 5px; } ' +
       '[contenteditable] li { padding-top: 6px; } ' +

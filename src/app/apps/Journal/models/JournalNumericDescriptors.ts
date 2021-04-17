@@ -42,7 +42,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
 
   get title() {
-    return this.id
+    return this.id?.replace(/_/, ' ')
   }
 
   constructor(data?: JndParams) {
@@ -56,7 +56,8 @@ export class JournalNumericDescriptor extends UiFieldDef {
     if ( includes(this.antonym, search) ) {
       return true
     }
-    return includes(this.id, search)
+    return includes(this.title, search)
+      || includes(this.id, search)
       || includes(this.searchTerms, search)
       || includes(this.acronym, search)
   }
@@ -82,6 +83,7 @@ type JndParams = {
   /** shortlisted by me, but not for general public */
   isCustomShortListed?: boolean,
   /** Limiting factor */
+  isPersonalFocus?: boolean,
   isPersonalBottleneck?: boolean,
   isPersonalSourceOfWorry?: boolean,
 }
@@ -129,6 +131,12 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     antonym: [`sad`, `depressed`],
     isShortListed: true,
   })
+  feeling_normal = jnd({
+    isPersonalFocus: true,
+    isShortListed: true,
+  })
+  /* TODO: being present in the moment, here and now
+  *   - enjoying the moment */
   health = jnd({
     isShortListed: true,
   })
@@ -137,6 +145,11 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   left_chest_pain = jnd({
     isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
+  left_hip_pain = jnd({
+    isPersonalBottleneck: false,
     isPersonalSourceOfWorry: true,
     lowerIsBetter: true,
   })
@@ -220,7 +233,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* ==== End of default shortlist of fields "to fill in a hurry".
     Here could be "show more button */
 
-  'liking life' = jnd({searchTerms: [`life appreciation`, `gratefulness`]})
+  'liking life' = jnd({searchTerms: [`life appreciation`, `gratefulness`, 'enjoying life']})
   'enjoyment of current activity' = jnd()
   'engagement' = jnd()
   'empathy' = jnd()

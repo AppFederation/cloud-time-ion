@@ -3,7 +3,7 @@ import {CachedSubject} from './CachedSubject2';
 
 describe('CachedSubject', () => {
 
-  it('next stores lastVal', () => {
+  it('next(...) stores lastVal', () => {
     const cachedSubject = new CachedSubject<string>()
 
     cachedSubject.next('someVal') // ==== ACT

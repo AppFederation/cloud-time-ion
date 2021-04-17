@@ -99,6 +99,30 @@ ul, ol {
   transform: skew(15deg);
 }
 
+.positive {
+  text-shadow: green 1px 1px 2px;
+  background: linear-gradient(#fff, #666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
+  //transform: skew(15deg);
+}
+
+.concept {
+  text-shadow: white 1px 1px 2px;
+  background: linear-gradient(#fff, #666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: 120%;
+  //transform: skew(15deg);
+}
+
 .negative {
   color: red;
   text-shadow: red 1px 1px 2px;
