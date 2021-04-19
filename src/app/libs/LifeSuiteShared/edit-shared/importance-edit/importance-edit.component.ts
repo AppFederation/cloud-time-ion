@@ -91,6 +91,9 @@ export class ImportanceEditComponent implements OnInit {
       false,
       'importance'
     ) /* TODO might need to ignore other fields from db */
+
+
+    // TODO currentImportance
   }
 
 }
