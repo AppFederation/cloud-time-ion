@@ -9,14 +9,22 @@
 </ion-header>
 
 <ion-content>
+  <app-time-passing
+    style="opacity: 20%; display: block; font-size: 95%; color: white; margin-left: 1rem; margin-top: 1rem; align-self: center; margin-bottom: 100px"
+    [isCountDown]="false"
+  ></app-time-passing>
 
-  <div class="fancy" style="margin: 8px">
+  <div class="fancy" style="margin: 15px">
+
+    <p>Don't hesitate to spend some time on this. It will pay off!</p>
 
     <p>Relax. Heal.</p>
 
     <p>Breathe deeply.</p>
 
     <p>Direct attention and awareness inwards.</p>
+
+    <p>Uninterrupted Focus.</p>
 
     <p>Establish Self-Mastery.</p>
 
@@ -29,10 +37,8 @@
   <!-- Idea: tranquil sounds -->
   <!-- https://www.nytimes.com/guides/well/how-to-meditate#:~:text=Mindfulness%20meditation%20is%20the%20practice%20of%20actually%20being%20present%20in,present%20moment%20without%20any%20judgment. -->
 
-  <app-time-passing
-    style="opacity: 20%; display: block; font-size: 95%; color: white; margin-left: 3px; align-self: center; margin-top: 100px"
-    [isCountDown]="false"
-  ></app-time-passing>
+
+  <!-- TODO: when trying to navigate away from mindfulness, before time passed: dialog with "it will pay off" and a little time counter ~3s before able to press btn -->
 
 
 </ion-content>
