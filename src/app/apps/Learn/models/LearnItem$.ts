@@ -67,7 +67,8 @@ export class LearnItem$
   }
 
   getEffectiveImportanceNumeric(): number {
-    return ( this.val ?. importance ?? importanceDescriptors.medium ) ?. numeric
+    // return ( this.val ?. importance ?? importanceDescriptors.medium ) ?. numeric
+    return this.getEffectiveImportance() ?. numeric
   }
 
   getEffectiveFunLevel(): FunLevelVal {
