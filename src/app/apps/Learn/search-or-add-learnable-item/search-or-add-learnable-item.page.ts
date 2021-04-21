@@ -40,6 +40,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   get filteredItem$s() { return this.listModel.filteredItem$s }
 
+  get item$s() { return this.listModel.item$s }
+
   get authUserId() {
     return this.authService.authUser$.lastVal?.uid
   }
