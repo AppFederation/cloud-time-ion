@@ -38,8 +38,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   searchFormControl = new FormControl()
 
-  showOldEditor = false
-
+  get filteredItem$s() { return this.listModel.filteredItem$s }
 
   get authUserId() {
     return this.authService.authUser$.lastVal?.uid

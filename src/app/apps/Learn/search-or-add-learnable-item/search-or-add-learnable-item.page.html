@@ -39,15 +39,6 @@
           [formControl1]="searchFormControl"
         ></app-search-or-add-text-editor>
 
-        <ion-textarea
-          *ngIf="showOldEditor"
-          [autoGrow]="true"
-          [(ngModel)]="listModel.search"
-          (ngModelChange)="listModel.onChangeSearch($event)"
-          placeholder="Search or add"
-          [debounce]="50"
-          inputmode="search"
-        ></ion-textarea>
         <ion-button
           [hidden]="! hasSearchText()"
           (click)="clearInput()"
