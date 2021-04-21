@@ -32,15 +32,11 @@ import {ListProcessing} from './list-processing'
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
 
+  listModel = new ListProcessing()
+
   htmlSearch ? : string = undefined
 
   searchFormControl = new FormControl()
-
-  listModel = new ListProcessing()
-
-  get filteredItem$s() { return this.listModel.filteredItem$s }
-
-  get item$s() { return this.listModel.item$s }
 
   showOldEditor = false
 
@@ -78,7 +74,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.listModel.setItemsAndSort(item$s)
     })
   }
-
 
   add(string?: string, isTask?: boolean, navInto?: boolean) {
     console.log('add: ', string)
@@ -221,10 +216,6 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
   @HostListener('window:keyup.alt.enter', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     console.log(`alt enter`)
-  }
-
-  trackByFn(index: number, item: LearnItem) {
-    return item.id
   }
 
   hasSearchText() {

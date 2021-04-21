@@ -22,6 +22,7 @@ import {SelectionCheckboxComponent} from './actionable-item/selection-checkbox/s
 import {SelectionInfoComponent} from './selection-info/selection-info.component'
 import {SelectionPopupComponent} from './selection-popup/selection-popup.component'
 import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
+import {ItemListComponent} from './item-list/item-list.component'
 
 const routes: Routes = [
   {
@@ -57,6 +58,7 @@ const routes: Routes = [
     SelectionCheckboxComponent,
     SelectionInfoComponent,
     SelectionPopupComponent,
+    ItemListComponent,
   ],
 })
 export class SearchOrAddLearnableItemPageModule {}
