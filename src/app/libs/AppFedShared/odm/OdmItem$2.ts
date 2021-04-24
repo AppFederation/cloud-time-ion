@@ -185,7 +185,14 @@ export class OdmItem$2<
 
   /** Default impl, to be overridden */
   toDbFormat(): TRawData {
-    let dbFormat = Object.assign({}, this.currentVal) as any as TRawData
+    let dbFormat: any = Object.assign({}, this.currentVal) as any as TRawData
+
+    for ( let key of Object.keys(dbFormat) ) {
+      if ( dbFormat[key] === undefined ) {
+        dbFormat[key] = null // for Firestore
+      }
+    }
+
     return dbFormat
     // return this.currentVal as any as TRawData
     // // delete dbFormat.odmService
