@@ -72,6 +72,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.listModel.onChangeSearch(val)
     })
     this.learnDoService.localItems$.subscribe(item$s => {
+      console.log('localItems$ ==== ')
       this.listModel.setItemsAndSort(item$s)
     })
   }
@@ -158,12 +159,12 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       overlay.title = (string ?? '')./*?.*/trim() /*?? null*/
     }
     this.applyImportanceFromText(stringEviscerated, overlay)
-    return {
+    return Object.assign(new LearnItem(), {
       owner: this.authUserId,
       whenAdded: new Date(),
       isTask: isTask ? true : null,
       ...overlay,
-    }
+    })
   }
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {

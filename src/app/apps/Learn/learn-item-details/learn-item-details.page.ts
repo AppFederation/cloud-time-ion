@@ -26,7 +26,7 @@ export class LearnItemDetailsPage implements OnInit {
   sidesDefsArray = sidesDefsArray
 
   public id: LearnItemId = this.activatedRoute.snapshot.params['itemId']
-  public item$: LearnItem$ = this.learnDoService.getItem$ById(this.id)
+  public item$: LearnItem$ = this.learnDoService.obtainItem$ById(this.id)
   public title? : string
 
   constructor(

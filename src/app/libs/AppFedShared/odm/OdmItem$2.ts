@@ -58,7 +58,7 @@ export class OdmItem$2<
   TRawPatch extends
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
-  >
+>
   implements PatchableObservable<TInMemData | nullish, TMemPatch>
 {
 

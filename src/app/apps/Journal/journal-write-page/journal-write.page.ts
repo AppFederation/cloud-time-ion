@@ -48,7 +48,7 @@ export class JournalWritePage implements OnInit {
       // ... (which might be totally irrelevant and distracting now, since we want to write new entry and not make a retrospective
       this.newItem()
     } else {
-      this.setItem$(this.journalEntriesService.getItem$ById(this.itemId))
+      this.setItem$(this.journalEntriesService.obtainItem$ById(this.itemId))
     }
     // this.journalEntry.saveNowToDb()
   }
