@@ -74,6 +74,7 @@ export class QuizStatus {
     public itemsLeftByImportance?: any,
     /* TODO: undefined */
     public itemsCountByImportance?: any,
+    public chooserParams?: any,
   ) {}
 
   private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
@@ -152,7 +153,9 @@ export class QuizService {
 
       const quizItemChooser = new QuizItemChooser(pendingItems, quizOptions)
 
-      let nextItem$ = quizItemChooser.chooseItemFromPending()
+      let chooserOutput = quizItemChooser.chooseItemFromPending()
+      const nextItem$ = chooserOutput.item
+
       const retStatus = new QuizStatus(
         pendingItems.length,
         nextItem$,
@@ -161,6 +164,7 @@ export class QuizService {
         undefined,
         countBy(pendingItems, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
         countBy(item$s, (item$) => item$.getEffectiveImportanceId()) as CountsByImportance,
+        chooserOutput.chooserParams
         // pendingItems[0] /* TODO: ensure sorted or minBy */,
       );
 

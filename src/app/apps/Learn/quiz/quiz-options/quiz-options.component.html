@@ -50,3 +50,4 @@
   [control]="controls.scaleIntervalsByImportance"
 ></app-quiz-interval-importance-scaling>
 
+{{ ( (quizStatus$ | async)?.chooserParams?.probabilitiesByImportance ) | json }}

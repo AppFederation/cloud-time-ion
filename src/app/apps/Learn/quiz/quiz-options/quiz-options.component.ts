@@ -27,6 +27,8 @@ export class QuizOptionsComponent implements OnInit {
   viewSyncer = new ViewSyncer(this.formGroup, this.quizService.options2$, false,
     'powBaseX100' /* FIXME why just 1 field */)
 
+  quizStatus$ = this.quizService.quizStatus$
+
   constructor(
     public quizService: QuizService,
     public optionsService: OptionsService,

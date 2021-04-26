@@ -48,7 +48,7 @@ export class QuizItemChooser {
     return item$?.quiz?.calculateWhenNextRepetitionMsEpoch(this.quizOptions)
   }
 
-  private pickRandomWeighedByImportance(): LearnItem$ | undefined {
+  private pickRandomWeighedByImportance() {
     const mins = minsGroupBy(this.pendingItems,
       (item$: LearnItem$) => this.calculateWhenNextRepetitionMsEpoch(item$),
       (item$: LearnItem$) => item$.getEffectiveImportanceNumeric(),
@@ -60,8 +60,13 @@ export class QuizItemChooser {
         weighted.push([this.calculateProbabilityWeight(fromMap), fromMap[1]])
       }
     }
-    this.printProbabilityPercent(weighted)
-    return pickRandomWeighted(weighted)
+
+    return {
+      item: pickRandomWeighted(weighted),
+      chooserParams: {
+        probabilitiesByImportance: this.printProbabilityPercent(weighted)
+      }
+    }
   }
 
   private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
@@ -92,7 +97,7 @@ export class QuizItemChooser {
   private testStatistically() {
     const arr: Array<LearnItem$|undefined> = []
     for ( let i = 0; i < 1000; ++ i ) {
-      arr.push(this.pickRandomWeighedByImportance())
+      arr.push(this.pickRandomWeighedByImportance().item)
     }
     console.log(`testStatistically`, countBy(arr, x => x ?. getEffectiveImportanceNumeric()))
 
@@ -100,8 +105,14 @@ export class QuizItemChooser {
 
   private printProbabilityPercent(weighted: Array<[number, LearnItem$]>) {
     const sum = sumBy(weighted, x=>x[0])
+    const probabilities: any = {}
     for ( let weigh of weighted ) {
-      console.log(`printProbabilityPercent`, (weigh[0] / sum * 100).toFixed(1) + '% ' + weigh[1].getEffectiveImportanceShortId())
+      const shortId = weigh[1].getEffectiveImportanceShortId()
+      const percentString = (weigh[0] / sum * 100).toFixed(2)
+      console.log(`printProbabilityPercent`, percentString + '% ' + shortId)
+      probabilities[shortId] = percentString
     }
+
+    return probabilities
   }
 }
