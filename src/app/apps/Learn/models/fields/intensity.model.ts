@@ -82,7 +82,11 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   mantra
     = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
   meta_mantra
-    = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`})
+    = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`,
+        description: `
+          Items that directly help to establish MANTRA.
+        `
+  })
   current_focus
     = intensity({numeric: 1000, abbrev: `CF`, icons: `CF!`, shortId: `CF`,
         description: `SHOULD do every day. Can be a bit longer, with some deeper reflections.\nTODO: maybe maybe switch current_focus order with meta/mantra/meta-mantra ?`
@@ -90,6 +94,10 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   current_focus_mantra
     = intensity({numeric: 2000, abbrev: `CFMtr`, icons: `CFMtr!`, shortId: `CFMtr`,
         description: `MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
+  })
+  current_focus_meta_mantra
+    = intensity({numeric: 5000, abbrev: `CFMtMtr`, icons: `CFMtMtr!`, shortId: `CFMtMtr`,
+        description: `Current Focus items, that directly help to establish MANTRA. MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
   })
   /* TODO: current focus urgent, day / week /
     Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category

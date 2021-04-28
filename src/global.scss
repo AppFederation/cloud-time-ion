@@ -25,7 +25,7 @@ html {
 :root {
 
   --secondary: darkorange;
-  --primary: violet /* FIXME: Ionic color */;
+  --primary: --ion-color-primary /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;
   //--answerBorderColorDark: darken(var(--answerBorderColor), 0);

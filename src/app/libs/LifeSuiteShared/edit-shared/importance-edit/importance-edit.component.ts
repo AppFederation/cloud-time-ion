@@ -13,7 +13,7 @@ export function intensityBtnVariant(label: string, descr: any) {
   return btnVariant({
     value: descr /* FIXME*/,
     label: label,
-    subLabel: descr.id.replace(`_`, ` `),
+    subLabel: descr.id.replace(/_/g, ` `),
     id: descr.id,
   })
 }
@@ -56,6 +56,7 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
     btnVariants: [
       intensityBtnVariant(`CF !`, importanceDescriptors.current_focus),
       intensityBtnVariant(`CFMtr !`, importanceDescriptors.current_focus_mantra),
+      intensityBtnVariant(`CFMtMtr !`, importanceDescriptors.current_focus_meta_mantra),
     ]
   }),
 ])

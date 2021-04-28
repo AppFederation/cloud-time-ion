@@ -21,10 +21,18 @@
   <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
   <span
-    style="color: var(--primary)"
+    style="color: var(--ion-color-primary)"
     *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
   >
     {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
+  </span>
+
+  <span
+    style="color: var(--ion-color-primary)"
+    *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
+  >
+    ➤
+    {{ item.getEffectiveImportance() ?. numeric }}x {{ item.getEffectiveImportance() ?. id }}
   </span>
 
   {{getFunLevelDescriptor() ?. icons }}

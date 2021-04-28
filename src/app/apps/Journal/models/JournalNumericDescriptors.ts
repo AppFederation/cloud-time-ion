@@ -42,7 +42,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
 
   get title() {
-    return this.id?.replace(/_/, ' ')
+    return this.id?.replace(/_/g, ' ')
   }
 
   constructor(data?: JndParams) {
