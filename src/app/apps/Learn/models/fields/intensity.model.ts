@@ -80,11 +80,16 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 100, abbrev: `Mt`, icons: `Meta`, shortId: `Mt`})
   /** Frequently repeat and contemplate and improve; affirmations */
   mantra
-    = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`})
+    = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`,
+        description: `
+          MUST be concise and well-written and optimized.\n
+          MUST get to a point where I can memorize the whole exact text and recite it smoothly.\n
+        `
+  })
   meta_mantra
     = intensity({numeric: 500, abbrev: `MtMtr`, icons: `MetaMantra`, shortId: `MtMtr`,
         description: `
-          Items that directly help to establish MANTRA.
+          Items that directly help to establish MANTRA.\n
         `
   })
   current_focus

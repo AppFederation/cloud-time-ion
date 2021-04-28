@@ -71,7 +71,8 @@ export class QuizItemChooser {
 
   private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
     // const weightSlider = 1.05 /* 50% */ // 0.3
-    const weightSlider = 3 // "CFMtr": "87.57%", "CF": "10.95%", "MtMtr": "1.37%"
+    // const weightSlider = 3 // { "CFMtr": "87.57%", "CF": "10.95%", "MtMtr": "1.37%"
+    const weightSlider = 3.5 // { "CFMtMtr": "95.75%", "CFMtr": "3.88%", "CF": "0.34%", "MtMtr": "0.03%"
     // const weightSlider = 2 // 0.3
     // const weightSlider = 1.5 // 0.3
     const importanceNumeric = fromMap[1].getEffectiveImportanceNumeric()
