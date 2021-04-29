@@ -64,7 +64,7 @@ export class QuizItemChooser {
     return {
       item: pickRandomWeighted(weighted),
       chooserParams: {
-        probabilitiesByImportance: this.printProbabilityPercent(weighted)
+        probabilitiesByImportance: this.calculateProbabilitiesPercent(weighted)
       }
     }
   }
@@ -72,7 +72,8 @@ export class QuizItemChooser {
   private calculateProbabilityWeight(fromMap: [number, LearnItem$]) {
     // const weightSlider = 1.05 /* 50% */ // 0.3
     // const weightSlider = 3 // { "CFMtr": "87.57%", "CF": "10.95%", "MtMtr": "1.37%"
-    const weightSlider = 3.5 // { "CFMtMtr": "95.75%", "CFMtr": "3.88%", "CF": "0.34%", "MtMtr": "0.03%"
+    // const weightSlider = 3.5 // { "CFMtMtr": "95.75%", "CFMtr": "3.88%", "CF": "0.34%", "MtMtr": "0.03%"
+    const weightSlider = this.quizOptions ?. focusLevelProbabilities ?? 1
     // const weightSlider = 2 // 0.3
     // const weightSlider = 1.5 // 0.3
     const importanceNumeric = fromMap[1].getEffectiveImportanceNumeric()
@@ -106,13 +107,13 @@ export class QuizItemChooser {
 
   }
 
-  private printProbabilityPercent(weighted: Array<[number, LearnItem$]>) {
+  private calculateProbabilitiesPercent(weighted: Array<[number, LearnItem$]>) {
     const sum = sumBy(weighted, x=>x[0])
     const probabilities: any = {}
     for ( let weigh of weighted ) {
       const shortId = weigh[1].getEffectiveImportanceShortId()
       const percentString = '' + (weigh[0] / sum * 100).toFixed(2) + '%'
-      console.log(`printProbabilityPercent`, percentString + ' '  + shortId)
+      // console.log(`printProbabilityPercent`, percentString + ' '  + shortId)
       probabilities[shortId] = percentString
     }
 

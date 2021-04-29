@@ -1,0 +1,24 @@
+<div style="display: flex; flex-direction: column; align-items: stretch">
+  <div style="display: flex; flex-direction: row">
+    <ion-label>{{minLabel}}
+    </ion-label>
+    <div style="flex-grow: 1"
+    ></div>
+    <ion-note
+    >{{ (control.value / scale)?.toFixed(fractionDigits) }}
+    </ion-note>
+    <div style="flex-grow: 1"
+    ></div>
+
+    <ion-label>{{maxLabel}}</ion-label>
+  </div>
+
+  <ion-range
+    [min]="minVal"
+    [max]="maxVal"
+    [pin]="false"
+    [step]="step"
+    [formControl]="control"
+  >
+  </ion-range>
+</div>

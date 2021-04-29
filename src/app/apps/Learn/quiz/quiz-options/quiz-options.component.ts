@@ -19,6 +19,7 @@ export class QuizOptionsComponent implements OnInit {
     skipTasks: new FormControl(true),
     powBaseX100: new FormControl(),
     scaleIntervalsByImportance: new FormControl(1),
+    focusLevelProbabilities: new FormControl(1),
     categories: new FormControl('')
   }
 
@@ -26,8 +27,6 @@ export class QuizOptionsComponent implements OnInit {
 
   viewSyncer = new ViewSyncer(this.formGroup, this.quizService.options2$, false,
     'powBaseX100' /* FIXME why just 1 field */)
-
-  quizStatus$ = this.quizService.quizStatus$
 
   constructor(
     public quizService: QuizService,
