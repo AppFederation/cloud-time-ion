@@ -1,14 +1,15 @@
-{{((item$.locallyVisibleChanges$ | async)?.importance?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}
+<!--{{((item$.locallyVisibleChanges$ | async)?.importance?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
 <!-- FIXME: this is causing delay; do smth like item$.valImmediate$ -->
 
-
+<label>IMPORTANCE:</label>
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"
   [formControl]="formControls.importance"
 ></apf-numeric-picker>
 
 
-CURRENT IMPORTANCE: {{((item$.locallyVisibleChanges$ | async)?.importanceCurrent?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}
+<label>CURRENT IMPORTANCE:</label>
+<!--{{((item$.locallyVisibleChanges$ | async)?.importanceCurrent?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
 <apf-numeric-picker
   [buttonDescriptors]="importanceButtonsDesc"
   [formControl]="formControlsCurrent.importanceCurrent"

@@ -110,6 +110,7 @@ export class NumericPickerComponent<TVal = any> extends CustomFormControl<TVal> 
   // numVal ? : NumericPickerVal
 
   selectedVariant ? : ButtonVariantDescriptor<any>
+
   selectedButton ? : ButtonDescriptor<any>
 
   constructor() {
