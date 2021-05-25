@@ -104,6 +104,10 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 5000, abbrev: `CFMtMtr`, icons: `CFMtMtr!`, shortId: `CFMtMtr`,
         description: `Current Focus items, that directly help to establish MANTRA. MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
   })
+  basic_functioning
+    = intensity({numeric: 10000, abbrev: `BF`, icons: `BF!`, shortId: `BF`,
+        description: `Basic functioning. To even want, and be able to, do *anything*.`,
+  })
   /* TODO: current focus urgent, day / week /
     Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category
   *   */

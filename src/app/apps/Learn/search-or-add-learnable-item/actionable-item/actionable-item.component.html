@@ -27,13 +27,18 @@
     {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
 
-  <span
-    style="color: var(--ion-color-primary)"
-    *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
-  >
+  <ng-container
+    *ngIf="item.val?.importanceCurrent?.id"
+  > <!--  && ( item.val?.importance?.id !== item.val?.importanceCurrent?.id ) -->
+    {{item.val?.importance?.id}} {{item.val?.importanceCurrent?.id}}
+    <span
+        style="color: var(--ion-color-primary)"
+        *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
+      >
     ➤
-    {{ item.getEffectiveImportance() ?. numeric }}x {{ item.getEffectiveImportance() ?. id }}
-  </span>
+        {{ item.getEffectiveImportance() ?. numeric }}x {{ item.getEffectiveImportance() ?. id }}
+    </span>
+  </ng-container>
 
   {{getFunLevelDescriptor() ?. icons }}
 

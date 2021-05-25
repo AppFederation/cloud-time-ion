@@ -1,13 +1,22 @@
+\:host
+  --cell-background-color: #1c1c1c
+
 td
   padding: 2px
   text-align: center
-  background-color: #1c1c1c
+  background-color: var(--cell-background-color)
   border: 2px solid #121212 /* hack for bg color */
   border-radius: 3px // does not work; try: https://stackoverflow.com/questions/13514593/table-cell-background-color-and-round-corners
 
 tr>:nth-child(1)
   background-color: inherit
-  opacity: 60%
+  color: darkslategray
+  //color: var(--cell-background-color)
+  //opacity: 60%
 
 .highlight
   background-color: darkblue
+
+.tableSectionHeader
+  font-size: 75%
+  text-align: center

@@ -88,8 +88,11 @@ ul, ol {
 }
 
 .fancy {
-  text-shadow: orange 1px 1px 2px;
-  background: linear-gradient(#fff, #666);
+  text-shadow: var(--ion-color-primary) 1px 1px 2px;
+  //text-shadow: #428CFFFF 1px 1px 2px;
+  //background: linear-gradient(#fff, #666);
+  background: linear-gradient(var(--ion-color-primary), #666);
+  //background: linear-gradient(#428CFFFF, #666);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.2em;

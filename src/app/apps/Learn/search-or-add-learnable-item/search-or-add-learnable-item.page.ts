@@ -70,7 +70,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(100),
+      debounceTime(100) /* FIXME: this debounceTime() is probably causing the double-adding of items */,
       // tap(debugLog),
       // map(stripHtml), // TODO but need to not destroy html
       // TODO: strip too coz maybe adding a space should not make a difference
@@ -247,10 +247,12 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   private getUserString(string?: string) {
     return string ?? this.htmlSearch ?? this.search ?? ``
+    // FIXME: this inconsistency with clearInput might be causing the bug with double-adding of items
   }
 
   clearInput() {
     this.search = ''
+    this.htmlSearch = ''
     this.searchFormControl.setValue('')
   }
 
@@ -301,6 +303,10 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     const s = stringEviscerated?.toUpperCase()
     /*==*/ if (s?.startsWith(`CF!`) || s?.endsWith(`CF!`)) {
       overlay.importance = importanceDescriptors.current_focus
+    } else if (s?.startsWith(`BF!`) || s?.endsWith(`BF!`)
+        || s?.startsWith(`BF !`) || s?.endsWith(`BF !`)
+    ) {
+      overlay.importance = importanceDescriptors.basic_functioning
     } else if (s?.startsWith(`CFMM!`) || s?.endsWith(`CFMM!`)
         || s?.startsWith(`CFMTM!`) || s?.endsWith(`CFMTM!`)
         || s?.startsWith(`CFMTMTR!`) || s?.endsWith(`CFMTMTR!`)
