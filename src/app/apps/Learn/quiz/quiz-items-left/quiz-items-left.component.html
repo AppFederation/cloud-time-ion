@@ -13,6 +13,12 @@
   </span>
   <!--  {{ (quizStatus ?. itemsLeftByImportance) | json }}-->
   <table>
+    <tr class="tableSectionHeader">
+      <td colspan="2">
+        PENDING:
+      </td>
+    </tr>
+
     <tr >
       <td></td>
 
@@ -42,11 +48,14 @@
       </td>
     </tr>
 
-    <tr style="font-size: 50%; text-align: center">
-      <td>
+
+    <tr class="tableSectionHeader" (click)="showTotals = ! showTotals" style="cursor: pointer; user-select: none">
+      <td colspan="2">
+        TOTAL:
       </td>
     </tr>
 
+    <ng-container *ngIf="showTotals">
     <tr >
       <td></td>
       <td
@@ -64,7 +73,7 @@
         {{quizStatus !. itemsCountByImportanceAtLeast ! [importance.id !] }}
       </td>
     </tr>
-
+    </ng-container>
 
   </table>
 

@@ -19,6 +19,8 @@ export class QuizItemsLeftComponent implements OnInit {
 
   private itemDisplayed: LearnItem$ | nullish
 
+  showTotals = false
+
   constructor(
     public quizService: QuizService
   ) { }
