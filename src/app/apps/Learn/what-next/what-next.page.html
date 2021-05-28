@@ -19,6 +19,11 @@
 
   <ion-button [disabled]="true">Automatic mode</ion-button>
 
+  <!-- TODO: hierarchical, e.g.
+    learning: quiz, processing
+    planning: day, week, long-term
+  -->
+
   <ion-button [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
 
   <ion-button [disabled]="true">Physical Exercises (WITH TIMER)</ion-button>
@@ -28,11 +33,13 @@
   <ion-button [disabled]="true">Process Inboxes/TODOs</ion-button>
 
   <ion-button [routerLink]="'/mindfulness'">Mindfulness</ion-button>
+  <ion-button [routerLink]="'/sleep'">Sleep</ion-button>
 
-  <app-quiz-button></app-quiz-button>
 
   <ion-button [disabled]="true">Affirmations Quiz</ion-button>
 
+  Learning:
+  <app-quiz-button></app-quiz-button>
 
   <app-process-button></app-process-button>
 
