@@ -7,7 +7,7 @@ import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 import {Observable} from 'rxjs'
 
-export abstract class OdmService<
+export abstract class OdmService_OLD<
   T extends OdmItem<T>,
   TRaw = T /* TODO: no longer = T */,
   // TOdmItem$ extends T /*OdmItem<T>*/ = T
@@ -73,8 +73,9 @@ export abstract class OdmService<
   saveNowToDb(itemToSave: T) {
     itemToSave.onModified()
     debugLog('saveNowToDb', itemToSave)
-    const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat() as any as TRaw /* TODO check type */, itemToSave.id !)
-    this.syncStatusService.handleSavingPromise(promise)
+    console.log("NOT SAVING")
+    // const promise = this.odmCollectionBackend.saveNowToDb(itemToSave.toDbFormat() as any as TRaw /* TODO check type */, itemToSave.id !)
+    // this.syncStatusService.handleSavingPromise(promise)
   }
 
   protected convertFromDbFormat(dbItem: TRaw): T {
