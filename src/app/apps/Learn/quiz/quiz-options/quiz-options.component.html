@@ -23,7 +23,7 @@
 </ion-item>
 
 <ion-item>
-  <ion-checkbox [formControl]="controls.onlyWithQA">
+  <ion-checkbox [formControl]="controls.skipTasks">
   </ion-checkbox>
   <ion-label>
     &nbsp; SKIP TASKS
@@ -37,6 +37,8 @@
     &nbsp; ONLY WITH Q&A
   </ion-label>
 </ion-item>
+
+<app-fun-level-edit [formControl1]="controls.minFunLevel"></app-fun-level-edit>
 
 <app-quiz-intervals
 ></app-quiz-intervals>

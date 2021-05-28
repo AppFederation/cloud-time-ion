@@ -92,6 +92,15 @@ export abstract class OdmService2<
     // this.subscribeToBackendCollection();
   }
 
+  _ensureItemAdded(item$: TOdmItem$) {
+    if ( ! this.mapIdToItem$.get(item$.id as TItemId) ) {
+      this.mapIdToItem$.set(item$.id as TItemId, item$)
+      let items = this.localItems$.lastVal
+      items!.push(item$)
+      this.emitLocalItems()
+    }
+  }
+
   deleteWithoutConfirmation(item: TOdmItem$) {
     this.deleteWithoutConfirmationById(item.id ! as TItemId)
   }
@@ -108,9 +117,14 @@ export abstract class OdmService2<
     * pending: *where*modified to be moved to Item$ */
     this.addGeoConditionally(itemToSave)
     // debugLog('saveNowToDb', itemToSave)
-    const dbFormat = itemToSave.toDbFormat()
-    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
-    this.syncStatusService.handleSavingPromise(promise)
+    this._ensureItemAdded(itemToSave)
+
+
+    // setTimeout(() => {
+      const dbFormat = itemToSave.toDbFormat()
+      const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
+      this.syncStatusService.handleSavingPromise(promise)
+    // }, 10000)
   }
 
   private addGeoConditionally(itemToSave: TOdmItem$) {
@@ -136,7 +150,7 @@ export abstract class OdmService2<
     (itemToSave.val as any).whereLastModified = geo /* FIXME: move to setWhenLastModified (rename to whenWhere) */
   }
 
-  public getItem$ById(id: TItemId): TOdmItem$ {
+  public obtainItem$ById(id: TItemId): TOdmItem$ {
     assertTruthy(id, `id`)
     let item$ = this.mapIdToItem$.get(id)
     if ( ! item$ ) {
@@ -164,27 +178,34 @@ export abstract class OdmService2<
     this.odmCollectionBackend.setListener({
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
 
-        let existingItem: TOdmItem$ = service.getItem$ById(addedItemId)
+        let existingItem: TOdmItem$ | undefined = service.mapIdToItem$.get(addedItemId)
         // debugLog('setBackendListenerIfNecessary onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
 
         // service.obtainOdmItem$(addedItemId) TODO
+        if ( ! existingItem ) {
 
-        let items = service.localItems$.lastVal;
-        // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
-        //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
-        // }
-        existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-        items!.push(existingItem)
+          existingItem = service.obtainItem$ById(addedItemId)
+
+          let items = service.localItems$.lastVal;
+          // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
+          //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+          // }
+
+          existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
+          items!.push(existingItem)
+        } // else: it was added locally as lag compensation, don't do anything, to not destroy potential local changes
+
         // } else {
         // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
         // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
         // }
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+
       },
       onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
         // debugLog('setBackendListenerIfNecessary onModified', ...arguments)
         let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
-        let existingItem = service.getItem$ById(modifiedItemId)
+        let existingItem = service.obtainItem$ById(modifiedItemId)
         if (existingItem && existingItem.applyDataFromDbAndEmit) {
           existingItem.applyDataFromDbAndEmit(convertedItemData)
         } else {
@@ -242,7 +263,7 @@ export abstract class OdmService2<
   patchThrottledById(id: TItemId, patch: TMemPatch) {
     console.log(`patchThrottledById, `, id, patch)
     // TODO: reverse and implement here to not have to acquire OdmItem$ in case updating massive number of items
-    const item$ById = this.getItem$ById(id)
+    const item$ById = this.obtainItem$ById(id)
     const subHack: {subscription?: any} = {}
     subHack.subscription = item$ById.val$.subscribe((val) => {
       console.log(`patchThrottledById, item$ById.val$.subscribe`, id, patch, val)

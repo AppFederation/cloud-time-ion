@@ -1,5 +1,5 @@
 import {OdmItem} from "../../../libs/AppFedShared/odm/OdmItem";
-import {OdmService} from "../../../libs/AppFedShared/odm/OdmService";
+import {OdmService_OLD} from "../../../libs/AppFedShared/odm/OdmService_OLD";
 import {OdmItemId} from "../../../libs/AppFedShared/odm/OdmItemId";
 import {OdmInMemItem} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {JournalNumericDescriptor, JournalNumericDescriptors} from './JournalNumericDescriptors'

@@ -20,7 +20,8 @@ export class QuizOptionsComponent implements OnInit {
     powBaseX100: new FormControl(),
     scaleIntervalsByImportance: new FormControl(1),
     focusLevelProbabilities: new FormControl(1),
-    categories: new FormControl('')
+    categories: new FormControl(''),
+    minFunLevel: new FormControl(),
   }
 
   formGroup = new FormGroup(this.controls)
@@ -32,9 +33,12 @@ export class QuizOptionsComponent implements OnInit {
     public quizService: QuizService,
     public optionsService: OptionsService,
   ) {
+    this.controls.minFunLevel.valueChanges.subscribe(v => console.log('minfun', v))
+    this.formGroup.valueChanges.subscribe(v => console.log('formGroup', v))
     this.formGroup.valueChanges.pipe(
       throttleTimeWithLeadingTrailing_ReallyThrottle(200)
     ).subscribe((options: QuizOptions) => {
+      console.log('quiz options', options)
       this.quizService.setOptions(options)
     })
     // this.formGroup.setValue({

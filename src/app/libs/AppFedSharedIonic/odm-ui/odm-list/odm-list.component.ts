@@ -1,5 +1,5 @@
 import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
-import {OdmService} from "../../../AppFedShared/odm/OdmService";
+import {OdmService_OLD} from "../../../AppFedShared/odm/OdmService_OLD";
 import {OdmItem} from "../../../AppFedShared/odm/OdmItem";
 import {OdmListItemDirective} from "./odm-list-item.directive";
 
@@ -16,7 +16,7 @@ export class OdmListComponent implements OnInit /* could extend non-ionic OdmLis
   @ContentChild(OdmListItemDirective, /* TODO: add static flag */ { read: TemplateRef, static: true /* TODO check */ }) itemTemplate: any
 
   /** TODO: allow parent items (e.g. shopping lists) */
-  @Input() parentItem ! : OdmService<TItem>
+  @Input() parentItem ! : OdmService_OLD<TItem>
 
   @Input() sortCompareFunction ! : any
 

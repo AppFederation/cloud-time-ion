@@ -7,6 +7,7 @@ import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
 // import {Observable} from 'rxjs'
 import {combineLatest} from 'rxjs'
 import {
+  FunLevelId, FunLevelId2,
   ImportanceVal,
   LearnItem,
 
@@ -47,6 +48,7 @@ export class QuizOptions {
   constructor(
     public dePrioritizeNewMaterial: boolean,
     public onlyWithQA: boolean,
+    public minFunLevel: FunLevelId2 = funLevels.undefined.id,
     public powBaseX100: number = 300,
     public skipTasks: boolean = true,
     public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)

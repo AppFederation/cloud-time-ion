@@ -5,6 +5,10 @@ import {QuizOptions} from './quiz.service'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
 
+(Date.prototype as any).toMillis = function() {
+  return this.getTime()
+}
+
 
 export interface QuizzableData {
   whenAdded ? : OdmTimestamp

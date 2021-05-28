@@ -1,5 +1,5 @@
 /** Object-Document/Database Mapping item */
-import {OdmService} from "./OdmService";
+import {OdmService_OLD} from "./OdmService_OLD";
 import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
@@ -33,7 +33,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 
   constructor(
-    public odmService: OdmService<T>,
+    public odmService: OdmService_OLD<T>,
     public id?: OdmItemId<T>,
     public isDeleted?: Date,
     public whenCreated?: any,

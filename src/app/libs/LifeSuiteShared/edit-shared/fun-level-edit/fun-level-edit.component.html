@@ -1,0 +1,8 @@
+<hr>
+
+<!--{{((item$.val$ | async)?.funEstimate?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
+
+<apf-numeric-picker
+  [buttonDescriptors]="buttonsDesc"
+  [formControl]="formControls.funEstimate"
+></apf-numeric-picker>

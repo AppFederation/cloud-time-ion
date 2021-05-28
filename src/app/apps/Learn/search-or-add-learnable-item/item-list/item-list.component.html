@@ -1,0 +1,30 @@
+<p style="margin: 10px" *ngIf="! learnDoService.itemsLoaded">
+  LOADING...
+</p>
+<p style="margin: 10px" *ngIf="learnDoService.itemsLoaded && ! this.filteredItem$s?.length">
+  NOTHING FOUND
+</p>
+
+<ion-virtual-scroll
+  [items]="filteredItem$s"
+  [approxItemHeight]="31"
+  [trackBy]="trackByFn"
+>
+  <div *virtualItem="let currItem; let i = index">
+    <app-actionable-item
+      [index]="i"
+      [item]="currItem"
+      [selection]="listModel.selection"
+    ></app-actionable-item>
+    <!-- [hidden]="! matchesSearch(currItem)"-->
+  </div>
+</ion-virtual-scroll>
+
+<!--
+   ion-virtual-scroll BUGS:
+   * items vertically on top of each other (wrong height, with item with audio)
+   * not reacting to delete (when deleting item -> changing route) until scrolled
+   * blinking when items array changed (check trackBy again)
+   * almost-invisible (black) scrollbar
+   * distracting broad light-colored scrollbar
+-->
