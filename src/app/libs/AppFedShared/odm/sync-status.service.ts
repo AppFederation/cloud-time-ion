@@ -31,6 +31,8 @@ export class SyncStatusService {
   }
 
   private emitSyncStatus() {
-    this.syncStatus$.next({pendingUploadsCount: this.pendingPromises.size})
+    this.syncStatus$.next({
+      pendingUploadsCount: this.pendingPromises.size
+    })
   }
 }
