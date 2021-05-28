@@ -1,0 +1,27 @@
+<table>
+  <tr > <!-- column headers row -->
+    <td></td>
+
+    <td
+      *ngFor="let dim1 of pivot.getDim1Vals()"
+    >
+      <!--       [ngClass]="{ highlight: isCurrentDisplayed(importance) }"
+      -->
+      {{dim1}}
+    </td>
+  </tr>
+
+  <tr
+    *ngFor="let dim2 of pivot.getDim2Vals()"
+  >
+    <td> <!-- row header cell -->
+      {{dim2}}
+    </td>
+    <td
+      *ngFor="let dim1 of pivot.getDim1Vals()"
+    >
+      {{ pivot.getAggregateVal(dim1, dim2) }}
+    </td>
+  </tr>
+
+</table>
