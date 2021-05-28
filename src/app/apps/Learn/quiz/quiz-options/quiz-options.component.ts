@@ -4,6 +4,7 @@ import {QuizOptions, QuizService} from '../../core/quiz/quiz.service'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {OptionsService} from '../../core/options.service'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
+import {buttonsDesc} from '../../../../libs/LifeSuiteShared/edit-shared/fun-level-edit/fun-level-edit.component'
 
 @Component({
   selector: 'app-quiz-options',
@@ -11,6 +12,8 @@ import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/A
   styleUrls: ['./quiz-options.component.sass'],
 })
 export class QuizOptionsComponent implements OnInit {
+
+  funButtonsDesc = buttonsDesc
 
   /* TODO use some options syncer util, maybe OptionsFormControl directive */
   controls: { [k in keyof QuizOptions]: FormControl} = {
@@ -33,8 +36,12 @@ export class QuizOptionsComponent implements OnInit {
     public quizService: QuizService,
     public optionsService: OptionsService,
   ) {
-    this.controls.minFunLevel.valueChanges.subscribe(v => console.log('minfun', v))
-    this.formGroup.valueChanges.subscribe(v => console.log('formGroup', v))
+    this.controls.minFunLevel.valueChanges.subscribe(v => {
+      console.log('minfun', v)
+      console.log('minfun val', this.controls.minFunLevel.value)
+      console.log('grp val', this.formGroup.value)
+    })
+    this.formGroup.valueChanges.subscribe(v => console.log('formGroup valueChanges', v))
     this.formGroup.valueChanges.pipe(
       throttleTimeWithLeadingTrailing_ReallyThrottle(200)
     ).subscribe((options: QuizOptions) => {

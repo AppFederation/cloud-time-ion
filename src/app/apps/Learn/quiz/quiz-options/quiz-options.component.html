@@ -37,8 +37,14 @@
     &nbsp; ONLY WITH Q&A
   </ion-label>
 </ion-item>
+<!--<ion-button (click)="controls.minFunLevel.setValue('aa')">set fun level</ion-button>-->
 
-<app-fun-level-edit [formControl1]="controls.minFunLevel"></app-fun-level-edit>
+<!--<app-fun-level-edit [formControl1]="controls.minFunLevel"></app-fun-level-edit>-->
+<apf-numeric-picker
+  [buttonDescriptors]="funButtonsDesc"
+  [formControl]="controls.minFunLevel"
+></apf-numeric-picker>
+
 
 <app-quiz-intervals
 ></app-quiz-intervals>

@@ -119,7 +119,6 @@ export abstract class OdmService2<
     // debugLog('saveNowToDb', itemToSave)
     this._ensureItemAdded(itemToSave)
 
-
     // setTimeout(() => {
       const dbFormat = itemToSave.toDbFormat()
       const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)

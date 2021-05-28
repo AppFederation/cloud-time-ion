@@ -9,7 +9,7 @@ import {funLevels} from '../../../../apps/Learn/models/fields/fun-level.model'
 
 const levels = funLevels
 
-const buttonsDesc = new ButtonsDescriptor<any, string>([
+export const buttonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
       intensityBtnVariant(`😡` /*😒*/, levels.somewhat_low),
