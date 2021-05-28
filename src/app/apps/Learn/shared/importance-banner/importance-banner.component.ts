@@ -11,6 +11,10 @@ export class ImportanceBannerComponent implements OnInit {
   @Input()
   item$ ? : LearnItem$
 
+  get importance() {
+    return this.item$?.getEffectiveImportance()?.id?.replace(/_/g, ' ')
+  }
+
   constructor() { }
 
   ngOnInit() {}
