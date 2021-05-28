@@ -92,11 +92,13 @@ export abstract class OdmService2<
     // this.subscribeToBackendCollection();
   }
 
-  _addItem$(item$: TOdmItem$) {
-    this.mapIdToItem$.set(item$.id as TItemId, item$)
-    let items = this.localItems$.lastVal
-    items!.push(item$)
-    this.emitLocalItems()
+  _ensureItemAdded(item$: TOdmItem$) {
+    if ( ! this.mapIdToItem$.get(item$.id as TItemId) ) {
+      this.mapIdToItem$.set(item$.id as TItemId, item$)
+      let items = this.localItems$.lastVal
+      items!.push(item$)
+      this.emitLocalItems()
+    }
   }
 
   deleteWithoutConfirmation(item: TOdmItem$) {
@@ -115,11 +117,13 @@ export abstract class OdmService2<
     * pending: *where*modified to be moved to Item$ */
     this.addGeoConditionally(itemToSave)
     // debugLog('saveNowToDb', itemToSave)
-    this._addItem$(itemToSave)
+    this._ensureItemAdded(itemToSave)
 
-    const dbFormat = itemToSave.toDbFormat()
-    const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
-    this.syncStatusService.handleSavingPromise(promise)
+    // setTimeout(() => {
+      const dbFormat = itemToSave.toDbFormat()
+      const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
+      this.syncStatusService.handleSavingPromise(promise)
+    // }, 10000)
   }
 
   private addGeoConditionally(itemToSave: TOdmItem$) {
