@@ -16,13 +16,25 @@ export class PivotTable<TItem, TVal, TDim1, TDim2, TAggregate = TVal>
   }
 
   /** for ngFor */
-  public getDim1Vals() // : TDim1[]
+  public getDim1Vals(): TDim1[]
+  {
+    return null as any
+  }
+
+  public getDim2Vals(): TDim2[]
+  {
+    return null as any
+
+  }
+
+  public getDim1Aggregate(dim2: TDim2) // : TAggregate
   {
 
   }
 
-  public getDim2Vals() // : TDim2[]
+  public getDim2Aggregate(dim1: TDim2) // : TAggregate
   {
 
   }
+
 }
