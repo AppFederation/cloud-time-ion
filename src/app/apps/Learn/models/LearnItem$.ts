@@ -9,7 +9,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Distribution} from '../../../libs/AppFedShared/utils/numbers/distributions/distribution'
 import {Quiz, Quizzable$} from '../core/quiz/quiz'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
-import {funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
+import {funLevels, funLevelsDescriptors, FunLevelVal} from './fields/fun-level.model'
 import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {SelfRating} from './fields/self-rating.model'
@@ -122,5 +122,13 @@ export class LearnItem$
     return categories.some(category => {
       return this.val?.matchesSearch(category)
     })
+  }
+
+  hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal) {
+    if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
+      return true
+    } else {
+      return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
+    }
   }
 }
