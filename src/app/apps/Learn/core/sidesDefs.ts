@@ -146,12 +146,17 @@ export class SidesDefs {
     ask: false,
   })
   finish_before = side({
+    /* for learn deadlines: 1-3 nights before to sleep on it and consolidate memories
+    * whereas CurrentFocus is a kinda of ambient focus without specified deadline.
+    * */
     ask: false,
     icon: `calendar-outline`,
+    searchTerms: [`deadline`],
   })
   finish_after = side({
     ask: false,
     icon: `calendar-outline`,
+    searchTerms: [`finish no earlier than`],
   })
   sub_tasks = side({
     ask: false,

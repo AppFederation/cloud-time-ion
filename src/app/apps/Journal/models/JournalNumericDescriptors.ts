@@ -42,7 +42,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
 
 
   get title() {
-    return this.id
+    return this.id?.replace(/_/g, ' ')
   }
 
   constructor(data?: JndParams) {
@@ -56,14 +56,17 @@ export class JournalNumericDescriptor extends UiFieldDef {
     if ( includes(this.antonym, search) ) {
       return true
     }
-    return includes(this.id, search)
+    return includes(this.title, search)
+      || includes(this.id, search)
       || includes(this.searchTerms, search)
       || includes(this.acronym, search)
   }
 }
 
 type JndParams = {
+  /** difference between acronyms and abbreviations and how they relate to initialisms.: https://examples.yourdictionary.com/examples-of-acronyms.html */
   acronym?: string | string[],
+  abbreviation?: string | string[],
   antonym?: string | string[],
   minLabel?: string,
   maxLabel?: string,
@@ -76,8 +79,13 @@ type JndParams = {
   /* not yet implemented */
   searchTerms?: string | string[],
   isShortListed?: boolean,
+  isMetadata?: boolean,
   /** shortlisted by me, but not for general public */
   isCustomShortListed?: boolean,
+  /** Limiting factor */
+  isPersonalFocus?: boolean,
+  isPersonalBottleneck?: boolean,
+  isPersonalSourceOfWorry?: boolean,
 }
 
 function jnd(antonymOrData?: JndParams) {
@@ -104,8 +112,18 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   static instance = new JournalNumericDescriptors()
 
+  confidentiality = jnd({subTitle: `of this journal entry`, minLabel: `advertised`/*public, published*/, maxLabel: `top-secret` /* encryption */,
+    searchTerms: [`secret secrecy private privacy discreet discretion discrete`],
+    /* 6: discrete; e.g. NSFW but nothing too deeply revealing about one's self */
+    /* 7: private */
+    /* default : 5 ?*/
+    isShortListed: true,
+    isMetadata: true,
+  })
+
   importance = jnd({subTitle: `of this journal entry`, minLabel: `routine`, maxLabel: `revolution`,
     isShortListed: true,
+    isMetadata: true,
   })
 
   mood = jnd({
@@ -113,11 +131,60 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     antonym: [`sad`, `depressed`],
     isShortListed: true,
   })
+  feeling_normal = jnd({
+    isPersonalFocus: true,
+    isShortListed: true,
+  })
+  /* TODO: being present in the moment, here and now
+  *   - enjoying the moment */
   health = jnd({
     isShortListed: true,
   })
   mental_health = jnd({
     isShortListed: true,
+  })
+  left_chest_pain = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
+  left_hip_pain = jnd({
+    isPersonalBottleneck: false,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
+  kidney_pain_or_discomfort = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+  })
+  blood_in_urine = jnd({
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+    lowerIsBetter: true,
+    searchTerms: [`pee`, `bleeding`, `kidney`]
+  })
+  back_pain = jnd({
+    lowerIsBetter: true,
+  })
+  buttocks_pain = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    searchTerms: [`chair`, `sitting`]
+  })
+  foot_pain = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+  })
+  foot_numbness = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
+    isPersonalSourceOfWorry: true,
+  })
+  drinking_liquids = jnd({
+    lowerIsBetter: true,
+    isPersonalBottleneck: true,
   })
   blood_circulation = jnd({
     isShortListed: true,
@@ -166,7 +233,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /* ==== End of default shortlist of fields "to fill in a hurry".
     Here could be "show more button */
 
-  'liking life' = jnd({searchTerms: [`life appreciation`, `gratefulness`]})
+  'liking life' = jnd({searchTerms: [`life appreciation`, `gratefulness`, 'enjoying life']})
   'enjoyment of current activity' = jnd()
   'engagement' = jnd()
   'empathy' = jnd()
@@ -267,6 +334,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   'grogginess' = jnd({lowerIsBetter: true, searchTerms: [`groggy`]})
   'sleep quality' = jnd({
     isShortListed: true,
+    isPersonalBottleneck: true,
   })
   'sleep regularity' = jnd({searchTerms: `sleep pattern`})
   'sleep quantity' = jnd({
@@ -289,12 +357,14 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     lowerIsBetter: true,
   })
   'cravings for computer games' = jnd({
+    searchTerms: [`video gaming cravings temptations`],
     lowerIsBetter: true,
   })
   'thinking_about_computer_games' = jnd({
     lowerIsBetter: true,
   })
   'cravings for food' = jnd({
+    searchTerms: [`munchies`, `eat`, `temptations`],
     lowerIsBetter: true,
   })
   'cravings for alcohol' = jnd({
@@ -412,6 +482,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   sport = jnd({
     isShortListed: true,
     specifyDuration,
+    searchTerms: [`sports`],
   })
   bicycle = jnd({
     specifyDuration,
@@ -423,6 +494,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   /*end sport subelements*/
 
   sex = jnd({moderateIsBetter: true,})
+  premenstrual_syndrome = jnd({
+    acronym: 'PMS',
+    searchTerms: ['PMS', 'menstruation']
+  })
   weather = jnd()
 
   delegating = jnd()
@@ -469,7 +544,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   efficiency = jnd()
   effectiveness = jnd()
 
-  social_interactions = jnd({searchTerms: ['interacting with people']})
+  social_interactions = jnd({searchTerms: ['interacting with people', 'meetings']})
 
   introspection = jnd()
   self_discovery = jnd()
