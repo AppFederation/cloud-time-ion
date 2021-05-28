@@ -4,9 +4,11 @@ import {ImportanceEditComponent} from './importance-edit/importance-edit.compone
 import {SharedModule} from '../../../shared/shared.module'
 import {RatingsModule} from '../../AppFedSharedIonic/ratings/ratings.module'
 import {IonicModule} from '@ionic/angular'
+import {FunLevelEditComponent} from './fun-level-edit/fun-level-edit.component'
 
 const exports = [
-  ImportanceEditComponent
+  ImportanceEditComponent,
+  FunLevelEditComponent,
 ]
 
 @NgModule({

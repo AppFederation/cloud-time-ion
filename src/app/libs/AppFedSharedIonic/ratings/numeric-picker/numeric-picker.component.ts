@@ -97,6 +97,7 @@ export class NumericPickerComponent<TVal = any> extends CustomFormControl<TVal> 
   @Input() numFieldDef ? : JournalNumericDescriptor
 
   @Input() minNum ! : number
+
   @Input() maxNum ! : number
 
   @Input()

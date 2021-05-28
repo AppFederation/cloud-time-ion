@@ -25,6 +25,7 @@ import {QuizDiligenceLevelComponent} from './quiz-options/quiz-diligence-level/q
 import {QuizIntervalImportanceScalingComponent} from './quiz-options/quiz-interval-importance-scaling/quiz-interval-importance-scaling.component'
 import {QuizCategoriesPickerComponent} from './quiz-categories-picker/quiz-categories-picker.component'
 import {QuizFocusLevelComponent} from './quiz-options/quiz-focus-level/quiz-focus-level.component'
+import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
     EditorModule,
     TimeModule,
     SharedModule,
+    EditSharedModule,
   ],
   declarations: [
     QuizPage,

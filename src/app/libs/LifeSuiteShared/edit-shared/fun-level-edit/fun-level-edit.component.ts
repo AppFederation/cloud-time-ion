@@ -1,12 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms'
-import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {LearnItem$} from '../../models/LearnItem$'
-import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
-import {btn, btnVariant, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
-import {FunLevelDescriptor, funLevels, funLevelsDescriptors} from '../../models/fields/fun-level.model'
-import {intensityBtnVariant} from '../../../../libs/LifeSuiteShared/edit-shared/importance-edit/importance-edit.component'
-import {importanceDescriptors} from '../../models/fields/importance.model'
+import {ViewSyncer} from '../../../AppFedShared/odm/ui/ViewSyncer'
+import {btn, btnVariant, ButtonsDescriptor} from '../../../AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
+import {intensityBtnVariant} from '../importance-edit/importance-edit.component'
+import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
+import {funLevels} from '../../../../apps/Learn/models/fields/fun-level.model'
 
 
 const levels = funLevels
@@ -61,19 +59,21 @@ export class FunLevelEditComponent implements OnInit {
   viewSyncer ! : ViewSyncer
 
   @Input()
-  @Required()
+  // @Required()
   public item$ ! : LearnItem$
 
   constructor() { }
 
   ngOnInit() {
     this.formGroup = new FormGroup(this.formControls)
-    this.viewSyncer = new ViewSyncer(
-      this.formGroup,
-      this.item$,
-      false,
-      'funEstimate'
-    ) /* TODO might need to ignore other fields from db */
+    if ( this . item$ ) {
+      this.viewSyncer = new ViewSyncer(
+        this.formGroup,
+        this.item$,
+        false,
+        'funEstimate'
+      ) /* TODO might need to ignore other fields from db */
+    }
   }
 
 }

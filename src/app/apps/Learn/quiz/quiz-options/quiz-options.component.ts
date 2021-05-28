@@ -20,7 +20,8 @@ export class QuizOptionsComponent implements OnInit {
     powBaseX100: new FormControl(),
     scaleIntervalsByImportance: new FormControl(1),
     focusLevelProbabilities: new FormControl(1),
-    categories: new FormControl('')
+    categories: new FormControl(''),
+    minFunLevel: new FormControl(),
   }
 
   formGroup = new FormGroup(this.controls)

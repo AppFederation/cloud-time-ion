@@ -8,7 +8,7 @@ import {ImportanceDescriptors} from './fields/importance.model'
 import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
 import {QuizzableData} from '../core/quiz/quiz'
-import {FunDescriptors} from './fields/fun-level.model'
+import {FunDescriptors, FunLevelDescriptors} from './fields/fun-level.model'
 import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
 import {isNotNullish, isNullish, isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {parseDate} from '../../../libs/AppFedShared/utils/time/parse-date'
@@ -38,6 +38,7 @@ export type ImportanceId = keyof ImportanceDescriptors
 
 export type FunVal = IntensityVal
 export type FunLevelId = keyof FunDescriptors
+export type FunLevelId2 = keyof FunLevelDescriptors
 
 export type MentalLevelVal = IntensityVal
 export type MentalLevelId = keyof MentalEffortLevelDescriptors
