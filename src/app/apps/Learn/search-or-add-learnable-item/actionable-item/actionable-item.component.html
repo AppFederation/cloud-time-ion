@@ -21,11 +21,24 @@
   <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
   <span
-    style="color: var(--primary)"
+    style="color: var(--ion-color-primary)"
     *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
   >
     {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
   </span>
+
+  <ng-container
+    *ngIf="item.val?.importanceCurrent?.id"
+  > <!--  && ( item.val?.importance?.id !== item.val?.importanceCurrent?.id ) -->
+    {{item.val?.importance?.id}} {{item.val?.importanceCurrent?.id}}
+    <span
+        style="color: var(--ion-color-primary)"
+        *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
+      >
+    ➤
+        {{ item.getEffectiveImportance() ?. numeric }}x {{ item.getEffectiveImportance() ?. id }}
+    </span>
+  </ng-container>
 
   {{getFunLevelDescriptor() ?. icons }}
 
@@ -52,7 +65,7 @@
   <!--    {{item[side.id] ? (item[side.id] + ' • ' ) : undefined }}-->
   <!--  </ng-container>-->
 
-  <span [innerHTML]="joinedSidesOneLine()"></span>
+  <span [innerHTML]="joinedSidesOneLine()"></span> <!-- FIXME div not span (proper HTML) -->
 
   <!--  <app-rich-text-view-->
   <!--    [htmlString]="joinedSides()"-->

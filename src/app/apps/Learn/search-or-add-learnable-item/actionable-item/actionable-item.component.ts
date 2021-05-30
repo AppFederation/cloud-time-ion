@@ -34,6 +34,7 @@ export class ActionableItemComponent implements OnInit {
 
   get item() { return this._item }
 
+  // @Required()
   @Input() index ! : number
 
   // @Input() search: string
