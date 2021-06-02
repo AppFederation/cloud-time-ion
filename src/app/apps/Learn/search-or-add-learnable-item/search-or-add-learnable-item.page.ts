@@ -72,7 +72,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       this.listModel.onChangeSearch(val)
     })
     this.learnDoService.localItems$.subscribe(item$s => {
-      console.log('localItems$ ==== ')
+      // console.log('localItems$ ==== ')
       this.listModel.setItemsAndSort(item$s)
     })
   }
