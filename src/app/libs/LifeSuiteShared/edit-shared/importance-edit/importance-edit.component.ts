@@ -13,7 +13,7 @@ export function intensityBtnVariant(label: string, descr: any) {
   return btnVariant({
     value: descr /* FIXME*/,
     label: label,
-    subLabel: descr.id.replace(`_`, ` `),
+    subLabel: descr.id.replace(/_/g, ` `),
     id: descr.id,
   })
 }
