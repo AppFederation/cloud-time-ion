@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {errorAlert} from '../utils/log'
 
@@ -16,6 +16,10 @@ export class SyncStatusService {
   pendingPromises = new Set<SyncTask>()
 
   public readonly syncStatus$ = new CachedSubject<SyncStatus>()
+
+  get hasPendingUploads() {
+    return this.syncStatus$.lastVal ?. pendingUploadsCount
+  }
 
   constructor() { }
 

@@ -46,7 +46,7 @@ export class AppComponent {
       if (isOpen) {
         const popover = await this.popoverController.create({
           component: OptionsComponent,
-          event: event,
+          event: event /* FIXME some global event object */,
           translucent: true,
           mode: 'ios',
         });
@@ -57,7 +57,7 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   handleBeforeUnload($event: any) {
-    if ( this.syncStatusService.syncStatus$.lastVal ?. pendingUploadsCount ) {
+    if ( this.syncStatusService.hasPendingUploads ) {
       // TODO: record throttled patches too
       // https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event
       // Cancel the event as stated by the standard.
