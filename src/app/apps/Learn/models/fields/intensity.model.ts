@@ -83,7 +83,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 200, abbrev: `Mtr`, icons: `Mantra`, shortId: `Mtr`,
         description: `
           MUST be concise and well-written and optimized.\n
-          MUST get to a point where I can memorize the whole exact text and recite it smoothly.\n
+          MUST get to a point where I can memorize the whole exact text and recite it smoothly in few seconds.\n
         `
   })
   meta_mantra
@@ -105,9 +105,30 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
         description: `Current Focus items, that directly help to establish MANTRA. MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
   })
   basic_functioning
-    = intensity({numeric: 10000, abbrev: `BF`, icons: `BF!`, shortId: `BF`,
+    = intensity({numeric: 10_000, abbrev: `BF`, icons: `BF!`, shortId: `BF`,
         description: `Basic functioning. To even want, and be able to, do *anything*.`,
   })
+  basic_functioning_mantra
+    = intensity({numeric: 20_000, abbrev: `BFMtr`, icons: `BFMantra`, shortId: `BFMtr`,
+    description: `
+          MUST be concise and well-written and optimized.\n
+          MUST get to a point where I can memorize the whole exact text and recite it smoothly in few seconds.\n
+        `
+  })
+  basic_functioning_meta
+    = intensity({numeric: 50_000, abbrev: `BFMeta`, icons: `BFMeta`, shortId: `BFMeta`,
+        description: `
+              Note, I switched importance numeric to be higher than mantra here in BF, because there can be dozens of mantras which could lcog; but I need meta to even ensure I get to the mantras.
+            `
+  })
+  /** Frequently repeat and contemplate and improve; affirmations */
+  basic_functioning_meta_mantra
+    = intensity({numeric: 100_000, abbrev: `BFMetaMtr`, icons: `BFMetaMantra`, shortId: `BFMetaMtr`,
+    description: `
+          Items that directly help to establish MANTRA.\n
+        `
+  })
+
   /* TODO: current focus urgent, day / week /
     Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category
   *   */

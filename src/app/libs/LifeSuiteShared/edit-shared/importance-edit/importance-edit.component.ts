@@ -57,7 +57,14 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
       intensityBtnVariant(`CF !`, importanceDescriptors.current_focus),
       intensityBtnVariant(`CFMtr !`, importanceDescriptors.current_focus_mantra),
       intensityBtnVariant(`CFMtMtr !`, importanceDescriptors.current_focus_meta_mantra),
-      intensityBtnVariant(`BF !`, importanceDescriptors.basic_functioning),
+    ]
+  }),
+  btn({
+    btnVariants: [
+      intensityBtnVariant(`BF`, importanceDescriptors.basic_functioning),
+      intensityBtnVariant(`BFMtr`, importanceDescriptors.basic_functioning_mantra),
+      intensityBtnVariant(`BFMeta`, importanceDescriptors.basic_functioning_meta),
+      intensityBtnVariant(`BFMetaMtr`, importanceDescriptors.current_focus_meta_mantra),
     ]
   }),
 ])
