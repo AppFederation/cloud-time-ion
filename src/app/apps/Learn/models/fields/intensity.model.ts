@@ -96,6 +96,10 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 1000, abbrev: `CF`, icons: `CF!`, shortId: `CF`,
         description: `SHOULD do every day. Can be a bit longer, with some deeper reflections.\nTODO: maybe maybe switch current_focus order with meta/mantra/meta-mantra ?`
   })
+  current_focus_meta
+    = intensity({numeric: 1500, abbrev: `CFMeta`, icons: `CFMeta!`, shortId: `CFMeta`,
+        description: ``,
+  })
   current_focus_mantra
     = intensity({numeric: 2000, abbrev: `CFMtr`, icons: `CFMtr!`, shortId: `CFMtr`,
         description: `MUST be short to not block the pipe. MUST do every day, otherwise bad things start to happen.`,
