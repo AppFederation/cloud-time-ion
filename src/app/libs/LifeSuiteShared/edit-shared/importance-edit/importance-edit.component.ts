@@ -55,7 +55,7 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
   btn({
     btnVariants: [
       intensityBtnVariant(`CF !`, importanceDescriptors.current_focus),
-      intensityBtnVariant(`CFMeta !`, importanceDescriptors.current_focus),
+      intensityBtnVariant(`CFMeta !`, importanceDescriptors.current_focus_meta),
       intensityBtnVariant(`CFMtr !`, importanceDescriptors.current_focus_mantra),
       intensityBtnVariant(`CFMetaMtr !`, importanceDescriptors.current_focus_meta_mantra),
     ]
