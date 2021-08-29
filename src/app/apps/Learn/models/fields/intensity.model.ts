@@ -122,6 +122,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
   basic_functioning_meta
     = intensity({numeric: 50_000, abbrev: `BFMeta`, icons: `BFMeta`, shortId: `BFMeta`,
         description: `
+              Meta: To establish the System being-in-force (quiz, mindfulness, posters, etc)
               Note, I switched importance numeric to be higher than mantra here in BF, because there can be dozens of mantras which could lcog; but I need meta to even ensure I get to the mantras.
             `
   })
@@ -130,6 +131,18 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: 100_000, abbrev: `BFMetaMtr`, icons: `BFMetaMantra`, shortId: `BFMetaMtr`,
     description: `
           Items that directly help to establish MANTRA.\n
+        `
+  })
+  overarching
+    = intensity({numeric: 200_000, abbrev: `Ovr`, icons: `Ovr`, shortId: `Ovr`,
+    description: `
+          Overarching. Transcendental. No Plan B. https://www.youtube.com/watch?v=_NRRRBxcq5Y
+        `
+  })
+  overarching_mantra
+    = intensity({numeric: 500_000, abbrev: `OvrMtr`, icons: `OvrMtr`, shortId: `OvrMtr`,
+    description: `
+          Overarching Mantra.
         `
   })
 
