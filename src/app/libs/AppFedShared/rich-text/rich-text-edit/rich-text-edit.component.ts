@@ -143,7 +143,7 @@ export class RichTextEditComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customMarkBtn bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
+      'customMarkBtn btnFormatPositive bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
       selectall copy paste | undo redo | \
       formatselect | \
       alignleft aligncenter alignright alignjustify ' /* align is probably quite useless for notes */ +
@@ -184,6 +184,12 @@ export class RichTextEditComponent implements OnInit {
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
         } /* for fancy: `mceToggleFormat` ? - https://www.tiny.cloud/docs/advanced/editor-command-identifiers/ */
       });
+      editor.ui.registry.addButton('btnFormatPositive', {
+        text: 'P',
+        onAction: () => {
+          this.formatPositive(editor)
+        } /* for fancy: `mceToggleFormat` ? - https://www.tiny.cloud/docs/advanced/editor-command-identifiers/ */
+      });
     }
   }
 
@@ -198,6 +204,10 @@ export class RichTextEditComponent implements OnInit {
 
   public highlightSelected(editor: any) {
     editor.execCommand('hilitecolor', false, /*'#808000'*/ '#ffa626');
+  }
+
+  public formatPositive(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'positive');
   }
 
   logEditor(msg: string) {
