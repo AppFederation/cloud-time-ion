@@ -54,6 +54,7 @@ export class QuizOptions {
     public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
     public focusLevelProbabilities = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
     public categories = '',
+    public textFilter = '',
     // TODO: priorityByImportances: 0 .. 1 -- 0 - ignore importances, 1 - items of highest importance go first
     // in-between - probabilities
   ) {
@@ -301,7 +302,11 @@ export class QuizService {
 
   /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByCategories(item$s: LearnItem$[], quizOptions: QuizOptions) {
-    const categories: string[] = quizOptions.categories?.split(',') ?? []
+    const trimAllFunc = (strings?: string[]) => strings ?. map(string => string ?.trim())
+    const getArr = (inputStr?: string) => trimAllFunc(inputStr ?. trim() ?. toLowerCase() ?. split(',')) ?? []
+    const categories: string[] = getArr(quizOptions.categories)
+    const textFilterStrings: string[] = getArr(quizOptions.textFilter)
+
     // const categories = [`health`, `interview`]
     // const categories = [
     //   `#codility`,
@@ -318,10 +323,10 @@ export class QuizService {
     // strategy
 
     // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
-    if ( item$s.length > 0 ) {
+    if ( item$s ?. length ) {
       item$s = item$s.filter(
         (item$) => {
-          return item$.hasAnyCategory(categories)
+          return item$.hasAnyCategory(categories) && item$.matchesAnyFilterText(textFilterStrings)
         }
       )
     }
