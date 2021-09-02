@@ -133,18 +133,19 @@ export class LearnItem$
     if ( ! searchCategories ?. length ) {
       return true
     }
-    const myCategories = (this.getFieldVal(sidesDefs.categories) as string) ?. toLowerCase()
+    const myCategories = (this.getFieldVal(sidesDefs.categories) as string ?? '') ?. toLowerCase()
     return searchCategories.some(
       searchCategory => myCategories ?. includes(searchCategory)
     )
   }
 
-  hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal) {
-    if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
-      return true
-    } else {
-      return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
-    }
+  hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal): boolean {
+    return true
+    // if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
+    //   return true
+    // } else {
+    //   return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
+    // }
   }
 
   public getFieldVal(side: Side) {

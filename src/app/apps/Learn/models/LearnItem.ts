@@ -214,14 +214,14 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     return null
   }
 
-  public matchesSearch(search: string) {
+  public matchesSearch(search: string): boolean {
     search = (search || '').trim().toLowerCase()
     if ( search.length === 0 ) {
       return true
     }
     return sidesDefsArray.some(side => {
       const sideVal = this.getSideVal(side)?.replace(/<img src="data:image\/png;base64,.*"/gi, '')
-      return sideVal && sideVal.toLowerCase().includes(search)
+      return sideVal ?. toLowerCase() ?. includes(search)
     })
   }
 

@@ -209,6 +209,7 @@ export class QuizService {
 
   /** Potentially move to QuizItemChooser or QuizItemsFilter... */
   private filterByOptions(quizOptions: QuizOptions, item$s: LearnItem$[]) {
+
     // FIXME: perf: one .filter() call, with multiple predicates
     if (quizOptions.onlyWithQA) {
       item$s = item$s.filter(item => item.val?.hasQAndA())
@@ -306,6 +307,7 @@ export class QuizService {
     const getArr = (inputStr?: string) => trimAllFunc(inputStr ?. trim() ?. toLowerCase() ?. split(',')) ?? []
     const categories: string[] = getArr(quizOptions.categories)
     const textFilterStrings: string[] = getArr(quizOptions.textFilter)
+    console.log(`textFilterStrings`, textFilterStrings)
 
     // const categories = [`health`, `interview`]
     // const categories = [
@@ -326,6 +328,7 @@ export class QuizService {
     if ( item$s ?. length ) {
       item$s = item$s.filter(
         (item$) => {
+          // return true
           return item$.hasAnyCategory(categories) && item$.matchesAnyFilterText(textFilterStrings)
         }
       )
