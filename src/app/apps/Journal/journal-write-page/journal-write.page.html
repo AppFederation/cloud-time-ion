@@ -3,11 +3,11 @@
     <ion-buttons slot="start">
 <!--      <ion-back-button [defaultHref]="'/'"></ion-back-button>-->
       <ion-icon
-        [size]="'25px'"
         [routerLink]="'/journal'"
         (click)="item$ ?. saveNowToDbIfNeeded()"
         name="arrow-back-outline"
         class="action-icon"
+        slot="start"
       ></ion-icon>
     </ion-buttons>
     <!-- TODO: this will go to previous journal entry to correct it if necessary -->
@@ -24,7 +24,6 @@
 
     <ion-buttons slot="end">
       <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
-
       <odm-sync-status></odm-sync-status>
 
     </ion-buttons>
