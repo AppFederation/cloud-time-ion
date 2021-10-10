@@ -181,7 +181,9 @@ export abstract class OdmService2<
         // debugLog('setBackendListenerIfNecessary onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
 
         // service.obtainOdmItem$(addedItemId) TODO
-        if ( ! existingItem ) {
+        // if ( ! existingItem ) {
+        if ( ! existingItem?.val$?.hasEmitted ) {
+          // FIXME: this is is causing item to never load if subscribed via item details url early
 
           existingItem = service.obtainItem$ById(addedItemId)
 
