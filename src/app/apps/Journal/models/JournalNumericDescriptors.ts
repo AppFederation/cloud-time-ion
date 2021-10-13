@@ -551,6 +551,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   social_interactions = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing']})
   socializing = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing', 'socialising']})
+  communication = jnd({searchTerms: ['understanding', 'talking']})
   networking = jnd({searchTerms: ['social networking', 'meetings', 'business networking']})
 
   introspection = jnd()
