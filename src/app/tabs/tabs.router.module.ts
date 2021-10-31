@@ -8,15 +8,6 @@ import {ShoppingListDetailsPageComponent} from "../apps/ShopNext/shopping-list-d
 
 const routes: Routes = [
   {
-    path: 'tab1',
-    children: [
-      {
-        path: '',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
-      }
-    ]
-  },
-  {
     path: 'shopping',
     children: [
       {
@@ -41,7 +32,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'timers',
+    path: 'timers',  /* recipes with timers built in; healthy; easy, fast; raw vegan; integrated with shopping list */
     children: [
       {
         path: '',

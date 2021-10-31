@@ -253,7 +253,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   shame = jnd({lowerIsBetter: true}) /* mental state group */
   selfishness = jnd({lowerIsBetter: true, searchTerms: [`ego`, `egoism`], antonym: [`altruism`, `selflessness`]}) /* mental state group */
   competitiveness = jnd({moderateIsBetter: true}) /* mental state group */
-  skill = jnd({})
+  skill = jnd({subTitle: `for the tasks at hand`})
+  knowledge = jnd({subTitle: `for the tasks at hand`})
   caution = jnd({moderateIsBetter: true, searchTerms: [`carefulness`], antonym: [`recklessness`, `carelessness`]})
   passion = jnd()
   adventure = jnd()
@@ -314,6 +315,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
     isShortListed: true,
   })
   progress = jnd({
+    isShortListed: true,
+  })
+  effort = jnd({
     isShortListed: true,
   })
   momentum = jnd({
@@ -423,6 +427,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   planning = jnd({
     specifyDuration,
   })
+  time_available = jnd({})
   prioritizing = jnd({})
   return_on_investment = jnd({acronym: `ROI`})
   'time tracking' = jnd()
@@ -437,7 +442,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   'music quantity' = jnd({lowerIsBetter: true})
   'music volume' = jnd({lowerIsBetter: true})
-  long_term_thinking = jnd()
+  long_term_thinking = jnd({searchTerms: [`long time perspective`]})
   perspective = jnd()
   rationality = jnd()
   pragmatism = jnd({searchTerms: [`practical`]})
@@ -544,7 +549,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   efficiency = jnd()
   effectiveness = jnd()
 
-  social_interactions = jnd({searchTerms: ['interacting with people', 'meetings']})
+  social_interactions = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing']})
+  socializing = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing', 'socialising']})
+  communication = jnd({searchTerms: ['understanding', 'talking']})
+  networking = jnd({searchTerms: ['social networking', 'meetings', 'business networking']})
 
   introspection = jnd()
   self_discovery = jnd()

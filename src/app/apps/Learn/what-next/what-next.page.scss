@@ -1,0 +1,49 @@
+//path {
+//  stroke-dasharray: 1000;
+//  stroke-dashoffset: 1000;
+//  animation: dash 5s linear alternate infinite;
+//}
+
+path,
+.animline {
+  stroke-dasharray: 3;
+  stroke-dashoffset: 0;
+  animation: dash 1s linear infinite;
+  color: orange;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+
+
+.energy {
+  animation: pulse 4s infinite;
+  -webkit-animation: pulse 4s infinite;
+}
+
+@keyframes pulse {
+  0%   { fill: #ff0000 }
+  17%  { fill: #ffff00 }
+  33%  { fill: #00ff00 }
+  50%  { fill: #00ffff }
+  67%  { fill: #0000ff }
+  83%  { fill: #ff00ff }
+  100% { fill: #ff0000 }
+}
+
+@-webkit-keyframes pulse {
+  0%   { fill: #ff0000 }
+  17%  { fill: #ffff00 }
+  33%  { fill: #00ff00 }
+  50%  { fill: #00ffff }
+  67%  { fill: #0000ff }
+  83%  { fill: #ff00ff }
+  100% { fill: #ff0000 }
+}

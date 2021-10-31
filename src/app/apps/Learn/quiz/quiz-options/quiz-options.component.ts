@@ -24,6 +24,7 @@ export class QuizOptionsComponent implements OnInit {
     scaleIntervalsByImportance: new FormControl(1),
     focusLevelProbabilities: new FormControl(1),
     categories: new FormControl(''),
+    textFilter: new FormControl(''),
     minFunLevel: new FormControl(),
   }
 

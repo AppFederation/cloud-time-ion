@@ -13,6 +13,7 @@ import {funLevels, funLevelsDescriptors, FunLevelVal} from './fields/fun-level.m
 import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental-effort-level.model'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {SelfRating} from './fields/self-rating.model'
+import {Side, sidesDefs} from '../core/sidesDefs'
 
 // export class Quiz {
 //   // status$: {
@@ -118,17 +119,37 @@ export class LearnItem$
     }
   }
 
-  public hasAnyCategory(categories: ItemCategory[]) {
-    return categories.some(category => {
-      return this.val?.matchesSearch(category)
+  matchesAnyFilterText(textFilterStrings: string[]): boolean {
+    if ( ! textFilterStrings ?. length ) {
+      return true
+    }
+
+    return textFilterStrings.some(searchedStr => {
+      return this.val?.matchesSearch(searchedStr)
     })
   }
 
-  hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal) {
-    if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
+  public hasAnyCategory(searchCategories: ItemCategory[]): boolean {
+    if ( ! searchCategories ?. length ) {
       return true
-    } else {
-      return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
     }
+    const myCategories = (this.getFieldVal(sidesDefs.categories) as string ?? '') ?. toLowerCase()
+    return searchCategories.some(
+      searchCategory => myCategories ?. includes(searchCategory)
+    )
   }
+
+  hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal): boolean {
+    return true
+    // if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
+    //   return true
+    // } else {
+    //   return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
+    // }
+  }
+
+  public getFieldVal(side: Side) {
+    return this.val?.[side.id as keyof LearnItem]
+  }
+
 }

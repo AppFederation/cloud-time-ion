@@ -112,6 +112,16 @@ ul, ol {
   font-variant: small-caps;
   font-size: 120%;
   //transform: skew(15deg);
+  animation: pulse-shadow 1s infinite;
+}
+
+@keyframes pulse-shadow {
+  0% {
+    text-shadow: green 1px 1px 2px;
+  }
+  50% {
+    text-shadow: lightgreen 1px 1px 6px;
+  }
 }
 
 .concept {

@@ -143,7 +143,8 @@ export class RichTextEditComponent implements OnInit {
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customMarkBtn bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
+      'customMarkBtn btnFormatPositive btnFormatNegative btnFormatWarning btnFormatFancy btnFormatConcept \
+      bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
       selectall copy paste | undo redo | \
       formatselect | \
       alignleft aligncenter alignright alignjustify ' /* align is probably quite useless for notes */ +
@@ -184,6 +185,36 @@ export class RichTextEditComponent implements OnInit {
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
         } /* for fancy: `mceToggleFormat` ? - https://www.tiny.cloud/docs/advanced/editor-command-identifiers/ */
       });
+      editor.ui.registry.addButton('btnFormatPositive', {
+        text: 'P',
+        onAction: () => {
+          this.formatPositive(editor)
+        } /* for fancy: `mceToggleFormat` ? - https://www.tiny.cloud/docs/advanced/editor-command-identifiers/ */
+      }); //  btnFormatWarning btnFormatFancy btnFormatConcept
+      editor.ui.registry.addButton('btnFormatNegative', {
+        text: 'N',
+        onAction: () => {
+          this.formatNegative(editor)
+        }
+      });
+      editor.ui.registry.addButton('btnFormatWarning', {
+        text: 'W',
+        onAction: () => {
+          this.formatWarning(editor)
+        }
+      });
+      editor.ui.registry.addButton('btnFormatFancy', {
+        text: 'F',
+        onAction: () => {
+          this.formatFancy(editor)
+        }
+      });
+      editor.ui.registry.addButton('btnFormatConcept', {
+        text: 'C',
+        onAction: () => {
+          this.formatConcept(editor)
+        }
+      });
     }
   }
 
@@ -198,6 +229,26 @@ export class RichTextEditComponent implements OnInit {
 
   public highlightSelected(editor: any) {
     editor.execCommand('hilitecolor', false, /*'#808000'*/ '#ffa626');
+  }
+
+  public formatPositive(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'positive');
+  }
+
+  public formatNegative(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'negative');
+  }
+
+  public formatWarning(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'warning');
+  }
+
+  public formatFancy(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'fancy');
+  }
+
+  public formatConcept(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'concept');
   }
 
   logEditor(msg: string) {
