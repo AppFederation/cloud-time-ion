@@ -607,8 +607,8 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     // if ( colVal ) console.log('showEffectiveValue colVal', colVal, typeof colVal)
     return ! this.isChildOfRoot &&
       ( /*this.itemData.estimatedTime == null || this.itemData.estimatedTime == undefined || */
-        this.getChildrenTimeLeftSum(column) !== 0 ||
-        parseTimeToMinutes(colVal) >= 60 // TODO: move to domain-specific code since this deals with time (help reducing this file)
+        this.getChildrenTimeLeftSum(column) !== 0 /*||
+        parseTimeToMinutes(colVal) >= 60*/ // TODO: move to domain-specific code since this deals with time (help reducing this file)
       )
   }
 
