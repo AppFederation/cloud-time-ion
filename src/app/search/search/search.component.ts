@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
   textFieldDummy
   filteredNodes = []
 
-  @ViewChild('searchInput') searchInput: ElementRef
+  @ViewChild('searchInput', {static: true}) searchInput: ElementRef
 
   constructor(
     public searchService: SearchService,

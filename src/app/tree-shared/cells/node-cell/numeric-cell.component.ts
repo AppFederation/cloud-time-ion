@@ -36,7 +36,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
     return this.treeNode.isChildrenEstimationExceedingOwn(this.column)
   }
 
-  @ViewChild('cellInput')
+  @ViewChild('cellInput', {static: true})
   cellInput: ElementRef
 
   @Output()

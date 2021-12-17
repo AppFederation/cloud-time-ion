@@ -29,7 +29,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   @Input()
   cell: ColumnCell
 
-  @ViewChild('contentEditableEl') contentEditableEl: ElementRef
+  @ViewChild('contentEditableEl', {static: true}) contentEditableEl: ElementRef
 
   constructor() {
     super()
