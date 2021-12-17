@@ -51,18 +51,18 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
   }),
   btn({
     btnVariants: [
-      intensityBtnVariant(`META!`, importanceDescriptors.meta),
-      intensityBtnVariant(`MANTRA!`, importanceDescriptors.mantra),
-      intensityBtnVariant(`META-MANTRA!`, importanceDescriptors.meta_mantra),
+      intensityBtnVariant(`META`, importanceDescriptors.meta),
+      intensityBtnVariant(`MANTRA`, importanceDescriptors.mantra),
+      intensityBtnVariant(`META-MANTRA`, importanceDescriptors.meta_mantra),
       // intensityBtnVariant(`X-TEST`, importanceDescriptors.testing_extremely_high),
     ]
   }),
   btn({
     btnVariants: [
-      intensityBtnVariant(`CF !`, importanceDescriptors.current_focus),
-      intensityBtnVariant(`CFMeta !`, importanceDescriptors.current_focus_meta),
-      intensityBtnVariant(`CFMtr !`, importanceDescriptors.current_focus_mantra),
-      intensityBtnVariant(`CFMetaMtr !`, importanceDescriptors.current_focus_meta_mantra),
+      intensityBtnVariant(`CF`, importanceDescriptors.current_focus),
+      intensityBtnVariant(`CFMeta`, importanceDescriptors.current_focus_meta),
+      intensityBtnVariant(`CFMtr`, importanceDescriptors.current_focus_mantra),
+      intensityBtnVariant(`CFMetaMtr`, importanceDescriptors.current_focus_meta_mantra),
     ]
   }),
   btn({
