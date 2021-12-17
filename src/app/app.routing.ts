@@ -2,15 +2,15 @@
 const appRoutes: Routes = [
   {
     path: 'sign-in',
-    loadChildren: 'app/user-sign-in/user-sign-in.module#UserSignInModule'
+    loadChildren: () => import('app/user-sign-in/user-sign-in.module').then(m => m.UserSignInModule)
   },
   {
     path: 'tree',
-    loadChildren: 'app/tree-page/tree-page.module#TreePageModule'
+    loadChildren: () => import('app/tree-page/tree-page.module').then(m => m.TreePageModule)
   },
   {
     path: 'moderation',
-    loadChildren: 'app/apps/ModerationTimers/moderation-timers-page/moderation-timers-page.module#ModerationTimersPageModule'
+    loadChildren: () => import('app/apps/ModerationTimers/moderation-timers-page/moderation-timers-page.module').then(m => m.ModerationTimersPageModule)
   },
   {
     path: '',
