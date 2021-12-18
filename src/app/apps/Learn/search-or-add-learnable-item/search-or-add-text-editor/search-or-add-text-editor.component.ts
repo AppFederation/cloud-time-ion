@@ -65,7 +65,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
         });
       editor.ui.registry.addButton('customInsertButton', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
-        text: 'MARK',
+        text: 'M',
         onAction: () => {
           this.highlightSelected(editor)
           // editor.insertContent('&nbsp;<strong>It\'s my button!</strong>&nbsp;');
