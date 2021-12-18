@@ -1,10 +1,11 @@
 <div
+  style="font-size: 70%; /*margin-top: 5px;*/ margin-left: 5px"
   *ngIf="numFieldDef"
-  style="font-size: 70%; margin-top: 5px; margin-left: 5px"
 >
   {{numFieldDef ?. uiName}}
 </div>
-{{ selectedVariant ?. subLabel }}
+{{ selectedVariant ?. subLabel }}&nbsp; <!-- nbsp to ensure constant height -->
+<!-- TODO: move this into the button-->
 <div style="display: flex; align-items: center">
 
   <ion-button
@@ -19,6 +20,11 @@
         fill="outline"
     -->
     {{ getDisplayedVariantForButton(btnDesc).label}}
+<!--    zza {{  selectedVariant ?. subLabel }}-->
+<!--    {{ isSelected(btnDesc) }}-->
+<!--    <ng-container *ngIf="isSelected(btnDesc)">-->
+<!--      {{ selectedVariant ?. subLabel }}-->
+<!--    </ng-container>-->
     <ng-container
       *ngIf="false && getDisplayedVariantForButton(btnDesc).subLabel let subLabel"
     >
