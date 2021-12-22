@@ -1,0 +1,28 @@
+<p>
+  categories works!
+</p>
+
+<p-tree [value]="files1" [draggableNodes]="true" [droppableNodes]="true" draggableScope="self" droppableScope="self"></p-tree>
+
+tree
+
+
+<div class="p-grid p-fluid">
+  <div class="p-col-12 p-md-4">
+    <h4>Files</h4>
+    <p>Can transfer to Server 2.</p>
+
+  </div>
+
+  <div class="p-col-12 p-md-4">
+    <h4>Server 1</h4>
+    <p>Can transfer to Files.</p>
+    <p-tree [value]="files3" [draggableNodes]="true" [droppableNodes]="true" droppableScope="server1" draggableScope="files"></p-tree>
+  </div>
+
+  <div class="p-col-12 p-md-4">
+    <h4>Server 2</h4>
+    <p>Can transfer to Server 1.</p>
+    <p-tree [value]="files4" [draggableNodes]="true" [droppableNodes]="true" droppableScope="server2" draggableScope="server1"></p-tree>
+  </div>
+</div>

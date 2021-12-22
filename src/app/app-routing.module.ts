@@ -56,7 +56,12 @@ const routes: Routes = [
     redirectTo: '/learn',
     pathMatch: 'full'
   },
+  {
+    path: 'categories',
+    loadChildren: () => import('./apps/Common/categories/categories.module').then( m => m.CategoriesPageModule)
+  },
   { path: '**', redirectTo: '' },
+
 
 ];
 
