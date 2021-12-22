@@ -1,5 +1,6 @@
 <p style="margin: 10px" *ngIf="! learnDoService.itemsLoaded">
   LOADING...
+  <ion-spinner></ion-spinner>
 </p>
 <p style="margin: 10px" *ngIf="learnDoService.itemsLoaded && ! this.filteredItem$s?.length">
   NOTHING FOUND
