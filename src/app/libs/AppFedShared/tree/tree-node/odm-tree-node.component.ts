@@ -11,11 +11,12 @@ export class OdmTreeNodeComponent implements OnInit {
   expanded = false
 
   @Input()
-  treeNode!: TreeNode
+  treeNode!: TreeNode<any>
 
   constructor() { }
 
   ngOnInit(): void {
+    this.treeNode.requestLoadChildren()
   }
 
 }

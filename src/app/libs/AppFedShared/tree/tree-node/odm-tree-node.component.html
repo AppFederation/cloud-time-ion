@@ -17,7 +17,7 @@
     <div
       *ngIf="!(treeNode.childNodesList$ | async)"
     >
-      Loading....
+      Loading.... <ion-spinner style="height: 15px"></ion-spinner>
     </div>
 
     <!-- NOTE: we might already have some list, e.g. it's not fully loaded (coz need to finish another query),

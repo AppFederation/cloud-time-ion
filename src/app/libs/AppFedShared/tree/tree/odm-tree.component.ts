@@ -8,7 +8,7 @@ import {TreeNode} from '../tree-node/TreeNode'
 })
 export class OdmTreeComponent implements OnInit {
 
-  rootNode = new TreeNode(undefined, undefined)
+  rootNode = new TreeNode(undefined, undefined as any /* hack */)
 
   constructor() { }
 

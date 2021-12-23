@@ -10,16 +10,20 @@ export class TreeNode<TOdmItem$ extends OdmItem$2<any, any, any, any> = any> {
     public parentNode: TreeNode<any> | undefined,
     public item$: TOdmItem$
   ) {
+  }
+
+  requestLoadChildren(depth = 1) {
+    /* This could preload a number of levels recursively */
     setTimeout(() => {
       this.childNodesList$.nextWithCache([
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
-        new TreeNode(this, undefined),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
+        new TreeNode(this, undefined as any),
       ])
     }, 2_000)
   }
