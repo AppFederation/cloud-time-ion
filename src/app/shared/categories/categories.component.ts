@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {TreeNode} from 'primeng/api'
+import {MessageService, TreeDragDropService, TreeNode} from 'primeng/api'
 import {NodeService} from './node.service'
 
 @Component({
   selector: 'app-categories',
+  providers: [TreeDragDropService,MessageService],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.sass'],
 })
