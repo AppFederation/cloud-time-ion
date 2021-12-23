@@ -19,4 +19,7 @@ export class OdmTreeNodeComponent implements OnInit {
     this.treeNode.requestLoadChildren()
   }
 
+  addChild() {
+
+  }
 }
