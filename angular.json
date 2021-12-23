@@ -44,7 +44,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
-              "./node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/primeng/resources/themes/md-dark-indigo/theme.css",
               "./node_modules/primeng/resources/primeng.min.css",
               "./node_modules/primeflex/primeflex.css",
               "./node_modules/primeicons/primeicons.css",
