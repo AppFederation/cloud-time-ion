@@ -10,6 +10,18 @@ export class TreeNode<TOdmItem$ extends OdmItem$2<any, any, any, any> = any> {
     public parentNode: TreeNode<any> | undefined,
     public item$: TOdmItem$
   ) {
+    setTimeout(() => {
+      this.childNodesList$.nextWithCache([
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+        new TreeNode(this, undefined),
+      ])
+    }, 2_000)
   }
 
 }
