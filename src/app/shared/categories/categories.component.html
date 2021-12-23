@@ -2,7 +2,13 @@
   categories works!
 </p>
 
-<p-tree [value]="files1" [draggableNodes]="true" draggableScope="self"></p-tree>
+<p-tree [value]="files1" [draggableNodes]="true" draggableScope="self">
+  <ng-template let-node pTemplate="default">
+    XYZ
+<!--    {{node.data}}-->
+<!--    <input [(ngModel)]="node.label" type="text" style="width:100%">-->
+  </ng-template>
+</p-tree>
 
 <!--  [droppableNodes]="true"  droppableScope="self" -->
 
