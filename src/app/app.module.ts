@@ -13,7 +13,7 @@ import {CoreModule} from "./core/core.module";
 import {ShoppingListsModule} from "./apps/ShopNext/shopping-lists/shopping-lists.module";
 import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule} from '@angular/common/http';
 
 // custom configuration Hammerjs
 @Injectable()

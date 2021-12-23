@@ -21,6 +21,9 @@ export abstract class OdmItemData<TData> {
 
 export type OdmPatch<TData> = Partial<TData>
 
+/**
+ * @deprecated
+ */
 export class OdmItem<T extends OdmItem<T>, TData = T> {
 
   public locallyVisibleChanges$ = new CachedSubjectBugged<T>(this.asT)

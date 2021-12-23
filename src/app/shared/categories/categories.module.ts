@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {CategoriesComponent} from './categories.component'
 import {TreeModule} from 'primeng/tree'
 import {HttpClient, HttpClientModule} from '@angular/common/http'
+import {OdmTreeModule} from '../../libs/AppFedShared/tree/odm-tree.module'
 
 
 
@@ -16,6 +17,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http'
   imports: [
     CommonModule,
     TreeModule,
-  ]
+    OdmTreeModule,
+  ],
 })
 export class CategoriesModule { }

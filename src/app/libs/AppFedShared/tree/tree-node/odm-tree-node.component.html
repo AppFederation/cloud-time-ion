@@ -1,0 +1,32 @@
+<div style="border: 2px solid green">
+  <button (click)="expanded = true">Expand</button>
+
+  children:
+
+  <div style="margin-left: 20px" *ngIf="expanded">
+    <div
+      *ngIf="(treeNode.childNodesList$ | async) let childNodesList"
+    >
+      <app-tree-node
+        *ngFor="let node of childNodesList"
+      ></app-tree-node>
+
+    </div>
+
+    <div
+      *ngIf="!(treeNode.childNodesList$ | async)"
+    >
+      Loading....
+    </div>
+
+    <!-- NOTE: we might already have some list, e.g. it's not fully loaded (coz need to finish another query),
+      and/or
+
+      hence, maybe: (childNodesListStatus$ | async)?.isLoadingFinished
+    -->
+
+  </div>
+
+
+</div>
+
