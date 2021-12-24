@@ -1,5 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TreeNode} from './TreeNode'
+import {GenericItem$} from '../GenericItem$'
+import {OdmItem$2} from '../../odm/OdmItem$2'
+import {OdmService2} from '../../odm/OdmService2'
 
 @Component({
   selector: 'app-tree-node',
@@ -11,7 +14,7 @@ export class OdmTreeNodeComponent implements OnInit {
   expanded = false
 
   @Input()
-  treeNode!: TreeNode<any>
+  treeNode!: TreeNode<OdmItem$2<any, any, any, any>>
 
   constructor() { }
 
@@ -20,6 +23,8 @@ export class OdmTreeNodeComponent implements OnInit {
   }
 
   addChild() {
-
+    const item$ = this.treeNode.item$
+    const odmService = item$.odmService as OdmService2<any, any, any, any>
+    odmService.newItem(undefined, undefined, [item$])
   }
 }

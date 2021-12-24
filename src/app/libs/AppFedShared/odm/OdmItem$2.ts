@@ -11,6 +11,9 @@ export type UserId = string
 
 export class OdmInMemItemWriteOnce {
   public whenCreated?: OdmTimestamp
+  /** TODO maybe better status: 'normal'/null | 'del(eted)' | 'arch(ived)' - but also think of "other meaning of status", like "draft", "published" etc
+   * and whenDeleted, whenArchived
+   * */
   public isDeleted?: OdmTimestamp
   public owner?: UserId
 }
@@ -45,7 +48,7 @@ export function convertUndefinedFieldValsToNull(obj: any) {
 export class OdmItem$2<
   TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData extends OdmInMemItem,
-  TRawData extends OdmInMemItem /* workaround */, // = TInMemData,
+  TRawData /* TODO: maybe this does not have to be part of public interface */ extends OdmInMemItem /* workaround */, // = TInMemData,
   TItemListService extends
     OdmService2<TItemListService, TInMemData, TRawData, any /* workaround */>, // =
     // OdmService2<TInMemData, TRawData>,
@@ -55,7 +58,7 @@ export class OdmItem$2<
   TMemPatch extends
     OdmPatch<TInMemData> =
     OdmPatch<TInMemData>,
-  TRawPatch extends
+  TRawPatch extends /* TODO: maybe this does not have to be part of public interface */
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
 >
@@ -83,12 +86,15 @@ export class OdmItem$2<
   public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
+  public childrenList$ = new CachedSubject<TSelf[] | undefined>()
+
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 
   constructor(
     public odmService: TItemListService,
     public id?: TItemId,
     initialInMemData?: TInMemData,
+    parents?: TSelf[]
   ) {
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
@@ -112,6 +118,15 @@ export class OdmItem$2<
       this.resolveFuncPendingThrottledIfNecessary()
     }) as any /* TODO investigate after strict */)
     // this.onModified()
+
+    // FIXME: weave parents into db data
+
+    if ( parents ) {
+      for (let parent of parents) {
+        parent.onChildrenAddedLocally([this])
+      }
+    }
+
   }
 
   private setIdAndWhenCreatedIfNecessary() {
@@ -254,5 +269,12 @@ export class OdmItem$2<
       this.resolveFuncPendingThrottled?.(true)
       this.resolveFuncPendingThrottled = undefined
     }
+  }
+
+  public onChildrenAddedLocally(children: TSelf[]) {
+    this.childrenList$.nextWithCache([
+      ... (this.childrenList$.lastVal ?? []),
+      ... children,
+    ])
   }
 }

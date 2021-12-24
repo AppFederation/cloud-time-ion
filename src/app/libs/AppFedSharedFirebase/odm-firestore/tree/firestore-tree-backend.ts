@@ -69,5 +69,14 @@ export class FirestoreTreeBackend {
   * 5 users x 5 parents = 25 entries, but only querying 1 or 2
   *
   *
+  * ====== TODO: think of case where a user wants to privately add a public (or someone else's) non-writable-by-them item to their own category
+  *         ---> a kind of "symlink" item object would be needed
+  *     And opposite situation in which a user wants to privately add their own item to public non-writable-by-them category (this is a bit more fancy - like overlays, inheritance)
+  *       - maybe security rules can handle preventing setting a parent that user doesn't have permission to modify
+  *
+  * ====== Considerations about editing conflicts on parents array:
+  *   * the array could just be for indexed-query purposes; while this info could be also stored in a map like inclusions:
+  *     { parentId: { <inclusionData (or just `true`) > }
+  *
   * */
 }

@@ -232,10 +232,12 @@ export abstract class OdmService2<
   // }
 
   /** Can be overridden by subclasses to provide specific sub-type */
-  newItem(id?: TItemId, inMemData?: TInMemData): TOdmItem$ {
+  newItem(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[]): TOdmItem$ {
+
     const odmItem$ = new OdmItem$2(this as any
       /* workaround for TS2716: Type parameter 'TOdmItem$' has a circular default. */
-      , id, inMemData) as any as TOdmItem$
+      , id, inMemData, parents) as any as TOdmItem$
+
     return odmItem$
   }
 

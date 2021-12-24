@@ -18,7 +18,7 @@ export class GenericItemsService extends OdmService2<
   ) {
     super(
       injector,
-      'GenericItem'
+      'LearnItem' // FIXME: 'GenericItem'
     )
     // console.log(`this.odmCollectionBackend`, this.odmCollectionBackend)
     // this.localItems$.subscribe(items => {
