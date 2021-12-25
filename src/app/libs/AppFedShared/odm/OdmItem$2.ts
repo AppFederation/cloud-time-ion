@@ -94,7 +94,7 @@ export class OdmItem$2<
     public odmService: TItemListService,
     public id?: TItemId,
     initialInMemData?: TInMemData,
-    parents?: TSelf[]
+    public parents?: TSelf[]
   ) {
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)

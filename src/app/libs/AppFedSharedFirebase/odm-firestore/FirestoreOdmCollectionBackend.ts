@@ -1,4 +1,4 @@
-import {OdmCollectionBackend, OdmCollectionBackendListener} from "../../AppFedShared/odm/OdmCollectionBackend";
+import {ItemId, OdmCollectionBackend, OdmCollectionBackendListener} from "../../AppFedShared/odm/OdmCollectionBackend";
 import {Injector} from "@angular/core";
 import {AngularFirestore, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
 import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
@@ -30,13 +30,16 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     })
   }
 
-  saveNowToDb(item: TRaw, id: string): Promise<any> {
+  saveNowToDb(item: TRaw, id: string, parentIds?: ItemId[]): Promise<any> {
     if ( ! isNotNullish(id) ) {
       errorAlert('id cannot be ' + id)
     }
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
     try {
-      const retPromise = this.itemDoc(id).set(item/*.toDbFormat()*/)
+      const retPromise = this.itemDoc(id).set({
+        ... item,
+        parentIds,
+      }/*.toDbFormat()*/)
       return retPromise
     } catch (error: any) {
       throw errorAlertAndThrow(`saveNowToDb error: `, error, item, id)

@@ -4,6 +4,8 @@ import {OdmBackend} from "./OdmBackend";
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
 
+export type ItemId = string & { type: 'ItemId' }
+
 export abstract class OdmCollectionBackendListener<
   TRaw,
   TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
@@ -36,7 +38,7 @@ export abstract class OdmCollectionBackend<
   ) {
   }
 
-  abstract saveNowToDb(item: TRaw, id: string): Promise<any>
+  abstract saveNowToDb(item: TRaw, id: ItemId, parentIds?: ItemId[]): Promise<any>
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId): Promise<any>
 

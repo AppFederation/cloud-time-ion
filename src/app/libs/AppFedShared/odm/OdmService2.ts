@@ -11,6 +11,7 @@ import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
 import {OdmItemHistoryService} from './odm-item-history-service'
 import {DictPatch} from '../utils/rxUtils'
 import {isNotNullish} from '../utils/utils'
+import {ItemId} from './OdmCollectionBackend'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -121,7 +122,8 @@ export abstract class OdmService2<
 
     // setTimeout(() => {
       const dbFormat = itemToSave.toDbFormat()
-      const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, itemToSave.id !)
+      const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, (itemToSave.id!) as ItemId,
+        itemToSave.parents?.map(parent => (parent.id!) as ItemId))
       this.syncStatusService.handleSavingPromise(promise)
     // }, 10000)
   }
