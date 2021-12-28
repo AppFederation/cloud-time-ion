@@ -97,7 +97,7 @@ export abstract class OdmService2<
     if ( ! this.mapIdToItem$.get(item$.id as TItemId) ) {
       this.mapIdToItem$.set(item$.id as TItemId, item$)
       let items = this.localItems$.lastVal
-      items!.push(item$)
+      items!.push(item$) /* FIXME: this out-of-band modification might confuse RxJS */
       this.emitLocalItems()
     }
   }
@@ -195,7 +195,7 @@ export abstract class OdmService2<
           // }
 
           existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
-          items!.push(existingItem)
+          items!.push(existingItem) /* FIXME: this out-of-band modification might confuse RxJS */
         } // else: it was added locally as lag compensation, don't do anything, to not destroy potential local changes
 
         // } else {
@@ -244,13 +244,13 @@ export abstract class OdmService2<
   }
 
   /** Can be overridden by subclasses to provide specific conversion */
-  protected convertFromDbFormat(dbItem: TRawData): TInMemData {
+  public convertFromDbFormat(dbItem: TRawData): TInMemData {
     return dbItem as unknown as TInMemData // default impl
   }
 
   emitLocalItems() {
     this.itemsLoaded = true
-    this.localItems$.next(this.localItems$!.lastVal !)
+    this.localItems$.reEmit()
   }
 
   itemsCount() {

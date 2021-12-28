@@ -44,6 +44,8 @@ export class JournalTextDescriptors {
   text = d({
     hide: true
   })
+  categories = d()
+
   positive = d({
     icon: `thumbs-up-outline`
   })

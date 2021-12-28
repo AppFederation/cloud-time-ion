@@ -47,4 +47,9 @@ export class CachedSubject<T> extends Subject<T> {
     this.onSubscribeCallBack = callBack
     return this
   }
+
+  /** HACK for emitting out-of-band value changes */
+  reEmit() {
+    this.next(this.lastVal !)
+  }
 }

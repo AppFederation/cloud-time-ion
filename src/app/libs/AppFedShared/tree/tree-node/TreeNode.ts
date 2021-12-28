@@ -23,6 +23,7 @@ export class TreeNode<
   }
 
   requestLoadChildren(depth = 1) {
+    this.item$.requestLoadChildren()
     /* This could preload a number of levels recursively */
     // setTimeout(() => {
     //   this.childNodesList$.nextWithCache([

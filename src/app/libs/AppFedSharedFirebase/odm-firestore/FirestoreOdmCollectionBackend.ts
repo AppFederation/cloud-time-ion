@@ -6,6 +6,7 @@ import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
+import {assertTruthy} from '../../AppFedShared/utils/assertUtils'
 
 
 export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TRaw> {
@@ -34,11 +35,14 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     if ( ! isNotNullish(id) ) {
       errorAlert('id cannot be ' + id)
     }
+    // TODO: also store ancestorIds for loading entire subtree in 1 query (e.g. for faster searching)
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
     try {
       const retPromise = this.itemDoc(id).set({
         ... item,
-        parentIds,
+        ... (parentIds ? {
+          parentIds
+        } : {}),
       }/*.toDbFormat()*/)
       return retPromise
     } catch (error: any) {
@@ -81,14 +85,14 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
             const docData = change.doc.data()
             // this.setOwnerIfNeeded(docData, docId)
             if ( change.type === 'added' ) {
-              this.listener?.onAdded(docId, docData as TRaw)
+              listener?.onAdded(docId, docData as TRaw)
             } else if ( change.type === 'modified') {
-              this.listener?.onModified(docId, docData as TRaw)
+              listener?.onModified(docId, docData as TRaw)
             } else if ( change.type === 'removed') {
-              this.listener?.onRemoved(docId)
+              listener?.onRemoved(docId)
             }
           }
-          this.listener?.onFinishedProcessingChangeSet()
+          listener?.onFinishedProcessingChangeSet()
 
           // FIXME: only emit after processing finished
 
@@ -97,6 +101,37 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       //   this.dbCollection$.nextWithCache(coll)
       // })
     })
+  }
+
+  loadChildrenOf(parentId: ItemId, listener: OdmCollectionBackendListener<TRaw>) {
+    assertTruthy(parentId, 'parentId')
+    const userId = this.authService.authUser$.lastVal!.uid
+    console.info('loadChildrenOf', arguments)
+    this.angularFirestore.firestore.collection(this.collectionName)
+      .where('owner', '==', userId)
+      .where('parentIds', 'array-contains', parentId)
+      .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
+      {
+        console.log('loadChildrenOf firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+        // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
+        for ( let change of snapshot.docChanges() ) {
+          const docId = change.doc.id
+          const docData = change.doc.data()
+          // this.setOwnerIfNeeded(docData, docId)
+          if ( change.type === 'added' ) {
+            listener?.onAdded(docId, docData as TRaw)
+          } else if ( change.type === 'modified') {
+            listener?.onModified(docId, docData as TRaw)
+          } else if ( change.type === 'removed') {
+            listener?.onRemoved(docId)
+          }
+        }
+        listener?.onFinishedProcessingChangeSet()
+
+        // FIXME: only emit after processing finished
+
+      }) as any /* workaround after strict settings */)
+
   }
 
 }

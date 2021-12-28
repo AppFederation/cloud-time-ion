@@ -3,6 +3,7 @@ import {TreeNode} from './TreeNode'
 import {GenericItem$} from '../GenericItem$'
 import {OdmItem$2} from '../../odm/OdmItem$2'
 import {OdmService2} from '../../odm/OdmService2'
+import {AuthService} from '../../../../auth/auth.service'
 
 @Component({
   selector: 'app-tree-node',
@@ -16,10 +17,17 @@ export class OdmTreeNodeComponent implements OnInit {
   @Input()
   treeNode!: TreeNode<OdmItem$2<any, any, any, any>>
 
-  constructor() { }
+  constructor(
+    public authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
-    this.treeNode.requestLoadChildren()
+    this.authService.authUser$.subscribe((user) => {
+      console.log(`user`, user)
+      if ( user ) {
+        this.treeNode.requestLoadChildren()
+      }
+    })
   }
 
   addChild() {

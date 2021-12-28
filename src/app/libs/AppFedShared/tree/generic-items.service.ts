@@ -18,7 +18,7 @@ export class GenericItemsService extends OdmService2<
   ) {
     super(
       injector,
-      'LearnItem' // FIXME: 'GenericItem'
+      'GenericItem' // FIXME: 'GenericItem'
     )
     // console.log(`this.odmCollectionBackend`, this.odmCollectionBackend)
     // this.localItems$.subscribe(items => {
@@ -26,7 +26,7 @@ export class GenericItemsService extends OdmService2<
     // })
   }
 
-  protected convertFromDbFormat(dbItem: GenericItem): GenericItem {
+  public convertFromDbFormat(dbItem: GenericItem): GenericItem {
     return Object.assign(new GenericItem(), dbItem)
   }
 

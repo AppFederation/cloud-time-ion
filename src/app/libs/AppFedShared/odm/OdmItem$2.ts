@@ -86,6 +86,9 @@ export class OdmItem$2<
   public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>()
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
+  /** FIXME: encapsulate into OdmCollection<TSelf>, and unify with all-items-list?
+   * This has `list` in name, so should only react to changes of the list itself (not object data contents
+   * */
   public childrenList$ = new CachedSubject<TSelf[] | undefined>()
 
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
@@ -258,7 +261,7 @@ export class OdmItem$2<
     ) {
       this.saveNowToDb /* ...Force */()
     }
-    // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields
+    // TODO: item$ ?. hasOrHadUserProvidedContent() --> "had" - for undo in text fields (for the text field to not disappear), and for deleting item via backspace like OrYoL will have, and prolly LifeSuite Categories
     // FIXME: check if has pending patches
   }
 
@@ -276,5 +279,71 @@ export class OdmItem$2<
       ... (this.childrenList$.lastVal ?? []),
       ... children,
     ])
+  }
+
+  public requestLoadChildren() {
+    console.log('requestLoadChildren')
+    /* FIXME: this is copy-paste from entire-collection loading */
+    /* TODO: encapsulate into OdmCollection object ?
+      children$, allItems$
+    *   */
+    const service = this.odmService
+    const thisItem$ = this
+    const listener = {
+      onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
+
+        let existingItem: TSelf | undefined = service.mapIdToItem$.get(addedItemId)
+        // debugLog('setBackendListenerIfNecessary onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
+
+        // service.obtainOdmItem$(addedItemId) TODO
+        // if ( ! existingItem ) {
+        if ( ! existingItem?.val$?.hasEmitted ) {
+          // FIXME: this is is causing item to never load if subscribed via item details url early
+
+          existingItem = service.obtainItem$ById(addedItemId)
+
+          let items = service.localItems$.lastVal;
+          // if ( ! existingItem /* FIXME: now existingItem always returns smth */ ) {
+          //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
+          // }
+
+          existingItem!.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData) !)
+          thisItem$.childrenList$.lastVal ??= []
+          thisItem$.childrenList$.lastVal.push(existingItem!) /* FIXME: this out-of-band modification might confuse RxJS */
+          items!.push(existingItem)
+        } // else: it was added locally as lag compensation, don't do anything, to not destroy potential local changes
+
+        // } else {
+        // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
+        // existingItem.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData))
+        // }
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+
+      },
+      onModified(modifiedItemId: TItemId, modifiedItemRawData: TRawData) {
+        // debugLog('setBackendListenerIfNecessary onModified', ...arguments)
+        let convertedItemData = service.convertFromDbFormat(modifiedItemRawData);
+        let existingItem = service.obtainItem$ById(modifiedItemId)
+        if (existingItem && existingItem.applyDataFromDbAndEmit) {
+          existingItem.applyDataFromDbAndEmit(convertedItemData)
+        } else {
+          console.error('FIXME existingItem.applyDataFromDbAndEmit(convertedItemData)', existingItem, existingItem && existingItem.applyDataFromDbAndEmit)
+        }
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onRemoved(removedItemId: TItemId) {
+        /* FIXME: remove in childrenList$ */
+        service.localItems$.lastVal = service.localItems$ !.lastVal !.filter(item => item.id !== removedItemId)
+        // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
+        // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
+      },
+      onFinishedProcessingChangeSet() {
+        thisItem$.childrenList$.lastVal ??= [] /* FIXME: only emit if changed ? */
+        thisItem$.childrenList$.reEmit()
+        service.emitLocalItems()
+      },
+    }
+
+    this.odmService.odmCollectionBackend.loadChildrenOf(this.id !, listener)
   }
 }

@@ -46,4 +46,6 @@ export abstract class OdmCollectionBackend<
     this.listener = listener
   }
 
+  abstract loadChildrenOf(id: TItemId, listener: OdmCollectionBackendListener<TRaw>): void
+
 }

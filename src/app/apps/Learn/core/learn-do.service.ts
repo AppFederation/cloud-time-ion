@@ -28,7 +28,7 @@ export class LearnDoService extends OdmService2<
     // })
   }
 
-  protected convertFromDbFormat(dbItem: LearnItem): LearnItem {
+  convertFromDbFormat(dbItem: LearnItem): LearnItem {
     return Object.assign(new LearnItem(), dbItem)
   }
 
