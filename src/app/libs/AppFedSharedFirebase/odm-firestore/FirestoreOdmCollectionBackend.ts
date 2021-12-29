@@ -139,4 +139,39 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   }
 
+  loadTreeDescendantsOf(ancestorId: ItemId, listener: OdmCollectionBackendListener<TRaw>) {
+    assertTruthy(ancestorId, 'ancestorId')
+    const userId = this.authService.authUser$.lastVal?.uid
+    console.info('loadTreeDescendantsOf', arguments)
+    let query = this.angularFirestore.firestore.collection(this.collectionName)
+      .where('ancestorIds', 'array-contains', ancestorId)
+    if ( userId ) {
+      query = query.where('owner', '==', userId)
+    }
+    query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
+    {
+      console.log(`loadTreeDescendantsOf results ${ancestorId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length',
+        snapshot.docChanges().length)
+      // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
+      for ( let change of snapshot.docChanges() ) {
+        const docId = change.doc.id
+        const docData = change.doc.data()
+        // this.setOwnerIfNeeded(docData, docId)
+        if ( change.type === 'added' ) {
+          listener?.onAdded(docId, docData as TRaw)
+        } else if ( change.type === 'modified') {
+          listener?.onModified(docId, docData as TRaw)
+        } else if ( change.type === 'removed') {
+          listener?.onRemoved(docId)
+        }
+      }
+      listener?.onFinishedProcessingChangeSet()
+
+      // FIXME: only emit after processing finished
+
+    }) as any /* workaround after strict settings */)
+
+  }
+
+
 }

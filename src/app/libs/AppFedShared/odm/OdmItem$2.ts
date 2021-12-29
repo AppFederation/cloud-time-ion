@@ -94,6 +94,8 @@ export class OdmItem$2<
 
   public childrenListener?: any
 
+  public treeDescendantsListener?: any
+
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 
   constructor(
@@ -362,6 +364,22 @@ export class OdmItem$2<
 
     this.odmService.odmCollectionBackend.loadChildrenOf(this.id !, this.childrenListener)
   }
+
+  public requestLoadTreeDescendants() {
+    console.log('requestLoadTreeDescendants', this.id)
+    if ( this.treeDescendantsListener ) {
+      return
+    }
+    /* FIXME: this is copy-paste from entire-collection loading */
+    /* TODO: encapsulate into OdmCollection object ?
+      children$, allItems$
+    *   */
+    const service = this.odmService
+    const thisItem$ = this
+
+    this.odmService.odmCollectionBackend.loadTreeDescendantsOf(this.id !, this.treeDescendantsListener)
+  }
+
 
   public getParentIds(): TItemId[] {
     // check if parents are set correctly:

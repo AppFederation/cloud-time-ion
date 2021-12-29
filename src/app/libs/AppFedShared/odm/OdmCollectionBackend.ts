@@ -54,4 +54,6 @@ export abstract class OdmCollectionBackend<
 
   abstract loadChildrenOf(id: TItemId, listener: OdmCollectionBackendListener<TRaw>): void
 
+  abstract loadTreeDescendantsOf(ancestorId: TItemId, listener: OdmCollectionBackendListener<TRaw>): void
+
 }
