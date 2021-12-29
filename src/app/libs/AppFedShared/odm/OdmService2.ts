@@ -84,6 +84,10 @@ export abstract class OdmService2<
 
   itemHistoryService = new OdmItemHistoryService()
 
+  readonly treeRootItemId = '_root_' + this.className as TItemId
+
+  readonly treeRootItem = this.obtainItem$ById(this.treeRootItemId)
+
   protected constructor(
     protected injector: Injector,
     public className: string,
@@ -122,8 +126,12 @@ export abstract class OdmService2<
 
     // setTimeout(() => {
       const dbFormat = itemToSave.toDbFormat()
-      const promise = this.odmCollectionBackend.saveNowToDb(dbFormat, (itemToSave.id!) as ItemId,
-        itemToSave.parents?.map(parent => (parent.id!) as ItemId))
+      const promise = this.odmCollectionBackend.saveNowToDb(
+        dbFormat,
+        (itemToSave.id!) as ItemId,
+        itemToSave.getParentIds() as ItemId[],
+        itemToSave.getAncestorIds() as ItemId[]
+      )
       this.syncStatusService.handleSavingPromise(promise)
     // }, 10000)
   }
@@ -288,4 +296,5 @@ export abstract class OdmService2<
       this.patchThrottledById(id, patch)
     }
   }
+
 }

@@ -22,12 +22,12 @@ export class OdmTreeNodeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.authUser$.subscribe((user) => {
-      console.log(`user`, user)
-      if ( user ) {
+    // this.authService.authUser$.subscribe((user) => {
+    //   console.log(`user`, user)
+    //   if ( user ) {
         this.treeNode.requestLoadChildren()
-      }
-    })
+    //   }
+    // })
   }
 
   addChild() {

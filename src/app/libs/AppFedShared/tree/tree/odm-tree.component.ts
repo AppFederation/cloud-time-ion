@@ -11,7 +11,7 @@ import {GenericItemsService} from '../generic-items.service'
 export class OdmTreeComponent implements OnInit {
 
 
-  rootItem = new GenericItem$(this.itemsService, '_root_item_')
+  rootItem = this.itemsService.treeRootItem
 
   // TODO: use TreeModel
 

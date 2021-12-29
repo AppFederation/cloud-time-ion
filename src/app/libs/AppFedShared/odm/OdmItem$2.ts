@@ -6,6 +6,7 @@ import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {nullish} from '../utils/type-utils'
+import {ItemId} from './OdmCollectionBackend'
 
 export type UserId = string
 
@@ -315,6 +316,7 @@ export class OdmItem$2<
           // }
 
           existingItem!.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData) !) /* emits here, screwing this `! emitted` condition */
+          // FIXME: set parent(s)
           console.log(`requestLoadChildren, thisItem$.childrenList$.lastVal.push`, thisItem$.id, addedItemId)
 
           items!.push(existingItem)
@@ -359,5 +361,33 @@ export class OdmItem$2<
     }
 
     this.odmService.odmCollectionBackend.loadChildrenOf(this.id !, this.childrenListener)
+  }
+
+  public getParentIds(): TItemId[] {
+    // check if parents are set correctly:
+    if ( ! this.parents?.length && !this.isTreeRoot() ) {
+      console.error('Item$ has no parents, but is not root!', this)
+    }
+    // FIXME: handle case where this.parents are nullish
+    return (this.parents?.map(parent => parent.id! as TItemId)) ?? ([] as TItemId[])
+  }
+
+  public getAncestorIds(): TItemId[] {
+    /* FIXME: consider case where we load a sub-tree - some parent-of-parent were not yet loaded;
+      but we can use their `ancestorIds` from their data object, without even having to load the ancestors
+    *   */
+
+    const ancestorIds = [] as TItemId[]
+    ancestorIds.push(... this.getParentIds())
+    for ( let parentItem$ of this.parents ?? [] ) {
+      const ancestorsOfParent: TItemId[] = parentItem$.getAncestorIds() as TItemId[]
+      ancestorIds.push(... ancestorsOfParent)
+    }
+
+    return ancestorIds
+  }
+
+  private isTreeRoot() {
+    return this.id === this.odmService.treeRootItemId
   }
 }
