@@ -12,7 +12,7 @@ import {AuthService} from '../../../../auth/auth.service'
 })
 export class OdmTreeNodeComponent implements OnInit {
 
-  expanded = false
+  expanded = true
 
   @Input()
   treeNode!: TreeNode<OdmItem$2<any, any, any, any>>

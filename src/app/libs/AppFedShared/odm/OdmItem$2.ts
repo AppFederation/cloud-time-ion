@@ -91,6 +91,8 @@ export class OdmItem$2<
    * */
   public childrenList$ = new CachedSubject<TSelf[] | undefined>()
 
+  public childrenListener?: any
+
   public get throttleIntervalMs() { return this.odmService.throttleIntervalMs }
 
   constructor(
@@ -282,22 +284,27 @@ export class OdmItem$2<
   }
 
   public requestLoadChildren() {
-    console.log('requestLoadChildren')
+    console.log('requestLoadChildren', this.id)
+    if ( this.childrenListener ) {
+      return
+    }
     /* FIXME: this is copy-paste from entire-collection loading */
     /* TODO: encapsulate into OdmCollection object ?
       children$, allItems$
     *   */
     const service = this.odmService
     const thisItem$ = this
-    const listener = {
+    this.childrenListener = {
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
 
         let existingItem: TSelf | undefined = service.mapIdToItem$.get(addedItemId)
         // debugLog('setBackendListenerIfNecessary onAdded', service, ...arguments, 'service.itemsCount()', service.itemsCount())
 
+        console.log(`requestLoadChildren, onAdded addedItemId parent: `, thisItem$.id, addedItemId, `existingItem?.val$?.hasEmitted`, existingItem?.val$?.hasEmitted)
+
         // service.obtainOdmItem$(addedItemId) TODO
         // if ( ! existingItem ) {
-        if ( ! existingItem?.val$?.hasEmitted ) {
+        if ( ! existingItem?.val$?.hasEmitted ) { /* FIXME: isn't this gonna cause it to never emit changes coming from another machine ? */
           // FIXME: this is is causing item to never load if subscribed via item details url early
 
           existingItem = service.obtainItem$ById(addedItemId)
@@ -307,11 +314,17 @@ export class OdmItem$2<
           //   existingItem = service.createOdmItem$ForExisting(addedItemId, service.convertFromDbFormat(addedItemRawData))// service.convertFromDbFormat(addedItemRawData); // FIXME this.
           // }
 
-          existingItem!.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData) !)
-          thisItem$.childrenList$.lastVal ??= []
-          thisItem$.childrenList$.lastVal.push(existingItem!) /* FIXME: this out-of-band modification might confuse RxJS */
+          existingItem!.applyDataFromDbAndEmit(service.convertFromDbFormat(addedItemRawData) !) /* emits here, screwing this `! emitted` condition */
+          console.log(`requestLoadChildren, thisItem$.childrenList$.lastVal.push`, thisItem$.id, addedItemId)
+
           items!.push(existingItem)
         } // else: it was added locally as lag compensation, don't do anything, to not destroy potential local changes
+
+        thisItem$.childrenList$.lastVal ??= []
+        if ( ! thisItem$.childrenList$.lastVal.includes(existingItem !) ) {
+          thisItem$.childrenList$.lastVal.push(existingItem!) /* FIXME: this out-of-band modification might confuse RxJS */
+        }
+
 
         // } else {
         // errorAlert('onAdded item unexpectedly existed already: ' + addedItemId, existingItem, 'incoming data: ', addedItemRawData)
@@ -338,12 +351,13 @@ export class OdmItem$2<
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onFinishedProcessingChangeSet() {
+        console.log('onFinishedProcessingChangeSet() - thisItem$.childrenList$.lastVal', thisItem$.childrenList$.lastVal)
         thisItem$.childrenList$.lastVal ??= [] /* FIXME: only emit if changed ? */
         thisItem$.childrenList$.reEmit()
         service.emitLocalItems()
       },
     }
 
-    this.odmService.odmCollectionBackend.loadChildrenOf(this.id !, listener)
+    this.odmService.odmCollectionBackend.loadChildrenOf(this.id !, this.childrenListener)
   }
 }

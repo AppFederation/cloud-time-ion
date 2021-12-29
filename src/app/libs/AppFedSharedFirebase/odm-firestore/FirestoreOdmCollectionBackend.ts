@@ -112,7 +112,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       .where('parentIds', 'array-contains', parentId)
       .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
-        console.log('loadChildrenOf firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+        console.log(`loadChildrenOf ${parentId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length', snapshot.docChanges().length)
         // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
         for ( let change of snapshot.docChanges() ) {
           const docId = change.doc.id

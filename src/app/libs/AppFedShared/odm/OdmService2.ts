@@ -184,7 +184,7 @@ export abstract class OdmService2<
 
         // service.obtainOdmItem$(addedItemId) TODO
         // if ( ! existingItem ) {
-        if ( ! existingItem?.val$?.hasEmitted ) {
+        if ( ! existingItem?.val$?.hasEmitted ) { /* FIXME: isn't this gonna cause it to never emit changes coming from another machine ? - prolly no, coz this is about ADDING, not modified */
           // FIXME: this is is causing item to never load if subscribed via item details url early
 
           existingItem = service.obtainItem$ById(addedItemId)
