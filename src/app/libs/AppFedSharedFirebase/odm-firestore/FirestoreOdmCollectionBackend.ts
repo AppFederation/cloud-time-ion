@@ -31,7 +31,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     })
   }
 
-  saveNowToDb(item: TRaw, id: string, parentIds?: ItemId[]): Promise<any> {
+  saveNowToDb(item: TRaw, id: string, parentIds?: ItemId[], ancestorIds?: ItemId[]): Promise<any> {
     if ( ! isNotNullish(id) ) {
       errorAlert('id cannot be ' + id)
     }
@@ -42,6 +42,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         ... item,
         ... (parentIds ? {
           parentIds
+        } : {}),
+        ... (ancestorIds ? {
+          ancestorIds
         } : {}),
       }/*.toDbFormat()*/)
       return retPromise
@@ -105,11 +108,14 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   loadChildrenOf(parentId: ItemId, listener: OdmCollectionBackendListener<TRaw>) {
     assertTruthy(parentId, 'parentId')
-    const userId = this.authService.authUser$.lastVal!.uid
+    const userId = this.authService.authUser$.lastVal?.uid
     console.info('loadChildrenOf', arguments)
-    this.angularFirestore.firestore.collection(this.collectionName)
-      .where('owner', '==', userId)
+    let query = this.angularFirestore.firestore.collection(this.collectionName)
       .where('parentIds', 'array-contains', parentId)
+    if ( userId ) {
+      query = query.where('owner', '==', userId)
+    }
+    query
       .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
         console.log(`loadChildrenOf ${parentId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length', snapshot.docChanges().length)
