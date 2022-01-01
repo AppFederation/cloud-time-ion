@@ -47,6 +47,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           ancestorIds
         } : {}),
       }/*.toDbFormat()*/)
+      /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise
     } catch (error: any) {
       throw errorAlertAndThrow(`saveNowToDb error: `, error, item, id)

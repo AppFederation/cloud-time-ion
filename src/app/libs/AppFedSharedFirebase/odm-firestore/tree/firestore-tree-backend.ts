@@ -88,6 +88,12 @@ export class FirestoreTreeBackend {
   * ======= Considerations for only storing ancestors up to 2..3 levels - reducing write overhead by order(s) of magnitude,
   * while reducing number of queries by order of magnitude too!
   * - think 10 x 10 x 10, 10 x 10
+  * - while also minimizing sizes of documents
+  * - this could also use extra heuristics / criteria like on learn-items to store more levels, coz
+  *  -  we know they need to be displayed at once
+  *    - they might have less children per parent
+  * - this kinda matches user behavior/expectations/perceptions/limitations/overwhelm/partitioning
+  *    - You look a few levels deeper, but not like totally deep
   *
   * */
 }

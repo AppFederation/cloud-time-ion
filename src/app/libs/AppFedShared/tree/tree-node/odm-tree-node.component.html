@@ -4,6 +4,8 @@
 
   id ({{treeNode.item$.id}})
 
+  <app-tree-node-content></app-tree-node-content>
+
   children: {{(treeNode.childNodesList$ | async) ?. length}}
 
   <ng-container
