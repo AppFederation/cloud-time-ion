@@ -78,5 +78,16 @@ export class FirestoreTreeBackend {
   *   * the array could just be for indexed-query purposes; while this info could be also stored in a map like inclusions:
   *     { parentId: { <inclusionData (or just `true`) > }
   *
+  *
+  * ====== Considerations for free users - only fully loading categories in which the user is interested, to minimize Firestore query/traffic
+  * ---- this implies multiple roots support in TreeModel !
+  * ---> OR maybe there would be an item with users chosen categories
+  * --- NO, coz this would mean modifying public items
+  * ---- but we could have a way for private-only inclusions of items not-editable-by-us into our own items
+  *
+  * ======= Considerations for only storing ancestors up to 2..3 levels - reducing write overhead by order(s) of magnitude,
+  * while reducing number of queries by order of magnitude too!
+  * - think 10 x 10 x 10, 10 x 10
+  *
   * */
 }
