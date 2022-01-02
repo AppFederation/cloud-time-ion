@@ -9,6 +9,7 @@ import { CategoriesPageRoutingModule } from './categories-routing.module';
 import { CategoriesPage } from './categories.page';
 import {CategoriesComponent} from '../../../shared/categories/categories.component'
 import {CategoriesModule} from '../../../shared/categories/categories.module'
+import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import {CategoriesModule} from '../../../shared/categories/categories.module'
     IonicModule,
     CategoriesPageRoutingModule,
     CategoriesModule,
+    OdmModule,
   ],
   declarations: [CategoriesPage],
 })
