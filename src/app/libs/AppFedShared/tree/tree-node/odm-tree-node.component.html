@@ -20,7 +20,7 @@
       *ngIf="(treeNode.childNodesList$ | async) let childNodesList"
     >
       <app-tree-node
-        *ngFor="let node of childNodesList"
+        *ngFor="let node of childNodesList; trackBy: trackById"
         [treeNode]="node"
       ></app-tree-node>
 

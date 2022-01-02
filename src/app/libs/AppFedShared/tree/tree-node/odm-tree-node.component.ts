@@ -37,4 +37,8 @@ export class OdmTreeNodeComponent implements OnInit {
     newItem.saveNowToDb()
     console.log('newItem', newItem)
   }
+
+  trackById(index: number, node: TreeNode) {
+    return node.item$.id
+  }
 }
