@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TreeNode} from './TreeNode'
-import {GenericItem$} from '../GenericItem$'
-import {OdmItem$2} from '../../odm/OdmItem$2'
+]import {OdmItem$2} from '../../odm/OdmItem$2'
 import {OdmService2} from '../../odm/OdmService2'
 import {AuthService} from '../../../../auth/auth.service'
 

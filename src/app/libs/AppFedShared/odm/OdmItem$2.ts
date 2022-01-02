@@ -153,6 +153,7 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch, modificationOpts?: ModificationOpts) {
+    this.currentVal ??= {} as TInMemData /* HACK */
     convertUndefinedFieldValsToNull(patch)
     convertUndefinedFieldValsToNull(this.currentVal) // quick hack for undefined in importance
     // return; // HACK

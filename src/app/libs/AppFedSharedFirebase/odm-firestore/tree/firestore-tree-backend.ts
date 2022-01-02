@@ -95,5 +95,8 @@ export class FirestoreTreeBackend {
   * - this kinda matches user behavior/expectations/perceptions/limitations/overwhelm/partitioning
   *    - You look a few levels deeper, but not like totally deep
   *
+  *
+  * === If I store child count (could be children per class e.g. categories, items), then I can prevent a lot of unnecessary queries of leafs
+  *
   * */
 }

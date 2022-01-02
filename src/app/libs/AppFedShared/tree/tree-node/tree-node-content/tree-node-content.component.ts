@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {OdmCell} from '../../cells/OdmCell'
+import {TreeNode} from '../TreeNode'
 
 @Component({
   selector: 'app-tree-node-content',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TreeNodeContentComponent implements OnInit {
 
+  @Input()
+  treeNode !: TreeNode
+
+  titleCell !: OdmCell
+
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.titleCell = new OdmCell(this.treeNode)
+  }
 
 }

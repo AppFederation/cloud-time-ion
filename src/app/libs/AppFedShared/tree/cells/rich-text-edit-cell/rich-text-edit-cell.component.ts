@@ -1,4 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {OdmCell} from '../OdmCell'
 
 @Component({
   selector: 'app-rich-text-edit-cell',
@@ -7,17 +8,22 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 })
 export class RichTextEditCellComponent implements OnInit {
 
-  @ViewChild('contentEditableEl', {static: true}) contentEditableEl: ElementRef
+  @ViewChild('contentEditableEl', {static: true})
+  contentEditableEl !: ElementRef
+
+  @Input()
+  cell !: OdmCell
 
   constructor() { }
 
   ngOnInit() {
     this.contentEditableEl
-      .nativeElement.addEventListener('input', (event) => this.onInputChanged(event, this.getInputValue()))
+      .nativeElement.addEventListener('input', (event: any) => this.onInputChanged(event, this.getInputValue()))
   }
 
-  protected onInputChanged(event, newValue) {
+  protected onInputChanged(event: any, newValue: any) {
     console.log('onInputChanged', newValue)
+    this.cell.patchThrottled(newValue, event)
   }
 
   getInputValue(): string {

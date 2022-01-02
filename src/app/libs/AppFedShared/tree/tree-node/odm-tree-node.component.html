@@ -4,7 +4,9 @@
 
   id ({{treeNode.item$.id}})
 
-  <app-tree-node-content></app-tree-node-content>
+  <app-tree-node-content
+    [treeNode]="treeNode"
+  ></app-tree-node-content>
 
   children: {{(treeNode.childNodesList$ | async) ?. length}}
 
