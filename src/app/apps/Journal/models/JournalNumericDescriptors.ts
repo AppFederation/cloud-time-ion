@@ -469,6 +469,7 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   relationships_with_partner = jnd()
   relationships_at_home = jnd()
   relationships_with_coworkers = jnd()
+  relationships_with_business_partners = jnd()
   relationships_with_family = jnd()
   relationships_with_close_family = jnd() // parents
   relationships_with_distant_family = jnd()
