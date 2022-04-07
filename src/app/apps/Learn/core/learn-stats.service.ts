@@ -18,6 +18,7 @@ import {Accessor, getByAccessor} from '../../../libs/AppFedShared/utils/lodashPl
 /** split into part that goes into DB */
 export class LearnStats {
   countWithRatingPresent?: number = 0
+  atLeast0_25? = 0
   atLeast05? = 0
   atLeast1? = 0
   atLeast1_5? = 0
@@ -77,13 +78,14 @@ export class LearnStatsService {
         return undefined
       }
       const count = item$s ?. length
-      if ( count >= 3400 * 2 ) {
+      if ( count >= 6400 * 2 ) {
         errorAlert(`item$s ?. length - items probably duplicated; bug`, item$s ?. length)
       }
       const items: (LearnItem|undefined|null)[] = item$s.map(item$ => item$.currentVal)
       return {
         countWithRatingEqual: this.getCountWithRatingEqual(items),
         countWithRatingPresent: countNotNullishBy(items, item => item ?. lastSelfRating),
+        atLeast0_25: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 0.25) ?. length,
         atLeast05: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 0.5) ?. length,
         atLeast1: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 1) ?. length,
         atLeast1_5: items ?. filter((item: LearnItem | nullish) => (item ?. lastSelfRating ?? 0) >= 1.5) ?. length,
