@@ -33,13 +33,20 @@ export class QuizIntervalCalculator {
     const mediumImportanceNum = importanceDescriptors.medium.numeric
     const effectiveImportance = (importance?.numeric ?? mediumImportanceNum) / mediumImportanceNum
 
-    const scaleByImp = quizOptions?.scaleIntervalsByImportance ?? 1
+    const scaleByImp = (quizOptions?.scaleIntervalsByImportance ?? 1) / 1
     return hoursAsMs(this.calculateIntervalHours(lastSelfRating ?? (0 as SelfRating), quizOptions))
       / this.calculateMultiplierToScaleByImportance(scaleByImp, effectiveImportance) /* TODO: this should actually appear before some old stuff, to de-clutter */
   }
 
   private calculateMultiplierToScaleByImportance(scaleByImp: number, effectiveImportance: number) {
-    return 1 + scaleByImp * (effectiveImportance - 1)
+    // return 1 + scaleByImp * (effectiveImportance - 1) /* FIXME: -1 causes negative intervals */
+    // return 1 + scaleByImp * (effectiveImportance - 0.49) /* FIXME: -1 causes negative intervals */
+    // return 1 + scaleByImp * (effectiveImportance - 0.49) /* FIXME: -1 causes negative intervals */
+    // 1.070
+    // return scaleByImp * (Math.log2(effectiveImportance + 1.6)) /* FIXME: -1 causes negative intervals */
+    return Math.pow(Math.log2(effectiveImportance + 1.6), scaleByImp) /* FIXME: -1 causes negative intervals */
+
+    // TODO: scaleByImp should determine ratio of spread between lowest importance and highest, e.g. CfMtr being 10x shorter interval than XLo
     // later this could be based on probability of forgetting (e.g. Medium: 50%, XH: 5%)
   }
 }
