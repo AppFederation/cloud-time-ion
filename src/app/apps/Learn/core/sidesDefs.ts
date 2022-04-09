@@ -244,6 +244,20 @@ export class SidesDefs {
     // hideByDefault,
     onlyForLearn,
   })
+  ukr = side({
+    defaultLang: 'uk-UA',
+    ask: false,
+    flag: `ua`,
+    // hideByDefault,
+    onlyForLearn,
+  })
+  ro = side({
+    defaultLang: 'rum',
+    ask: false,
+    flag: `ro`,
+    // hideByDefault,
+    onlyForLearn,
+  })
   cmn = side({
     defaultLang: 'cmn',
     ask: false,
