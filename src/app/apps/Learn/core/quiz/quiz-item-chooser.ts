@@ -73,7 +73,13 @@ export class QuizItemChooser {
     // const weightSlider = 1.05 /* 50% */ // 0.3
     // const weightSlider = 3 // { "CFMtr": "87.57%", "CF": "10.95%", "MtMtr": "1.37%"
     // const weightSlider = 3.5 // { "CFMtMtr": "95.75%", "CFMtr": "3.88%", "CF": "0.34%", "MtMtr": "0.03%"
-    const weightSlider = this.quizOptions ?. focusLevelProbabilities ?? 1
+    const weightSlider = Math.pow(50000000, (this.quizOptions ?. focusLevelProbabilities ?? 1) / 100) -1
+    /* FIXME: this should determine the % probability of highest-importance item, 0...100%, linear;
+        and rest of values should be calculated based on that;
+        coz with current approach, it's really hard to reach balance between fine-grained %, and reaching 100% at slider end;
+        !! BUT, this approach would mean that slider center would not distribute equally between importances.
+        Another approach would be to (also) display cumulative %, e.g. "At least BasicFunctioning: 50%".
+         */
     // const weightSlider = 2 // 0.3
     // const weightSlider = 1.5 // 0.3
     const importanceNumeric = fromMap[1].getEffectiveImportanceNumeric()

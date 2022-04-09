@@ -285,6 +285,7 @@ export class QuizService {
   }
 
   toggleShowHint() {
+    // TODO: increase hint count (characters; stripHtml(), trim())
     this.showHint$.next(! this.showHint$.lastVal)
   }
 
