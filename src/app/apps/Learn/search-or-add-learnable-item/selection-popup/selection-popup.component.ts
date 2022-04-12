@@ -10,6 +10,9 @@ import {LearnItem$} from '../../models/LearnItem$'
 import {OdmService2} from '../../../../libs/AppFedShared/odm/OdmService2'
 import {OdmItemId} from '../../../../libs/AppFedShared/odm/OdmItemId'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
+import {ItemId} from '../../../../libs/AppFedShared/odm/OdmCollectionBackend'
+import {ValueDistribution} from '../../../../libs/AppFedShared/utils/time/parse-duration'
 
 export class MultiSelectItem$<TInMem> implements PatchableObservable<LearnItem | nullish> {
 
@@ -84,5 +87,26 @@ export class SelectionPopupComponent implements OnInit {
 
   edit() {
     this.isEditing = ! this.isEditing
+  }
+
+  sumEstimates() {
+    const selected = this.selection.getEffectivelySelected() as ItemId[]
+    const aggregate = {
+      aggregateValue: 0,
+      aggregateDistribution: new ValueDistribution(0, 0, 0),
+      missingValuesCount: 0
+    }
+    for ( let itemId of selected ){
+      const item$ = this.itemsService.obtainItem$ById(itemId)
+      const val = item$.val?.getDurationEstimateMinutes()
+      const distrib = item$.val?.getDurationEstimateMinutesDistribution()
+      if ( isNullish(val) || !val ) {
+        aggregate.missingValuesCount ++
+      } else {
+        aggregate.aggregateValue += val
+      }
+      aggregate.aggregateDistribution.add(distrib)
+    }
+    return aggregate
   }
 }
