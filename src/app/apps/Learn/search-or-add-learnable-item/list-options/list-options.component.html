@@ -1,7 +1,37 @@
 <ion-content>
 
-<ion-checkbox>Filter</ion-checkbox>
+  <!-- General filtering:
 
+  - all should have a checkbox to enable/disable and invert
+
+   - by class(es)
+   - categories, sub-categories
+   - by parents
+   - context (e.g. at the computer, at treadmill, hands-free, etc.)
+   - ranges on things like (with checkbox to enable / disable)
+    - % done
+    - mental effort, fun,
+    - full-text search (later Algolia)
+
+    General:
+    - small components
+    - filtering data model separate from UI; prolly $P (patchable observable based)
+
+  -->
+
+<ion-checkbox>Filter</ion-checkbox>Filter
+
+<div>
+  <ion-checkbox [formControl]="formControls.rangeEnabled"></ion-checkbox> <!-- Will gray-out the range -->
+  % DONE
+  <ion-range
+    [disabled]="! formControls.rangeEnabled.value"
+    [formControl]="formControls.range"
+    dualKnobs="true" min="-10" max="110" step="2.5" snaps="true"
+    pin="true"
+  ></ion-range> <!-- -1 for undefined; 110 is for tasks which were overdone -->
+
+</div>
 
 <ion-button (click)="setPreset('lastModified')">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-numeric-up-alt" viewBox="0 0 16 16">
@@ -71,6 +101,9 @@ TASKS:
 </ion-button>
 
 <ion-button (click)="setPreset('roi')">
+  <!-- TODO: think of long-term ROI and short-term ROI
+    which could at the beginning be life-wide importance vs current focus importance
+  -->
   <div style="flex-flow: column">
     <div>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
@@ -88,6 +121,10 @@ TASKS:
 
 </ion-button>
 
+<ion-button (click)="setPreset('healthFunQuickEasy')">
+  🤸🧠health, 😊fun, 🕒quick & 🤪easy
+</ion-button>
+
 <ion-button (click)="setPreset('funQuickEasy')">
   😊fun, 🕒quick & 🤪easy
 </ion-button>
@@ -101,7 +138,7 @@ TASKS:
 </ion-button>
 
 <ion-button [disabled]="true">
-  😊fun & 🧠challenging (bad roi / prio?)
+  😊fun & 🤔challenging (bad roi / prio?)
 </ion-button>
 
 <ion-button (click)="setPreset('quickest')">

@@ -4,6 +4,7 @@ import {OdmTimestamp} from '../odm/OdmBackend'
 
 export type GenericItemId = OdmItemId<GenericItem>
 
+/* Rename to GeneralItem */
 export class GenericItem extends OdmInMemItem {
 
   id?: GenericItem

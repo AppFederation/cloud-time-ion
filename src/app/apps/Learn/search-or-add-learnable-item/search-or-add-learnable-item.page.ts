@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Injector, OnInit} from '@angular/core';
 import {sortBy} from 'lodash-es'
 import {LearnDoService} from '../core/learn-do.service'
 import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
@@ -32,7 +32,7 @@ import {ListProcessing} from './list-processing'
 export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
 
-  listModel = new ListProcessing()
+  listModel = new ListProcessing(this.injector)
 
   htmlSearch ? : string = undefined
 
@@ -54,6 +54,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     public merriamWebsterDictService: MerriamWebsterDictService,
     public popoverController: PopoverController,
     public router: Router,
+    public injector: Injector,
   ) {
   }
 
@@ -175,6 +176,18 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
         || s?.startsWith(`BF !`) || s?.endsWith(`BF !`)
     ) {
       overlay.importance = importanceDescriptors.basic_functioning
+    } else if (s?.startsWith(`BFMTR!`) || s?.endsWith(`BFMTR!`)
+        || s?.startsWith(`BFMTR !`) || s?.endsWith(`BFMTR !`)
+    ) {
+      overlay.importance = importanceDescriptors.basic_functioning_mantra
+    } else if (s?.startsWith(`CFMTR!`) || s?.endsWith(`CFMTR!`)
+        || s?.startsWith(`CFMTR !`) || s?.endsWith(`CFMTR !`)
+    ) {
+      overlay.importance = importanceDescriptors.basic_functioning_mantra
+    } else if (s?.startsWith(`OVRMTR!`) || s?.endsWith(`OVRMTR!`)) {
+      overlay.importance = importanceDescriptors.overarching_mantra
+    } else if (s?.startsWith(`OVR!`) || s?.endsWith(`OVR!`)) {
+      overlay.importance = importanceDescriptors.overarching
     } else if (s?.startsWith(`CFMM!`) || s?.endsWith(`CFMM!`)
         || s?.startsWith(`CFMTM!`) || s?.endsWith(`CFMTM!`)
         || s?.startsWith(`CFMTMTR!`) || s?.endsWith(`CFMTMTR!`)

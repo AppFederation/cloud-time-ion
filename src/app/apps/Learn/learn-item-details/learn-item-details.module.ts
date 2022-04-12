@@ -18,6 +18,9 @@ import {StatusesEditComponent} from './statuses-edit/statuses-edit.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {ItemClassToLearnEditComponent} from './item-class-to-learn-edit/item-class-edit.component'
 import {EditSharedModule} from '../../../libs/LifeSuiteShared/edit-shared/edit-shared.module'
+import {PhysicalHealthImpactLevelEditComponent} from './physical-health-impact-level-edit/physical-health-impact-level-edit.component'
+import {MentalHealthImpactLevelEditComponent} from './mental-health-impact-level-edit/mental-health-impact-level-edit.component'
+import {OdmUiModule} from '../../../libs/AppFedSharedIonic/odm-ui/odm-ui.module'
 
 const routes: Routes = [
   {
@@ -40,6 +43,7 @@ const routes: Routes = [
         TimeModule,
         SharedModule,
         EditSharedModule,
+        OdmUiModule,
     ],
     exports: [
     ],
@@ -47,7 +51,8 @@ const routes: Routes = [
         LearnItemDetailsPage,
         LearnItemDetailsHintsComponent,
         MentalEffortLevelEditComponent,
-        MentalEffortLevelEditComponent,
+        PhysicalHealthImpactLevelEditComponent,
+        MentalHealthImpactLevelEditComponent,
         ItemClassEditComponent,
         ItemClassToLearnEditComponent,
         StatusesEditComponent,

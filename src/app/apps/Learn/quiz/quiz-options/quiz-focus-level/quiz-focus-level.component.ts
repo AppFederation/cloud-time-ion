@@ -22,4 +22,7 @@ export class QuizFocusLevelComponent implements OnInit {
 
   ngOnInit() {}
 
+  removeQuotes(s: string) {
+    return s.replace(/"/g, '')
+  }
 }

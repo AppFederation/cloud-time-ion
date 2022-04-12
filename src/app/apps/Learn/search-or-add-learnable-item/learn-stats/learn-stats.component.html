@@ -20,6 +20,12 @@
   <b>0+:</b>
   {{ learnStats ?. countWithRatingPresent }}
 
+  <b>0.25+:</b>
+  {{ learnStats ?. atLeast0_25 | json }} <!-- TODO: click to filter
+    - those could be candidates for simplifying / splitting, making Question more specific,
+    they might be CLOGGING the Quiz
+  -->
+
   <b>0.5+:</b>
   {{ learnStats ?. atLeast05 | json }}
 

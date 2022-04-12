@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {sidesDefsArray} from '../core/sidesDefs'
-import {ActivatedRoute, Router} from '@angular/router'
+import {ActivatedRoute, NavigationStart, Router} from '@angular/router'
 import {LearnDoService} from '../core/learn-do.service'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
 import {AlertController} from '@ionic/angular'
@@ -9,6 +9,8 @@ import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
 import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
+import {NavigationService} from '../../../shared/navigation.service'
+import {filter} from 'rxjs/operators'
 
 @Component({
   selector: 'app-learn-item-details',
@@ -31,11 +33,20 @@ export class LearnItemDetailsPage implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    protected learnDoService: LearnDoService,
-    protected angularFirestore: AngularFirestore,
+    public learnDoService: LearnDoService,
+    public angularFirestore: AngularFirestore,
     public alertController: AlertController,
-    private router: Router,
+    public router: Router,
+    public navigationService: NavigationService,
   ) {
+    // router.events.pipe(
+    //   filter(event => event instanceof NavigationStart) /* Using NavigationStart coz could be good if quickly clicking next next */
+    // ).subscribe((event: NavigationStart) => {
+    //   this.navigationService.currentItemId = event.
+    // });
+    this.activatedRoute.params.subscribe((params)=>{
+      this.navigationService.setCurrenItemId(params['itemId'])
+    });
   }
 
   private doc: AngularFirestoreDocument<LearnItem> = this.angularFirestore.collection<LearnItem>(`LearnItem`).doc(this.id)

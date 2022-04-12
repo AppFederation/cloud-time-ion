@@ -7,6 +7,7 @@
 <!--    </ion-title>-->
 
     <div style="display: flex; align-items: center">
+      <app-app-logo></app-app-logo>
       <ion-title>
         <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
       </ion-title>
@@ -34,9 +35,9 @@
             ></ion-icon> <!-- HERE-->
           </ion-button>
 
-          <ion-button>
-            <ion-icon class="action-icon" slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']" ></ion-icon>
-          </ion-button>
+<!--          <ion-button>-->
+<!--            <ion-icon class="action-icon" slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']" ></ion-icon>-->
+<!--          </ion-button>-->
           <odm-sync-status></odm-sync-status>
         </ion-buttons>
 
@@ -61,8 +62,8 @@
 <!--    ></app-quiz-tips>-->
     <!-- TODO extract `status$ | async` with ngIf let -->
 
-    <p *ngIf="(status$ | async) let quizStatus">
-      <ion-note style="text-transform: uppercase">
+    <div *ngIf="(status$ | async) let quizStatus" style="font-size: 12px; opacity: 70%;">
+      <div style="text-transform: uppercase">
         next repetition:
         <app-time-point
           [time]="newDate(quizService.calculateWhenNextRepetitionMsEpochOrNullish(quizStatus ?. nextItem$))"
@@ -72,8 +73,8 @@
           [quizStatus]="quizStatus"
         ></app-quiz-items-left>
 
-      </ion-note>
-    </p>
+      </div>
+    </div>
 
     <div *ngIf="( status$ | async ) ?. isNextItemInFuture">
       <app-quiz-finished

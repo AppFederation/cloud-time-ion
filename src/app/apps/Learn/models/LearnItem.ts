@@ -6,7 +6,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {Rating} from './fields/self-rating.model'
 import {ImportanceDescriptors} from './fields/importance.model'
 import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
-import {parseDurationToMs} from '../../../libs/AppFedShared/utils/time/parse-duration'
+import {parseDurationToMs, parseTimeDistribution} from '../../../libs/AppFedShared/utils/time/parse-duration'
 import {QuizzableData} from '../core/quiz/quiz'
 import {FunDescriptors, FunLevelDescriptors} from './fields/fun-level.model'
 import {MentalEffortLevelDescriptors} from './fields/mental-effort-level.model'
@@ -76,6 +76,10 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   funEstimate ? : FunVal
 
   mentalLevelEstimate ? : MentalLevelVal
+
+  physicalHealthImpact ? : MentalLevelVal /* fix */
+
+  mentalHealthImpact ? : IntensityVal /* fix */
 
   /** keep in mind also: time-boxing */
   time_estimate ? : HtmlString
@@ -230,7 +234,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   }
 
   getDurationEstimateMinutes() {
-    const parseDurationToMs1: number | null | undefined = parseDurationToMs(stripHtml(this.time_estimate) ?. trim())
+    const strippedTrimmed = stripHtml(this.time_estimate) ?. trim()
+    const parseDurationToMs1: number | null | undefined = parseDurationToMs(strippedTrimmed)
     if ( parseDurationToMs1 ) {
       return parseDurationToMs1 / 60_000
     } else {
@@ -238,19 +243,25 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     }
   }
 
-  /** TODO: ROI could also take into account mental effort (maybe even fun), money (as also if something is more expensive, the decision requires more mental effort, time;
-   * more likely to get postponed */
-  getRoi() {
-    const durationEstimateMs = this.getDurationEstimateMs()
-    if ( ! durationEstimateMs ) {
-      return undefined
-    }
-    const importance = this.importance?.numeric
-    if ( ! importance ) {
-      return undefined
-    }
-    return importance / durationEstimateMs
+  getDurationEstimateMinutesDistribution() {
+    const strippedTrimmed = stripHtml(this.time_estimate) ?. trim()
+    return parseTimeDistribution(strippedTrimmed)
   }
+
+  // /** TODO: ROI could also take into account mental effort (maybe even fun), money (as also if something is more expensive, the decision requires more mental effort, time;
+  //  * more likely to get postponed */
+  // getRoi() {
+  //   const durationEstimateMs = this.getDurationEstimateMs()
+  //   if ( ! durationEstimateMs ) {
+  //     return undefined
+  //   }
+  //   // const importance = this.importance?.numeric
+  //   const importance = this.importance?.numeric
+  //   if ( ! importance ) {
+  //     return undefined
+  //   }
+  //   return importance / durationEstimateMs
+  // }
 
 
   /* NOTE: will apply to Learn too (e.g. to master certain material before/after some date, it will be prioritized). */

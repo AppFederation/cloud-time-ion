@@ -2,7 +2,7 @@ import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {LearnDoService} from '../core/learn-do.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
-import {ImportanceId, ImportanceVal, LearnItem, MentalLevelVal, PositiveInt, PositiveIntOrZero} from './LearnItem'
+import {ImportanceId, ImportanceVal, IntensityVal, LearnItem, MentalLevelVal, PositiveInt, PositiveIntOrZero} from './LearnItem'
 import {IntensityDescriptors} from './fields/intensity.model'
 import {ImportanceDescriptor, ImportanceDescriptors, importanceDescriptors, importanceDescriptors2} from './fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -85,10 +85,31 @@ export class LearnItem$
   // TODO: start introducing item$.task.smth() for middle coupling (but not for general stuff like importance)
 
   getEffectiveRoi(): Distribution | undefined {
-    return this.val ?. getRoi()
+    return this . getRoi()
     // return 999 // FIXME
     // return this.importance // ?? maybe return medium
   }
+
+  /** TODO: ROI could also take into account mental effort (maybe even fun), money (as also if something is more expensive, the decision requires more mental effort, time;
+   * more likely to get postponed
+   * This could be normalized to e.g. values in euros,
+   * e.g. 100 eur in 1h is 1 ROI point.
+   * Total life health and peace of mind is 1..20 million eur (max mental and physical health impact and max fun; add or multiply; multiply probably too crazy out-of-control unpredictable).
+   * Could have also relationships impact.
+   * */
+  getRoi() {
+    const durationEstimateMs = this.val?.getDurationEstimateMs()
+    if ( ! durationEstimateMs ) {
+      return undefined
+    }
+    // const importance = this.importance?.numeric
+    const importance = this.getEffectiveImportanceNumeric()
+    if ( ! importance ) {
+      return undefined
+    }
+    return importance / durationEstimateMs
+  }
+
 
   getEffectiveImportanceId(): ImportanceId {
     return this.getEffectiveImportance() ?. id
@@ -140,16 +161,33 @@ export class LearnItem$
   }
 
   hasEffectiveFunLevelAtLeast(minFunLevel: FunLevelVal): boolean {
-    return true
-    // if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
-    //   return true
-    // } else {
-    //   return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
-    // }
+    // return true
+    if ( ! minFunLevel || minFunLevel.id === funLevels.undefined.id ) {
+      return true
+    } else {
+      return this.getEffectiveFunLevel().numeric >= minFunLevel.numeric
+    }
   }
 
   public getFieldVal(side: Side) {
     return this.val?.[side.id as keyof LearnItem]
   }
 
+  /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
+  getEffectivePhysicalHealthImpact(): IntensityVal {
+    return this.val ?. physicalHealthImpact ?? funLevelsDescriptors.descriptors.undefined
+  }
+
+  getEffectivePhysicalHealthImpactNumeric(): number {
+    return this.getEffectivePhysicalHealthImpact() ?. numeric
+  }
+
+  /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
+  getEffectiveMentalHealthImpact(): IntensityVal {
+    return this.val ?. mentalHealthImpact ?? funLevelsDescriptors.descriptors.undefined
+  }
+
+  getEffectiveMentalHealthImpactNumeric(): number {
+    return this.getEffectiveMentalHealthImpact() ?. numeric
+  }
 }

@@ -3,6 +3,8 @@ import {sortBy} from 'lodash-es'
 import {SelectionManager} from './SelectionManager'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {ListOptionsData} from './list-options'
+import {Injector} from '@angular/core'
+import {NavigationService} from '../../../shared/navigation.service'
 
 export class ListProcessing {
 
@@ -20,7 +22,11 @@ export class ListProcessing {
     }
   )
 
-  constructor() {
+  navigationService = this.injector.get(NavigationService)
+
+  constructor(
+    protected injector: Injector,
+  ) {
     this.listOptions$P.locallyVisibleChanges$.subscribe(options => {
       this.setItemsAndSort(this.item$s)
       this.reFilter()
@@ -56,10 +62,14 @@ export class ListProcessing {
       = (item: LearnItem$) => - (item.val?.importance ?. numeric ?? -99999) /* TODO get descriptor by id later: getEffectiveImportance() */
     const funGetterDescending
       = (item: LearnItem$) => - (item.val?.funEstimate ?. numeric ?? -99999) /* TODO get descriptor by id later */
+    const physicalHealthImpactGetterDescending
+      = (item$: LearnItem$) => - (item$.getEffectivePhysicalHealthImpactNumeric() ?? -99999) /* TODO get descriptor by id later */
+    const mentalHealthImpactGetterDescending
+      = (item$: LearnItem$) => - (item$.getEffectiveMentalHealthImpactNumeric() ?? -99999) /* TODO get descriptor by id later */
     const mentalGetterAscending
       = (item: LearnItem$) => item.val?.mentalLevelEstimate?.numeric ?? 99999 /* TODO get descriptor by id later */
     const roiGetterDescending
-      = (item: LearnItem$) => - (item.val?.getRoi() ?? -99999)
+      = (item: LearnItem$) => - (item.getEffectiveRoi() ?? -99999)
     // item$s = items.map(item => Object.assign(new LearnItem(), item))
     const listOptions = this.listOptions$P.locallyVisibleChanges$.lastVal
     // debugLog(`listOptions`, listOptions)
@@ -98,15 +108,25 @@ export class ListProcessing {
         mentalGetterAscending,
         importanceGetterDescending,
       ])
-    } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
+    } else if ( preset === `healthFunQuickEasy` ) {
       this.item$s = sortBy(item$s, [
         maybeDoableGetterDescending,
+        physicalHealthImpactGetterDescending,
+        mentalHealthImpactGetterDescending,
+        funGetterDescending,
+        durationGetterAscending /* NOT ROI here, coz we wanna prioritize fun and quick and easy; whereas roi would elevate importance */,
+        mentalGetterAscending,
+        importanceGetterDescending,
+      ])
+    } else if ( preset === `importance_roi` /* === this is the DEFAULT */ ) {
+      this.item$s = sortBy(item$s, [
+        // maybeDoableGetterDescending,
         /* TODO: take into account nearest deadlines (start/finish before);
           * but bucket them by order of magnitude, taking into account estimated time
           * and within those buckets, sort by importance;
           * also deps to start, deps to finish */
-        urgencyGetterDescending,
-        importanceGetterDescending,
+        // urgencyGetterDescending,
+        // importanceGetterDescending,
         /* TODO: take into account */
         roiGetterDescending /* for now here it is the same as if duration sort were at this position, but in future ROI might be more advanced.
           Take into account %done, for real remaining cost
@@ -217,7 +237,13 @@ export class ListProcessing {
         // && item.funEstimate
       )
     }
+    this.filteredItem$s = this.filteredItem$s.filter(
+      item =>
+        item.val?.isMaybeDoableNow()
+    )
+
     this.selection.setAllPossibleToSelect(this.filteredItem$s.map(item => item.id))
+    this.navigationService.list = this.filteredItem$s
   }
 
   /** can be removed coz belongs in model class */

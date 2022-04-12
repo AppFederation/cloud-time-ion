@@ -14,13 +14,14 @@ import {SearchToolbarComponent} from '../libs/search/search-toolbar/search-toolb
 import {ImportanceBannerComponent} from '../apps/Learn/shared/importance-banner/importance-banner.component'
 import {WhatNextButtonComponent} from './what-next-button/what-next-button.component'
 import {RouterModule} from '@angular/router'
+import {AppLogoComponent} from '../apps/Common/app-logo/app-logo.component'
 
 let imports = [
   ReactiveFormsModule,
   FormsModule,
 ];
 
-const declarations = [
+const exportedDeclarations = [
   RichTextEditComponent,
   RichTextViewComponent,
   ImportanceComponent,
@@ -28,6 +29,10 @@ const declarations = [
   ChooserComponent,
   GeoLocComponent,
   OptionsComponent,
+  SearchToolbarComponent,
+  ImportanceBannerComponent,
+  WhatNextButtonComponent,
+  AppLogoComponent,
 ]
 
 @NgModule({
@@ -41,17 +46,11 @@ const declarations = [
   ],
   exports: [
     ...imports,
-    ...declarations,
-    SearchToolbarComponent,
-    ImportanceBannerComponent,
-    WhatNextButtonComponent,
+    ...exportedDeclarations,
   ],
   providers: [],
   declarations: [
-    declarations,
-    SearchToolbarComponent,
-    ImportanceBannerComponent,
-    WhatNextButtonComponent,
+    ...exportedDeclarations,
   ],
 })
 export class SharedModule {

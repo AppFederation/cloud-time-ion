@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ListOptionsData} from '../list-options'
 import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
+import {FormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-list-options',
@@ -14,9 +15,19 @@ export class ListOptionsComponent implements OnInit {
   @Input()
   listOptions$P ! : PatchableObservable<ListOptionsData>
 
+
+  formControls = {
+    range: new FormControl(),
+    rangeEnabled: new FormControl(true),
+  }
+
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.formControls.range.valueChanges.subscribe(x => {
+      console.log(`this.formControls.range.valueChanges`, x)
+    })
+  }
 
   setPreset(preset: string) {
     this.listOptions$P.patchThrottled({

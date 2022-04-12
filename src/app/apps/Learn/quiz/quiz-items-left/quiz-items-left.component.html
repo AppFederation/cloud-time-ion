@@ -3,11 +3,11 @@
 <ng-container
   *ngIf="quizStatus else loading"
 >
-  <div style="overflow: scroll">
+  <div style="overflow: scroll; font-size: 12px">
 
   <span>
     | left:
-    <strong style="font-size: 130%; color: white">{{ quizStatus ?. itemsLeft }}</strong>
+    <strong style="font-size: 12px; color: white">{{ quizStatus ?. itemsLeft }}</strong>
     | next 12h:
     {{ quizStatus ?. itemsLeftToday }}
   </span>
@@ -15,7 +15,7 @@
   <table>
     <tr class="tableSectionHeader">
       <td colspan="5" style="text-align: left">
-        PENDING:
+        PENDING FILTERED:
       </td>
     </tr>
 

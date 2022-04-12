@@ -16,7 +16,16 @@
     {{index+1}}.
   </span>
 
-  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
+  <ion-note *ngIf="item.val?.isTask">
+    TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
+  </ion-note>
+  <ion-button size="small"
+              (click)="addToToday($event)"
+  >
+    <ion-icon slot="icon-only" name="today-outline"></ion-icon>
+     <!-- TODO: checkbox if already included -->
+    <!-- TODO: later: this week / month / quarter / year -->
+  </ion-button>
   <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
   <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
@@ -40,7 +49,14 @@
     </span>
   </ng-container>
 
-  {{getFunLevelDescriptor() ?. icons }}
+  {{ getFunLevelDescriptor() ?. icons }}
+
+  {{ getPhysicalHealthImpactLevelDescriptor() ?. icons
+      ?. replaceAll('😊', '🤸')
+      ?. replaceAll('😡', '💀')
+  }}
+
+  {{ getMentalHealthImpactLevelDescriptor() ?. icons ?. replaceAll('😊', '🧠') }}
 
   <!--  id: {{item.id}}-->
   <!--      {{item | json}}-->

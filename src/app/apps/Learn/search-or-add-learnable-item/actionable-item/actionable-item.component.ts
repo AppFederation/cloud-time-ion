@@ -34,6 +34,8 @@ export class ActionableItemComponent implements OnInit {
 
   get item() { return this._item }
 
+  get item$() { return this._item }
+
   // @Required()
   @Input() index ! : number
 
@@ -77,6 +79,22 @@ export class ActionableItemComponent implements OnInit {
     return undefined
   }
 
+  getPhysicalHealthImpactLevelDescriptor() {
+    const val = this.item$.getEffectivePhysicalHealthImpact()
+    if ( val ) {
+      return funLevelsDescriptors.descriptors[val.id]
+    }
+    return undefined
+  }
+
+  getMentalHealthImpactLevelDescriptor() {
+    const val = this.item$.getEffectiveMentalHealthImpact()
+    if ( val ) {
+      return funLevelsDescriptors.descriptors[val.id]
+    }
+    return undefined
+  }
+
   /* FIXME: move to Item class */
   getImportanceDescriptor() {
     const val = this.item.val?.importance
@@ -88,5 +106,9 @@ export class ActionableItemComponent implements OnInit {
 
   editEstimate() {
     debugLog(`editEstimate()`)
+  }
+
+  addToToday(event: any) {
+    event.stopPropagation()
   }
 }

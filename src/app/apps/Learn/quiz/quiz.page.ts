@@ -22,6 +22,7 @@ export class QuizPage implements OnInit, AfterViewInit  {
   item$: LearnItem$ | undefined
 
 
+  // showOptions = true
   showOptions = false
 
   status$ = this.quizService.quizStatus$

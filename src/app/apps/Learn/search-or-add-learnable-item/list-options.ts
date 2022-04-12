@@ -18,7 +18,10 @@ export class ListOptionsData {
 export class ListOptions {
 
   /** maybe scoring better?
-   * But sort kinda handles scoring */
+   * But sort kinda handles scoring
+   *
+   * NOTE: have the sort and filter functions with TITLE and ICON
+   * */
   filtersFns: (() => boolean)[] = []
 
 

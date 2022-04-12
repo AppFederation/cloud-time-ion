@@ -2,8 +2,19 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
+      <app-app-logo></app-app-logo>
+      <ion-button (click)="navigationService.navigateToPrevious()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="navigationService.navigateToNext()">
+        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <div style="display: inline-flex; align-items: center; width: 100%">
+      <div *ngIf="(navigationService.status$ | async) let s" style="align-self: center">
+        {{s?.currentOrdinal}} / {{s?.totalCount}}, {{s.percent}}%
+      </div>
+
       <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
       <!--        <ion-button routerLink="/learn"><&lt;!&ndash; TODO: create component back-icon &ndash;&gt;</ion-button>-->
 
@@ -60,6 +71,20 @@
         style="flex-grow: 1"
         [item$]="item$"
       ></app-item-class-to-learn-edit>
+      <!-- TODO:
+        - isPublic / isBuiltIn / isOfficial for Vianey for Ukrainian
+        - and later draft/beta/published(release) status
+          - (which could be same/related to task statuses, thinking that each learn-item is also a task, or has task-workflow)
+      -->
+      <odm-checkbox
+        [fieldName]="'isOfficial'"
+        [item$]="item$"
+      >OFFICIAL</odm-checkbox>
+      <odm-checkbox
+        [fieldName]="'isPublished'"
+        [item$]="item$"
+      >PUBLISHED <!-- TODO store timestamp --></odm-checkbox>
+
     </div>
 
     <app-importance-edit
@@ -73,6 +98,14 @@
     <app-mental-effort-level-edit
       [item$]="item$"
     ></app-mental-effort-level-edit>
+
+    <app-physical-health-impact-level-edit
+      [item$]="item$"
+    ></app-physical-health-impact-level-edit>
+
+    <app-mental-health-impact-level-edit
+      [item$]="item$"
+    ></app-mental-health-impact-level-edit>
 
 <!--    <app-statuses-edit-->
 <!--      [item$]="item$"-->

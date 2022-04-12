@@ -1,0 +1,9 @@
+<!--<hr>-->
+
+<!--{{((item$.val$ | async) ?. mentalLevelEstimate ?. id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
+
+<label>MENTAL HEALTH IMPACT: </label>
+<apf-numeric-picker
+  [buttonDescriptors]="buttonsDesc"
+  [formControl]="formControls[fieldName]"
+></apf-numeric-picker>
