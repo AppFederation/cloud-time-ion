@@ -153,7 +153,10 @@ export class OdmItem$2<
   }
 
   patchThrottled(patch: TMemPatch, modificationOpts?: ModificationOpts) {
-    this.currentVal ??= {} as TInMemData /* HACK */
+    this.currentVal ??= {} as TInMemData /* HACK - FIXME - test it - tree deep descendants disappeared?
+      - might affect hasEmitted... / has initial data arrived
+      FIXME: patching removes (does not store) parentIds and ancestorIds - started happening after rich text cell - need to store parents in a field when loading
+     */
     convertUndefinedFieldValsToNull(patch)
     convertUndefinedFieldValsToNull(this.currentVal) // quick hack for undefined in importance
     // return; // HACK
