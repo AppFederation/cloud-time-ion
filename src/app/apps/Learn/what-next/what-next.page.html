@@ -9,158 +9,162 @@
 </ion-header>
 
 <ion-content>
+  <div style="padding: 0.3rem">
+    <app-quiz-button style="display: block; margin-bottom: 0.5rem"></app-quiz-button>
 
-  <p><ion-note>Idea: generate a day plan proposal, instead of just next item</ion-note></p>
+    <p><ion-note>Idea: generate a day (or time-chunk) plan proposal, instead of just next item</ion-note></p>
 
-  How much time I have:
-  <ion-range></ion-range>
+    How much time I have:
+    <ion-range></ion-range>
 
-  <ion-note><p>This will be automatically sorted depending on scheduling</p></ion-note>
+    <ion-note><p>This will be automatically sorted depending on scheduling</p></ion-note>
 
-  <ion-button [disabled]="true">Automatic mode</ion-button>
+    <ion-button [disabled]="true">Automatic mode</ion-button>
 
-  <!-- TODO: hierarchical, e.g.
-    learning: quiz, processing
-    planning: day, week, long-term
-  -->
+    <!-- TODO: hierarchical, e.g.
+      learning: quiz, processing
+      planning: day, week, long-term
+    -->
 
-  <ion-button [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
+    <ion-button [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
 
-  <ion-button [disabled]="true">Physical Exercises (WITH TIMER)</ion-button>
+    <ion-button [disabled]="true">Physical Exercises (WITH TIMER)</ion-button>
 
-  <ion-button [disabled]="true">N-Minute rule</ion-button>
+    <ion-button [disabled]="true">N-Minute rule</ion-button>
 
-  <ion-button [disabled]="true">Process Inboxes/TODOs</ion-button>
+    <ion-button [disabled]="true">Process Inboxes/TODOs</ion-button>
 
-  <ion-button [routerLink]="'/mindfulness'">Mindfulness</ion-button>
-  <ion-button [routerLink]="'/mindfulness'">Contemplate&nbsp; <!-- Big Pictures --> <ion-note>(here life overview diagrams)</ion-note> </ion-button>
-  <!-- Other keywords: internalize -->
-  <ion-button [routerLink]="'/sleep'">Sleep</ion-button>
+    <ion-button [routerLink]="'/mindfulness'">Mindfulness</ion-button>
+    <ion-button [routerLink]="'/mindfulness'">Contemplate&nbsp; <!-- Big Pictures --> <ion-note>(here life overview diagrams)</ion-note> </ion-button>
+    <!-- Other keywords: internalize -->
+    <ion-button [routerLink]="'/sleep'">Sleep</ion-button>
 
 
-  <ion-button [disabled]="true">Affirmations Quiz</ion-button>
+    <ion-button [disabled]="true">Affirmations Quiz</ion-button>
 
-  Learning:
-  <app-quiz-button></app-quiz-button>
+    Learning:
 
-  <app-process-button></app-process-button>
+    <app-process-button></app-process-button>
 
-  <ion-button [disabled]="true">Learn</ion-button>
+    <ion-button [disabled]="true">Learn</ion-button>
 
-  <div
-    style="border: 5px solid green"
+    <div
+      style="border: 5px solid green"
 
-  >
-    <ion-button [disabled]="true">Plan
+    >
+      <ion-button [disabled]="true">Plan
+      </ion-button>
+    </div>
+
+
+    <ion-button [routerLink]="'/learn'">Do tasks
+      <ion-note>TODO: link to items list with tasks preset; maybe some tasks stats times per importance, milestones, etc</ion-note>
     </ion-button>
-  </div>
 
+    <ion-button [routerLink]="'/journal/write'">Write Journal</ion-button>
 
-  <ion-button [routerLink]="'/learn'">Do tasks
-    <ion-note>TODO: link to items list with tasks preset; maybe some tasks stats times per importance, milestones, etc</ion-note>
-  </ion-button>
+    <ion-button [routerLink]="'/journal'">RETROSPECTIVE</ion-button>
 
-  <ion-button [routerLink]="'/journal/write'">Write Journal</ion-button>
+    <ion-button [disabled]="true">Execute routine</ion-button>
 
-  <ion-button [routerLink]="'/journal'">RETROSPECTIVE</ion-button>
+    <ion-button [disabled]="true">Work on routines</ion-button>
 
-  <ion-button [disabled]="true">Execute routine</ion-button>
+    <!-- could be button - work on health (mental / physical), do something fun, increase ENERGY -->
 
-  <ion-button [disabled]="true">Work on routines</ion-button>
+    <!-- TODO: (good) stimulants (coffee, etc.) right amount -->
+    <!-- TODO: energy also right amount -->
 
-  <!-- TODO: stimulants (coffee, etc.) right amount -->
-  <!-- TODO: energy also right amount -->
-
-  <svg width="100%" height="100%" viewBox="0 0 639 553" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <svg width="100%" height="100%" viewBox="0 0 639 553" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
+         style="max-width: 700px; fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
     <g transform="matrix(5.3263,0,0,5.3263,-1398.53,-1159.5)" class="wobble">
         <text class="energy" x="297.484px" y="267.945px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(191,147,0);">&quot;ENERGY&quot;</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-306.649,-304.316)">
+      <g transform="matrix(1.74524,0,0,1.74524,-306.649,-304.316)">
         <text x="347.881px" y="388.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">WELL</text>
-      <text x="325.153px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">O<tspan x="333.309px " y="400.617px ">X</tspan>YGENA<tspan x="379.117px " y="400.617px ">T</tspan></text>
-      <text x="386.541px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">E</text>
-      <text x="393.051px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">D</text>
-      <text x="343.926px" y="412.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">BL<tspan x="357.707px " y="412.617px ">O</tspan>OD</text>
+        <text x="325.153px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">O<tspan x="333.309px " y="400.617px ">X</tspan>YGENA<tspan x="379.117px " y="400.617px ">T</tspan></text>
+        <text x="386.541px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">E</text>
+        <text x="393.051px" y="400.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">D</text>
+        <text x="343.926px" y="412.617px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">BL<tspan x="357.707px " y="412.617px ">O</tspan>OD</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-346.49,-421.445)">
+      <g transform="matrix(1.74524,0,0,1.74524,-346.49,-421.445)">
         <text x="488.094px" y="311.369px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">RIGH<tspan x="515.305px " y="311.369px ">T</tspan></text>
-      <text x="488.094px" y="323.369px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">AMOUNT</text>
-      <text x="488.094px" y="335.369px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">OF</text>
-      <text x="488.094px" y="347.369px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">GOOD</text>
-      <text x="488.094px" y="359.369px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">SLEEP</text>
+        <text x="488.094px" y="323.369px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">AMOUNT</text>
+        <text x="488.094px" y="335.369px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">OF</text>
+        <text x="488.094px" y="347.369px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">GOOD</text>
+        <text x="488.094px" y="359.369px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">SLEEP</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-321.949,-269.38)">
+      <g transform="matrix(1.74524,0,0,1.74524,-321.949,-269.38)">
         <text x="270.199px" y="448.723px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">GOOD</text>
-      <text x="237.257px" y="460.723px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">BREA<tspan x="266.695px " y="460.723px ">T</tspan>HING</text>
+        <text x="237.257px" y="460.723px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">BREA<tspan x="266.695px " y="460.723px ">T</tspan>HING</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-281.734,-253.496)">
+      <g transform="matrix(1.74524,0,0,1.74524,-281.734,-253.496)">
         <text x="424.285px" y="439.622px" style="font-family:'Roboto-Regular', 'Roboto';font-size:12px;fill:rgb(91,152,255);">PH<tspan x="440.246px " y="439.622px ">Y</tspan>SICAL</text>
-      <text x="424.285px" y="451.622px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">EXERCISE</text>
+        <text x="424.285px" y="451.622px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">EXERCISE</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-214.289,-393.369)">
+      <g transform="matrix(1.74524,0,0,1.74524,-214.289,-393.369)">
         <text x="156.206px" y="295.282px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">MO<tspan x="174.505px " y="295.282px ">T</tspan>IV<tspan x="192.833px 200.204px " y="295.282px 295.282px ">AT</tspan>ION</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-251.687,-265.231)">
+      <g transform="matrix(1.74524,0,0,1.74524,-251.687,-265.231)">
         <text x="156.206px" y="295.282px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">NUTRITION</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,272.367,-265.231)">
+      <g transform="matrix(1.74524,0,0,1.74524,272.367,-265.231)">
         <text x="156.206px" y="295.282px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">HEAL<tspan x="184.805px " y="295.282px ">T</tspan>H</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-28.443,-289.054)">
+      <g transform="matrix(1.74524,0,0,1.74524,-28.443,-289.054)">
         <text x="168.213px" y="235.51px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">EXCITEMENT</text>
     </g>
-    <g transform="matrix(1.74524,0,0,1.74524,-13.8798,-379.476)">
+      <g transform="matrix(1.74524,0,0,1.74524,-13.8798,-379.476)">
         <text x="168.213px" y="235.51px" style="font-family:'Roboto-Bold', 'Roboto';font-weight:700;font-size:12px;fill:rgb(91,152,255);">MEANING</text>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-120.593,-76.9749)">
+      <g transform="matrix(1.06338,0,0,1.06338,-120.593,-76.9749)">
         <g transform="matrix(0.940396,-0,-0,0.940396,113.405,72.3869)">
             <path d="M328.987,81.016L322.607,93.776L316.226,81.016L328.987,81.016Z" style="fill:rgb(0,133,122);"/>
           <path d="M322.607,42.935L322.607,83.568" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-120.593,-75.9439)">
+      <g transform="matrix(1.06338,0,0,1.06338,-120.593,-75.9439)">
         <g transform="matrix(0.940396,-0,-0,0.940396,113.405,71.4173)">
             <path d="M328.987,176.582L322.607,189.343L316.226,176.582L328.987,176.582Z" style="fill:rgb(0,133,122);"/>
           <path d="M322.607,147.383L322.607,179.134" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
+      <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
         <g transform="matrix(0.940396,-0,-0,0.940396,96.622,72.3869)">
             <path d="M451.893,189.762L438.358,194.274L442.87,180.739L451.893,189.762Z" style="fill:rgb(0,133,122);"/>
           <path d="M486.28,146.352C486.28,146.352 458.961,173.671 445.577,187.055" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
+      <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
         <g transform="matrix(0.940396,-0,-0,0.940396,96.622,72.3869)">
             <path d="M196.483,181.736L203.29,194.274L189.175,192.197L196.483,181.736Z" style="fill:rgb(0,133,122);"/>
           <path d="M134.686,146.352C134.686,146.352 176.625,175.647 194.921,188.428" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-120.593,-75.1729)">
+      <g transform="matrix(1.06338,0,0,1.06338,-120.593,-75.1729)">
         <g transform="matrix(0.940396,-0,-0,0.940396,113.405,70.6923)">
             <path d="M316.226,303.257L322.607,290.496L328.987,303.257L316.226,303.257Z" style="fill:rgb(0,133,122);"/>
           <path d="M322.607,342.969L322.607,300.705" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
+      <g transform="matrix(1.06338,0,0,1.06338,-102.746,-76.9749)">
         <g transform="matrix(0.940396,-0,-0,0.940396,96.622,72.3869)">
             <path d="M402.43,421.829L396.802,408.719L410.667,412.083L402.43,421.829Z" style="fill:rgb(0,133,122);"/>
           <path d="M462.319,464.091C462.319,464.091 421.967,429.987 404.599,415.309" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(-1.06338,0,0,1.06338,752.29,-67.8873)">
+      <g transform="matrix(-1.06338,0,0,1.06338,752.29,-67.8873)">
         <g transform="matrix(-0.940396,0,0,0.940396,707.45,63.8409)">
             <path d="M238.877,421.171L252.742,417.807L247.114,430.917L238.877,421.171Z" style="fill:rgb(0,133,122);"/>
           <path d="M187.225,473.178C187.225,473.178 227.577,439.075 244.945,424.396" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(1.06338,0,0,1.06338,-91.4978,-60.763)">
+      <g transform="matrix(1.06338,0,0,1.06338,-91.4978,-60.763)">
         <g transform="matrix(0.940396,-0,-0,0.940396,86.0442,57.1413)">
             <path d="M167.476,235.659L180.236,242.04L167.476,248.42L167.476,235.659Z" style="fill:rgb(0,133,122);"/>
           <path d="M145.934,242.04L170.028,242.04" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
         </g>
     </g>
-    <g transform="matrix(-1.06338,0,0,1.06338,756.349,-60.763)">
+      <g transform="matrix(-1.06338,0,0,1.06338,756.349,-60.763)">
         <g transform="matrix(-0.940396,0,0,0.940396,711.268,57.1413)">
             <path d="M497.376,248.42L484.615,242.04L497.376,235.659L497.376,248.42Z" style="fill:rgb(0,133,122);"/>
           <path d="M518.917,242.04L494.824,242.04" style="fill:none;stroke:rgb(0,133,122);stroke-width:2.13px;"/>
@@ -168,5 +172,8 @@
     </g>
 </svg>
 
+
+
+  </div>
 
 </ion-content>
