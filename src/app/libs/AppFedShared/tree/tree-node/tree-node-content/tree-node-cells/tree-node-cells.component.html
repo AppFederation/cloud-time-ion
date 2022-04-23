@@ -1,0 +1,27 @@
+<p>
+  tree-node-cells works!
+</p>
+
+<!-- Have cells-list component be nestable for sub-cells -->
+
+<!-- individual cell components MUST NOT assume they are in a tree node
+  They could be in properties sheet or in options popup, etc.
+  So they must be in separate module(s)
+
+  Cell MUST NOT assume that it has anything to do with columns.
+
+  SOME cells/cell-components must be able to handle display of aggregate values (e.g. minMidMax or at the numeric cell level, time-tracking)
+    and missing child values
+-->
+
+<ng-container
+  *ngFor="let cell of cells"
+>
+  <!-- TODO: maybe separate cell type resolver component, to be reusable also in property sheets, options popups, etc -->
+  <ng-container *ngIf="cell.type === 'richText'">
+    <app-rich-text-edit-cell [cell]="cell"></app-rich-text-edit-cell>
+  </ng-container>
+  <ng-container *ngIf="cell.type === 'minMidMax'">
+    <app-min-mid-max-cell [cell]="cell"></app-min-mid-max-cell>
+  </ng-container>
+</ng-container>

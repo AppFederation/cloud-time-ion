@@ -1,10 +1,13 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {ViewSyncer} from '../../odm/ui/ViewSyncer'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 import {FormControl} from '@angular/forms'
 import {debugLog} from '../../utils/log'
 import {EditorService} from './editor.service'
 import {richTextEditCommon} from './RichTextEditCommon'
+import {cellDirections, CellNavigationService} from '../../cell-navigation.service'
+import {AbstractCellComponent} from '../../AbstractCellComponent'
+import {getSelectionCursorState} from '../../utils/caret-utils'
 
 /**
  * http://ckeditor.github.io/editor-recommendations/about/
@@ -17,7 +20,7 @@ import {richTextEditCommon} from './RichTextEditCommon'
   templateUrl: './rich-text-edit.component.html',
   styleUrls: ['./rich-text-edit.component.sass'],
 })
-export class RichTextEditComponent implements OnInit {
+export class RichTextEditComponent extends AbstractCellComponent implements OnInit {
 
   @Input() viewSyncer ! : ViewSyncer
 
@@ -221,10 +224,16 @@ export class RichTextEditComponent implements OnInit {
 
   constructor(
     public editorService: EditorService,
-  ) { }
+    public cellNavigationService: CellNavigationService,
+    injector: Injector
+  ) {
+    super(injector)
+  }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+    super.ngOnInit()
+  }
 
 
   public highlightSelected(editor: any) {
@@ -267,6 +276,27 @@ export class RichTextEditComponent implements OnInit {
       textEditorFocused: b
     })
     // debugLog(`rich text onFocus`, b) // TODO focusService notify htmlEditorFocused true/false
+  }
+
+  public focusCellAbove($event: any) {
+    if ( getSelectionCursorState().atStart ) {
+      // this.side
+      // const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
+      // this.focusOtherNode(nodeToFocus)
+      this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.up, this)
+      console.log('Will navi up')
+    }
+  }
+
+  public focusCellBelow($event: any) {
+    if ( getSelectionCursorState().atEnd ) {
+      this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.down, this)
+      console.log('Will navi down')
+    }
+  }
+
+  /* override */ focus() {
+    this.focusEditor()
   }
 
 }

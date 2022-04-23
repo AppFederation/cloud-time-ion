@@ -15,17 +15,20 @@ export class OdmCell<TValue = any> {
 
   // private item$: OdmItem$2<any, TValue, any, any>
 
+  type = this.column?.type
+
   constructor(
-    public treeNode: TreeNode,
+    public readonly treeNode?: TreeNode,
+    public readonly column?: any,
     /* row / column for getCellAbove / Below / Left / Right */
   ) {
   }
 
   patchThrottled(newValue: TValue, event?: any) {
     const patch: any = {
-      title: newValue
+      title: newValue /* FIXME take from column */
     }
-    this.treeNode.item$.patchThrottled(patch)
+    this.treeNode!.item$.patchThrottled(patch)
     console.error('HACK patching title')
   }
 

@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {OdmCell} from '../OdmCell'
+import {CellNavigationService} from '../../../cell-navigation.service'
 
 @Component({
   selector: 'app-rich-text-edit-cell',
@@ -14,7 +15,11 @@ export class RichTextEditCellComponent implements OnInit {
   @Input()
   cell !: OdmCell
 
-  constructor() { }
+  constructor(
+    public cellNavigationService: CellNavigationService
+  ) {
+
+  }
 
   ngOnInit() {
     this.contentEditableEl

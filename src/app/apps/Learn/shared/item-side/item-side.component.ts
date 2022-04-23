@@ -8,6 +8,8 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
 import {EditorComponent} from '@tinymce/tinymce-angular'
 import {RichTextEditComponent} from '../../../../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
+import {getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
+import {OdmCell} from '../../../../libs/AppFedShared/tree/cells/OdmCell'
 
 export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
 
@@ -22,11 +24,16 @@ export class ItemSideComponent implements OnInit {
 
   answerDescr = sidesDefs.answer
 
+
   @Input()
   item$ ! : LearnItem$
 
+  /** TODO: this should use OdmCell (maybe subclass like ItemSideCell); and this expandable icon-to-editor functionality could be useful also in treetable node cell */
   @Input()
   side ! : Side | nullish
+
+  @Input()
+  cell ! : OdmCell
 
   formControls ! : SideFormControlsDict
 

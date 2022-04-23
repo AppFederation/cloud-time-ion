@@ -1,6 +1,6 @@
 /** https://stackoverflow.com/a/3976125/170451 */
 import { debugLog } from './log'
-import { equalsIgnoreCase } from './utils'
+import {equalsIgnoreCase} from './utils-from-oryol'
 
 /* to consider: https://github.com/timdown/rangy - A cross-browser JavaScript range and selection library.
   but 2015; but there could be something similar more modern
@@ -58,7 +58,7 @@ export function isCaretAtEndOfActiveElement() {
 export function getSelectionCursorState(/*nativeElement*/) {
   // const el = nativeElement
   const el = document.activeElement
-  debugLog('getSelectionCursorState', el.tagName, el)
+  // debugLog('getSelectionCursorState', el.tagName, el)
   if ( equalsIgnoreCase('INPUT', el.tagName) ) {
     return {
       atStart: getActiveElementCaretPos() === 0,
@@ -97,6 +97,6 @@ export function getSelectionCursorState(/*nativeElement*/) {
   }
 
   const ret = {atStart: atStart, atEnd: atEnd}
-  debugLog('getSelectionCursorState start/end', ret)
+  // debugLog('getSelectionCursorState start/end', ret)
   return ret
 }

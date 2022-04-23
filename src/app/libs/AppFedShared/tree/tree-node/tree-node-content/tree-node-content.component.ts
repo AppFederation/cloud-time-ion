@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OdmCell} from '../../cells/OdmCell'
 import {TreeNode} from '../TreeNode'
+import {cellDirections, CellNavigationService} from '../../../cell-navigation.service'
 
 @Component({
   selector: 'app-tree-node-content',
@@ -12,12 +13,14 @@ export class TreeNodeContentComponent implements OnInit {
   @Input()
   treeNode !: TreeNode
 
-  titleCell !: OdmCell
-
-  constructor() { }
+  constructor(
+    public cellNavigationService: CellNavigationService
+  ) { }
 
   ngOnInit() {
-    this.titleCell = new OdmCell(this.treeNode)
   }
 
+  onArrowLeft() {
+    this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.left)
+  }
 }

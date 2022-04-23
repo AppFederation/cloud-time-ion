@@ -7,6 +7,12 @@
   (onFocusIn)="onFocus(true)"
   (onFocusOut)="onFocus(false)"
   (blur)="onFocus(true)"
+
+  (keydown.arrowup)="focusCellAbove($event)"
+  (keydown.meta.arrowup)="focusCellAbove($event)"
+  (keydown.arrowdown)="focusCellBelow($event)"
+  (keydown.meta.arrowdown)="focusCellBelow($event)"
+
 >
   <!--   (onFocus)="onFocus($event)"
 -->
