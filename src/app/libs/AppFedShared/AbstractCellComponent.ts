@@ -12,7 +12,7 @@ export abstract class AbstractCellComponent implements OnInit, OnDestroy {
   public elementRef = this.injector.get(ElementRef)
 
   get viewportTop() {
-    return this.elementRef.nativeElement.getBoundingClientRect().viewportTop
+    return this.elementRef.nativeElement.getBoundingClientRect().top
   }
 
 

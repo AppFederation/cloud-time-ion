@@ -40,11 +40,11 @@ export class CellNavigationService {
 
   navigateToCellVisuallyInDirection(direction: CellDirection, fromCellComponent: AbstractCellComponent) {
     console.log('navigateToCellVisuallyInDirection', direction)
-    const rect = fromCellComponent.viewportTop
+    const focusedTop = fromCellComponent.viewportTop
     let compNearest: AbstractCellComponent | undefined = undefined
     if ( direction === cellDirections.up ) {
       compNearest = minBy([...this.cellComponents], comp => {
-        const topDiff = rect.top - comp.viewportTop
+        const topDiff = focusedTop - comp.viewportTop
         if ( comp === fromCellComponent || topDiff < 0) {
           return 9999_999
         }
@@ -53,7 +53,7 @@ export class CellNavigationService {
     }
     if ( direction === cellDirections.down ) {
       compNearest = minBy([...this.cellComponents], comp => {
-        const topDiff = comp.viewportTop
+        const topDiff = comp.viewportTop - focusedTop
         if ( comp === fromCellComponent || topDiff < 0) {
           return 9999_999
         }
