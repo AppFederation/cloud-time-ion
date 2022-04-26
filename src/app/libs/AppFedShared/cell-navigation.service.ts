@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {OdmCell} from './tree/cells/OdmCell'
 import {Dict, setIdsFromKeys} from './utils/dictionary-utils'
 import {AbstractCellComponent} from './AbstractCellComponent'
-import {minBy} from 'lodash-es'
+import {maxBy, minBy} from 'lodash-es'
 
 
 export type CellDirectionId = string & { type: CellDirectionId }
@@ -41,18 +41,22 @@ export class CellNavigationService {
   navigateToCellVisuallyInDirection(direction: CellDirection, fromCellComponent: AbstractCellComponent) {
     console.log('navigateToCellVisuallyInDirection', direction)
     const focusedTop = fromCellComponent.viewportTop
-    let compNearest: AbstractCellComponent | undefined = undefined
+    let compToFocus: AbstractCellComponent | undefined = undefined
     if ( direction === cellDirections.up ) {
-      compNearest = minBy([...this.cellComponents], comp => {
+      compToFocus = minBy([...this.cellComponents], comp => {
         const topDiff = focusedTop - comp.viewportTop
         if ( comp === fromCellComponent || topDiff < 0) {
           return 9999_999
         }
         return topDiff
       })
+      console.log(compToFocus?.viewportTop)
+      if ( ! compToFocus || (compToFocus.viewportTop >= focusedTop) ) {
+        compToFocus = this.findBottommostComponent() // wrap-around
+      }
     }
     if ( direction === cellDirections.down ) {
-      compNearest = minBy([...this.cellComponents], comp => {
+      compToFocus = minBy([...this.cellComponents], comp => {
         const topDiff = comp.viewportTop - focusedTop
         if ( comp === fromCellComponent || topDiff < 0) {
           return 9999_999
@@ -61,18 +65,24 @@ export class CellNavigationService {
       })
       // NOTE: this wraps back to topmost
     }
-    compNearest?.focus()
+    compToFocus?.focus()
     // TODO: wrap-around
   }
 
   constructor() { }
 
-  register(component: AbstractCellComponent) {
+  public register(component: AbstractCellComponent) {
     this.cellComponents.add(component)
     console.log('Register component', component)
   }
 
-  deregister(component: AbstractCellComponent) {
+  public deregister(component: AbstractCellComponent) {
     this.cellComponents.delete(component)
+  }
+
+  public findBottommostComponent() {
+    const maxBy1 = maxBy([...this.cellComponents], comp => comp.viewportTop)
+    console.log(`findBottommostComponent`, maxBy1)
+    return maxBy1
   }
 }
