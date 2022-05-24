@@ -7,6 +7,8 @@ import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
 import {assertTruthy} from '../../AppFedShared/utils/assertUtils'
+import { firestore } from 'firebase';
+import Timestamp = firestore.Timestamp
 
 
 export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TRaw> {
@@ -67,8 +69,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     return this.collection().doc(itemId)
   }
 
-  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>) {
-    super.setListener(listener);
+  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number) {
+    super.setListener(listener, nDaysOldModified);
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
       // debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
@@ -78,9 +80,26 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       if ( ! userId ) {
         errorAlert(`FirestoreOdmCollectionBackend before query - no userId`)
       }
-      this.angularFirestore.firestore.collection(this.collectionName)
+      console.log('FirestoreOdmCollectionBackend setListener')
+      // nDaysOldModified = 15
+      // getDocs
+      // .where('whenArchived', '==', null)
+      // .where('whenDeleted', '==', null)
+      const query = this.angularFirestore.firestore.collection(this.collectionName)
         .where('owner', '==', userId)
-        .onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
+      if ( nDaysOldModified ) {
+        query
+          .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
+          .get({source: 'cache'}).then(data => {
+            for ( let doc of data.docs ) {
+              listener?.onAdded(doc.id, doc.data() as TRaw)
+            }
+            listener?.onFinishedProcessingChangeSet()
+          }
+
+        )
+      } else {
+        query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
           // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
           // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
@@ -101,6 +120,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           // FIXME: only emit after processing finished
 
         }) as any /* workaround after strict settings */)
+      }
+
       // this.collection().valueChanges().subscribe((coll: TRaw[]) => {
       //   this.dbCollection$.nextWithCache(coll)
       // })

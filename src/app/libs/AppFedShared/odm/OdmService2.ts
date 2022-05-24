@@ -184,7 +184,7 @@ export abstract class OdmService2<
 
     // !!!! FIXME: start listener when someone subscribes to items$, e.g. chart QuizHistory
 
-    this.odmCollectionBackend.setListener({
+    const listener = {
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
 
         let existingItem: TOdmItem$ | undefined = service.mapIdToItem$.get(addedItemId)
@@ -232,7 +232,9 @@ export abstract class OdmService2<
       onFinishedProcessingChangeSet() {
         service.emitLocalItems()
       },
-    })
+    }
+    this.odmCollectionBackend.setListener(listener, 1) // TODO: mark as isLoading for UI - return promise from setListener
+    this.odmCollectionBackend.setListener(listener, 0)
     this.backendListenerWasSet = true
   }
 

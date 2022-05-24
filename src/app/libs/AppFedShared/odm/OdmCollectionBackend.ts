@@ -48,7 +48,7 @@ export abstract class OdmCollectionBackend<
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId): Promise<any>
 
-  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>) {
+  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>, nDaysOldModified: number) {
     this.listener = listener
   }
 
