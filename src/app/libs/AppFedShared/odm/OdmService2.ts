@@ -233,8 +233,9 @@ export abstract class OdmService2<
         service.emitLocalItems()
       },
     }
-    this.odmCollectionBackend.setListener(listener, 1) // TODO: mark as isLoading for UI - return promise from setListener
-    this.odmCollectionBackend.setListener(listener, 0)
+    this.odmCollectionBackend.setListener(listener, 1, () => {
+      this.odmCollectionBackend.setListener(listener, 0, () => {})
+    }) // TODO: mark as isLoading for UI - return promise from setListener
     this.backendListenerWasSet = true
   }
 

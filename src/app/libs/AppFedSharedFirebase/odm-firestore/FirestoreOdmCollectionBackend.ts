@@ -69,8 +69,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     return this.collection().doc(itemId)
   }
 
-  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number) {
-    super.setListener(listener, nDaysOldModified);
+  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number, callback: () => void) {
+    super.setListener(listener, nDaysOldModified, callback);
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
       // debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
@@ -88,16 +88,18 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       const query = this.angularFirestore.firestore.collection(this.collectionName)
         .where('owner', '==', userId)
       if ( nDaysOldModified ) {
-        query
+        const promise = query
           .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
-          .get({source: 'cache'}).then(data => {
+          .get({source: 'cache'})
+        promise.then(data => {
             for ( let doc of data.docs ) {
               listener?.onAdded(doc.id, doc.data() as TRaw)
             }
             listener?.onFinishedProcessingChangeSet()
+            callback()
           }
-
         )
+        // return promise
       } else {
         query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
@@ -120,6 +122,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           // FIXME: only emit after processing finished
 
         }) as any /* workaround after strict settings */)
+        return undefined
       }
 
       // this.collection().valueChanges().subscribe((coll: TRaw[]) => {
