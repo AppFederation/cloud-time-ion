@@ -233,9 +233,20 @@ export abstract class OdmService2<
         service.emitLocalItems()
       },
     }
-    this.odmCollectionBackend.setListener(listener, 1, () => {
-      this.odmCollectionBackend.setListener(listener, 0, () => {})
+
+    const nDaysOldModified = 1
+    const dl1 = {name: `${this.className} - last ${nDaysOldModified} days - local cache`}
+    const dl2 = {name: `${this.className} - all`}
+
+    this.syncStatusService.addPendingDownload(dl1)
+    this.odmCollectionBackend.setListener(listener, nDaysOldModified, () => {
+      this.syncStatusService.removePendingDownload(dl1)
+      this.syncStatusService.addPendingDownload(dl2)
+      this.odmCollectionBackend.setListener(listener, 0, () => {
+        this.syncStatusService.removePendingDownload(dl2)
+      }) // this causes 2 refreshes (from-cache, from-server)
     }) // TODO: mark as isLoading for UI - return promise from setListener
+    // NOTE: this causes 3 ui changes in total (of which 2 change the list causing blink), because of
     this.backendListenerWasSet = true
   }
 

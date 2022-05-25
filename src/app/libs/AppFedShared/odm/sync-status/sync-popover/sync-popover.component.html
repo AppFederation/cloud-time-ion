@@ -16,6 +16,12 @@
 
   </ng-container>
 
+  <ng-container
+    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingDownloadsCount let count; else allSynced"
+  >
+    DOWNLOADING: {{count}}
+  </ng-container>
+
   <ng-template
     #allSynced
   >

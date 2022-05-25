@@ -69,7 +69,10 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     return this.collection().doc(itemId)
   }
 
-  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number, callback: () => void) {
+  /** IDEA: for more flexibility this could return an ARRAY of download DESCRIPTORS
+   * { promise:, name: 'LearnItem - last 10 days - from local/server'}
+   * */
+  setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number, callback: () => void/*, name: string*/) {
     super.setListener(listener, nDaysOldModified, callback);
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
@@ -118,6 +121,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
             }
           }
           listener?.onFinishedProcessingChangeSet()
+          callback?.()
 
           // FIXME: only emit after processing finished
 
