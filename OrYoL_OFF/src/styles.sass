@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Vendor files
+@import "~primeng/resources/themes/bootstrap/theme.css"
+@import "~primeng/resources/primeng.min.css"
+@import "~font-awesome/css/font-awesome.min.css"
+
+
+// Bootswatch theme
+@import "styles/_variables.scss"
+@import "~bootstrap/scss/bootstrap" // import bootstrap has to be in-between _variables.scss and _bootswatch.scss - https://bootswatch.com/help/
+@import "styles/_bootswatch.scss"
+
+html
+  opacity: 0.99
+
+body
+  color: lightgray
+  opacity: 99%
+  z-index: 1
+  position: relative
+
+//.popover.bs-popover-bottom
+  //z-index: 9999
+  //opacity: 10%
+  //position: relative
+  // https://coder-coder.com/z-index-isnt-working/
+  // https://stackoverflow.com/questions/2837057/what-has-bigger-priority-opacity-or-z-index-in-browsers
+  // https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+  // https://www.w3.org/TR/CSS21/zindex.html
+  // https://css-tricks.com/almanac/properties/z/z-index/
+
+
+$popover-max-width: 500px
+
+.popover
+  max-width: 100% !important
+
+.actionable
+  cursor: pointer
+  user-select: none
+  color: var(--secondary) // FIXME: color and actionable should be orthogonal
+
+.checkbox
+  cursor: pointer
+  user-select: none
+
+.faded
+  color: gray
+
+\:root
+  --primary: #B15900
+  --secondary: #817ed9
+  --highlight: #5b5b00
+
+.danger
+  background-color: lightcoral !important
+
+input
+  background: #0a0a0a // #f5f5f5
+  color: lightgray
+
+
+$border-left: 2px
+
+.ancestor-of-focused,
+.ancestor-of-focused.node-content-container
+  border-left: var(--primary) $border-left solid

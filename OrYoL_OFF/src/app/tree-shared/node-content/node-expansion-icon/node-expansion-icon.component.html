@@ -1,0 +1,15 @@
+<i
+  style="color: var(--primary); vertical-align: middle; padding-top: 3px"
+  class="material-icons tappable-icon actionable"
+  (tap)="toggleExpand($event)"
+  (press)="onPress($event)"
+  [ngClass]="{collapsedIcon: ! treeNode.expanded}"
+>
+  <!--  {{ treeNode.hasChildren ? 'expand_more' : 'add_circle' }}-->
+  <!-- Idea: add_circle icon if no children (therefore no expand/collapse) and would create child node -->
+  expand_more
+</i>
+
+<!-- TODO: for some reason expanding by 3-dots below this icon does not update the icon
+    - could be change detection problem?
+    -> could directly listen to tree mode/node expansion events observable ? -->

@@ -1,0 +1,108 @@
+<div style="display: flex; align-items: center; justify-content: space-between">
+  <i style="font-size: 35px; padding: 0.5rem; transform: rotate(-45deg)"
+     (tap)="treeHost.navigateUp($event)"
+     (window:keydown.meta.arrowup)="treeHost.navigateUp($event)"
+     (press)="treeHost.navigateToRoot($event)"
+     class="material-icons actionable"
+  >arrow_upward</i>
+
+  <!--Start:-->
+  <!--End: {{treeModel.endTime()}}-->
+
+  <a
+    (window:keydown.meta.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+    (window:keydown.control.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+  >
+    <fa-icon #searchPopOverTrigger="ngbPopover" [ngbPopover]="searchPopupContent"
+      icon="search" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
+  </a>
+
+  <ng-template #searchPopupContent>
+    <app-search
+    ></app-search>
+  </ng-template>
+
+
+  <fa-icon icon="shopping-cart" class="actionable"
+           (click)='treeHost.goToShopping()'
+  ></fa-icon>
+
+  <ng-container *ngIf="showExtraNavIcons">
+    <a href="https://lifedvisor.innotopic.com/" target="_blank">
+      <fa-icon icon="brain" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
+    </a>
+
+    <a href="https://cloudtime.innotopic.com/" target="_blank">
+      <fa-icon icon="hourglass" class="actionable"></fa-icon>
+    </a>
+  </ng-container>
+
+
+
+<!--  <fa-icon icon="expand-alt"></fa-icon>-->
+<!--  <fa-icon icon="compress-alt"></fa-icon>-->
+
+
+<!--  <button-->
+<!--    class="btn btn-primary"-->
+<!--    (click)='treeHost.expandAll()'>-->
+<!--    E-->
+<!--  </button>-->
+
+<!--  <button-->
+<!--    class="btn btn-primary"-->
+<!--    (click)='treeHost.collapseAll()'>-->
+<!--    C-->
+<!--    &lt;!&ndash; Idea: collapse all apart from currently focused node; for better focus; quick way to implement: just refocus/expand after collapsing &ndash;&gt;-->
+<!--  </button>-->
+
+  <i
+     class="material-icons actionable"
+     (click)='treeHost.newJournalEntry()'
+  >create</i>
+
+  <i
+     class="material-icons actionable"
+     (click)='treeHost.newNote()'
+  >note</i>
+
+  <i
+    class="material-icons actionable"
+    (click)='treeHost.goToMilestones()'
+  >event_note</i>
+
+  <i
+    class="material-icons actionable"
+    (click)='treeHost.planToday()'
+  >today</i>
+
+  <app-time-tracking-toolbar
+    style="font-size: 13px"
+  ></app-time-tracking-toolbar>
+
+  <ng-container *ngIf="showExtraNavIcons">
+    <fa-icon icon="trophy" class="actionable"
+    ></fa-icon>
+  </ng-container>
+
+  <fa-icon [icon]="['fas', 'cog']" class="actionable" style="font-size: 24px"
+           [ngbPopover]="popupContent"
+           #popOver="ngbPopover"
+           [autoClose]="'outside'"
+           placement="bottom"
+  ></fa-icon>
+
+  <ng-template #popupContent>
+    <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
+    <app-toolbar-popover
+      [treeHost]="treeHost"
+    ></app-toolbar-popover>
+  </ng-template>
+
+
+  <ng-container *ngIf="debugService.isDebug$ | async">
+    Pending listeners: {{treeHost.pendingListeners}}
+  </ng-container>
+
+  <div style="width: 80px"><!-- empty to not conflict with round buttons--></div>
+</div>

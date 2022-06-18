@@ -1,0 +1,17 @@
+{
+  /* GENERAL NOTE: defaults in this config file are for quick ad-hoc runs by-hand
+    (unless it is impossible to specify false value to switches like --debug-on-fail),
+    not necessarily optimized for long runs or CI (those are in package.json and scripts/ via CLI args)
+  */
+//  "videoPath": "reports/screen-captures"
+  "skipJsErrors": true, // for console errors which are currently happening
+  "assertionTimeout": 20000,
+  "selectorTimeout": 20000,
+//  "debugOnFail": false /* for repeated runs */,
+  "screenshots": {
+    "takeOnFails": true,
+    "path": "screenshots",
+  },
+  "browsers": "firefox", // https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#browsers
+  "src": "testSrc/index.ts",
+}

@@ -1,0 +1,55 @@
+<div
+  class="node-and-children"
+  [ngClass]="{
+    'ancestor-of-focused': treeNode.highlight.isAncestorOfFocusedNode(),
+    'node-content-container': true,
+    'nested-tree-node': ! treeNode.isVisualRoot,
+    'isDragOver': isDragOver
+  }"
+  draggable="true"
+  (dragstart)="onDragStart($event)"
+  (drag)="onDrag($event)"
+  (dragenter)="onDragOver($event, true)"
+  (dragleave)="onDragOver($event,false)"
+  (dragover)="onDragOver2($event)"
+  (drop)="onDragDrop($event)"
+>
+
+  ZZZ
+  <!--{{treeNode.highlight.isAncestorOfFocusedNode()}}-->
+
+  <app-node-content
+    draggable="false"
+    *ngIf="! treeNode.isRoot"
+    [treeNode]="treeNode"
+    [treeHost]="treeHost"
+  ></app-node-content>
+
+  <div *ngIf="treeNode.expanded || alwaysExpanded" class="node-children">
+    <ng-container *ngFor="let childNode of treeNode.children">
+      <app-nested-tree-node
+        [treeNode]="childNode"
+        [treeHost]="treeHost"
+      ></app-nested-tree-node>
+<!--      <hr *ngIf="isVisualRoot"/>-->
+    </ng-container>
+  </div>
+
+  <div
+    style="cursor: pointer; user-select: none; color: #666; font-size: 10px; padding-left: 4px;"
+    (click)="toggleExpand($event)"
+    *ngIf="! (treeNode.expanded || alwaysExpanded ) && treeNode.children.length > 0"
+  >...</div>
+
+</div>
+
+<div style="height:5px">
+  <!-- spacer between bottom shadows to give more space between disjoint subtrees;
+    I had problem doing this using margins; as if all the margins collapsed into one instead of adding up;
+    Note: if height: 0px, this still causes the "margins collapsing into one" effect apparently;
+    so between 0px and 1px there is like 3 logical pixels visual difference.
+    This could be related to app-node-content component which has no vertical size apparently when inspecting.
+  -->
+</div>
+
+

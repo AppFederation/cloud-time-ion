@@ -1,0 +1,41 @@
+
+<div style="position: fixed; right: 0; top: 0; z-index: 9999; display: flex; opacity: 0.75;">
+  <div
+    class="command-icon"
+       (click)="commandsService.toggleDone()"
+  >
+    <!--<i style="cursor: pointer; user-select: none; color: #777"-->
+    <!--(click)="toggleExpand($event)"-->
+    <!--class="material-icons"-->
+    <!--&gt;expand_less</i>-->
+    <!--up-->
+  </div>
+
+  <div
+    style="display: inline"
+    style="display: flex; flex-direction: column;"
+  >
+
+    <div class="command-icon"
+         (click)="commandsService.reorderUp()"
+    >
+      <!--<i style="cursor: pointer; user-select: none; color: #777"-->
+      <!--(click)="toggleExpand($event)"-->
+      <!--class="material-icons"-->
+      <!--&gt;expand_less</i>-->
+      <!--up-->
+    </div>
+    <div
+      class="command-icon"
+      (click)="commandsService.reorderDown()"
+    >
+      <!--<i style="cursor: pointer; user-select: none; color: #777"-->
+      <!--(click)="toggleExpand($event)"-->
+      <!--class="material-icons"-->
+      <!--&gt;expand_more</i>-->
+      <!--down-->
+    </div>
+  </div>
+
+</div>
+

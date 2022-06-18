@@ -1,0 +1,15 @@
+
+<!--<ng-container-->
+<!--  *ngIf="(timeTrackingPeriodsService.activePeriods$ | async)?.length let trackedCount"-->
+<!--&gt;-->
+<!--  Tracking {{trackedCount}}-->
+<!--</ng-container>-->
+
+<app-time-tracking-cell
+  *ngFor="let entry of (timeTrackingService.timeTrackedEntries$ | async)"
+  (click)="navigateTo(entry)"
+  [timeTrackedEntry]="entry"
+  [toolBarMode]="true"
+></app-time-tracking-cell>
+
+<!--{{(timeTrackingService.timeTrackedEntry$ | async) | json}}-->

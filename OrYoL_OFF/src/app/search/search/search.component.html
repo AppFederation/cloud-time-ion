@@ -1,0 +1,31 @@
+
+<label for="search-text">Search:</label>
+<input id="search-text" #searchInput type="text" class="form-control"
+       [(ngModel)]="textFieldDummy"
+       (ngModelChange)="searchText($event)"
+       autofocus
+/> <!--
+ -->
+
+<p>Results:</p>
+
+<div
+  style="cursor: pointer;"
+  *ngFor="let node of filteredNodes"
+  (click)="navigateTo(node)"
+> <!-- display: flex; align-items: stretch; -->
+  <app-node-class-icon
+    style="display: inline"
+    [treeNode]="node"
+  ></app-node-class-icon>
+
+  <span
+    style="    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;"
+  >
+    &nbsp;
+    &emsp;
+    {{node.getItemData()?.title}}
+  </span>
+</div>

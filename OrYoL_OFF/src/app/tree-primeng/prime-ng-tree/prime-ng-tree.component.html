@@ -1,0 +1,20 @@
+<p-tree
+  class="tree-component"
+  [value]="treeModel.root.children"
+  draggableNodes="true"
+  droppableNodes="true"
+  (onNodeDrop)="nodeDrop($event)"
+>
+  <ng-template
+    let-node
+    pTemplate="default"
+  >
+    <!--{{node | json}}-->
+    <app-node-content
+      [treeNode]="node"
+      [treeHost]="treeHost"
+    ></app-node-content>
+    <!-- https://www.primefaces.org/primeng/#/tree : Templating -->
+    <!--<input [(ngModel)]="node.label" type="text" style="width:100%">-->
+  </ng-template>
+</p-tree>

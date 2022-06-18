@@ -1,0 +1,117 @@
+
+<ng-template #popTitle>Fancy <b>content</b></ng-template>
+
+<ng-template #popupContent>
+  <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
+  <app-tree-node-menu
+    [treeNode]="treeNode"
+    [treeHost]="treeHost"
+    [popOver]="popOver"
+    [nodeContentComponent]="this"
+  ></app-tree-node-menu>
+</ng-template>
+
+<div
+  style="display: flex; align-items: stretch; font-size: 13px"
+  (keydown.alt.enter)="addChild()"
+  (keydown.meta.enter)="keyPressMetaEnter($event)"
+  (keydown.control.enter)="keyPressMetaEnter($event)"
+  (keydown.control.arrowup)="reorderUp($event)"
+  (keydown.control.arrowdown)="reorderDown($event)"
+
+  (keydown.enter)="keyPressEnter($event)"
+  (keydown.arrowup)="focusNodeAbove($event)"
+  (keydown.arrowdown)="focusNodeBelow($event)"
+
+  (keydown.shift.tab)="indentDecrease($event)"
+  (keydown.tab)="indentIncrease($event)"
+
+  [ngClass]="{'done': isDone, 'ancestor-of-focused': isAncestorOfFocused, 'node-content-container': true}"
+
+  (keydown.arrowleft)="onArrowLeft()"
+  (keydown.alt.arrowleft)="onArrowLeft()"
+  (keydown.meta.arrowleft)="onArrowLeft()"
+
+  (keydown.arrowright)="onArrowRight()"
+  (keydown.alt.arrowright)="onArrowRight()"
+  (keydown.meta.arrowright)="onArrowRight()"
+  (keydown.control.arrowright)="onArrowRight()"
+>
+
+  <!--  <app-cell-host>-->
+  <!-- re-check the cell-host idea when handling keyboard shortcuts and focus -->
+<!--    <app-node-cell-->
+<!--      [cell]="cells.forColumn(columns.estimatedTimeMin)"-->
+<!--      [nodeContentComponent]="this"-->
+<!--    ></app-node-cell>-->
+<!--  </app-cell-host>-->
+
+  <app-node-expansion-icon
+    [treeNode]="treeNode"
+  ></app-node-expansion-icon>
+
+  <app-node-class-icon
+    [treeNode]="treeNode"
+    [ngbPopover]="popupContent"
+    #popOver="ngbPopover"
+    [autoClose]="'outside'"
+    placement = auto
+  ></app-node-class-icon>
+
+  <ng-container *ngIf="treeNode.itemData?.deleted">
+    Deleted <!--{{treeNode.itemData?.deleted}}-->
+  </ng-container>
+
+
+  <!-- ======= new cells approach: -->
+  <app-node-cell
+    [nodeContentComponent]="this"
+    [cell]="cells.forColumn(columnDefs.estimatedTimeMin)"
+    [hidden]="! isEstimatedTimeShown || ! (config$ | async)?.showMinMaxColumns"
+  ></app-node-cell>
+
+  <app-node-cell
+    [nodeContentComponent]="this"
+    [cell]="cells.forColumn(columnDefs.estimatedTime)"
+    [hidden]="! isEstimatedTimeShown"
+  ></app-node-cell>
+
+  <app-node-cell
+    [nodeContentComponent]="this"
+    [cell]="cells.forColumn(columnDefs.estimatedTimeMax)"
+    [hidden]="! isEstimatedTimeShown || ! (config$ | async)?.showMinMaxColumns"
+  ></app-node-cell>
+  <!-- ===== end new cells approach -->
+
+  <app-node-content-time-tracking
+    [treeNode]="treeNode"
+    style="margin-left: 0.5em; vertical-align: middle; align-self: center"
+  ></app-node-content-time-tracking>
+
+  <div *ngIf="treeNode.isDayPlan"
+       style="margin-left: 4px; margin-right: 2px; user-select: none; vertical-align: middle; display: table-cell; align-self: center"
+  >
+    <span class="faded">End {{formatEndTime(columnDefs.estimatedTime)}}</span>
+    <!--Sum: {{treeNode.timeLeftSumText()}}-->
+  </div>
+
+  <app-contenteditable-cell
+    style='
+      flex-grow: 1;
+      background-color: #222;
+      margin-right: 0.3em;
+      margin-left: 0.3em;
+      margin-top: 2px; /* help not overlap input focus outline and hackish help centering text a bit vertically */
+      font-size: 13px;
+    '
+    [nodeContentComponent]="this"
+    [cell]="cells.forColumn(columnDefs.title)"
+  ></app-contenteditable-cell>
+
+  <app-node-debug-cell
+    *ngIf="debugService.isDebug$ | async"
+    [treeNode]="treeNode"
+    [nodeDebug]="nodeDebug"
+  ></app-node-debug-cell>
+
+</div>

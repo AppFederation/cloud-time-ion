@@ -1,0 +1,47 @@
+<!--<app-node-cell-->
+<!--  [cell]="cells.forColumn(columns.estimatedTime)"-->
+<!--  [nodeContentComponent]="this"-->
+<!--  [hidden]="! isEstimatedTimeShown"-->
+<!--  [ngClass]="{'done-title': isDone}"-->
+
+<!--  [showCalculatedValue]="treeNode.showEffectiveDuration()"-->
+<!--  [calculatedValue]="treeNode.effectiveDurationText()"-->
+
+<!-- </app-node-cell> -->
+
+
+<div
+  style="
+      border-radius: 3px;
+      background: #1b1b1b;
+      margin: .3em;
+  "
+>
+  <input
+    #cellInput
+    maxlength="4"
+    style="
+      flex-basis: auto;
+      width: 2.4em;
+      text-align: right;
+      margin: 0;
+      border-radius: 3px;
+      border: none;
+      padding: 2px;
+    "
+    [ngClass]="{'danger' : isDanger()}"
+  >
+  <ng-container *ngIf="(config$|async).showAggregateValues && (showCalculatedValue || treeNode.getChildrenMissingValsCount(column))"> <!-- note: double calculation of getChildrenMissingValsCount -->
+    <span
+      *ngIf="showCalculatedValue"
+      style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
+
+    <ng-container *ngIf="(config$ | async)?.showMissingValuesCount">
+      <span *ngIf='treeNode.getChildrenMissingValsCount(column); let missingValsCount'
+            style="color: red">
+        &nbsp;{{missingValsCount}}
+      </span>&nbsp;
+    </ng-container>
+  </ng-container>
+
+</div>

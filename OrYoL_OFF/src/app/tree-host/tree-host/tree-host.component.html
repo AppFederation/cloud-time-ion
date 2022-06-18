@@ -1,0 +1,46 @@
+<!--<app-confirm-modal-->
+  <!--id="confirmDelete"-->
+  <!--class="modal fade"-->
+  <!--role="dialog"-->
+<!--&gt;</app-confirm-modal>-->
+
+<div
+  (window:keydown.meta.alt.enter)="newNodeAtVisualRoot()"
+  (window:keydown.control.alt.enter)="newNodeAtVisualRoot()"
+  style="width: 100%"
+>
+  <!--<div class="row">-->
+    <!--<div class="col-xs-12">-->
+      <app-toolbar [treeHost]="this"
+                   style="position: fixed; top: 0; width: 100%; background-color: rgba(50, 50, 50, 0.95)"
+      ></app-toolbar>
+<!--                   style="position: -webkit-sticky; /* Safari */; position: sticky; top: 0;"
+-->
+      <!--Time left: {{treeModel.timeLeftSumText()}}-->
+      <div class="tree-container" style="margin-top: 60px">
+        <app-prime-ng-tree
+          *ngIf="! useNestedTree"
+          [treeModel]="treeModel"
+          [treeHost]="this"
+        ></app-prime-ng-tree>
+
+        <app-nested-tree
+          class="tree-component"
+          *ngIf="useNestedTree"
+          [treeModel]="treeModel"
+          [treeHost]="this"
+        ></app-nested-tree>
+      </div>
+
+      <button
+        style="margin-left: 0.5em"
+        class="btn btn-dark"
+        (click)="appendNode()"
+      >
+        Append
+      </button>
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+

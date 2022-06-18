@@ -1,0 +1,50 @@
+.node-and-children:hover {
+  //background: greenyellow;
+}
+
+.ancestor-of-focused {
+  //background: antiquewhite;
+}
+
+$nested-tree-node-margin: 5px;
+
+.nested-tree-node {
+  //border-left: 3px solid red;
+  //border-bottom: 2px solid #F8F8F8;
+  margin: 2px 0 2px $nested-tree-node-margin;
+  box-shadow: 0px 1px 3px 1px #111;
+  //margin-bottom: 20px;
+  border-radius: 3px;
+  animation: nested-tree-node-animation 0.7s;
+}
+
+.isDragOver {
+  background: red;
+}
+
+@keyframes nested-tree-node-animation {
+  0% {
+    //padding-left: 100px;
+    opacity: 0.0;
+  }
+  100% {
+    //padding-left: 0px;
+    opacity: 1.0;
+  }
+}
+
+hr {
+  margin: 5px;
+  margin-left: 1px;
+  height: 4px;
+  display: block;
+  //height: 1px;
+  border: 0;
+  border-top: 2px solid #000;
+  //margin: 1em 0;
+  padding: 0;
+}
+
+.node-children {
+  margin-left: 13px /* node indent */
+}
