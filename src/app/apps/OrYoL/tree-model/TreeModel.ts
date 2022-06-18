@@ -1,4 +1,3 @@
-import { TreeNode } from 'primeng/primeng'
 import {
   NodeAddEvent,
   NodeInclusion,
@@ -15,13 +14,8 @@ import {
   Injector,
 } from '@angular/core'
 import { isNullOrUndefined } from 'util'
-import {
-  isEmpty,
-  nullOrUndef,
-} from '../utils/utils'
 import { sumBy } from 'lodash';
 import { OryColumn } from '../tree-shared/OryColumn'
-import { ReplaySubject } from 'rxjs/ReplaySubject'
 import { MultiMap } from '../utils/multi-map'
 import {
   NodeOrderer,
@@ -44,6 +38,9 @@ import {
   minutesToString,
   parseTimeToMinutes,
 } from '../utils/time-utils'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {TreeNode} from 'primeng/api'
+import {isEmpty, nullOrUndef} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
 
 /**
@@ -765,7 +762,7 @@ export class TreeModel {
 
   navigation = new class Navigation {
     visualRoot: OryTreeNode = null
-    visualRoot$ = new ReplaySubject<OryTreeNode>(1)
+    visualRoot$ = new CachedSubject<OryTreeNode>()
 
     constructor(public treeModel: TreeModel) {
     }

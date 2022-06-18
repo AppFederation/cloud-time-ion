@@ -60,6 +60,10 @@ const routes: Routes = [
     path: 'categories',
     loadChildren: () => import('./apps/Common/categories/categories.module').then( m => m.CategoriesPageModule)
   },
+  {
+    path: 'tree',
+    loadChildren: () => import('./apps/OrYoL/tree-page/tree-page.module').then(m => m.TreePageModule)
+  },
   { path: '**', redirectTo: '' },
 
 

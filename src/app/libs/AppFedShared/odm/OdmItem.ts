@@ -1,9 +1,10 @@
 /** Object-Document/Database Mapping item */
 import {OdmService_OLD} from "./OdmService_OLD";
-import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
+// import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
 import {debugLog} from "../utils/log";
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 /** A specific version of the ODM item.
  * OdmItemVersion ... */
@@ -26,9 +27,9 @@ export type OdmPatch<TData> = Partial<TData>
  */
 export class OdmItem<T extends OdmItem<T>, TData = T> {
 
-  public locallyVisibleChanges$ = new CachedSubjectBugged<T>(this.asT)
-  public locallyVisibleChangesThrottled$ = new CachedSubjectBugged<T>(this.asT)
-  public localUserSavesToThrottle$ = new CachedSubjectBugged<T>(this.asT)
+  public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
+  public locallyVisibleChangesThrottled$ = new CachedSubject<T>(this.asT)
+  public localUserSavesToThrottle$ = new CachedSubject<T>(this.asT)
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   public get asT() { return this as any as T}

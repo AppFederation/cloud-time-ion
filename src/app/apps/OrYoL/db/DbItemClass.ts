@@ -3,7 +3,7 @@ export class DbItemField {
 }
 
 export class DbItemClass {
-  fields: DbItemField[]
+  fields!: DbItemField[]
 
   hasField?(field: DbItemField) {
     return this.fields.some(curField => curField === field)

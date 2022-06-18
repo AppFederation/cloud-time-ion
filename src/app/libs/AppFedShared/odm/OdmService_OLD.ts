@@ -1,11 +1,12 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
 import {OdmItem} from "./OdmItem";
-import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
+// import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 import {Observable} from 'rxjs'
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmService_OLD<
   T extends OdmItem<T>,
@@ -21,7 +22,7 @@ export abstract class OdmService_OLD<
   odmBackendFactory = this.injector.get(OdmBackend)
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRaw>(this.injector, this.className)
 
-  localItems$ = new CachedSubjectBugged<T[]>([])
+  localItems$ = new CachedSubject<T[]>([])
 
   syncStatusService = this.injector.get(SyncStatusService)
 

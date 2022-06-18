@@ -5,7 +5,7 @@ import {TreePrimengModule} from '../tree-primeng/tree-primeng.module'
 import {TreeNestedModule} from '../tree-nested/tree-nested.module';
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { TimeTrackingModule } from '../time-tracking/time-tracking.module'
-import { TreeTableModule } from 'primeng/primeng'
+import { TreeTableModule } from 'primeng/treetable'
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popover.component'
 import { ReactiveFormsModule } from '@angular/forms'

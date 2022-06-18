@@ -17,8 +17,8 @@ export class DbItem<TData = any> {
 
   data$ = new CachedSubject<TData>()
 
-  itemClass: DbItemClass
-  itemData: any
+  itemClass?: DbItemClass
+  itemData?: any
 
   hasField(field: DbItemField) {
     return this.itemClass.hasField(field)

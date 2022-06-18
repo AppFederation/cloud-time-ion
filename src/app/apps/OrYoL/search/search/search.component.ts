@@ -8,6 +8,8 @@ import {
 import { SearchService } from '../../core/search.service'
 import { NavigationService } from '../../core/navigation.service'
 
+
+zzz
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',

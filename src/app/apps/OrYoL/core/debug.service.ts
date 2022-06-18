@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 @Injectable()
 export class DebugService {
@@ -11,7 +11,7 @@ export class DebugService {
   public static isDebug: boolean
 
   constructor() {
-    DebugService.isDebug = JSON.parse(window.localStorage.getItem(this.IS_DEBUG_KEY))
+    DebugService.isDebug = JSON.parse(window.localStorage.getItem(this.IS_DEBUG_KEY) || 'false')
     this.isDebug$.next(DebugService.isDebug)
     this.isDebug$.subscribe(value => {
       window.localStorage.setItem(this.IS_DEBUG_KEY, '' + value)

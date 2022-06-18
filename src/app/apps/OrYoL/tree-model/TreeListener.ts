@@ -18,7 +18,7 @@ export class NodeInclusion {
 
 export class NodeAddEvent {
   constructor (
-    public parents,
+    public parents: any /* FIXME any */,
     public directParentItemId: ItemId,
     public itemData: any,
     public itemId: ItemId,
@@ -28,6 +28,6 @@ export class NodeAddEvent {
 }
 
 export abstract class DbTreeListener {
-  abstract onNodeAddedOrModified(e: NodeAddEvent)
-  abstract onNodeInclusionModified(nodeInclusionId: string, nodeInclusionData, newParentItemId: string)
+  abstract onNodeAddedOrModified(e: NodeAddEvent): void
+  abstract onNodeInclusionModified(nodeInclusionId: string, nodeInclusionData: any, newParentItemId: string): void
 }
