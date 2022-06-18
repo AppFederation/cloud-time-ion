@@ -127,7 +127,7 @@ export abstract class OdmService_OLD<
       onFinishedProcessingChangeSet() {
         // nothing in v1
       }
-    })
+    }, 0, () => {})
   }
 
   emitLocalItems() {

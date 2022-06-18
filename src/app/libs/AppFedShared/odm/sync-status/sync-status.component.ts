@@ -16,6 +16,8 @@ export class SyncStatusComponent implements OnInit {
 
   get pendingUploadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingUploadsCount))}
 
+  get pendingDownloadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingDownloadsCount))}
+
   get syncStatus$() { return this.syncStatusService.syncStatus$ }
 
   constructor(

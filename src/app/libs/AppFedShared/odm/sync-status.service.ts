@@ -5,6 +5,7 @@ import {errorAlert} from '../utils/log'
 export class SyncStatus {
   pendingUploadsCount ? : number
   pendingDownloadsCount ? : number
+  isAllSynced ! : boolean
 }
 
 type SyncTask = Promise<any> | {then: any}
@@ -40,7 +41,8 @@ export class SyncStatusService {
   private emitSyncStatus() {
     const val = {
       pendingUploadsCount: this.pendingPromises.size,
-      pendingDownloadsCount: this.pendingDownloads.size
+      pendingDownloadsCount: this.pendingDownloads.size,
+      isAllSynced: !this.pendingPromises.size && !this.pendingDownloads.size,
     }
     console.log(`emitSyncStatus`, val, this.pendingDownloads)
     this.syncStatus$.next(val)

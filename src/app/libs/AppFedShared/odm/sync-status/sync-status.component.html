@@ -33,7 +33,7 @@
 <!--      </svg>-->
 
       <img
-        [ngClass]="{ hide: (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
+        [ngClass]="{ hide: ! ((syncStatus$ | async)?.isAllSynced), fade: true, 'action-icon': true }"
         style="height: 25px; color: var(--secondary)"
         src="assets/libs/sync/icons/cloud_checkmark.svg"
         alt="all uploaded to cloud"
@@ -44,6 +44,7 @@
   <div
     style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center"
   >
+<!--    <div       [ngClass]="{ hide: ! (pendingDownloadsCount$ | async), fade: true, 'action-icon': true }">DDD</div>-->
       <img
         [ngClass]="{ hide: ! (pendingUploadsCount$ | async), fade: true, 'action-icon': true }"
         style="height: 25px; color: var(--secondary)"
@@ -53,6 +54,19 @@
 
 <!--    </div>-->
   </div>
+  <div
+    style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center"
+  >
+    <img
+      [ngClass]="{ hide: ! (pendingDownloadsCount$ | async), fade: true, 'action-icon': true }"
+      style="height: 25px; color: var(--secondary)"
+      src="assets/libs/sync/icons/cloud_down_arrow.svg"
+      alt="pending downloads"
+    >
+
+    <!--    </div>-->
+  </div>
+
 </div>
 <!--bb-->
 <!--  <span-->

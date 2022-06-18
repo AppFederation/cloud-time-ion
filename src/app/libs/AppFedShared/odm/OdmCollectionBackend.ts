@@ -48,10 +48,9 @@ export abstract class OdmCollectionBackend<
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId): Promise<any>
 
-  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>, nDaysOldModified: number, callback: () => void)
+  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>, nDaysOldModified: number, callback: () => void): void
     /*: Promise<any> | undefined*/ {
     this.listener = listener
-    return undefined
   }
 
   abstract loadChildrenOf(id: TItemId, listener: OdmCollectionBackendListener<TRaw>): void
