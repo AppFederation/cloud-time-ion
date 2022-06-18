@@ -180,6 +180,24 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
           // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/
           this.highlightSelected(editor)
         });
+      editor.addShortcut('ctrl+p', 'Positive style ', function(){
+        editor.formatter.apply('positive');
+      });
+      editor.addShortcut('ctrl+e', 'Positive style ', function(){
+        editor.formatter.apply('positive');
+      });
+      editor.addShortcut('ctrl+n', 'Negative style ', function(){
+        editor.formatter.apply('negative');
+      });
+      editor.addShortcut('ctrl+w', 'Warning style ', function(){
+        editor.formatter.apply('warning');
+      });
+      editor.addShortcut('ctrl+f', 'Fancy style ', function(){
+        editor.formatter.apply('fancy');
+      });
+      editor.addShortcut('ctrl+c', 'Concept style ', function(){
+        editor.formatter.apply('concept');
+      });
       editor.ui.registry.addButton('customMarkBtn', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
         text: 'M',
