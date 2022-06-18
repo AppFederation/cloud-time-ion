@@ -12,6 +12,8 @@ export class ColumnDefs {
   estimatedTimeMin = new OryColumn('estimatedTimeMin')
   estimatedTime = new OryColumn('estimatedTime')
   estimatedTimeMax = new OryColumn('estimatedTimeMax')
+  /** TODO: another status: suspended; isSuspended, apart from done; to not distract but to be able, to still go back to it
+   * with darkening and some sort of wavy strike-through */
   isDone = new OryColumn('isDone')
 }
 

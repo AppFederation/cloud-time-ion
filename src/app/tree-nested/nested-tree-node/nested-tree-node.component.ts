@@ -29,6 +29,12 @@ export class NestedTreeNodeComponent implements OnInit {
   @Input()
   treeHost: TreeHostComponent
 
+  public isDragOver = false
+
+  get itemId() {
+    return this.treeNode.itemId
+  }
+
   constructor() {
   }
 
@@ -44,6 +50,43 @@ export class NestedTreeNodeComponent implements OnInit {
   toggleExpand(event) {
     debugLog('expand', event)
     this.treeNode.expansion.toggleExpansion(event.altKey)
+  }
+
+  onDrag($event: DragEvent) {
+    console.log(`onDrag`, $event)
+    $event.dataTransfer.setData('text', this.treeNode.itemId);
+  }
+
+  onDragStart($event: DragEvent) {
+    console.log(`onDragStart`, $event)
+    $event.dataTransfer.setData('text', this.treeNode.itemId);
+    $event.stopImmediatePropagation()
+  }
+
+  onDragOver($event: DragEvent, isEntered: boolean) {
+    this.isDragOver = isEntered
+  }
+
+  onDragOver2($event: DragEvent) {
+    const draggedItemId = $event.dataTransfer.getData('text')
+    console.log('onDragOver2 2', draggedItemId, `<- draggedItemId`, $event)
+
+    if ( draggedItemId !== this.itemId ) {
+      $event.preventDefault();
+    }
+  }
+
+  onDragDrop($event: DragEvent) {
+    const draggedItemId = $event.dataTransfer.getData('text')
+
+    console.log('onDragDrop 2', draggedItemId, $event)
+    this.isDragOver = false
+    console.log('onDragDrop drop worked', draggedItemId !== this.itemId)
+    $event.stopImmediatePropagation()
+    const droppedNodes = this.treeNode.treeModel.getNodesByItemId(draggedItemId)
+    // const nodes = this.clipboardService.nodesInClipboard
+    this.treeNode.moveInclusionsHere(droppedNodes, {beforeNode: undefined}) // TODO: order
+    // console.log(`droppedNode`, droppedNode)
   }
 
 }

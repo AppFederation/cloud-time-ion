@@ -6,6 +6,7 @@ import {
 import { NavigationService } from '../../core/navigation.service'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 import { PlanExecutionService } from '../../plan-execution/plan-execution.service'
+import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
 
 @Component({
   selector: 'app-time-tracking-toolbar',
@@ -18,6 +19,7 @@ export class TimeTrackingToolbarComponent implements OnInit {
     public timeTrackingService: TimeTrackingService,
     public navigationService: NavigationService,
     public planExecutionService: PlanExecutionService /* just to instantiate and later to track % */,
+    public timeTrackingPeriodsService: TimeTrackingPeriodsService,
   ) {}
 
   ngOnInit() {

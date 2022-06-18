@@ -113,6 +113,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.columnDefs.estimatedTimeMin.hidden = ! config.showMinMaxColumns
       this.columnDefs.estimatedTimeMax.hidden = ! config.showMinMaxColumns
     })
+
+    const x: string = null /* FIXME: still on old TypeScript version, need noImplicitNull  */
   }
 
   ngOnInit() {
@@ -187,6 +189,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /** NOTE: time-tracking is a cross-cutting built-in concern, so it's ok for it to spill into some generic code.
+   * Though this should later be configurable in keyboard shortcuts settings. (at least on-off to avoid conflicts / accidents)
+   *  */
   keyPressMetaEnter(event) {
     // debugLog('keyPressMetaEnter')
     const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
@@ -234,14 +239,19 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.focusNode(nodeToFocus, this.columns.leftMostColumn, {cursorPosition: 0})
   }
 
+  /** TODO: rename to focusCellAbove */
   public focusNodeAbove($event) {
-    const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
-    this.focusOtherNode(nodeToFocus)
+    // if ( getSelectionCursorState().atStart ) {
+      const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
+      this.focusOtherNode(nodeToFocus)
+    // }
   }
 
   public focusNodeBelow($event) {
-    const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
-    this.focusOtherNode(nodeToFocus)
+    // if ( getSelectionCursorState().atEnd ) {
+      const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
+      this.focusOtherNode(nodeToFocus)
+    // }
   }
 
   focusOtherNode(nodeToFocus: OryTreeNode) {
@@ -294,6 +304,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.treeHost.onNodeContentComponentDestroyed(this)
   }
 
+  /* TODO: move to end-time cell (only on day-plans) */
   formatEndTime(column: OryColumn) {
     const date = this.treeNode.endTime(column)
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
@@ -363,6 +374,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public focusColumnToTheRight() {
     const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn)
+    // TODO: this should be more independent of COLUMNS and work more on CELLS level
     debugLog('coldIdx', colIdx)
     this.focus(this.columns.allNotHiddenColumns[colIdx + 1])
   }

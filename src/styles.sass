@@ -11,8 +11,26 @@
 @import "~bootstrap/scss/bootstrap" // import bootstrap has to be in-between _variables.scss and _bootswatch.scss - https://bootswatch.com/help/
 @import "styles/_bootswatch.scss"
 
+html
+  opacity: 0.99
+
 body
   color: lightgray
+  opacity: 99%
+  z-index: 1
+  position: relative
+
+//.popover.bs-popover-bottom
+  //z-index: 9999
+  //opacity: 10%
+  //position: relative
+  // https://coder-coder.com/z-index-isnt-working/
+  // https://stackoverflow.com/questions/2837057/what-has-bigger-priority-opacity-or-z-index-in-browsers
+  // https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+  // https://www.w3.org/TR/CSS21/zindex.html
+  // https://css-tricks.com/almanac/properties/z/z-index/
+
 
 $popover-max-width: 500px
 

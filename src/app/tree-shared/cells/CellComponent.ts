@@ -15,7 +15,7 @@ import {
 
 export abstract class CellComponent implements OnInit {
 
-  /** TODO fix circular dep via e.g. event */
+  /** TODO fix circular dep via e.g. event / ViewModel */
   @Input()
   nodeContentComponent: NodeContentComponent
 

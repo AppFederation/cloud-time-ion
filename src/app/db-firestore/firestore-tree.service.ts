@@ -62,8 +62,9 @@ export interface FirestoreNodeInclusion {
 @Injectable()
 export class FirestoreTreeService extends DbTreeService {
 
-  // static dbPrefix = 'DbWithAllInclusionsSyncer2'
-  static dbPrefix = 'DbWithAllInclusionsSyncer2_test_'
+  static dbPrefix = 'DbWithAllInclusionsSyncer2'
+  // static dbPrefix = 'DbWithAllInclusionsSyncer2_test_'
+  // static dbPrefix = 'oryol_test_'
 
   pendingListeners = 0
 

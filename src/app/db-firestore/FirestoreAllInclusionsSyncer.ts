@@ -55,15 +55,16 @@ export class FirestoreAllInclusionsSyncer {
       const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
       // NOTE: for now treating adding and modifying as same event (as in tree event add-or-modify)
       snapshot.docChanges().forEach((change: DocumentChange) => {
-        const documentSnapshot = change.doc
-        const docData = documentSnapshot.data() as FirestoreNodeInclusion
+        const docSnapshot = change.doc
+        const docData = docSnapshot.data() as FirestoreNodeInclusion
         debugLog('FirestoreAllInclusionsSyncer onSnapshot id', change.doc.id, 'DocumentChange', change)
+        const parentNodeId = docData.parentNode.id
         if (change.type === 'added') {
-          mapParentIdToDocsAdded.add(docData.parentNode.id, documentSnapshot)
-          // this.putItemAndFireCallbacks(documentSnapshot)
+          mapParentIdToDocsAdded.add(parentNodeId, docSnapshot)
+          // this.putItemAndFireCallbacks(docSnapshot)
         } else if ( change.type === 'modified') {
-          debugLog('FirestoreAllItemsLoader modified: ', docData.parentNode.id);
-          mapParentIdToDocsModified.add(docData.parentNode.id, documentSnapshot)
+          debugLog('FirestoreAllItemsLoader modified: ', parentNodeId);
+          mapParentIdToDocsModified.add(parentNodeId, docSnapshot)
           // listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData)
         } else if (change.type === 'removed') {
           FIXME('FirestoreAllItemsLoader change.type === \'removed\'', change)

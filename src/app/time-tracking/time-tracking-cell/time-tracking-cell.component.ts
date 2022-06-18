@@ -9,6 +9,7 @@ import {
 } from '../time-tracking.service'
 import { DebugService } from '../../core/debug.service'
 import { ConfigService } from '../../core/config.service'
+import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
 
 @Component({
   selector: 'app-time-tracking-cell',

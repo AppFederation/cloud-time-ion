@@ -41,10 +41,26 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
       .onSnapshot((snapshot: QuerySnapshot) =>
     {
       snapshot.docChanges().forEach((change: DocumentChange) => {
-        const documentSnapshot = change.doc
-        debugLog('FirestoreAllItemsLoader onSnapshot id', change.doc.id, 'DocumentChange', change)
+        const docSnapshot: firestore.QueryDocumentSnapshot = change.doc
+        const docId = change.doc.id
+        const docData = change.doc.data()
+        const owner = docData.owner
+        const karolOwner = `FIXME____`
+        if ( ! owner ) {
+          debugLog(`OrYoL item no owner `, docId)
+          //this.itemDoc(id).update({owner: karolOwner})
+        } else {
+          debugLog(`OrYoL item yes owner `, docId, owner)
+          if ( owner !== karolOwner ) {
+            window.alert(`OrYoL some other owner!! ` + `docId:` + docId + ` owner: ` + owner)
+          }
+        }
+
+
+
+        debugLog('FirestoreAllItemsLoader onSnapshot id', docId, 'DocumentChange', change)
         if (change.type === 'added' || change.type === 'modified') {
-          this.putItemAndFireCallbacks(documentSnapshot)
+          this.putItemAndFireCallbacks(docSnapshot)
         }
         // if (change.type === 'modified') {
         //   debugLog('FirestoreAllItemsLoader modified: ', nodeInclusionData);

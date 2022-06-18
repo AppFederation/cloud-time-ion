@@ -18,6 +18,10 @@ $nested-tree-node-margin: 5px;
   animation: nested-tree-node-animation 0.7s;
 }
 
+.isDragOver {
+  background: red;
+}
+
 @keyframes nested-tree-node-animation {
   0% {
     //padding-left: 100px;

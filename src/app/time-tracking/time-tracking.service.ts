@@ -250,6 +250,9 @@ export class TimeTrackingService {
     public dataItemsService: DataItemsService,
     private timeTrackingPeriodsService: TimeTrackingPeriodsService,
   ) {
+    this.timeTrackingPeriodsService.activePeriods$.subscribe(periods => {
+      // this.
+    })
     // console.log('TimeTrackingService constructor()')
     // console.trace('TimeTrackingService constructor()')
     if ( TimeTrackingService._the ) {
@@ -267,7 +270,7 @@ export class TimeTrackingService {
       }
     })
 
-    // detect item being tracked when loading from DB:
+    // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
     this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem) => {
       const itemData = dataItem.getItemData()
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
