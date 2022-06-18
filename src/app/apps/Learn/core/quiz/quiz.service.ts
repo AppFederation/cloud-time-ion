@@ -308,7 +308,7 @@ export class QuizService {
     const getArr = (inputStr?: string) => trimAllFunc(inputStr ?. trim() ?. toLowerCase() ?. split(',')) ?? []
     const categories: string[] = getArr(quizOptions.categories)
     const textFilterStrings: string[] = getArr(quizOptions.textFilter)
-    console.log(`textFilterStrings`, textFilterStrings)
+    console.log(`textFilterStrings`, textFilterStrings) /* FIXME: this could be the slowdown during typing; as it prolly string-filters all thousands of items on every save */
 
     // const categories = [`health`, `interview`]
     // const categories = [
@@ -326,7 +326,7 @@ export class QuizService {
     // strategy
 
     // note: not using word "tags" ; let's reserve this word for #SomeCategory hashtag occurrence maybe.
-    if ( item$s ?. length ) {
+    if ( item$s ?. length && (categories.length || textFilterStrings.length) ) {
       item$s = item$s.filter(
         (item$) => {
           // return true
