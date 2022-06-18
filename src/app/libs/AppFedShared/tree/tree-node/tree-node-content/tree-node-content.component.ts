@@ -21,6 +21,6 @@ export class TreeNodeContentComponent implements OnInit {
   }
 
   onArrowLeft() {
-    this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.left)
+    // this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.left)
   }
 }

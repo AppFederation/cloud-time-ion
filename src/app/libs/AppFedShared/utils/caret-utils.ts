@@ -6,7 +6,7 @@ import {equalsIgnoreCase} from './utils-from-oryol'
   but 2015; but there could be something similar more modern
  */
 
-export function getCaretPosition(el) {
+export function getCaretPosition(el: any) {
   var caretPos = 0,
     sel, range;
   // if ( el.tagName.toLowerCase() === 'input' ) {
@@ -14,8 +14,8 @@ export function getCaretPosition(el) {
   // } else
   if (window.getSelection) {
     sel = window.getSelection();
-    if (sel.rangeCount) {
-      range = sel.getRangeAt(0);
+    if (sel!.rangeCount) {
+      range = sel!.getRangeAt(0);
       if (range.commonAncestorContainer.parentNode == el) {
         caretPos = range.endOffset;
       }
@@ -35,7 +35,7 @@ export function getCaretPosition(el) {
 }
 
 
-export function getElementCaretPos(activeElement) {
+export function getElementCaretPos(activeElement: any) {
   const element = <HTMLInputElement>activeElement
   const end = element.selectionEnd
   debugLog('getElementCaretPos', end)
@@ -59,7 +59,7 @@ export function getSelectionCursorState(/*nativeElement*/) {
   // const el = nativeElement
   const el = document.activeElement
   // debugLog('getSelectionCursorState', el.tagName, el)
-  if ( equalsIgnoreCase('INPUT', el.tagName) ) {
+  if ( equalsIgnoreCase('INPUT', el!.tagName) ) {
     return {
       atStart: getActiveElementCaretPos() === 0,
       atEnd: isCaretAtEndOfActiveElement(),
@@ -71,15 +71,15 @@ export function getSelectionCursorState(/*nativeElement*/) {
   const selection = (document as any).selection
   if (window.getSelection) {
     var sel = window.getSelection();
-    if (sel.rangeCount) {
-      selRange = sel.getRangeAt(0);
+    if (sel!.rangeCount) {
+      selRange = sel!.getRangeAt(0);
       testRange = selRange.cloneRange();
 
-      testRange.selectNodeContents(el);
+      testRange.selectNodeContents(el as Node);
       testRange.setEnd(selRange.startContainer, selRange.startOffset);
       atStart = (testRange.toString() == "");
 
-      testRange.selectNodeContents(el);
+      testRange.selectNodeContents(el as Node);
       testRange.setStart(selRange.endContainer, selRange.endOffset);
       atEnd = (testRange.toString() == "");
     }

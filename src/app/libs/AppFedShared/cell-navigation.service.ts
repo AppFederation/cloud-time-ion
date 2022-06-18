@@ -39,7 +39,7 @@ export class CellNavigationService {
   }
 
   navigateToCellVisuallyInDirection(direction: CellDirection, fromCellComponent: AbstractCellComponent) {
-    console.log('navigateToCellVisuallyInDirection', direction)
+    // console.log('navigateToCellVisuallyInDirection', direction)
     const focusedTop = fromCellComponent.viewportTop
     let compToFocus: AbstractCellComponent | undefined = undefined
     if ( direction === cellDirections.up ) {
@@ -50,7 +50,7 @@ export class CellNavigationService {
         }
         return topDiff
       })
-      console.log(compToFocus?.viewportTop)
+      // console.log(compToFocus?.viewportTop)
       if ( ! compToFocus || (compToFocus.viewportTop >= focusedTop) ) {
         compToFocus = this.findBottommostComponent() // wrap-around
       }
@@ -73,7 +73,7 @@ export class CellNavigationService {
 
   public register(component: AbstractCellComponent) {
     this.cellComponents.add(component)
-    console.log('Register component', component)
+    // console.log('Register component', component)
   }
 
   public deregister(component: AbstractCellComponent) {
@@ -82,7 +82,7 @@ export class CellNavigationService {
 
   public findBottommostComponent() {
     const maxBy1 = maxBy([...this.cellComponents], comp => comp.viewportTop)
-    console.log(`findBottommostComponent`, maxBy1)
+    // console.log(`findBottommostComponent`, maxBy1)
     return maxBy1
   }
 }

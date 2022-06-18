@@ -1,19 +1,18 @@
 import {debugLog} from './log'
-import { isNullOrUndefined } from 'util'
 
-export function nullOrUndef(x) {
+export function nullOrUndef(x: any) {
   // cannot just do !x, because of zero
   return (x === null) || (x === undefined)
 }
 
-export function defined(x) {
+export function defined(x: any) {
   return ! nullOrUndef(x)
 }
 
-export const uuidv4 = require('uuid/v4');
+// export const uuidv4 = require('uuid/v4');
 
 
-function applyNegativeOffsetIfNecessary(caretPos, length) {
+function applyNegativeOffsetIfNecessary(caretPos: any, length: any) {
   if (caretPos < 0) {
     let offsetFromEnd = - caretPos - 1
     caretPos = length - offsetFromEnd
@@ -22,7 +21,7 @@ function applyNegativeOffsetIfNecessary(caretPos, length) {
 }
 
 /** sets text cursor position */
-export function setCaretPosition(elem, caretPos) {
+export function setCaretPosition(elem: any, caretPos: any) {
   debugLog('setCaretPosition', arguments)
   if (elem != null) {
     let length = elem.value.length
@@ -42,19 +41,19 @@ export function setCaretPosition(elem, caretPos) {
   }
 }
 
-export function setCaretPositionInContentEditable(el, caretPos) {
+export function setCaretPositionInContentEditable(el: any, caretPos: any) {
 
   caretPos = applyNegativeOffsetIfNecessary(caretPos, el.html().length)
   let range = document.createRange();
   let sel = window.getSelection();
   range.setStart(el.childNodes[2], 5);
   range.collapse(true);
-  sel.removeAllRanges();
-  sel.addRange(range);
+  sel!.removeAllRanges();
+  sel!.addRange(range);
 }
 
 
-export function setCaretOnContentEditable(target, isStart) {
+export function setCaretOnContentEditable(target: any, isStart: any) {
   debugLog('setCaretOnContentEditable', arguments)
 
   // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
@@ -68,19 +67,19 @@ export function setCaretOnContentEditable(target, isStart) {
     range.selectNodeContents(target);
   }
   range.collapse(isStart);
-  sel.removeAllRanges();
-  sel.addRange(range);
+  sel!.removeAllRanges();
+  sel!.addRange(range);
   target.focus();
   if ( target.select ) {
     target.select();
   }
 }
 
-export function isEmpty(val) {
+export function isEmpty(val: any) {
   if ( typeof val === 'string' ) {
     return val.trim() === ''
   }
-  return isNullOrUndefined(val)
+  return nullOrUndef(val)
 }
 
 export function equalsIgnoreCase(str1: string, str2: string) {

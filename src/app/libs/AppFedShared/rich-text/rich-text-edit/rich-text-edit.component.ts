@@ -280,18 +280,15 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   public focusCellAbove($event: any) {
     if ( getSelectionCursorState().atStart ) {
-      // this.side
-      // const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
-      // this.focusOtherNode(nodeToFocus)
       this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.up, this)
-      console.log('Will navi up')
+      // console.log('Will navi up')
     }
   }
 
   public focusCellBelow($event: any) {
     if ( getSelectionCursorState().atEnd ) {
       this.cellNavigationService.navigateToCellVisuallyInDirection(cellDirections.down, this)
-      console.log('Will navi down')
+      // console.log('Will navi down')
     }
   }
 
