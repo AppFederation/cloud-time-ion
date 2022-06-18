@@ -2,15 +2,15 @@
 const appRoutes: Routes = [
   {
     path: 'sign-in',
-    loadChildren: () => import('app/user-sign-in/user-sign-in.module').then(m => m.UserSignInModule)
+    loadChildren: () => import('src/app/apps/OrYoL/user-sign-in/user-sign-in.module').then(m => m.UserSignInModule)
   },
   {
     path: 'tree',
-    loadChildren: () => import('app/tree-page/tree-page.module').then(m => m.TreePageModule)
+    loadChildren: () => import('src/app/apps/OrYoL/tree-page/tree-page.module').then(m => m.TreePageModule)
   },
   {
     path: 'moderation',
-    loadChildren: () => import('app/apps/ModerationTimers/moderation-timers-page/moderation-timers-page.module').then(m => m.ModerationTimersPageModule)
+    loadChildren: () => import('src/app/apps/OrYoL/apps/ModerationTimers/moderation-timers-page/moderation-timers-page.module').then(m => m.ModerationTimersPageModule)
   },
   {
     path: '',

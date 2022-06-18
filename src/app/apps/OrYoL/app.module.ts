@@ -20,7 +20,7 @@ import { MyHammerConfig } from './my-hammer-config';
 import { SharedModule } from './shared/shared.module'
 import { routingModule } from './app.routing';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { environment } from '../../../../OrYoL_OFF/src/environments/environment';
 
 library.add(fas);
 
