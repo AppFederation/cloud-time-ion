@@ -52,7 +52,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
     setTimeout(() => {
       this.contentEditableEl.nativeElement.focus()
       setCaretOnContentEditable(
-        this.contentEditableEl.nativeElement, options && (options.cursorPosition) >= 0 /* simplification of start vs end*/
+        this.contentEditableEl.nativeElement, (options?.cursorPosition ?? -1) >= 0 /* simplification of start vs end*/
       )
     })
     // this.contentEditableEl.nativeElement.scrollIntoView()

@@ -27,7 +27,7 @@ export class PlanExecutionService {
       console.log(`PlanExecutionService config$`, config)
       this.reset()
     })
-    this.timeTrackingService.timeTrackedEntries$.subscribe(newTtEntries => {
+    this.timeTrackingService.timeTrackedEntries$.subscribe((newTtEntries: TimeTrackedEntry[]) => {
       console.log(`PlanExecutionService timeTrackedEntries$`, newTtEntries)
       this.onEntriesChanged(newTtEntries)
     })
@@ -74,7 +74,7 @@ export class PlanExecutionService {
     }))
   }
 
-  private onItemDataChanged(data, node: OryTreeNode, ttEntry: TimeTrackedEntry) {
+  private onItemDataChanged(data: any, node: OryTreeNode, ttEntry: TimeTrackedEntry) {
     if ( ttEntry.isTrackingNow ) {
       this.subscribeTimeoutsForPercentages(node, ttEntry)
     }

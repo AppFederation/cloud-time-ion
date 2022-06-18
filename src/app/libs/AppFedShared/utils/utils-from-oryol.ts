@@ -6,8 +6,6 @@ export function nullOrUndef(x: any) {
   return (x === null) || (x === undefined)
 }
 
-export const isNullOrUndefined = nullOrUndef
-
 export function defined(x: any) {
   return ! nullOrUndef(x)
 }

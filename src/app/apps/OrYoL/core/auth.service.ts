@@ -17,7 +17,7 @@ export type UserId = string
 )
 export class AuthService {
 
-  public userId: UserId
+  public userId?: UserId
 
   constructor(
     // private angularFireAuth: AngularFireAuth,
@@ -29,7 +29,8 @@ export class AuthService {
     const provider = new auth.GoogleAuthProvider();
     auth().signInWithPopup(provider).then(result => {
     // this.angularFireAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((result) => {
-      this.userId = result.user.uid
+      // FIXME handle nullish user?
+      this.userId = result.user!.uid
       console.log('signInWithPopup', this.userId, result)
     })
   }

@@ -1,6 +1,6 @@
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
-export function parseTimeToMinutes(val: string): number {
+export function parseTimeToMinutes(val: string): number | null {
   if ( isEmpty(val) ) {
     return null
   }

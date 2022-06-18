@@ -10,13 +10,13 @@ import { TimeService } from '../../../core/time.service'
 export class TimePassingComponent implements OnInit, OnDestroy {
 
   @Input()
-  referenceTime: Date
+  referenceTime!: Date
 
   @Input()
   isCountDown: boolean = true
 
   @Input()
-  pausableEntry: TimeTrackedEntry
+  pausableEntry!: TimeTrackedEntry
 
   msDiff = 0
 

@@ -4,7 +4,7 @@ import {
   Cells,
   ColumnCell,
 } from './Cells'
-import { ignoreUnused } from '../../utils/utils'
+import {ignoreUnused} from '../../../../libs/AppFedShared/utils/utils-from-oryol'
 
 export class ColumnDefs {
   title = new OryColumn('title')

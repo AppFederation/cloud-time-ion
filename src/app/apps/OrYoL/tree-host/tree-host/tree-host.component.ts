@@ -155,7 +155,7 @@ export class TreeHostComponent implements OnInit {
   }
 
   newNodeAtVisualRoot() {
-    const newTreeNode = this.treeModel.navigation.visualRoot.addChild()
+    const newTreeNode = this.treeModel.navigation.visualRoot!.addChild()
     this.focusNode(newTreeNode)
   }
 
