@@ -10,12 +10,12 @@ import {
 })
 export class SearchService {
 
-  allItems = []
+  allItems: any[] = []
 
   constructor(
     private dataItemsService: DataItemsService
   ) {
-    this.dataItemsService.onItemWithDataAdded$.subscribe(item => {
+    this.dataItemsService.onItemWithDataAdded$.subscribe((item: any) => {
       this.allItems.push(item)
       // console.log('Adding for search', item)
     })

@@ -8,12 +8,9 @@ import {
 import { CellComponent } from '../CellComponent'
 import { NodeContentComponent } from '../../node-content/node-content.component'
 import { ColumnCell } from '../../node-content/Cells'
-import {
-  setCaretOnContentEditable,
-  setCaretPosition,
-} from '../../../utils/utils'
 import { NodeFocusOptions } from '../../../tree-model/TreeModel'
 import { debugLog } from '../../../utils/log'
+import {setCaretOnContentEditable} from '../../../../../libs/AppFedShared/utils/utils-from-oryol'
 
 @Component({
   selector: 'app-contenteditable-cell',
@@ -24,12 +21,12 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
 
   /** TODO fix circular dep via e.g. event */
   @Input()
-  nodeContentComponent: NodeContentComponent
+  nodeContentComponent!: NodeContentComponent
 
   @Input()
-  cell: ColumnCell
+  cell!: ColumnCell
 
-  @ViewChild('contentEditableEl', {static: true}) contentEditableEl: ElementRef
+  @ViewChild('contentEditableEl', {static: true}) contentEditableEl!: ElementRef
 
   constructor() {
     super()
@@ -38,7 +35,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   ngOnInit() {
     super.ngOnInit()
     this.contentEditableEl
-      .nativeElement.addEventListener('input', (event) => this.onInputChanged(event, this.getInputValue()))
+      .nativeElement.addEventListener('input', (event: InputEvent) => this.onInputChanged(event, this.getInputValue()))
   }
 
   getInputValue(): string {

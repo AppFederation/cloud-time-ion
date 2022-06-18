@@ -16,9 +16,9 @@ export class NodeDebug {
 })
 export class NodeDebugCellComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
-  @Input() nodeDebug: NodeDebug
+  @Input() nodeDebug!: NodeDebug
 
   constructor() { }
 

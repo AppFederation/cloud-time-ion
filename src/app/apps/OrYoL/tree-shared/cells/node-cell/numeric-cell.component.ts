@@ -12,10 +12,8 @@ import {
   NodeFocusOptions,
   OryTreeNode,
 } from '../../../tree-model/TreeModel'
-import {
-  setCaretPosition,
-} from '../../../utils/utils'
 import { ConfigService } from '../../../core/config.service'
+import {setCaretPosition} from '../../../../../libs/AppFedShared/utils/utils-from-oryol'
 
 /* TODO: rename to eg NumericCell */
 @Component({
@@ -37,13 +35,13 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   }
 
   @ViewChild('cellInput', {static: true})
-  cellInput: ElementRef
+  cellInput!: ElementRef
 
   @Output()
   cellInputChanged = new EventEmitter()
 
   /* for interim compatibility after extracting this component */
-  nativeElement: HTMLElement
+  nativeElement!: HTMLElement
 
   config$ = this.configService.config$
 

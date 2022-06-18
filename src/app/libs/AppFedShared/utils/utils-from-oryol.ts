@@ -1,16 +1,18 @@
 import {debugLog} from './log'
+import { v4 } from 'uuid';
 
 export function nullOrUndef(x: any) {
   // cannot just do !x, because of zero
   return (x === null) || (x === undefined)
 }
 
+export const isNullOrUndefined = nullOrUndef
+
 export function defined(x: any) {
   return ! nullOrUndef(x)
 }
 
-// export const uuidv4 = require('uuid/v4');
-
+export const uuidv4 = v4;
 
 function applyNegativeOffsetIfNecessary(caretPos: any, length: any) {
   if (caretPos < 0) {

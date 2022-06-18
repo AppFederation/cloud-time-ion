@@ -13,19 +13,19 @@ import { debugLog } from '../../../utils/log'
 })
 export class NodeExpansionIconComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  toggleExpand(event) {
+  toggleExpand(event: any) {
     debugLog('toggleExpand', event)
     this.treeNode.expansion.setExpanded(! this.treeNode.expanded, event.altKey)
   }
 
-  onPress(event) {
+  onPress(event: any) {
     debugLog('onPress', event)
     this.treeNode.expansion.toggleExpansion(true)
   }

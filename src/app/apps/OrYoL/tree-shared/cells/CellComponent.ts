@@ -17,10 +17,10 @@ export abstract class CellComponent implements OnInit {
 
   /** TODO fix circular dep via e.g. event / ViewModel */
   @Input()
-  nodeContentComponent: NodeContentComponent
+  nodeContentComponent!: NodeContentComponent
 
   @Input()
-  cell: ColumnCell
+  cell!: ColumnCell
 
   get column() { return this.cell.column }
 
@@ -29,7 +29,7 @@ export abstract class CellComponent implements OnInit {
 
   abstract getInputValue(): string
 
-  abstract setInputValue(newValue: string)
+  abstract setInputValue(newValue: string): void
 
   constructor(
     // protected injector: Injector,
@@ -39,11 +39,11 @@ export abstract class CellComponent implements OnInit {
     return this.getInputValue() === newValue
   }
 
-  protected onInputChanged(event, newValue) {
+  protected onInputChanged(event: any, newValue: any) {
     this.nodeContentComponent.onInputChanged(event, this.cell, newValue, this)
   }
 
-  abstract focus(options?: NodeFocusOptions)
+  abstract focus(options?: NodeFocusOptions): void
 
   ngOnInit() {
     this.nodeContentComponent.mapColumnToComponent.set(this.cell.column, this)

@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { TreeDragDropService } from 'primeng/primeng'
+import { TreeDragDropService } from 'primeng/api'
 import { TreeService } from '../../tree-model/tree.service'
 import {
   NodeFocusOptions,
@@ -15,7 +15,7 @@ import { OryColumn } from '../../tree-shared/OryColumn'
 import { debugLog } from '../../utils/log'
 import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
-import { CommandsService } from '../../core/commands.service'
+import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
 
 
@@ -48,13 +48,13 @@ export class TreeHostComponent implements OnInit {
   ) {
     const rootNodeInclusionId = this.activatedRoute.snapshot.params['rootNodeId']
     console.log('rootNodeInclusionId', rootNodeInclusionId)
-    this.navigationService.navigation$.subscribe(nodeId => {
+    this.navigationService.navigation$.subscribe((nodeId: string) => {
       // this.treeModel.navigation.navigateInto(nodeId)
       // TODO: reFocusLastFocused()?
       this.focusNode(this.treeModel.getNodesByItemId(nodeId)[0])
     })
 
-    commandsService.commands$.subscribe(command => {
+    commandsService.commands$.subscribe((command: Command) => {
       const lastFocusedNode = this.treeModel.focus.lastFocusedNode
       /*  */ if ( command === 'reorderUp' ) {
         if ( lastFocusedNode ) {
@@ -70,7 +70,7 @@ export class TreeHostComponent implements OnInit {
         }
       }
     })
-    treeDragDropService.dragStop$.subscribe((...args) => {
+    treeDragDropService.dragStop$.subscribe((...args: any[]) => {
       console.log('dragStop$', args)
     })
 
@@ -137,19 +137,19 @@ export class TreeHostComponent implements OnInit {
     node.expansion.setExpansionOnParentsRecursively(true)
     setTimeout(() => {
       this.treeModel.focus.ensureNodeVisibleAndFocusIt(node, column, options)
-      const component: NodeContentComponent = this.getComponentForNode(node)
+      const component: NodeContentComponent | undefined = this.getComponentForNode(node)
       if ( component ) {
         component.focus(column, options)
       }
     })
   }
 
-  navigateUp($event) {
+  navigateUp($event: Event) {
     this.treeModel.navigation.navigateToParent()
     this.reFocusLastFocused() // FIXME: move this to treeModel or reaction to navigation (or maybe it is there already)
   }
 
-  navigateToRoot($event) {
+  navigateToRoot($event: Event) {
     this.treeModel.navigation.navigateToRoot()
     this.reFocusLastFocused() // FIXME: move this to treeModel or reaction to navigation (or maybe it is there already)
   }
@@ -191,7 +191,7 @@ export class TreeHostComponent implements OnInit {
   planToday() {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
-    lastPlanNode.parent2.navigateInto()
+    lastPlanNode.parent2?.navigateInto()
     lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }

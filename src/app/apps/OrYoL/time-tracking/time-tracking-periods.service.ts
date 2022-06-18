@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { TimeTrackedEntry } from './time-tracking.service'
 // import Timestamp = firebase.firestore.Timestamp
 import { ItemId } from '../db/DbItem'
-import { uuidv4 } from '../utils/utils'
 import { firestore1 } from '../db-firestore/firestore-tree.service'
 import { firestore } from 'firebase'
 import { errorAlert } from '../utils/log'
-import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5
 

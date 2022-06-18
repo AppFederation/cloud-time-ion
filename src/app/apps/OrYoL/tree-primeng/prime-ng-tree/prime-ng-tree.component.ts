@@ -10,17 +10,17 @@ import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
 export class PrimeNgTreeComponent implements OnInit {
 
   @Input()
-  treeModel: TreeModel
+  treeModel!: TreeModel
 
   @Input()
-  treeHost: TreeHostComponent
+  treeHost!: TreeHostComponent
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  nodeDrop(event) {
+  nodeDrop(event: Event) {
     console.log('nodeDrop', event)
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }

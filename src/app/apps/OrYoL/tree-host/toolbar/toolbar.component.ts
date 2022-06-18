@@ -16,7 +16,7 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 export class ToolbarComponent implements OnInit {
 
   /* workaround for now */
-  @Input() treeHost: TreeHostComponent
+  @Input() treeHost!: TreeHostComponent
 
   showExtraNavIcons = false
 

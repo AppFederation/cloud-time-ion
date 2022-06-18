@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OryTreeNode } from '../tree-model/TreeModel'
-import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 /* Distinguish between navigation and focus?*/
 @Injectable({

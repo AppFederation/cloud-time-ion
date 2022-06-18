@@ -9,7 +9,7 @@ import { OryTreeNode } from '../../tree-model/TreeModel'
 })
 export class ConfirmDeleteTreeNodeComponent implements OnInit {
 
-  treeNode: OryTreeNode
+  treeNode!: OryTreeNode
 
   constructor(
     public activeModal: NgbActiveModal,

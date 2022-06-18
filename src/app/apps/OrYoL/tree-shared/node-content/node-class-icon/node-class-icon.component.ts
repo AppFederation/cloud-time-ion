@@ -12,7 +12,7 @@ import { OryTreeNode } from '../../../tree-model/TreeModel'
 })
 export class NodeClassIconComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
   constructor() { }
 

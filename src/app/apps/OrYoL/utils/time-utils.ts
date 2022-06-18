@@ -1,6 +1,6 @@
-import { isEmpty } from './utils'
+import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
-export function parseTimeToMinutes(val: string) {
+export function parseTimeToMinutes(val: string): number {
   if ( isEmpty(val) ) {
     return null
   }
@@ -14,7 +14,7 @@ export function parseTimeToMinutes(val: string) {
   }
 }
 
-export function minutesToString(minutes: number) {
+export function minutesToString(minutes: number): string {
   minutes = Math.round(minutes * 100) / 100
   const hours = Math.floor(minutes / 60)
   const minutesUpTo60 = minutes % 60

@@ -23,7 +23,7 @@ function timeTrackedMsFunc ( node: OryTreeNode ) {
 })
 export class TimeTrackingMenuComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
   timeTrackedMsFunc = timeTrackedMsFunc
 

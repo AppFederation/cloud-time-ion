@@ -14,7 +14,6 @@ import {
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { OryColumn } from '../OryColumn'
-import { isNullOrUndefined } from 'util'
 import 'rxjs/add/operator/throttleTime';
 
 import { padStart } from 'lodash';
@@ -25,10 +24,6 @@ import { debugLog } from '../../utils/log'
 import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap'
-import {
-  getActiveElementCaretPos,
-  getSelectionCursorState,
-} from '../../utils/caret-utils'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import {
   Cells,
@@ -43,6 +38,8 @@ import {
 } from './Columns'
 import { ConfigService } from '../../core/config.service'
 import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
+import {getActiveElementCaretPos, getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
+import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -71,18 +68,18 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   columns: Columns = NodeContentComponent.columnsStatic
 
-  cells: Cells
+  cells!: Cells
 
   /* TODO: remove */
   isDone: Date | boolean /* for backwards compatibility */ | null = null
 
-  nodeContentViewSyncer: NodeContentViewSyncer
+  nodeContentViewSyncer!: NodeContentViewSyncer
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
-  @Input() treeHost: TreeHostComponent
+  @Input() treeHost!: TreeHostComponent
 
-  private focusedColumn: OryColumn
+  private focusedColumn: OryColumn | undefined
 
   isAncestorOfFocused = false
 
@@ -114,7 +111,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.columnDefs.estimatedTimeMax.hidden = ! config.showMinMaxColumns
     })
 
-    const x: string = null /* FIXME: still on old TypeScript version, need noImplicitNull  */
+    // const x: string = null /* FIXME: still on old TypeScript version, need noImplicitNull  */
   }
 
   ngOnInit() {
@@ -146,7 +143,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     debugLog('applyItemDataValuesToViews this.treeNode', this.treeNode)
 
     this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
-    if (isNullOrUndefined(this.isDone)) {
+    if (isNullish(this.isDone)) {
       this.isDone = null; // TODO: test for done timestamp
     }
 
@@ -178,7 +175,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  keyPressEnter(event) {
+  keyPressEnter(event: any) {
     if ( this.treeNode.isVisualRoot ) {
       this.addChild()
     } else {
@@ -192,7 +189,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   /** NOTE: time-tracking is a cross-cutting built-in concern, so it's ok for it to spill into some generic code.
    * Though this should later be configurable in keyboard shortcuts settings. (at least on-off to avoid conflicts / accidents)
    *  */
-  keyPressMetaEnter(event) {
+  keyPressMetaEnter(event: any) {
     // debugLog('keyPressMetaEnter')
     const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
 
@@ -222,7 +219,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private setDone(newDone: boolean) {
     this.isDone = newDone ? (this.isDone || new Date()) : false // TODO: test for done timestamp
-    this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone), this.isDone, null)
+    this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone) !, this.isDone, null)
   }
 
   addNodeAfterThis() {
@@ -240,14 +237,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /** TODO: rename to focusCellAbove */
-  public focusNodeAbove($event) {
+  public focusNodeAbove($event: any) {
     // if ( getSelectionCursorState().atStart ) {
       const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
       this.focusOtherNode(nodeToFocus)
     // }
   }
 
-  public focusNodeBelow($event) {
+  public focusNodeBelow($event: any) {
     // if ( getSelectionCursorState().atEnd ) {
       const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
       this.focusOtherNode(nodeToFocus)
@@ -267,18 +264,18 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getCellComponentByColumnOrDefault(column?: OryColumn): CellComponent {
-    return this.mapColumnToComponent.get(column)
-      || this.mapColumnToComponent.get(this.columnDefs.title)
+    return this.mapColumnToComponent.get(column!)
+      || this.mapColumnToComponent.get(this.columnDefs.title) !
   }
 
-  onColumnFocused(column: OryColumn, event) {
+  onColumnFocused(column: OryColumn, event: any) {
     debugLog('onColumnFocused', column)
     this.focusedColumn = column
     this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }
 
   /* TODO: rename reactToInputChangedAndSave */
-  onInputChanged(event, cell: ColumnCell, inputNewValue, component: CellComponent) {
+  onInputChanged(event: any, cell: ColumnCell, inputNewValue: any, component: CellComponent | null) {
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
     this.nodeContentViewSyncer.onInputChangedByUser(cell, inputNewValue)
@@ -289,12 +286,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // TODO: investigating time recalculation
   }
 
-  reorderUp(event) {
+  reorderUp(event: any) {
     event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
     this.treeNode.reorderUp()
   }
 
-  reorderDown(event) {
+  reorderDown(event: any) {
     event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
     this.treeNode.reorderDown()
   }
@@ -310,13 +307,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 
-  indentDecrease($event) {
+  indentDecrease($event: Event) {
     $event.preventDefault()
     this.treeNode.indentDecrease()
     this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 
-  indentIncrease($event) {
+  indentIncrease($event: Event) {
     $event.preventDefault()
     this.treeNode.indentIncrease()
     this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
@@ -373,14 +370,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public focusColumnToTheRight() {
-    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn !)
     // TODO: this should be more independent of COLUMNS and work more on CELLS level
     debugLog('coldIdx', colIdx)
     this.focus(this.columns.allNotHiddenColumns[colIdx + 1])
   }
 
   public focusColumnToTheLeft() {
-    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn)
+    const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn !)
     debugLog('coldIdx', colIdx)
     this.focus(this.columns.allNotHiddenColumns[colIdx - 1])
   }

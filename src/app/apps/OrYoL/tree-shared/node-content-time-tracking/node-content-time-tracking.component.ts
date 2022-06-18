@@ -16,9 +16,9 @@ import { OryTreeNode } from '../../tree-model/TreeModel'
 })
 export class NodeContentTimeTrackingComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
-  timeTrackedEntry: TimeTrackedEntry
+  timeTrackedEntry!: TimeTrackedEntry
 
   constructor(
     public timeTrackingService: TimeTrackingService,

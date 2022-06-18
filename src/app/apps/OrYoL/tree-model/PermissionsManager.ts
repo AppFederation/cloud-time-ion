@@ -11,7 +11,7 @@ export class PermissionsManager {
 
 
   onAfterCreated(newNode: OryTreeNode) {
-    const readPerms = {}
+    const readPerms = {} as any
     readPerms[this.userId] = new Date()
     newNode.itemData.perms = {
       read: readPerms

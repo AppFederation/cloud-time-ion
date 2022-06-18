@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject'
 import { NavigationService } from './navigation.service'
+import {Subject} from 'rxjs'
 
 export type Command = string
 

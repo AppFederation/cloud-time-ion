@@ -15,8 +15,8 @@ import { PermissionsManager } from '../tree-model/PermissionsManager'
 
 export class ItemValueAndCallbacks {
   constructor(
-    public documentSnapshot: DocumentSnapshot = null,
-    public callbacks = []
+    public documentSnapshot: DocumentSnapshot | null = null,
+    public callbacks: any[] = []
   ) {}
 }
 
@@ -77,7 +77,7 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
 
 
   /* refactor to return observable */
-  getItem$ByRef(itemRef: DocumentReference, callback) {
+  getItem$ByRef(itemRef: DocumentReference, callback: any) {
     const id = itemRef.id
     let entry = this.mapItemIdToDescriptor.get(id)
     if ( ! entry ) {

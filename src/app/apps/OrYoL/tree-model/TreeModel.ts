@@ -88,7 +88,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   // ==== End of PrimeNG's TreeNode
 
   get title() {
-    return this.itemData && this.itemData.title
+    return this.itemData ?. title
   }
 
   /** TODO: rename to itemData$ and use CachedSubject to get initial val too;
@@ -111,7 +111,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   public get numChildren() {
-    return this.children && this.children.length || 0
+    return this.children ?. length ?? 0
   }
 
 
@@ -173,19 +173,19 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   get isDayPlan() {
-    return this.parent2 && this.parent2.itemId === 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
+    return this.parent2 ?. itemId === 'item_35023937-195c-4b9c-b265-5e8a01cf397e'
   }
 
   /** conceptual differences between note and journal entry: note is more pertaining to the topic,
    * whereas journal entry is more about the User's state in a given moment, useful for retrospective, tracking mood, etc. */
   get isJournalEntry() {
-    return this.parent2 && this.parent2.itemId === 'item_50872811-928d-4878-94c0-0df36667be0e'
+    return this.parent2 ?. itemId === 'item_50872811-928d-4878-94c0-0df36667be0e'
   }
 
   get isMilestone() {
     const milestonesNodeId = 'item_28cca5d5-6935-4fb1-907a-44f1f1898851'
     // return //this.parent2 && this.parent2.itemId === milestonesNodeId ||
-    return (this.parent2 && this.parent2.parent2 && this.parent2.parent2.itemId === milestonesNodeId )
+    return this.parent2 ?. parent2 ?. itemId === milestonesNodeId
   }
 
   get isTask() {
@@ -197,7 +197,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   constructor(
-    public nodeInclusion: NodeInclusion,
+    public nodeInclusion: NodeInclusion | undefined,
     public itemId: string,
     public treeModel: TreeModel,
     public itemData: any
@@ -209,18 +209,16 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   public getIndexInParent() {
     return (
-      this.parent2 &&
-      this.parent2.children &&
-      this.parent2.children.indexOf(this)
+      this.parent2?.children?.indexOf(this)
     )
   }
 
-  getSiblingNodeAboveThis() {
+  getSiblingNodeAboveThis(): OryTreeNode | undefined {
     const index = this.getIndexInParent()
     return this.parent2.getChildAtIndexOrNull(index - 1)
   }
 
-  getSiblingNodeBelowThis() {
+  getSiblingNodeBelowThis(): OryTreeNode | undefined  {
     const index = this.getIndexInParent()
     // console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
     const childAtIndexOrNull = (
@@ -231,11 +229,11 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return childAtIndexOrNull
   }
 
-  getNodeVisuallyAboveThis(): OryTreeNode {
+  getNodeVisuallyAboveThis(): OryTreeNode | undefined {
     if ( this.isRoot ) {
       return this.treeModel.root.getLastMostNestedVisibleNodeRecursively()
     }
-    let ret: OryTreeNode
+    let ret: OryTreeNode | undefined
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
       const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedVisibleNodeRecursively()
@@ -257,9 +255,9 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     }
   }
 
-  getNodeVisuallyBelowThis(): OryTreeNode {
+  getNodeVisuallyBelowThis(): OryTreeNode | undefined {
     // this could be extracted as a generic tree util func, a'la sumRecursively
-    let ret: OryTreeNode
+    let ret: OryTreeNode | undefined
     const simple = (
       this.children
       && this.children.length
@@ -300,8 +298,8 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     }
   }
 
-  public getLastDirectChild() {
-    return this.children && this.children.length > 0 && this.children[this.children.length - 1]
+  public getLastDirectChild(): OryTreeNode | undefined {
+    return this.children ?.length > 0 && this.children[this.children.length - 1]
   }
 
   _appendChildAndSetThisAsParent(nodeToAppend?: OryTreeNode, insertBeforeIndex?: number) {
@@ -355,14 +353,14 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     // console.log('addChild, afterExistingNode', afterExistingNode)
     newNode = newNode || new OryTreeNode(null, 'item_' + uuidV4(), this.treeModel, this.newItemData())
 
-    const nodeBelow = afterExistingNode && afterExistingNode.getSiblingNodeBelowThis()
+    const nodeBelow = afterExistingNode?.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
     const nodeInclusion: NodeInclusion = newNode.nodeInclusion || new NodeInclusion(generateNewInclusionId())
 
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
       {
-        inclusionBefore: afterExistingNode && afterExistingNode.nodeInclusion,
-        inclusionAfter: nodeBelow && nodeBelow.nodeInclusion,
+        inclusionBefore: afterExistingNode ?. nodeInclusion,
+        inclusionAfter: nodeBelow ?. nodeInclusion,
       },
       nodeInclusion,
     )
@@ -385,8 +383,8 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
       const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId())
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
-          inclusionBefore: this.lastChildNode && this.lastChildNode.nodeInclusion,
-          inclusionAfter: null,
+          inclusionBefore: this.lastChildNode ?. nodeInclusion,
+          inclusionAfter: undefined,
         },
         newInclusion,
       )
@@ -397,11 +395,11 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   /* This could/should probably be unified with reorder code */
-  moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode }) {
+  moveInclusionsHere(nodes: OryTreeNode[], beforeNode: { beforeNode: OryTreeNode | undefined }) {
     // FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
     for ( const childNodeToAssociate of nodes ) {
-      const nodeAfter = beforeNode && beforeNode.beforeNode
-      let nodeBefore = nodeAfter && nodeAfter.getSiblingNodeAboveThis()
+      const nodeAfter = beforeNode?.beforeNode
+      let nodeBefore = nodeAfter?.getSiblingNodeAboveThis()
       if ( ! nodeAfter && ! nodeBefore ) {
         // both nodeAfter and nodeBefore can become falsy, causing order == 0
         nodeBefore = this.lastChildNode
@@ -409,19 +407,19 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
       const inclusionToModify = childNodeToAssociate.nodeInclusion
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
-          inclusionBefore: nodeBefore && nodeBefore.nodeInclusion,
-          inclusionAfter: nodeAfter && nodeAfter.nodeInclusion,
+          inclusionBefore: nodeBefore?.nodeInclusion,
+          inclusionAfter: nodeAfter?.nodeInclusion,
         },
         inclusionToModify
       )
       this.patchChildInclusionData(inclusionToModify, childNodeToAssociate)
-      childNodeToAssociate.parent2._removeChild(childNodeToAssociate)
+      childNodeToAssociate.parent2!._removeChild(childNodeToAssociate)
       const insertionIndex = nodeAfter ? nodeAfter.getIndexInParent() : this.children.length
       this._appendChildAndSetThisAsParent(childNodeToAssociate, insertionIndex)
     }
   }
 
-  private patchChildInclusionData(inclusionToModify, childNodeToAssociate) {
+  private patchChildInclusionData(inclusionToModify: NodeInclusion, childNodeToAssociate: OryTreeNode) {
     this.treeModel.treeService.patchChildInclusionData(
       /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
       inclusionToModify.nodeInclusionId,
@@ -432,7 +430,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   deleteWithoutConfirmation() {
     this.treeModel.treeService.deleteWithoutConfirmation(this.itemId)
-    this.parent2._removeChild(this)
+    this.parent2!._removeChild(this)
   }
 
   patchItemData(itemDataPatch: any /* TData */) {
@@ -449,14 +447,11 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
     const order = siblingNodeAboveThis ? {
       inclusionBefore:
-        siblingNodeAboveThis &&
-        siblingNodeAboveThis.getSiblingNodeAboveThis() &&
-        siblingNodeAboveThis.getSiblingNodeAboveThis().nodeInclusion,
+        siblingNodeAboveThis?.getSiblingNodeAboveThis()?.nodeInclusion,
       inclusionAfter:
-        siblingNodeAboveThis &&
-        siblingNodeAboveThis.nodeInclusion
+        siblingNodeAboveThis?.nodeInclusion
     } : { // wrap-around to last
-      inclusionBefore: this.parent2.lastChildNode.nodeInclusion,
+      inclusionBefore: this.parent2!.lastChildNode.nodeInclusion,
       inclusionAfter: null
     }
     this.reorder(order)
@@ -466,15 +461,12 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     const siblingNodeBelowThis = this.getSiblingNodeBelowThis()
     const order = siblingNodeBelowThis ? {
       inclusionBefore:
-        siblingNodeBelowThis &&
-        siblingNodeBelowThis.nodeInclusion,
+        siblingNodeBelowThis?.nodeInclusion,
       inclusionAfter:
-        siblingNodeBelowThis &&
-        siblingNodeBelowThis.getSiblingNodeBelowThis() &&
-        siblingNodeBelowThis.getSiblingNodeBelowThis().nodeInclusion
+        siblingNodeBelowThis?.getSiblingNodeBelowThis()?.nodeInclusion
     } : { // wrap-around to first
       inclusionBefore: null,
-      inclusionAfter: this.parent2.children[0].nodeInclusion
+      inclusionAfter: this.parent2!.children[0]!.nodeInclusion
     }
     this.reorder(order)
   }
@@ -482,21 +474,21 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   reorder(order: NodeOrderInfo) {
     debugLog('reorder order, this.parent2', order, this.parent2)
     // TODO: replace patch with set due to problems with "no document to update" after quickly reordering/indenting after creating
-    const inclusion = this.nodeInclusion
+    const inclusion = this.nodeInclusion !
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
 
     { // reorder locally to avoid UI lag, e.g. when quickly reordering up/down and perhaps will remove keyboard appearing/disappearing on android
-      this.parent2._removeChild(this)
-      const insertionIndex = this.parent2.findInsertionIndexForNewInclusion(inclusion)
-      this.parent2._appendChildAndSetThisAsParent(this, insertionIndex)
+      this.parent2!._removeChild(this)
+      const insertionIndex = this.parent2!.findInsertionIndexForNewInclusion(inclusion)
+      this.parent2!._appendChildAndSetThisAsParent(this, insertionIndex)
       this.treeModel.treeListener.onAfterNodeMoved() // fixes focus being lost after reorder
       // TODO: duplicate with onNodeInclusionModified - extract applyParentAndOrder or smth
     }
 
     // this.patchChildInclusionData()
     this.treeModel.treeService.patchChildInclusionData(
-      this.parent2.itemId,
-      this.nodeInclusion.nodeInclusionId,
+      this.parent2!.itemId,
+      this.nodeInclusion!.nodeInclusionId,
       inclusion,
       this.itemId
     )
@@ -515,7 +507,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   /** TODO: move to NumericCell */
-  valueLeftSum(column: OryColumn) {
+  valueLeftSum(column: OryColumn): number {
     const columnVal = column.getValueFromItemData(this.itemData)
     const selfTimeLeft = ( columnVal && parseTimeToMinutes(columnVal)) || 0
     // TODO: use AggregateValue class
@@ -523,7 +515,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
-  getChildrenTimeLeftSum(column: OryColumn) {
+  getChildrenTimeLeftSum(column: OryColumn): number {
     return sumBy(this.children, childNode => {
       return childNode.effectiveValueLeft(column)
     })
@@ -543,7 +535,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   /** TODO: move to NumericCell */
   missingValsCount(column: OryColumn) {
-    return this.getChildrenMissingValsCount(column) + this.hasMissingVal(column) ? 1 : 0
+    return this.getChildrenMissingValsCount(column) + (this.hasMissingVal(column) ? 1 : 0)
     // const missingValsCount = count(this.children, )
     // return missingValsCount
   }
@@ -562,16 +554,16 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return this.getSumRecursivelyJustChildren(missingValsCountFunc)
   }
 
-  public getSumRecursivelyJustChildren(sumValueFunc) {
+  public getSumRecursivelyJustChildren(sumValueFunc: any): number {
     return sumRecursivelyJustChildren<OryTreeNode>(this, node => node.children, sumValueFunc)
   }
 
-  public getSumRecursivelyIncludingThisNode(sumValueFunc) {
+  public getSumRecursivelyIncludingThisNode(sumValueFunc: any): number {
     return sumRecursivelyIncludingRoot<OryTreeNode>(this, node => node.children, sumValueFunc)
   }
 
   /** TODO: move to NumericCell */
-  effectiveValueLeft(column: OryColumn) {
+  effectiveValueLeft(column: OryColumn): number {
     if ( ! this.isDoneOrCancelled ) {
       if ( this.showEffectiveValue(column) ) {
         return this.valueLeftSum(column)
@@ -619,7 +611,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     const colVal = column.getValueFromItemData(this.itemData)
     return ! isEmpty(colVal) &&
       this.valueLeftSum(column) >
-      ( colVal && parseTimeToMinutes(colVal)) || 0
+      (( colVal && parseTimeToMinutes(colVal)) || 0) /* FIXME: there was "object is potentially null" so I added parenthesis 2022-06-18 */
   }
 
   endTime(column: OryColumn) {
@@ -633,10 +625,9 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
     }
 
-    isAncestorOfFocusedNode() {
-      return (
-        this.treeNode.treeModel.focus.lastFocusedNode &&
-        this.treeNode.treeModel.focus.lastFocusedNode.getParentsPathArray().some(ancestorOfFocused => {
+    isAncestorOfFocusedNode(): boolean {
+      return !!(
+        this.treeNode.treeModel.focus.lastFocusedNode?.getParentsPathArray().some(ancestorOfFocused => {
           return this.treeNode === ancestorOfFocused
         })
       )
@@ -645,7 +636,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   getParentsPathArray(): OryTreeNode[] {
     const ret = []
-    let node: OryTreeNode = this
+    let node: OryTreeNode | undefined = this
     while (true) {
       if ( ! node ) {
         // debugLog('getAncestorsPathArray', ret)
@@ -694,9 +685,9 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   indentDecrease() {
-    const newParent = this.parent2.parent2
+    const newParent = this.parent2?.parent2
     if ( newParent ) {
-      newParent.moveInclusionsHere([this], {beforeNode: this.parent2.getSiblingNodeBelowThis()})
+      newParent.moveInclusionsHere([this], {beforeNode: this.parent2?.getSiblingNodeBelowThis()})
     }
   }
 
@@ -723,25 +714,25 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 }
 
 export abstract class OryTreeListener {
-  abstract onAfterNodeMoved()
+  abstract onAfterNodeMoved(): void
 }
 
 export class TreeCell {
   constructor(
-    public node: OryTreeNode,
-    public column: OryColumn,
+    public node?: OryTreeNode,
+    public column?: OryColumn,
   ) {}
 }
 
 export class FocusEvent {
   constructor(
     public cell: TreeCell,
-    public options: NodeFocusOptions,
+    public options?: NodeFocusOptions,
   ) {}
 }
 
 export class NodeFocusOptions {
-  cursorPosition: number
+  cursorPosition?: number
 }
 
 
@@ -761,7 +752,7 @@ export class TreeModel {
   isRootShown = false
 
   navigation = new class Navigation {
-    visualRoot: OryTreeNode = null
+    visualRoot: OryTreeNode | null = null
     visualRoot$ = new CachedSubject<OryTreeNode>()
 
     constructor(public treeModel: TreeModel) {
@@ -807,9 +798,9 @@ export class TreeModel {
   focus = new class Focus {
 
     /** could skip the "focused" part */
-    lastFocusedNode: OryTreeNode
+    lastFocusedNode: OryTreeNode | undefined
     /** could skip the "focused" part */
-    lastFocusedColumn: OryColumn
+    lastFocusedColumn: OryColumn | undefined
 
     // expectedNewNodeToFocus:  = null
 
@@ -819,10 +810,10 @@ export class TreeModel {
       return new TreeCell(this.lastFocusedNode, this.lastFocusedColumn)
     }
 
-    ensureNodeVisibleAndFocusIt(treeNode: OryTreeNode, column: OryColumn, options?: NodeFocusOptions) {
+    ensureNodeVisibleAndFocusIt(treeNode?: OryTreeNode, column?: OryColumn, options?: NodeFocusOptions) {
       this.lastFocusedNode = treeNode
       this.lastFocusedColumn = column
-      treeNode.expansion.setExpansionOnParentsRecursively(true)
+      treeNode?.expansion?.setExpansionOnParentsRecursively(true)
       this.focus$.emit(new FocusEvent(this.lastFocusedCell, options))
     }
   }
@@ -835,7 +826,7 @@ export class TreeModel {
   dataItemsService = this.injector.get(DataItemsService)
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
-  root: OryTreeNode = new OryTreeNode(null, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
+  root: OryTreeNode = new OryTreeNode(undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null)
 
   constructor(
     public injector: Injector,
@@ -867,7 +858,7 @@ export class TreeModel {
     const existingNodes = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     try {
       this.isApplyingFromDbNow = true
-      if ( existingNodes && existingNodes.length > 0 ) {
+      if ( existingNodes ?. length > 0 ) {
         traceLog('node(s) for inclusion already exist(s): ', nodeInclusionId)
         for ( const existingNode of existingNodes ) {
           // setTimeout(() => {
@@ -907,14 +898,14 @@ export class TreeModel {
   }
 
   /* Can unify this with moveInclusionsHere() */
-  onNodeInclusionModified(nodeInclusionId: NodeInclusionId, nodeInclusionData, newParentItemId: ItemId) {
+  onNodeInclusionModified(nodeInclusionId: NodeInclusionId, nodeInclusionData: any, newParentItemId: ItemId) {
     // TODO: ensure this same code is executed locally immediately after reorder/move, without waiting for DB
     // if ( nodeInclusionData.parentNode)
     const nodes: OryTreeNode[] | undefined = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     for (const node of nodes) {
       // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
-      node.parent2._removeChild(node)
+      node.parent2!._removeChild(node)
       const newParents = this.mapItemIdToNodes.get(newParentItemId)
       // FIXME: need to create new node instead of moving existing
       debugLog('onNodeInclusionModified newParents.length', newParents.length)
@@ -940,7 +931,7 @@ export class TreeModel {
   }
 
   registerNode(nodeToRegister: OryTreeNode) {
-    this.mapNodeInclusionIdToNodes.add(nodeToRegister.nodeInclusion.nodeInclusionId, nodeToRegister)
+    this.mapNodeInclusionIdToNodes.add(nodeToRegister.nodeInclusion!.nodeInclusionId, nodeToRegister)
     this.addNodeToMapByItemId(nodeToRegister)
   }
 

@@ -23,7 +23,7 @@ import { debugLog } from '../../../utils/log'
 export class ToolbarPopoverComponent implements OnInit {
 
   /* workaround for now */
-  @Input() treeHost: TreeHostComponent
+  @Input() treeHost!: TreeHostComponent
 
   controls: { [K in keyof Config]: FormControl } = {
     showMinMaxColumns: new FormControl(),
@@ -52,11 +52,11 @@ export class ToolbarPopoverComponent implements OnInit {
   }
 
   private setFormValue() {
-    const formValue = this.configService.config$.lastVal
+    const formValue = this.configService.config$.lastVal as any
     this.formGroup.patchValue(formValue)
   }
 
-  onDebugChange($event) {
+  onDebugChange($event: any) {
     debugLog('$event', $event)
     this.debugService.isDebug$.next($event.target.checked)
   }

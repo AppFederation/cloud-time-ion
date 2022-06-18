@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CachedSubject } from '../utils/cachedSubject2/CachedSubject2'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 export class Config {
   showMinMaxColumns = true

@@ -8,6 +8,6 @@ import DocumentSnapshot = firestore.DocumentSnapshot
 
 export abstract class FirestoreItemsLoader {
 
-  abstract getItem$ByRef(itemRef: DocumentReference, callback: (includedItemDoc: DocumentSnapshot) => void)
+  abstract getItem$ByRef(itemRef: DocumentReference, callback: (includedItemDoc: DocumentSnapshot) => void): any
 
 }

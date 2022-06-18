@@ -17,14 +17,14 @@ import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component
 export class NestedTreeComponent implements OnInit {
 
   @Input()
-  treeModel: TreeModel
+  treeModel!: TreeModel
 
   @Input()
-  treeHost: TreeHostComponent
+  treeHost!: TreeHostComponent
 
-  wrapperHackArrayWasForNode: OryTreeNode
+  wrapperHackArrayWasForNode!: OryTreeNode
   /* For forcing new component instance every time visualRoot changes */
-  wrapperHackArray
+  wrapperHackArray!: any
 
   constructor() {
   }

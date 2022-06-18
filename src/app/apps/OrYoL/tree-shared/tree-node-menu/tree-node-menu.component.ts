@@ -23,13 +23,13 @@ import { ClipboardService } from '../../core/clipboard.service'
 })
 export class TreeNodeMenuComponent implements OnInit {
 
-  @Input() treeNode: OryTreeNode
+  @Input() treeNode!: OryTreeNode
 
-  @Input() treeHost: TreeHostComponent
+  @Input() treeHost!: TreeHostComponent
 
-  @Input() nodeContentComponent: NodeContentComponent
+  @Input() nodeContentComponent!: NodeContentComponent
 
-  @Input() popOver: NgbPopover
+  @Input() popOver!: NgbPopover
 
   constructor(
     public dialogService: DialogService,
@@ -61,7 +61,7 @@ export class TreeNodeMenuComponent implements OnInit {
 
   navigateInto() {
     console.log('navigateInto')
-    this.router.navigate(['/tree', this.treeNode.nodeInclusion.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
+    this.router.navigate(['/tree', this.treeNode!.nodeInclusion!.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
     this.treeNode.navigateInto()
   }
 

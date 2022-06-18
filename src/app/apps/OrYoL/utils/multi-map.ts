@@ -1,6 +1,6 @@
-import { nullOrUndef } from './utils'
+import {nullOrUndef} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
-const EMPTY_ARRAY = []
+const EMPTY_ARRAY: any[] = []
 
 export class MultiMap<K, V> {
   map = new Map<K, V[]>()

@@ -9,7 +9,6 @@ import { SearchService } from '../../core/search.service'
 import { NavigationService } from '../../core/navigation.service'
 
 
-zzz
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -17,10 +16,10 @@ zzz
 })
 export class SearchComponent implements OnInit, AfterViewInit {
   // searchText: string
-  textFieldDummy
-  filteredNodes = []
+  textFieldDummy!: any
+  filteredNodes: any[] = []
 
-  @ViewChild('searchInput', {static: true}) searchInput: ElementRef
+  @ViewChild('searchInput', {static: true}) searchInput!: ElementRef
 
   constructor(
     public searchService: SearchService,

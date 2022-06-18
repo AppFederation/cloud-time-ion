@@ -5,6 +5,7 @@ import { debugLog } from '../../utils/log'
 import { ColumnCell } from './Cells'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 import { Columns } from './Columns'
+import {throttleTime} from 'rxjs/operators'
 
 /** other names: CellsViewSyncer */
 export class NodeContentViewSyncer {
@@ -44,8 +45,10 @@ export class NodeContentViewSyncer {
           http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
       }
       const scheduler = undefined
-      this.getEventEmitterOnChangePerColumn(column).throttleTime(
-        this.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
+      this.getEventEmitterOnChangePerColumn(column).pipe(
+        throttleTime(
+          this.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
+        )
       ).subscribe((changeEvent) => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if (!this.treeNode.treeModel.isApplyingFromDbNow) {
