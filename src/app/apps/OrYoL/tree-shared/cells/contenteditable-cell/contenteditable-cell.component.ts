@@ -21,11 +21,11 @@ import {nullish} from '../../../../../libs/AppFedShared/utils/type-utils'
 export class ContenteditableCellComponent extends CellComponent implements OnInit {
 
   /** TODO fix circular dep via e.g. event */
-  @Input()
-  nodeContentComponent!: NodeContentComponent
-
-  @Input()
-  cell!: ColumnCell
+  // @Input()
+  // nodeContentComponent!: NodeContentComponent
+  //
+  // @Input()
+  // cell!: ColumnCell
 
   @ViewChild('contentEditableEl', {static: true}) contentEditableEl!: ElementRef
 

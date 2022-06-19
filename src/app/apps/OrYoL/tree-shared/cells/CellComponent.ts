@@ -1,4 +1,5 @@
 import {
+  Component,
   ElementRef,
   HostListener,
   Injectable,
@@ -14,7 +15,11 @@ import {
 } from '../../tree-model/TreeModel'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
-@Injectable()
+@Component({
+  selector: 'zzz-app-abstract-node-cell',
+  template: '',
+  styleUrls: []
+})
 export abstract class CellComponent implements OnInit {
 
   /** TODO fix circular dep via e.g. event / ViewModel */

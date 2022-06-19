@@ -82,7 +82,7 @@ export class FirestoreTreeService extends DbTreeService {
       // window.alert('persistence enabled')
       this.dbItemsLoader.startQuery(this.itemsCollection())
       this.dbInclusionsSyncer.startQuery()
-    }).catch((caught) => {
+    }).catch((caught: any) => {
       errorAlert('enablePersistence error', caught)
     })
     // this.listenToChanges(onSnapshotHandler)
