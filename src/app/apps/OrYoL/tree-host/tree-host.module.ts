@@ -12,8 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { SearchModule } from '../search/search.module'
 import {TreeSharedModule} from '../tree-shared/tree-shared.module'
-import {SharedModule} from '../../../shared/shared.module'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
+import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
@@ -30,6 +30,7 @@ import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
     TreeSharedModule,
     SharedModule,
     OdmModule,
+    NgbPopoverModule,
   ],
   declarations: [
     TreeHostComponent,
