@@ -16,7 +16,7 @@ import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component
 import { OryColumn } from '../OryColumn'
 // import 'rxjs/add/operator/throttleTime';
 
-import { padStart } from 'lodash';
+import { padStart } from 'lodash-es';
 import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';

@@ -13,7 +13,7 @@ import {
   Injectable,
   Injector,
 } from '@angular/core'
-import { sumBy } from 'lodash';
+import { sumBy } from 'lodash-es';
 import { OryColumn } from '../tree-shared/OryColumn'
 import { MultiMap } from '../utils/multi-map'
 import {

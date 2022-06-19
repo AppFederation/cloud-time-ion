@@ -1,4 +1,4 @@
-import {sumBy} from 'lodash';
+import {sumBy} from 'lodash-es';
 
 export function count<T>(array: T[], predicate: ((_: T) => boolean)): number {
   if ( ! array ) {
