@@ -11,6 +11,7 @@ import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popov
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { SearchModule } from '../search/search.module'
+import {TreeSharedModule} from '../tree-shared/tree-shared.module'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
@@ -24,6 +25,7 @@ import { SearchModule } from '../search/search.module'
     ReactiveFormsModule,
     RouterModule,
     SearchModule,
+    TreeSharedModule,
   ],
   declarations: [
     TreeHostComponent,

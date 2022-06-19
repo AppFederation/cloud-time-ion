@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {TreePageComponent} from './tree-page/tree-page.component'
 import {TreeHostModule} from '../tree-host/tree-host.module'
 import { TreePageRoutingModule } from './tree-page.routing.module'
+import {TreeSharedModule} from '../tree-shared/tree-shared.module'
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { TreePageRoutingModule } from './tree-page.routing.module'
     CommonModule,
     TreeHostModule,
     TreePageRoutingModule,
+    TreeSharedModule,
   ],
   exports: [
   ]
