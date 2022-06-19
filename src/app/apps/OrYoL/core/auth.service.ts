@@ -9,6 +9,7 @@ import { auth } from 'firebase'
 export type UserId = string
 
 @Injectable(
+  {providedIn: 'root'}
   // {
   // providedIn: CoreModule /* CoreModule caused TS circular dependency warning */
   // /* TODO: investigate https://medium.com/@tomastrajan/total-guide-to-angular-6-dependency-injection-providedin-vs-providers-85b7a347b59f ,

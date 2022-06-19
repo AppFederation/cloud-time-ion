@@ -7,7 +7,8 @@ export class PermissionsManager {
     public userId: UserId
   ) {
     if ( ! userId ) {
-      window.alert('! userId: ' + userId)
+      // window.alert('! userId: ' + userId)
+      console.error('! userId: ' + userId)
     }
     this.userId = 'FAKE_USER' // FIXME
   }

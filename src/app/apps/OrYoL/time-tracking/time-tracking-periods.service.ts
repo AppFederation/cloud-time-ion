@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { TimeTrackedEntry } from './time-tracking.service'
 // import Timestamp = firebase.firestore.Timestamp
 import { ItemId } from '../db/DbItem'
-import { firestore1 } from '../db-firestore/firestore-tree.service'
 import { firestore } from 'firebase'
 import { errorAlert } from '../utils/log'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
@@ -40,7 +39,7 @@ export class TimeTrackingPeriod {
 })
 export class TimeTrackingPeriodsService {
 
-  coll = firestore1.collection(`TimeTrackingPeriodTest`)
+  coll = firestore().collection(`TimeTrackingPeriodTest`)
 
   activePeriods$ = new CachedSubject<TimeTrackingPeriod[] | null | undefined>(undefined)
 

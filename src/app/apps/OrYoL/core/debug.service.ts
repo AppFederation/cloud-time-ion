@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DebugService {
 
   IS_DEBUG_KEY = 'oryol_is_debug'

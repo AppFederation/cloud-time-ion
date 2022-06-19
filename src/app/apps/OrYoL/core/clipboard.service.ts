@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OryTreeNode } from '../tree-model/TreeModel'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ClipboardService {
 
   private _nodesInClipboard: OryTreeNode[] = []

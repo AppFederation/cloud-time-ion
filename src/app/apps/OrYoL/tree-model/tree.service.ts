@@ -10,7 +10,7 @@ import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TreeService {
 
   constructor(

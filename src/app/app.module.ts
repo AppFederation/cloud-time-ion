@@ -14,6 +14,7 @@ import {ShoppingListsModule} from "./apps/ShopNext/shopping-lists/shopping-lists
 import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {HttpClientModule} from '@angular/common/http';
+import {DbFirestoreModule} from './apps/OrYoL/db-firestore/db-firestore.module'
 
 // custom configuration Hammerjs
 @Injectable()
@@ -42,6 +43,7 @@ export class HammerConfig extends HammerGestureConfig {
     ShoppingListsModule, /* HACK as a kind of core, for shopping list service*/
     AngularFireStorageModule, BrowserAnimationsModule,
     HammerModule,
+    DbFirestoreModule,
     HttpClientModule /* Only for primeng tree demo */,
   ],
   exports: [

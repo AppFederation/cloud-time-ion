@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DialogService {
 
   deleteDialog$ = new Subject<any>()

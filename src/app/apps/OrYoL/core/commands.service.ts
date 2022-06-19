@@ -4,7 +4,7 @@ import {Subject} from 'rxjs'
 
 export type Command = string
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CommandsService {
 
   commands$ = new Subject<Command>()

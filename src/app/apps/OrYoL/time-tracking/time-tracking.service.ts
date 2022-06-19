@@ -230,7 +230,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 }
 
 /** ================================================================================================ */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TimeTrackingService {
 
   private static _the: TimeTrackingService

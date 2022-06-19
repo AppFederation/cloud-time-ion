@@ -24,32 +24,33 @@ import DocumentSnapshot = firestore.DocumentSnapshot
 import * as firebase1 from 'firebase/app'
 import 'firebase/firestore';
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {AngularFirestore} from '@angular/fire/firestore'
 // Required for side-effects
 // require('firebase/firestore');
 
 
 console.log('firebase1', firebase1)
 
-export const firebaseApp = firebase1.initializeApp({
-  apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
-  authDomain: 'oryol-app.firebaseapp.com',
-  databaseURL: 'https://oryol-app.firebaseio.com',
-  projectId: 'oryol-app',
-  storageBucket: 'oryol-app.appspot.com',
-  messagingSenderId: '970393221829'
-})
+// export const firebaseApp = firebase1.initializeApp({
+//   apiKey: 'AIzaSyAVVLpc9MvJw7dickStZcAd3G5ZI5fqE6I',
+//   authDomain: 'oryol-app.firebaseapp.com',
+//   databaseURL: 'https://oryol-app.firebaseio.com',
+//   projectId: 'oryol-app',
+//   storageBucket: 'oryol-app.appspot.com',
+//   messagingSenderId: '970393221829'
+// })
 
 console.log('firebase1', firebase1)
-console.log('firebaseApp', firebaseApp)
+// console.log('firebaseApp', firebaseApp)
 
 
 // Initialize Cloud Firestore through Firebase
 // const firestore1 = firebase1.firestore();
-export const firestore1 = firebaseApp.firestore();
-const db = firestore1;
-firestore1.settings({
-  // timestampsInSnapshots: true,
-})
+// export const firestore1 = firebaseApp.firestore();
+// const db = firestore1;
+// firestore1.settings({
+//   // timestampsInSnapshots: true,
+// })
 
 export interface FirestoreNodeInclusion {
   childNode: DocumentReference,
@@ -60,7 +61,7 @@ export interface FirestoreNodeInclusion {
 }
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FirestoreTreeService extends DbTreeService {
 
   static dbPrefix = 'DbWithAllInclusionsSyncer2'
@@ -69,22 +70,27 @@ export class FirestoreTreeService extends DbTreeService {
 
   pendingListeners = 0
 
+  db: firestore.Firestore = this.angularFirestore.firestore
+
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + '_items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + '_roots'
   // private dbItemsLoader: FirestoreItemsLoader = new FirestoreIndividualItemsLoader()
   dbItemsLoader = new FirestoreAllItemsLoader()
-  dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(db, FirestoreTreeService.dbPrefix)
+  dbInclusionsSyncer = new FirestoreAllInclusionsSyncer(this.db, FirestoreTreeService.dbPrefix)
   private timeStamper = new TimeStamper()
 
-  constructor() {
+
+  constructor(
+    protected angularFirestore: AngularFirestore,
+  ) {
     super()
-    db.enablePersistence().then(() => {
-      // window.alert('persistence enabled')
+    // this.db.enablePersistence().then(() => {
+    //   // window.alert('persistence enabled')
       this.dbItemsLoader.startQuery(this.itemsCollection())
       this.dbInclusionsSyncer.startQuery()
-    }).catch((caught: any) => {
-      errorAlert('enablePersistence error', caught)
-    })
+    // }).catch((caught: any) => {
+    //   errorAlert('enablePersistence error', caught)
+    // })
     // this.listenToChanges(onSnapshotHandler)
   }
 
@@ -179,7 +185,7 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   private itemsCollection(): firestore.CollectionReference {
-    return db.collection(this.ITEMS_COLLECTION)
+    return this.db.collection(this.ITEMS_COLLECTION)
   }
 
   private itemDocById(dbId: string): DocumentReference {
