@@ -15,6 +15,10 @@ import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storag
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {HttpClientModule} from '@angular/common/http';
 import {DbFirestoreModule} from './apps/OrYoL/db-firestore/db-firestore.module'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+library.add(fas);
 
 // custom configuration Hammerjs
 @Injectable()

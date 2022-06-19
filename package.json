@@ -68,7 +68,8 @@
     "zone.js": "~0.10.2",
     "@fortawesome/angular-fontawesome": "^0.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
-    "@fortawesome/free-solid-svg-icons": "^5.5.0"
+    "@fortawesome/free-solid-svg-icons": "^5.5.0",
+    "font-awesome": "^4.7.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^9.0.0",
