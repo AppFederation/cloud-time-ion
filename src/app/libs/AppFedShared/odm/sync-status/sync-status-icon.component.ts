@@ -6,11 +6,11 @@ import {map} from 'rxjs/operators'
 import {AuthService} from '../../../../auth/auth.service'
 
 @Component({
-  selector: 'odm-sync-status',
-  templateUrl: './sync-status.component.html',
-  styleUrls: ['./sync-status.component.sass'],
+  selector: 'odm-sync-status-icon',
+  templateUrl: './sync-status-icon.component.html',
+  styleUrls: ['./sync-status-icon.component.sass'],
 })
-export class SyncStatusComponent implements OnInit {
+export class SyncStatusIconComponent implements OnInit {
 
   showShadow = true
 

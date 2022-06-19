@@ -19,6 +19,7 @@ import { NodeExpansionIconComponent } from './node-content/node-expansion-icon/n
 import { NodeClassIconComponent } from './node-content/node-class-icon/node-class-icon.component'
 import { TimeModule } from '../AppFedSharedEmu/time/time.module';
 import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/node-class-picker.component'
+import {SharedModule} from '../../../shared/shared.module'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
@@ -41,12 +42,13 @@ import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/nod
     NodeClassIconComponent,
     NodeClassPickerComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    TimeTrackingModule,
-    TimeModule,
-  ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        TimeTrackingModule,
+        TimeModule,
+        SharedModule,
+    ],
   exports: [
     NodeContentComponent,
     ExampleCellComponent,

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {SyncStatusComponent} from './sync-status/sync-status.component'
+import {SyncStatusIconComponent} from './sync-status/sync-status-icon.component'
 import {IonicModule} from '@ionic/angular'
 import {SyncPopoverComponent} from './sync-status/sync-popover/sync-popover.component'
 
 @NgModule({
   declarations: [
-    SyncStatusComponent,
+    SyncStatusIconComponent,
     SyncPopoverComponent,
   ],
   exports: [
-    SyncStatusComponent,
+    SyncStatusIconComponent,
   ],
   imports: [
     CommonModule,
