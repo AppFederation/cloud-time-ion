@@ -11,6 +11,7 @@ import { ColumnCell } from '../../node-content/Cells'
 import { NodeFocusOptions } from '../../../tree-model/TreeModel'
 import { debugLog } from '../../../utils/log'
 import {setCaretOnContentEditable} from '../../../../../libs/AppFedShared/utils/utils-from-oryol'
+import {nullish} from '../../../../../libs/AppFedShared/utils/type-utils'
 
 @Component({
   selector: 'app-contenteditable-cell',
@@ -47,7 +48,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
     this.contentEditableEl.nativeElement.innerHTML = newValue
   }
 
-  focus(options?: NodeFocusOptions) {
+  focus(options?: NodeFocusOptions | nullish) {
     // console.log('ContenteditableCellComponent focus', options)
     setTimeout(() => {
       this.contentEditableEl.nativeElement.focus()

@@ -4,6 +4,7 @@ import {
 } from '../utils/log'
 import { NodeInclusion } from './TreeListener'
 import {defined, nullOrUndef} from '../../../libs/AppFedShared/utils/utils-from-oryol'
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 
 export const ORDER_STEP = 1 * 1000 * 1000
@@ -14,8 +15,8 @@ interface NodeInclusionWithOrderNum extends NodeInclusion {
 
 export interface NodeOrderInfo {
   /* Note: naming: before&after is better than above&below because it is decoupled from spatial projection (imagine e.g. a graph in the future; or left-right flow of order) */
-  inclusionBefore?: NodeInclusion,
-  inclusionAfter?: NodeInclusion,
+  inclusionBefore?: NodeInclusion | nullish,
+  inclusionAfter?: NodeInclusion | nullish,
 }
 
 export class NodeOrderer {

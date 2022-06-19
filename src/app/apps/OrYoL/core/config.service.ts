@@ -17,7 +17,7 @@ const ORYOL_CONFIG_KEY = 'OrYoL_Config'
 })
 export class ConfigService {
   public readonly config$ = new CachedSubject<Config>(
-    JSON.parse(localStorage.getItem(ORYOL_CONFIG_KEY)) || new Config()
+    JSON.parse(localStorage.getItem(ORYOL_CONFIG_KEY) || 'null') || new Config()
   )
 
   constructor() { }

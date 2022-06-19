@@ -10,7 +10,7 @@ import { TimeService } from '../../../core/time.service'
 export class TimePassingComponent implements OnInit, OnDestroy {
 
   @Input()
-  referenceTime!: Date
+  referenceTime : Date | null | undefined = new Date()
 
   @Input()
   isCountDown: boolean = true

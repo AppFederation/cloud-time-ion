@@ -51,6 +51,7 @@ import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/nod
     NodeContentComponent,
     ExampleCellComponent,
     NodeClassIconComponent,
+    NumericCellComponent,
   ],
   entryComponents: [
     ConfirmDeleteTreeNodeComponent,

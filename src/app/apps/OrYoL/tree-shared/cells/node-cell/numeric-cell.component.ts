@@ -12,8 +12,10 @@ import {
   NodeFocusOptions,
   OryTreeNode,
 } from '../../../tree-model/TreeModel'
-import { ConfigService } from '../../../core/config.service'
+import {Config, ConfigService} from '../../../core/config.service'
 import {setCaretPosition} from '../../../../../libs/AppFedShared/utils/utils-from-oryol'
+import {nullish} from '../../../../../libs/AppFedShared/utils/type-utils'
+import {CachedSubject} from '../../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 /* TODO: rename to eg NumericCell */
 @Component({
@@ -43,7 +45,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
   /* for interim compatibility after extracting this component */
   nativeElement!: HTMLElement
 
-  config$ = this.configService.config$
+  config$: CachedSubject<Config> = this.configService.config$
 
   constructor(
     public configService: ConfigService,
@@ -70,8 +72,8 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
     this.cellInput.nativeElement.value = newValue || ''
   }
 
-  focus(options?: NodeFocusOptions) {
+  focus(options?: NodeFocusOptions | nullish) {
     this.nativeElement.focus()
-    setCaretPosition(this.nativeElement, options && options.cursorPosition)
+    setCaretPosition(this.nativeElement, options ?. cursorPosition)
   }
 }

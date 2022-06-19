@@ -58,7 +58,7 @@ export class FirestoreAllInclusionsSyncer {
         const docSnapshot = change.doc
         const docData = docSnapshot.data() as FirestoreNodeInclusion
         debugLog('FirestoreAllInclusionsSyncer onSnapshot id', change.doc.id, 'DocumentChange', change)
-        const parentNodeId = docData!.parentNode.id
+        const parentNodeId = docData !. parentNode !. id
         if (change.type === 'added') {
           mapParentIdToDocsAdded.add(parentNodeId, docSnapshot)
           // this.putItemAndFireCallbacks(docSnapshot)

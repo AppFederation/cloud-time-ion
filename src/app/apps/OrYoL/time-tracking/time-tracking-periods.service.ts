@@ -5,6 +5,8 @@ import { ItemId } from '../db/DbItem'
 import { firestore1 } from '../db-firestore/firestore-tree.service'
 import { firestore } from 'firebase'
 import { errorAlert } from '../utils/log'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5
 
@@ -65,8 +67,8 @@ export class TimeTrackingPeriodsService {
   }
 
   onPeriodEnd(entry: TimeTrackedEntry) {
-    let period: TimeTrackingPeriod = entry.currentPeriod
-    if ( ! entry.currentPeriod ) {
+    let period: TimeTrackingPeriod | undefined = entry.currentPeriod
+    if ( ! period ) {
       errorAlert('timetracking ! entry.currentPeriod -- TODO: need to load from DB (any periods with end==null and set at beginning')
       return
     }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CachedSubject } from '../utils/CachedSubject'
 import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
 import { HasItemData } from '../tree-model/has-item-data'
@@ -8,10 +7,12 @@ import {
   TimeTrackingPeriod,
   TimeTrackingPeriodsService,
 } from './time-tracking-periods.service'
+import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {TimeoutHandle} from '../../../libs/AppFedShared/scheduler/scheduler.service'
 
 export type TimeTrackable = HasItemData
 
-export function date(obj) {
+export function date(obj: any) {
   if ( ! obj ) {
     return null
   }
@@ -27,7 +28,7 @@ export class TimeTrackingPersistentData {
   // ==== tracking periods:
   previousTrackingsMs? : number
 
-  nowTrackingSince?: Date
+  nowTrackingSince: Date | null = null
 
   // ==== tracking pause periods:
   previousPausesMs? : number
@@ -46,23 +47,23 @@ export class TTFirstStartPatch implements TTPatch {
 }
 
 export class TTResumePatch implements TTPatch {
-  nowTrackingSince : Date
-  previousPausesMs : number
-  whenCurrentPauseStarted = null
+  nowTrackingSince ! : Date
+  previousPausesMs ! : number
+  whenCurrentPauseStarted = null as any as undefined
 }
 
 export class TTPausePatch implements TTPatch {
-  previousTrackingsMs : number
+  previousTrackingsMs! : number
   /** TODO: rename to whenCurrentTrackingStarted ? */
-  nowTrackingSince = null
-  whenCurrentPauseStarted : Date
+  nowTrackingSince = null as any as undefined /* FIXME */
+  whenCurrentPauseStarted ! : Date
 }
 
 export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   public currentPeriod ? : TimeTrackingPeriod
 
-  private timeoutHandles = []
+  private timeoutHandles: TimeoutHandle[] = []
 
   public get isTrackingNow() {
     // return this.wasTracked && ! this.isPaused
@@ -76,8 +77,11 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
   }
 
   /** Could be useful for seeing e.g. which tasks have been started a long time ago and then abandoned */
-  get totalMsIncludingPauses() {
-    return this.nowMs() - this.whenFirstStarted.getTime()
+  get totalMsIncludingPauses(): number {
+    if ( ! this.whenFirstStarted ) {
+      return 0
+    }
+    return this.nowMs() - this.whenFirstStarted.getTime() ! /* FIXME undefined ? */
   }
 
   get currentPauseMsTillNow() {
@@ -88,10 +92,10 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
   }
 
   get currentTrackingMsTillNow() {
-    if ( ! this.isTrackingNow ) {
+    if ( ! this.isTrackingNow || ! this.nowTrackingSince ) {
       return 0
     }
-    return this.nowMs() - this.nowTrackingSince
+    return this.nowMs() - this.nowTrackingSince.getTime() ! /* FIXME undefined ? */
   }
 
   get totalMsExcludingPauses() {
@@ -113,7 +117,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     public whenCurrentPauseStarted?: Date,
     public previousPausesMs: number = 0,
     public previousTrackingsMs: number = 0,
-    public nowTrackingSince = null,
+    public nowTrackingSince: Date | null = null,
   ) {
     const itemData = this.timeTrackable.getItemData()
     const ttData = itemData && itemData.timeTrack
@@ -142,14 +146,14 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
       // TODO: const patch = new TTFirstStartPatch(this.now())
       this.whenFirstStarted = this.now()
       dataItemPatch.whenFirstStarted = this.whenFirstStarted
-      dataItemPatch.whenCurrentPauseStarted = null
+      dataItemPatch.whenCurrentPauseStarted = null as any as undefined /* FIXME */
     }
     // this.isTrackingNow = true
     if ( this.isPausedButWasTrackingBefore ) {
       this.previousPausesMs += this.currentPauseMsTillNow
       dataItemPatch.previousPausesMs = this.previousPausesMs
     }
-    this.whenCurrentPauseStarted = null
+    this.whenCurrentPauseStarted = null as any as undefined /* FIXME */
     this.patchItemTimeTrackingData(dataItemPatch)
     this.timeTrackingService.emitTimeTrackedEntry(this)
     this.currentPeriod = this.timeTrackingPeriodsService.onPeriodStart(this)
@@ -167,7 +171,7 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
     this.whenCurrentPauseStarted = this.now()
     const dataItemPatch: TTPausePatch = {
       whenCurrentPauseStarted: this.whenCurrentPauseStarted,
-      nowTrackingSince: this.nowTrackingSince,
+      nowTrackingSince: this.nowTrackingSince as any as undefined /* FIXME */,
       previousTrackingsMs: this.previousTrackingsMs,
     }
     this.patchItemTimeTrackingData(dataItemPatch)
@@ -250,7 +254,7 @@ export class TimeTrackingService {
     public dataItemsService: DataItemsService,
     private timeTrackingPeriodsService: TimeTrackingPeriodsService,
   ) {
-    this.timeTrackingPeriodsService.activePeriods$.subscribe(periods => {
+    this.timeTrackingPeriodsService.activePeriods$.subscribe((periods: TimeTrackingPeriod[] | null | undefined) => {
       // this.
     })
     // console.log('TimeTrackingService constructor()')
@@ -263,7 +267,7 @@ export class TimeTrackingService {
     }
 
     // pause tracking of items which are done:
-    this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe(event => {
+    this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData, any]) => {
       if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
         console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
         this.pauseOrNoop(event[0])
@@ -271,7 +275,7 @@ export class TimeTrackingService {
     })
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
-    this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem) => {
+    this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem: HasItemData) => {
       const itemData = dataItem.getItemData()
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
       if ( ttData && ttData.nowTrackingSince &&

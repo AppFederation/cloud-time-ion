@@ -1,7 +1,11 @@
+import {ItemId} from '../db/DbItem'
+
+export type ItemData = any /* FIXME unify with ODM */
+
 export interface HasItemData {
-  patchItemData(itemData: any)
+  patchItemData(itemData: ItemData): void
 
-  getItemData()
+  getItemData(): ItemData | undefined
 
-  getId()
+  getId(): ItemId
 }

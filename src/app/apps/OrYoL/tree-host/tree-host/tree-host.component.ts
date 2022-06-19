@@ -106,15 +106,15 @@ export class TreeHostComponent implements OnInit {
   }
 
   appendNode() {
-    this.treeModel.navigation.visualRoot.addChild()
+    this.treeModel.navigation.visualRoot!.addChild()
   }
 
   expandAll() {
-    this.treeModel.navigation.visualRoot.expansion.setExpanded(true, true)
+    this.treeModel.navigation.visualRoot?.expansion?.setExpanded(true, true)
   }
 
   collapseAll() {
-    this.treeModel.navigation.visualRoot.expansion.setExpanded(false, true)
+    this.treeModel.navigation.visualRoot?.expansion?.setExpanded(false, true)
   }
 
   registerNodeComponent(nodeContentComponent: NodeContentComponent) {
@@ -129,7 +129,7 @@ export class TreeHostComponent implements OnInit {
     return this.mapNodeToComponent.get(node)
   }
 
-  focusNode(node: OryTreeNode, column?: OryColumn, options?: NodeFocusOptions) {
+  focusNode(node: OryTreeNode | null | undefined, column?: OryColumn | null, options?: NodeFocusOptions) {
     debugLog('focusNode', arguments)
     if ( ! node ) {
       return
@@ -191,8 +191,8 @@ export class TreeHostComponent implements OnInit {
   planToday() {
     this.commandsService.planToday()
     const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
-    lastPlanNode.parent2?.navigateInto()
-    lastPlanNode.expansion.setExpanded(true, {recursive: false})
+    lastPlanNode ?. parent2 ?. navigateInto()
+    lastPlanNode ?. expansion ?. setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }
 

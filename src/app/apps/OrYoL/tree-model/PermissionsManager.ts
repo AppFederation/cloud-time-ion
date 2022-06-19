@@ -6,6 +6,9 @@ export class PermissionsManager {
   constructor(
     public userId: UserId
   ) {
+    if ( ! userId ) {
+      window.alert('! userId: ' + userId)
+    }
     this.userId = 'FAKE_USER' // FIXME
   }
 

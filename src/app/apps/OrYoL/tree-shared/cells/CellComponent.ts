@@ -12,7 +12,9 @@ import {
   NodeFocusOptions,
   OryTreeNode,
 } from '../../tree-model/TreeModel'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
+@Injectable()
 export abstract class CellComponent implements OnInit {
 
   /** TODO fix circular dep via e.g. event / ViewModel */
@@ -43,7 +45,7 @@ export abstract class CellComponent implements OnInit {
     this.nodeContentComponent.onInputChanged(event, this.cell, newValue, this)
   }
 
-  abstract focus(options?: NodeFocusOptions): void
+  abstract focus(options?: NodeFocusOptions | nullish): void
 
   ngOnInit() {
     this.nodeContentComponent.mapColumnToComponent.set(this.cell.column, this)

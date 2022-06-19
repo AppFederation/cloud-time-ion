@@ -21,6 +21,6 @@ export class DbItem<TData = any> {
   itemData?: any
 
   hasField(field: DbItemField) {
-    return !!this.itemClass?.hasField(field)
+    return !!this.itemClass?.hasField?.(field)
   }
 }

@@ -23,6 +23,7 @@ import DocumentSnapshot = firestore.DocumentSnapshot
 // const firebase1 = require('firebase');
 import * as firebase1 from 'firebase/app'
 import 'firebase/firestore';
+import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 // Required for side-effects
 // require('firebase/firestore');
 
@@ -149,7 +150,7 @@ export class FirestoreTreeService extends DbTreeService {
       const nodeInclusionData = inclusionModified.data() as FirestoreNodeInclusion
       const nodeInclusionId = nodeInclusionData.nodeInclusionId
 
-      listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData, nodeInclusionData.parentNode.id)
+      listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData, nodeInclusionData.parentNode !. id)
     })
 
   }
@@ -208,9 +209,9 @@ export class FirestoreTreeService extends DbTreeService {
 // TODO:
 // to as little as possible in vendor specific class (FirestoreTreeService)
 // pre-calculate next/previous order in TreeModel
-  addNodeToDb(parent, nodeBefore, odeAfter, orderBefore, orderAfter) {
-
-  }
+//   addNodeToDb(parent, nodeBefore, odeAfter, orderBefore, orderAfter) {
+//
+//   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
   addChildNode(parentNode: OryTreeNode, newNode: OryTreeNode) {
@@ -230,7 +231,7 @@ export class FirestoreTreeService extends DbTreeService {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
-      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion, itemDocRef)
+      this.addNodeInclusionToParent(parentId, newNode.nodeInclusion !, itemDocRef)
     })
     // add node-inclusion to firestore
     // ignore parent for now? But then how do we specify node-inclusion / order?
@@ -253,9 +254,9 @@ export class FirestoreTreeService extends DbTreeService {
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
   }
 
-  addAssociateSiblingAfterNode(parentNode: OryTreeNode, nodeToAssociate: OryTreeNode, associateAfterNode: OryTreeNode) {
+  addAssociateSiblingAfterNode(parentNode: OryTreeNode, nodeToAssociate: OryTreeNode, associateAfterNode: OryTreeNode | nullish) {
     const itemDocRef = this.itemDocById(nodeToAssociate.itemId)
-    this.addNodeInclusionToParent(parentNode.itemId, nodeToAssociate.nodeInclusion, itemDocRef)
+    this.addNodeInclusionToParent(parentNode.itemId, nodeToAssociate.nodeInclusion !, itemDocRef)
   }
 
   patchItemData(itemId: string, itemData: any) {

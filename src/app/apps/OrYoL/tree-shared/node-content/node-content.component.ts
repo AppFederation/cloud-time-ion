@@ -40,6 +40,7 @@ import { ConfigService } from '../../core/config.service'
 import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 import {getActiveElementCaretPos, getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
 import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
+import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -251,19 +252,19 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
   }
 
-  focusOtherNode(nodeToFocus: OryTreeNode) {
+  focusOtherNode(nodeToFocus: OryTreeNode | undefined) {
     debugLog('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
 
-  focus(column?: OryColumn, options?: NodeFocusOptions) {
+  focus(column?: OryColumn | nullish, options?: NodeFocusOptions | nullish) {
     let cellComponentToFocus = this.getCellComponentByColumnOrDefault(column)
     if ( cellComponentToFocus ) {
       cellComponentToFocus.focus(options)
     }
   }
 
-  getCellComponentByColumnOrDefault(column?: OryColumn): CellComponent {
+  getCellComponentByColumnOrDefault(column?: OryColumn | nullish): CellComponent {
     return this.mapColumnToComponent.get(column!)
       || this.mapColumnToComponent.get(this.columnDefs.title) !
   }

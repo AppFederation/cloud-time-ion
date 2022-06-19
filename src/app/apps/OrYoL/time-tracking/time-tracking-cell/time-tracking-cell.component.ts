@@ -20,9 +20,9 @@ export class TimeTrackingCellComponent implements OnInit {
 
   // get timeTrackedEntry() { return this.timeTrackingService.timeTrackedEntry$.lastVal }
 
-  @Input() timeTrackedEntry: TimeTrackedEntry //  = new TimeTrackedEntry(this.timeTrackingServiceOff, null)
+  @Input() timeTrackedEntry!: TimeTrackedEntry //  = new TimeTrackedEntry(this.timeTrackingServiceOff, null)
 
-  @Input() toolBarMode: boolean
+  @Input() toolBarMode!: boolean
 
   config$ = this.configService.config$
 

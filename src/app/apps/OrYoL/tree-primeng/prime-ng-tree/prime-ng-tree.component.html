@@ -1,8 +1,8 @@
 <p-tree
   class="tree-component"
   [value]="treeModel.root.children"
-  draggableNodes="true"
-  droppableNodes="true"
+  [draggableNodes]="true"
+  [droppableNodes]="true"
   (onNodeDrop)="nodeDrop($event)"
 >
   <ng-template

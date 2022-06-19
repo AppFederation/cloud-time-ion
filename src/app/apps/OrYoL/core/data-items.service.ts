@@ -3,7 +3,7 @@ import {
   Injectable,
 } from '@angular/core';
 import { HasItemData } from '../tree-model/has-item-data'
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
