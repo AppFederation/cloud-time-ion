@@ -188,9 +188,15 @@ export class TreeHostComponent implements OnInit {
     this.createChildNavigateAndFocus('item_91c761a4-0308-43a1-8634-5164cb4d5b0e')
   }
 
-  planToday() {
+  planToday(createNew?: boolean) {
     this.commandsService.planToday()
-    const lastPlanNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0].lastChildNode
+    const plansNode = this.treeModel.getNodesByItemId('item_35023937-195c-4b9c-b265-5e8a01cf397e')[0]
+    let lastPlanNode = plansNode.lastChildNode
+    if ( createNew ) {
+      lastPlanNode = plansNode.addChild()
+      // TODO:
+      // lastPlanNode.
+    }
     lastPlanNode.parent2.navigateInto()
     lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
