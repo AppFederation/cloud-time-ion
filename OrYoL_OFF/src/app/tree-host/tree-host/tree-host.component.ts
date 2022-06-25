@@ -197,7 +197,8 @@ export class TreeHostComponent implements OnInit {
       // TODO:
       // lastPlanNode.
     }
-    lastPlanNode.parent2.navigateInto()
+    // lastPlanNode.parent2.navigateInto()
+    lastPlanNode.navigateInto()
     lastPlanNode.expansion.setExpanded(true, {recursive: false})
     this.focusNode(lastPlanNode)
   }
