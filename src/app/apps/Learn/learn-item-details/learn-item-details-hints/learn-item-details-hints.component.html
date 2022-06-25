@@ -1,10 +1,10 @@
 <div style="color: orange; margin: 5px;"
      class="style1"
 >
-  <h2 style="text-transform: uppercase">Hints
+  <h2 style="text-transform: uppercase" (click)="showDetails = !showDetails">Hints
     <span style="font-size: 70%">for making good cards</span>
   </h2>
-  <ol class="step">
+  <ol class="step" *ngIf="showDetails">
     <li>
       <b><!--hack--></b>Choose question & answer based on the context in which you will need the information
     </li>
