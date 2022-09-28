@@ -4,7 +4,7 @@ import {LearnItem} from '../models/LearnItem'
 import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary, mapEntriesToArray} from '../../../libs/AppFedShared/utils/dictionary-utils'
 import {LearnDoService} from './learn-do.service'
-import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
+import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
 import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
@@ -72,7 +72,11 @@ const accessorsFieldsIds: string[] = accessorsFields.map(acc => acc[0])
 })
 export class LearnStatsService {
 
+  // FIXME: make stats component unsubscribe from this when not visible
+  // make this not run when noone is subscribed [anymore]
   stats$: Observable<LearnStats | undefined> = this.learnDoService.localItems$.pipe(
+    debounceTime(4000),
+    // throttleTimeWithLeadingTrailing_ReallyThrottle(2000),
     map((item$s: (LearnItem$[] | undefined)) => {
       if ( ! item$s ) {
         return undefined
@@ -104,6 +108,7 @@ export class LearnStatsService {
     private learnDoService: LearnDoService,
     private statsHistoryService: StatsHistoryService,
   ) {
+    console.log('LearnStatsService ctor')
     // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(

@@ -143,6 +143,9 @@ export class QuizService {
     // https://stackoverflow.com/questions/50276165/combinelatest-deprecated-in-favor-of-static-combinelatest
     this.options$,
     (this.learnDoService.localItems$.pipe(
+      debounceTime(4000),
+      // FIXME: performance: debounce and more ms
+        // also anything using `localItems$.pipe` is suspicious
       throttleTimeWithLeadingTrailing_ReallyThrottle(secondsAsMs(1))) as Observable<LearnItem$[]>
     ),
     combineLatest(
