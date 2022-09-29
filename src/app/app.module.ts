@@ -17,6 +17,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {DbFirestoreModule} from './apps/OrYoL/db-firestore/db-firestore.module'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import {StoreModule} from '@ngrx/store'
+import {counterReducer} from './apps/Learn/core/quiz/quiz.reducer'
 
 library.add(fas);
 
@@ -49,6 +51,7 @@ export class HammerConfig extends HammerGestureConfig {
     HammerModule,
     DbFirestoreModule,
     HttpClientModule /* Only for primeng tree demo */,
+    StoreModule.forRoot({count: counterReducer})
   ],
   exports: [
     CoreModule,
