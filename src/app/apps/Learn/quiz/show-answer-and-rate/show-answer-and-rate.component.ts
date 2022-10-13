@@ -5,6 +5,8 @@ import {LearnItem$} from '../../models/LearnItem$'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizHistoryService} from '../../core/quiz/quiz-history.service'
 import {QuizAnswersService} from '../../core/quiz/quiz-answers.service'
+import {Store} from '@ngrx/store'
+import {requestNextQuizItem} from '../../core/quiz/quiz.actions'
 
 @Component({
   selector: 'app-show-answer-and-rate',
@@ -25,10 +27,13 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   get quizStatus$() { return this.quizService.quizStatus$ }
 
+  counter$ = this.store.select(store => store.count)
+
   constructor(
     public quizService: QuizService,
     public quizHistoryService: QuizHistoryService,
     public quizAnswersService: QuizAnswersService,
+    private store: Store<{count: {}}>,
   ) { }
 
 
@@ -56,7 +61,8 @@ export class ShowAnswerAndRateComponent implements OnInit {
   // }
 
   applyAndNext() {
-    this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
+    // this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
+    this.store.dispatch(requestNextQuizItem())
   }
 
   toggleHide() {

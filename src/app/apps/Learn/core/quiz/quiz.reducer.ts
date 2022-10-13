@@ -1,12 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
-import {requestNextQuizItem} from './quiz.actions'
+import {requestNextQuizItem, requestNextQuizItemSuccess} from './quiz.actions'
 
 export const initialState = 0;
 
 export const counterReducer = createReducer(
   initialState,
-  on(requestNextQuizItem, (state) => {
-    console.log('counterReducer requestNextQuizItem', state)
+  on(requestNextQuizItemSuccess, (state) => {
+    console.log('ngrx counterReducer requestNextQuizItem', state)
     return state + 1
   }),
 );

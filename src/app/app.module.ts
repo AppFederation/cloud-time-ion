@@ -19,6 +19,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import {StoreModule} from '@ngrx/store'
 import {counterReducer} from './apps/Learn/core/quiz/quiz.reducer'
+import {EffectsModule} from '@ngrx/effects'
+import {QuizEffects} from './apps/Learn/core/quiz/quiz.effects'
+import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 
 library.add(fas);
 
@@ -51,7 +54,13 @@ export class HammerConfig extends HammerGestureConfig {
     HammerModule,
     DbFirestoreModule,
     HttpClientModule /* Only for primeng tree demo */,
-    StoreModule.forRoot({count: counterReducer})
+    StoreModule.forRoot({count: counterReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 125, // Retains last 25 states
+      // logOnly: environment.production, // Restrict extension to log-only mode
+      // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
+    EffectsModule.forRoot([QuizEffects]),
   ],
   exports: [
     CoreModule,
