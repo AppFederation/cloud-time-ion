@@ -27,13 +27,16 @@ export class ShowAnswerAndRateComponent implements OnInit {
 
   get quizStatus$() { return this.quizService.quizStatus$ }
 
-  counter$ = this.store.select(store => store.count)
+  quizSelector$ = this.store.select(store => {
+    console.log('store select', store)
+    return store.count.quizItemId
+  })
 
   constructor(
     public quizService: QuizService,
     public quizHistoryService: QuizHistoryService,
     public quizAnswersService: QuizAnswersService,
-    private store: Store<{count: {}}>,
+    private store: Store<{count: {quizItemId: {}}}>,
   ) { }
 
 

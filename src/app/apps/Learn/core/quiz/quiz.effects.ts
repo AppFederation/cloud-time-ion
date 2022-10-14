@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import {map, mergeMap, catchError, concatMap} from 'rxjs/operators';
 import {QuizService} from './quiz.service'
 import {requestNextQuizItem, requestNextQuizItemSuccess} from './quiz.actions'
 
@@ -11,6 +11,7 @@ export class QuizEffects {
   fetchQuizItem$ = createEffect(() => this.actions$.pipe(
       ofType(requestNextQuizItem),
       mergeMap(() => {
+      // concatMap(() => {
         console.log('!!! ngrx QuizEffects mergeMap')
 
         return this.quizService.nextItem$WhenRequested
@@ -20,7 +21,7 @@ export class QuizEffects {
               return ({
                 type: /*requestNextQuizItemSuccess.name*/ '[Quiz] Next Item Success',
                 // payload: {test: 'xyz'},
-                payload: {test: movies?.id},
+                payload: {quizItemId: movies?.id},
               })
             }),
             catchError(() => EMPTY),
