@@ -4,6 +4,8 @@ import {LearnItem$} from '../models/LearnItem$'
 import {map, shareReplay} from 'rxjs/operators'
 import {Observable} from 'rxjs'
 import {findPreferred} from '../../../libs/AppFedShared/utils/cachedSubject2/collectionUtils'
+import {countBy} from 'lodash-es'
+import {LearnItem} from '../models/LearnItem'
 
 @Injectable({
   providedIn: 'root'
@@ -47,4 +49,20 @@ export class ItemProcessingService {
     return found
   }
 
+  public getCountsByImportance() {
+    return countBy(
+      this.getItemsNeedingProcessing() ?? [],
+      (item$: LearnItem$) => item$.getEffectiveImportanceShortId()
+    )
+  }
+
+  public getItemsNeedingProcessing() {
+    return this.learnDoService.localItems$.lastVal?.filter(
+      item => item.currentVal?.needsProcessing()
+    )
+  }
+
+  getCountNeedingProcessing() {
+    return this.getItemsNeedingProcessing()?.length
+  }
 }
