@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+      <app-app-logo></app-app-logo>
+    </ion-buttons>
+
+
+    <ion-title>Item Processing</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<!--  <div *ngFor="let importance of importanceDescriptorsArray">{{importance.abbrev}}</div>-->
+
+<!--  <app-what-next-button></app-what-next-button>-->
+  <app-process-button></app-process-button>
+
+  {{itemProcessingService.getCountsByImportance() | json}}
+
+  Total: {{itemProcessingService.getCountNeedingProcessing() | json}}
+
+  <!-- TODO: cumulative importance-and-above -->
+
+
+  <table *ngIf="itemProcessingService.getCountsByImportance(); let counts">
+    <thead>
+      <th>Importance</th>
+      <th>Count</th>
+      <th>Count+</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let importance of importanceDescriptorsArray">
+        <td>{{importance.shortId}}</td>
+        <td>{{counts[importance.shortId]}}</td>
+      </tr>
+    </tbody>
+    <thead>
+
+    </thead>
+    <th></th>
+  </table>
+
+</ion-content>

@@ -64,8 +64,12 @@ const routes: Routes = [
     path: 'tree',
     loadChildren: () => import('./apps/OrYoL/tree-page/tree-page.module').then(m => m.TreePageModule)
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: 'item-processing',
+    loadChildren: () => import('./apps/Learn/item-processing/item-processing.module').then( m => m.ItemProcessingPageModule)
+  },
 
+  { path: '**', redirectTo: '' },
 
 ];
 
