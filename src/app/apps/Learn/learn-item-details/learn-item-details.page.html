@@ -35,7 +35,9 @@
 
       {{title}}
 
-      <odm-sync-status-icon></odm-sync-status-icon>
+      <ion-buttons>
+        <odm-sync-status-icon style="padding-right: 4px"></odm-sync-status-icon>
+      </ion-buttons>
 
     </div>
 <!--    <ion-title>-->
@@ -122,6 +124,8 @@
     ></app-play-button>
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
+
+    <app-item-sub-items></app-item-sub-items>
 
     <app-item-side-editor
       *ngFor="let side of sidesDefsArray"
