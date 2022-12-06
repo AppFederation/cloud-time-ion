@@ -15,15 +15,13 @@ import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storag
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {HttpClientModule} from '@angular/common/http';
 import {DbFirestoreModule} from './apps/OrYoL/db-firestore/db-firestore.module'
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import {StoreModule} from '@ngrx/store'
 import {counterReducer} from './apps/Learn/core/quiz/quiz.reducer'
 import {EffectsModule} from '@ngrx/effects'
 import {QuizEffects} from './apps/Learn/core/quiz/quiz.effects'
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
-
-library.add(fas);
+import {FaIconLibrary} from '@fortawesome/angular-fontawesome'
 
 // custom configuration Hammerjs
 @Injectable()
@@ -77,4 +75,11 @@ export class HammerConfig extends HammerGestureConfig {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    faIconLibrary: FaIconLibrary,
+  ) {
+    faIconLibrary.addIconPacks(fas);
+  }
+
+}
