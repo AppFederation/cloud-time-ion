@@ -106,7 +106,10 @@ export class TreeHostComponent implements OnInit {
   }
 
   appendNode() {
-    this.treeModel.navigation.visualRoot!.addChild()
+    const newNode = this.treeModel.navigation.visualRoot!.addChild()
+    setTimeout(() => {
+      this.focusNode(newNode)
+    })
   }
 
   expandAll() {

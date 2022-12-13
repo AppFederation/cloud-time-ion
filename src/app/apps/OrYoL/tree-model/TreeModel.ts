@@ -340,7 +340,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  addChild(afterExistingNode?: OryTreeNode, newNode?: OryTreeNode) {
+  addChild(afterExistingNode?: OryTreeNode, newNode?: OryTreeNode): OryTreeNode<any> {
     if ( ! afterExistingNode && this.children.length > 0 ) {
       afterExistingNode = this.lastChildNode
     }
