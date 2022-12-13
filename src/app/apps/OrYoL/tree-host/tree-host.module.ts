@@ -14,24 +14,26 @@ import { SearchModule } from '../search/search.module'
 import {TreeSharedModule} from '../tree-shared/tree-shared.module'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
 import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
+import {IonicModule} from '@ionic/angular'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
 @NgModule({
-  imports: [
-    CommonModule,
-    TreePrimengModule,
-    TreeNestedModule,
-    TimeTrackingModule,
-    TreeTableModule,
-    SharedModule,
-    ReactiveFormsModule,
-    RouterModule,
-    SearchModule,
-    TreeSharedModule,
-    SharedModule,
-    OdmModule,
-    NgbPopoverModule,
-  ],
+    imports: [
+        CommonModule,
+        TreePrimengModule,
+        TreeNestedModule,
+        TimeTrackingModule,
+        TreeTableModule,
+        SharedModule,
+        ReactiveFormsModule,
+        RouterModule,
+        SearchModule,
+        TreeSharedModule,
+        SharedModule,
+        OdmModule,
+        NgbPopoverModule,
+        IonicModule,
+    ],
   declarations: [
     TreeHostComponent,
     ToolbarComponent,
