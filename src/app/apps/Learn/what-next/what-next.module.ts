@@ -8,6 +8,7 @@ import { WhatNextPageRoutingModule } from './what-next-routing.module';
 
 import { WhatNextPage } from './what-next.page';
 import {LearnSharedModule} from '../shared/learn-shared.module'
+import {SharedModule} from '../../../shared/shared.module'
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import {LearnSharedModule} from '../shared/learn-shared.module'
         IonicModule,
         WhatNextPageRoutingModule,
         LearnSharedModule,
+        SharedModule,
     ],
   declarations: [WhatNextPage]
 })

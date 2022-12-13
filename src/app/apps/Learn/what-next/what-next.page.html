@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+      <app-app-logo></app-app-logo>
     </ion-buttons>
 
     <ion-title>WHAT NEXT?</ion-title>
@@ -11,6 +12,7 @@
 <ion-content>
   <div style="padding: 0.3rem">
     <ion-button [routerLink]="'/learn/item/LearnItem__2022-05-26__17.33.46.061Z_'">Affirmations</ion-button>
+    <ion-button>Craving fun (Quiz/Tasks) - "Panic Button"</ion-button>
     <app-quiz-button style="display: block; margin-bottom: 0.5rem"></app-quiz-button>
 
     <p><ion-note>Idea: generate a day (or time-chunk) plan proposal, instead of just next item</ion-note></p>
@@ -46,6 +48,8 @@
     Learning:
 
     <app-process-button></app-process-button>
+
+    <ion-button [routerLink]="'/item-processing'">Process Learn Items (& tasks)</ion-button>
 
     <ion-button [disabled]="true">Learn</ion-button>
 

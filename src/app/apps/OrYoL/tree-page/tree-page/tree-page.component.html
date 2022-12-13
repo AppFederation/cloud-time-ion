@@ -1,4 +1,34 @@
 <!-- later toolbar, etc. page-wide -->
 
-<app-tree-host
-></app-tree-host>
+<!-- note: this does not yet have ionic toolbar, ion-content; not scrollable -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
+      <app-app-logo></app-app-logo>
+    </ion-buttons>
+    <div style="display: inline-flex; align-items: center; width: 100%">
+      <!--      Tree-->
+      <div style="flex-grow: 1; display: flex; align-items: center">
+        <!--          &nbsp; CARD DETAILS-->
+      </div>
+
+      <ion-buttons>
+        <odm-sync-status-icon style="padding-right: 4px"></odm-sync-status-icon>
+      </ion-buttons>
+
+    </div>
+    <!--    <ion-title>-->
+    <!--      -->
+    <!--    </ion-title>-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <app-tree-host
+  ></app-tree-host>
+
+
+</ion-content>

@@ -21,36 +21,40 @@ import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/nod
 import {SharedModule} from '../../../shared/shared.module'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
+import {RatingCellComponent} from './cells/rating-cell/rating-cell.component'
+import {IonicModule} from '@ionic/angular'
 
 /** Components reusable to be embedded in different tree implementations (e.g. node content) */
 @NgModule({
-  declarations: [
-    NodeContentComponent,
-    NumericCellComponent,
-    TreeNodeMenuComponent,
-    NodeContentComponent,
-    ItemClassIconComponent,
-    ConfirmDeleteTreeNodeComponent,
-    TimeTrackingMenuComponent,
-    NodeContentTimeTrackingComponent,
-    RangeCellComponent,
-    CellsGroupComponent,
-    CellHostComponent,
-    ExampleCellComponent,
-    ContenteditableCellComponent,
-    NodeDebugCellComponent,
-    NodeExpansionIconComponent,
-    NodeClassIconComponent,
-    NodeClassPickerComponent,
-  ],
+    declarations: [
+        NodeContentComponent,
+        NumericCellComponent,
+        TreeNodeMenuComponent,
+        NodeContentComponent,
+        ItemClassIconComponent,
+        ConfirmDeleteTreeNodeComponent,
+        TimeTrackingMenuComponent,
+        NodeContentTimeTrackingComponent,
+        RangeCellComponent,
+        CellsGroupComponent,
+        CellHostComponent,
+        ExampleCellComponent,
+        ContenteditableCellComponent,
+        NodeDebugCellComponent,
+        NodeExpansionIconComponent,
+        NodeClassIconComponent,
+        NodeClassPickerComponent,
+        RatingCellComponent,
+    ],
     imports: [
         CommonModule,
         SharedModule,
         TimeTrackingModule,
         TimeModule,
         SharedModule,
-      FontAwesomeModule,
-      NgbPopoverModule,
+        FontAwesomeModule,
+        NgbPopoverModule,
+        IonicModule,
     ],
   exports: [
     NodeContentComponent,

@@ -427,6 +427,9 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   planning = jnd({
     specifyDuration,
   })
+  organizedness = jnd({
+    searchTerms: ['level being organized organised', 'organisedness', 'level of organization'],
+  })
   time_available = jnd({})
   prioritizing = jnd({})
   return_on_investment = jnd({acronym: `ROI`})
@@ -552,8 +555,10 @@ export class JournalNumericDescriptors extends UiFieldDefs {
 
   social_interactions = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing']})
   socializing = jnd({searchTerms: ['interacting with people', 'meetings', 'socializing', 'socialising']})
+  human_contact = jnd(/* not the same as socializing; superset */)
   communication = jnd({searchTerms: ['understanding', 'talking']})
   networking = jnd({searchTerms: ['social networking', 'meetings', 'business networking']})
+  teamwork = jnd({searchTerms: ['collaboration', 'meetings', 'working together']})
 
   introspection = jnd()
   self_discovery = jnd()

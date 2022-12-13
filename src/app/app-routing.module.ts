@@ -26,7 +26,7 @@ const routes: Routes = [
     data: { shouldReuse: true },
   },
   { path: 'learn/item',
-    loadChildren: () => import('./apps/Learn/learn-item-details/learn-item-details.module').then(m => m.LearnItemDetailsPageModule)
+    loadChildren: async () => (await import('./apps/Learn/learn-item-details/learn-item-details.module')).LearnItemDetailsPageModule
   },
   { path: 'learn/quiz',
     loadChildren: () => import('./apps/Learn/quiz/quiz.module').then(m => m.QuizPageModule)

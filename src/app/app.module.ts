@@ -77,6 +77,8 @@ export class HammerConfig extends HammerGestureConfig {
 })
 export class AppModule {
   constructor(
+    /** https://github.com/FortAwesome/angular-fontawesome/blob/master/docs/upgrading/0.4.0-0.5.0.md#migrate-from-global-icon-library-to-faiconlibrary
+     * https://github.com/FortAwesome/angular-fontawesome/blob/master/docs/upgrading/0.5.0-0.6.0.md */
     faIconLibrary: FaIconLibrary,
   ) {
     faIconLibrary.addIconPacks(fas);
