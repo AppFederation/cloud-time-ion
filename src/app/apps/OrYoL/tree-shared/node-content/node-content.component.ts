@@ -181,10 +181,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.addChild()
     } else {
       debugLog('key press enter; node: ', this.treeNode)
-      event.preventDefault()
       const newTreeNode = this.addNodeAfterThis()
       this.focusNewlyCreatedNode(newTreeNode)
     }
+    event.preventDefault()
   }
 
   /** NOTE: time-tracking is a cross-cutting built-in concern, so it's ok for it to spill into some generic code.
