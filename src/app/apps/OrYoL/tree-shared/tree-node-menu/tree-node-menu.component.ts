@@ -29,7 +29,7 @@ export class TreeNodeMenuComponent implements OnInit {
 
   @Input() nodeContentComponent!: NodeContentComponent
 
-  @Input() popOver!: NgbPopover
+  // @Input() popOver!: NgbPopover
 
   constructor(
     public dialogService: DialogService,
@@ -43,7 +43,7 @@ export class TreeNodeMenuComponent implements OnInit {
   }
 
   openDeleteConfirmationDialog() {
-    this.popOver.close()
+    // this.popOver.close()
     console.log('openDeleteConfirmationDialog()')
     // this.dialogService.showDeleteDialog(() => {
     //   // TODO: delete node inclusion and the node itself
@@ -55,19 +55,21 @@ export class TreeNodeMenuComponent implements OnInit {
   }
 
   addChild() {
-    this.popOver.close()
+    // this.popOver.close()
     this.nodeContentComponent.addChild()
   }
 
   navigateInto() {
-    console.log('navigateInto')
-    this.router.navigate(['/tree', this.treeNode!.nodeInclusion!.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
+    console.log('navigateInto', this.treeNode)
+    // this.router.navigate(['/tree', this.treeNode!.nodeInclusion!.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
+    // FIXME: router.navigate might be causing problem with this sometimes working and sometimes not; maybe race condition?
+    // maybe multiple instances of page component
     this.treeNode.navigateInto()
   }
 
   toClipboard() {
     this.clipboardService.setNodesInClipboard([this.treeNode])
-    this.popOver.close()
+    // this.popOver.close()
   }
 
   pasteCopyHereFromClipboard() {

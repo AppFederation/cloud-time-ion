@@ -52,10 +52,7 @@
 
   <app-node-class-icon
     [treeNode]="treeNode"
-    [ngbPopover]="popupContent"
-    #popOver="ngbPopover"
-    [autoClose]="'outside'"
-    placement = auto
+    (click)="onClickClassIcon($event)"
   ></app-node-class-icon>
 
   <ng-container *ngIf="treeNode.itemData?.deleted">

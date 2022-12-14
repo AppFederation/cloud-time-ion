@@ -769,6 +769,7 @@ export class TreeModel {
       // this.treeModel.focus.lastFocusedCell.node.
       // this.treeModel.focus.setFocused(node, )
       // TODO: set focused
+      console.log('this.visualRoot$.next(this.visualRoot!)', this.visualRoot)
       this.visualRoot$.next(this.visualRoot!)
     }
 

@@ -41,6 +41,8 @@ import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 import {getActiveElementCaretPos, getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
 import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
+import {PopoverController} from '@ionic/angular'
+import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -105,6 +107,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     public debugService: DebugService,
     private modalService: NgbModal,
     public configService: ConfigService,
+    public popoverController: PopoverController,
   ) {
     // should be at the level of model / column-model
     this.config$.subscribe(config => {
@@ -381,5 +384,20 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     const colIdx = this.columns.allNotHiddenColumns.indexOf(this.focusedColumn !)
     debugLog('coldIdx', colIdx)
     this.focus(this.columns.allNotHiddenColumns[colIdx - 1])
+  }
+
+  async onClickClassIcon($event: MouseEvent) {
+    const popover = await this.popoverController.create({
+      component: TreeNodeMenuComponent,
+      componentProps: {
+        treeNode: this.treeNode,
+        treeHost: this.treeHost,
+        nodeContentComponent: this,
+      },
+      event: $event,
+      translucent: true,
+      mode: 'ios',
+    });
+    return await popover.present();
   }
 }
