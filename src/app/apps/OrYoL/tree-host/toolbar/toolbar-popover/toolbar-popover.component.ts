@@ -42,6 +42,7 @@ export class ToolbarPopoverComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('ToolbarPopoverComponent ngOnInit')
     // this.configService.config$.subscribe(val => {
     //   this.formGroup.setValue(val)
     // })

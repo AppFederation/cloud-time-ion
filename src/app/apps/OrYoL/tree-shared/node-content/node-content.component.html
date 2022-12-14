@@ -67,7 +67,7 @@
   <app-node-cell
     [nodeContentComponent]="this"
     [cell]="cells.forColumn(columnDefs.estimatedTimeMin) !"
-    [hidden]="! isEstimatedTimeShown"
+    [hidden]="! isEstimatedTimeShown || ! (config$ | async)?.showMinMaxColumns"
   ></app-node-cell>
 
   <app-node-cell

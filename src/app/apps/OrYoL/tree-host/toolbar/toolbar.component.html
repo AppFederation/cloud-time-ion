@@ -92,19 +92,19 @@
     ></fa-icon>
   </ng-container>
 
-  <fa-icon [icon]="['fas', 'cog']" class="actionable" style="font-size: 24px"
-           [ngbPopover]="popupContent"
-           #popOver="ngbPopover"
-           [autoClose]="'outside'"
-           placement="bottom"
+  <fa-icon
+    [icon]="['fas', 'cog']"
+    class="actionable"
+    style="font-size: 24px"
+    (click)="onClickMenuIcon($event)"
   ></fa-icon>
 
-  <ng-template #popupContent>
-    <!-- note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context -->
-    <app-toolbar-popover
-      [treeHost]="treeHost"
-    ></app-toolbar-popover>
-  </ng-template>
+<!--  <ng-template #popupContent>-->
+<!--    &lt;!&ndash; note: passing [nodeContentComponent]="this" might be an acceptable exception, since the popover really originates form the node-content component so it might depend on it for context &ndash;&gt;-->
+<!--    <app-toolbar-popover-->
+<!--      [treeHost]="treeHost"-->
+<!--    ></app-toolbar-popover>-->
+<!--  </ng-template>-->
 
 
   <ng-container *ngIf="debugService.isDebug$ | async">
