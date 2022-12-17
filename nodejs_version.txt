@@ -1,0 +1,15 @@
+# my own file to make sure I keep track of which version of node I'm using
+
+! works: v16.17.1
+~/.nvm/versions/node/v16.17.1/bin/node
+
+nvm list
+       node v14.20.1 (npm v6.14.17) -- worked 2022-10-25 after problems with prod build on node 16
+other:
+      v16.15.1
+       v16.17.1
+
+try v12.22.9 (npm v6.14.15)
+
+https://stackoverflow.com/questions/60248452/is-there-a-compatibility-list-for-angular-angular-cli-and-node-js
+https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3 -- angular-cli-node-js-typescript-rxjs-compatiblity-matrix.csv
