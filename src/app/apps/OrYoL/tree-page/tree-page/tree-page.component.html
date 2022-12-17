@@ -15,6 +15,9 @@
       </div>
 
       <ion-buttons>
+        <ion-button (click)="commandsService.reorderUp()">up</ion-button>
+        <ion-button (click)="commandsService.reorderDown()">down</ion-button>
+        <ion-button (click)="commandsService.toggleDone()">done</ion-button>
         <odm-sync-status-icon style="padding-right: 4px"></odm-sync-status-icon>
       </ion-buttons>
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CommandsService} from '../../core/commands.service'
 
 @Component({
   selector: 'app-tree-page',
@@ -9,7 +10,9 @@ export class TreePageComponent implements OnInit {
 
   // TODO: route handling should be here, not in TreeHostComponent
 
-  constructor() { }
+  constructor(
+    public commandsService: CommandsService,
+  ) { }
 
   ngOnInit() {
   }
