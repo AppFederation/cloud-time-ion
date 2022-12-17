@@ -92,7 +92,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         .where('owner', '==', userId)
       if ( nDaysOldModified ) {
         const promise = query
-          .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
+          .orderBy("whenLastModified", 'desc')
+          // .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
+          .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
           .get({source: 'cache'})
         promise.then(data => {
             for ( let doc of data.docs ) {
