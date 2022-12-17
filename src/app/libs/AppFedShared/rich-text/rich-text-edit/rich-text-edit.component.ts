@@ -82,7 +82,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     plugins: [
       'advlist autolink lists image charmap print preview anchor' /* link */,
       'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
+      'insertdatetime media table paste code help wordcount hr'
     ],
     formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
@@ -149,7 +149,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
       'customMarkBtn btnFormatPositive btnFormatNegative btnFormatWarning btnFormatFancy btnFormatConcept \
       bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
       selectall copy paste | undo redo | \
-      formatselect | \
+      formatselect | hr | \
       alignleft aligncenter alignright alignjustify ' /* align is probably quite useless for notes */ +
       ' | removeformat | help',
     skin: 'oxide-dark',
