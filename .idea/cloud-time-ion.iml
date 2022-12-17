@@ -7,6 +7,14 @@
       <excludeFolder url="file://$MODULE_DIR$/platforms" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules_OFF-ngcc-backup-file-error" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules_npm16" />
+      <excludeFolder url="file://$MODULE_DIR$/android/app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/android/capacitor-cordova-android-plugins/build" />
+      <excludeFolder url="file://$MODULE_DIR$/OrYoL_OFF" />
+      <excludeFolder url="file://$MODULE_DIR$/ios_OFF" />
+      <excludeFolder url="file://$MODULE_DIR$/CloudTimeDroid/app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/CloudTimeDroid/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/www" />
     </content>
     <orderEntry type="inheritedJdk" />
