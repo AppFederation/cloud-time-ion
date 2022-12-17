@@ -181,22 +181,22 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
           this.highlightSelected(editor)
         });
       editor.addShortcut('ctrl+p', 'Positive style ', function(){
-        editor.formatter.apply('positive');
+        editor.formatter.toggle('positive');
       });
       editor.addShortcut('ctrl+e', 'Positive style ', function(){
-        editor.formatter.apply('positive');
+        editor.formatter.toggle('positive');
       });
       editor.addShortcut('ctrl+n', 'Negative style ', function(){
-        editor.formatter.apply('negative');
+        editor.formatter.toggle('negative');
       });
       editor.addShortcut('ctrl+w', 'Warning style ', function(){
-        editor.formatter.apply('warning');
+        editor.formatter.toggle('warning');
       });
       editor.addShortcut('ctrl+f', 'Fancy style ', function(){
-        editor.formatter.apply('fancy');
+        editor.formatter.toggle('fancy');
       });
       editor.addShortcut('ctrl+c', 'Concept style ', function(){
-        editor.formatter.apply('concept');
+        editor.formatter.toggle('concept');
       });
       editor.ui.registry.addButton('customMarkBtn', {
         /* https://www.tiny.cloud/docs/demo/custom-toolbar-button/ */
