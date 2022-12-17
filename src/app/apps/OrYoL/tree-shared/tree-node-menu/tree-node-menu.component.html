@@ -16,43 +16,38 @@ In n Places:
 
 <!--<app-time-tracking-menu [treeNode]="treeNode"></app-time-tracking-menu>-->
 
-<button
-  class="btn btn-primary"
+<ion-button
   (click)="openDeleteConfirmationDialog()">
   Delete
-</button>
+</ion-button>
 
-<button
-  class="btn btn-primary"
+<ion-button
   (click)='navigateInto()'>
   Navigate Into
-</button>
+</ion-button>
 
-<button
-  class="btn btn-primary"
+<ion-button
   (click)='addChild()'>
   Add Sub-task
-</button>
+</ion-button>
 
-<button
-  class="btn btn-primary"
+<ion-button
   (click)='toClipboard()'>
   To Clipboard
-</button>
+</ion-button>
 
-<button
+<ion-button
   *ngIf="clipboardService.hasContent"
-  class="btn btn-primary"
   (click)='pasteCopyHereFromClipboard()'>
   Copy here from clipboard
-</button>
+</ion-button>
 
-<button
+<ion-button
   *ngIf="clipboardService.hasContent"
   class="btn btn-primary"
   (click)='pasteMoveHereFromClipboard()'>
   Move here from clipboard
-</button>
+</ion-button>
 <p style="margin-top: .5em">
   Created: {{getWhenCreated()}}
 </p>
