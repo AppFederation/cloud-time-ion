@@ -17,7 +17,7 @@ import { TestComponentInstanceChangingOnInputValueChangeComponent } from './expe
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { MyHammerConfig } from './my-hammer-config';
-import { SharedModule } from './shared/shared.module'
+import { OryolSharedModule } from './shared/oryol-shared.module'
 import { routingModule } from './app.routing';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../../../../OrYoL_OFF/src/environments/environment';
@@ -40,7 +40,7 @@ library.add(fas);
     // MatIconModule,
     CoreModule,
     routingModule,
-    SharedModule,
+    OryolSharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [

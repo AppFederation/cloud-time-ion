@@ -6,7 +6,7 @@ import {TreeNestedModule} from '../tree-nested/tree-nested.module';
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { TimeTrackingModule } from '../time-tracking/time-tracking.module'
 import { TreeTableModule } from 'primeng/treetable'
-import { SharedModule } from '../shared/shared.module';
+import { OryolSharedModule } from '../shared/oryol-shared.module';
 import { ToolbarPopoverComponent } from './toolbar/toolbar-popover/toolbar-popover.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
@@ -24,12 +24,12 @@ import {IonicModule} from '@ionic/angular'
         TreeNestedModule,
         TimeTrackingModule,
         TreeTableModule,
-        SharedModule,
+        OryolSharedModule,
         ReactiveFormsModule,
         RouterModule,
         SearchModule,
         TreeSharedModule,
-        SharedModule,
+        OryolSharedModule,
         OdmModule,
         NgbPopoverModule,
         IonicModule,

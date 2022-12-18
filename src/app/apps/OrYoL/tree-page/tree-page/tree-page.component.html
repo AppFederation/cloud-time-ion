@@ -14,12 +14,42 @@
         <!--          &nbsp; CARD DETAILS-->
       </div>
 
+<!--      aa-->
+<!--      <fa-icon icon="indent" class="actionable"-->
+<!--      ></fa-icon>-->
+<!--bb-->
+<!--      <fa-icon icon="shopping-cart" class="actionable"-->
+<!--      ></fa-icon>-->
+
+<!--      cc-->
       <ion-buttons>
-        <ion-button (click)="commandsService.reorderUp()">up</ion-button>
-        <ion-button (click)="commandsService.reorderDown()">down</ion-button>
-        <ion-button (click)="commandsService.toggleDone()">done</ion-button>
-        <ion-button (click)="commandsService.indentLeft()">&lt;</ion-button>
-        <ion-button (click)="commandsService.indentRight()">&gt;</ion-button>
+        <ion-button (click)="commandsService.reorderUp()">
+          <ion-icon class="action-color" name="chevron-up-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="commandsService.reorderDown()">
+          <ion-icon class="action-color" name="chevron-down-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="commandsService.toggleDone()">
+          <ion-icon class="action-color" name="checkmark-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="commandsService.indentLeft()">
+          <ion-icon class="action-color" name="chevron-back-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="commandsService.indentRight()">
+          <ion-icon class="action-color" name="chevron-forward-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+<!--        <ion-button>-->
+<!--          <fa-icon slot="icon-only" icon="indent" class="actionable"-->
+<!--          ></fa-icon>-->
+<!--        </ion-button>-->
+<!--        <ion-button>-->
+<!--          <fa-icon icon="outdent" class="actionable"-->
+<!--          ></fa-icon>-->
+<!--        </ion-button>-->
+        <!-- fa: <i class="fa-regular fa-arrow-right-long-to-line"></i> - - - just has to-right version
+
+          indent / outdent ; command: indentIncrease
+        -->
         <odm-sync-status-icon style="padding-right: 4px"></odm-sync-status-icon>
       </ion-buttons>
 
@@ -34,6 +64,5 @@
 
   <app-tree-host
   ></app-tree-host>
-
 
 </ion-content>
