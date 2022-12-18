@@ -57,17 +57,15 @@ export class TreeHostComponent implements OnInit {
     commandsService.commands$.subscribe((command: Command) => {
       const lastFocusedNode = this.treeModel.focus.lastFocusedNode
       /*  */ if ( command === 'reorderUp' ) {
-        if ( lastFocusedNode ) {
-          lastFocusedNode.reorderUp()
-        }
+        lastFocusedNode ?. reorderUp()
       } else if ( command === 'reorderDown' ) {
-        if ( lastFocusedNode ) {
-          lastFocusedNode.reorderDown()
-        }
+        lastFocusedNode ?. reorderDown()
       } else if ( command === 'toggleDone' ) {
-        if ( lastFocusedNode ) {
-          lastFocusedNode.toggleDone()
-        }
+        lastFocusedNode ?. toggleDone()
+      } else if ( command === 'indentLeft' ) {
+        lastFocusedNode ?. indentDecrease()
+      } else if ( command === 'indentRight' ) {
+        lastFocusedNode ?. indentIncrease()
       }
     })
     treeDragDropService.dragStop$.subscribe((...args: any[]) => {
