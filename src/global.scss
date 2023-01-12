@@ -13,6 +13,8 @@
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
 
+@import 'global_oryol2';
+
 [contenteditable] {
   -webkit-user-select: text;
   user-select: text;
@@ -49,7 +51,7 @@ html {
 
 ul, ol {
   ::marker {
-    color: var(--secondary)
+    //color: var(--secondary)
   }
 }
 
@@ -205,3 +207,4 @@ body {
 //  font-size: 212px;
 //  font-weight: 500;
 //}
+
