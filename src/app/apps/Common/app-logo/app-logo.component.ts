@@ -8,10 +8,18 @@ import {Router} from '@angular/router'
 })
 export class AppLogoComponent implements OnInit {
 
+  /** workaround for logo disappearing on page navigation */
+  fillSuffix = (''+Math.random()).replace('.', '')
+
+  fill1Id = 'fill1-' + this.fillSuffix
+  fill2Id = 'fill2-' + this.fillSuffix
+
   constructor(
     public router: Router,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('suffix', this.fillSuffix)
+  }
 
 }
