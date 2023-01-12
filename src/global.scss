@@ -27,8 +27,8 @@ html {
 
 :root {
 
-  --secondary: darkorange;
-  --primary: --ion-color-primary /* FIXME: Ionic color */;
+  --secondary: darkorange; /* FIXME make consistent */
+  //--primary: var(--ion-color-primary) /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;
   //--answerBorderColorDark: darken(var(--answerBorderColor), 0);
