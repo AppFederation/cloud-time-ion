@@ -19,7 +19,6 @@ export class AppLogoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('suffix', this.fillSuffix)
   }
 
 }

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+      <app-app-logo></app-app-logo>
+    </ion-buttons>
+
+
+    <ion-title>Success Probability</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p>(explanatory and motivational text & graphic here)</p>
+
+  Single attempt chance: {{singleAttemptChance * 100}} %
+  <ion-range></ion-range>
+
+  <p>Number of attempts:</p>
+  <table>
+    <tr *ngFor="let count of attemptCounts">
+      <td style="color: var(--ion-color-secondary)">
+        {{count}}
+      </td>
+      <td style="color: var(--ion-color-primary)">
+        {{ (probability(count) * 100).toFixed(1) }} %
+      </td>
+    </tr>
+  </table>
+
+</ion-content>

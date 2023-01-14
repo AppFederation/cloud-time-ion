@@ -68,6 +68,15 @@ const routes: Routes = [
     path: 'item-processing',
     loadChildren: () => import('./apps/Learn/item-processing/item-processing.module').then( m => m.ItemProcessingPageModule)
   },
+  {
+    path: 'success-chance',
+    loadChildren: () => import('./apps/Learn/success-chance/success-chance.module').then( m => m.SuccessChancePageModule)
+  },
+  {
+    path: 'exponential-improvement',
+    loadChildren: () => import('./apps/Learn/exponential-improvement/exponential-improvement.module').then( m => m.ExponentialImprovementPageModule)
+  },
+
 
   { path: '**', redirectTo: '' },
 

@@ -1,4 +1,4 @@
-# my own file to make sure I keep track of which version of node I'm using
+# my own file to make sure I keep track of which version of node & npm I'm using
 
 ! works: v16.17.1
 ~/.nvm/versions/node/v16.17.1/bin/node

@@ -9,6 +9,7 @@ import { WhatNextPageRoutingModule } from './what-next-routing.module';
 import { WhatNextPage } from './what-next.page';
 import {LearnSharedModule} from '../shared/learn-shared.module'
 import {SharedModule} from '../../../shared/shared.module'
+import {EnergyGraphComponent} from '../energy-graph/energy-graph.component'
 
 @NgModule({
     imports: [
@@ -19,6 +20,6 @@ import {SharedModule} from '../../../shared/shared.module'
         LearnSharedModule,
         SharedModule,
     ],
-  declarations: [WhatNextPage]
+    declarations: [WhatNextPage, EnergyGraphComponent],
 })
 export class WhatNextPageModule {}
