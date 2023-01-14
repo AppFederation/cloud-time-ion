@@ -9,6 +9,8 @@
 
 time npm i --force  --legacy-peer-deps
 
+export NODE_OPTIONS=--openssl-legacy-provider ; npm start
+
 # "EBADENGINE Unsupported engine" -- it seems to have worked despite this, after upgrading sass to  sass@1.57.1
 
 nvm list
