@@ -5,6 +5,14 @@
 
 time npm i --force  --legacy-peer-deps
 
+=====
+kmac32:cloud-time-ion kd$ node --version
+v18.13.0
+kmac32:cloud-time-ion kd$ npm --version
+8.19.3
+
+=====
+
 export NODE_OPTIONS=--openssl-legacy-provider ; npm start
 
 # "EBADENGINE Unsupported engine" -- it seems to have worked despite this, after upgrading sass to  sass@1.57.1
