@@ -3,6 +3,10 @@
 ! works: v16.17.1
 ~/.nvm/versions/node/v16.17.1/bin/node
 
+ % npm --version
+8.15.0
+
+
 time npm i --force  --legacy-peer-deps
 
 # "EBADENGINE Unsupported engine" -- it seems to have worked despite this, after upgrading sass to  sass@1.57.1
