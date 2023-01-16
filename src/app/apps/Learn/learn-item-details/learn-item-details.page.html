@@ -51,6 +51,7 @@
   <ng-container
     *ngIf="(val$ | async) as itemVal else notLoaded"
   >
+    <app-breadcrumbs></app-breadcrumbs>
     <app-learn-item-details-hints
       [hidden]="itemVal ?. isTask"
     ></app-learn-item-details-hints>
