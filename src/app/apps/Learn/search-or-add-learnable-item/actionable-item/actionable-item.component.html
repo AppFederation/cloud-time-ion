@@ -22,6 +22,7 @@
   <ion-button size="small"
               (click)="addToToday($event)"
   >
+    <!-- should be dot dot dot menu anyway -->
     <ion-icon slot="icon-only" name="today-outline"></ion-icon>
      <!-- TODO: checkbox if already included -->
     <!-- TODO: later: this week / month / quarter / year -->
@@ -71,7 +72,7 @@
     [itemId]="item.id"
   ></app-play-button>
 
-  <span style="color: orange">
+  <span style="color: var(--ion-color-primary)">
     {{ item.val?.lastSelfRating }}
   </span>
 
