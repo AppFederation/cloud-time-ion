@@ -12,8 +12,45 @@
 </ion-header>
 
 <ion-content>
-  (explanatory and motivational text & graphic here)
+  (explanatory and motivational text & graphic here; info about Synergies vs Diminishing Returns cancelling each other - to ~linear)
 
-  <ion-range></ion-range>
+<p>  Increment: {{ (incrementFraction * 100)?.toFixed(2) }} %
+</p>
+  <ion-range [step]="0.1" (ionChange)="onSliderChange($event)"></ion-range>
+
+
+  <table>
+    <tr>
+      <td style="writing-mode: vertical-rl; text-orientation: mixed; background: var(--ion-color-secondary)">
+        Number<br>of days:
+      </td>
+      <td style="writing-mode: vertical-rl; text-orientation: mixed; background: var(--ion-color-primary)">
+        Improvement:
+      </td>
+      <td style="writing-mode: vertical-rl; text-orientation: mixed; background: var(--ion-color-primary)">
+        Comment:
+      </td>
+    </tr>
+    <tr *ngFor="let count of periodsDays">
+      <td style="color: var(--ion-color-secondary)">
+        {{count}}
+      </td>
+      <td style="color: var(--ion-color-primary); font-weight: bold">
+        {{ improvementFraction(count).toFixed(2) }} x
+      </td>
+      <td style="color: var(--ion-color-primary); font-weight: bold">
+        {{ improvementFractionLinear(count).toFixed(2) }} x
+      </td>
+<!--      <td>-->
+<!--        <div style="width: 100%; height: 20px; background: #424242">-->
+<!--          <div [ngStyle]="{ width: probabilityStrPercent(count), background: 'var(&#45;&#45;ion-color-primary)', height: '20px', display: 'block' }"></div>-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td style="text-align: left">-->
+<!--        <ion-note>        You have a reasonable chance!</ion-note>-->
+
+<!--      </td>-->
+    </tr>
+  </table>
 
 </ion-content>
