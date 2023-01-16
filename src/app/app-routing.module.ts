@@ -76,7 +76,10 @@ const routes: Routes = [
     path: 'exponential-improvement',
     loadChildren: () => import('./apps/Learn/exponential-improvement/exponential-improvement.module').then( m => m.ExponentialImprovementPageModule)
   },
-
+  {
+    path: 'categories-stats',
+    loadChildren: () => import('./libs/AppFedShared/categories-stats-page/categories-stats-page.module').then( m => m.CategoriesStatsPagePageModule)
+  },
 
   { path: '**', redirectTo: '' },
 
