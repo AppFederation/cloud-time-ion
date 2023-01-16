@@ -10,16 +10,18 @@ import { CategoriesPage } from './categories.page';
 import {CategoriesComponent} from '../../../shared/categories/categories.component'
 import {CategoriesModule} from '../../../shared/categories/categories.module'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
+import {SharedModule} from '../../../shared/shared.module'
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    CategoriesPageRoutingModule,
-    CategoriesModule,
-    OdmModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CategoriesPageRoutingModule,
+        CategoriesModule,
+        OdmModule,
+        SharedModule,
+    ],
   declarations: [CategoriesPage],
 })
 export class CategoriesPageModule {}
