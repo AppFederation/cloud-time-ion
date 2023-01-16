@@ -16,7 +16,23 @@ export class SuccessChancePage implements OnInit {
   ngOnInit() {
   }
 
-  probability(number: number) {
+  probabilityFraction(number: number) {
     return 1 - ((1 - this.singleAttemptChance) ** number)
+  }
+
+  probabilityStr(count: number) {
+    return (this.probabilityFraction(count) * 100).toFixed(1)
+  }
+
+  probabilityStrPercent(count: number) {
+    return this.probabilityStr(count) + '%'
+  }
+
+  probabilityStrPx(count: number) {
+    return this.probabilityStr(count) + 'px'
+  }
+
+  onSliderChange($event: any) {
+    this.singleAttemptChance = $event.detail.value / 100
   }
 }
