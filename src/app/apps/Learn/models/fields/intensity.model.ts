@@ -145,6 +145,12 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
           Overarching Mantra.
         `
   })
+  overarching_meta_mantra
+    = intensity({numeric: 1_000_000, abbrev: `OvrMtMtr`, icons: `OvrMtMtr`, shortId: `OvrMtMtr`,
+    description: `
+          Overarching Meta Mantra.
+        `
+  })
 
   /* TODO: current focus urgent, day / week /
     Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category

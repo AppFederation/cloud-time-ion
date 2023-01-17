@@ -77,6 +77,8 @@ const importanceButtonsDesc = new ButtonsDescriptor<any, string>([
     btnVariants: [
       intensityBtnVariant(`Ovr`, importanceDescriptors.overarching),
       intensityBtnVariant(`OvrMtr`, importanceDescriptors.overarching_mantra),
+      // intensityBtnVariant(`OvrMeta`, importanceDescriptors.overarching_meta),
+      intensityBtnVariant(`OvrMetaMtr`, importanceDescriptors.overarching_meta_mantra),
     ]
   }),
 ])

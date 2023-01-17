@@ -15,6 +15,7 @@ import {ImportanceBannerComponent} from '../apps/Learn/shared/importance-banner/
 import {WhatNextButtonComponent} from './what-next-button/what-next-button.component'
 import {RouterModule} from '@angular/router'
 import {AppLogoComponent} from '../apps/Common/app-logo/app-logo.component'
+import {BreadcrumbsComponent} from '../libs/AppFedShared/breadcrumbs/breadcrumbs.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -44,14 +45,16 @@ const exportedDeclarations = [
     EditorModule,
     RouterModule,
   ],
-  exports: [
-    ...imports,
-    ...exportedDeclarations,
-  ],
+    exports: [
+        ...imports,
+        ...exportedDeclarations,
+        BreadcrumbsComponent,
+    ],
   providers: [],
-  declarations: [
-    ...exportedDeclarations,
-  ],
+    declarations: [
+        ...exportedDeclarations,
+        BreadcrumbsComponent,
+    ],
 })
 export class SharedModule {
 }
