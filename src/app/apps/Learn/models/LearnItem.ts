@@ -92,6 +92,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
 
   finish_before ? : string
 
+  categories ? : HtmlString
+
   /** quick hack for category field__de */
   de ? : HtmlString
   en ? : HtmlString
