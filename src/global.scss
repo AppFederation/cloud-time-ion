@@ -27,8 +27,8 @@ html {
 
 :root {
 
-  --secondary: darkorange; /* FIXME make consistent */
-  //--primary: var(--ion-color-primary) /* FIXME: Ionic color */;
+  --secondary: var(--ion-color-secondary); /* FIXME make consistent */
+  --primary: var(--ion-color-primary) /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;
   //--answerBorderColorDark: darken(var(--answerBorderColor), 0);
@@ -42,11 +42,11 @@ html {
   cursor: pointer;
   user-select: none;
   padding: 2px;
-  color: orange;
+  color: var(--ion-color-primary);
 }
 
 .action-color {
-  color: orange;
+  color: var(--ion-color-primary);
 }
 
 ul, ol {
