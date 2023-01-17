@@ -4,31 +4,41 @@
   SYNC STATUS
 </h3>
 
-{{(authService.authUser$ | async)?.email}}
+<app-theme-config></app-theme-config>
 
-<p
+<p>
+  {{(authService.authUser$ | async)?.email}}
+</p>
+
+<div
   *ngIf="(authService.authUser$ | async) else notLoggedIn"
 >
   <ng-container
-    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount let count; else allSynced"
+    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount let count; else allUploaded"
   >
     TO UPLOAD: {{count}}
 
   </ng-container>
 
   <ng-container
-    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingDownloadsCount let count; else allSynced"
+    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingDownloadsCount let count; else allDownloaded"
   >
     DOWNLOADING: {{count}}
   </ng-container>
 
   <ng-template
-    #allSynced
+    #allUploaded
   >
-    ALL SYNCED!
+    <p>ALL UPLOADED!</p>
   </ng-template>
 
-</p>
+  <ng-template
+    #allDownloaded
+  >
+    <p>ALL DOWNLOADED!</p>
+  </ng-template>
+
+</div>
 
 <ng-template
   #notLoggedIn
@@ -39,6 +49,8 @@
   >LOG IN</ion-button>
 
 </ng-template>
+
+<br />
 
 <ion-button
   (click)="logOut()"
