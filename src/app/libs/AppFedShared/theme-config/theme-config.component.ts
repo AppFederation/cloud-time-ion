@@ -26,6 +26,26 @@ function shadeColor(color: string, decimal: number): string {
   return `#${rr}${gg}${bb}`;
 }
 
+type RGB = [number, number, number];
+
+function getRgbColorFromHex(hex: string) {
+  hex = hex.slice(1);
+  const value = parseInt(hex, 16);
+  const r = (value >> 16) & 255;
+  const g = (value >> 8) & 255;
+  const b = value & 255;
+
+  return [r, g, b] as RGB;
+};
+
+function luminance(rgb: RGB) {
+  const [r, g, b] = rgb.map((v: any) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return r * 0.2126 + g * 0.7152 + b * 0.0722;
+};
+
 const themes = {
   'Porzeczki Agrest': {
     comment: 'Jellies',
@@ -97,15 +117,20 @@ export class ThemeConfigComponent implements OnInit {
     // FIXME: also try to set -rgb, coz button does not change color
     // Try this later with ionic 6 (can be in separate app)
 
-    const colorName = `secondary`
-
     function setColorProp(colorName: string, colorVal: string) {
       // root.style.setProperty(`--ion-color-${colorName}-rgb`, colorVal);
+      const centralColor = shadeColor(colorVal, centerVal)
+      const luminance1 = luminance(getRgbColorFromHex(centralColor))
+      console.log('luminance1' + colorName + ` $centralColor`, luminance1)
+      root.style.setProperty(`--ion-color-${colorName}-contrast`,
+        luminance1 < 0.37 ? 'white' : 'black');
       root.style.setProperty(`--ion-color-${colorName}-tint`, shadeColor(colorVal, lightenVal));
-      root.style.setProperty(`--ion-color-${colorName}`, shadeColor(colorVal, centerVal));
-      root.style.setProperty(`--${colorName}`, shadeColor(colorVal, centerVal));
+      root.style.setProperty(`--ion-color-${colorName}-tint`, shadeColor(colorVal, lightenVal));
+      root.style.setProperty(`--ion-color-${colorName}`, centralColor);
+      root.style.setProperty(`--${colorName}`, centralColor);
       root.style.setProperty(`--ion-color-${colorName}-shade`, shadeColor(colorVal, darkenVal));
     }
+
 
     setColorProp('primary', primary)
     setColorProp('secondary', secondary)
