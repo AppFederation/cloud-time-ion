@@ -26,6 +26,24 @@ function shadeColor(color: string, decimal: number): string {
   return `#${rr}${gg}${bb}`;
 }
 
+const themes = {
+  'Porzeczki Agrest': {
+    comment: 'Jellies',
+    primary: '#c72323',
+    secondary: '#b68001',
+  },
+  'Gray Green': {
+    comment: 'Jellies',
+    primary: '#6e6e6e',
+    secondary: '#007e00',
+  },
+  'Blue Orange': {
+    comment: 'Blueberries and orange',
+    primary: '#004cb7',
+    secondary: '#007e00',
+  },
+}
+
 @Component({
   selector: 'app-theme-config',
   templateUrl: './theme-config.component.html',
@@ -33,17 +51,27 @@ function shadeColor(color: string, decimal: number): string {
 })
 export class ThemeConfigComponent implements OnInit {
 
+  Object = Object
+
+  themes = themes as any
+
+  brightness = 50
+
+  themeId: any/*keyof typeof themes*/ = 'Porzeczki Agrest'
+
   constructor() { }
 
   ngOnInit() {}
 
   onSliderChange($event: any) {
+    this.brightness = $event.detail.value
+    this.updateColors()
+  }
+
+  updateColors() {
     // let root: HTMLElement = document.documentElement;
     let root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
     // let root = document.getEl
-    // const sliderVal =  0
-    const sliderVal = $event.detail.value
-
     // it was gray and green cool theme
 
     // const color = '#000080'
@@ -53,12 +81,14 @@ export class ThemeConfigComponent implements OnInit {
     // TODO: extract ThemeService, so I can e.g. fade in on app start
 
     // const color = '#800080'
-    const primary = '#008000'
-    const secondary = '#5050f0'
+    // const primary = '#008000'
+    // const secondary = '#5050f0'
 
-    const darkenVal = sliderVal / 50
-    const centerVal = sliderVal / 75
-    const lightenVal = sliderVal / 100
+    const {primary, secondary} = themes[this.themeId as keyof typeof themes]
+
+    const darkenVal = this.brightness / 50
+    const centerVal = this.brightness / 75
+    const lightenVal = this.brightness / 100
     // const darkenVal = 0 - sliderVal / 100
     // const lightenVal = 0 + sliderVal / 100
 
@@ -73,6 +103,7 @@ export class ThemeConfigComponent implements OnInit {
       // root.style.setProperty(`--ion-color-${colorName}-rgb`, colorVal);
       root.style.setProperty(`--ion-color-${colorName}-tint`, shadeColor(colorVal, lightenVal));
       root.style.setProperty(`--ion-color-${colorName}`, shadeColor(colorVal, centerVal));
+      root.style.setProperty(`--${colorName}`, shadeColor(colorVal, centerVal));
       root.style.setProperty(`--ion-color-${colorName}-shade`, shadeColor(colorVal, darkenVal));
     }
 
@@ -80,7 +111,5 @@ export class ThemeConfigComponent implements OnInit {
     setColorProp('secondary', secondary)
 
     console.log('root.style', root.style);
-
   }
-
 }

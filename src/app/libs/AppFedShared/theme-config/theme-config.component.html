@@ -14,10 +14,22 @@
 <!-- - each page / functionality could have a different theme; e.g. learning vs planning; as mental hook-->
 
 <!--</pre>-->
+
+
+
 <ion-range
   [step]="0.1"
   (ionChange)="onSliderChange($event)"
 ></ion-range>
 
+aa
+<div *ngFor="let curThemeId of Object.keys(themes)"
+     style="cursor: pointer"
+     (click)="themeId = curThemeId; updateColors()"
+>
+  {{curThemeId}}<br>
+  <span [ngStyle]="{color: themes[curThemeId].primary}">Primary</span>
+  &nbsp;
+  <span [ngStyle]="{color: themes[curThemeId].secondary}">Secondary</span>
 
-
+</div>
