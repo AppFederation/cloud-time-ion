@@ -59,6 +59,8 @@ export class ThemeService {
   }
 
   setColorProps(colorName: string, colorVal: string) {
+    const isDarkTheme = true // TODO
+
     const darkenVal = this.brightnessPercent / 50
     const centerVal = this.brightnessPercent / 75
     const lightenVal = this.brightnessPercent / 100
@@ -73,14 +75,24 @@ export class ThemeService {
     console.log('luminance1 ' + colorName + ` $centralColor`, luminance1)
     root.style.setProperty(`--ion-color-${colorName}-contrast`,
       luminance1 < this.contrastLuminanceThreshold ? 'white' : 'black');
-    root.style.setProperty(`--ion-color-${colorName}-muted`,
+    // root.style.setProperty(`--ion-color-${colorName}-muted`,
+    //   /** workaround for logo disappearing on page navigation */
+    // 'gray' /* TODO might wanna vary on luminance */); // TODO: prolly better to have it as transparency
+    root.style.setProperty(`--ion-color-${colorName}-contrast-muted`,
       /** workaround for logo disappearing on page navigation */
-    'gray' /* TODO might wanna vary on luminance */); // TODO: prolly better to have it as transparency
-    root.style.setProperty(`--ion-color-${colorName}-tint`, shadeColor(colorVal, lightenVal));
-    root.style.setProperty(`--ion-color-${colorName}-tint`, shadeColor(colorVal, lightenVal));
+      centralColor+'80')
+    const tinted = shadeColor(colorVal, lightenVal)
+    root.style.setProperty(`--ion-color-${colorName}-tint`, tinted);
     root.style.setProperty(`--ion-color-${colorName}`, centralColor);
     root.style.setProperty(`--${colorName}`, centralColor);
-    root.style.setProperty(`--ion-color-${colorName}-shade`, shadeColor(colorVal, darkenVal));
+    const shaded = shadeColor(colorVal, darkenVal)
+    root.style.setProperty(`--ion-color-${colorName}-shade`, shaded);
+
+    if (isDarkTheme) { /* highlight color to stand against background: */
+      root.style.setProperty(`--ion-color-${colorName}-highlight`, `var(--ion-color-primary-tint`);
+    } else {
+      root.style.setProperty(`--ion-color-${colorName}-highlight`, `var(--ion-color-primary-shade`);
+    }
   }
 
   setThemeId(themeId: ThemeId) {
