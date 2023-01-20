@@ -43,6 +43,7 @@ import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
+import {INodeContentComponent} from './INodeContentComponent'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -59,7 +60,7 @@ import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
   // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, INodeContentComponent {
 
   /** Could be actually map *Cell* to Component */
   mapColumnToComponent = new Map<OryColumn, CellComponent>()
@@ -203,6 +204,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy {
     // -> was tracked, **not done**
     // -> (1 back) being tracked, not done
 
+    // TODO: move to global command handler? but under new name not toggleDone
     if ( timeTrackedEntry.isTrackingNow ) {
       this.setDone(true)
       timeTrackedEntry.pauseOrNoop()

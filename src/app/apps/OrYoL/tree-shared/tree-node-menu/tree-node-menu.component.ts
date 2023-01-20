@@ -15,6 +15,8 @@ import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/conf
 import { NodeContentComponent } from '../node-content/node-content.component'
 import { Router } from '@angular/router'
 import { ClipboardService } from '../../core/clipboard.service'
+import {PopoverController} from '@ionic/angular'
+import {INodeContentComponent} from '../node-content/INodeContentComponent'
 
 @Component({
   selector: 'app-tree-node-menu',
@@ -27,7 +29,7 @@ export class TreeNodeMenuComponent implements OnInit {
 
   @Input() treeHost!: TreeHostComponent
 
-  @Input() nodeContentComponent!: NodeContentComponent
+  @Input() nodeContentComponent!: INodeContentComponent
 
   // @Input() popOver!: NgbPopover
 
@@ -37,6 +39,7 @@ export class TreeNodeMenuComponent implements OnInit {
     public dbService: DbTreeService,
     public router: Router,
     public clipboardService: ClipboardService,
+    public popoverController: PopoverController,
   ) { }
 
   ngOnInit() {
@@ -54,9 +57,11 @@ export class TreeNodeMenuComponent implements OnInit {
     component.treeNode = this.treeNode;
   }
 
-  addChild() {
+  async addChild() {
     // this.popOver.close()
+    // this.treeNode.addChild()
     this.nodeContentComponent.addChild()
+    await this.popoverController.dismiss()
   }
 
   navigateInto() {
