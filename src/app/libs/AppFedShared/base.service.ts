@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {g} from './g'
 
-export let enableAll = true
+/** showAll */
+export let enableAll = false
 
 export class FeatureLevelsConfig {
   // ORDER: from least mature to most
@@ -63,7 +64,7 @@ export class FeatureLevelsConfig {
 
 
   /** CROSS_CUTTING feature;
-   * kinda stressful distracting annoying */
+   * kinda stressful distracting annoying; timer time tracking current user activity */
   userActivityTiming = enableAll
 
   /** CROSS_CUTTING feature;

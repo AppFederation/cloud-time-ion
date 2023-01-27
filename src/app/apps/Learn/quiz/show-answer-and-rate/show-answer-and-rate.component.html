@@ -19,12 +19,13 @@
   </ion-button>
 
   <app-time-passing
+    *ngIf="feat.userActivityTiming"
     style="font-size: 95%; color: white; margin-left: 3px; align-self: center"
     [isCountDown]="false"
   ></app-time-passing>
   <div style="flex-grow: 1"></div>
 
-  <ion-button (click)="toggleHide()">^</ion-button>
+  <ion-button *ngIf="feat.showUgly" (click)="toggleHide()">^</ion-button>
 
 </div>
 

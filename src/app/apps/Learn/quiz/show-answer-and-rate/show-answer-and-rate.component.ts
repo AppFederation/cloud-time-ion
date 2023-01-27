@@ -7,13 +7,14 @@ import {QuizHistoryService} from '../../core/quiz/quiz-history.service'
 import {QuizAnswersService} from '../../core/quiz/quiz-answers.service'
 import {Store} from '@ngrx/store'
 import {requestNextQuizItem} from '../../core/quiz/quiz.actions'
+import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
 @Component({
   selector: 'app-show-answer-and-rate',
   templateUrl: './show-answer-and-rate.component.html',
   styleUrls: ['./show-answer-and-rate.component.sass'],
 })
-export class ShowAnswerAndRateComponent implements OnInit {
+export class ShowAnswerAndRateComponent extends BaseComponent implements OnInit {
 
   @Input() item$ ? : LearnItem$ | nullish
 
@@ -37,7 +38,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
     public quizHistoryService: QuizHistoryService,
     public quizAnswersService: QuizAnswersService,
     private store: Store<{count: {quizItemId: {}}}>,
-  ) { }
+  ) { super() }
 
 
   ngOnInit() {

@@ -65,19 +65,21 @@
 <!--    ></app-quiz-tips>-->
     <!-- TODO extract `status$ | async` with ngIf let -->
 
-    <div *ngIf="(status$ | async) let quizStatus" style="font-size: 12px; opacity: 70%;">
-      <div style="text-transform: uppercase">
-        next repetition:
-        <app-time-point
-          [time]="newDate(quizService.calculateWhenNextRepetitionMsEpochOrNullish(quizStatus ?. nextItem$))"
-        ></app-time-point>
+    <ng-container *ngIf="feat.distracting">
+      <div *ngIf="(status$ | async) let quizStatus" style="font-size: 12px; opacity: 70%;">
+        <div style="text-transform: uppercase">
+          next repetition:
+          <app-time-point
+            [time]="newDate(quizService.calculateWhenNextRepetitionMsEpochOrNullish(quizStatus ?. nextItem$))"
+          ></app-time-point>
 
-        <app-quiz-items-left
-          [quizStatus]="quizStatus"
-        ></app-quiz-items-left>
+          <app-quiz-items-left
+            [quizStatus]="quizStatus"
+          ></app-quiz-items-left>
 
+        </div>
       </div>
-    </div>
+    </ng-container>
 
     <div *ngIf="( status$ | async ) ?. isNextItemInFuture">
       <app-quiz-finished
