@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {errorAlert} from '../utils/log'
+import {appGlobals} from '../g'
+import {BaseService} from '../base.service'
 
 export class SyncStatus {
   pendingUploadsCount ? : number
@@ -13,7 +15,7 @@ type SyncTask = Promise<any> | {then: any}
 @Injectable({
   providedIn: 'root'
 })
-export class SyncStatusService {
+export class SyncStatusService extends BaseService {
 
   pendingPromises = new Set<SyncTask>()
 
@@ -25,7 +27,7 @@ export class SyncStatusService {
     return this.syncStatus$.lastVal ?. pendingUploadsCount
   }
 
-  constructor() { }
+  constructor() { super() }
 
   handleSavingPromise(promise: SyncTask) {
     this.pendingPromises.add(promise)
@@ -44,7 +46,9 @@ export class SyncStatusService {
       pendingDownloadsCount: this.pendingDownloads.size,
       isAllSynced: !this.pendingPromises.size && !this.pendingDownloads.size,
     }
-    console.log(`emitSyncStatus`, val, this.pendingDownloads)
+    // if ( appGlobals.feat.showDebug ) {
+      console.log(`emitSyncStatus`, val, this.pendingDownloads)
+    // }
     this.syncStatus$.next(val)
   }
 

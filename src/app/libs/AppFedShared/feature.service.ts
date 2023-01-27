@@ -43,9 +43,9 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
   /** estimates / milestones */
   estimating = true
 
-  milestones = true
+  milestones = new FeatureLevelsConfig()
 
-  planToday: any
+  planToday = new FeatureLevelsConfig()
 
   /** also keywords: plan execution service */
   timeTracking = {
