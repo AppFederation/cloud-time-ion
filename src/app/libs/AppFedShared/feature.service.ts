@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import {g} from './g'
-import {FeatureLevelsConfig} from './base.service'
+import {FeatureLevelsConfig, FeaturesProps} from './base.service'
+import {CachedSubject} from './utils/cachedSubject2/CachedSubject2'
 
 export let showWhatIUse = true
 
-@Injectable({
-  providedIn: 'root'
-})
-export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
+export class FeaturesConfig extends FeatureLevelsConfig {
+
+
+  constructor(
+    public props: FeaturesProps
+  ) {
+    super(props)
+  }
+
 
   // IDEA for UI - shift+click or long press would select/unselect range from last clicked
 
@@ -17,23 +23,23 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
   // === mock/prototype-only:
 
 
-  shopping = new FeatureLevelsConfig()
+  shopping = this.fc(this.props)
 
-  cloudTime = new FeatureLevelsConfig()
+  cloudTime = this.fc(this.props)
 
-  notes = new FeatureLevelsConfig()
+  notes = this.fc(this.props)
 
   /** OrYoL / Coviob style outliner notes with tree nodes */
-  outlinerTreeNotes = new FeatureLevelsConfig()
+  outlinerTreeNotes = this.fc(this.props)
 
-  itemsTree = new FeatureLevelsConfig()
+  itemsTree = this.fc(this.props)
 
   // experimental:
-  categoriesTree = new FeatureLevelsConfig()
+  categoriesTree = this.fc(this.props)
 
   // ==== kinda working:
 
-  tutorial = new FeatureLevelsConfig()
+  tutorial = this.fc(this.props)
 
   lifedvisor = showWhatIUse
 
@@ -41,36 +47,68 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   tasks = showWhatIUse
 
-  roiPoints = new FeatureLevelsConfig()
+  roiPoints = this.fc(this.props)
 
   /** prolly about more long-term planning/estimating than plan-today */
-  planning = new FeatureLevelsConfig()
+  planning = this.fc(this.props)
 
 
   /** estimates / milestones */
   estimating = showWhatIUse
 
-  milestones = new FeatureLevelsConfig()
+  milestones = this.fc(this.props)
 
-  planToday = new FeatureLevelsConfig()
+  planToday = this.fc(this.props)
 
   /** also keywords: plan execution service */
-  timeTracking = {
-    periods: {
-      /* this is only a placeholder for good future-proofness top-down usage patterns; total implementation of tree will be quite complicated in logic and UI */
-      showFixmes: false
-    }
-  }
+  timeTracking = this.fc(this.props)
+
+  /** logging of time tracked periods */
+  timeTrackingPeriods = this.fc(this.props)
+  //   {
+  //   periods: {
+  //     /* this is only a placeholder for good future-proofness top-down usage patterns; total implementation of tree will be quite complicated in logic and UI */
+  //     showFixmes: false
+  //   }
+  // }
 
   /** most mature prolly */
   learning = true
 
-  quiz = new FeatureLevelsConfig()
+  quiz = this.fc(this.props)
 
+  private fc(props: FeaturesProps) {
+    return new FeatureLevelsConfig(props)
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FeatureService {
+
+  config$ = new CachedSubject<FeaturesConfig>()
 
   constructor() {
-    super()
     console.log('FeatureService ctor')
-    g.feat = this // DX FTW!
+    // g.feat = this // DX FTW!
+    const featuresConfig = new FeaturesConfig(
+      {
+        enableAll: false
+      }
+    )
+    g.feat = featuresConfig
+    this.config$.nextWithCache(featuresConfig)
+  }
+
+  setEnableAll(enabled: boolean) {
+    console.log('FeaturesConfig setEnableAll', enabled)
+    const featuresConfig1 = new FeaturesConfig(
+      {
+        enableAll: enabled
+      }
+    )
+    g.feat = featuresConfig1
+    this.config$.nextWithCache(featuresConfig1)
   }
 }

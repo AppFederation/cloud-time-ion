@@ -1,8 +1,8 @@
-import {FeatureService} from './feature.service'
+import {FeaturesConfig, FeatureService} from './feature.service'
 
 export const g = {
 } as {
-  feat: FeatureService
+  feat: FeaturesConfig
 }
 
 /** easier to find in IDE */

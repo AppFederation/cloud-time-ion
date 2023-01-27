@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {BaseComponent} from '../base/base.component'
-import {enableAll} from '../base.service'
 import {FeatureService} from '../feature.service'
 
 @Component({
@@ -17,7 +16,8 @@ export class FeatureConfigComponent extends BaseComponent implements OnInit {
   ngOnInit() {}
 
   onChangeAllFeatures($event: any) {
-    console.log('$event', $event)
+    this.featureConfigService.setEnableAll($event.detail.checked)
     // enableAll = $event.target.value
   }
+
 }

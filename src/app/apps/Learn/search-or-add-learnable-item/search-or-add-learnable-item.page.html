@@ -93,6 +93,8 @@
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;LEARN</ion-button>
 
       <ion-button
+        *ngIf="feat.showExperimental"
+        [routerLink]="['/journal/write/new']"
         (click)="addToJournal()"
       ><ion-icon name="add-circle-outline"></ion-icon>&nbsp;JOURNAL</ion-button>
 

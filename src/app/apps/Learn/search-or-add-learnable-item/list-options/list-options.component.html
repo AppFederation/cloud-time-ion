@@ -60,16 +60,16 @@
 </ion-button>
 
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   manual order for execution/priority
 </ion-button>
 
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   for processing
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   categories
 </ion-button>
 
@@ -142,7 +142,7 @@ TASKS:
   😊fun, ❗importance
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   😊fun & 🤔challenging (bad roi / prio?)
 </ion-button>
 
@@ -150,17 +150,17 @@ TASKS:
   shortest
 </ion-button>
 
-<span *ngIf="featureService.showUgly">
+<span *ngIf="feat.showUgly">
   ==== Processing
 </span>
-<span *ngIf="featureService.showTodosNotes">
+<span *ngIf="feat.showTodosNotes">
   (todo move up before executing?) :
   Separate tab / tree-branch ?</span>
 <ion-button (click)="setPreset('notEstimated')">
   not estimated
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   missing metadata <!-- should probably be tree with sub-items; like fun, mental, etc. -->
 </ion-button>
 
@@ -169,7 +169,7 @@ TASKS:
 </ion-button>
 
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   <div style="flex-flow: column">
     <div>needs doing</div>
     <ion-note class="preset-note">
@@ -178,7 +178,7 @@ TASKS:
   </div>
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   <div style="flex-flow: column">
     <div>can do</div>
     <ion-note class="preset-note">
@@ -187,24 +187,24 @@ TASKS:
   </div>
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   next milestones
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   started
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   started thinking
 </ion-button>
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   started executing
 </ion-button>
 
 
-<ion-button *ngIf="featureService.mockups" [disabled]="true">
+<ion-button *ngIf="feat.mockups" [disabled]="true">
   blocked
 </ion-button>
 

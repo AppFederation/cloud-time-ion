@@ -1,101 +1,111 @@
 import {Injectable, Injector} from '@angular/core';
 import {g} from './g'
+import {FeaturesConfig} from './feature.service'
 
-/** showAll */
-export var enableAll = false
+export class FeaturesProps {
+  enableAll = false
+// /** showAll */
+// export var this.props.enableAll = false
+}
+
 
 export class FeatureLevelsConfig {
   // ORDER: from least mature to most
 
-  showDeprecated = enableAll
+  constructor(
+    public props: FeaturesProps
+  ) {
+  }
 
-  potentiallyDangerous = enableAll
+  showDeprecated = this.props.enableAll
 
-  pointless = enableAll
+  potentiallyDangerous = this.props.enableAll
 
-  showIdeas = enableAll
-  showNotes = enableAll
+  pointless = this.props.enableAll
+
+  showIdeas = this.props.enableAll
+  showNotes = this.props.enableAll
 
   /** mockups (/notes?) of stuff that I will prolly not be able/willing to do, unless i become like Musk ;). Still kinda motivating to push harder upon seeing this. */
-  megalomania = enableAll
+  megalomania = this.props.enableAll
 
 
-  showTodos = enableAll
+  showTodos = this.props.enableAll
 
   /** @deprecated */
-  showTodosNotes = enableAll
+  showTodosNotes = this.props.enableAll
 
 
   /** stuff that is not implemented, just visual for imagination / motivation / visualization */
-  mockups = enableAll
+  mockups = this.props.enableAll
 
   /** stuff that works or gives some everyday value but looks ugly/unprofessional/unfinished */
-  showUgly = enableAll
+  showUgly = this.props.enableAll
 
   /** an entire feature/page/sub-product could be unfinished; or just its feature/sub-feature */
-  unfinished = enableAll
+  unfinished = this.props.enableAll
 
   /** might be unstable for me or end user */
-  showUnstable = enableAll
+  showUnstable = this.props.enableAll
 
   /** Prolly stable for me but might be hard to understand for end user */
-  showExperimental = enableAll
+  showExperimental = this.props.enableAll
 
   /** works decently for me, e.g. text filter on categories in quiz */
-  quickNDirty = enableAll
+  quickNDirty = this.props.enableAll
 
 
   /** worse than unpolished */
-  buggy = enableAll
+  buggy = this.props.enableAll
 
   /** better than `ugly`; works and fulfills some function, e.g. energy graph; actually worse than ugly; coz deficiencies not only in looks, but also in functionality
    * TODO split: into visual / func
    * */
-  unpolished = enableAll // buggy?
+  unpolished = this.props.enableAll // buggy?
 
-  unpolishedFunctionality  = enableAll
+  unpolishedFunctionality  = this.props.enableAll
 
-  unpolishedVisually = enableAll
+  unpolishedVisually = this.props.enableAll
 
   // confusing
 
   // TODO/idea: alpha, beta, release-candidate
 
 
-  showDebugPerformanceTracking = enableAll
+  showDebugPerformanceTracking = this.props.enableAll
 
   /** This is becoming similar to logger levels and logger tree */
-  showDebug = enableAll
+  showDebug = this.props.enableAll
 
-  showAdvanced = enableAll
+  showAdvanced = this.props.enableAll
 
-  distracting = enableAll
+  distracting = this.props.enableAll
 
-  stressful = enableAll // also: depressing overwhelming, over-the-top (e.g. having 3000 quiz items pending) :)
+  stressful = this.props.enableAll // also: depressing overwhelming, over-the-top (e.g. having 3000 quiz items pending) :)
 
-  annoying = enableAll
+  annoying = this.props.enableAll
 
 
   /** e.g. task statuses; prolly also published/draft for content biz */
-  workflowStatuses = enableAll
+  workflowStatuses = this.props.enableAll
 
   /** CROSS_CUTTING feature;
    * kinda stressful distracting annoying; timer time tracking current user activity */
-  userActivityTiming = enableAll
+  userActivityTiming = this.props.enableAll
 
   /** CROSS_CUTTING feature;
    e.g. on quiz / mindfulness */
-  userActivityCountDownTimer = enableAll
+  userActivityCountDownTimer = this.props.enableAll
 
   /** CROSS-CUTTING feature; statistics */
-  stats = enableAll
+  stats = this.props.enableAll
 
   /** CROSS-CUTTING feature; stuff like official and published; important for my future content business */
-  admin = enableAll
+  admin = this.props.enableAll
 
   /** just an idea; more high priority than todos/notes/ideas texts display; should fix before release to end-users;
    * Can disable for demos. Should prolly be last in order of maturity, to force fixing fixmes before release. */
-  showFixmes = enableAll
+  showFixmes = this.props.enableAll
 
 }
 
@@ -107,7 +117,9 @@ export class BaseService {
 
   g = g
 
-  feat: FeatureLevelsConfig = this.g.feat
+  feat: FeaturesConfig = this.g.feat
+
+  featLocal: FeatureLevelsConfig = this.g.feat
 
   constructor(
     public injector?: Injector

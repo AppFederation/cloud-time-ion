@@ -1,6 +1,21 @@
-<ion-checkbox
-  (ionChange)="onChangeAllFeatures($event)"
-></ion-checkbox>All features
-<ion-checkbox
-  (ionChange)="onChangeAllFeatures($event)"
-></ion-checkbox>Features I use
+<ion-item>
+  <ion-checkbox
+    slot="start"
+    (ionChange)="onChangeAllFeatures($event)"
+  ></ion-checkbox>
+  <ion-label>All features</ion-label>
+</ion-item>
+<ion-item>
+  <ion-checkbox
+    slot="start"
+    (ionChange)="onChangeAllFeatures($event)"
+  ></ion-checkbox>
+  <ion-label>Nice-looking</ion-label>
+</ion-item>
+<ion-item>
+  <ion-checkbox
+    slot="start"
+    (ionChange)="onChangeAllFeatures($event)"
+  ></ion-checkbox>
+  <ion-label>Features I use</ion-label>
+</ion-item>

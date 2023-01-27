@@ -11,7 +11,7 @@
   ></app-selection-checkbox>
 
   <span
-    *ngIf="featureService.showAdvanced"
+    *ngIf="feat.showAdvanced"
     style="color: var(--secondary); font-size: 10px; opacity: 50%"
   >
     {{index+1}}.
@@ -22,7 +22,7 @@
     TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
   </ion-note>
   <ion-button size="small"
-              *ngIf="featureService.planToday.mockups"
+              *ngIf="feat.planToday.mockups"
               (click)="addToToday($event)"
   >
     <!-- should be dot dot dot menu anyway -->
@@ -69,7 +69,7 @@
   <!--      <ion-title>{{item.title}}</ion-title>-->
 
   &nbsp;<ion-icon
-    *ngIf="featureService.mockups"
+    *ngIf="feat.mockups"
     (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"
   ></ion-icon>
 

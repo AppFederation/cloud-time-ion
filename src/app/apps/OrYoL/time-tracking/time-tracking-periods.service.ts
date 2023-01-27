@@ -47,7 +47,7 @@ export class TimeTrackingPeriodsService extends BaseService {
   constructor(
   ) {
     super()
-    this.feat = this.g.feat.timeTracking.periods as FeatureLevelsConfig
+    this.featLocal = this.g.feat.timeTrackingPeriods
     // this.queryNotFinishedPeriods().get().then(queryResult => {
     //   console.log(`TimeTrackingPeriodTest query`, queryResult)
     // })
