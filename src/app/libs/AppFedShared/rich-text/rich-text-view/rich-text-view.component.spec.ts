@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RichTextViewComponent } from './rich-text-view.component';
@@ -7,7 +7,7 @@ describe('RichTextViewComponent', () => {
   let component: RichTextViewComponent;
   let fixture: ComponentFixture<RichTextViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RichTextViewComponent ],
       imports: [IonicModule.forRoot()]

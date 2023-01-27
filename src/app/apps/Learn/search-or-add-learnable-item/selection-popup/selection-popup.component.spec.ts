@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { SelectionPopupComponent } from './selection-popup.component';
@@ -7,7 +7,7 @@ describe('SelectionPopupComponent', () => {
   let component: SelectionPopupComponent;
   let fixture: ComponentFixture<SelectionPopupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SelectionPopupComponent ],
       imports: [IonicModule.forRoot()]

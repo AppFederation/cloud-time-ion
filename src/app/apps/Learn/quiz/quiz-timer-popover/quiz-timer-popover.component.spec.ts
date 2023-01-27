@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { QuizTimerPopoverComponent } from './quiz-timer-popover.component';
@@ -7,7 +7,7 @@ describe('QuizTimerPopoverComponent', () => {
   let component: QuizTimerPopoverComponent;
   let fixture: ComponentFixture<QuizTimerPopoverComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QuizTimerPopoverComponent ],
       imports: [IonicModule.forRoot()]

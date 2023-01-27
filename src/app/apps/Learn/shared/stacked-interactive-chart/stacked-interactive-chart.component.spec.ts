@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { StackedInteractiveChartComponent } from './stacked-interactive-chart.component';
@@ -7,7 +7,7 @@ describe('StackedInteractiveChartComponent', () => {
   let component: StackedInteractiveChartComponent;
   let fixture: ComponentFixture<StackedInteractiveChartComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StackedInteractiveChartComponent ],
       imports: [IonicModule.forRoot()]

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { QuizCategoriesPickerComponent } from './quiz-categories-picker.component';
@@ -7,7 +7,7 @@ describe('QuizCategoriesPickerComponent', () => {
   let component: QuizCategoriesPickerComponent;
   let fixture: ComponentFixture<QuizCategoriesPickerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QuizCategoriesPickerComponent ],
       imports: [IonicModule.forRoot()]

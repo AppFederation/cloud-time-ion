@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { OdmListComponent } from './odm-list.component';
 
@@ -7,7 +7,7 @@ describe('OdmListComponent', () => {
   let component: OdmListComponent;
   let fixture: ComponentFixture<OdmListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ OdmListComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

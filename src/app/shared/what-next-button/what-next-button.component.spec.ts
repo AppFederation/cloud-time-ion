@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { WhatNextButtonComponent } from './what-next-button.component';
@@ -7,7 +7,7 @@ describe('WhatNextButtonComponent', () => {
   let component: WhatNextButtonComponent;
   let fixture: ComponentFixture<WhatNextButtonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WhatNextButtonComponent ],
       imports: [IonicModule.forRoot()]

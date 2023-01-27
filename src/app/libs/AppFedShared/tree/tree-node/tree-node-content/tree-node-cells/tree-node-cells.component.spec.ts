@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { TreeNodeCellsComponent } from './tree-node-cells.component';
@@ -7,7 +7,7 @@ describe('TreeNodeCellsComponent', () => {
   let component: TreeNodeCellsComponent;
   let fixture: ComponentFixture<TreeNodeCellsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TreeNodeCellsComponent ],
       imports: [IonicModule.forRoot()]

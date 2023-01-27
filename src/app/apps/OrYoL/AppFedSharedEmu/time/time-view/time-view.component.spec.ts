@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TimeViewComponent } from './time-view.component';
 import {By} from "@angular/platform-browser";
@@ -8,7 +8,7 @@ describe('TimeViewComponent', () => {
   let component: TimeViewComponent;
   let fixture: ComponentFixture<TimeViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TimeViewComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

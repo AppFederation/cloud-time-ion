@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RangeCellComponent } from './range-cell.component';
 
@@ -6,7 +6,7 @@ describe('RangeCellComponent', () => {
   let component: RangeCellComponent;
   let fixture: ComponentFixture<RangeCellComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RangeCellComponent ]
     })

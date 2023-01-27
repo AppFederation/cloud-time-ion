@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { SideLabelComponent } from './side-label.component';
@@ -7,7 +7,7 @@ describe('SideLabelComponent', () => {
   let component: SideLabelComponent;
   let fixture: ComponentFixture<SideLabelComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SideLabelComponent ],
       imports: [IonicModule.forRoot()]

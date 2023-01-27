@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { EstimatePickerComponent } from './estimate-picker.component';
@@ -7,7 +7,7 @@ describe('EstimatePickerComponent', () => {
   let component: EstimatePickerComponent;
   let fixture: ComponentFixture<EstimatePickerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EstimatePickerComponent ],
       imports: [IonicModule.forRoot()]

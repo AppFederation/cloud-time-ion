@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RatingCellComponent } from './rating-cell.component';
@@ -7,7 +7,7 @@ describe('RatingCellComponent', () => {
   let component: RatingCellComponent;
   let fixture: ComponentFixture<RatingCellComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RatingCellComponent ],
       imports: [IonicModule.forRoot()]

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ProcessButtonComponent } from './process-button.component';
@@ -7,7 +7,7 @@ describe('ProcessButtonComponent', () => {
   let component: ProcessButtonComponent;
   let fixture: ComponentFixture<ProcessButtonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProcessButtonComponent ],
       imports: [IonicModule.forRoot()]

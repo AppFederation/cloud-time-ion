@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { JournalTextFieldsViewComponent } from './journal-text-fields-view.component';
@@ -7,7 +7,7 @@ describe('JournalTextFieldsViewComponent', () => {
   let component: JournalTextFieldsViewComponent;
   let fixture: ComponentFixture<JournalTextFieldsViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ JournalTextFieldsViewComponent ],
       imports: [IonicModule.forRoot()]

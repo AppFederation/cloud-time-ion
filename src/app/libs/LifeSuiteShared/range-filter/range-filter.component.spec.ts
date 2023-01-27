@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RangeFilterComponent } from './range-filter.component';
@@ -7,7 +7,7 @@ describe('RangeFilterComponent', () => {
   let component: RangeFilterComponent;
   let fixture: ComponentFixture<RangeFilterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RangeFilterComponent ],
       imports: [IonicModule.forRoot()]
