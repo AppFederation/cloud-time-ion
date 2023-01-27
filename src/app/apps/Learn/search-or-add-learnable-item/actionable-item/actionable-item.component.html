@@ -18,7 +18,7 @@
   </span>
 
   <!-- FIXME icon task / learnable / journal-entry / note -->
-  <ion-note *ngIf="featureService.showRoi && item.val?.isTask">
+  <ion-note *ngIf="g.feat.roiPoints.showUgly && item.val?.isTask">
     TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
   </ion-note>
   <ion-button size="small"
