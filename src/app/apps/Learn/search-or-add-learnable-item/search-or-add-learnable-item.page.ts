@@ -22,6 +22,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {SelectionManager} from './SelectionManager'
 import {ListProcessing} from './list-processing'
+import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -29,7 +30,7 @@ import {ListProcessing} from './list-processing'
   templateUrl: './search-or-add-learnable-item.page.html',
   styleUrls: ['./search-or-add-learnable-item.page.scss'],
 })
-export class SearchOrAddLearnableItemPageComponent implements OnInit {
+export class SearchOrAddLearnableItemPageComponent extends BaseComponent implements OnInit {
 
 
   listModel = new ListProcessing(this.injector)
@@ -56,6 +57,7 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     public router: Router,
     public injector: Injector,
   ) {
+    super(injector)
   }
 
   ngOnInit() {

@@ -3,6 +3,8 @@ import {g} from '../g'
 
 /** This is syntactic sugar and automation to improve DX where angular has DX shortcomings
  * and to reduce boilerplate and distractions when coding ACTUAL FEATURES
+ *
+ * Provides basic bookkeeping and lifecycle and DI, reactivity, config
  * */
 @Component({
   selector: 'app-base',
@@ -16,6 +18,10 @@ export class BaseComponent implements OnInit {
   ) {
 
   }
+
+  // inject<T>(token: Type<T> | InjectionToken<T> | AbstractType<T>, notFoundValue?: T, flags?: InjectFlags): T {
+  //   return this.injector?.get()
+  // }
 
 
   /** to have it in template scope */

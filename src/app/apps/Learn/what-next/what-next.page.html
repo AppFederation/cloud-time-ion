@@ -14,7 +14,7 @@
 
     <span *ngIf="g.feat.showTodosNotes">This page is also useful for a version with just Learn - e.g. processing, fun cravings (boredom/focus level), etc</span>
 
-    <!-- First stuff that has to be done quickly every day anyway (independent of time available or boredom) - will become a habit -->
+    <span *ngIf="g.feat.showTodosNotes">First stuff that has to be done quickly every day anyway (independent of time available or boredom) - will become a habit</span>
     <ion-button *ngIf="g.feat.showExperimental" [routerLink]="'/learn/item/LearnItem__2022-05-26__17.33.46.061Z_'">Affirmations</ion-button>
     <ion-button *ngIf="g.feat.showExperimental" (click)="cravingFun()">Craving&nbsp;<span style="text-emphasis: 'x' orange"><!--Orange as warning (not negative)-->fun</span>&nbsp;Panic Button <span>&nbsp;</span> <ion-note> (Quiz/Tasks)</ion-note></ion-button>
     <app-quiz-button style="display: block; margin-bottom: 0.5rem"></app-quiz-button>

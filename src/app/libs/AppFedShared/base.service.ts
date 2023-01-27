@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {g} from './g'
 
 /** showAll */
@@ -9,11 +9,17 @@ export class FeatureLevelsConfig {
 
   showDeprecated = enableAll
 
-  showTodosNotes = enableAll
-
+  showIdeas = enableAll
+  showNotes = enableAll
 
   /** mockups (/notes?) of stuff that I will prolly not be able/willing to do, unless i become like Musk ;). Still kinda motivating to push harder upon seeing this. */
   megalomania = enableAll
+
+
+  showTodos = enableAll
+
+  /** @deprecated */
+  showTodosNotes = enableAll
 
 
   /** stuff that is not implemented, just visual for imagination / motivation / visualization */
@@ -74,6 +80,9 @@ export class FeatureLevelsConfig {
    e.g. on quiz / mindfulness */
   userActivityCountDownTimer = enableAll
 
+  /** CROSS-CUTTING feature; statistics */
+  stats = enableAll
+
   /** just an idea; more high priority than todos/notes/ideas texts display; should fix before release to end-users;
    * Can disable for demos. Should prolly be last in order of maturity, to force fixing fixmes before release. */
   showFixmes = enableAll
@@ -90,5 +99,9 @@ export class BaseService {
 
   feat: FeatureLevelsConfig = this.g.feat
 
-  constructor() { }
+  constructor(
+    public injector?: Injector
+  ) {
+
+  }
 }
