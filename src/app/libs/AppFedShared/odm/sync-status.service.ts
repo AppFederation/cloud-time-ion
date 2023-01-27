@@ -27,7 +27,10 @@ export class SyncStatusService extends BaseService {
     return this.syncStatus$.lastVal ?. pendingUploadsCount
   }
 
-  constructor() { super() }
+  constructor() {
+    super()
+    console.log('SyncStatusService ctor')
+  }
 
   handleSavingPromise(promise: SyncTask) {
     this.pendingPromises.add(promise)
@@ -47,7 +50,7 @@ export class SyncStatusService extends BaseService {
       isAllSynced: !this.pendingPromises.size && !this.pendingDownloads.size,
     }
     // if ( appGlobals.feat.showDebug ) {
-      console.log(`emitSyncStatus`, val, this.pendingDownloads)
+    //   console.log(`emitSyncStatus`, val, this.pendingDownloads)
     // }
     this.syncStatus$.next(val)
   }

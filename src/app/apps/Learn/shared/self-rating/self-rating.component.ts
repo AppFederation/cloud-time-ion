@@ -9,13 +9,14 @@ import {
 import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem$} from '../../models/LearnItem$'
 import {intensityBtnVariant} from '../../../../libs/LifeSuiteShared/edit-shared/importance-edit/importance-edit.component'
+import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
 @Component({
   selector: 'app-self-rating',
   templateUrl: './self-rating.component.html',
   styleUrls: ['./self-rating.component.sass'],
 })
-export class SelfRatingComponent implements OnInit {
+export class SelfRatingComponent extends BaseComponent implements OnInit {
 
   buttonDescriptors = new ButtonsDescriptor<number, string>([
     btn({
@@ -57,7 +58,9 @@ export class SelfRatingComponent implements OnInit {
 
   @Output() numericValue = new EventEmitter<NumericPickerVal>()
 
-  constructor() { }
+  constructor() {
+    super()
+  }
 
   ngOnInit() {}
 

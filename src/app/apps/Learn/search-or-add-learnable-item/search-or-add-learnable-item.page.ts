@@ -75,7 +75,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
       this.listModel.onChangeSearch(val)
     })
     this.learnDoService.localItems$.subscribe((item$s: LearnItem$[]) => {
-      console.log('localItems$ ==== '/*, item$s*/)
+      // console.log('localItems$ ==== '/*, item$s*/)
       this.listModel.setItemsAndSort(item$s)
     })
   }

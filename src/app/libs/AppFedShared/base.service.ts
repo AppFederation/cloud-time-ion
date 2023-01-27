@@ -9,6 +9,10 @@ export class FeatureLevelsConfig {
 
   showDeprecated = enableAll
 
+  potentiallyDangerous = enableAll
+
+  pointless = enableAll
+
   showIdeas = enableAll
   showNotes = enableAll
 
@@ -72,6 +76,9 @@ export class FeatureLevelsConfig {
   annoying = enableAll
 
 
+  /** e.g. task statuses; prolly also published/draft for content biz */
+  workflowStatuses = enableAll
+
   /** CROSS_CUTTING feature;
    * kinda stressful distracting annoying; timer time tracking current user activity */
   userActivityTiming = enableAll
@@ -82,6 +89,9 @@ export class FeatureLevelsConfig {
 
   /** CROSS-CUTTING feature; statistics */
   stats = enableAll
+
+  /** CROSS-CUTTING feature; stuff like official and published; important for my future content business */
+  admin = enableAll
 
   /** just an idea; more high priority than todos/notes/ideas texts display; should fix before release to end-users;
    * Can disable for demos. Should prolly be last in order of maturity, to force fixing fixmes before release. */

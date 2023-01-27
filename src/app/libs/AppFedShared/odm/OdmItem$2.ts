@@ -7,6 +7,7 @@ import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {nullish} from '../utils/type-utils'
 import {ItemId} from './OdmCollectionBackend'
+import {appGlobals} from '../g'
 
 export type UserId = string
 
@@ -388,7 +389,9 @@ export class OdmItem$2<
   public getParentIds(): TItemId[] {
     // check if parents are set correctly:
     if ( ! this.parents?.length && !this.isTreeRoot() ) {
-      console.error('Item$ has no parents, but is not root!', this)
+      if ( appGlobals.feat.categoriesTree.showFixmes ) {
+        console.error('Item$ has no parents, but is not root!', this)
+      }
     }
     // FIXME: handle case where this.parents are nullish
     return (this.parents?.map(parent => parent.id! as TItemId)) ?? ([] as TItemId[])

@@ -11,9 +11,11 @@
       </ion-button>
     </ion-buttons>
     <div style="display: inline-flex; align-items: center; width: 100%">
-      <div *ngIf="(navigationService.status$ | async) let s" style="align-self: center">
-        {{s?.currentOrdinal}} / {{s?.totalCount}}, {{s.percent}}%
-      </div>
+      <ng-container *ngIf="feat.showUgly">
+        <div *ngIf="(navigationService.status$ | async) let s" style="align-self: center">
+          {{s?.currentOrdinal}} / {{s?.totalCount}}, {{s.percent}}%
+        </div>
+      </ng-container>
 
       <!-- <ion-button (click)="window.history.back()"><</ion-button> -->
       <!--        <ion-button routerLink="/learn"><&lt;!&ndash; TODO: create component back-icon &ndash;&gt;</ion-button>-->
@@ -54,18 +56,22 @@
     *ngIf="(val$ | async) as itemVal else notLoaded"
   >
     <app-breadcrumbs></app-breadcrumbs>
-    <app-learn-item-details-hints
-      [hidden]="itemVal ?. isTask"
-    ></app-learn-item-details-hints>
+    <ng-container
+      *ngIf="g.feat.tutorial.unpolishedVisually"
+    >
+      <app-learn-item-details-hints
+        [hidden]="itemVal ?. isTask"
+      ></app-learn-item-details-hints>
 
-    CREATED <app-time-point
+      CREATED <app-time-point
       [time]="itemVal?.whenCreated?.toDate()"
     ></app-time-point>
-    MODIFIED <app-time-point
+      MODIFIED <app-time-point
       [time]="itemVal?.whenLastModified?.toDate()"
     ></app-time-point>
 
-    <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
+      <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
+    </ng-container>
 
     <div style="display: flex; flex-direction: row; width: 100%">
       <app-item-class-edit
@@ -81,14 +87,16 @@
         - and later draft/beta/published(release) status
           - (which could be same/related to task statuses, thinking that each learn-item is also a task, or has task-workflow)
       -->
-      <odm-checkbox
-        [fieldName]="'isOfficial'"
-        [item$]="item$"
-      >OFFICIAL</odm-checkbox>
-      <odm-checkbox
-        [fieldName]="'isPublished'"
-        [item$]="item$"
-      >PUBLISHED <!-- TODO store timestamp --></odm-checkbox>
+      <ng-container *ngIf="feat.showDebug">
+        <odm-checkbox
+          [fieldName]="'isOfficial'"
+          [item$]="item$"
+        >OFFICIAL</odm-checkbox>
+        <odm-checkbox
+          [fieldName]="'isPublished'"
+          [item$]="item$"
+        >PUBLISHED <!-- TODO store timestamp --></odm-checkbox>
+      </ng-container>
 
     </div>
 
@@ -112,11 +120,13 @@
       [item$]="item$"
     ></app-mental-health-impact-level-edit>
 
-<!--    <app-statuses-edit-->
-<!--      [item$]="item$"-->
-<!--    ></app-statuses-edit>-->
+    <app-statuses-edit
+      *ngIf="feat.workflowStatuses"
+      [item$]="item$"
+    ></app-statuses-edit>
 
     <app-self-rating
+      *ngIf="feat.potentiallyDangerous"
       [hidden]="itemVal ?. isTask"
       [item$]="item$"
     ></app-self-rating>
@@ -128,7 +138,9 @@
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
-    <app-item-sub-items></app-item-sub-items>
+    <app-item-sub-items
+      *ngIf="feat.itemsTree.mockups"
+    ></app-item-sub-items>
 
     <app-item-side-editor
       *ngFor="let side of sidesDefsArray"

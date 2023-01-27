@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router'
 
 @Component({
@@ -7,6 +7,9 @@ import {Router} from '@angular/router'
   styleUrls: ['./app-logo.component.sass'],
 })
 export class AppLogoComponent implements OnInit {
+
+  @Input()
+  withText = true
 
   /** workaround for logo disappearing on page navigation */
   fillSuffix = (''+Math.random()).replace('.', '')

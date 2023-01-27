@@ -16,6 +16,7 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   // === mock/prototype-only:
 
+
   shopping = new FeatureLevelsConfig()
 
   cloudTime = new FeatureLevelsConfig()
@@ -25,6 +26,8 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
   /** OrYoL / Coviob style outliner notes with tree nodes */
   outlinerTreeNotes = new FeatureLevelsConfig()
 
+  itemsTree = new FeatureLevelsConfig()
+
   // experimental:
   categoriesTree = new FeatureLevelsConfig()
 
@@ -32,11 +35,11 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   tutorial = new FeatureLevelsConfig()
 
-  lifedvisor = true
+  lifedvisor = showWhatIUse
 
-  journal = true
+  journal = showWhatIUse
 
-  tasks = true
+  tasks = showWhatIUse
 
   roiPoints = new FeatureLevelsConfig()
 
@@ -67,6 +70,7 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   constructor() {
     super()
+    console.log('FeatureService ctor')
     g.feat = this // DX FTW!
   }
 }
