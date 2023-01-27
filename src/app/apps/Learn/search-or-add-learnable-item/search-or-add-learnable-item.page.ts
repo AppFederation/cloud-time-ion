@@ -17,7 +17,7 @@ import {JournalEntriesService} from '../../Journal/core/journal-entries.service'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
-import {importanceDescriptors} from '../models/fields/importance.model'
+import {importanceDescriptors, importanceDescriptorsArray} from '../models/fields/importance.model'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {SelectionManager} from './SelectionManager'
@@ -172,6 +172,36 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
   }
 
   private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
+  // private applyImportanceFromText(stringEviscerated: string | nullish, overlay: Partial<LearnItemSidesVals & LearnItem>) {
+    //   const s = stringEviscerated?.toUpperCase()
+    //   const importanceDescriptors = importanceDescriptorsArray
+    //   //   {
+    //   //   current_focus: "CF",
+    //   //   basic_functioning: "BF",
+    //   //   basic_functioning_mantra: "BFMTR",
+    //   //   overarching_mantra: "OVRMTR",
+    //   //   overarching: "OVR",
+    //   //   current_focus_meta_mantra: "CFMM, CFMTM, CFMTMTR, CFMETAMANTRA",
+    //   //   current_focus_mantra: "CFM, CFMT, CFMTR, CFMANTRA",
+    //   //   meta_mantra: "!!!!!",
+    //   //   mantra: "!!!!!",
+    //   //   meta: "!!!!!",
+    //   //   extremely_high: "!!!!",
+    //   //   very_high: "!!!",
+    //   //   high: "!!",
+    //   //   somewhat_high: "!"
+    //   // };
+    //   const keys = Object.keys(importanceDescriptors);
+    //   for (let i = 0; i < keys.length; i++) {
+    //     if (s?.startsWith(keys[i]) || s?.endsWith(keys[i])) {
+    //       overlay.importance = importanceDescriptors[keys[i]];
+    //       break;
+    //     }
+    //   }
+    // }
+
+
+
     const s = stringEviscerated?.toUpperCase()
     /*==*/ if (s?.startsWith(`CF!`) || s?.endsWith(`CF!`)) {
       overlay.importance = importanceDescriptors.current_focus
