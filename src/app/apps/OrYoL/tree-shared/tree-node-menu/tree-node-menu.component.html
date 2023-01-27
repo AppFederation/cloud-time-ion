@@ -17,18 +17,19 @@ In n Places:
 <!--<app-time-tracking-menu [treeNode]="treeNode"></app-time-tracking-menu>-->
 
 <ion-button
-  (click)="openDeleteConfirmationDialog()">
-  Delete
+  style="height: 3rem; text-transform: uppercase"
+  (click)='addChild()'>
+  Add Sub-Item
 </ion-button>
+
+<!--<ion-button-->
+<!--  (click)="openDeleteConfirmationDialog()">-->
+<!--  Delete-->
+<!--</ion-button>-->
 
 <ion-button
   (click)='navigateInto()'>
   Navigate Into
-</ion-button>
-
-<ion-button
-  (click)='addChild()'>
-  Add Sub-task
 </ion-button>
 
 <ion-button
@@ -49,10 +50,10 @@ In n Places:
   Move here from clipboard
 </ion-button>
 <p style="margin-top: .5em">
-  Created: {{getWhenCreated()}}
+  Created: {{getWhenCreated()?.toISOString()}}
 </p>
 <p style="margin-top: .5em">
-  Done: {{treeNode?.itemData?.isDone?.toDate?.apply(treeNode?.itemData?.isDone)}}
+  Done: {{treeNode?.itemData?.isDone?.toDate?.apply(treeNode?.itemData?.isDone)?.toISOString()}}
 </p>
 
 <app-node-class-picker

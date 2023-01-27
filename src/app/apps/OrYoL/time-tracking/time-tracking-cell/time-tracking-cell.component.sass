@@ -1,7 +1,22 @@
 
 .timeTrackingNow
   font-weight: bold
-  background-color: var(--highlight)
-
+  //background-color: var(--highlight)
+  background-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary))
 .startPauseIcon
   margin-left: -2px
+
+i
+  color: var(--ion-color-primary)
+
+app-time-tracking-cell
+  //color: var(--ion-text-color)
+  color: blue
+
+timeTrackingNow
+  i
+    color: var(--ion-color-primary-contrast) !important
+  app-time-tracking-cell
+    //color: var(--ion-color-secondary-contrast) !important
+    color: red !important
+

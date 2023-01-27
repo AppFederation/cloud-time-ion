@@ -6,6 +6,7 @@ import { firestore } from 'firebase'
 import { errorAlert } from '../utils/log'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
+import {BaseService, FeatureLevelsConfig} from '../../../libs/AppFedShared/base.service'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5
 
@@ -37,7 +38,7 @@ export class TimeTrackingPeriod {
 @Injectable({
   providedIn: 'root'
 })
-export class TimeTrackingPeriodsService {
+export class TimeTrackingPeriodsService extends BaseService {
 
   coll = firestore().collection(`TimeTrackingPeriodTest`)
 
@@ -45,6 +46,8 @@ export class TimeTrackingPeriodsService {
 
   constructor(
   ) {
+    super()
+    this.feat = this.g.feat.timeTracking.periods as FeatureLevelsConfig
     // this.queryNotFinishedPeriods().get().then(queryResult => {
     //   console.log(`TimeTrackingPeriodTest query`, queryResult)
     // })
@@ -68,7 +71,9 @@ export class TimeTrackingPeriodsService {
   onPeriodEnd(entry: TimeTrackedEntry) {
     let period: TimeTrackingPeriod | undefined = entry.currentPeriod
     if ( ! period ) {
-      errorAlert('timetracking ! entry.currentPeriod -- TODO: need to load from DB (any periods with end==null and set at beginning')
+      if ( this.feat.unfinished && this.feat.showFixmes /* though; this.feat should already handle the `.timetracking.periods` */ ) {
+        console.error('timetracking ! entry.currentPeriod -- TODO: need to load from DB (any periods with end==null and set at beginning')
+      }
       return
     }
     period.end = firestore.Timestamp.now()

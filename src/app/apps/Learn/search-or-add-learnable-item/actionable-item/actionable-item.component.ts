@@ -7,6 +7,8 @@ import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {SelectionManager} from '../SelectionManager'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {LearnItem$} from '../../models/LearnItem$'
+import {FeatureService} from '../../../../libs/AppFedShared/feature.service'
+import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
 
 @Component({
@@ -15,7 +17,7 @@ import {LearnItem$} from '../../models/LearnItem$'
   styleUrls: ['./actionable-item.component.sass'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ActionableItemComponent implements OnInit {
+export class ActionableItemComponent extends BaseComponent implements OnInit {
 
   sidesDefsArray = sidesDefsArray
 
@@ -52,9 +54,10 @@ export class ActionableItemComponent implements OnInit {
   // }
 
   constructor(
+    public featureService: FeatureService,
     // protected angularFirestore: AngularFirestore,
     // protected changeDetectorRef: ChangeDetectorRef,
-  ) { }
+  ) { super() }
 
   ngOnInit() {}
 
@@ -95,7 +98,7 @@ export class ActionableItemComponent implements OnInit {
     return undefined
   }
 
-  /* FIXME: move to Item class */
+  /** FIXME: move to Item class */
   getImportanceDescriptor() {
     const val = this.item.val?.importance
     if ( val ) {

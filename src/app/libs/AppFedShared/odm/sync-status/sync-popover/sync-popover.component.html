@@ -23,7 +23,7 @@
   <ng-container
     *ngIf="(syncStatusService.syncStatus$ | async)?.pendingDownloadsCount let count; else allDownloaded"
   >
-    DOWNLOADING: {{count}}
+    DOWNLOADING: {{count}} collections
   </ng-container>
 
   <ng-template
@@ -59,7 +59,9 @@
   LOG OUT
 </ion-button>
 
-<ion-button (click)="learnStatsService.saveStatsFromItemsNow()">
+<ion-button
+  *ngIf="g.feat.showDebug"
+  (click)="learnStatsService.saveStatsFromItemsNow()">
   SAVE STATS
 </ion-button>
 

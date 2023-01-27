@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, Injector,
   Input,
   OnInit,
 } from '@angular/core';
@@ -9,13 +9,14 @@ import { ConfigService } from '../../core/config.service'
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 import {PopoverController} from '@ionic/angular'
 import {ToolbarPopoverComponent} from './toolbar-popover/toolbar-popover.component'
+import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.sass']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent extends BaseComponent implements OnInit {
 
   /* workaround for now */
   @Input() treeHost!: TreeHostComponent
@@ -27,7 +28,9 @@ export class ToolbarComponent implements OnInit {
     public configService: ConfigService,
     // ngbPopoverConfig: NgbPopoverConfig,
     public popoverController: PopoverController,
+    injector: Injector,
   ) {
+    super(injector)
     // ngbPopoverConfig.placement = 'bottom-left' // 'right' // 'hover';
   }
 

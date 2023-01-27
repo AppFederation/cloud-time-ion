@@ -18,7 +18,7 @@ export class ThemeService {
   public themeId: any/*keyof typeof themes*/ = this.getRandomThemeId()
 
   constructor() {
-    this.updateColors()
+    this.applyRandomTheme()
   }
 
   // private readonly contrastLuminanceThreshold = 0.37
@@ -41,7 +41,8 @@ export class ThemeService {
     // const primary = '#008000'
     // const secondary = '#5050f0'
 
-    const {primary, secondary} = themes[this.themeId as keyof typeof themes]
+    const theme = themes[this.themeId as keyof typeof themes]
+    const {primary, secondary, background} = theme
 
     // const darkenVal = 0 - sliderVal / 100
     // const lightenVal = 0 + sliderVal / 100
@@ -54,6 +55,11 @@ export class ThemeService {
 
     this.setColorProps('primary', primary)
     this.setColorProps('secondary', secondary)
+    // this.setColorProps('background', background || '#000000')
+
+    const root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
+    root.style.setProperty(`--ion-background-color`, background || '#000000');
+
 
     // console.log('root.style', root.style);
   }
@@ -66,7 +72,7 @@ export class ThemeService {
     const lightenVal = this.brightnessPercent / 100
 
     // let root: HTMLElement = document.documentElement;
-    let root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
+    const root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
     // let root = document.getEl
 
     // root.style.setProperty(`--ion-color-${colorName}-rgb`, colorVal);
@@ -116,5 +122,20 @@ export class ThemeService {
 
     console.log('getRandomThemeId', themeIndex, themeId)
     return themeId
+  }
+
+  applyRandomTheme() {
+    while (true) {
+      const newId = this.getRandomThemeId()
+      if ( newId !== this.themeId ) {
+        this.themeId = newId
+        break;
+      }
+    }
+    this.updateColors()
+  }
+
+  applyNextTheme() {
+    // this.the
   }
 }

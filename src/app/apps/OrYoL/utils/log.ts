@@ -21,6 +21,6 @@ export function traceLog(...args: any[]) {
 
 export function errorAlert(...args: any[]) {
   const prefix = 'ERROR: errorAlert: '
-  console.log(prefix, ...args)
+  console.error(prefix, ...args)
   window.alert(prefix + '(see console for details) ' + args.join(', '))
 }

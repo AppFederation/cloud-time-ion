@@ -4,7 +4,7 @@
 >
 
   <i *ngIf="timeTrackedEntry.isTrackingNow"
-     style="vertical-align: middle"
+     style="vertical-align: middle; color: var(--ion-color-primary-contrast)"
      class="material-icons actionable startPauseIcon"
      (click)="onPauseClicked($event)"
   >
@@ -30,7 +30,7 @@
   <!-- ==== End start/pause icon-->
 
   <app-time-passing
-    style="margin-left: 4px; margin-right: -2px;"
+    style="margin-left: 4px; margin-right: -2px"
     *ngIf="(((config$ | async)?.showTimeTrackedValue || toolBarMode ) && timeTrackedEntry.wasTracked) || timeTrackedEntry.isTrackingNow"
     [referenceTime]="timeTrackedEntry?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"

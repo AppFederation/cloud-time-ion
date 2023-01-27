@@ -10,6 +10,7 @@ import {AuthService} from './auth/auth.service'
 import {OptionsService} from './apps/Learn/core/options.service'
 import {SyncPopoverComponent} from './libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
 import {OptionsComponent} from './libs/AppFedShared/options/options.component'
+import {ThemeService} from './libs/AppFedShared/theme-config/theme.service'
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private ThemeService /* force the service to run */: ThemeService,
     private timerNotificationService /* force the service to run */: TimerNotificationsService,
     private authService  /* force the service to run */: AuthService,
     private learnStatsService  /* force the service to run */: LearnStatsService,

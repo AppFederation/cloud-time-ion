@@ -16,11 +16,34 @@
      (click)="onClick($event)"
 >
 <!--  as-->
-  <img
-    [ngClass]="{'action-icon': true }"
-    style="height: 25px; top: 0; left: 0; color: var(--secondary)"
-    src="assets/libs/sync/icons/cloud-upload-alt-solid1.svg"
-    alt="all uploaded to cloud"> <!-- FIXME: a11y: change alt to depend if pending items -->
+<!--  <img-->
+<!--    [ngClass]="{'action-icon': true }"-->
+<!--    style="height: 25px; top: 0; left: 0; color: var(&#45;&#45;secondary)"-->
+<!--    src="assets/libs/sync/icons/cloud-upload-alt-solid1.svg"-->
+<!--    alt="all uploaded to cloud"> &lt;!&ndash; FIXME: a11y: change alt to depend if pending items &ndash;&gt;-->
+  <svg height="25" viewBox="-10 10 660 532" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <linearGradient [attr.id]="fill1Id" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="5%" stop-color="var(--ion-color-primary)" stop-opacity="100%"/>
+      <stop offset="95%" stop-color="var(--ion-color-primary-tint)" stop-opacity="60%"/>
+    </linearGradient>
+
+    <!--    <filter id="f4" x="0" y="0" width="200%" height="200%">-->
+    <!--      <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />-->
+    <!--      &lt;!&ndash;      <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="matrixOut"/>&ndash;&gt;-->
+    <!--      &lt;!&ndash;      <feColorMatrix id="recolor"  type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" result="white-glow"/>&ndash;&gt;-->
+
+    <!--      <feColorMatrix result="matrixOut" in="offOut" type="matrix"-->
+    <!--                     values="1 0 0 0  0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />-->
+    <!--      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="20" />-->
+    <!--      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />-->
+    <!--    </filter>-->
+
+    <path
+      d="M544 192C544 204.2 541.7 215.9 537.6 226.6C596 238.4 640 290.1 640 352C640 422.7 582.7 480 512 480H144C64.5 480 0 415.5 0 336C0 273.2 40.2 219.8 96.2 200.1C96.1 197.4 96 194.7 96 192C96 103.6 167.6 32 256 32C315.3 32 367 64.2 394.7 112.2C409.9 102 428.3 96 448 96C501 96 544 139 544 192Z"
+      [attr.fill]="'url(#'+fill1Id+')'"/>
+  </svg>
+
 
   <!-- position: absolute; top: 0; left: 0 -->
   <!-- { hide: (pendingUploadsCount$ | async), fade: true,  -->
@@ -57,6 +80,32 @@
   <div
     style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: center"
   >
+
+<!--    <svg width="640" height="512" viewBox="-10 10 660 532" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+
+<!--      <linearGradient id="MyGradient" x1="0%" y1="0%" x2="0%" y2="100%">-->
+<!--        <stop offset="5%" stop-color="var(&#45;&#45;ion-color-primary)" stop-opacity="100%"/>-->
+<!--        <stop offset="95%" stop-color="var(&#45;&#45;ion-color-primary)" stop-opacity="60%"/>-->
+<!--      </linearGradient>-->
+
+<!--      <filter id="f4" x="0" y="0" width="200%" height="200%">-->
+<!--        <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />-->
+<!--        &lt;!&ndash;      <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="matrixOut"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;      <feColorMatrix id="recolor"  type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" result="white-glow"/>&ndash;&gt;-->
+
+<!--        <feColorMatrix result="matrixOut" in="offOut" type="matrix"-->
+<!--                       values="1 0 0 0  0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />-->
+<!--        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="20" />-->
+<!--        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />-->
+<!--      </filter>-->
+
+<!--      <path-->
+<!--        filter="url(#f4)"-->
+<!--        d="M544 192C544 204.2 541.7 215.9 537.6 226.6C596 238.4 640 290.1 640 352C640 422.7 582.7 480 512 480H144C64.5 480 0 415.5 0 336C0 273.2 40.2 219.8 96.2 200.1C96.1 197.4 96 194.7 96 192C96 103.6 167.6 32 256 32C315.3 32 367 64.2 394.7 112.2C409.9 102 428.3 96 448 96C501 96 544 139 544 192Z"-->
+<!--        fill="url(#MyGradient)"/>-->
+<!--    </svg>-->
+
+
     <img
       [ngClass]="{ hide: ! (pendingDownloadsCount$ | async), fade: true, 'action-icon': true }"
       style="height: 25px; color: var(--secondary)"

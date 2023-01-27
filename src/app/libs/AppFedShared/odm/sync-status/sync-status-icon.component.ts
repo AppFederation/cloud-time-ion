@@ -14,6 +14,11 @@ export class SyncStatusIconComponent implements OnInit {
 
   showShadow = true
 
+  /** workaround for logo disappearing on page navigation */
+  fillSuffix = (''+Math.random()).replace('.', '')
+
+  fill1Id = 'fill1-' + this.fillSuffix
+
   get pendingUploadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingUploadsCount))}
 
   get pendingDownloadsCount$() { return this.syncStatus$.pipe(map(s => s.pendingDownloadsCount))}

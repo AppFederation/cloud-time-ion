@@ -29,7 +29,9 @@
   </ng-template>
 
 
-  <fa-icon icon="shopping-cart" class="actionable"
+  <fa-icon
+    *ngIf="feat.shopping.mockups"
+    icon="shopping-cart" class="actionable"
            (click)='treeHost.goToShopping()'
   ></fa-icon>
 
@@ -68,6 +70,7 @@
   >create</i>
 
   <i
+    *ngIf="feat.outlinerTreeNotes.unpolished"
      class="material-icons actionable"
      (click)='treeHost.newNote()'
   >note</i>

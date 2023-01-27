@@ -87,11 +87,13 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
       */
+      done: {inline: 'span', classes: 'done'},
       fancy: {inline: 'span', classes: 'fancy'},
       warning: {inline: 'span', classes: 'warning'},
       negative: {inline: 'span', classes: 'negative'},
       positive: {inline: 'span', classes: 'positive'},
       concept: {inline: 'span', classes: 'concept'},
+      sourceCode: {inline: 'pre', classes: 'source-code'},
     },
     style_formats: [ /* https://www.tiny.cloud/docs/demo/format-html5/ */
       {
@@ -126,7 +128,8 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
       { title: 'Blocks', items: [
           { title: 'p', block: 'p' },
           { title: 'div', block: 'div' },
-          { title: 'pre', block: 'pre' }
+          { title: 'pre', block: 'pre' },
+          { title: 'code', format: 'sourceCode' },
         ] },
 
       { title: 'Containers', items: [
@@ -146,7 +149,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
     // toolbar: false, // https://stackoverflow.com/questions/2628187/tinymce-hide-the-bar
     toolbar:
-      'customMarkBtn btnFormatPositive btnFormatNegative btnFormatWarning btnFormatFancy btnFormatConcept \
+      'customMarkBtn btnFormatDone btnFormatPositive btnFormatNegative btnFormatWarning btnFormatFancy btnFormatConcept \
       bullist numlist outdent indent | bold italic underline strikethrough blockquote forecolor backcolor | \
       selectall copy paste | undo redo | \
       formatselect | hr | \
@@ -158,17 +161,19 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
     valid_classes: richTextEditCommon.valid_classes,
     content_style:
-      '[contenteditable] { padding-left: 5px; } ' +
-      '[contenteditable] li { padding-top: 6px; } ' +
+      // '[contenteditable] { padding-left: 5px; } ' +
+      // '[contenteditable] li { padding-top: 6px; } ' +
+      '[contenteditable] ::marker { color: var(--secondary); ' +
+      '[contenteditable] ul ::marker { color: var(--secondary); ' +
       '[contenteditable] ::marker { color: var(--secondary); ' +
         '/* does not seem to work: */ text-shadow: 2px 2px #ffffff; } ' +
       `blockquote { border-left: 3px var(--secondary) solid; padding-left: 6px; margin-left: 20px } ` + /* TODO: extract standard rich text css into global const for -edit and -view */
       `ul { padding-inline-start: 20px; }` +
       `ol { padding-inline-start: 20px; }` +
-      `section { border: 2px solid #b02020; padding: 3px; margin: 2px; border-radius: 4px;  }`
-      // `ul { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }` +
+      `section { border: 2px solid #b02020; padding: 3px; margin: 2px; border-radius: 4px;  }` +
+      `ul { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }` +
       + `ol { border-left: 2px solid #801010; }`
-      + `ul { border-left: 2px solid #801010; }`
+      // + `ul { border-left: 2px solid #801010; }`
       // `ol { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }`
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
@@ -180,6 +185,12 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
           // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/
           this.highlightSelected(editor)
         });
+      editor.addShortcut('ctrl+b', 'Bullet points style ', function(){
+        editor.execCommand('InsertUnorderedList');
+      });
+      editor.addShortcut('ctrl+d', 'Done style ', function(){
+        editor.formatter.toggle('done');
+      });
       editor.addShortcut('ctrl+p', 'Positive style ', function(){
         editor.formatter.toggle('positive');
       });
@@ -236,6 +247,12 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
           this.formatConcept(editor)
         }
       });
+      editor.ui.registry.addButton('btnFormatDone', {
+        text: 'D',
+        onAction: () => {
+          this.formatDone(editor)
+        }
+      });
     }
   }
 
@@ -276,6 +293,10 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   public formatConcept(editor: any) {
     editor.execCommand('mceToggleFormat', true, 'concept');
+  }
+
+  public formatDone(editor: any) {
+    editor.execCommand('mceToggleFormat', true, 'done');
   }
 
   logEditor(msg: string) {

@@ -19,9 +19,11 @@
 
   -->
 
-<ion-checkbox>Filter</ion-checkbox>Filter
+  <ng-container *ngIf="g.feat.mockups">
+    <ion-checkbox>Filter</ion-checkbox>Filter
+  </ng-container>
 
-<div>
+<div *ngIf="g.feat.mockups">
   <ion-checkbox [formControl]="formControls.rangeEnabled"></ion-checkbox> <!-- Will gray-out the range -->
   % DONE
   <ion-range
@@ -40,8 +42,10 @@
     <path d="M9.598 5.82c.054.621.625 1.278 1.761 1.278 1.422 0 2.145-.98 2.145-2.848 0-2.05-.973-2.688-2.063-2.688-1.125 0-1.972.688-1.972 1.836 0 1.145.808 1.758 1.719 1.758.69 0 1.113-.351 1.261-.742h.059c.031 1.027-.309 1.856-1.133 1.856-.43 0-.715-.227-.773-.45H9.598zm2.757-2.43c0 .637-.43.973-.933.973-.516 0-.934-.34-.934-.98 0-.625.407-1 .926-1 .543 0 .941.375.941 1.008zM12.438 14V8.668H11.39l-1.262.906v.969l1.21-.86h.052V14h1.046z"/>
   </svg>
   &nbsp;
-  <!-- TODO: second click o sort ascending / descending  -->
-  last added / modified / touched / viewed / associated
+  <span *ngIf="g.feat.showTodosNotes">TODO: second click to sort ascending / descending</span>
+  <span *ngIf="g.feat.showUgly">last added / modified / touched / viewed / associated</span>
+  <span *ngIf="! g.feat.showUgly">Last touched <!-- TODO maybe note --></span>
+
   <!-- TODO: OPENED (details page) / viewed -->
 </ion-button>
 
@@ -56,23 +60,24 @@
 </ion-button>
 
 
-<ion-button [disabled]="true">
-  manual order
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
+  manual order for execution/priority
 </ion-button>
 
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   for processing
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   categories
 </ion-button>
 
-
+<span *ngIf="g.feat.showUgly" >
 TASKS:
 
   ==== Executing (vs processing) :
+</span>
 
 <ion-button (click)="setPreset('allTasks')">
   ALL TASKS
@@ -94,7 +99,7 @@ TASKS:
     <div>
       urgent, ❗importance, 📈roi
     </div>
-    <ion-note class="preset-note">
+    <ion-note *ngIf="g.feat.showUgly" class="preset-note">
       -mental, fun; default
     </ion-note>
   </div>
@@ -113,9 +118,9 @@ TASKS:
       &nbsp;
       urgent, 📈ROI
     </div>
-    <ion-note class="preset-note">
+    <ion-note *ngIf="g.feat.showUgly" class="preset-note">
       can skip importance levels; closest to be done;
-      TODO: META/MANTRA first
+      <span *ngIf="g.feat.showTodosNotes">TODO: META/MANTRA first</span>
     </ion-note>
   </div>
 
@@ -137,7 +142,7 @@ TASKS:
   😊fun, ❗importance
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   😊fun & 🤔challenging (bad roi / prio?)
 </ion-button>
 
@@ -145,13 +150,17 @@ TASKS:
   shortest
 </ion-button>
 
-==== Processing (todo move up before executing?) :
-  Separate tab / tree-branch ?
+<span *ngIf="featureService.showUgly">
+  ==== Processing
+</span>
+<span *ngIf="featureService.showTodosNotes">
+  (todo move up before executing?) :
+  Separate tab / tree-branch ?</span>
 <ion-button (click)="setPreset('notEstimated')">
   not estimated
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   missing metadata <!-- should probably be tree with sub-items; like fun, mental, etc. -->
 </ion-button>
 
@@ -160,7 +169,7 @@ TASKS:
 </ion-button>
 
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   <div style="flex-flow: column">
     <div>needs doing</div>
     <ion-note class="preset-note">
@@ -169,7 +178,7 @@ TASKS:
   </div>
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   <div style="flex-flow: column">
     <div>can do</div>
     <ion-note class="preset-note">
@@ -178,24 +187,24 @@ TASKS:
   </div>
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   next milestones
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   started
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   started thinking
 </ion-button>
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   started executing
 </ion-button>
 
 
-<ion-button [disabled]="true">
+<ion-button *ngIf="featureService.mockups" [disabled]="true">
   blocked
 </ion-button>
 

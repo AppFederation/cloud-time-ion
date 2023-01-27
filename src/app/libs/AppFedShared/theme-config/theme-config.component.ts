@@ -15,6 +15,8 @@ export class ThemeConfigComponent implements OnInit {
 
   themes = this.themeService.themes
 
+  themesVisible = false
+
   constructor(
     public themeService: ThemeService,
   ) { }

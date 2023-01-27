@@ -11,15 +11,18 @@
   ></app-selection-checkbox>
 
   <span
+    *ngIf="featureService.showAdvanced"
     style="color: var(--secondary); font-size: 10px; opacity: 50%"
   >
     {{index+1}}.
   </span>
 
-  <ion-note *ngIf="item.val?.isTask">
+  <!-- FIXME icon task / learnable / journal-entry / note -->
+  <ion-note *ngIf="featureService.showRoi && item.val?.isTask">
     TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
   </ion-note>
   <ion-button size="small"
+              *ngIf="featureService.mockups"
               (click)="addToToday($event)"
   >
     <!-- should be dot dot dot menu anyway -->
@@ -27,6 +30,7 @@
      <!-- TODO: checkbox if already included -->
     <!-- TODO: later: this week / month / quarter / year -->
   </ion-button>
+  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
   <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
   <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
 
@@ -34,7 +38,8 @@
     style="color: var(--ion-color-primary)"
     *ngIf="item.val?.importance?.numeric || '-'; let importanceNum"
   >
-    {{getImportanceDescriptor() ?. numeric}}x {{getImportanceDescriptor() ?. abbrev}}
+    <span *ngIf="g.feat.showUgly">{{getImportanceDescriptor() ?. numeric}}x </span>
+    {{getImportanceDescriptor() ?. abbrev}}
   </span>
 
   <ng-container
@@ -46,7 +51,7 @@
         *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
       >
     ➤
-        {{ item.getEffectiveImportance() ?. numeric }}x {{ item.getEffectiveImportance() ?. id }}
+        <span *ngIf="g.feat.showUgly">{{ item.getEffectiveImportance() ?. numeric }}x </span>{{ item.getEffectiveImportance() ?. id }}
     </span>
   </ng-container>
 
@@ -63,7 +68,10 @@
   <!--      {{item | json}}-->
   <!--      <ion-title>{{item.title}}</ion-title>-->
 
-  &nbsp;<ion-icon (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"></ion-icon>
+  &nbsp;<ion-icon
+    *ngIf="featureService.mockups"
+    (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"
+  ></ion-icon>
 
   &nbsp;
   <app-play-button

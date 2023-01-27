@@ -15,19 +15,23 @@
 
 @import 'global_oryol2';
 
+.sc-ion-popover-ios-h {
+   --width: 350px;
+}
+
 [contenteditable] {
-  -webkit-user-select: text;
-  user-select: text;
+-webkit-user-select: text;
+user-select: text;
 }
 
 html {
-  scroll-behavior: smooth;
-  color-scheme: dark; // https://github.com/mdn/yari/pull/6102
+scroll-behavior: smooth;
+color-scheme: dark; // https://github.com/mdn/yari/pull/6102
 }
 
 :root {
 
-  --secondary: var(--ion-color-secondary); /* FIXME make consistent */
+--secondary: var(--ion-color-secondary); /* FIXME make consistent */
   --primary: var(--ion-color-primary) /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;
@@ -112,7 +116,7 @@ body {
 .button-text {
   //font-size: 72px;
   //background: -webkit-linear-gradient(#fff, #aaf);
-  background: radial-gradient(#fff, #bbf);
+  background: radial-gradient(var(--ion-color-secondary-contrast), var(--ion-color-secondary-contrast-muted));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -138,6 +142,16 @@ body {
   background-color: #202020;
 }
 
+.source-code, pre {
+  font-family: Monaco;
+  color: var(--ion-color-primary-tint)
+}
+
+.done {
+  text-decoration: line-through;
+  opacity: 10%;
+}
+
 .fancy {
   text-shadow: var(--ion-color-primary) 1px 1px 2px;
   //text-shadow: #428CFFFF 1px 1px 2px;
@@ -153,8 +167,9 @@ body {
   transform: skew(5deg);
 }
 
+
 .positive {
-  text-shadow: green 1px 1px 2px;
+  text-shadow: var(--ion-color-secondary) 1px 1px 2px;
   background: linear-gradient(#fff, #666);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -168,10 +183,10 @@ body {
 
 @keyframes pulse-shadow {
   0% {
-    text-shadow: green 1px 1px 2px;
+    text-shadow: var(--ion-color-secondary) 1px 1px 2px;
   }
   50% {
-    text-shadow: lightgreen 1px 1px 6px;
+    text-shadow: var(--ion-color-primary) 1px 1px 6px;
   }
 }
 
@@ -208,3 +223,10 @@ body {
 //  font-weight: 500;
 //}
 
+//body > div.tox.tox-silver-sink.tox-tinymce-aux {
+//  body > div.tox.tox-silver-sink.tox-tinymce-aux > div > div {
+  .tox-notifications-container {
+
+    display: none; // HACK for tinymce domain somehow not recognized (apiKey)
+  }
+//}

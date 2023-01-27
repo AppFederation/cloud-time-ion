@@ -4,20 +4,21 @@ import {SyncStatusService} from '../../sync-status.service'
 import {StatsHistoryService} from '../../../../../apps/Learn/core/stats-history.service'
 import {LearnStatsService} from '../../../../../apps/Learn/core/learn-stats.service'
 import {OptionsService} from '../../../../../apps/Learn/core/options.service'
+import {BaseComponent} from '../../../base/base.component'
 
 @Component({
   selector: 'app-sync-popover',
   templateUrl: './sync-popover.component.html',
   styleUrls: ['./sync-popover.component.sass'],
 })
-export class SyncPopoverComponent implements OnInit {
+export class SyncPopoverComponent extends BaseComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
     public syncStatusService: SyncStatusService,
     public learnStatsService: LearnStatsService,
     public optionsService: OptionsService,
-  ) { }
+  ) { super() }
 
   ngOnInit() {}
 
