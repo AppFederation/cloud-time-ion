@@ -17,6 +17,7 @@
       Journal Entry
       &nbsp;
       <app-time-passing
+        *ngIf="feat.userActivityTiming"
         style="font-size: .8rem;"
         [isCountDown]="false"
       ></app-time-passing>

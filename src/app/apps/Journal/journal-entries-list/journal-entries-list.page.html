@@ -13,9 +13,16 @@
 
     </ion-buttons>
 
-    <ion-title>Timeline <ion-note>
-      {{(items$Sorted | async) ?. length}} /
-      {{(journalEntriesService.localItems$ | async) ?. length}}</ion-note>
+    <ion-title>Timeline
+      <ng-container
+        *ngFor="feat.distracting"
+      >
+        &nbsp;
+        <ion-note>
+          {{(items$Sorted | async) ?. length}} /
+          {{(journalEntriesService.localItems$ | async) ?. length}}
+        </ion-note>
+      </ng-container>
     </ion-title>
 
     <ion-buttons slot="end"

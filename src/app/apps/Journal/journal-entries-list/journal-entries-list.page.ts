@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {JournalEntriesService} from '../core/journal-entries.service'
 import {JournalEntry$} from '../models/JournalEntry$'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
@@ -11,6 +11,7 @@ import {PopoverController} from '@ionic/angular'
 import {LocalOptionsPatchableObservable} from '../../Learn/core/options.service'
 import {ListOptionsData} from '../../Learn/search-or-add-learnable-item/list-options'
 import {TimelineListOptionsComponent} from './timeline-list-options/timeline-list-options.component'
+import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 export class TimelineListOptionsData {
   sortAscending ? : boolean
@@ -21,7 +22,7 @@ export class TimelineListOptionsData {
   templateUrl: './journal-entries-list.page.html',
   styleUrls: ['./journal-entries-list.page.sass'],
 })
-export class JournalEntriesListPage implements OnInit {
+export class JournalEntriesListPage extends BaseComponent implements OnInit {
 
   useVirtualScroll = true
 
@@ -51,7 +52,9 @@ export class JournalEntriesListPage implements OnInit {
   constructor(
     public journalEntriesService: JournalEntriesService,
     public popoverController: PopoverController,
+    public injector: Injector,
   ) {
+    super(injector)
     this.listOptions$P.val$.subscribe(x => {
       console.log(`listOptions$P`, x)
     })

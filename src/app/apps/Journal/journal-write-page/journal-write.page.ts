@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {JournalEntriesService} from "../core/journal-entries.service";
 import {JournalEntry, JournalEntryId} from "../models/JournalEntry";
 import {debugLog} from "../../../libs/AppFedShared/utils/log";
@@ -9,13 +9,14 @@ import {JournalNumericDescriptors} from '../models/JournalNumericDescriptors'
 import {JournalEntry$} from '../models/JournalEntry$'
 import {ActivatedRoute, Router} from '@angular/router'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 @Component({
   selector: 'app-journal-write-page',
   templateUrl: './journal-write.page.html',
   styleUrls: ['./journal-write.page.sass'],
 })
-export class JournalWritePage implements OnInit {
+export class JournalWritePage extends BaseComponent implements OnInit {
 
   public item$ ? : JournalEntry$
 
@@ -31,7 +32,9 @@ export class JournalWritePage implements OnInit {
     public geoLocationService: ApfGeoLocationService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
+    injector: Injector,
   ) {
+    super(injector)
     debugLog(`JournalWritePage constructor this.activatedRoute.snapshot.params['itemId']`, this.activatedRoute.snapshot.params)
   }
 

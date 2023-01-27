@@ -1,8 +1,13 @@
 <ng-container *ngIf="itemVal$ | async let itemVal else loading">
 
   <div style="margin: 5px;">
-    Play the <b>Self-Improvement</b> game and its mini-games!
-    <ion-note>{{ fieldDescriptors.length }} fields</ion-note>
+    <ng-container
+      *ngIf="feat.showExperimental"
+    >
+      Play the <b>Self-Improvement</b> game and its mini-games!
+      <ion-note>{{ fieldDescriptors.length }} fields</ion-note>
+
+    </ng-container>
     <p>
       <app-time-point [time]="itemVal?.whenCreated?.toDate()"></app-time-point>
       <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
