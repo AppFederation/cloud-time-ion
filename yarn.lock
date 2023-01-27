@@ -9684,6 +9684,11 @@
   "resolved" "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
+"mobx-state-tree@^5.1.7":
+  "integrity" "sha512-XW19rasJLmbmiSVMMGjwZGUvwLvfuwuhjLJK56dSXUb3Mny3s4pb6THfpqTPu1P/D+A9o0C0u8EsYW5S71YO8Q=="
+  "resolved" "https://registry.npmjs.org/mobx-state-tree/-/mobx-state-tree-5.1.7.tgz"
+  "version" "5.1.7"
+
 "moment@^2.27.0":
   "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
