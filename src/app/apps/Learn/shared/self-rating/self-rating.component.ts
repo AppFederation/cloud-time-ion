@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Injector, Input, OnInit, Output} from '@angular/core';
 import {
   btn,
   btnVariant,
@@ -58,8 +58,10 @@ export class SelfRatingComponent extends BaseComponent implements OnInit {
 
   @Output() numericValue = new EventEmitter<NumericPickerVal>()
 
-  constructor() {
-    super()
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector)
   }
 
   ngOnInit() {}

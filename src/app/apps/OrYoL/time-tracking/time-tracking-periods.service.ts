@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import { TimeTrackedEntry } from './time-tracking.service'
 // import Timestamp = firebase.firestore.Timestamp
 import { ItemId } from '../db/DbItem'
@@ -6,7 +6,8 @@ import { firestore } from 'firebase'
 import { errorAlert } from '../utils/log'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
-import {BaseService, FeatureLevelsConfig} from '../../../libs/AppFedShared/base.service'
+import {BaseService} from '../../../libs/AppFedShared/base.service'
+import {FeatureLevelsConfig} from '../../../libs/AppFedShared/FeatureLevelsConfig'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5
 
@@ -45,8 +46,9 @@ export class TimeTrackingPeriodsService extends BaseService {
   activePeriods$ = new CachedSubject<TimeTrackingPeriod[] | null | undefined>(undefined)
 
   constructor(
+    injector: Injector,
   ) {
-    super()
+    super(injector)
     this.featLocal = this.g.feat.timeTrackingPeriods
     // this.queryNotFinishedPeriods().get().then(queryResult => {
     //   console.log(`TimeTrackingPeriodTest query`, queryResult)

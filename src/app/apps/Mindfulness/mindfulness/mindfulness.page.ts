@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 @Component({
@@ -8,7 +8,11 @@ import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 })
 export class MindfulnessPage extends BaseComponent implements OnInit {
 
-  constructor() { super() }
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {
   }

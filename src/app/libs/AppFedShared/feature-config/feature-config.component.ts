@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {BaseComponent} from '../base/base.component'
 import {FeatureService} from '../feature.service'
 
@@ -11,7 +11,10 @@ export class FeatureConfigComponent extends BaseComponent implements OnInit {
 
   constructor(
     public featureConfigService: FeatureService,
-  ) { super() }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 

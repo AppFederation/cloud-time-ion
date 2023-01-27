@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {BaseComponent} from '../../base/base.component'
 
 @Component({
@@ -22,8 +22,9 @@ export class TimePassingComponent extends BaseComponent implements OnInit, OnDes
   constructor(
       private changeDetectorRef: ChangeDetectorRef,
       private ngZone: NgZone,
+      injector: Injector,
   ) {
-    super()
+    super(injector)
 
     this.ngZone.runOutsideAngular(() => {
       this.intervalHandle = setInterval(() => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {QuizService} from '../../core/quiz/quiz.service'
 import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
@@ -11,7 +11,10 @@ export class QuizButtonComponent extends BaseComponent implements OnInit {
 
   constructor(
     public quizService: QuizService,
-  ) { super() }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 

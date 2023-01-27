@@ -1,5 +1,7 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Injector, OnInit} from '@angular/core';
 import {g} from '../g'
+import {FeatureService} from '../feature.service'
+import {FeaturesConfig} from '../FeaturesConfig'
 
 /** This is syntactic sugar and automation to improve DX where angular has DX shortcomings
  * and to reduce boilerplate and distractions when coding ACTUAL FEATURES
@@ -14,9 +16,13 @@ import {g} from '../g'
 export class BaseComponent implements OnInit {
 
   constructor(
-    public injector?: Injector
+    public injector: Injector
   ) {
-
+    this.injector.get(FeatureService).config$.subscribe((cfg: FeaturesConfig) => {
+      this.feat = cfg
+      this.injector.get(ChangeDetectorRef).markForCheck()
+      // TODO this could also trigger change detection
+    })
   }
 
   // inject<T>(token: Type<T> | InjectionToken<T> | AbstractType<T>, notFoundValue?: T, flags?: InjectFlags): T {

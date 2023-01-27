@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router'
 import {LearnDoService} from '../core/learn-do.service'
@@ -39,8 +39,9 @@ export class LearnItemDetailsPage extends BaseComponent implements OnInit {
     public alertController: AlertController,
     public router: Router,
     public navigationService: NavigationService,
+    injector: Injector,
   ) {
-    super()
+    super(injector)
     // router.events.pipe(
     //   filter(event => event instanceof NavigationStart) /* Using NavigationStart coz could be good if quickly clicking next next */
     // ).subscribe((event: NavigationStart) => {

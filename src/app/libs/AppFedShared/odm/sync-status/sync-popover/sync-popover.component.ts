@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {AuthService} from '../../../../../auth/auth.service'
 import {SyncStatusService} from '../../sync-status.service'
 import {StatsHistoryService} from '../../../../../apps/Learn/core/stats-history.service'
@@ -18,7 +18,10 @@ export class SyncPopoverComponent extends BaseComponent implements OnInit {
     public syncStatusService: SyncStatusService,
     public learnStatsService: LearnStatsService,
     public optionsService: OptionsService,
-  ) { super() }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 

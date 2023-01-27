@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {errorAlert} from '../utils/log'
 import {appGlobals} from '../g'
@@ -27,8 +27,10 @@ export class SyncStatusService extends BaseService {
     return this.syncStatus$.lastVal ?. pendingUploadsCount
   }
 
-  constructor() {
-    super()
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector)
     console.log('SyncStatusService ctor')
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {ThemeService} from '../../../libs/AppFedShared/theme-config/theme.service'
 import {Router} from '@angular/router'
 import {FeatureService} from '../../../libs/AppFedShared/feature.service'
@@ -15,8 +15,9 @@ export class WhatNextPage extends BaseComponent implements OnInit {
     public themeService: ThemeService,
     public featureService: FeatureService,
     public router: Router,
+    injector: Injector,
   ) {
-    super()
+    super(injector)
   }
 
   ngOnInit() {

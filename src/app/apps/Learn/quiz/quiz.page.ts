@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Injector, OnInit} from '@angular/core';
 import {QuizService, QuizStatus} from '../core/quiz/quiz.service'
 import {Observable} from 'rxjs'
 import {PopoverController} from '@ionic/angular'
@@ -34,8 +34,9 @@ export class QuizPage extends BaseComponent implements OnInit, AfterViewInit  {
     public quizService: QuizService,
     public popoverController: PopoverController,
     public editorService: EditorService,
+    injector: Injector,
   ) {
-    super()
+    super(injector)
   }
 
   ngOnInit() {

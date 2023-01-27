@@ -1,4 +1,5 @@
-import {FeaturesConfig, FeatureService} from './feature.service'
+import {FeatureService} from './feature.service'
+import {FeaturesConfig} from './FeaturesConfig'
 
 export const g = {
 } as {

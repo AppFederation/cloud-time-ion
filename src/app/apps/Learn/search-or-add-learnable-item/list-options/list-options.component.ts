@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Injector, Input, OnInit} from '@angular/core';
 import {ListOptionsData} from '../list-options'
 import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
@@ -34,8 +34,9 @@ export class ListOptionsComponent extends BaseComponent implements OnInit {
 
   constructor(
     public featureService: FeatureService,
+    injector: Injector,
   ) {
-    super(/* prolly will need to pass injector */)
+    super(injector)
   }
 
   ngOnInit() {

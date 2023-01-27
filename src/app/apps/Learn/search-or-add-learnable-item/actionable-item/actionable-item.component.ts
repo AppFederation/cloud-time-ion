@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Injector, Input, OnInit} from '@angular/core';
 import {sidesDefs, sidesDefsArray} from '../../core/sidesDefs'
 import {LearnItem} from '../../models/LearnItem'
 import {funLevelsDescriptors} from '../../models/fields/fun-level.model'
@@ -57,7 +57,10 @@ export class ActionableItemComponent extends BaseComponent implements OnInit {
     public featureService: FeatureService,
     // protected angularFirestore: AngularFirestore,
     // protected changeDetectorRef: ChangeDetectorRef,
-  ) { super() }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 

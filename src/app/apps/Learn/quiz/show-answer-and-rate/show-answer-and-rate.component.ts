@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Injector, Input, OnInit} from '@angular/core';
 import {QuizService} from '../../core/quiz/quiz.service'
 import {NumericPickerVal} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {LearnItem$} from '../../models/LearnItem$'
@@ -38,7 +38,10 @@ export class ShowAnswerAndRateComponent extends BaseComponent implements OnInit 
     public quizHistoryService: QuizHistoryService,
     public quizAnswersService: QuizAnswersService,
     private store: Store<{count: {quizItemId: {}}}>,
-  ) { super() }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
 
   ngOnInit() {

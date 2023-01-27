@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {BaseComponent} from '../base/base.component'
 
 @Component({
@@ -8,7 +8,11 @@ import {BaseComponent} from '../base/base.component'
 })
 export class BreadcrumbsComponent extends BaseComponent implements OnInit {
 
-  constructor() { super() }
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 
