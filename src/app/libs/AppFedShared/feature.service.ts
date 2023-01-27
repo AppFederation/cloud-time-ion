@@ -28,6 +28,8 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   // ==== kinda working:
 
+  tutorial = new FeatureLevelsConfig()
+
   lifedvisor = true
 
   journal = true

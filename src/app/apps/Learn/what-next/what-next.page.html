@@ -45,7 +45,7 @@
       </ion-button>
     </div>
 
-    <ion-button [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
+    <ion-button *ngIf="feat.tutorial.unpolished" [routerLink]="'/tutorial'">LifeSuite App Tutorial</ion-button>
 
     <ion-button *ngIf="g.feat.mockups" [disabled]="true">Physical Exercises (WITH TIMER)
       <!-- Timer can run in background or big timer on fullscreen -->
@@ -88,7 +88,7 @@
     <ion-button [routerLink]="'/journal'">RETROSPECTIVE</ion-button>
     <ion-button [routerLink]="'/success-chance'">
       <ion-icon name="happy-outline" slot="start"></ion-icon>
-      Success probability Calculator
+      Success Probability Calc
     </ion-button>
     <ion-button [routerLink]="'/exponential-improvement'">
       <ion-icon name="trending-up-outline" slot="start"></ion-icon>
