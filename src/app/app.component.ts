@@ -12,6 +12,7 @@ import {SyncPopoverComponent} from './libs/AppFedShared/odm/sync-status/sync-pop
 import {OptionsComponent} from './libs/AppFedShared/options/options.component'
 import {ThemeService} from './libs/AppFedShared/theme-config/theme.service'
 import {FeatureService} from './libs/AppFedShared/feature.service'
+import {fakeExportToNotLookUnused} from '../background/background'
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,8 @@ export class AppComponent {
   ) {
     this.initializeApp();
   }
+
+  fakeExportToNotLookUnused = fakeExportToNotLookUnused + 'dummy'
 
   initializeApp() {
     this.platform.ready().then(() => {

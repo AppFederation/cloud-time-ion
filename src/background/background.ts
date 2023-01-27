@@ -1,6 +1,8 @@
 import { environment } from '../environments/environment';
 console.log(`Background start`);
 
+export const fakeExportToNotLookUnused = 'xyz'
+
 // @ts-ignore
 firebase.initializeApp(environment.firebaseConfig);
 
