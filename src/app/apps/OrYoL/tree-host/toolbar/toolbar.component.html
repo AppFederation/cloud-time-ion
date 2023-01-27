@@ -65,7 +65,8 @@
 <!--  </button>-->
 
   <i
-     class="material-icons actionable"
+    *ngIf="feat.showExperimental"
+    class="material-icons actionable"
      (click)='treeHost.newJournalEntry()'
   >create</i>
 
