@@ -87,7 +87,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     formats: { /* https://www.tiny.cloud/docs/demo/format-custom/ --> CodePen; also check badge format
       https://www.tiny.cloud/docs/configure/content-formatting/#built-informats
       */
-      done: {inline: 'span', classes: 'done'},
+      done: {inline: 'span', classes: 'done-text'},
       fancy: {inline: 'span', classes: 'fancy'},
       warning: {inline: 'span', classes: 'warning'},
       negative: {inline: 'span', classes: 'negative'},
