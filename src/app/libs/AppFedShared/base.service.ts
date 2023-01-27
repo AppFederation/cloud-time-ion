@@ -33,19 +33,21 @@ export class FeatureLevelsConfig {
    * */
   unpolished = false
 
-  unpolishedVisually = false
-
   unpolishedFunctionality  = false
 
+  unpolishedVisually = false
 
   // TODO/idea: alpha, beta, release-candidate
 
   /** experimental / advanced */
 
-  showAdvanced = false
+
+  showPerformanceTracking = false
 
   /** This is becoming similar to logger levels and logger tree */
   showDebug = false
+
+  showAdvanced = false
 
   /** just an idea; more high priority than todos/notes/ideas texts display; should fix before release to end-users;
    * Can disable for demos. Should prolly be last in order of maturity, to force fixing fixmes before release. */

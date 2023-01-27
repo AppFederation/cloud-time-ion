@@ -1,14 +1,21 @@
-
 /** TODO: rename to countIf or countWhere ?
  * Lodash's countBy is more like groupCountBy (grouping)
  */
+import {appGlobals} from '../g'
+
 export function countBy2<T>(arr: Iterable<T>, conditionFn: (item: T) => boolean): number {
   let count = 0
+  let totalCount = 0
   for ( let item of arr ) {
+    totalCount++
     if ( conditionFn(item) ) {
       count ++
     }
   }
+  if ( appGlobals.feat.showPerformanceTracking ) {
+    console.log('countBy2, totalCount', totalCount)
+  }
+
   return count
 }
 

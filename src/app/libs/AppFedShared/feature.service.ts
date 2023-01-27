@@ -36,19 +36,24 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   roiPoints = new FeatureLevelsConfig()
 
+  /** prolly about more long-term planning/estimating than plan-today */
   planning = new FeatureLevelsConfig()
 
+
+  /** estimates / milestones */
+  estimating = true
+
+  milestones = true
+
+  planToday: any
+
+  /** also keywords: plan execution service */
   timeTracking = {
     periods: {
       /* this is only a placeholder for good future-proofness top-down usage patterns; total implementation of tree will be quite complicated in logic and UI */
       showFixmes: false
     }
   }
-
-  /** estimates / milestones */
-  estimating = true
-
-  milestones = true
 
   /** most mature prolly */
   learning = true

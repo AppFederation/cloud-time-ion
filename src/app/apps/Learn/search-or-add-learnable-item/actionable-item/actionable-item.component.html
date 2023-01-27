@@ -22,7 +22,7 @@
     TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
   </ion-note>
   <ion-button size="small"
-              *ngIf="featureService.mockups"
+              *ngIf="featureService.planToday.mockups"
               (click)="addToToday($event)"
   >
     <!-- should be dot dot dot menu anyway -->
