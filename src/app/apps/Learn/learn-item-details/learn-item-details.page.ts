@@ -11,13 +11,14 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../models/LearnItem$'
 import {NavigationService} from '../../../shared/navigation.service'
 import {filter} from 'rxjs/operators'
+import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 @Component({
   selector: 'app-learn-item-details',
   templateUrl: './learn-item-details.page.html',
   styleUrls: ['./learn-item-details.page.sass'],
 })
-export class LearnItemDetailsPage implements OnInit {
+export class LearnItemDetailsPage extends BaseComponent implements OnInit {
 
   get val$(): Observable<LearnItem | nullish> {
     return this.item$.locallyVisibleChanges$
@@ -39,6 +40,7 @@ export class LearnItemDetailsPage implements OnInit {
     public router: Router,
     public navigationService: NavigationService,
   ) {
+    super()
     // router.events.pipe(
     //   filter(event => event instanceof NavigationStart) /* Using NavigationStart coz could be good if quickly clicking next next */
     // ).subscribe((event: NavigationStart) => {

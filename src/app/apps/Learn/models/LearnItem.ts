@@ -204,6 +204,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   }
 
   public needsProcessing(): boolean {
+    // TODO: (strip html) .split().toLower() === 'todo'
     return ! this.hasQAndA() && this.isEffectivelyToLearn()
   }
 
@@ -275,7 +276,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
       return msDiff as Deferrability
       // overdue should have high urgency
     } else {
-      return date
+      return date as nullish // as Deferrability // TODO check type
     }
   }
 

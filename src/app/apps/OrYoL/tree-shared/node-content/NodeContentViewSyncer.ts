@@ -59,7 +59,7 @@ export class NodeContentViewSyncer {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if (!this.treeNode.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
-          this.treeNode.patchItemData(this.pendingThrottledItemDataPatch)
+          this.treeNode.patchItemData(this.pendingThrottledItemDataPatch) // patching here
           this.pendingThrottledItemDataPatch = {}
         } // else: no need to react, since it is being applied from Db
       })

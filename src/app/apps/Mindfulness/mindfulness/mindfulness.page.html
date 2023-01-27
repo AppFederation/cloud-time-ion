@@ -10,6 +10,8 @@
 
 <ion-content>
   <app-time-passing
+    *ngIf="feat.userActivityTiming"
+
     style="opacity: 20%; display: block; font-size: 95%; color: white; margin-left: 1rem; margin-top: 1rem; align-self: center; margin-bottom: 100px"
     [isCountDown]="false"
   ></app-time-passing>

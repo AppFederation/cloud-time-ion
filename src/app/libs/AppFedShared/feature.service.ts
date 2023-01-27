@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {g} from './g'
 import {FeatureLevelsConfig} from './base.service'
 
+export let showWhatIUse = true
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,7 +45,7 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
 
   /** estimates / milestones */
-  estimating = true
+  estimating = showWhatIUse
 
   milestones = new FeatureLevelsConfig()
 
@@ -59,6 +61,8 @@ export class FeatureService extends FeatureLevelsConfig /* HACK for now */ {
 
   /** most mature prolly */
   learning = true
+
+  quiz = new FeatureLevelsConfig()
 
 
   constructor() {

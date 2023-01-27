@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {BaseComponent} from '../../base/base.component'
 
 @Component({
   selector: 'app-time-passing',
@@ -6,7 +7,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, On
   styleUrls: ['./time-passing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimePassingComponent implements OnInit, OnDestroy {
+export class TimePassingComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
   referenceTime : Date = new Date()
@@ -22,6 +23,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
       private changeDetectorRef: ChangeDetectorRef,
       private ngZone: NgZone,
   ) {
+    super()
 
     this.ngZone.runOutsideAngular(() => {
       this.intervalHandle = setInterval(() => {

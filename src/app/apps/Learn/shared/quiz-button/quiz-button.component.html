@@ -4,9 +4,15 @@
   </div>
 
   &nbsp;
+  <ng-container
+    *ngIf="feat.quiz.stressful"
+  >
 
-  {{ ((quizService.quizStatus$ | async)?.itemsLeft) || "" }}
-  <span style="opacity: 50%; font-size: 60%">
-    &nbsp;{{ ((quizService.quizStatus$ | async)?.itemsLeftToday) || "" }}
+    {{ ((quizService.quizStatus$ | async)?.itemsLeft) || "" }}
+    <span style="opacity: 50%; font-size: 60%">
+      &nbsp;{{ ((quizService.quizStatus$ | async)?.itemsLeftToday) || "" }}
+    </span>
 
-</span></ion-button>
+  </ng-container>
+
+</ion-button>

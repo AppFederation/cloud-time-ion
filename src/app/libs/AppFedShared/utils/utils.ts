@@ -12,7 +12,7 @@ export function countBy2<T>(arr: Iterable<T>, conditionFn: (item: T) => boolean)
       count ++
     }
   }
-  if ( appGlobals.feat.showPerformanceTracking ) {
+  if ( appGlobals.feat.showDebugPerformanceTracking ) {
     console.log('countBy2, totalCount', totalCount)
   }
 

@@ -10,6 +10,7 @@ import {map, withLatestFrom} from 'rxjs/operators'
 import {EditorService} from '../../../libs/AppFedShared/rich-text/rich-text-edit/editor.service'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
+import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
 
 
 @Component({
@@ -17,7 +18,7 @@ import {isNullish} from '../../../libs/AppFedShared/utils/utils'
   templateUrl: './quiz.page.html',
   styleUrls: ['./quiz.page.sass'],
 })
-export class QuizPage implements OnInit, AfterViewInit  {
+export class QuizPage extends BaseComponent implements OnInit, AfterViewInit  {
 
   item$: LearnItem$ | undefined
 
@@ -34,6 +35,7 @@ export class QuizPage implements OnInit, AfterViewInit  {
     public popoverController: PopoverController,
     public editorService: EditorService,
   ) {
+    super()
   }
 
   ngOnInit() {

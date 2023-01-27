@@ -19,11 +19,14 @@
 
 
         <app-time-passing
+          *ngIf="feat.userActivityTiming"
           style="font-size: 66%"
           [isCountDown]="false"
         ></app-time-passing>
         <ion-buttons>
-          <ion-icon class="action-icon" slot="end" size="50"
+          <ion-icon
+              *ngIf="feat.userActivityCountDownTimer"
+              class="action-icon" slot="end" size="50"
                     (click)="onClickTimer($event)"
                     name="timer-outline"
           ></ion-icon>

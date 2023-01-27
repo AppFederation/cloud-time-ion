@@ -23,6 +23,8 @@
       </div>
 
       <app-time-passing
+        *ngIf="feat.userActivityTiming"
+
         style="font-size: 80%; margin-right: 3px"
         [isCountDown]="false"
       ></app-time-passing>

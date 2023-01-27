@@ -68,6 +68,8 @@ export abstract class OdmService2<
     this.setBackendListener()
   })
 
+  // get items(): TOdmItem$[]
+
   private backendListenerWasSet = false
 
   public itemsLoaded = false

@@ -64,7 +64,7 @@ export class ShowAnswerAndRateComponent implements OnInit {
   // }
 
   applyAndNext() {
-    // this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
+    this.quizAnswersService.onApplyAndNext(this.item$ !, this.selfRating !)
     this.store.dispatch(requestNextQuizItem())
   }
 
