@@ -1,6 +1,7 @@
-import {showWhatIUse} from './feature.service'
 import {FeatureLevelsConfig} from './FeatureLevelsConfig'
 import {FeaturesProps} from './FeaturesProps'
+
+export let showWhatIUse = true
 
 export class FeaturesConfig extends FeatureLevelsConfig {
 

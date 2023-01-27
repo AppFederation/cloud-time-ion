@@ -3,8 +3,6 @@ import {g} from './g'
 import {CachedSubject} from './utils/cachedSubject2/CachedSubject2'
 import {FeaturesConfig} from './FeaturesConfig'
 
-export let showWhatIUse = true
-
 @Injectable({
   providedIn: 'root'
 })
