@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {g} from './g'
 
 /** showAll */
-export let enableAll = false
+export var enableAll = false
 
 export class FeatureLevelsConfig {
   // ORDER: from least mature to most
@@ -35,18 +35,21 @@ export class FeatureLevelsConfig {
   quickNDirty = enableAll
 
 
+  /** worse than unpolished */
+  buggy = enableAll
+
   /** better than `ugly`; works and fulfills some function, e.g. energy graph; actually worse than ugly; coz deficiencies not only in looks, but also in functionality
    * TODO split: into visual / func
    * */
-  unpolished = enableAll
+  unpolished = enableAll // buggy?
 
   unpolishedFunctionality  = enableAll
 
   unpolishedVisually = enableAll
 
-  // TODO/idea: alpha, beta, release-candidate
+  // confusing
 
-  /** experimental / advanced */
+  // TODO/idea: alpha, beta, release-candidate
 
 
   showDebugPerformanceTracking = enableAll
