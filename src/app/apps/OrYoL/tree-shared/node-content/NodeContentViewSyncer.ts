@@ -35,6 +35,12 @@ export class NodeContentViewSyncer {
   }
 
 
+  /* TODO move the throttling to Item$
+  * Here tackling bug with losing part of title when editing-then-indent.
+  * When indenting, it's new UI component.
+  *
+  * Maybe indenting could force committing the delayed (throttled) change.
+  *  */
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       const throttleTimeConfig = {

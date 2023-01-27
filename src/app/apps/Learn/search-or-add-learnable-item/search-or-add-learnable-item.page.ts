@@ -1,7 +1,7 @@
 import {Component, HostListener, Injector, OnInit} from '@angular/core';
 import {sortBy} from 'lodash-es'
 import {LearnDoService} from '../core/learn-do.service'
-import {field, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
+import {field, HtmlString, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
@@ -60,20 +60,20 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormControl.valueChanges.pipe(
-      debounceTime(100) /* FIXME: this debounceTime() is probably causing the double-adding of items */,
+      debounceTime(/*100*/300) /* FIXME: this debounceTime() is probably causing the double-adding of items */,
       // tap(debugLog),
       // map(stripHtml), // TODO but need to not destroy html
       // TODO: strip too coz maybe adding a space should not make a difference
       distinctUntilChanged(),
     ).subscribe(val => {
-      this.htmlSearch = val
+      this.htmlSearch = val // !! FIXME BUG: this is debounced; BUG when pressing enter/alt+enter fast - old value is taken
       val = stripHtml(val)
 
       this.listModel.search = val
       this.listModel.onChangeSearch(val)
     })
-    this.learnDoService.localItems$.subscribe(item$s => {
-      // console.log('localItems$ ==== ')
+    this.learnDoService.localItems$.subscribe((item$s: LearnItem$[]) => {
+      console.log('localItems$ ==== '/*, item$s*/)
       this.listModel.setItemsAndSort(item$s)
     })
   }
@@ -114,8 +114,9 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
     this.router.navigateByUrl('learn/item/' + id)
   }
 
-  private getUserString(string?: string) {
-    return string ?? this.htmlSearch ?? this.listModel.search ?? ``
+  private getUserString(string?: string): string {
+    // return string ?? this.htmlSearch ?? this.listModel.search ?? ``
+    return string ?? this.searchFormControl.value ?? this.listModel.search ?? ``
     // FIXME: this inconsistency with clearInput might be causing the bug with double-adding of items
   }
 
@@ -247,6 +248,8 @@ export class SearchOrAddLearnableItemPageComponent implements OnInit {
       translucent: true,
       mode: 'ios',
       cssClass: `my-popover`,
+      // size: 'cover',
+      // side: 'left',
     });
     return await popover.present();
   }
