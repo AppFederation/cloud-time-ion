@@ -28,13 +28,19 @@ export class FeatureLevelsConfig {
   /** Prolly stable for me but might be hard to understand for end user */
   showExperimental = false
 
-  /** better than `ugly`; works and fulfills some function, e.g. energy graph */
+  /** better than `ugly`; works and fulfills some function, e.g. energy graph; actually worse than ugly; coz deficiencies not only in looks, but also in functionality
+   * TODO split: into visual / func
+   * */
   unpolished = false
+
+  unpolishedVisually = false
+
+  unpolishedFunctionality  = false
+
 
   // TODO/idea: alpha, beta, release-candidate
 
   /** experimental / advanced */
-  showRoiPoints = false
 
   showAdvanced = false
 
