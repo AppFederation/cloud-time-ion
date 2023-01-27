@@ -45,7 +45,7 @@ export class AuthService {
 
   logout() {
     this._userIsAuthenticated = false;
-    this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut(); // https://github.com/angular/angularfire/blob/master/docs/version-6-upgrade.md
     this.authUser$.next(null)
   }
 
