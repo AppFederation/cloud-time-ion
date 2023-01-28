@@ -16,17 +16,33 @@ import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'
 import { TimeStamper } from '../tree-model/TimeStamper'
-import { firestore } from 'firebase'
+import firestore from 'firebase/compat'
 import DocumentReference = firestore.DocumentReference
 import DocumentSnapshot = firestore.DocumentSnapshot
 
 // const firebase1 = require('firebase');
 import * as firebase1 from 'firebase/app'
-import 'firebase/firestore';
+import 'firebase/compat/firestore';
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AngularFirestore} from '@angular/fire/compat/firestore'
 // Required for side-effects
 // require('firebase/firestore');
+
+
+/// ==== new SDK:
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import {firebaseConfig} from '../../../firebase.config'
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+// =====
+
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
 
 
 console.log('firebase1', firebase1)
