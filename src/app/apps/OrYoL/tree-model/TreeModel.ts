@@ -164,7 +164,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return this.treeModel.root === this;
   }
 
-  get isVisualRoot() {
+  get isVisualRoot(): boolean {
     return this === this.treeModel.navigation.visualRoot
   }
 

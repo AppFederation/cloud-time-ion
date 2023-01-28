@@ -1,6 +1,8 @@
 import { environment } from '../environments/environment';
 console.log(`Background start`);
 
+// tsconfig.app.json: "background/background.ts" /* disabled coz causes warning when running; and I dont work on extension now */
+
 export const fakeExportToNotLookUnused = 'xyz'
 
 // @ts-ignore

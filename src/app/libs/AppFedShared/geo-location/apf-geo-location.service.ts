@@ -15,7 +15,7 @@ const geolocationOptions = {
 export class ApfGeoLocationService {
 
   public readonly geoLocation$ = new CachedSubject<{
-    currentPosition: Position,
+    currentPosition: GeolocationPosition,
   }>()
 
   constructor() {
@@ -25,7 +25,7 @@ export class ApfGeoLocationService {
   private initGeoLocationCallback() {
     /* TODO: privacy settings */
     if (navigator.geolocation) {
-      const successCallback = (loc: Position) => {
+      const successCallback = (loc: GeolocationPosition) => {
         // debugLog('ApfGeoLocation: getCurrentPosition', loc)
         this.geoLocation$.next({
           currentPosition: loc,

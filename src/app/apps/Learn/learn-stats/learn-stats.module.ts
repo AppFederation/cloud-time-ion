@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { LearnStatsPageRoutingModule } from './learn-stats-routing.module';
 
-import { LearnStatsPage } from './learn-stats.page';
+// import { LearnStatsPage } from './learn-stats.page';
 import {LearnSharedModule} from '../shared/learn-shared.module'
 
 @NgModule({
@@ -17,6 +17,6 @@ import {LearnSharedModule} from '../shared/learn-shared.module'
     LearnSharedModule,
     LearnStatsPageRoutingModule
   ],
-  declarations: [LearnStatsPage]
+  // declarations: [LearnStatsPage]
 })
 export class LearnStatsPageModule {}

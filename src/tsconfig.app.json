@@ -14,7 +14,7 @@
     "main.ts",
     "polyfills.ts",
     "zone-flags.ts",
-    "background/background.ts"
+//    "background/background.ts" /* disabled coz causes warning when running; and I dont work on extension now */
   ],
   "include": [
     "src/**/*.d.ts"
