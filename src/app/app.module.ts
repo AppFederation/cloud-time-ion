@@ -79,6 +79,10 @@ export class AppModule {
      * https://github.com/FortAwesome/angular-fontawesome/blob/master/docs/upgrading/0.5.0-0.6.0.md */
     faIconLibrary: FaIconLibrary,
   ) {
+    console.log(`last commit: commit 35e028e72e74dfab8033f53f895b48c98d76768f (HEAD -> develop, origin/develop, origin/HEAD)
+      Author: Karol Depka <karol-depka@users.noreply.github.com>
+      Date:   Sat Jan 28 08:28:53 2023 +0100
+    ).catch((caught: any)`)
     faIconLibrary.addIconPacks(fas);
   }
 
