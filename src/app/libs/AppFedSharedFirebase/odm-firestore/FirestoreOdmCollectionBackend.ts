@@ -1,6 +1,6 @@
 import {ItemId, OdmCollectionBackend, OdmCollectionBackendListener} from "../../AppFedShared/odm/OdmCollectionBackend";
 import {Injector} from "@angular/core";
-import {AngularFirestore, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
+import {AngularFirestore, AngularFirestoreDocument, DocumentChange, QuerySnapshot} from "@angular/fire/firestore";
 import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
 import {ignorePromise} from "../../AppFedShared/utils/promiseUtils";
 import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
@@ -28,7 +28,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   deleteWithoutConfirmation(itemId: OdmItemId) {
     // DANGEROUS return  this. /* danger */ itemDoc(itemId) /* danger */  .delete()
-    return this.itemDoc(itemId).update({
+    // const angularFirestoreDocument = this.itemDoc(itemId) // as AngularFirestoreDocument<TRaw & { whenDeleted: Date}>
+    const angularFirestoreDocument = this.itemDoc(itemId) as AngularFirestoreDocument<any> /* HACK after AngularFire update */
+    return angularFirestoreDocument.update({
       whenDeleted: new Date()
     })
   }
@@ -96,7 +98,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           // .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
           .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
           .get({source: 'cache'})
-        promise.then(data => {
+        promise.then((data: any /* HACK after AngularFire update */) => {
             for ( let doc of data.docs ) {
               listener?.onAdded(doc.id, doc.data() as TRaw)
             }

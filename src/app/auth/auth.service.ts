@@ -45,19 +45,20 @@ export class AuthService {
 
   logout() {
     this._userIsAuthenticated = false;
-    this.afAuth.auth.signOut(); // https://github.com/angular/angularfire/blob/master/docs/version-6-upgrade.md
+    // this.afAuth.auth.signOut(); // https://github.com/angular/angularfire/blob/master/docs/version-6-upgrade.md
+    this.afAuth.signOut(); // https://github.com/angular/angularfire/blob/master/docs/version-6-upgrade.md
     this.authUser$.next(null)
   }
 
   signUpWithEmailAndPassword(email: string, password: string) {
-    return this.afAuth.auth
+    return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then(response => (this.login()/*, this.Router.navigateByUrl('/timers') /!* TODO why comma expression *!/)*/))
       .catch(error => console.log('Error on creating account', error));
   }
 
   logInViaEmailAndPassword(email: string, password: string) {
-    return this.afAuth.auth
+    return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then(response => (this.login()/*, this.Router.navigateByUrl('/timers'))*/))
       .catch(error => console.log('Error logging in', error));
@@ -73,7 +74,7 @@ export class AuthService {
       });
     } else {
       const authProvider = new firebase.auth.GoogleAuthProvider();
-      return this.afAuth.auth
+      return this.afAuth
         .signInWithPopup(authProvider)
         .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
           /* TODO: emit authUser$ */

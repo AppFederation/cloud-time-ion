@@ -37,7 +37,8 @@ export class PlayButtonComponent implements OnInit {
     this.isPlaying = true
     // TODO: move to service
     this.angularFirestore.collection('LearnDoAudio').doc(this.itemId || this.item?.id).get().subscribe(audioItem => {
-      const audioBytes = audioItem ?. data() ?. audio?.toUint8Array()?.buffer as ArrayBuffer
+      const data = audioItem ?. data() as any // this started to be unknown after angularfire upgrade
+      const audioBytes = data ?. audio?.toUint8Array()?.buffer as ArrayBuffer
       // todo maybe reuse ctx / source
       const audioCtx = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
       const source = audioCtx.createBufferSource()
