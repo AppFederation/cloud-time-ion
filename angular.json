@@ -1,5 +1,4 @@
 {
-  //  "$schema": "./node_modules/@angular-devkit/core/src/workspace/workspace-schema.json",
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "defaultProject": "app",
@@ -13,17 +12,13 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./custom-webpack.config.js"
-            },
-            "aot": true,
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
@@ -34,13 +29,7 @@
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
-              },
-              {
-                "glob": "**/*.html",
-                "input": "src/background",
-                "output": "./"
-              },
-              "src/manifest.json"
+              }
             ],
             "styles": [
               {
@@ -50,8 +39,13 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
-            //            "es5BrowserSupport": true
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -66,7 +60,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -118,8 +111,8 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "styles": [],
             "scripts": [],
             "assets": [
@@ -145,8 +138,27 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
             "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "app:serve:production"
+            },
+            "ci": {
+              "devServerTarget": "app:serve:ci"
+            }
           }
         },
         "ionic-cordova-build": {
@@ -174,42 +186,18 @@
           }
         }
       }
-    },
-    "app-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "app:serve"
-          },
-          "configurations": {
-            "ci": {
-              "devServerTarget": "app:serve:ci"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
-        }
-      }
     }
   },
   "cli": {
+    "analytics": false,
     "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
-      "styleext": "sass"
+      "styleext": "scss"
     },
     "@ionic/angular-toolkit:page": {
-      "styleext": "sass"
+      "styleext": "scss"
     }
   }
 }
