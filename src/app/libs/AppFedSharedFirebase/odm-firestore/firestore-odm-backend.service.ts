@@ -38,7 +38,9 @@ export class FirestoreOdmBackend extends OdmBackend {
   }
 
   protected initDb() {
-    this.angularFirestore.firestore.enablePersistence().then(() => {
+    this.angularFirestore.firestore.enablePersistence({
+      synchronizeTabs: true
+    }).then(() => {
       // window.alert('persistence enabled')
       debugLog('Firestore persistence enabled')
       this.authService.authUser$.subscribe(user => {
