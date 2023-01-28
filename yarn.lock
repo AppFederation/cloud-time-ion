@@ -273,12 +273,12 @@
   dependencies:
     "tslib" "^2.0.0"
 
-"@angular/cdk@^10.1.4", "@angular/cdk@10.2.7":
-  "integrity" "sha512-ZQjDfTRTn7JuAKsf3jiIdU2XBaxxGBi/ZWYv5Pb3HCl6B4PISsIE5VWRhkoUogoAB0MiFHpjnWeIqknJEm11YQ=="
-  "resolved" "https://registry.npmjs.org/@angular/cdk/-/cdk-10.2.7.tgz"
-  "version" "10.2.7"
+"@angular/cdk@^13.3.9", "@angular/cdk@10.2.7":
+  "integrity" "sha512-XCuCbeuxWFyo3EYrgEYx7eHzwl76vaWcxtWXl00ka8d+WAOtMQ6Tf1D98ybYT5uwF9889fFpXAPw98mVnlo3MA=="
+  "resolved" "https://registry.npmjs.org/@angular/cdk/-/cdk-13.3.9.tgz"
+  "version" "13.3.9"
   dependencies:
-    "tslib" "^2.0.0"
+    "tslib" "^2.3.0"
   optionalDependencies:
     "parse5" "^5.0.0"
 
@@ -307,7 +307,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
+"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^13.0.0 || ^14.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
   "integrity" "sha512-Nk4zNKfda92aFe+cucHRv2keyryR7C1ZnsurwZW9WZSobpY3z2tTT81F+yy35lGoMt5BDBAIpfh1b4j9Ue/vMg=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-13.3.12.tgz"
   "version" "13.3.12"
@@ -365,7 +365,7 @@
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-9.1.13.tgz"
   "version" "9.1.13"
 
-"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
+"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
   "integrity" "sha512-jx0YC+NbPMbxGr5bXECkCEQv2RdVxR8AJNnabkPk8ZjwCpDzROrbELwwS1kunrZUhffcD15IhWGBvf1EGHAYDw=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-13.3.12.tgz"
   "version" "13.3.12"
