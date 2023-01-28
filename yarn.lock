@@ -307,7 +307,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=6.0.0 <9 || ^9.0.0-0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
+"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
   "integrity" "sha512-Nk4zNKfda92aFe+cucHRv2keyryR7C1ZnsurwZW9WZSobpY3z2tTT81F+yy35lGoMt5BDBAIpfh1b4j9Ue/vMg=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-13.3.12.tgz"
   "version" "13.3.12"
@@ -365,7 +365,7 @@
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-9.1.13.tgz"
   "version" "9.1.13"
 
-"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=6.0.0 <9 || ^9.0.0-0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
+"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
   "integrity" "sha512-jx0YC+NbPMbxGr5bXECkCEQv2RdVxR8AJNnabkPk8ZjwCpDzROrbELwwS1kunrZUhffcD15IhWGBvf1EGHAYDw=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-13.3.12.tgz"
   "version" "13.3.12"
@@ -377,10 +377,12 @@
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-9.0.0.tgz"
   "version" "9.0.0"
 
-"@angular/fire@^5.4.2":
-  "integrity" "sha512-QzB5d1wtqr9jxfsVNv2+569MlfK4/QrrpNy0IngOHdxS4FBbXqMOcx37iv1m2mzJv9zlGUddUX44IZP5Xfb3cw=="
-  "resolved" "https://registry.npmjs.org/@angular/fire/-/fire-5.4.2.tgz"
-  "version" "5.4.2"
+"@angular/fire@^6.1.5":
+  "integrity" "sha512-jrstSStogpfJvhlrX8ajtsnbVzIzcrh/InYUGbMVzXyQoT6wHA0LODjR6eIzGhb9/YQ+myMuVelJ39PfU3e8Sg=="
+  "resolved" "https://registry.npmjs.org/@angular/fire/-/fire-6.1.5.tgz"
+  "version" "6.1.5"
+  dependencies:
+    "tslib" "^2.0.0"
 
 "@angular/forms@^10.0.0 || ^11.0.0-0", "@angular/forms@^13.3.12", "@angular/forms@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/forms@>=5.0.0", "@angular/forms@>=8.2.7", "@angular/forms@>=9.0.0":
   "integrity" "sha512-auow1TKZx44ha1ia8Jwg2xp2Q7BbpShG5Ft8tewL3T44aTmJY7svWOE/m+DkZ/SXHmTFnbZFobGU5aEfe0+pNw=="
@@ -401,14 +403,14 @@
   dependencies:
     "tslib" "^2.0.0"
 
-"@angular/platform-browser-dynamic@^13.3.12", "@angular/platform-browser-dynamic@>=6.0.0 <9 || ^9.0.0-0":
+"@angular/platform-browser-dynamic@^13.3.12", "@angular/platform-browser-dynamic@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0":
   "integrity" "sha512-/hBggov0PxK/KNJqIu3MVc5k8f0iDbygDP8Z1k/J0FcllOSRdO4LsQd1fsCfGfwIUf0YWGyD7KraSGpBBiWlFg=="
   "resolved" "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.3.12.tgz"
   "version" "13.3.12"
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/platform-browser@^13.3.12", "@angular/platform-browser@>=6.0.0 <9 || ^9.0.0-0", "@angular/platform-browser@13.3.12":
+"@angular/platform-browser@^13.3.12", "@angular/platform-browser@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/platform-browser@13.3.12":
   "integrity" "sha512-sfhQqU4xjTJCjkH62TQeH5/gkay/KzvNDF95J6NHi/Q6p2dbtzZdXuLJKR/sHxtF2kc505z5v9RNm6XMSXM1KA=="
   "resolved" "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-13.3.12.tgz"
   "version" "13.3.12"
@@ -7043,7 +7045,7 @@
     "winston-transport" "^4.4.0"
     "ws" "^7.2.3"
 
-"firebase@^7.24.0", "firebase@>= 5.5.7 <8":
+"firebase@^7.0 || ^8.0", "firebase@^7.24.0":
   "integrity" "sha512-j6jIyGFFBlwWAmrlUg9HyQ/x+YpsPkc/TTkbTyeLwwAJrpAmmEHNPT6O9xtAnMV4g7d3RqLL/u9//aZlbY4rQA=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-7.24.0.tgz"
   "version" "7.24.0"

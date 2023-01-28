@@ -19,7 +19,7 @@
     "@angular/cdk-experimental": "^10.1.4",
     "@angular/common": "^13.3.12",
     "@angular/core": "^13.3.12",
-    "@angular/fire": "^5.4.2",
+    "@angular/fire": "^6.1.5",
     "@angular/forms": "^13.3.12",
     "@angular/material": "^10.2.3",
     "@angular/platform-browser": "^13.3.12",
