@@ -239,7 +239,7 @@
     "rxjs" "6.6.2"
     "source-map" "0.7.3"
 
-"@angular-devkit/schematics@^13.3.10", "@angular-devkit/schematics@>=8.0.0", "@angular-devkit/schematics@13.3.10":
+"@angular-devkit/schematics@^12.0.0 || ^13.0.0", "@angular-devkit/schematics@^13.3.10", "@angular-devkit/schematics@>=8.0.0", "@angular-devkit/schematics@13.3.10":
   "integrity" "sha512-/G0xInGBfFiJJQET3nKMe8V7Ny+fcxAZsXxFuOpuH2jfKqty9JMmuJw6ll5qEP0h3NnKPsF+9J1Gvq8Bmb4uDQ=="
   "resolved" "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-13.3.10.tgz"
   "version" "13.3.10"
@@ -307,7 +307,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^13.0.0 || ^14.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
+"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^12.0.0 || ^13.0.0", "@angular/common@^13.0.0 || ^14.0.0-0", "@angular/common@^13.3.12", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=9.0.0", "@angular/common@13.3.12":
   "integrity" "sha512-Nk4zNKfda92aFe+cucHRv2keyryR7C1ZnsurwZW9WZSobpY3z2tTT81F+yy35lGoMt5BDBAIpfh1b4j9Ue/vMg=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-13.3.12.tgz"
   "version" "13.3.12"
@@ -365,7 +365,7 @@
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-9.1.13.tgz"
   "version" "9.1.13"
 
-"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
+"@angular/core@^10.0.0", "@angular/core@^10.0.0 || ^11.0.0-0", "@angular/core@^12.0.0 || ^13.0.0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@^13.3.12", "@angular/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/core@>=2.0.0", "@angular/core@>=5.0.0", "@angular/core@>=8.2.7", "@angular/core@>=9.0.0", "@angular/core@13.3.12":
   "integrity" "sha512-jx0YC+NbPMbxGr5bXECkCEQv2RdVxR8AJNnabkPk8ZjwCpDzROrbELwwS1kunrZUhffcD15IhWGBvf1EGHAYDw=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-13.3.12.tgz"
   "version" "13.3.12"
@@ -377,12 +377,26 @@
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-9.0.0.tgz"
   "version" "9.0.0"
 
-"@angular/fire@^6.1.5":
-  "integrity" "sha512-jrstSStogpfJvhlrX8ajtsnbVzIzcrh/InYUGbMVzXyQoT6wHA0LODjR6eIzGhb9/YQ+myMuVelJ39PfU3e8Sg=="
-  "resolved" "https://registry.npmjs.org/@angular/fire/-/fire-6.1.5.tgz"
-  "version" "6.1.5"
+"@angular/fire@7.2":
+  "integrity" "sha512-hi63xI17MW1mC0KKWQbUBAUkkvB61O6LoBHsP/Mgy/dCM9pAYJ1NxYamAHqAD2WI670FMAqJOqXoS86RSH4rYg=="
+  "resolved" "https://registry.npmjs.org/@angular/fire/-/fire-7.2.1.tgz"
+  "version" "7.2.1"
   dependencies:
+    "@angular-devkit/schematics" "^12.0.0 || ^13.0.0"
+    "@schematics/angular" "^12.0.0 || ^13.0.0"
+    "file-loader" "^6.2.0"
+    "fs-extra" "^8.0.1"
+    "fuzzy" "^0.1.3"
+    "inquirer" "^8.1.1"
+    "inquirer-autocomplete-prompt" "^1.0.1"
+    "jsonc-parser" "^3.0.0"
+    "node-fetch" "^2.6.1"
+    "open" "^8.0.0"
+    "ora" "^5.3.0"
+    "semver" "^7.1.3"
+    "triple-beam" "^1.3.0"
     "tslib" "^2.0.0"
+    "winston" "^3.0.0"
 
 "@angular/forms@^10.0.0 || ^11.0.0-0", "@angular/forms@^13.3.12", "@angular/forms@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/forms@>=5.0.0", "@angular/forms@>=8.2.7", "@angular/forms@>=9.0.0":
   "integrity" "sha512-auow1TKZx44ha1ia8Jwg2xp2Q7BbpShG5Ft8tewL3T44aTmJY7svWOE/m+DkZ/SXHmTFnbZFobGU5aEfe0+pNw=="
@@ -403,14 +417,14 @@
   dependencies:
     "tslib" "^2.0.0"
 
-"@angular/platform-browser-dynamic@^13.3.12", "@angular/platform-browser-dynamic@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0":
+"@angular/platform-browser-dynamic@^12.0.0 || ^13.0.0", "@angular/platform-browser-dynamic@^13.3.12":
   "integrity" "sha512-/hBggov0PxK/KNJqIu3MVc5k8f0iDbygDP8Z1k/J0FcllOSRdO4LsQd1fsCfGfwIUf0YWGyD7KraSGpBBiWlFg=="
   "resolved" "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.3.12.tgz"
   "version" "13.3.12"
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/platform-browser@^13.3.12", "@angular/platform-browser@^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0", "@angular/platform-browser@13.3.12":
+"@angular/platform-browser@^12.0.0 || ^13.0.0", "@angular/platform-browser@^13.3.12", "@angular/platform-browser@13.3.12":
   "integrity" "sha512-sfhQqU4xjTJCjkH62TQeH5/gkay/KzvNDF95J6NHi/Q6p2dbtzZdXuLJKR/sHxtF2kc505z5v9RNm6XMSXM1KA=="
   "resolved" "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-13.3.12.tgz"
   "version" "13.3.12"
@@ -2314,6 +2328,15 @@
     "@angular-devkit/schematics" "10.2.4"
     "jsonc-parser" "2.3.0"
 
+"@schematics/angular@^12.0.0 || ^13.0.0":
+  "integrity" "sha512-sw6K8YihfcqNyfa2/65ACPixZHQJRBw1aNm8w0DRGFyO3aXRe9G5X23MkCMLH+63oK9R1cK63/fZ8zqfdSq7zA=="
+  "resolved" "https://registry.npmjs.org/@schematics/angular/-/angular-13.3.10.tgz"
+  "version" "13.3.10"
+  dependencies:
+    "@angular-devkit/core" "13.3.10"
+    "@angular-devkit/schematics" "13.3.10"
+    "jsonc-parser" "3.0.0"
+
 "@schematics/angular@13.3.10":
   "integrity" "sha512-sw6K8YihfcqNyfa2/65ACPixZHQJRBw1aNm8w0DRGFyO3aXRe9G5X23MkCMLH+63oK9R1cK63/fZ8zqfdSq7zA=="
   "resolved" "https://registry.npmjs.org/@schematics/angular/-/angular-13.3.10.tgz"
@@ -3162,6 +3185,13 @@
   "version" "3.2.0"
 
 "ansi-escapes@^4.2.1":
+  "integrity" "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="
+  "resolved" "https://registry.npmjs.org/ansi-escapes/-/ansi-escapes-4.3.2.tgz"
+  "version" "4.3.2"
+  dependencies:
+    "type-fest" "^0.21.3"
+
+"ansi-escapes@^4.3.1":
   "integrity" "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="
   "resolved" "https://registry.npmjs.org/ansi-escapes/-/ansi-escapes-4.3.2.tgz"
   "version" "4.3.2"
@@ -4487,6 +4517,14 @@
   "integrity" "sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg=="
   "resolved" "https://registry.npmjs.org/chalk/-/chalk-3.0.0.tgz"
   "version" "3.0.0"
+  dependencies:
+    "ansi-styles" "^4.1.0"
+    "supports-color" "^7.1.0"
+
+"chalk@^4.0.0":
+  "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="
+  "resolved" "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz"
+  "version" "4.1.2"
   dependencies:
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
@@ -6865,6 +6903,21 @@
   dependencies:
     "escape-string-regexp" "^1.0.5"
 
+"figures@^3.2.0":
+  "integrity" "sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg=="
+  "resolved" "https://registry.npmjs.org/figures/-/figures-3.2.0.tgz"
+  "version" "3.2.0"
+  dependencies:
+    "escape-string-regexp" "^1.0.5"
+
+"file-loader@^6.2.0":
+  "integrity" "sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw=="
+  "resolved" "https://registry.npmjs.org/file-loader/-/file-loader-6.2.0.tgz"
+  "version" "6.2.0"
+  dependencies:
+    "loader-utils" "^2.0.0"
+    "schema-utils" "^3.0.0"
+
 "file-loader@6.0.0":
   "integrity" "sha512-/aMOAYEFXDdjG0wytpTL5YQLfZnnTmLNjn+AIrJ/6HVnTfDqLsVKUUwkDf4I4kgex36BvjuXEn/TX9B/1ESyqQ=="
   "resolved" "https://registry.npmjs.org/file-loader/-/file-loader-6.0.0.tgz"
@@ -6981,7 +7034,7 @@
     "locate-path" "^5.0.0"
     "path-exists" "^4.0.0"
 
-"firebase-tools@^9.23.3":
+"firebase-tools@^9.23.3", "firebase-tools@^9.9.0":
   "integrity" "sha512-J1S/T96rL3vKObDtTuBkop9JtW3vYnfwyU83NopiuOy9oPBRxFkitgzk034qGrpGyZvDA6Do6ZHI50taB3hrEg=="
   "resolved" "https://registry.npmjs.org/firebase-tools/-/firebase-tools-9.23.3.tgz"
   "version" "9.23.3"
@@ -7045,7 +7098,7 @@
     "winston-transport" "^4.4.0"
     "ws" "^7.2.3"
 
-"firebase@^7.0 || ^8.0", "firebase@^7.24.0":
+"firebase@^7.24.0", "firebase@^9.0.0", "firebase@^9.4.0":
   "integrity" "sha512-j6jIyGFFBlwWAmrlUg9HyQ/x+YpsPkc/TTkbTyeLwwAJrpAmmEHNPT6O9xtAnMV4g7d3RqLL/u9//aZlbY4rQA=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-7.24.0.tgz"
   "version" "7.24.0"
@@ -7189,6 +7242,15 @@
     "jsonfile" "^4.0.0"
     "universalify" "^0.1.0"
 
+"fs-extra@^8.0.1":
+  "integrity" "sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g=="
+  "resolved" "https://registry.npmjs.org/fs-extra/-/fs-extra-8.1.0.tgz"
+  "version" "8.1.0"
+  dependencies:
+    "graceful-fs" "^4.2.0"
+    "jsonfile" "^4.0.0"
+    "universalify" "^0.1.0"
+
 "fs-extra@^8.1.0":
   "integrity" "sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g=="
   "resolved" "https://registry.npmjs.org/fs-extra/-/fs-extra-8.1.0.tgz"
@@ -7296,6 +7358,11 @@
   "integrity" "sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ=="
   "resolved" "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   "version" "1.2.3"
+
+"fuzzy@^0.1.3":
+  "integrity" "sha512-/gZffu4ykarLrCiP3Ygsa86UAo1E5vEVlvTrpkKywXSbP9Xhln3oSp9QSV57gEq3JFFpGJ4GZ+5zdEp3FcUh4w=="
+  "resolved" "https://registry.npmjs.org/fuzzy/-/fuzzy-0.1.3.tgz"
+  "version" "0.1.3"
 
 "gauge@^4.0.3":
   "integrity" "sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg=="
@@ -8213,7 +8280,18 @@
   "resolved" "https://registry.npmjs.org/ini/-/ini-2.0.0.tgz"
   "version" "2.0.0"
 
-"inquirer@~6.3.1", "inquirer@6.3.1":
+"inquirer-autocomplete-prompt@^1.0.1":
+  "integrity" "sha512-qHgHyJmbULt4hI+kCmwX92MnSxDs/Yhdt4wPA30qnoa01OF6uTXV8yvH4hKXgdaTNmkZ9D01MHjqKYEuJN+ONw=="
+  "resolved" "https://registry.npmjs.org/inquirer-autocomplete-prompt/-/inquirer-autocomplete-prompt-1.4.0.tgz"
+  "version" "1.4.0"
+  dependencies:
+    "ansi-escapes" "^4.3.1"
+    "chalk" "^4.0.0"
+    "figures" "^3.2.0"
+    "run-async" "^2.4.0"
+    "rxjs" "^6.6.2"
+
+"inquirer@^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0", "inquirer@~6.3.1", "inquirer@6.3.1":
   "integrity" "sha512-MmL624rfkFt4TG9y/Jvmt8vdmOo836U7Y0Hxr2aFk3RelZEGX4Igk0KabWrcaaZaTv9uzglOqWh1Vly+FAWAXA=="
   "resolved" "https://registry.npmjs.org/inquirer/-/inquirer-6.3.1.tgz"
   "version" "6.3.1"
@@ -8231,6 +8309,27 @@
     "string-width" "^2.1.0"
     "strip-ansi" "^5.1.0"
     "through" "^2.3.6"
+
+"inquirer@^8.1.1":
+  "integrity" "sha512-QAgPDQMEgrDssk1XiwwHoOGYF9BAbUcc1+j+FhEvaOt8/cKRqyLn0U5qA6F74fGhTMGxf92pOvPBeh29jQJDTQ=="
+  "resolved" "https://registry.npmjs.org/inquirer/-/inquirer-8.2.5.tgz"
+  "version" "8.2.5"
+  dependencies:
+    "ansi-escapes" "^4.2.1"
+    "chalk" "^4.1.1"
+    "cli-cursor" "^3.1.0"
+    "cli-width" "^3.0.0"
+    "external-editor" "^3.0.3"
+    "figures" "^3.0.0"
+    "lodash" "^4.17.21"
+    "mute-stream" "0.0.8"
+    "ora" "^5.4.1"
+    "run-async" "^2.4.0"
+    "rxjs" "^7.5.5"
+    "string-width" "^4.1.0"
+    "strip-ansi" "^6.0.0"
+    "through" "^2.3.6"
+    "wrap-ansi" "^7.0.0"
 
 "inquirer@8.2.0":
   "integrity" "sha512-0crLweprevJ02tTuA6ThpoAERAGyVILC4sS74uib58Xf/zSr1/ZWtmm7D5CI+bSQEaA04f0K7idaHpQbSWgiVQ=="
@@ -9097,6 +9196,11 @@
   "integrity" "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="
   "resolved" "https://registry.npmjs.org/json5/-/json5-2.2.3.tgz"
   "version" "2.2.3"
+
+"jsonc-parser@^3.0.0":
+  "integrity" "sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w=="
+  "resolved" "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.2.0.tgz"
+  "version" "3.2.0"
 
 "jsonc-parser@2.3.0":
   "integrity" "sha512-b0EBt8SWFNnixVdvoR2ZtEGa9ZqLhbJnOjezn+WP+8kspFm+PFYDN8Z4Bc7pRlDjvuVcADSUkroIuTWWn/YiIA=="
@@ -10871,6 +10975,15 @@
   dependencies:
     "is-wsl" "^1.1.0"
 
+"open@^8.0.0":
+  "integrity" "sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q=="
+  "resolved" "https://registry.npmjs.org/open/-/open-8.4.0.tgz"
+  "version" "8.4.0"
+  dependencies:
+    "define-lazy-prop" "^2.0.0"
+    "is-docker" "^2.1.1"
+    "is-wsl" "^2.2.0"
+
 "open@^8.0.9", "open@8.4.0":
   "integrity" "sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q=="
   "resolved" "https://registry.npmjs.org/open/-/open-8.4.0.tgz"
@@ -10936,7 +11049,7 @@
     "strip-ansi" "^5.2.0"
     "wcwidth" "^1.0.1"
 
-"ora@^5.4.1", "ora@5.4.1":
+"ora@^5.3.0", "ora@^5.4.1", "ora@5.4.1":
   "integrity" "sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ=="
   "resolved" "https://registry.npmjs.org/ora/-/ora-5.4.1.tgz"
   "version" "5.4.1"
@@ -13015,7 +13128,14 @@
   dependencies:
     "aproba" "^1.1.1"
 
-"rxjs@^5.5.0 || ^6.5.0", "rxjs@^6.0.0", "rxjs@^6.4.0", "rxjs@^6.5.3", "rxjs@^6.5.3 || ^7.4.0", "rxjs@>=6.2.0", "rxjs@~6.6.7", "rxjs@6.6.7":
+"rxfire@^6.0.0":
+  "integrity" "sha512-77nkyffHh7jgfi1YA/N9RI+kWxYpgKk6GRML1lyersvaqbJt4hkvWwk1rWib9Rb5Lr5mT+Ha45lu7nM79sJCZA=="
+  "resolved" "https://registry.npmjs.org/rxfire/-/rxfire-6.0.3.tgz"
+  "version" "6.0.3"
+  dependencies:
+    "tslib" "^1.9.0 || ~2.1.0"
+
+"rxjs@^5.5.0 || ^6.5.0", "rxjs@^6.0.0", "rxjs@^6.0.0 || ^7.0.0", "rxjs@^6.4.0", "rxjs@^6.5.3", "rxjs@^6.5.3 || ^7.4.0", "rxjs@^6.6.2", "rxjs@>=6.2.0", "rxjs@~6.6.0 || ^7.0.0", "rxjs@~6.6.7", "rxjs@6.6.7":
   "integrity" "sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz"
   "version" "6.6.7"
@@ -13023,6 +13143,13 @@
     "tslib" "^1.9.0"
 
 "rxjs@^7.2.0":
+  "integrity" "sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg=="
+  "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-7.8.0.tgz"
+  "version" "7.8.0"
+  dependencies:
+    "tslib" "^2.1.0"
+
+"rxjs@^7.5.5":
   "integrity" "sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-7.8.0.tgz"
   "version" "7.8.0"
@@ -13277,6 +13404,13 @@
     "lru-cache" "^6.0.0"
 
 "semver@^7.1.1":
+  "integrity" "sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A=="
+  "resolved" "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz"
+  "version" "7.3.8"
+  dependencies:
+    "lru-cache" "^6.0.0"
+
+"semver@^7.1.3":
   "integrity" "sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A=="
   "resolved" "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz"
   "version" "7.3.8"
@@ -14647,6 +14781,11 @@
   "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
+
+"tslib@^1.9.0 || ~2.1.0":
+  "integrity" "sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.1.0.tgz"
+  "version" "2.1.0"
 
 "tslib@^1.9.3":
   "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
