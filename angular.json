@@ -14,13 +14,6 @@
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
-//          "allowedCommonJsDependencies": [ /* https://angular.io/guide/build#configuring-commonjs-dependencies */
-//            "semver",
-//            "firebase",
-//            "firebase/app",
-//            "@firebase/auth",
-//            "@firebase/database",
-//          ],
           "options": {
             "customWebpackConfig": {
               "path": "./custom-webpack.config.js"
@@ -50,12 +43,6 @@
               "src/manifest.json"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
-              "./node_modules/primeng/resources/themes/md-dark-indigo/theme.css",
-              "./node_modules/primeng/resources/primeng.min.css",
-              "./node_modules/primeflex/primeflex.css",
-              "./node_modules/primeicons/primeicons.css",
-              "./node_modules/quill/dist/quill.snow.css",
               {
                 "input": "src/theme/variables.scss"
               },
@@ -64,6 +51,7 @@
               }
             ],
             "scripts": []
+            //            "es5BrowserSupport": true
           },
           "configurations": {
             "production": {
@@ -132,9 +120,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/purple-green.css"
-            ],
+            "styles": [],
             "scripts": [],
             "assets": [
               {
@@ -159,13 +145,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "ionic-cordova-build": {
@@ -214,17 +195,14 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/angular-toolkit",
-    "analytics": false
+    "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
