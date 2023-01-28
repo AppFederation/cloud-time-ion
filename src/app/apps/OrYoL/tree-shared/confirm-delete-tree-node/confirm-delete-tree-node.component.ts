@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+// import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 
 @Component({
@@ -12,14 +12,14 @@ export class ConfirmDeleteTreeNodeComponent implements OnInit {
   treeNode!: OryTreeNode
 
   constructor(
-    public activeModal: NgbActiveModal,
+    // public activeModal: NgbActiveModal,
   ) { }
 
   ngOnInit() {
   }
 
   deleteNode() {
-    this.activeModal.close('Ok click')
+    // this.activeModal.close('Ok click')
     console.log('confirmed delete node itemId ' + this.treeNode.itemId)
     this.treeNode.deleteWithoutConfirmation()
   }

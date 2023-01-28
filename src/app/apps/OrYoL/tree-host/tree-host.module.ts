@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router'
 import { SearchModule } from '../search/search.module'
 import {TreeSharedModule} from '../tree-shared/tree-shared.module'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
-import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
+// import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
 import {IonicModule} from '@ionic/angular'
 
 /* Module used to embed a chosen implementation of tree (nested or primeng) and wire together */
@@ -31,7 +31,7 @@ import {IonicModule} from '@ionic/angular'
         TreeSharedModule,
         OryolSharedModule,
         OdmModule,
-        NgbPopoverModule,
+        // NgbPopoverModule,
         IonicModule,
     ],
   declarations: [

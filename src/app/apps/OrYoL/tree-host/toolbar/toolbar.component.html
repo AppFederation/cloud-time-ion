@@ -16,14 +16,21 @@
   <!--End: {{treeModel.endTime()}}-->
 
   <a
-    (window:keydown.meta.g)="searchPopOverTrigger.open(); $event.preventDefault()"
-    (window:keydown.control.g)="searchPopOverTrigger.open(); $event.preventDefault()"
   >
-    <fa-icon #searchPopOverTrigger="ngbPopover" [ngbPopover]="searchPopupContent"
-      icon="search" class="actionable"></fa-icon> <!-- [transform]="{size: 30} -->
+    <!--
+      (window:keydown.meta.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+      (window:keydown.control.g)="searchPopOverTrigger.open(); $event.preventDefault()"
+    -->
+    <fa-icon
+      icon="search" class="actionable"
+    >
+      <!-- #searchPopOverTrigger="ngbPopover" -->
+      <!--      [ngbPopover]="searchPopupContent"-->
+    </fa-icon> <!-- [transform]="{size: 30} -->
   </a>
 
-  <ng-template #searchPopupContent>
+  <ng-template>
+    <!-- #searchPopupContent -->
     <app-search
     ></app-search>
   </ng-template>

@@ -21,9 +21,9 @@ import { DebugService } from '../../core/debug.service'
 
 import 'hammerjs';
 import { debugLog } from '../../utils/log'
-import {
-  NgbModal,
-} from '@ng-bootstrap/ng-bootstrap'
+// import {
+//   NgbModal,
+// } from '@ng-bootstrap/ng-bootstrap'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import {
   Cells,
@@ -106,7 +106,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     public timeTrackingService: TimeTrackingService,
     private changeDetectorRef: ChangeDetectorRef,
     public debugService: DebugService,
-    private modalService: NgbModal,
+    // private modalService: NgbModal,
     public configService: ConfigService,
     public popoverController: PopoverController,
   ) {
@@ -349,9 +349,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   private openDeleteDialog() {
     // TODO: move to our own modal service - single line with passing treeNode
-    const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
-    const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
-    component.treeNode = this.treeNode;
+    // const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
+    // const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
+    // component.treeNode = this.treeNode;
   }
 
   onArrowLeft() {

@@ -20,7 +20,7 @@ import { TimeModule } from '../AppFedSharedEmu/time/time.module';
 import { NodeClassPickerComponent } from './tree-node-menu/node-class-picker/node-class-picker.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
-import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
+// import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap'
 import {RatingCellComponent} from './cells/rating-cell/rating-cell.component'
 import {IonicModule} from '@ionic/angular'
 
@@ -53,7 +53,7 @@ import {IonicModule} from '@ionic/angular'
         TimeModule,
         SharedModule,
         FontAwesomeModule,
-        NgbPopoverModule,
+        // NgbPopoverModule,
         IonicModule,
     ],
   exports: [

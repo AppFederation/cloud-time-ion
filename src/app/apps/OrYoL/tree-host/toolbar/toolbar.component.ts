@@ -6,7 +6,7 @@ import {
 import { DebugService } from '../../core/debug.service'
 import { TreeHostComponent } from '../tree-host/tree-host.component'
 import { ConfigService } from '../../core/config.service'
-import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
+// import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 import {PopoverController} from '@ionic/angular'
 import {ToolbarPopoverComponent} from './toolbar-popover/toolbar-popover.component'
 import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'

@@ -7,10 +7,10 @@ import { OryTreeNode } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { DialogService } from '../../core/dialog.service'
 import { DbTreeService } from '../../tree-model/db-tree-service'
-import {
-  NgbModal,
-  NgbPopover,
-} from '@ng-bootstrap/ng-bootstrap'
+// import {
+//   NgbModal,
+//   NgbPopover,
+// } from '@ng-bootstrap/ng-bootstrap'
 import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/confirm-delete-tree-node.component'
 import { NodeContentComponent } from '../node-content/node-content.component'
 import { Router } from '@angular/router'
@@ -35,7 +35,7 @@ export class TreeNodeMenuComponent implements OnInit {
 
   constructor(
     public dialogService: DialogService,
-    private modalService: NgbModal,
+    // private modalService: NgbModal,
     public dbService: DbTreeService,
     public router: Router,
     public clipboardService: ClipboardService,
@@ -52,9 +52,9 @@ export class TreeNodeMenuComponent implements OnInit {
     //   // TODO: delete node inclusion and the node itself
     //   this.dbService.delete(this.treeNode.itemId)
     // })
-    const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
-    const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
-    component.treeNode = this.treeNode;
+    // const modalRef = this.modalService.open(ConfirmDeleteTreeNodeComponent);
+    // const component = modalRef.componentInstance as ConfirmDeleteTreeNodeComponent
+    // component.treeNode = this.treeNode;
   }
 
   async addChild() {

@@ -319,14 +319,14 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^10.0.0", "@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^12.2.17", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=6.0.0 <9 || ^9.0.0-0", "@angular/common@>=9.0.0", "@angular/common@12.2.17":
+"@angular/common@^10.0.0 || ^11.0.0-0", "@angular/common@^12.2.17", "@angular/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/common@>=2.0.0", "@angular/common@>=5.0.0", "@angular/common@>=6.0.0 <9 || ^9.0.0-0", "@angular/common@>=9.0.0", "@angular/common@12.2.17":
   "integrity" "sha512-/Rc83mzlL6YZScYTzg+Ng2hiCSf3jUVHAfQ8cyLOIMj/y8863Q+DMLVWW+ttvHwCjEFY44pC8IPyBl5FmSJYHg=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-12.2.17.tgz"
   "version" "12.2.17"
   dependencies:
     "tslib" "^2.2.0"
 
-"@angular/compiler-cli@^12.0.0", "@angular/compiler-cli@~12.2.17", "@angular/compiler-cli@10.2.5":
+"@angular/compiler-cli@^12.0.0", "@angular/compiler-cli@~12.2.17", "@angular/compiler-cli@12.2.17":
   "integrity" "sha512-gJJlnDr8Fhs6z0hH0Y/5GC1YAgHY+sRh2BUrbDu+nIUubyyOVYSyQdL1jwEfCSIZl1GSg+4b4thU7pp7HtmX8g=="
   "resolved" "https://registry.npmjs.org/@angular/compiler-cli/-/compiler-cli-12.2.17.tgz"
   "version" "12.2.17"
@@ -364,7 +364,7 @@
     "sourcemap-codec" "^1.4.8"
     "yargs" "^16.1.1"
 
-"@angular/compiler@^12.2.17", "@angular/compiler@10.2.5", "@angular/compiler@12.2.17":
+"@angular/compiler@^12.2.17", "@angular/compiler@12.2.17":
   "integrity" "sha512-dxM1CxzvEJPk6ShJngkW5j5BejBloxQNi+fJi+F8P/GN/Rj7vJUf0JxL+TUt1+Iv575V4NidJDKKikk6K485CA=="
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-12.2.17.tgz"
   "version" "12.2.17"
@@ -398,7 +398,7 @@
   "resolved" "https://registry.npmjs.org/@angular/fire/-/fire-5.4.2.tgz"
   "version" "5.4.2"
 
-"@angular/forms@^10.0.0", "@angular/forms@^10.0.0 || ^11.0.0-0", "@angular/forms@^12.2.17", "@angular/forms@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/forms@>=5.0.0", "@angular/forms@>=8.2.7", "@angular/forms@>=9.0.0":
+"@angular/forms@^10.0.0 || ^11.0.0-0", "@angular/forms@^12.2.17", "@angular/forms@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@angular/forms@>=5.0.0", "@angular/forms@>=8.2.7", "@angular/forms@>=9.0.0":
   "integrity" "sha512-iOIAz5OR6yLWuNTSOSDqAffQ0FU71yw1QsOmltU/hBsO6H6smsIKVe8VlFa4SnBSAyVZXf/OhDRJ8gOqQT09mw=="
   "resolved" "https://registry.npmjs.org/@angular/forms/-/forms-12.2.17.tgz"
   "version" "12.2.17"
@@ -410,14 +410,14 @@
   "resolved" "https://registry.npmjs.org/@angular/language-service/-/language-service-12.2.17.tgz"
   "version" "12.2.17"
 
-"@angular/localize@^10.0.0", "@angular/localize@^12.0.0":
-  "integrity" "sha512-YgtVQDJLYAuSBMB4a8UBMbO+5g4IEkHszc6vU8P/G/hqWF6hj04uPqNoYqajVeoTTwPrM2If30/pNh15HjRG2A=="
-  "resolved" "https://registry.npmjs.org/@angular/localize/-/localize-10.2.5.tgz"
-  "version" "10.2.5"
+"@angular/localize@^12.0.0":
+  "integrity" "sha512-F87zH7TRLpjSlVUA2sAMkDHkF0ikcDVXciMlwlahcjX+ShL1q+iwddT0A4MOPyYTpXqfKAXniIvEK+C0OFdoAA=="
+  "resolved" "https://registry.npmjs.org/@angular/localize/-/localize-12.2.17.tgz"
+  "version" "12.2.17"
   dependencies:
     "@babel/core" "7.8.3"
-    "glob" "7.1.2"
-    "yargs" "^16.1.1"
+    "glob" "7.1.7"
+    "yargs" "^17.0.0"
 
 "@angular/material@^10.2.3":
   "integrity" "sha512-uk6JkRrKHaM9VFMzX7pWC83YNLVgXPB3D8U1yjSOafCdWwrRZgUHGr8MPlSILCr3o2nxgg5SsKdWcWwHuXXUZA=="
@@ -2088,13 +2088,6 @@
   "integrity" "sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg=="
   "resolved" "https://registry.npmjs.org/@jsdevtools/ono/-/ono-7.1.3.tgz"
   "version" "7.1.3"
-
-"@ng-bootstrap/ng-bootstrap@^8.0.0":
-  "integrity" "sha512-EdxTwOPOtlvfnwrglPniulmzdnXdXH3lTGaGAY1HrYRvdtGg6wicRvl+BvwVE/3Qik5NPkOWMVghUHpv3evIYg=="
-  "resolved" "https://registry.npmjs.org/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-8.0.4.tgz"
-  "version" "8.0.4"
-  dependencies:
-    "tslib" "^2.0.0"
 
 "@ngrx/effects@^10.1.2":
   "integrity" "sha512-6pX6FEzLlqdbtFVMbCvscsaL6QC/L95e72JKj76Xz+8V77UTlpVsxWyMo7YU9pM4EXNpBGmOpMs2xKjfBfK05Q=="
@@ -7342,18 +7335,6 @@
     "inherits" "2"
     "minimatch" "^5.0.1"
     "once" "^1.3.0"
-
-"glob@7.1.2":
-  "integrity" "sha512-MJTUg1kjuLeQCJ+ccE4Vpa6kKVXkPYJ2mOCQyUuKLcLQsdrMCpBPUi8qVE6+YuaJkozeA9NusTAw3hLr8Xe5EQ=="
-  "resolved" "https://registry.npmjs.org/glob/-/glob-7.1.2.tgz"
-  "version" "7.1.2"
-  dependencies:
-    "fs.realpath" "^1.0.0"
-    "inflight" "^1.0.4"
-    "inherits" "2"
-    "minimatch" "^3.0.4"
-    "once" "^1.3.0"
-    "path-is-absolute" "^1.0.0"
 
 "glob@7.1.6":
   "integrity" "sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA=="
@@ -13108,7 +13089,7 @@
   dependencies:
     "aproba" "^1.1.1"
 
-"rxjs@^5.5.0 || ^6.5.0", "rxjs@^6.0.0", "rxjs@^6.4.0", "rxjs@^6.5.3", "rxjs@^6.5.3 || ^7.0.0", "rxjs@^6.5.5", "rxjs@>=6.2.0", "rxjs@~6.6.7", "rxjs@6.6.7":
+"rxjs@^5.5.0 || ^6.5.0", "rxjs@^6.0.0", "rxjs@^6.4.0", "rxjs@^6.5.3", "rxjs@^6.5.3 || ^7.0.0", "rxjs@>=6.2.0", "rxjs@~6.6.7", "rxjs@6.6.7":
   "integrity" "sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz"
   "version" "6.6.7"

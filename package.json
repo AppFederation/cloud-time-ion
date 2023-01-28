@@ -38,7 +38,6 @@
     "@ionic-native/status-bar": "^5.27.0",
     "@ionic/angular": "^5.3.4",
     "@ionic/pro": "2.0.4",
-    "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@ngrx/effects": "^10.1.2",
     "@ngrx/store": "^10.1.2",
     "@ngrx/store-devtools": "^10.1.2",
