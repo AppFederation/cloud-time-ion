@@ -15,31 +15,27 @@ import {TimeIonicModule} from "../libs/AppFedSharedIonic/time/time-ionic.module"
 import {OdmModule} from '../libs/AppFedShared/odm/odm.module'
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    MomentModule,
-    RouterModule.forChild([{path: '', component: TimersPageComponent}]),
-    SharedModule,
-    IonicModule,
-    TimeModule,
-    TimeIonicModule,
-    OdmModule,
-  ],
-  declarations: [
-    TimersPageComponent,
-    TimerItemComponent,
-    TimersListComponent,
-    TimerEndedComponent,
-    TimerDetailsComponent,
-    TimeLeftOrDurationComponent,
-  ],
-  entryComponents: [
-    TimerDetailsComponent,
-    TimerEndedComponent,
-  ],
-  exports: [
-    TimerItemComponent,
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        MomentModule,
+        RouterModule.forChild([{ path: '', component: TimersPageComponent }]),
+        SharedModule,
+        IonicModule,
+        TimeModule,
+        TimeIonicModule,
+        OdmModule,
+    ],
+    declarations: [
+        TimersPageComponent,
+        TimerItemComponent,
+        TimersListComponent,
+        TimerEndedComponent,
+        TimerDetailsComponent,
+        TimeLeftOrDurationComponent,
+    ],
+    exports: [
+        TimerItemComponent,
+    ]
 })
 export class TimersPageModule {}

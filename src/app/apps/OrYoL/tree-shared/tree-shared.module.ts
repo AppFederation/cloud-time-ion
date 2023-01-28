@@ -56,14 +56,11 @@ import {IonicModule} from '@ionic/angular'
         // NgbPopoverModule,
         IonicModule,
     ],
-  exports: [
-    NodeContentComponent,
-    ExampleCellComponent,
-    NodeClassIconComponent,
-    NumericCellComponent,
-  ],
-  entryComponents: [
-    ConfirmDeleteTreeNodeComponent,
-  ],
+    exports: [
+        NodeContentComponent,
+        ExampleCellComponent,
+        NodeClassIconComponent,
+        NumericCellComponent,
+    ]
 })
 export class TreeSharedModule { }

@@ -13,16 +13,13 @@ import {FeatureConfigComponent} from '../feature-config/feature-config.component
         ThemeConfigComponent,
         FeatureConfigComponent,
     ],
-  exports: [
-    SyncStatusIconComponent,
-    FeatureConfigComponent,
-  ],
-  imports: [
-    CommonModule,
-    IonicModule,
-  ],
-  entryComponents: [
-    SyncPopoverComponent,
-  ]
+    exports: [
+        SyncStatusIconComponent,
+        FeatureConfigComponent,
+    ],
+    imports: [
+        CommonModule,
+        IonicModule,
+    ]
 })
 export class OdmModule { }

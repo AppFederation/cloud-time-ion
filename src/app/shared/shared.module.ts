@@ -37,24 +37,23 @@ const exportedDeclarations = [
 ]
 
 @NgModule({
-    entryComponents: [],
-  imports: [
-    CommonModule,
-    IonicModule,
-    ...imports,
-    EditorModule,
-    RouterModule,
-  ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        ...imports,
+        EditorModule,
+        RouterModule,
+    ],
     exports: [
         ...imports,
         ...exportedDeclarations,
         BreadcrumbsComponent,
     ],
-  providers: [],
+    providers: [],
     declarations: [
         ...exportedDeclarations,
         BreadcrumbsComponent,
-    ],
+    ]
 })
 export class SharedModule {
 }

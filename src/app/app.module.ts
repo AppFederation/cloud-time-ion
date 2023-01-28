@@ -38,42 +38,40 @@ export class HammerConfig extends HammerGestureConfig {
 }
 
 @NgModule({
-
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
-    SharedModule,
-    CoreModule,
-    ShoppingListsModule, /* HACK as a kind of core, for shopping list service*/
-    AngularFireStorageModule, BrowserAnimationsModule,
-    HammerModule,
-    DbFirestoreModule,
-    HttpClientModule /* Only for primeng tree demo */,
-    StoreModule.forRoot({count: counterReducer}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 125, // Retains last 25 states
-      // logOnly: environment.production, // Restrict extension to log-only mode
-      // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-    }),
-    EffectsModule.forRoot([QuizEffects]),
-  ],
-  exports: [
-    CoreModule,
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    {
-      provide: HAMMER_GESTURE_CONFIG,
-      useClass: HammerConfig
-    }
-    // { provide: RouteReuseStrategy, useClass: }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        SharedModule,
+        CoreModule,
+        ShoppingListsModule,
+        AngularFireStorageModule, BrowserAnimationsModule,
+        HammerModule,
+        DbFirestoreModule,
+        HttpClientModule /* Only for primeng tree demo */,
+        StoreModule.forRoot({ count: counterReducer }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 125, // Retains last 25 states
+            // logOnly: environment.production, // Restrict extension to log-only mode
+            // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+        }),
+        EffectsModule.forRoot([QuizEffects]),
+    ],
+    exports: [
+        CoreModule,
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        {
+            provide: HAMMER_GESTURE_CONFIG,
+            useClass: HammerConfig
+        }
+        // { provide: RouteReuseStrategy, useClass: }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
