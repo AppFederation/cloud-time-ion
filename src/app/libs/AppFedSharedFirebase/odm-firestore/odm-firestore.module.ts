@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AngularFireModule} from "@angular/fire";
+import {AngularFireModule} from "@angular/fire/compat";
 import {firebaseConfig} from "../../../firebase.config";
 import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";

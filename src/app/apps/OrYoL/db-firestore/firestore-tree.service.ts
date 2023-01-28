@@ -24,7 +24,7 @@ import DocumentSnapshot = firestore.DocumentSnapshot
 import * as firebase1 from 'firebase/app'
 import 'firebase/firestore';
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {AngularFirestore} from '@angular/fire/firestore'
+import {AngularFirestore} from '@angular/fire/compat/firestore'
 // Required for side-effects
 // require('firebase/firestore');
 

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {LearnItem, LearnItemId} from '../../models/LearnItem'
-import {AngularFirestore} from '@angular/fire/firestore'
+import {AngularFirestore} from '@angular/fire/compat/firestore'
 import {LearnItem$} from '../../models/LearnItem$'
 
 @Component({

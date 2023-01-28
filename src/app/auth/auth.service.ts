@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ignorePromise } from '../libs/AppFedShared/utils/promiseUtils';
 import { Router } from '@angular/router';
 
@@ -53,15 +53,15 @@ export class AuthService {
   signUpWithEmailAndPassword(email: string, password: string) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
-      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers') /!* TODO why comma expression *!/)*/))
-      .catch(error => console.log('Error on creating account', error));
+      .then((response: any) => (this.login()/*, this.Router.navigateByUrl('/timers') /!* TODO why comma expression *!/)*/))
+      .catch((error: any) => console.log('Error on creating account', error));
   }
 
   logInViaEmailAndPassword(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then(response => (this.login()/*, this.Router.navigateByUrl('/timers'))*/))
-      .catch(error => console.log('Error logging in', error));
+      .then((response: any) => (this.login()/*, this.Router.navigateByUrl('/timers'))*/))
+      .catch((error: any) => console.log('Error logging in', error));
   }
 
   logInViaGoogle() {
@@ -76,10 +76,10 @@ export class AuthService {
       const authProvider = new firebase.auth.GoogleAuthProvider();
       return this.afAuth
         .signInWithPopup(authProvider)
-        .then(response => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
+        .then((response: any) => (this.login()/*, this.Router.navigateByUrl('/timers')*/)
           /* TODO: emit authUser$ */
         )
-        .catch(error => errorAlert('Error logging in via Google ' + error));
+        .catch((error: any) => errorAlert('Error logging in via Google ' + error));
     }
   }
 }

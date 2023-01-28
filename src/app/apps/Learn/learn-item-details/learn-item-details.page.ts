@@ -2,7 +2,7 @@ import {Component, Injector, OnInit} from '@angular/core';
 import {sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router'
 import {LearnDoService} from '../core/learn-do.service'
-import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore'
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/compat/firestore'
 import {AlertController} from '@ionic/angular'
 import {LearnItem, LearnItemId} from '../models/LearnItem'
 import {ignorePromise} from '../../../libs/AppFedShared/utils/promiseUtils'
