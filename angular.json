@@ -14,13 +14,13 @@
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
-          "allowedCommonJsDependencies": [ /* https://angular.io/guide/build#configuring-commonjs-dependencies */
-            "semver",
-            "firebase",
-            "firebase/app",
-            "@firebase/auth",
-            "@firebase/database",
-          ],
+//          "allowedCommonJsDependencies": [ /* https://angular.io/guide/build#configuring-commonjs-dependencies */
+//            "semver",
+//            "firebase",
+//            "firebase/app",
+//            "@firebase/auth",
+//            "@firebase/database",
+//          ],
           "options": {
             "customWebpackConfig": {
               "path": "./custom-webpack.config.js"
