@@ -48,7 +48,7 @@ export class FirestoreOdmBackend extends OdmBackend {
           this.backendReady$.nextWithCache(true)
         }
       })
-    }).catch((caught) => {
+    }).catch((caught: any) => {
       errorAlert('Firestore enablePersistence error', caught)
     })
   }
