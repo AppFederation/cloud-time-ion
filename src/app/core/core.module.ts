@@ -4,7 +4,7 @@ import {OdmFirestoreModule} from "../libs/AppFedSharedFirebase/odm-firestore/odm
 import {TimerNotificationsService} from "./timer-notifications.service";
 import {TimersService} from "./timers.service";
 import {NotificationsService} from "../libs/AppFedSharedIonic/notifications/notifications.service";
-import {AngularFireAuthModule} from "@angular/fire/auth";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {NotificationsModule} from "../libs/AppFedSharedIonic/notifications/notifications.module";
 import {TimersPageModule} from "../timers/timers.module";
 

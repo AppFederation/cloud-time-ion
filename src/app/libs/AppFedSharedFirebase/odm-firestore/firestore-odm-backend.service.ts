@@ -2,7 +2,7 @@ import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {FirestoreOdmCollectionBackend} from "./FirestoreOdmCollectionBackend";
 import {Injectable, Injector} from "@angular/core";
 import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
-import {AngularFirestore} from "@angular/fire/firestore";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 
 /**
