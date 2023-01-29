@@ -266,14 +266,14 @@
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/cdk-experimental@^10.1.4":
-  "integrity" "sha512-yqTd0o7XZyyErXAvmJeQrz+1IbJ0cU8BGahpKwzoeAWI1OPsBn67WqI9i8d60U00iKwqXp+IPHUDhCLRM05xHw=="
-  "resolved" "https://registry.npmjs.org/@angular/cdk-experimental/-/cdk-experimental-10.2.7.tgz"
-  "version" "10.2.7"
+"@angular/cdk-experimental@^13.3.9":
+  "integrity" "sha512-XRf0LtP1FjQ6xJOUJ4xBE4InCqiukZCoCrDBVEAlH4Wn7XPbbs+2lVxpfRyhjuZEuSWC2+SOFz3E5QS2ou0FWA=="
+  "resolved" "https://registry.npmjs.org/@angular/cdk-experimental/-/cdk-experimental-13.3.9.tgz"
+  "version" "13.3.9"
   dependencies:
-    "tslib" "^2.0.0"
+    "tslib" "^2.3.0"
 
-"@angular/cdk@^13.3.9", "@angular/cdk@10.2.7":
+"@angular/cdk@^13.3.9", "@angular/cdk@10.2.7", "@angular/cdk@13.3.9":
   "integrity" "sha512-XCuCbeuxWFyo3EYrgEYx7eHzwl76vaWcxtWXl00ka8d+WAOtMQ6Tf1D98ybYT5uwF9889fFpXAPw98mVnlo3MA=="
   "resolved" "https://registry.npmjs.org/@angular/cdk/-/cdk-13.3.9.tgz"
   "version" "13.3.9"
