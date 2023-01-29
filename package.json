@@ -44,6 +44,7 @@
     "@schematics/angular": "^10.1.4",
     "@tinymce/tinymce-angular": "^4.1.0",
     "@types/uuid": "^8.3.4",
+    "@vercel/analytics": "^0.1.8",
     "a": "2.1.2",
     "bootstrap": "^4.5.0",
     "cordova-android": "8.0.0",

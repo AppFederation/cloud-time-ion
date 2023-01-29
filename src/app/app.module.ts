@@ -23,8 +23,6 @@ import {QuizEffects} from './apps/Learn/core/quiz/quiz.effects'
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 import {FaIconLibrary} from '@fortawesome/angular-fontawesome'
 
-import * as packageJson from '../../package.json';
-
 // custom configuration Hammerjs
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -81,14 +79,6 @@ export class AppModule {
      * https://github.com/FortAwesome/angular-fontawesome/blob/master/docs/upgrading/0.5.0-0.6.0.md */
     faIconLibrary: FaIconLibrary,
   ) {
-    console.log(`
-      last commit: commit 35e028e72e74dfab8033f53f895b48c98d76768f (HEAD -> develop, origin/develop, origin/HEAD)
-      Author: Karol Depka <karol-depka@users.noreply.github.com>
-      Date:   Sat Jan 28 08:28:53 2023 +0100
-      ).catch((caught: any)`
-    )
-
-    console.log(`package.json - FIXME potential security hole - exposing package.json`, packageJson) // FIXME potential security hole - exposing package.json
     faIconLibrary.addIconPacks(fas);
   }
 
