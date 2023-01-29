@@ -160,7 +160,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     this.children = this.children.filter(node => node !== nodeToRemove)
   }
 
-  get isRoot() {
+  get isRoot(): boolean {
     return this.treeModel.root === this;
   }
 
