@@ -13,6 +13,8 @@ import { inject } from '@vercel/analytics';
 
 inject();
 
+console.log('after vercel inject')
+
 
 console.log(`
       last commit: commit 35e028e72e74dfab8033f53f895b48c98d76768f (HEAD -> develop, origin/develop, origin/HEAD)

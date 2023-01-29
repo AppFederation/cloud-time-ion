@@ -613,7 +613,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return new Date(this.startTime.getTime() + this.valueLeftSum(column) * 60 * 1000)
   }
 
-  highlight = new class Highlight {
+  highlight: any /* FIXME */ = new class Highlight {
     constructor(public treeNode: OryTreeNode) {}
 
     isChildOfFocusedNode() {
