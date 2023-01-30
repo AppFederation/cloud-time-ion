@@ -39,6 +39,15 @@ export class HammerConfig extends HammerGestureConfig {
   }
 }
 
+const swOpts = {
+  enabled: environment.production,
+  // Register the ServiceWorker as soon as the application is stable
+  // or after 30 seconds (whichever comes first).
+  registrationStrategy: 'registerWhenStable:30000'
+}
+
+console.log(`service worker swOpts`, swOpts)
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -59,12 +68,7 @@ export class HammerConfig extends HammerGestureConfig {
             // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
         }),
         EffectsModule.forRoot([QuizEffects]),
-        ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: environment.production,
-          // Register the ServiceWorker as soon as the application is stable
-          // or after 30 seconds (whichever comes first).
-          registrationStrategy: 'registerWhenStable:30000'
-        }),
+        ServiceWorkerModule.register('ngsw-worker.js', swOpts),
     ],
     exports: [
         CoreModule,
