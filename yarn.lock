@@ -424,6 +424,13 @@
   dependencies:
     "tslib" "^2.3.0"
 
+"@angular/service-worker@^13.0.0 || ^13.3.0-rc.0", "@angular/service-worker@^13.3.12":
+  "integrity" "sha512-kZAoUkcTgw37eAyxE6y/XFxzn/94hD1oIT7LQtwe7eDxN/loMeVF7eTPCy2y8u662CMDe9FJ3rIMTasinNyIHA=="
+  "resolved" "https://registry.npmjs.org/@angular/service-worker/-/service-worker-13.3.12.tgz"
+  "version" "13.3.12"
+  dependencies:
+    "tslib" "^2.3.0"
+
 "@apidevtools/json-schema-ref-parser@^9.0.3":
   "integrity" "sha512-GBD2Le9w2+lVFoc4vswGI/TjkNIZSVp7+9xPf+X3uidBfWnAeUWmquteSyt0+VCrhNMWj/FTABISQrD3Z/YA+w=="
   "resolved" "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-9.0.9.tgz"

@@ -11,6 +11,7 @@ import {FeatureService} from '../../../../libs/AppFedShared/feature.service'
 import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
 
+/* TODO rename to  list-item */
 @Component({
   selector: 'app-actionable-item',
   templateUrl: './actionable-item.component.html',
