@@ -1,21 +1,16 @@
-// import * as firebase from 'firebase'
-import { firestore } from 'firebase'
-import DocumentReference = firestore.DocumentReference
-import DocumentSnapshot = firestore.DocumentSnapshot
 
 import { FirestoreItemsLoader } from './firestore-items-loader'
-import QuerySnapshot = firestore.QuerySnapshot
-import DocumentChange = firestore.DocumentChange
 
 import {
   debugLog,
   FIXME,
 } from '../utils/log'
 import { PermissionsManager } from '../tree-model/PermissionsManager'
+import {CollectionReference, DocumentChange, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot} from '@angular/fire/compat/firestore'
 
 export class ItemValueAndCallbacks {
   constructor(
-    public documentSnapshot: DocumentSnapshot | null = null,
+    public documentSnapshot: DocumentSnapshot<any> | null = null,
     public callbacks: any[] = []
   ) {}
 }
@@ -34,14 +29,14 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
 
   startQuery(
     /* this will have to be filtered to only what the user has read permission for */
-    itemsCollection: firebase.firestore.CollectionReference
+    itemsCollection: CollectionReference
   ) {
     itemsCollection
       // .where('perms.read.' + this.permissionsManager.userId, '>', new Date(0))
-      .onSnapshot((snapshot: QuerySnapshot) =>
+      .onSnapshot((snapshot: QuerySnapshot<any>) =>
     {
-      snapshot.docChanges().forEach((change: DocumentChange) => {
-        const docSnapshot: firestore.QueryDocumentSnapshot = change.doc
+      snapshot.docChanges().forEach((change: DocumentChange<any>) => {
+        const docSnapshot: QueryDocumentSnapshot<any> = change.doc
         const docId = change.doc.id
         const docData = change.doc.data()
         const owner = docData.owner
@@ -91,7 +86,7 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
     }
   }
 
-  private putItemAndFireCallbacks(documentSnapshot: DocumentSnapshot) {
+  private putItemAndFireCallbacks(documentSnapshot: DocumentSnapshot<any>) {
     debugLog('putItemAndFireCallbacks, id', documentSnapshot.id, 'size', this.mapItemIdToDescriptor.size)
     const id = documentSnapshot.id
     let entry = this.mapItemIdToDescriptor.get(id)

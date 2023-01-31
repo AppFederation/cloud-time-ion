@@ -17,14 +17,12 @@ import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'
 import { TimeStamper } from '../tree-model/TimeStamper'
 import firestore from 'firebase/compat'
-import DocumentReference = firestore.DocumentReference
-import DocumentSnapshot = firestore.DocumentSnapshot
 
 // const firebase1 = require('firebase');
 import * as firebase1 from 'firebase/app'
 import 'firebase/compat/firestore';
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {AngularFirestore} from '@angular/fire/compat/firestore'
+import {AngularFirestore, DocumentReference, DocumentSnapshot} from '@angular/fire/compat/firestore'
 // Required for side-effects
 // require('firebase/firestore');
 
@@ -33,6 +31,9 @@ import {AngularFirestore} from '@angular/fire/compat/firestore'
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {firebaseConfig} from '../../../firebase.config'
+import {Firestore} from '@angular/fire/firestore'
+import firebase from 'firebase/compat'
+import CollectionReference = firebase.firestore.CollectionReference
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -86,7 +87,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   pendingListeners = 0
 
-  db: firestore.Firestore = this.angularFirestore.firestore
+  db = this.angularFirestore.firestore
 
   private ITEMS_COLLECTION = FirestoreTreeService.dbPrefix + '_items'
   private ROOTS_COLLECTION = FirestoreTreeService.dbPrefix + '_roots'
@@ -139,7 +140,7 @@ export class FirestoreTreeService extends DbTreeService {
         debugLog('listener.onNodeAddedOrModified change includedItemDoc.id ' + nodeInclusionData.childNode.id, childrenChangesEvent)
         serviceThis.pendingListeners ++
         // ==== per-item callback:
-        serviceThis.dbItemsLoader.getItem$ByRef(nodeInclusionData.childNode, (includedItemDoc: DocumentSnapshot) => {
+        serviceThis.dbItemsLoader.getItem$ByRef(nodeInclusionData.childNode, (includedItemDoc: DocumentSnapshot<any>) => {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           // console.log('nodeInclusionId', nodeInclusionId)
@@ -200,7 +201,7 @@ export class FirestoreTreeService extends DbTreeService {
     })
   }
 
-  private itemsCollection(): firestore.CollectionReference {
+  private itemsCollection(): CollectionReference {
     return this.db.collection(this.ITEMS_COLLECTION)
   }
 

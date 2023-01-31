@@ -7,8 +7,8 @@ import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
 import {assertTruthy} from '../../AppFedShared/utils/assertUtils'
-import { firestore } from 'firebase';
-import Timestamp = firestore.Timestamp
+// import { firestore } from 'firebase';
+// import Timestamp = firestore.Timestamp
 
 
 export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TRaw> {

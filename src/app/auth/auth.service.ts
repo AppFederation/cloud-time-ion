@@ -4,11 +4,17 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ignorePromise } from '../libs/AppFedShared/utils/promiseUtils';
 import { Router } from '@angular/router';
 
-import * as firebase from 'firebase/app';
+// import * as firebase from 'firebase/app';
 import {errorAlert} from '../libs/AppFedShared/utils/log'
 import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-import {User} from 'firebase'
+// import {User} from 'firebase/compat'
 import {ChromeExtensionService} from '../apps/Learn/shared/utils/chrome-extension.service'
+import firebase from 'firebase/compat'
+import User = firebase.User
+import {nullish} from '../libs/AppFedShared/utils/type-utils'
+
+
+export type UserId = string
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +27,11 @@ export class AuthService {
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
+  }
+
+  /** this was required by stuff OrYoL AuthService */
+  get userId(): UserId | nullish {
+    return this.authUser$.lastVal?.uid
   }
 
   constructor(

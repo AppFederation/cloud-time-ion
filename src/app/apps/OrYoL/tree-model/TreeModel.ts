@@ -20,7 +20,6 @@ import {
   NodeOrderer,
   NodeOrderInfo,
 } from './node-orderer'
-import { AuthService } from '../core/auth.service'
 import { PermissionsManager } from './PermissionsManager'
 import {
   DbItem,
@@ -43,6 +42,7 @@ import {isEmpty, nullOrUndef, uuidv4} from '../../../libs/AppFedShared/utils/uti
 import {lastItemOrUndefined} from '../../../libs/AppFedShared/utils/arrayUtils'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {AuthService} from '../../../auth/auth.service'
 
 
 /**

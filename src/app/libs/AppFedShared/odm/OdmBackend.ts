@@ -4,11 +4,13 @@ import {OdmItem} from "./OdmItem";
 // import {CachedSubject} from "../utils/CachedSubject2";
 
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
-import Timestamp = firebase.firestore.Timestamp
+// import Timestamp = firebase.firestore.Timestamp
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
+import firebase from 'firebase/compat'
+import Timestamp = firebase.firestore.Timestamp
 
 export type OdmTimestamp = Timestamp
 

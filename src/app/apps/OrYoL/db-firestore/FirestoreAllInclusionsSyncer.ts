@@ -1,14 +1,7 @@
-// import * as firebase from 'firebase'
-import { firestore } from 'firebase'
-import DocumentReference = firestore.DocumentReference
-import DocumentSnapshot = firestore.DocumentSnapshot
-
-import DocumentChange = firestore.DocumentChange
 import {
   debugLog,
   FIXME,
 } from '../utils/log'
-import QuerySnapshot = firestore.QuerySnapshot
 import { NodeInclusion } from '../tree-model/TreeListener'
 import {
   FirestoreNodeInclusion,
@@ -22,6 +15,11 @@ import {
   Subject,
 } from 'rxjs'
 import { MultiMap } from '../utils/multi-map'
+import {Firestore} from '@angular/fire/firestore'
+import {CollectionReference, DocumentChange, DocumentReference, QuerySnapshot} from '@angular/fire/compat/firestore'
+import firebase from 'firebase/compat'
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot
+import "firebase/firestore";
 
 class InclusionsValueAndCallbacks {
   /* Used as initial value if someone subscribes */
@@ -38,23 +36,23 @@ export class FirestoreAllInclusionsSyncer {
   private INCLUSIONS_COLLECTION = this.dbPrefix + '_inclusions'
 
   constructor(
-    private db: firebase.firestore.Firestore,
+    private db: any,
     private dbPrefix: string,
   ) {
 
   }
 
-  private inclusionsCollection(): firebase.firestore.CollectionReference {
+  private inclusionsCollection(): CollectionReference {
     return this.db.collection(this.INCLUSIONS_COLLECTION)
   }
 
   startQuery() {
-    this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot) => {
+    this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot<any>) => {
       // TODO: check again regarding offline/metadata: https://firebase.google.com/docs/firestore/query-data/listen
       const mapParentIdToDocsModified = new MultiMap<string, DocumentSnapshot>()
       const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
       // NOTE: for now treating adding and modifying as same event (as in tree event add-or-modify)
-      snapshot.docChanges().forEach((change: DocumentChange) => {
+      snapshot.docChanges().forEach((change: DocumentChange<any>) => {
         const docSnapshot = change.doc
         const docData = docSnapshot.data() as FirestoreNodeInclusion
         debugLog('FirestoreAllInclusionsSyncer onSnapshot id', change.doc.id, 'DocumentChange', change)
@@ -82,12 +80,12 @@ export class FirestoreAllInclusionsSyncer {
   }
 
   getChildInclusionsForParentItem$(parentItemId: string) {
-    const inclusionsEntry = this.obtainInclusionsEntryForParentId(parentItemId)
+    const inclusionsEntry: InclusionsValueAndCallbacks = this.obtainInclusionsEntryForParentId(parentItemId)
     const newObs = new ReplaySubject<ChildrenChangesEvent>() /* HACK so that the subscriber gets what they need
      * instead I should investigate if it is possible to make a custom observable which emits something (initial value of inclusions map) to the new subscriber only while not emitting it to others.
      * Current impl. makes it so that, you should only subscribe once to a given observable returned (second subscriber will not get the initial value) */
     inclusionsEntry.observables.push(newObs)
-    newObs.next(new ChildrenChangesEvent(inclusionsEntry.mapByInclusionId, EMPTY_MAP))
+    newObs.next(new ChildrenChangesEvent((inclusionsEntry.mapByInclusionId) as any /* FIXME `as any` when upgrading firestore */, EMPTY_MAP))
     return newObs
     FIXME('getChildInclusionsForParentItem$')
   }

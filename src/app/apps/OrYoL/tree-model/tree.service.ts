@@ -6,8 +6,9 @@ import {TreeModel} from './TreeModel'
 import {NodeAddEvent} from './TreeListener'
 import {DbTreeService} from './db-tree-service'
 import { debugLog } from '../utils/log'
-import { AuthService } from '../core/auth.service'
+// import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
+import {AuthService} from '../../../auth/auth.service'
 
 
 @Injectable({providedIn: 'root'})
