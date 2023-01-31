@@ -7,9 +7,9 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {BaseService} from '../../../libs/AppFedShared/base.service'
 import {FeatureLevelsConfig} from '../../../libs/AppFedShared/FeatureLevelsConfig'
-import firebase from 'firebase/compat'
+import firebase from 'firebase/compat/app'
 import Timestamp = firebase.firestore.Timestamp
-import firestore from 'firebase/compat'
+import firestore from 'firebase/compat/app'
 import {AngularFirestore, Query} from '@angular/fire/compat/firestore'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5

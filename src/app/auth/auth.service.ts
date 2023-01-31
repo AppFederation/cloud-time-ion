@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
 // import * as firebase from 'firebase/app';
 import {errorAlert} from '../libs/AppFedShared/utils/log'
 import {CachedSubject} from '../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-// import {User} from 'firebase/compat'
+// import {User} from 'firebase/compat/app'
 import {ChromeExtensionService} from '../apps/Learn/shared/utils/chrome-extension.service'
-import firebase from 'firebase/compat'
+import firebase from 'firebase/compat/app'
 import User = firebase.User
 import {nullish} from '../libs/AppFedShared/utils/type-utils'
 

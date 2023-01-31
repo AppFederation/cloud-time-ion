@@ -16,7 +16,7 @@ import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'
 import { TimeStamper } from '../tree-model/TimeStamper'
-import firestore from 'firebase/compat'
+import firestore from 'firebase/compat/app'
 
 // const firebase1 = require('firebase');
 import * as firebase1 from 'firebase/app'
@@ -32,7 +32,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {firebaseConfig} from '../../../firebase.config'
 import {Firestore} from '@angular/fire/firestore'
-import firebase from 'firebase/compat'
+import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
 
 // Initialize Firebase

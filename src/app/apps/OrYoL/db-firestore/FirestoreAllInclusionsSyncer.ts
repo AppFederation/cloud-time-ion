@@ -17,7 +17,7 @@ import {
 import { MultiMap } from '../utils/multi-map'
 import {Firestore} from '@angular/fire/firestore'
 import {CollectionReference, DocumentChange, DocumentReference, QuerySnapshot} from '@angular/fire/compat/firestore'
-import firebase from 'firebase/compat'
+import firebase from 'firebase/compat/app'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import "firebase/firestore";
 
