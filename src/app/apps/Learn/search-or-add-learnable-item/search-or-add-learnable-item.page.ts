@@ -39,9 +39,9 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
 
   searchFormControl = new UntypedFormControl()
 
-  get filteredItem$s() { return this.listModel.filteredItem$s }
+  get filteredItem$s(): LearnItem$[] { return this.listModel.filteredItem$s }
 
-  get item$s() { return this.listModel.item$s }
+  get item$s(): LearnItem$[] { return this.listModel.item$s }
 
   get authUserId() {
     return this.authService.authUser$.lastVal?.uid

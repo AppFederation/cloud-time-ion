@@ -19,7 +19,7 @@
 
   <!-- FIXME icon task / learnable / journal-entry / note -->
   <ion-note *ngIf="g.feat.roiPoints.showUgly && item.val?.isTask">
-    TASK {{((item.getEffectiveRoi() || 0) * 1000000)?.toFixed(3)}} ROI
+    TASK {{((item.getEffectiveRoi() || 0) * 1000000).toFixed(3)}} ROI
   </ion-note>
   <ion-button size="small"
               *ngIf="feat.planToday.mockups"
@@ -54,7 +54,7 @@
         *ngIf="item.val?.importanceCurrent?.numeric || '-'; let importanceNum"
       >
     ➤
-        <span *ngIf="g.feat.showUgly">{{ item.getEffectiveImportance() ?. numeric }}x </span>{{ item.getEffectiveImportance() ?. id }}
+        <span *ngIf="g.feat.showUgly">{{ item.getEffectiveImportance() . numeric }}x </span>{{ item.getEffectiveImportance() . id }}
     </span>
   </ng-container>
 

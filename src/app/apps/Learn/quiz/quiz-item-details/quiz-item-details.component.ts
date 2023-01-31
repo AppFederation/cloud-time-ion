@@ -16,7 +16,7 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 export class QuizItemDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
-  item$ ? : LearnItem$ | nullish
+  item$ ? : LearnItem$ | null | undefined
 
   @Input()
   ionContent: any

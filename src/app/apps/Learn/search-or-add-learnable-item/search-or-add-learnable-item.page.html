@@ -112,8 +112,8 @@
 
 
       <ion-text style="color: gray">
-        <span *ngIf="filteredItem$s?.length !== item$s?.length">{{filteredItem$s?.length}} /</span>
-        {{ item$s?.length }}
+        <span *ngIf="filteredItem$s.length !== item$s.length">{{filteredItem$s.length}} /</span>
+        {{ item$s.length }}
         <app-learn-stats *ngIf="feat.stats"><!-- FIXME ugly --></app-learn-stats>
       </ion-text>
     </div>

@@ -39,9 +39,9 @@
   {{ learnStats ?. atLeast2 | json }}
 
   <span
-    *ngFor="let kv of (learnStats ?. countWithRatingEqual) ! | keyvalue"
+    *ngFor="let kv of (learnStats . countWithRatingEqual) ! | keyvalue"
   >
-    <b>{{kv.key?.replace('undefined', '-')}}:</b> {{kv.value}}
+    <b>{{kv.key.replace('undefined', '-')}}:</b> {{kv.value}}
 
   </span>
 </ng-container>

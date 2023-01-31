@@ -2,7 +2,7 @@
   style="font-size: 70%; /*margin-top: 5px;*/ margin-left: 5px"
   *ngIf="numFieldDef"
 >
-  {{numFieldDef ?. uiName}}
+  {{numFieldDef . uiName}}
 </div>
 {{ selectedVariant ?. subLabel }}&nbsp; <!-- nbsp to ensure constant height -->
 <!-- TODO: move this into the button-->

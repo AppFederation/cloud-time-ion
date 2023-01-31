@@ -14,7 +14,7 @@
 <ion-content>
   (explanatory and motivational text & graphic here; info about Synergies vs Diminishing Returns cancelling each other - to ~linear)
 
-<p>  Increment: {{ (incrementFraction * 100)?.toFixed(2) }} %
+<p>  Increment: {{ (incrementFraction * 100).toFixed(2) }} %
 </p>
   <ion-range [step]="0.1" (ionChange)="onSliderChange($event)"></ion-range>
 

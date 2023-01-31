@@ -7,9 +7,9 @@
 
   <span>
     | left:
-    <strong style="font-size: 12px; color: white">{{ quizStatus ?. itemsLeft }}</strong>
+    <strong style="font-size: 12px; color: white">{{ quizStatus . itemsLeft }}</strong>
     | next 12h:
-    {{ quizStatus ?. itemsLeftToday }}
+    {{ quizStatus . itemsLeftToday }}
   </span>
   <!--  {{ (quizStatus ?. itemsLeftByImportance) | json }}-->
   <table>

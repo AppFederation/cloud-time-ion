@@ -7,7 +7,7 @@
 
   <app-play-button
     [item]="(itemVal$ | async) !"
-    [itemId]="item$ ?. id"
+    [itemId]="item$ . id"
   ></app-play-button>
 
   <app-item-side-editor
