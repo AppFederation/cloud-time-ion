@@ -32,7 +32,10 @@
   </ion-button>
   <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
   <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
-  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>
+<!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>-->
+  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">
+    <ion-icon style="margin-right: 7px;" name="book-outline"></ion-icon>
+  </ion-note>
 
   <span
     style="color: var(--ion-color-primary)"

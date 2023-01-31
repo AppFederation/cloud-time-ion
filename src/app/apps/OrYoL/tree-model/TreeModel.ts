@@ -160,7 +160,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     this.children = this.children.filter(node => node !== nodeToRemove)
   }
 
-  get isRoot() {
+  get isRoot(): boolean {
     return this.treeModel.root === this;
   }
 
@@ -613,7 +613,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
     return new Date(this.startTime.getTime() + this.valueLeftSum(column) * 60 * 1000)
   }
 
-  highlight = new class Highlight {
+  highlight: any /* FIXME */ = new class Highlight {
     constructor(public treeNode: OryTreeNode) {}
 
     isChildOfFocusedNode() {

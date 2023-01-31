@@ -11,7 +11,7 @@ export const environment = {
     storageBucket: "cloudtime-app.appspot.com",
     // messagingSenderId: "42917465053"
   },
-  production: false
+  production: true
 };
 
 /*

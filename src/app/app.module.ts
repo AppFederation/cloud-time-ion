@@ -21,7 +21,9 @@ import {counterReducer} from './apps/Learn/core/quiz/quiz.reducer'
 import {EffectsModule} from '@ngrx/effects'
 import {QuizEffects} from './apps/Learn/core/quiz/quiz.effects'
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
-import {FaIconLibrary} from '@fortawesome/angular-fontawesome'
+import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment'
 
 // custom configuration Hammerjs
 @Injectable()
@@ -36,6 +38,15 @@ export class HammerConfig extends HammerGestureConfig {
     }
   }
 }
+
+const swOpts = {
+  enabled: environment.production,
+  // Register the ServiceWorker as soon as the application is stable
+  // or after 30 seconds (whichever comes first).
+  registrationStrategy: 'registerWhenStable:30000'
+}
+
+console.log(`service worker swOpts`, swOpts)
 
 @NgModule({
     declarations: [AppComponent],
@@ -57,6 +68,7 @@ export class HammerConfig extends HammerGestureConfig {
             // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
         }),
         EffectsModule.forRoot([QuizEffects]),
+        ServiceWorkerModule.register('ngsw-worker.js', swOpts),
     ],
     exports: [
         CoreModule,

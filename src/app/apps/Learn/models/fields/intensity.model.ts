@@ -151,6 +151,12 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
           Overarching Meta Mantra.
         `
   })
+  pinned
+    = intensity({numeric: 2_000_000, abbrev: `Pinned`, icons: `Pinned` /* will be pin icon */, shortId: `Pinned`,
+    description: `
+          Overarching Meta Mantra.
+        `
+  })
 
   /* TODO: current focus urgent, day / week /
     Could specify DEADLINE for the focus (e.g. next day, next week) -- per item or per category
