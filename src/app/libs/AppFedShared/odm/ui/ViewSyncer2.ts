@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {Observable} from 'rxjs/internal/Observable'
 
 export class ViewSyncer2<TFormVal, TExternal = TFormVal> {
@@ -9,7 +9,7 @@ export class ViewSyncer2<TFormVal, TExternal = TFormVal> {
   constructor(
     public observable: Observable<TExternal>,
     public setExternalFunc: (valFromForm: TFormVal) => void,
-    public formControl: FormControl = new FormControl/*<TFormVal>*/()
+    public formControl: UntypedFormControl = new UntypedFormControl/*<TFormVal>*/()
   ) {
     this.observable.subscribe((val) => {
       if ( ! this.isSetting ) {

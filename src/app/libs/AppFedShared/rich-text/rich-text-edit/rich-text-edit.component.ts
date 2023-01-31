@@ -1,7 +1,7 @@
 import {Component, Inject, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {ViewSyncer} from '../../odm/ui/ViewSyncer'
 import {EditorComponent} from '@tinymce/tinymce-angular'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {debugLog} from '../../utils/log'
 import {EditorService} from './editor.service'
 import {richTextEditCommon} from './RichTextEditCommon'
@@ -24,7 +24,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   @Input() viewSyncer ! : ViewSyncer
 
-  @Input() formControl1 ! : FormControl
+  @Input() formControl1 ! : UntypedFormControl
 
   @Input() showClearButton: boolean = false
 

@@ -2,7 +2,7 @@ import {Component, Injector, Input, OnInit} from '@angular/core';
 import {ListOptionsData} from '../list-options'
 import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {FeatureService} from '../../../../libs/AppFedShared/feature.service'
 import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 
@@ -19,8 +19,8 @@ export class ListOptionsComponent extends BaseComponent implements OnInit {
 
 
   formControls = {
-    range: new FormControl(),
-    rangeEnabled: new FormControl(true),
+    range: new UntypedFormControl(),
+    rangeEnabled: new UntypedFormControl(true),
   }
 
   features = this.featureService

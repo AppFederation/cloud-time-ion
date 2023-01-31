@@ -4,7 +4,7 @@ import {PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {createViewSyncerForField, ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {JournalEntry} from '../../models/JournalEntry'
 import {TimelineListOptionsData} from '../journal-entries-list.page'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-timeline-list-options',
@@ -18,10 +18,10 @@ export class TimelineListOptionsComponent implements OnInit {
   listOptions$P ! : PatchableObservable<TimelineListOptionsData>
 
 
-  formControl = new FormControl()
+  formControl = new UntypedFormControl()
 
   viewSyncer ! : ViewSyncer
-  formControls = { range: new FormControl() }
+  formControls = { range: new UntypedFormControl() }
 
 
   constructor() { }

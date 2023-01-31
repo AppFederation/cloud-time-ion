@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
 import {RichTextInterceptorService} from '../../shared/utils/rich-text-interceptor.service'
 import {ChromeExtensionService} from '../../shared/utils/chrome-extension.service'
@@ -12,7 +12,7 @@ import {richTextEditCommon} from '../../../../libs/AppFedShared/rich-text/rich-t
 })
 export class SearchOrAddTextEditorComponent implements OnInit {
 
-  @Input() formControl1 ! : FormControl
+  @Input() formControl1 ! : UntypedFormControl
 
   constructor(private richTextInterceptor: RichTextInterceptorService) {
     if (ChromeExtensionService.isApplicationRunAsChromeExtension()) {

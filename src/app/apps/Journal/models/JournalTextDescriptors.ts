@@ -1,7 +1,7 @@
 import {Dict, dictToArrayWithIds} from "../../../libs/AppFedShared/utils/dictionary-utils";
 import {ILateInit} from './JournalNumericDescriptors'
 import {SidesDefs} from '../../Learn/core/sidesDefs'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 
 /* TODO: split into UiField and simpler UiFieldDecl */
 export class UiFieldDef implements ILateInit {
@@ -84,5 +84,5 @@ export class JournalTextDescriptors {
 
 }
 
-export type TextDescriptorsFormControlsDict = {[key in keyof JournalTextDescriptors]: FormControl }
+export type TextDescriptorsFormControlsDict = {[key in keyof JournalTextDescriptors]: UntypedFormControl }
 

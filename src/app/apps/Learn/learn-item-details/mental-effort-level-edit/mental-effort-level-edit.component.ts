@@ -1,6 +1,6 @@
 
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem$} from '../../models/LearnItem$'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
@@ -53,10 +53,10 @@ export class MentalEffortLevelEditComponent implements OnInit {
 
   buttonsDesc = buttonsDesc
 
-  formGroup ! : FormGroup
+  formGroup ! : UntypedFormGroup
 
   formControls = {
-    mentalLevelEstimate: new FormControl(),
+    mentalLevelEstimate: new UntypedFormControl(),
   }
 
   viewSyncer ! : ViewSyncer
@@ -68,7 +68,7 @@ export class MentalEffortLevelEditComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new UntypedFormGroup(this.formControls)
     this.viewSyncer = new ViewSyncer(
       this.formGroup,
       this.item$,

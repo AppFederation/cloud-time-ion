@@ -2,7 +2,7 @@
  * Created by kd on 2017-08-01.
  */
 import {ILateInit} from '../../../apps/Journal/models/JournalNumericDescriptors'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {DictPatch} from './rxUtils'
 
 export interface Dict<TVal, /*TKey = string*/> {
@@ -67,7 +67,7 @@ export function mapEntriesToArray(srcObj: any, mapFunc: (entry: [string, any]) =
 
 export function mapFieldsToFormControls(srcObj: any) {
   return mapFields(srcObj, () => {
-    return new FormControl()
+    return new UntypedFormControl()
   })
 }
 

@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms'
+import {AbstractControl, UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {OdmItem$2} from '../OdmItem$2'
 import {debugLog, errorAlert} from '../../utils/log'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
@@ -8,10 +8,10 @@ import {convertToHtmlIfNeeded} from '../../utils/html-utils'
 import {TimelineListOptionsData} from '../../../../apps/Journal/journal-entries-list/journal-entries-list.page'
 import {JournalEntry} from '../../../../apps/Journal/models/JournalEntry'
 
-export function createViewSyncerForField<T>(patchableObservable: PatchableObservable<T>, fieldName: keyof T, formControl: FormControl) {
+export function createViewSyncerForField<T>(patchableObservable: PatchableObservable<T>, fieldName: keyof T, formControl: UntypedFormControl) {
   const formControls/*: { [key in keyof T]: FormControl} */: any = {}
   formControls[fieldName] = formControl
-  const formGroup = new FormGroup(formControls)
+  const formGroup = new UntypedFormGroup(formControls)
   const viewSyncer = new ViewSyncer(formGroup, patchableObservable, false,
     fieldName)
   return viewSyncer

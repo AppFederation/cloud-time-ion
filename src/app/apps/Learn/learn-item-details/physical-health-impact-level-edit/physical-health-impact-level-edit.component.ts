@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
 import {btn, ButtonsDescriptor} from '../../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {intensityBtnVariant} from '../../../../libs/LifeSuiteShared/edit-shared/importance-edit/importance-edit.component'
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {LearnItem$} from '../../models/LearnItem$'
@@ -50,10 +50,10 @@ export class PhysicalHealthImpactLevelEditComponent implements OnInit {
 
   buttonsDesc = buttonsDesc
 
-  formGroup ! : FormGroup
+  formGroup ! : UntypedFormGroup
 
   formControls = {
-    physicalHealthImpact: new FormControl(),
+    physicalHealthImpact: new UntypedFormControl(),
   }
 
   viewSyncer ! : ViewSyncer
@@ -65,7 +65,7 @@ export class PhysicalHealthImpactLevelEditComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new UntypedFormGroup(this.formControls)
     this.viewSyncer = new ViewSyncer(
       this.formGroup,
       this.item$,

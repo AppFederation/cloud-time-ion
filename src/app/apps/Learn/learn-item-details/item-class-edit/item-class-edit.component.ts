@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {LearnItem$} from '../../models/LearnItem$'
@@ -14,10 +14,10 @@ export class ItemClassEditComponent implements OnInit {
   readonly fieldName = 'isTask'
 
   formControls = {
-    isTask: new FormControl(),
+    isTask: new UntypedFormControl(),
   }
 
-  formGroup = new FormGroup(this.formControls)
+  formGroup = new UntypedFormGroup(this.formControls)
 
   viewSyncer ! : ViewSyncer
 

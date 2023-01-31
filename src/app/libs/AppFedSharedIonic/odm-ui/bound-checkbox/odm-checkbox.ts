@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {OdmItem$2} from '../../../AppFedShared/odm/OdmItem$2'
@@ -21,7 +21,7 @@ export class OdmCheckbox implements OnInit {
 
   formControls!: any
 
-  formGroup!: FormGroup
+  formGroup!: UntypedFormGroup
 
   viewSyncer ! : ViewSyncer
 
@@ -29,9 +29,9 @@ export class OdmCheckbox implements OnInit {
 
   ngOnInit() {
     this.formControls = {
-      [this.fieldName]: new FormControl(),
+      [this.fieldName]: new UntypedFormControl(),
     }
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new UntypedFormGroup(this.formControls)
     this.viewSyncer = new ViewSyncer(
       this.formGroup,
       this.item$,

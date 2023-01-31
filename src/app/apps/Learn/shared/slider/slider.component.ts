@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-slider',
@@ -22,7 +22,7 @@ export class SliderComponent implements OnInit {
 
   @Input() scale : number = 1
 
-  @Input() control ! : FormControl
+  @Input() control ! : UntypedFormControl
 
 
   constructor() { }

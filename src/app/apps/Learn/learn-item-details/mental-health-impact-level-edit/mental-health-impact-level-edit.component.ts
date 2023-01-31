@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
 import {LearnItem$} from '../../models/LearnItem$'
@@ -50,10 +50,10 @@ export class MentalHealthImpactLevelEditComponent implements OnInit {
 
   buttonsDesc = buttonsDesc
 
-  formGroup ! : FormGroup
+  formGroup ! : UntypedFormGroup
 
   formControls = {
-    mentalHealthImpact: new FormControl(),
+    mentalHealthImpact: new UntypedFormControl(),
   }
 
   viewSyncer ! : ViewSyncer
@@ -65,7 +65,7 @@ export class MentalHealthImpactLevelEditComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new UntypedFormGroup(this.formControls)
     this.viewSyncer = new ViewSyncer(
       this.formGroup,
       this.item$,

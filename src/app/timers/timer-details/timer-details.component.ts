@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TimerItem} from "../../core/TimerItem";
 import {AlertController, ModalController} from "@ionic/angular";
 import {TimersService} from "../../core/timers.service";
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {ignorePromise} from "../../libs/AppFedShared/utils/promiseUtils";
 
 @Component({
@@ -15,7 +15,7 @@ export class TimerDetailsComponent implements OnInit {
   @Input()
   timer ! : TimerItem
 
-  timerTitleControl = new FormControl('');
+  timerTitleControl = new UntypedFormControl('');
 
   get endTime() {
     return new Date(Date.now() + (this.timer.durationSeconds)! * 1000)

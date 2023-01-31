@@ -5,7 +5,7 @@ import {field, HtmlString, LearnItem, LearnItemSidesVals} from '../models/LearnI
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
 import {debugLog} from '../../../libs/AppFedShared/utils/log'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {LingueeService} from '../natural-langs/linguee.service'
@@ -37,7 +37,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
 
   htmlSearch ? : string = undefined
 
-  searchFormControl = new FormControl()
+  searchFormControl = new UntypedFormControl()
 
   get filteredItem$s() { return this.listModel.filteredItem$s }
 

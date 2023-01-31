@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Side, sidesDefs, SidesDefs} from '../../core/sidesDefs'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
@@ -11,7 +11,7 @@ import {RichTextEditComponent} from '../../../../libs/AppFedShared/rich-text/ric
 import {getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
 import {OdmCell} from '../../../../libs/AppFedShared/tree/cells/OdmCell'
 
-export type SideFormControlsDict = {[key in keyof SidesDefs]: FormControl }
+export type SideFormControlsDict = {[key in keyof SidesDefs]: UntypedFormControl }
 
 
 // TODO: escape key to hide toolbar&menu bar
@@ -37,7 +37,7 @@ export class ItemSideComponent implements OnInit {
 
   formControls ! : SideFormControlsDict
 
-  formGroup ! : FormGroup
+  formGroup ! : UntypedFormGroup
 
   editorOpened = false
 
@@ -57,7 +57,7 @@ export class ItemSideComponent implements OnInit {
   ngOnInit() {
     if ( this.side ) {
       this.formControls = this.createFormControlDict()
-      this.formGroup = new FormGroup(this.formControls)
+      this.formGroup = new UntypedFormGroup(this.formControls)
       this.viewSyncer = new ViewSyncer(
         this.formGroup,
         this.item$,
@@ -69,7 +69,7 @@ export class ItemSideComponent implements OnInit {
 
   private createFormControlDict(): SideFormControlsDict {
     const ret = {} as SideFormControlsDict
-    ret[this.side !. id] = new FormControl()
+    ret[this.side !. id] = new UntypedFormControl()
     // console.dir(ret)
     return ret
   }

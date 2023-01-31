@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Form, FormControl, FormGroup} from '@angular/forms'
+import {Form, UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {QuizOptions, QuizService} from '../../core/quiz/quiz.service'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {OptionsService} from '../../core/options.service'
@@ -16,19 +16,19 @@ export class QuizOptionsComponent implements OnInit {
   funButtonsDesc = buttonsDesc
 
   /* TODO use some options syncer util, maybe OptionsFormControl directive */
-  controls: { [k in keyof QuizOptions]: FormControl} = {
-    dePrioritizeNewMaterial: new FormControl(false),
-    onlyWithQA: new FormControl(true),
-    skipTasks: new FormControl(true),
-    powBaseX100: new FormControl(),
-    scaleIntervalsByImportance: new FormControl(1),
-    focusLevelProbabilities: new FormControl(1),
-    categories: new FormControl(''),
-    textFilter: new FormControl(''),
-    minFunLevel: new FormControl(),
+  controls: { [k in keyof QuizOptions]: UntypedFormControl} = {
+    dePrioritizeNewMaterial: new UntypedFormControl(false),
+    onlyWithQA: new UntypedFormControl(true),
+    skipTasks: new UntypedFormControl(true),
+    powBaseX100: new UntypedFormControl(),
+    scaleIntervalsByImportance: new UntypedFormControl(1),
+    focusLevelProbabilities: new UntypedFormControl(1),
+    categories: new UntypedFormControl(''),
+    textFilter: new UntypedFormControl(''),
+    minFunLevel: new UntypedFormControl(),
   }
 
-  formGroup = new FormGroup(this.controls)
+  formGroup = new UntypedFormGroup(this.controls)
 
   viewSyncer = new ViewSyncer(this.formGroup, this.quizService.options2$, false,
     'powBaseX100' /* FIXME why just 1 field */)

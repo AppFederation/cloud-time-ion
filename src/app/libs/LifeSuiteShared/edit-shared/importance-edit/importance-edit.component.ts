@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms'
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms'
 import {ViewSyncer} from '../../../AppFedShared/odm/ui/ViewSyncer'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 import {Required} from '../../../AppFedShared/utils/angular/Required.decorator'
@@ -94,16 +94,16 @@ export class ImportanceEditComponent implements OnInit {
 
   importanceButtonsDesc = importanceButtonsDesc
 
-  formGroup ! : FormGroup
+  formGroup ! : UntypedFormGroup
 
-  formGroupCurrent ! : FormGroup
+  formGroupCurrent ! : UntypedFormGroup
 
   formControls = {
-    importance: new FormControl(),
+    importance: new UntypedFormControl(),
   }
 
   formControlsCurrent = {
-    importanceCurrent: new FormControl(),
+    importanceCurrent: new UntypedFormControl(),
   }
 
   viewSyncer ! : ViewSyncer
@@ -117,7 +117,7 @@ export class ImportanceEditComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formGroup = new FormGroup(this.formControls)
+    this.formGroup = new UntypedFormGroup(this.formControls)
     this.viewSyncer = new ViewSyncer(
       this.formGroup,
       this.item$,
@@ -126,7 +126,7 @@ export class ImportanceEditComponent implements OnInit {
     ) /* TODO might need to ignore other fields from db */
 
 
-    this.formGroupCurrent = new FormGroup(this.formControlsCurrent)
+    this.formGroupCurrent = new UntypedFormGroup(this.formControlsCurrent)
     this.viewSyncerCurrent = new ViewSyncer(
       this.formGroupCurrent,
       this.item$,

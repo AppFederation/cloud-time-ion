@@ -10,8 +10,8 @@ import {
   ConfigService,
 } from '../../../core/config.service'
 import {
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
 } from '@angular/forms'
 import { debugLog } from '../../../utils/log'
 
@@ -25,16 +25,16 @@ export class ToolbarPopoverComponent implements OnInit {
   /* workaround for now */
   @Input() treeHost!: TreeHostComponent
 
-  controls: { [K in keyof Config]: FormControl } = {
-    showMinMaxColumns: new FormControl(),
-    showMissingValuesCount: new FormControl(),
-    showAggregateValues: new FormControl(),
-    showTimeTrackedValue: new FormControl(),
-    planExecutionNotificationsEnabled: new FormControl(),
-    planExecutionNotificationTimePercentages: new FormControl(),
+  controls: { [K in keyof Config]: UntypedFormControl } = {
+    showMinMaxColumns: new UntypedFormControl(),
+    showMissingValuesCount: new UntypedFormControl(),
+    showAggregateValues: new UntypedFormControl(),
+    showTimeTrackedValue: new UntypedFormControl(),
+    planExecutionNotificationsEnabled: new UntypedFormControl(),
+    planExecutionNotificationTimePercentages: new UntypedFormControl(),
   }
 
-  formGroup = new FormGroup(this.controls)
+  formGroup = new UntypedFormGroup(this.controls)
 
   constructor(
     public debugService: DebugService,

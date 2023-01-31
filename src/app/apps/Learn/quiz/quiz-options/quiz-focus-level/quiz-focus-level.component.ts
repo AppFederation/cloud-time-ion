@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Required} from '../../../../../libs/AppFedShared/utils/angular/Required.decorator'
-import {FormControl} from '@angular/forms'
+import {UntypedFormControl} from '@angular/forms'
 import {QuizService} from '../../../core/quiz/quiz.service'
 
 @Component({
@@ -14,7 +14,7 @@ export class QuizFocusLevelComponent implements OnInit {
 
   @Input()
   @Required()
-  control ! : FormControl
+  control ! : UntypedFormControl
 
   constructor(
     public quizService: QuizService,
