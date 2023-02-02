@@ -11,6 +11,9 @@ export class AppLogoComponent implements OnInit {
   @Input()
   withText = true
 
+  @Input()
+  hideTextOnSmallScreens = false
+
   /** workaround for logo disappearing on page navigation */
   fillSuffix = (''+Math.random()).replace('.', '')
 
