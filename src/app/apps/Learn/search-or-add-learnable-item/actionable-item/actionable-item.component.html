@@ -26,16 +26,16 @@
               (click)="addToToday($event)"
   >
     <!-- should be dot dot dot menu anyway -->
-    <ion-icon slot="icon-only" name="today-outline"></ion-icon>
+    <ion-icon slot="icon-only"name="today-outline"></ion-icon>
      <!-- TODO: checkbox if already included -->
     <!-- TODO: later: this week / month / quarter / year -->
   </ion-button>
   <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
   <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
 <!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>-->
-  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">
-    <ion-icon style="margin-right: 7px;" name="book-outline"></ion-icon>
-  </ion-note>
+<!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">-->
+    <ion-icon style="margin-right: 7px;" size="large" color="secondary" name="book-outline"></ion-icon>
+<!--  </ion-note>-->
 
   <span
     style="color: var(--ion-color-primary)"
