@@ -19,6 +19,15 @@
    --width: 350px;
 }
 
+// ==== BEGIN stuff that is edited via rich-text-editor (but also appears on items list)
+ul, ol {
+  padding-inline-start: 1.35rem;
+  ::marker {
+    color: var(--secondary);
+  }
+}
+// ======
+
 [contenteditable] {
 -webkit-user-select: text;
 user-select: text;

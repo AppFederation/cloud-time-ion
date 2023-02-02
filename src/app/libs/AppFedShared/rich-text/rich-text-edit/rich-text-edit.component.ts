@@ -161,14 +161,15 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     /** https://www.tiny.cloud/docs/configure/content-filtering/#valid_classes */
     valid_classes: richTextEditCommon.valid_classes,
     content_style:
-      // '[contenteditable] { padding-left: 5px; } ' +
+      '[contenteditable] { padding-left: 5px; } ' +
+      // '[contenteditable] ul { padding-inline-start: 1rem; } ' +
       // '[contenteditable] li { padding-top: 6px; } ' +
-      '[contenteditable] ::marker { color: var(--secondary); ' +
+      // '[contenteditable] ::marker { color: var(--secondary); ' +
       '[contenteditable] ul ::marker { color: var(--secondary); ' +
       '[contenteditable] ::marker { color: var(--secondary); ' +
         '/* does not seem to work: */ text-shadow: 2px 2px #ffffff; } ' +
       `blockquote { border-left: 3px var(--secondary) solid; padding-left: 6px; margin-left: 20px } ` + /* TODO: extract standard rich text css into global const for -edit and -view */
-      `ul { padding-inline-start: 20px; }` +
+      `ul { padding-inline-start: 0px; }` +
       `ol { padding-inline-start: 20px; }` +
       `section { border: 2px solid #b02020; padding: 3px; margin: 2px; border-radius: 4px;  }` +
       `ul { border: 2px solid #101010; padding: 3px; margin: 2px; border-radius: 4px;  }` +
