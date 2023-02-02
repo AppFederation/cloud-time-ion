@@ -9,19 +9,12 @@ import 'hammerjs'
 
 import * as packageJson from '../package.json';
 
-import { inject } from '@vercel/analytics';
-
-inject();
-
-console.log('after vercel inject')
+console.log('%cLifeSuite app main.ts %cstarting', 'color: red; background-color: black', 'color: lightblue; background-color: darkblue')
 
 
-console.log(`
-      last commit: commit 35e028e72e74dfab8033f53f895b48c98d76768f (HEAD -> develop, origin/develop, origin/HEAD)
-      Author: Karol Depka <karol-depka@users.noreply.github.com>
-      Date:   Sat Jan 28 08:28:53 2023 +0100
-      ).catch((caught: any)`
-)
+// import { inject } from '@vercel/analytics';
+
+// inject();
 
 console.log(`package.json - FIXME potential security hole - exposing package.json`, packageJson) // FIXME potential security hole - exposing package.json
 
