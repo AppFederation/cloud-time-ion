@@ -117,7 +117,8 @@
         <app-learn-stats *ngIf="feat.stats"><!-- FIXME ugly --></app-learn-stats>
       </ion-text>
     </div>
-    <app-mic style="display: flex; align-items: stretch; padding-bottom: 8px;"></app-mic>
+    <app-mic *ngIf="feat.buggy"
+      style="display: flex; align-items: stretch; padding-bottom: 8px;"></app-mic>
 
   </div>
 </ion-header>
