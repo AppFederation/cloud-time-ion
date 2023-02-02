@@ -30,11 +30,14 @@
      <!-- TODO: checkbox if already included -->
     <!-- TODO: later: this week / month / quarter / year -->
   </ion-button>
-  <ion-note *ngIf="item.val?.isTask">TASK</ion-note>
-  <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
-<!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>-->
-<!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">-->
-    <ion-icon style="margin-right: 7px;" size="large" color="secondary" name="book-outline"></ion-icon>
+  <!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>-->
+  <!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">-->
+  <ion-icon style="margin-right: 7px; font-size: 25px" color="secondary" name="book-outline"></ion-icon>
+
+  <ion-note *ngIf="item.val?.isTask">
+    <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
+    TASK&nbsp;
+  </ion-note>
 <!--  </ion-note>-->
 
   <span
