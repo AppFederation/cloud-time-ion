@@ -1,11 +1,16 @@
-<ion-header>
+<!--<ion-header>-->
   <ion-text color="secondary">
-    <h5 style="text-transform: uppercase">
+<!--    <h5 style="text-transform: uppercase">-->
       <app-side-icon
         [side]="side"
       ></app-side-icon>
+    <ng-container *ngIf="side.icon">
       &nbsp;
-      {{side . title}}
-    </h5>
+    </ng-container>
+      <span style="text-transform: uppercase">
+        {{side . title}}
+      </span>
+<!--    </h5>-->
   </ion-text>
-</ion-header>
+<!--</ion-header>-->
+<!--{{side . title}}-->
