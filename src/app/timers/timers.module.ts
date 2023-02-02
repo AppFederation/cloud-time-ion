@@ -2,7 +2,6 @@ import {IonicModule} from '@ionic/angular';
 import {RouterModule} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MomentModule} from 'ngx-moment';
 import {TimersPageComponent} from './timers-page.component';
 import {TimerItemComponent} from "./timer-item/timer-item.component";
 import {TimersListComponent} from "./timers-list/timers-list.component";
@@ -18,7 +17,6 @@ import {OdmModule} from '../libs/AppFedShared/odm/odm.module'
     imports: [
         IonicModule,
         CommonModule,
-        MomentModule,
         RouterModule.forChild([{ path: '', component: TimersPageComponent }]),
         SharedModule,
         IonicModule,

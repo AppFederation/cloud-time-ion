@@ -10,7 +10,7 @@
     placeholder="Timer Title"
     value="{{timer.title}}"
   ></ion-input>
-  End: {{endTime | amLocal}}
+  End: {{endTime | date }} <!-- TODO format time -->
 
 
   <app-time-picker
