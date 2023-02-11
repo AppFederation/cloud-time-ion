@@ -79,6 +79,7 @@
         https://ionicframework.com/docs/utilities/gestures
       -->
       <app-selection-info
+        *ngIf="feat.unpolished"
         [selection]="listModel.selection"
       ></app-selection-info>
 
