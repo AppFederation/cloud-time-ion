@@ -32,6 +32,13 @@ export const themes: { [key: string]: Theme } = {
     primary: '#c72323',
     secondary: '#b68001',
   },
+  'Dark Green Bg, Agrest': {
+    comment: 'Jellies',
+    experimental: true,
+    background: '#244d20',
+    primary: '#326a2c',
+    secondary: '#b68001',
+  },
   'Gray Green': {
     comment: 'Jellies',
     primary: '#6e6e6e',
