@@ -15,8 +15,26 @@
 
 @import 'global_oryol2';
 
+:root {
+  transition: all 2s; // FIXME test
+}
+
 .sc-ion-popover-ios-h {
-   --width: 350px;
+   --width: 380px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red !important;
+  opacity: 1; /* Firefox */
+}
+
+.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+  /* https://www.w3schools.com/howto/howto_css_placeholder.asp */
+  /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */
+  //background-color: white;
+  color: var(--ion-text-color) !important; //rgba(118, 118, 118, 1);
+  opacity: 0.5;
+  padding-left: 0.45em;
 }
 
 // ==== BEGIN stuff that is edited via rich-text-editor (but also appears on items list)
@@ -29,18 +47,18 @@ ul, ol {
 // ======
 
 [contenteditable] {
--webkit-user-select: text;
-user-select: text;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 html {
-scroll-behavior: smooth;
-color-scheme: dark; // https://github.com/mdn/yari/pull/6102
+  scroll-behavior: smooth;
+  color-scheme: dark; // https://github.com/mdn/yari/pull/6102
 }
 
 :root {
 
---secondary: var(--ion-color-secondary); /* FIXME make consistent */
+  --secondary: var(--ion-color-secondary); /* FIXME make consistent */
   --primary: var(--ion-color-primary) /* FIXME: Ionic color */;
 
   --answerBorderColor: #003b00;

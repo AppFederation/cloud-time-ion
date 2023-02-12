@@ -1,51 +1,54 @@
-<div
-  [formGroup]=formGroup
-  style="opacity: 50%; /*z-index: 99999*/"
->
-
-  <label class="checkbox" >
-    <input type="checkbox"
-           [checked]="debugService.isDebug$ | async"
-           (change)="onDebugChange($event)">
-    Debug
-  </label>
-
-  <label class="checkbox" >
-    <input type="checkbox"
-           [formControl]="controls.showMinMaxColumns"
-    >
-    Min/Max Cols
-  </label>
-
-  <label class="checkbox" >
-    <input type="checkbox"
-           [formControl]="controls.showAggregateValues"
-    >
-    Aggregate Values
+<ion-content>
+  <div
+    [formGroup]=formGroup
+    style="opacity: 50%; /*z-index: 99999*/"
+  >
 
     <label class="checkbox" >
       <input type="checkbox"
-             [formControl]="controls.showMissingValuesCount"
-      >
-      Missing Values Count
+             [checked]="debugService.isDebug$ | async"
+             (change)="onDebugChange($event)">
+      Debug
     </label>
 
-  </label>
+    <label class="checkbox" >
+      <input type="checkbox"
+             [formControl]="controls.showMinMaxColumns"
+      >
+      Min/Max Cols
+    </label>
 
-  <label class="checkbox" >
-    <input type="checkbox"
-           [formControl]="controls.showTimeTrackedValue"
-    >
-    Time-tracked Values
-  </label>
+    <label class="checkbox" >
+      <input type="checkbox"
+             [formControl]="controls.showAggregateValues"
+      >
+      Aggregate Values
 
-  <label class="checkbox" >
-    <input type="checkbox"
-           [formControl]="controls.planExecutionNotificationsEnabled"
-    >
-    Plan Execution Notifications Enabled
-  </label>
+      <label class="checkbox" >
+        <input type="checkbox"
+               [formControl]="controls.showMissingValuesCount"
+        >
+        Missing Values Count
+      </label>
 
-  Items: {{treeHost.treeModel.mapItemIdToNodes.keyCount}}
+    </label>
 
-</div>
+    <label class="checkbox" >
+      <input type="checkbox"
+             [formControl]="controls.showTimeTrackedValue"
+      >
+      Time-tracked Values
+    </label>
+
+    <label class="checkbox" >
+      <input type="checkbox"
+             [formControl]="controls.planExecutionNotificationsEnabled"
+      >
+      Plan Execution Notifications Enabled
+    </label>
+
+    Items: {{treeHost.treeModel.mapItemIdToNodes.keyCount}}
+
+  </div>
+
+</ion-content>

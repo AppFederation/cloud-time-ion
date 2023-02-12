@@ -41,8 +41,8 @@ export class ToolbarComponent extends BaseComponent implements OnInit {
     const popover = await this.popoverController.create({
       component: ToolbarPopoverComponent,
       event: $event,
-      // translucent: true,
-      // mode: 'ios',
+      translucent: true,
+      mode: 'ios',
       componentProps: {
         treeHost: this.treeHost,
       }
