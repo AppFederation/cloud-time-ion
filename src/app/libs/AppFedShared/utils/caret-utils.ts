@@ -55,7 +55,7 @@ export function isCaretAtEndOfActiveElement() {
 }
 
 
-export function getSelectionCursorState(/*nativeElement*/) {
+export function getSelectionCursorState(/*nativeElement*/): { atEnd: boolean; atStart: boolean } {
   // const el = nativeElement
   const el = document.activeElement
   // debugLog('getSelectionCursorState', el.tagName, el)

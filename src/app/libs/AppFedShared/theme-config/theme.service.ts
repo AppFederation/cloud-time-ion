@@ -128,14 +128,18 @@ export class ThemeService {
     while (true) {
       const newId = this.getRandomThemeId()
       if ( newId !== this.themeId ) {
-        this.themeId = newId
+        this.setThemeId(newId)
         break;
       }
     }
-    this.updateColors()
   }
 
   applyNextTheme() {
-    // this.the
+    // written by GH Copilot; nice:
+    const themeIds = Object.keys(themes)
+    const currentIndex = themeIds.indexOf(this.themeId)
+    const nextIndex = (currentIndex + 1) % themeIds.length
+    const nextId = themeIds[nextIndex]
+    this.setThemeId(nextId)
   }
 }

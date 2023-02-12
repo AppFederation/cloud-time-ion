@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {themes} from './themes.data'
 import {ThemeService} from './theme.service'
+import {BaseComponent} from '../base/base.component'
 
 
 
@@ -9,7 +10,7 @@ import {ThemeService} from './theme.service'
   templateUrl: './theme-config.component.html',
   styleUrls: ['./theme-config.component.sass'],
 })
-export class ThemeConfigComponent implements OnInit {
+export class ThemeConfigComponent extends BaseComponent implements OnInit {
 
   Object = Object
 
@@ -19,7 +20,10 @@ export class ThemeConfigComponent implements OnInit {
 
   constructor(
     public themeService: ThemeService,
-  ) { }
+    injector: Injector,
+  ) {
+    super(injector)
+  }
 
   ngOnInit() {}
 

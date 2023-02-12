@@ -26,7 +26,10 @@
 >Random Theme</ion-button>
 <ion-button
   (click)="themeService.applyNextTheme()"
->Next Theme<!-- good for testing quickly--></ion-button>
+>Next Theme<!-- good for testing quickly-->
+  <!--  *ngIf="feat.mockups"-->
+
+</ion-button>
 
 <ion-button (click)="themesVisible = ! themesVisible">Themes</ion-button>
 <div *ngIf="themesVisible">
