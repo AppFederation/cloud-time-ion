@@ -1,9 +1,10 @@
 import {ElementRef, Injectable, Injector, Input, OnDestroy, OnInit} from '@angular/core'
 import {CellNavigationService} from './cell-navigation.service'
 import {OdmCell} from './tree/cells/OdmCell'
+import {BaseComponent} from './base/base.component'
 
 @Injectable()
-export abstract class AbstractCellComponent implements OnInit, OnDestroy {
+export abstract class AbstractCellComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
   public cell: OdmCell = new OdmCell() /* FIXME: dummy */
@@ -18,9 +19,9 @@ export abstract class AbstractCellComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    protected injector: Injector,
+    injector: Injector,
   ) {
-
+    super(injector)
   }
 
   /* override */ ngOnInit(): void {

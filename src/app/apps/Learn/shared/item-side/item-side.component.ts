@@ -6,9 +6,7 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {LearnItem} from '../../models/LearnItem'
-import {EditorComponent} from '@tinymce/tinymce-angular'
 import {RichTextEditComponent} from '../../../../libs/AppFedShared/rich-text/rich-text-edit/rich-text-edit.component'
-import {getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
 import {OdmCell} from '../../../../libs/AppFedShared/tree/cells/OdmCell'
 
 export type SideFormControlsDict = {[key in keyof SidesDefs]: UntypedFormControl }
