@@ -1,13 +1,14 @@
 //* :has(p[data-mce-bogus]) {
-.mce-content-body {
+.mce-content-body { /* FIXME: this is not encapsulated to component */
   background-color: var(--ion-item-background);
   padding: 10px; // FIXME setting this to non-zero causes too big padding;
   //padding: 0px;
-  margin: 0px;
   p {
     margin: 0;
     //background-color: orange;
   }
+
+  margin: 0px 0px 4px;
 
 }
 
