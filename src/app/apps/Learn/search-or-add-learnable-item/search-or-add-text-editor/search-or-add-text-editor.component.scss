@@ -1,10 +1,16 @@
 //* :has(p[data-mce-bogus]) {
 .mce-content-body {
   background-color: var(--ion-item-background);
-  padding: 1px; // FIXME setting this to non-zero causes too big padding;
+  padding: 10px; // FIXME setting this to non-zero causes too big padding;
   //padding: 0px;
   margin: 0px;
+  p {
+    margin: 0;
+    //background-color: orange;
+  }
+
 }
+
 
 //p {
 //  background-color: blue;
