@@ -5,7 +5,8 @@
   "homepage": "https://cloudtime.innotopic.com",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4207",
+    "start": "ng serve --port 4207 --live-reload false",
+    "startWithAutoReload": "ng serve --port 4207",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

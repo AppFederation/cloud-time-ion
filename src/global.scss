@@ -28,6 +28,8 @@
   opacity: 1; /* Firefox */
 }
 
+
+// TINYMCE
 .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
   /* https://www.w3schools.com/howto/howto_css_placeholder.asp */
   /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */
@@ -36,6 +38,7 @@
   opacity: 0.5;
   padding-left: 0.42em;
 }
+
 
 // ==== BEGIN stuff that is edited via rich-text-editor (but also appears on items list)
 ul, ol {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {UntypedFormControl} from '@angular/forms'
 import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
 import {RichTextInterceptorService} from '../../shared/utils/rich-text-interceptor.service'
@@ -8,7 +8,9 @@ import {richTextEditCommon} from '../../../../libs/AppFedShared/rich-text/rich-t
 @Component({
   selector: 'app-search-or-add-text-editor',
   templateUrl: './search-or-add-text-editor.component.html',
-  styleUrls: ['./search-or-add-text-editor.component.sass'],
+  styleUrls: ['./search-or-add-text-editor.component.scss'],
+  // disable encapsulation to allow styling of tinymce
+  encapsulation: ViewEncapsulation.None,
 })
 export class SearchOrAddTextEditorComponent implements OnInit {
 
