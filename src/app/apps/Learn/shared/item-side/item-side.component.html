@@ -20,7 +20,14 @@
   (click)="focusEditor()"
 > <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
 
-  <div class="dark-bg-highlight" style="padding: 0.5rem; border-radius: 3px; margin: 3px;">
+  <div
+    style="
+      padding: 0.5rem;
+      border-radius: 3px;
+      margin: 3px;
+      background-color: var(--apf-item-header-background)
+    "
+  >
     <app-side-label
       [side]="side"
     ></app-side-label>

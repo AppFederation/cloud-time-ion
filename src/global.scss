@@ -29,7 +29,26 @@
 }
 
 
-// TINYMCE
+// ====  TINYMCE - TODO move to components when I unify search&add with item side text editors
+
+//* :has(p[data-mce-bogus]) {
+.mce-content-body { /* FIXME: this is not encapsulated to component */
+  background-color: var(--apf-text-edit-background);
+  padding: 10px; // FIXME setting this to non-zero causes too big padding;
+  //padding: 0px;
+  p {
+    margin: 0;
+    //background-color: orange;
+  }
+
+  margin: 0px 0px 4px;
+
+}
+
+//p {
+//  background-color: blue;
+//}
+
 .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
   /* https://www.w3schools.com/howto/howto_css_placeholder.asp */
   /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */

@@ -37,9 +37,10 @@ export class ThemeCalculator {
     root.style.setProperty(`--ion-background-color`, background);
 
     const itemAndTextBg = shadeColor(background, themeOptions.brightnessPercent / 85)
-    console.log(`itemAndTextBg`, itemAndTextBg)
-    root.style.setProperty(`--apf-text-edit-background`, itemAndTextBg);
+    // console.log(`itemAndTextBg`, itemAndTextBg)
     root.style.setProperty(`--ion-item-background`, itemAndTextBg);
+    root.style.setProperty(`--apf-text-edit-background`, 'var(--ion-item-background)');
+    root.style.setProperty(`--apf-item-header-background`, 'var(--ion-item-background)');
 
 
     // console.log('root.style', root.style);
