@@ -1,6 +1,6 @@
 //* :has(p[data-mce-bogus]) {
 .mce-content-body { /* FIXME: this is not encapsulated to component */
-  background-color: var(--ion-item-background);
+  background-color: var(--apf-text-edit-background);
   padding: 10px; // FIXME setting this to non-zero causes too big padding;
   //padding: 0px;
   p {

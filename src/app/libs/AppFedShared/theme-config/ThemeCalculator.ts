@@ -17,20 +17,10 @@ export class ThemeOptions {
 export class ThemeCalculator {
 
   public updateColors(themeOptions: ThemeOptions) {
-    // it was gray and green cool theme
-
-    // const color = '#000080'
-    // // const color = '#800080'
-    // const secondary = '#008000'
-
-    // TODO: extract ThemeService, so I can e.g. fade in on app start
-
-    // const color = '#800080'
-    // const primary = '#008000'
-    // const secondary = '#5050f0'
 
     const theme = themeOptions.theme
-    const {primary, secondary, background} = theme
+    const {primary, secondary} = theme
+    const background = shadeColor(theme.background || '#101010', themeOptions.brightnessPercent / 75)
 
     // const darkenVal = 0 - sliderVal / 100
     // const lightenVal = 0 + sliderVal / 100
@@ -38,15 +28,18 @@ export class ThemeCalculator {
 
     // console.log('root.style', root.style);
     // FIXME: also try to set -rgb, coz button does not change color
-    // Try this later with ionic 6 (can be in separate app)
-
 
     this.setColorProps('primary', primary, themeOptions)
     this.setColorProps('secondary', secondary, themeOptions)
     // this.setColorProps('background', background || '#000000')
 
     const root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
-    root.style.setProperty(`--ion-background-color`, background || '#000000');
+    root.style.setProperty(`--ion-background-color`, background);
+
+    const itemAndTextBg = shadeColor(background, themeOptions.brightnessPercent / 85)
+    console.log(`itemAndTextBg`, itemAndTextBg)
+    root.style.setProperty(`--apf-text-edit-background`, itemAndTextBg);
+    root.style.setProperty(`--ion-item-background`, itemAndTextBg);
 
 
     // console.log('root.style', root.style);
@@ -86,6 +79,7 @@ export class ThemeCalculator {
     } else {
       root.style.setProperty(`--ion-color-${colorName}-highlight`, `var(--ion-color-primary-shade`);
     }
+
   }
 
 }

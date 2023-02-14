@@ -2,6 +2,8 @@ import {ChangeDetectorRef, Component, Injector, OnInit} from '@angular/core';
 import {g} from '../g'
 import {FeatureService} from '../feature.service'
 import {FeaturesConfig} from '../FeaturesConfig'
+import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
+import {Config, ConfigService} from '../../../apps/OrYoL/core/config.service'
 
 /** This is syntactic sugar and automation to improve DX where angular has DX shortcomings
  * and to reduce boilerplate and distractions when coding ACTUAL FEATURES
@@ -14,6 +16,11 @@ import {FeaturesConfig} from '../FeaturesConfig'
   styleUrls: ['./base.component.sass'],
 })
 export class BaseComponent implements OnInit {
+
+  configService = this.injector.get(ConfigService)
+
+  config$: CachedSubject<Config> = this.configService.config$
+
 
   constructor(
     public injector: Injector

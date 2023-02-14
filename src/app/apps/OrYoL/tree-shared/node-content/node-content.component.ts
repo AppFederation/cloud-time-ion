@@ -36,7 +36,7 @@ import {
   columnDefs,
   Columns,
 } from './Columns'
-import { ConfigService } from '../../core/config.service'
+import {Config, ConfigService} from '../../core/config.service'
 import { TimeTrackingService } from '../../time-tracking/time-tracking.service'
 import {getActiveElementCaretPos, getSelectionCursorState} from '../../../../libs/AppFedShared/utils/caret-utils'
 import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
@@ -44,6 +44,7 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
+import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -100,7 +101,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   nodeDebug = new NodeDebug()
 
-  config$ = this.configService.config$
+  config$: CachedSubject<Config> = this.configService.config$
 
   constructor(
     public timeTrackingService: TimeTrackingService,
