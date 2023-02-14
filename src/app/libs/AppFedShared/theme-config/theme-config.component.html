@@ -33,15 +33,15 @@
 
 <ion-button (click)="themesVisible = ! themesVisible">Themes</ion-button>
 <div *ngIf="themesVisible">
-  <div *ngFor="let curThemeId of Object.keys(themes)"
+  <div *ngFor="let curTheme of themes"
        style="cursor: pointer; margin-bottom: 4px"
-       (click)="themeService.setThemeId(curThemeId)"
-       [ngStyle]="{'background-color': themes[curThemeId].background}"
+       (click)="themeService.setTheme(curTheme)"
+       [ngStyle]="{'background-color': curTheme.background}"
   >
-    {{curThemeId}}<br>
-    <span [ngStyle]="{color: themes[curThemeId].primary}">Primary</span>
+    {{getThemeId(curTheme)}}<br>
+    <span [ngStyle]="{color: curTheme.primary}">Primary</span>
     &nbsp;
-    <span [ngStyle]="{color: themes[curThemeId].secondary}">Secondary</span>
+    <span [ngStyle]="{color: curTheme.secondary}">Secondary</span>
 
   </div>
 </div>

@@ -1,7 +1,7 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {themes} from './themes.data'
 import {ThemeService} from './theme.service'
 import {BaseComponent} from '../base/base.component'
+import {Theme, ThemeId} from './themes.data'
 
 
 
@@ -14,7 +14,9 @@ export class ThemeConfigComponent extends BaseComponent implements OnInit {
 
   Object = Object
 
-  themes = this.themeService.themes
+  get themes() {
+    return this.themeService.themes
+  }
 
   themesVisible = false
 
@@ -31,4 +33,7 @@ export class ThemeConfigComponent extends BaseComponent implements OnInit {
     this.themeService.setBrightnessPercent(100 - $event.detail.value)
   }
 
+  getThemeId(theme: Theme) {
+    return (theme as any as {id: ThemeId}).id
+  }
 }

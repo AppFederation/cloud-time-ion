@@ -1,4 +1,4 @@
-import {setIdsFromKeys} from '../utils/dictionary-utils'
+import {getDictionaryValuesAsArray, mapEntriesToArray, setIdsFromKeys} from '../utils/dictionary-utils'
 
 export type ThemeId = string
 
@@ -10,7 +10,7 @@ export type Theme = {
   secondary: string;
 }
 
-export const themes: { [key: string]: Theme } = setIdsFromKeys({
+export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
   'Bright': {
     // background: '#2c2c2c',
     background: '#cbcbcb',
@@ -31,14 +31,12 @@ export const themes: { [key: string]: Theme } = setIdsFromKeys({
   },
   'Porzeczki Agrest': {
     comment: 'Jellies',
-    experimental: true,
     background: '#6a2c2c',
     primary: '#c72323',
     secondary: '#b68001',
   },
   'Dark Green Bg, Agrest': {
     comment: 'Jellies',
-    experimental: true,
     background: '#244d20',
     primary: '#326a2c',
     secondary: '#b68001',
@@ -99,3 +97,5 @@ export const themes: { [key: string]: Theme } = setIdsFromKeys({
   },
   // TODO: brown and green like forest
 })
+
+export const themesArray = getDictionaryValuesAsArray(themesMapById)
