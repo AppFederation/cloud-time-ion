@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {themes} from './themes.data'
+import {ThemeId, themes} from './themes.data'
 import {getRgbColorFromHex, luminance, shadeColor} from './color-utils'
+import {ThemeCalculator, ThemeOptions} from './ThemeCalculator'
 
-export type ThemeId = string
 
 
 @Injectable({
@@ -10,9 +10,11 @@ export type ThemeId = string
 })
 export class ThemeService {
 
-  public themes = themes as any
+  themeCalculator = new ThemeCalculator()
 
   brightnessPercent = 50
+
+  public themes = themes as any
 
   // public themeId: any/*keyof typeof themes*/ = 'Porzeczki Agrest'
   public themeId: any/*keyof typeof themes*/ = this.getRandomThemeId()
@@ -21,89 +23,9 @@ export class ThemeService {
     this.applyRandomTheme()
   }
 
-  // private readonly contrastLuminanceThreshold = 0.37
-  // private readonly contrastLuminanceThreshold = 0.25
-  // private readonly contrastLuminanceThreshold = 0.1
-  private readonly contrastLuminanceThreshold = 0.15
-  // private readonly contrastLuminanceThreshold = 0.9
-
-
-  protected updateColors() {
-    // it was gray and green cool theme
-
-    // const color = '#000080'
-    // // const color = '#800080'
-    // const secondary = '#008000'
-
-    // TODO: extract ThemeService, so I can e.g. fade in on app start
-
-    // const color = '#800080'
-    // const primary = '#008000'
-    // const secondary = '#5050f0'
-
-    const theme = themes[this.themeId as keyof typeof themes]
-    const {primary, secondary, background} = theme
-
-    // const darkenVal = 0 - sliderVal / 100
-    // const lightenVal = 0 + sliderVal / 100
-
-
-    // console.log('root.style', root.style);
-    // FIXME: also try to set -rgb, coz button does not change color
-    // Try this later with ionic 6 (can be in separate app)
-
-
-    this.setColorProps('primary', primary)
-    this.setColorProps('secondary', secondary)
-    // this.setColorProps('background', background || '#000000')
-
-    const root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
-    root.style.setProperty(`--ion-background-color`, background || '#000000');
-
-
-    // console.log('root.style', root.style);
-  }
-
-  setColorProps(colorName: string, colorVal: string) {
-    const isDarkTheme = true // TODO
-
-    const darkenVal = this.brightnessPercent / 50
-    const centerVal = this.brightnessPercent / 75
-    const lightenVal = this.brightnessPercent / 100
-
-    // let root: HTMLElement = document.documentElement;
-    const root = document.getElementsByTagName("BODY")[0] ! as HTMLElement;
-    // let root = document.getEl
-
-    // root.style.setProperty(`--ion-color-${colorName}-rgb`, colorVal);
-    const centralColor = shadeColor(colorVal, centerVal)
-    const luminance1 = luminance(getRgbColorFromHex(centralColor))
-    console.log('luminance1 ' + colorName + ` $centralColor`, luminance1)
-    root.style.setProperty(`--ion-color-${colorName}-contrast`,
-      luminance1 < this.contrastLuminanceThreshold ? 'white' : 'black');
-    // root.style.setProperty(`--ion-color-${colorName}-muted`,
-    //   /** workaround for logo disappearing on page navigation */
-    // 'gray' /* TODO might wanna vary on luminance */); // TODO: prolly better to have it as transparency
-    root.style.setProperty(`--ion-color-${colorName}-contrast-muted`,
-      /** workaround for logo disappearing on page navigation */
-      centralColor+'80')
-    const tinted = shadeColor(colorVal, lightenVal)
-    root.style.setProperty(`--ion-color-${colorName}-tint`, tinted);
-    root.style.setProperty(`--ion-color-${colorName}`, centralColor);
-    root.style.setProperty(`--${colorName}`, centralColor);
-    const shaded = shadeColor(colorVal, darkenVal)
-    root.style.setProperty(`--ion-color-${colorName}-shade`, shaded);
-
-    if (isDarkTheme) { /* highlight color to stand against background: */
-      root.style.setProperty(`--ion-color-${colorName}-highlight`, `var(--ion-color-primary-tint`);
-    } else {
-      root.style.setProperty(`--ion-color-${colorName}-highlight`, `var(--ion-color-primary-shade`);
-    }
-  }
-
   setThemeId(themeId: ThemeId) {
     this.themeId = themeId
-    this.updateColors()
+    this.themeCalculator.updateColors(this.getThemeOptions())
   }
 
   setBrightnessPercent(brightnessPercent: number) {
@@ -141,5 +63,25 @@ export class ThemeService {
     const nextIndex = (currentIndex + 1) % themeIds.length
     const nextId = themeIds[nextIndex]
     this.setThemeId(nextId)
+  }
+
+  public getThemeOptions(): ThemeOptions {
+    const opts = new ThemeOptions()
+    // opts.theme = this.getTheme()
+    // opts.brightnessPercent = this.brightnessPercent
+
+    return {
+      ... opts,
+      theme: this.getTheme(),
+      brightnessPercent: this.brightnessPercent
+    }
+  }
+
+  public getTheme() {
+    return this.themes[this.themeId]
+  }
+
+  private updateColors() {
+    this.themeCalculator.updateColors(this.getThemeOptions())
   }
 }

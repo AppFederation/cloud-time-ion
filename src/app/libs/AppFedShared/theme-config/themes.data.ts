@@ -1,4 +1,8 @@
-type Theme = {
+import {setIdsFromKeys} from '../utils/dictionary-utils'
+
+export type ThemeId = string
+
+export type Theme = {
   comment?: string;
   background?: string;
   experimental?: boolean;
@@ -6,7 +10,7 @@ type Theme = {
   secondary: string;
 }
 
-export const themes: { [key: string]: Theme } = {
+export const themes: { [key: string]: Theme } = setIdsFromKeys({
   'Bright': {
     // background: '#2c2c2c',
     background: '#cbcbcb',
@@ -38,6 +42,13 @@ export const themes: { [key: string]: Theme } = {
     background: '#244d20',
     primary: '#326a2c',
     secondary: '#b68001',
+  },
+  'Dark purple and yellow': {
+    comment: 'Jellies',
+    experimental: true,
+    background: 'darkblue',
+    primary: 'yellow',
+    secondary: 'orange',
   },
   'Gray Green': {
     comment: 'Jellies',
@@ -87,4 +98,4 @@ export const themes: { [key: string]: Theme } = {
     secondary: '#e1b74d',
   },
   // TODO: brown and green like forest
-}
+})
