@@ -244,7 +244,7 @@ export class ListProcessing {
       ... (!this.search?.trim() ? (this.filteredItem$s.filter( /* FIXME: don't include this if `searchText.trim()` */
         item$ => {
           const effectiveImportance = item$.getEffectiveImportance()
-          console.log(`effectiveImportance`, effectiveImportance)
+          // console.log(`effectiveImportance`, effectiveImportance)
           return effectiveImportance.numeric === importanceDescriptors.pinned.numeric
         }
       )) : []),
