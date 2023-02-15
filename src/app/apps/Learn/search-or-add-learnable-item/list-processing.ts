@@ -5,6 +5,7 @@ import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {ListOptionsData} from './list-options'
 import {Injector} from '@angular/core'
 import {NavigationService} from '../../../shared/navigation.service'
+import {importanceDescriptors} from '../models/fields/importance.model'
 
 export class ListProcessing {
 
@@ -237,10 +238,21 @@ export class ListProcessing {
         // && item.funEstimate
       )
     }
-    this.filteredItem$s = this.filteredItem$s.filter(
-      item =>
-        item.val?.isMaybeDoableNow()
-    )
+    console.log(`this.search`, this.search, !!this.search)
+    this.filteredItem$s = [
+
+      ... (!this.search?.trim() ? (this.filteredItem$s.filter( /* FIXME: don't include this if `searchText.trim()` */
+        item$ => {
+          const effectiveImportance = item$.getEffectiveImportance()
+          console.log(`effectiveImportance`, effectiveImportance)
+          return effectiveImportance.numeric === importanceDescriptors.pinned.numeric
+        }
+      )) : []),
+      ... this.filteredItem$s.filter(
+        item =>
+          item.val?.isMaybeDoableNow()
+      )
+    ]
 
     this.selection.setAllPossibleToSelect(this.filteredItem$s.map(item => item.id))
     this.navigationService.list = this.filteredItem$s
