@@ -104,21 +104,31 @@
       [item$]="item$"
     ></app-importance-edit>
 
-    <app-fun-level-edit
-      [item$]="item$"
-    ></app-fun-level-edit>
 
-    <app-mental-effort-level-edit
-      [item$]="item$"
-    ></app-mental-effort-level-edit>
-
-    <app-physical-health-impact-level-edit
-      [item$]="item$"
-    ></app-physical-health-impact-level-edit>
-
-    <app-mental-health-impact-level-edit
-      [item$]="item$"
-    ></app-mental-health-impact-level-edit>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-xl=3>
+          <app-fun-level-edit
+            [item$]="item$"
+          ></app-fun-level-edit>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-xl=3>
+          <app-mental-effort-level-edit
+            [item$]="item$"
+          ></app-mental-effort-level-edit>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-xl=3>
+          <app-physical-health-impact-level-edit
+            [item$]="item$"
+          ></app-physical-health-impact-level-edit>
+        </ion-col>
+        <ion-col size="12" size-md="6" size-xl=3>
+          <app-mental-health-impact-level-edit
+            [item$]="item$"
+          ></app-mental-health-impact-level-edit>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
     <app-statuses-edit
       *ngIf="feat.workflowStatuses"

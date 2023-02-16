@@ -1,19 +1,26 @@
 <!--{{((item$.locallyVisibleChanges$ | async)?.importance?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
 <!-- FIXME: this is causing delay; do smth like item$.valImmediate$ -->
 
-<label>IMPORTANCE:</label>
-<apf-numeric-picker
-  [buttonDescriptors]="importanceButtonsDesc"
-  [formControl]="formControls.importance"
-></apf-numeric-picker>
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" size-xl="6">
+      <label>IMPORTANCE:</label>
+      <apf-numeric-picker
+        [buttonDescriptors]="importanceButtonsDesc"
+        [formControl]="formControls.importance"
+      ></apf-numeric-picker>
+    </ion-col>
+    <ion-col size="12" size-xl="6">
+      <label>CURRENT IMPORTANCE:</label>
+      <!--{{((item$.locallyVisibleChanges$ | async)?.importanceCurrent?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
+      <apf-numeric-picker
+        [buttonDescriptors]="importanceButtonsDesc"
+        [formControl]="formControlsCurrent.importanceCurrent"
+      ></apf-numeric-picker>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 
-
-<label>CURRENT IMPORTANCE:</label>
-<!--{{((item$.locallyVisibleChanges$ | async)?.importanceCurrent?.id)?.replace('_', ' ')?.toUpperCase() || '-' }}-->
-<apf-numeric-picker
-  [buttonDescriptors]="importanceButtonsDesc"
-  [formControl]="formControlsCurrent.importanceCurrent"
-></apf-numeric-picker>
 
 
 <!--<ion-item>-->

@@ -238,7 +238,7 @@ export class ListProcessing {
         // && item.funEstimate
       )
     }
-    console.log(`this.search`, this.search, !!this.search)
+    // console.log(`this.search`, this.search, !!this.search)
     this.filteredItem$s = [
 
       ... (!this.search?.trim() ? (this.filteredItem$s.filter( /* FIXME: don't include this if `searchText.trim()` */
