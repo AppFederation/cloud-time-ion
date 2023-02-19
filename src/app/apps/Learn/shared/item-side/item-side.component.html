@@ -15,7 +15,7 @@
 </ion-button>
 
 <div
-  style="margin-left: 4px"
+  style="margin: 3px"
   *ngIf="side && isVisible(item$.val$ | async) && (editorOpened || formControl.value)"
   (click)="focusEditor()"
 > <!-- https://github.com/tinymce/tinymce-angular/issues/130 -->
@@ -23,8 +23,8 @@
   <div
     style="
       padding: 0.5rem;
-      border-radius: 3px;
-      margin: 3px;
+      border-radius: 6px 6px 0px 0px;
+      margin-bottom: 3px;
       background-color: var(--apf-item-header-background)
     "
   >
