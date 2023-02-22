@@ -3,6 +3,9 @@ import {AngularFireStorage} from '@angular/fire/compat/storage'
 import {uuid4} from '@capacitor/core/dist/esm/util'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {AngularFirestore} from '@angular/fire/compat/firestore'
+import firebase from 'firebase/compat/app'
+import FirestoreBlob = firebase.firestore.Blob
+
 
 
 @Injectable({
@@ -44,7 +47,7 @@ export class UploadService {
     console.log(`int8Array.byteLength`, int8Array.byteLength)
     const promise = this.angularFirestore.collection('LearnDoAudio').doc(id).set({
       // fixme: commented out while migrating to firebase v9
-      // audio: firebase.firestore.Blob.fromUint8Array(int8Array),
+      audio: FirestoreBlob.fromUint8Array(int8Array),
     })
     this.syncStatusService.handleSavingPromise(promise)
   }

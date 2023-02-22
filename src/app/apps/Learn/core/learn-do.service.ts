@@ -42,4 +42,8 @@ export class LearnDoService extends OdmService2<
     return learnItem$
   }
 
+  override createOdmItem$(id?: LearnItemId, inMemData?: LearnItem) {
+    return new LearnItem$(this, id, inMemData)
+  }
+
 }

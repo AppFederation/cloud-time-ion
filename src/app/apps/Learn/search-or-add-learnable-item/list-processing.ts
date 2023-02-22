@@ -240,14 +240,13 @@ export class ListProcessing {
     }
     // console.log(`this.search`, this.search, !!this.search)
     this.filteredItem$s = [
-
-      ... (!this.search?.trim() ? (this.filteredItem$s.filter( /* FIXME: don't include this if `searchText.trim()` */
-        item$ => {
-          const effectiveImportance = item$.getEffectiveImportance()
-          // console.log(`effectiveImportance`, effectiveImportance)
-          return effectiveImportance.numeric === importanceDescriptors.pinned.numeric
-        }
-      )) : []),
+      // ... (!this.search?.trim() ? (this.filteredItem$s.filter( /* FIXME: don't include this if `searchText.trim()` */
+      //   item$ => {
+      //     const effectiveImportance = item$.getEffectiveImportance()
+      //     // console.log(`effectiveImportance`, effectiveImportance)
+      //     return effectiveImportance.numeric === importanceDescriptors.pinned.numeric
+      //   }
+      // )) : []),
       ... this.filteredItem$s.filter(
         item =>
           item.val?.isMaybeDoableNow()

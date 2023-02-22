@@ -34,10 +34,16 @@ export class GenericItemsService extends OdmService2<
     return new GenericItem$(this, itemId, inMemVal)
   }
 
+  /** TODO de-duplicate with base service func; rename to addAndSave() */
   add(val?: GenericItem) {
-    const item$ = new GenericItem$(this, undefined, val ?? new GenericItem())
+    const item$ = this.createOdmItem$(undefined, val)
     item$.saveNowToDb()
     return item$
+  }
+
+  override createOdmItem$(id?: GenericItemId, inMemData?: GenericItem, parents?: GenericItem$[]): GenericItem$ {
+    // TODO: I wrote this when tired, to fix mic component. Re-check.
+    return new GenericItem$(this, undefined, inMemData, parents);
   }
 
 }

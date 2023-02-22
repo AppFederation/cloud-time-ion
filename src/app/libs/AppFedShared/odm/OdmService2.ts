@@ -260,9 +260,7 @@ export abstract class OdmService2<
   /** Can be overridden by subclasses to provide specific sub-type */
   newItem(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[]): TOdmItem$ {
 
-    const odmItem$ = new OdmItem$2(this as any
-      /* workaround for TS2716: Type parameter 'TOdmItem$' has a circular default. */
-      , id, inMemData, parents) as any as TOdmItem$
+    const odmItem$ = this.createOdmItem$(id, inMemData, parents)
 
     return odmItem$
   }
@@ -313,4 +311,8 @@ export abstract class OdmService2<
     }
   }
 
+  /** this should be abstract but keeping default impl for compat; subclasses should override */
+  createOdmItem$(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[]): TOdmItem$ {
+    return new OdmItem$2(this as any, id, inMemData, parents) as any as TOdmItem$
+  }
 }
