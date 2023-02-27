@@ -32,15 +32,15 @@
 
     <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
       <!--      <hr>-->
-      <app-side-label
-        *ngIf="(showHint$ | async) && ! (showAnswer$ | async)"
-        [side]="answerSide"
-      ></app-side-label>
+<!--      <app-side-label-->
+<!--        *ngIf="(showHint$ | async) && ! (showAnswer$ | async)"-->
+<!--        [side]="answerSide"-->
+<!--      ></app-side-label>-->
 
       <app-item-side-editor
-        *ngIf="(showAnswer$ | async)"
         [item$]="item$ !"
         [side]="answerSide"
+        [showRevealButton]="! (showAnswer$ | async)"
       ></app-item-side-editor>
 
     </ng-container>

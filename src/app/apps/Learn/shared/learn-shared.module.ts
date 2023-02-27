@@ -16,6 +16,7 @@ import {ProcessButtonComponent} from './process-button/process-button.component'
 import {SideIconComponent} from './side-icon/side-icon.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {SliderComponent} from './slider/slider.component'
+import {QuizAnswerRevealerComponent} from '../quiz/quiz-item-details/quiz-answer-revealer/quiz-answer-revealer.component'
 
 const exports = [
   SelfRatingComponent,
@@ -33,6 +34,7 @@ const exports = [
 @NgModule({
     declarations: [
         ...exports,
+        QuizAnswerRevealerComponent,
     ],
   imports: [
     CommonModule,

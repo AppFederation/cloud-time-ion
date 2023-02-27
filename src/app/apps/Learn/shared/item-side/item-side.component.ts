@@ -33,6 +33,10 @@ export class ItemSideComponent implements OnInit {
   @Input()
   cell ! : OdmCell
 
+  @Input()
+  showRevealButton = false
+
+
   formControls ! : SideFormControlsDict
 
   formGroup ! : UntypedFormGroup
@@ -49,6 +53,7 @@ export class ItemSideComponent implements OnInit {
 
   /** TODO     *ngIf="viewSyncer.initialDataArrived else notLoaded" */
   viewSyncer ! : ViewSyncer
+
 
   constructor() { }
 
@@ -114,4 +119,5 @@ export class ItemSideComponent implements OnInit {
     }
     return true
   }
+
 }

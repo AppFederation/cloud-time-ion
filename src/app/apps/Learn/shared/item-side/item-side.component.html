@@ -31,6 +31,7 @@
     <app-side-label
       [side]="side"
     ></app-side-label>
+    <!--    <ion-button size="small">Reveal</ion-button>-->
   </div>
 
 <!--
@@ -39,9 +40,15 @@
 -->
 
   <app-rich-text-edit
+    *ngIf="! showRevealButton"
     [viewSyncer]="viewSyncer"
     [formControl1]="formControl"
   ></app-rich-text-edit>
+
+  <app-quiz-answer-revealer
+    *ngIf="showRevealButton"
+    [formControl1]="formControl"
+  ></app-quiz-answer-revealer>
 
 </div>
 
