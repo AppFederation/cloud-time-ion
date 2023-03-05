@@ -58,10 +58,10 @@
   >
     <div style="flex-grow: 1; color: white">
       <div
-        (keyup.enter)="addTask(); $event.stopPropagation()"
-        (keyup.meta.enter)="addToLearn(); $event.stopPropagation()"
-        (keyup.alt.enter)="addToLearn(); $event.stopPropagation()"
-        (keyup.control.enter)="addToLearn(); $event.stopPropagation()"
+        (keyup.shift.enter)="addTask(); $event.stopPropagation(); $event.preventDefault()"
+        (keyup.meta.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
+        (keyup.alt.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
+        (keyup.control.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
       >
         <app-search-or-add-text-editor
           [formControl1]="searchFormControl"

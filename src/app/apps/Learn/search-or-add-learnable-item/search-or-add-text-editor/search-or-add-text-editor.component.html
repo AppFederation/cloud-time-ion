@@ -1,18 +1,27 @@
 
-<editor
-  apiKey="o9pxe54rr0n0ox46qj7gtlks0ilkpf7gmximm8syjqzjl184"
-  #editor
-  [init]="tinyMceInit"
-  [inline]="true"
-  [formControl]="formControl1"
-  modelEvents="change input undo redo nodechange"
->
-  <!--     (onSetContent)="logEditor('onSetContent')"
-  (onPostRender)="logEditor('onPostRender')"
-  -->
-  <!-- events: https://www.tiny.cloud/docs/advanced/events/#init
-    * Init -- actually called last?
-    * SetContent
-  -->
+<app-rich-text-edit
+  [viewSyncer]="undefined"
+  [formControl1]="formControl1"
+  [placeholder]="'SEARCH OR ADD'"
+  [showToolbar]="false"
+  [showMenuBar]="false"
+  [enableModelEventNodeChange]="true"
+></app-rich-text-edit>
 
-</editor>
+<!--<editor-->
+<!--  apiKey="o9pxe54rr0n0ox46qj7gtlks0ilkpf7gmximm8syjqzjl184"-->
+<!--  #editor-->
+<!--  [init]="tinyMceInit"-->
+<!--  [inline]="true"-->
+<!--  [formControl]="formControl1"-->
+<!--  modelEvents="change input undo redo nodechange"-->
+<!--&gt;-->
+<!--  &lt;!&ndash;     (onSetContent)="logEditor('onSetContent')"-->
+<!--  (onPostRender)="logEditor('onPostRender')"-->
+<!--  &ndash;&gt;-->
+<!--  &lt;!&ndash; events: https://www.tiny.cloud/docs/advanced/events/#init-->
+<!--    * Init &#45;&#45; actually called last?-->
+<!--    * SetContent-->
+<!--  &ndash;&gt;-->
+
+<!--</editor>-->

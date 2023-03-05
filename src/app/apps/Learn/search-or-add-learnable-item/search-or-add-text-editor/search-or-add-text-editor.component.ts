@@ -9,7 +9,7 @@ import {richTextEditCommon} from '../../../../libs/AppFedShared/rich-text/rich-t
   selector: 'app-search-or-add-text-editor',
   templateUrl: './search-or-add-text-editor.component.html',
   styleUrls: ['./search-or-add-text-editor.component.scss'],
-  // disable encapsulation to allow styling of tinymce
+  // disable encapsulation to allow styling of tinymce (no longer needed prolly cos moved to global styles)
   encapsulation: ViewEncapsulation.None,
 })
 export class SearchOrAddTextEditorComponent implements OnInit {
@@ -50,10 +50,10 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     // content_css: 'dark', /* is causing error on console, as this is url part */  // > **Note**: This feature is only available for TinyMCE 5.1 and later.
     entity_encoding: `raw`,
     valid_classes: richTextEditCommon.valid_classes,
-    content_style:
-      '[contenteditable] { padding-left: 5px; } ' +
-      '[contenteditable] li { padding-top: 6px; } ' +
-      '[contenteditable] ::marker { color: red } '
+    content_style: '' /* DO NOT use this; as they should look the same in list items etc. */
+      // '[contenteditable] { padding-left: 5px; } ' +
+      // '[contenteditable] li { padding-top: 6px; } ' +
+      // '[contenteditable] ::marker { color: red } '
     /* https://www.tiny.cloud/docs/configure/content-appearance/
       padding to be able to see cursor when it's close to focus border
       [contenteditable] a { color: #98aed9 }
@@ -102,6 +102,7 @@ export class SearchOrAddTextEditorComponent implements OnInit {
     })
   }
 
+  /** This is for Chrome extension */
   private interceptSelectedText() {
     this.richTextInterceptor.intercept(selectedText => this.formControl1.setValue(selectedText[0]));
   }
