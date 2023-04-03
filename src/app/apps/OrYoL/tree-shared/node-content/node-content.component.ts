@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -110,6 +110,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // private modalService: NgbModal,
     public configService: ConfigService,
     public popoverController: PopoverController,
+    protected injector: Injector,
   ) {
     // should be at the level of model / column-model
     this.config$.subscribe(config => {
@@ -159,6 +160,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   ngAfterViewInit(): void {
     this.nodeContentViewSyncer = new NodeContentViewSyncer(
+      this.injector,
       this.treeNode,
       this.columns,
       this.mapColumnToComponent,

@@ -34,6 +34,7 @@ import {firebaseConfig} from '../../../firebase.config'
 import {Firestore} from '@angular/fire/firestore'
 import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
+import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -99,6 +100,7 @@ export class FirestoreTreeService extends DbTreeService {
 
   constructor(
     protected angularFirestore: AngularFirestore,
+    protected syncStatusService: SyncStatusService,
   ) {
     super()
     // this.db.enablePersistence().then(() => {
@@ -112,8 +114,9 @@ export class FirestoreTreeService extends DbTreeService {
   }
 
   deleteWithoutConfirmation(itemId: string) {
-    this.itemDocById(itemId).update('deleted', new Date())
-    console.log('deleted ' + itemId)
+    let promise = this.itemDocById(itemId).update('deleted', new Date()) // TODO
+    this.syncStatusService.handleSavingPromise(promise)
+    console.log('deleteWithoutConfirmation deleted ' + itemId)
   }
 
   loadNodesTree(listener: DbTreeListener) {
@@ -128,6 +131,8 @@ export class FirestoreTreeService extends DbTreeService {
   private processNodeEvents(nestLevel: number, childrenChangesEvent: ChildrenChangesEvent, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
     childrenChangesEvent.inclusionsAdded.forEach(inclusionAdded => {
+      console.log(`FirestoreTreeService childrenChangesEvent.inclusionsAdded`, inclusionAdded)
+
       // debugLog('docChanges change.type', change.type);
 
       // debugLog('nodeInclusionData ... change.doc', change.doc)
@@ -172,7 +177,7 @@ export class FirestoreTreeService extends DbTreeService {
     childrenChangesEvent.inclusionsModified.forEach(inclusionModified => {
       const nodeInclusionData = inclusionModified.data() as FirestoreNodeInclusion
       const nodeInclusionId = nodeInclusionData.nodeInclusionId
-
+      console.log(`FirestoreTreeService listener.onNodeInclusionModified`, inclusionModified)
       listener.onNodeInclusionModified(nodeInclusionId, nodeInclusionData, nodeInclusionData.parentNode !. id)
     })
 
@@ -285,11 +290,17 @@ export class FirestoreTreeService extends DbTreeService {
   patchItemData(itemId: string, itemData: any) {
     this.timeStamper.onBeforeSaveToDb(itemData)
 
-    return this.itemDocById(itemId).update(itemData)
+    /**
+     * TODO check: "The update will fail if applied to a document that does not exist."
+     * @return
+     A Promise resolved once the data has been successfully written to the backend
+     (Note that it won't resolve while you're offline). */
+    let promise = this.itemDocById(itemId).update(itemData)
+    return { onPatchSentToRemote: promise }
   }
 
   patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any, childItemId: string) {
-    // FIXME: this should build the whole inclusion object and use .set instead of .update
+    // FIXME: this should build the whole inclusion object and use .set() instead of .update()
     debugLog('patchChildInclusionData', arguments)
     // in order to work around the "no document to update" issue, we use the same function as for adding new inclusions:
     this.addNodeInclusionToParent(parentItemId, itemInclusionData, this.itemDocById(childItemId))

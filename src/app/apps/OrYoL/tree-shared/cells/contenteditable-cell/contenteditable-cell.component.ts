@@ -35,8 +35,11 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
 
   ngOnInit() {
     super.ngOnInit()
-    this.contentEditableEl
-      .nativeElement.addEventListener('input', (event: InputEvent) => this.onInputChanged(event, this.getInputValue()))
+    this.contentEditableEl.nativeElement.addEventListener(
+      'input',
+      (event: InputEvent) =>
+        this.onInputChanged(event, this.getInputValue())
+    )
   }
 
   getInputValue(): string {

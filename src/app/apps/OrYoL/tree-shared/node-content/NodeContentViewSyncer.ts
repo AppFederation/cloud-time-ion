@@ -1,13 +1,22 @@
 import { OryColumn } from '../OryColumn'
 import { CellComponent } from '../cells/CellComponent'
-import { EventEmitter } from '@angular/core'
+import {EventEmitter, Injector} from '@angular/core'
 import { debugLog } from '../../utils/log'
 import { ColumnCell } from './Cells'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 import { Columns } from './Columns'
 import {throttleTime} from 'rxjs/operators'
+import {SyncStatusService} from '../../../../libs/AppFedShared/odm/sync-status.service'
 
-/** other names: CellsViewSyncer */
+/** other names: CellsViewSyncer
+ *
+ * ======== FIXME: problem with cursor being reset after TAB indent: is because another NodeContentViewSyncer instance is created,
+ * which does not know about the previous.
+ * This should be as much as possible on OdmItem$, instead of component view.
+ * And the delay is not due to Firestore, but due to my DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB.
+ *
+ * @deprecated
+ * */
 export class NodeContentViewSyncer {
   // isApplyingFromDbNow = false   /** TODO: to NodeContentViewSyncer */
 
@@ -26,7 +35,11 @@ export class NodeContentViewSyncer {
 
   private readonly DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB = 7000
 
+  protected syncStatusService = this.injector.get(SyncStatusService)
+  private unsavedChangesPromiseResolve: ( () => void ) | undefined
+
   constructor(
+    protected injector: Injector,
     private treeNode: OryTreeNode,
     private columns: Columns,
     private mapColumnToComponent: Map<OryColumn, CellComponent>,
@@ -44,7 +57,7 @@ export class NodeContentViewSyncer {
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
       const throttleTimeConfig = {
-        leading: true /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
+        leading: false /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
         /* think about false; usually single character; but what if someone pastes something, then it will be fast;
         plus a single character can give good indication that someone started writing */
         trailing: true /* ensures last value is not lost;
@@ -54,12 +67,16 @@ export class NodeContentViewSyncer {
       this.getEventEmitterOnChangePerColumn(column).pipe(
         throttleTime(
           this.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
+          // keep in mind that this might have something to do with the update events coming with delay (e.g. reorders)
         )
       ).subscribe((changeEvent) => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeNode.treeModel.isApplyingFromDbNow)
         if (!this.treeNode.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
-          this.treeNode.patchItemData(this.pendingThrottledItemDataPatch) // patching here
+          const ret = this.treeNode.patchItemData(this.pendingThrottledItemDataPatch) // patching here
+          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote /* title: Saving to remote */)
+          this.unsavedChangesPromiseResolve!.call(undefined)
+          this.unsavedChangesPromiseResolve = undefined
           this.pendingThrottledItemDataPatch = {}
         } // else: no need to react, since it is being applied from Db
       })
@@ -92,13 +109,21 @@ export class NodeContentViewSyncer {
       const msPassedSinceLastEditPerCol = timeNow - lastEditedByColumn.getTime()
       return msPassedSinceLastEditPerCol > this.DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB
     }
-    /* idea for storing previus locally user-entered vals,
+    /* idea for storing previous locally user-entered vals,
      * to ensure they don't "come back from the grave" if long delay of coming from DB */
   }
 
   onInputChangedByUser(cell: ColumnCell, inputNewValue: any) {
     const column = cell.column
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
+    // TODO this should already mark as unsaved in SyncStatus
+    if ( ! this.unsavedChangesPromiseResolve ) {
+      const unsavedPromise = new Promise<void>((resolve) => {
+        this.unsavedChangesPromiseResolve = resolve
+        console.log('this.unsavedChangesPromiseResolve = resolve', resolve)
+      })
+      this.syncStatusService.handleSavingPromise(unsavedPromise)
+    }
     this.getEventEmitterOnChangePerColumn(column).emit(column)
     // this.editedHere.set(column, true)
     this.whenLastEditedLocallyByColumn.set(column, new Date())

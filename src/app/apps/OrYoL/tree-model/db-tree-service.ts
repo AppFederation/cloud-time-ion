@@ -22,7 +22,7 @@ export abstract class DbTreeService {
 
   abstract loadNodesTree(listener: DbTreeListener): void
 
-  abstract patchItemData(itemId: string, itemData: any): void
+  abstract patchItemData(itemId: string, itemData: any): { onPatchSentToRemote: Promise<void> }
 
   abstract patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any, childItemId: string): void
 

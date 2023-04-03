@@ -430,10 +430,11 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
 
   patchItemData(itemDataPatch: any /* TData */) {
     Object.assign(this.itemData, itemDataPatch)
-    this.treeModel.treeService.patchItemData(this.itemId, itemDataPatch)
+    let ret = this.treeModel.treeService.patchItemData(this.itemId, itemDataPatch)
     // TODO: fireOnChangeItemDataOfChildOnParents ?
     this.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
     this.dbItem.data$.next(this.itemData)
+    return ret
     // this.itemData$.next()
   }
 
@@ -654,7 +655,7 @@ export class OryTreeNode<TData = any> implements TreeNode, HasItemData {
   }
 
   toggleDone() {
-    this.patchItemData({
+    let ret = this.patchItemData({
       isDone: this.itemData.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
     })
     // FIXME: fireOnChangeItemDataOfChildOnParents and on this
