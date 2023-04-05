@@ -34,6 +34,12 @@ export class SyncStatusService extends BaseService {
     console.log('SyncStatusService ctor')
   }
 
+  /** crude placeholder to distinguish "Unsaved" From "Saving..." */
+  handleUnsavedPromise(promise: SyncTask) {
+    this.handleSavingPromise(promise)
+  }
+
+
   handleSavingPromise(promise: SyncTask) {
     this.pendingPromises.add(promise)
     this.emitSyncStatus()

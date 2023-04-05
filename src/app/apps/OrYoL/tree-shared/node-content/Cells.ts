@@ -1,11 +1,15 @@
 import { OryColumn } from '../OryColumn'
 import { OryTreeNode } from '../../tree-model/TreeModel'
 
-export class ColumnCell<TVal = any> {
+export class ColumnCell<
+  TVal = any,
+  TColumn extends OryColumn<TVal> = OryColumn<TVal>,
+  TNode extends OryTreeNode<any, any, any, any, any> = OryTreeNode<any, any, any, any, any>
+> {
   constructor(
-    public column: OryColumn<TVal>,
+    public column: TColumn,
     public cells: Cells,
-    public treeNode: OryTreeNode
+    public treeNode: TNode
   ) {
     this.cells.add(this)
   }

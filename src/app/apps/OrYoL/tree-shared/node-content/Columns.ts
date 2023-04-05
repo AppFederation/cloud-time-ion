@@ -21,7 +21,11 @@ export const columnDefs = new ColumnDefs()
 
 
 /** Consider renaming to "view slots" - more generic than columns, while more view-related than "property".
- * Or maybe PropertyView ? */
+ * Or maybe PropertyView ?
+ *
+ * Consider rename: ColumnsModel
+ *
+ * */
 export class Columns {
   allVisibleColumns = [
     columnDefs.estimatedTimeMin,

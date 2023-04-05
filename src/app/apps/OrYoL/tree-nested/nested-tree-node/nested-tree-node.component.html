@@ -26,7 +26,7 @@
   ></app-node-content>
 
   <div *ngIf="treeNode.expanded || alwaysExpanded" class="node-children">
-    <ng-container *ngFor="let childNode of treeNode.children">
+    <ng-container *ngFor="let childNode of treeNode.childrenTreeTableNodes">
       <app-nested-tree-node
         [treeNode]="childNode"
         [treeHost]="treeHost"

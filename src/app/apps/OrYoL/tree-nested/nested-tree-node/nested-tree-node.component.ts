@@ -6,6 +6,7 @@ import {
 import { OryTreeNode } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
+import {TreeTableNode} from '../../tree-model/TreeTableNode'
 
 @Component({
   selector: 'app-nested-tree-node',
@@ -19,11 +20,11 @@ export class NestedTreeNodeComponent implements OnInit {
   isVisualRoot: boolean = false
 
   @Input()
-  treeNode!: OryTreeNode
+  treeNode!: TreeTableNode
 
   /* Hack to force new instance of component for input changes*/
   @Input()
-  treeNodeWrapperHack!: {wrapperHack: OryTreeNode}
+  treeNodeWrapperHack!: {wrapperHack: TreeTableNode}
 
 
   @Input()

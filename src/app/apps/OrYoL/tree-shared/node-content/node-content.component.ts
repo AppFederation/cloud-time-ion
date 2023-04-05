@@ -45,6 +45,7 @@ import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {TreeTableNode} from '../../tree-model/TreeTableNode'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -80,7 +81,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   nodeContentViewSyncer!: NodeContentViewSyncer
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: TreeTableNode
 
   @Input() treeHost!: TreeHostComponent
 
@@ -117,12 +118,10 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
       this.columnDefs.estimatedTimeMin.hidden = ! config.showMinMaxColumns
       this.columnDefs.estimatedTimeMax.hidden = ! config.showMinMaxColumns
     })
-
-    // const x: string = null /* FIXME: still on old TypeScript version, need noImplicitNull  */
   }
 
   ngOnInit() {
-    this.cells = this.columns.createColumnCells(this.treeNode)
+    this.cells = this.columns.createColumnCells(this.treeNode) // consider rolling cells into OdmItem$. But prolly not, coz OdmItem$ is not thinking in terms of columns/table/treetable
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
     this.treeHost.registerNodeComponent(this)
 
@@ -287,7 +286,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   onInputChanged(event: any, cell: ColumnCell, inputNewValue: any, component: CellComponent | null) {
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
-    this.nodeContentViewSyncer.onInputChangedByUser(cell, inputNewValue)
+    // here start moving responsibilities from component viewSyncer to
+    this.treeNode.onInputChangedByUser(cell, inputNewValue)
     column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()

@@ -48,6 +48,7 @@ export abstract class CellComponent implements OnInit {
 
   protected onInputChanged(event: any, newValue: any) {
     this.nodeContentComponent.onInputChanged(event, this.cell, newValue, this)
+    /// FIXME this should not go to parent component; instead to OdmItem$ or similar model obj
   }
 
   abstract focus(options?: NodeFocusOptions | nullish): void
