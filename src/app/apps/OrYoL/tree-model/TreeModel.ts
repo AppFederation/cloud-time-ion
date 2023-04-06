@@ -143,13 +143,20 @@ export class OryTreeNode<
     }
 
     areParentsExpandedToMakeThisNodeVisible(): boolean {
+      let ret: boolean
       if ( this.treeNode.isRoot ) {
-        return this.treeNode.treeModel.isRootShown
+        ret = this.treeNode.treeModel.isRootShown
+      } else {
+        const ancestorsPathArrayExcludingVirtualRoot = this.treeNode.getAncestorsPathArrayExcludingVirtualRoot()
+        console.log(`ancestorsPathArrayExcludingVirtualRoot for node [${this.treeNode.itemData?.title}]`,
+          ancestorsPathArrayExcludingVirtualRoot.map(node => `> ${node.title}`))
+        ret = ancestorsPathArrayExcludingVirtualRoot.every(node => {
+          return node.expanded
+        })
       }
+      console.log('areParentsExpandedToMakeThisNodeVisible ret', ret, this.treeNode.itemData?.title)
+      return ret
       // return false
-      return this.treeNode.getAncestorsPathArrayExcludingVirtualRoot().every(node => {
-        return node.expanded
-      })
     }
 
     setExpanded(expansionState: boolean, recursive: boolean | {recursive: boolean}) {
@@ -243,8 +250,9 @@ export class OryTreeNode<
   }
 
   getNodeVisuallyAboveThis(): TBaseNode | undefined {
-    if ( this.isRoot ) {
-      return this.treeModel.root.getLastMostNestedVisibleNodeRecursively()
+    debugLog(`getNodeVisuallyAboveThis this.isVisualRoot`, this.isVisualRoot)
+    if ( this.isVisualRoot ) {
+      return this.treeModel.navigation.visualRoot.getLastMostNestedVisibleNodeRecursively()
     }
     let ret: TBaseNode | undefined
     const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
@@ -273,9 +281,10 @@ export class OryTreeNode<
     // this could be extracted as a generic tree util func, a'la sumRecursively
     let ret: TBaseNode | undefined
     const simple = (
-      this.children
-      && this.children.length
-      && this.children[0]
+      // this.children
+      // && this.children.length
+      // && this.children[0]
+      this.children?.[0]
       || this.getSiblingNodeBelowThis()
       // ||
     )
@@ -283,7 +292,7 @@ export class OryTreeNode<
       ret = simple
     } else {
       let parent: TAncestorNode | undefined = this.parent2
-      while (parent) {
+      while (parent && ! parent.isVisualRoot) {
         if ( parent.getSiblingNodeBelowThis() ) {
           ret =  parent.getSiblingNodeBelowThis() as TBaseNode
           break
@@ -291,13 +300,14 @@ export class OryTreeNode<
         parent = parent.parent2 as TAncestorNode
       }
     }
-    // not found - wrap around to top-most
-    ret = ret || this.treeModel.root.children[0]
+    debugLog(`getNodeVisuallyBelowThis(): not found - wrap around to top-most`)
+    debugLog(`getNodeVisuallyBelowThis(): this.treeModel.navigation.visualRoot`, this.treeModel.navigation.visualRoot)
+    ret = ret || this.treeModel.navigation.visualRoot // .children[0]
     if ( ! ret?.expansion.areParentsExpandedToMakeThisNodeVisible() ) {
-      return ret?.getNodeVisuallyBelowThis() // recursive call
-    } else {
-      return ret
+      ret = ret?.getNodeVisuallyBelowThis() // recursive call
     }
+    debugLog(`getNodeVisuallyBelowThis() ret`, ret)
+    return ret
   }
 
   /** can also return this node */
@@ -659,12 +669,15 @@ export class OryTreeNode<
   } (this)
 
   getParentsPathArray(): TBaseNode[] {
-    const ret: TBaseNode[] = []
+    let ret: TBaseNode[] = []
     let node: TAncestorNode | undefined = this.parent2
     while (true) {
       if ( ! node ) {
         // debugLog('getAncestorsPathArray', ret)
-        return ret.reverse()
+        ret = ret.reverse()
+        // debugLog(`getParentsPathArray for node [${this.itemData?.title}]`, ret.map(node => `> ${node.itemData?.title}`))
+
+        return ret
       } else {
         ret.push(node)
         node = node.parent2 as TParentNode
@@ -674,7 +687,8 @@ export class OryTreeNode<
 
   getAncestorsPathArray() {
     const pathArray = this.getParentsPathArray()
-    return pathArray.slice(0, pathArray.length - 1 /*exclusive - skip last*/)
+    // return pathArray.slice(0, pathArray.length - 1 /*exclusive - skip last*/)
+    return pathArray.slice(0, pathArray.length - 0 /* not skipping last */)
   }
 
   getAncestorsPathArrayExcludingVirtualRoot() {
