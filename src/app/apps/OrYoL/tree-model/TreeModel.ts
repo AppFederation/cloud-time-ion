@@ -723,6 +723,10 @@ export class OryTreeNode<
   }
 
   indentDecrease() {
+    if ( this.parent2?.isVisualRoot ) {
+      debugLog(`cannot indentDecrease more - this node is child of visualRoot`, this)
+      return
+    }
     const newParent = this.parent2?.parent2
     if ( newParent ) {
       newParent.moveInclusionsHere([this], {beforeNode: this.parent2?.getSiblingNodeBelowThis()})
