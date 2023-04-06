@@ -17,6 +17,8 @@ import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
+import {TreeTableModel} from '../../tree-model/TreeTableModel'
+import {TreeTableNode} from '../../tree-model/TreeTableNode'
 
 
 @Component({
@@ -26,7 +28,7 @@ import { NavigationService } from '../../core/navigation.service'
 })
 export class TreeHostComponent implements OnInit {
 
-  treeModel: TreeModel// = new TreeModel(this.treeService2)
+  treeModel: TreeTableModel// = new TreeModel(this.treeService2)
 
   showTree = false
 
@@ -130,7 +132,7 @@ export class TreeHostComponent implements OnInit {
     return this.mapNodeToComponent.get(node)
   }
 
-  focusNode(node: OryTreeNode | null | undefined, column?: OryColumn | null, options?: NodeFocusOptions) {
+  focusNode(node: TreeTableNode | null | undefined, column?: OryColumn | null, options?: NodeFocusOptions) {
     debugLog('focusNode', arguments)
     if ( ! node ) {
       return
@@ -211,6 +213,6 @@ export class TreeHostComponent implements OnInit {
   }
 
   public focus(cell: TreeCell) {
-    this.focusNode(cell.node, cell.column)
+    this.focusNode(cell.node as TreeTableNode, cell.column)
   }
 }

@@ -24,7 +24,7 @@ import {OdmItem} from "../../AppFedShared/odm/OdmItem";
 export class FirestoreOdmBackend extends OdmBackend {
 
   constructor(
-    protected injector: Injector,
+    injector: Injector,
     protected angularFirestore: AngularFirestore
   ) {
     super(injector)

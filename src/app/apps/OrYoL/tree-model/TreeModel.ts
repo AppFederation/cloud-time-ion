@@ -43,6 +43,7 @@ import {lastItemOrUndefined} from '../../../libs/AppFedShared/utils/arrayUtils'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
+import {TreeTableNode} from './TreeTableNode'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**
@@ -338,7 +339,7 @@ export class OryTreeNode<
     return nodeToAppend
   }
 
-  private newItemData() {
+  protected newItemData() {
     return {title: OryTreeNode.INITIAL_TITLE}
   }
 
@@ -388,7 +389,7 @@ export class OryTreeNode<
     return newNode
   }
 
-  private createChildNode(): TChildNode {
+  protected createChildNode(): TChildNode {
     return new OryTreeNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
         // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
@@ -740,9 +741,10 @@ export abstract class OryTreeListener {
   abstract onAfterNodeMoved(): void
 }
 
+/** rename to TreeTableCell, as this deals with columns already */
 export class TreeCell {
   constructor(
-    public node?: OryTreeNode<any>,
+    public node?: OryTreeNode,
     public column?: OryColumn,
   ) {}
 }
@@ -771,6 +773,7 @@ export class TreeModel<
   TBaseNode extends OryTreeNode<any> = OryTreeNode<any>,
   TRootNode extends TBaseNode = TBaseNode,
   TNonRootNode extends TBaseNode = TBaseNode,
+  TItemData = any,
 >
 {
 
@@ -918,7 +921,7 @@ export class TreeModel<
             for (const parentNode of parentNodes) {
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
 
-              const newTreeNode = new OryTreeNode(this.injector, event.nodeInclusion, event.itemId, this, event.itemData)
+              const newTreeNode = this.createTreeNode(event.nodeInclusion, event.itemId, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
               // console.log('onItemWithDataAdded$.next(newTreeNode)')
@@ -929,6 +932,10 @@ export class TreeModel<
     } finally {
       this.isApplyingFromDbNow = false
     }
+  }
+
+  protected createTreeNode(nodeInclusion: NodeInclusion, itemId: ItemId, itemData: TItemData): TBaseNode {
+    return new OryTreeNode(this.injector, nodeInclusion, itemId, this, itemData as any) as TBaseNode
   }
 
   /* Can unify this with moveInclusionsHere() */
@@ -973,7 +980,7 @@ export class TreeModel<
     this.mapItemIdToNodes.add(nodeToRegister.itemId, nodeToRegister)
   }
 
-  getNodesByItemId(itemId: ItemId) {
+  getNodesByItemId(itemId: ItemId): TBaseNode[] {
     const nodes: TBaseNode[] = this.mapItemIdToNodes.get(itemId)
     return nodes
   }

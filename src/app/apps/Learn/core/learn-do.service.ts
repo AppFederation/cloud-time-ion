@@ -28,7 +28,7 @@ export class LearnDoService extends OdmService2<
     // })
   }
 
-  convertFromDbFormat(dbItem: LearnItem): LearnItem {
+  override convertFromDbFormat(dbItem: LearnItem): LearnItem {
     return Object.assign(new LearnItem(), dbItem)
   }
 

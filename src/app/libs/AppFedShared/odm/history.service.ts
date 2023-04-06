@@ -15,8 +15,8 @@ export abstract class HistoryService<TInMem, TRaw = TInMem>
   extends OdmService2<HistoryService<TInMem, TRaw>,TInMem, TRaw, any> /* TODO: compose, not inherit, to not expose tons of unneeded methods maybe */
 {
   constructor(
-    protected injector: Injector,
-    public className: string,
+    injector: Injector,
+    className: string,
   ) {
     super(injector, className, {
       dontLoadAllAutomatically: true,

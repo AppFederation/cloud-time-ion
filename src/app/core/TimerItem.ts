@@ -41,7 +41,7 @@ export class TimerItem extends OdmItem<TimerItem> {
   }
 
 
-  toDbFormat() {
+  override toDbFormat() {
     let toDbFormat = super.toDbFormat();
     if ( ! toDbFormat.endTime ) {
       delete toDbFormat.endTime // for firestore
@@ -49,7 +49,7 @@ export class TimerItem extends OdmItem<TimerItem> {
     return toDbFormat;
   }
 
-  onModified() {
+  override onModified() {
     super.onModified()
   }
 

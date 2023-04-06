@@ -33,7 +33,7 @@ export class JournalEntry$ extends OdmItem$2<
     }
   ))
 
-  public patchThrottled(patch: OdmPatch<JournalEntry>) {
+  public override patchThrottled(patch: OdmPatch<JournalEntry>) {
     // errorAlertAndThrow(`patchThrottled journal entry`)
     super.patchThrottled(patch);
   }

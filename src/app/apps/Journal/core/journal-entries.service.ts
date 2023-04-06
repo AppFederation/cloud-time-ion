@@ -42,7 +42,7 @@ export class JournalEntriesService extends OdmService2<
     })
   }
 
-  convertFromDbFormat(dbItem: JournalEntry): JournalEntry {
+  override convertFromDbFormat(dbItem: JournalEntry): JournalEntry {
     return Object.assign(new JournalEntry(), dbItem)
   }
 

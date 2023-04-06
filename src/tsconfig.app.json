@@ -8,6 +8,7 @@
     // ======= Strictness / checks:
     "strictNullChecks": true,
     "noImplicitAny" : true,
+    "noImplicitOverride" : true,
     "strict": true
   },
   "files": [

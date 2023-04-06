@@ -22,7 +22,7 @@ export class JournalItemEditComponent extends BaseComponent implements OnInit {
   }
 
   constructor(
-    public injector: Injector,
+    injector: Injector,
   ) {
     super(injector)
   }

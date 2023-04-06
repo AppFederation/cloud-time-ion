@@ -53,7 +53,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
     super()
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit()
     this.nativeElement = this.cellInput.nativeElement
     this.nativeElement.addEventListener('input', (ev) => this.emitInputChanged(ev)); // TODO unsubscribe

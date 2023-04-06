@@ -176,7 +176,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     this.focusNewlyCreatedNode(newTreeNode)
   }
 
-  private focusNewlyCreatedNode(newTreeNode: OryTreeNode) {
+  private focusNewlyCreatedNode(newTreeNode: TreeTableNode) {
     setTimeout(() => {
       this.treeHost.focusNode(newTreeNode)
     })
@@ -259,7 +259,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // }
   }
 
-  focusOtherNode(nodeToFocus: OryTreeNode | undefined) {
+  focusOtherNode(nodeToFocus: TreeTableNode | undefined) {
     debugLog('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }

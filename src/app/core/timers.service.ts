@@ -13,7 +13,7 @@ export class TimersService extends OdmService_OLD<TimerItem> {
     super(injector, 'Timer')
   }
 
-  protected convertFromDbFormat(dbTimer: TimerItem) {
+  protected override convertFromDbFormat(dbTimer: TimerItem) {
     const timerInstance = Object.assign(new TimerItem(this), dbTimer);
     timerInstance.endTime =
       timerInstance.endTime &&

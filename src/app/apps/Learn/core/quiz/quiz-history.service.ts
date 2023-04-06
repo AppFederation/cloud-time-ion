@@ -50,7 +50,7 @@ export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 export class QuizHistoryService extends HistoryService<QuizAnswerForHistory> {
 
   constructor(
-    protected injector: Injector,
+    injector: Injector,
   ) {
     super(
       injector,

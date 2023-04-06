@@ -7,7 +7,7 @@ export class FeaturesConfig extends FeatureLevelsConfig {
 
 
     constructor(
-        public props: FeaturesProps,
+        props: FeaturesProps,
     ) {
         super(props)
     }

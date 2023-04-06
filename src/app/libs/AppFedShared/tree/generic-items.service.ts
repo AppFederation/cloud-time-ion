@@ -26,7 +26,7 @@ export class GenericItemsService extends OdmService2<
     // })
   }
 
-  public convertFromDbFormat(dbItem: GenericItem): GenericItem {
+  public override convertFromDbFormat(dbItem: GenericItem): GenericItem {
     return Object.assign(new GenericItem(), dbItem)
   }
 

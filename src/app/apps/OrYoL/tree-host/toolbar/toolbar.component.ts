@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { DebugService } from '../../core/debug.service'
 import { TreeHostComponent } from '../tree-host/tree-host.component'
-import { ConfigService } from '../../core/config.service'
 // import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap'
 import {PopoverController} from '@ionic/angular'
 import {ToolbarPopoverComponent} from './toolbar-popover/toolbar-popover.component'
@@ -25,7 +24,6 @@ export class ToolbarComponent extends BaseComponent implements OnInit {
 
   constructor(
     public debugService: DebugService,
-    public configService: ConfigService,
     // ngbPopoverConfig: NgbPopoverConfig,
     public popoverController: PopoverController,
     injector: Injector,

@@ -28,7 +28,7 @@ import { environment } from '../environments/environment'
 // custom configuration Hammerjs
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
-  overrides = <any> {
+  override overrides = <any> {
     // I will only use the swap gesture so
     // I will deactivate the others to avoid overlaps
     'pinch': { enable: false },

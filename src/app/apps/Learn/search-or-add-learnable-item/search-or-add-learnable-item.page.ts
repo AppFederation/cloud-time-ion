@@ -55,7 +55,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
     public merriamWebsterDictService: MerriamWebsterDictService,
     public popoverController: PopoverController,
     public router: Router,
-    public injector: Injector,
+    injector: Injector,
   ) {
     super(injector)
   }

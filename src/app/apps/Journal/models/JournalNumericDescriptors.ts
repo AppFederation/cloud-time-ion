@@ -41,7 +41,7 @@ export class JournalNumericDescriptor extends UiFieldDef {
   acronym?: string | string[]
 
 
-  get title() {
+  override get title() {
     return this.id?.replace(/_/g, ' ')
   }
 
@@ -469,7 +469,8 @@ export class JournalNumericDescriptors extends UiFieldDefs {
   })
   relationships_with_friends = jnd()
   relationships_with_best_friends = jnd()
-  relationships_with_partner = jnd()
+  relationships_with_partner = jnd() /* FIXME rename romantic partner, business partner etc */
+  /* relationship with flatmate / roommate */
   relationships_at_home = jnd()
   relationships_with_coworkers = jnd()
   relationships_with_business_partners = jnd()

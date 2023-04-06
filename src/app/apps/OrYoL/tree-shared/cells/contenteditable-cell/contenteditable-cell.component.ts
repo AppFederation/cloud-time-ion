@@ -33,7 +33,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
     super()
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit()
     this.contentEditableEl.nativeElement.addEventListener(
       'input',

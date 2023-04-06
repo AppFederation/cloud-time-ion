@@ -23,7 +23,7 @@ export class CachedSubject<T> extends Subject<T> {
     }
   }
 
-  public next(val: T) {
+  public override next(val: T) {
     this.lastVal = val
     this.hasEmitted = true
     super.next(val)
@@ -34,7 +34,7 @@ export class CachedSubject<T> extends Subject<T> {
     return this.next(val)
   }
 
-  public _subscribe(subscriber: Subscriber<T>): Subscription {
+  public override _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     if ( this.hasEmitted ) {
       subscriber.next(this.lastVal)

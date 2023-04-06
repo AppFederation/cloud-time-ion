@@ -63,14 +63,13 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   constructor(
     public editorService: EditorService,
-    public cellNavigationService: CellNavigationService,
     injector: Injector
   ) {
     super(injector)
   }
 
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit()
     this.tinyMceInit = {
       // placeholder: "Search or add" /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */,

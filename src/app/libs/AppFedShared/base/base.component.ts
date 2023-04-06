@@ -15,7 +15,7 @@ import {Config, ConfigService} from '../../../apps/OrYoL/core/config.service'
   templateUrl: './base.component.html',
   styleUrls: ['./base.component.sass'],
 })
-export class BaseComponent implements OnInit {
+export class BaseComponent /*implements OnInit*/ {
 
   configService = this.injector.get(ConfigService)
 
@@ -48,7 +48,7 @@ export class BaseComponent implements OnInit {
 
   // constructor( /* prolly will need to pass injector */ ) { }
 
-  ngOnInit() {}
+  // ngOnInit() {}
 
   // could have automatic rxjs subscribe/unsubscribe
   subscribeAuto() {

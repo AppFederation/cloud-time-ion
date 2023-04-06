@@ -8,6 +8,7 @@ import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.serv
 import {Columns} from '../tree-shared/node-content/Columns'
 import {NodeContentComponent} from '../tree-shared/node-content/node-content.component'
 import {NodeInclusion} from './TreeListener'
+import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 
 /** Consider composition over `extends`; or still call it viewSyncer; or CellSyncer as a field on OryTreeNode
  * Name ideas: TreeNodeContentsModel - this would be OdmItem$ and/or cells/columns stuff, but decoupled/separated from tree stuff like nodes, parents, children
@@ -20,7 +21,14 @@ import {NodeInclusion} from './TreeListener'
  *  And an OdmItem$ should be able to exist without being part of a Tree/TreeTable.
  *
  * */
-export class TreeTableNode extends OryTreeNode {
+export class TreeTableNode extends OryTreeNode<
+  TreeTableNode
+> {
+
+  protected override createChildNode(): TreeTableNode {
+    return new TreeTableNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData())
+    // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
+  }
 
   columns: Columns = NodeContentComponent.columnsStatic
 
@@ -50,11 +58,11 @@ export class TreeTableNode extends OryTreeNode {
   }
 
   constructor(
-    public injector: Injector,
-    public nodeInclusion: NodeInclusion | undefined | null,
-    public itemId: string,
-    public treeModel: TreeModel,
-    public itemData: any,
+    injector: Injector,
+    nodeInclusion: NodeInclusion | undefined | null,
+    itemId: string,
+    treeModel: TreeModel,
+    itemData: any,
   ) {
     super(injector, nodeInclusion, itemId, treeModel, itemData)
     this.subscribeDebouncedOnChangePerColumns()

@@ -7,6 +7,7 @@ import { OryTreeNode } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
 import {TreeTableNode} from '../../tree-model/TreeTableNode'
+import {TreeTableModel} from '../../tree-model/TreeTableModel'
 
 @Component({
   selector: 'app-nested-tree-node',
@@ -84,7 +85,7 @@ export class NestedTreeNodeComponent implements OnInit {
       this.isDragOver = false
       console.log('onDragDrop drop worked', draggedItemId !== this.itemId)
       $event.stopImmediatePropagation()
-      const droppedNodes = this.treeNode.treeModel.getNodesByItemId(draggedItemId)
+      const droppedNodes = (this.treeNode.treeModel as TreeTableModel).getNodesByItemId(draggedItemId)
       // const nodes = this.clipboardService.nodesInClipboard
       this.treeNode.moveInclusionsHere(droppedNodes, {beforeNode: undefined}) // TODO: order
       // console.log(`droppedNode`, droppedNode)

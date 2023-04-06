@@ -126,7 +126,7 @@ export class NumericPickerComponent<TVal = any> extends CustomFormControl<TVal> 
     }
   }
 
-  writeValue(value: TVal): void {
+  override writeValue(value: TVal): void {
     super.writeValue(value);
     const found = this.buttonDescriptors.findVariantByValue(value)
     if ( found ) {

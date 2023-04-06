@@ -52,7 +52,7 @@ export class JournalEntriesListPage extends BaseComponent implements OnInit {
   constructor(
     public journalEntriesService: JournalEntriesService,
     public popoverController: PopoverController,
-    public injector: Injector,
+    injector: Injector,
   ) {
     super(injector)
     this.listOptions$P.val$.subscribe(x => {
