@@ -44,8 +44,6 @@ import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeTableNode} from './TreeTableNode'
-import {TreeTable} from 'primeng/treetable'
-
 
 /**
  * Created by kd on 2017-10-27.
