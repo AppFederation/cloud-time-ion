@@ -43,7 +43,7 @@ import {lastItemOrUndefined} from '../../../libs/AppFedShared/utils/arrayUtils'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
-import {TreeTableNode} from './TreeTableNode'
+// import {TreeTableNode} from './TreeTableNode'
 
 /**
  * Created by kd on 2017-10-27.
@@ -73,7 +73,7 @@ export class OryTreeNode<
   TChildNode extends TBaseNonRootNode = TBaseNonRootNode,
   TData extends {
     title: string,
-    isDone: boolean,
+    isDone?: boolean,
   } = any,
 > implements TreeNode, HasItemData {
 
@@ -117,7 +117,7 @@ export class OryTreeNode<
 
   /** 2020-02-02 Decided that done/cancelled should be a core concept to tree node,
    * as it will simplify a lot of methods, at minimal cost in this file. Also, where else to put it... */
-  public get isDoneOrCancelled() { return this.itemData.isDone /* TODO: cancelled */ }
+  public get isDoneOrCancelled() { return this.itemData?.isDone /* TODO: cancelled */ }
 
   public get hasChildren() {
     return this.numChildren > 0
@@ -216,7 +216,7 @@ export class OryTreeNode<
     public nodeInclusion: NodeInclusion | undefined | null,
     public itemId: string,
     public treeModel: TreeModel,
-    public itemData: TData,
+    public itemData: TData | null,
     // public item$: TItem$,
   ) {}
 
@@ -389,7 +389,7 @@ export class OryTreeNode<
   }
 
   private createChildNode(): TChildNode {
-    return new TreeTableNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
+    return new OryTreeNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
         // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
 
@@ -683,7 +683,7 @@ export class OryTreeNode<
 
   toggleDone() {
     let ret = this.patchItemData({
-      isDone: this.itemData.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
+      isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
     })
     // FIXME: fireOnChangeItemDataOfChildOnParents and on this
 
@@ -860,7 +860,7 @@ export class TreeModel<
   dataItemsService = this.injector.get(DataItemsService)
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
-  root: TRootNode = new TreeTableNode(this.injector, undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null) as any as TRootNode
+  root: TRootNode = new OryTreeNode(this.injector, undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null) as any as TRootNode
 
   constructor(
     public injector: Injector,
