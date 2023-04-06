@@ -123,13 +123,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   ngOnInit() {
     this.cells = this.columns.createColumnCells(this.treeNode) // consider rolling cells into OdmItem$. But prolly not, coz OdmItem$ is not thinking in terms of columns/table/treetable
     debugLog('ngOnInit', this.treeNode.nodeInclusion)
+    debugLog('ngOnInit NodeContentComponent', this.treeNode)
     this.treeHost.registerNodeComponent(this)
 
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
       debugLog('onChangeItemDataOrChildHandler')
       if ( ! this.isDestroyed ) {
-        this.applyItemDataValuesToViews()
+        this.applyItemDataValuesToViews(false)
       }
     }
     this.treeNode.onChangeItemData.subscribe(onChangeItemDataOrChildHandler)
@@ -144,7 +145,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     })
   }
 
-  private applyItemDataValuesToViews() {
+  private applyItemDataValuesToViews(force: boolean) {
     this.nodeDebug.countApplyItemDataValuesToViews ++
     debugLog('applyItemDataValuesToViews this.treeNode', this.treeNode)
 
@@ -153,7 +154,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
       this.isDone = null; // TODO: test for done timestamp
     }
 
-    this.nodeContentViewSyncer.applyItemDataValuesToViews()
+    this.nodeContentViewSyncer.applyItemDataValuesToViews(force)
     this.changeDetectorRef.detectChanges()
   }
 
@@ -164,7 +165,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
       this.columns,
       this.mapColumnToComponent,
     )
-    this.applyItemDataValuesToViews()
+    this.applyItemDataValuesToViews(true /* force = true */)
 
     // focus if expecting to focus
     // this.focus()
@@ -225,7 +226,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // }
   }
 
-  private setDone(newDone: boolean) {
+  public setDone(newDone: boolean) {
     this.isDone = newDone ? (this.isDone || new Date()) : false // TODO: test for done timestamp
     this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone) !, this.isDone, null)
   }

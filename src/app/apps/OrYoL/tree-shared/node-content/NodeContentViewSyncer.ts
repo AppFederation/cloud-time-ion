@@ -28,7 +28,7 @@ export class NodeContentViewSyncer {
 ) {
   }
 
-  applyItemDataValuesToViews() {
+  applyItemDataValuesToViews(force: boolean) {
     // FIXME: take care of the inputValueEquals, isApplyingFromDbNow
     // if (this.elInputEstimatedTime.inputValueEquals(newValue)) {
     //   this.editedHere.set(column, false)
@@ -36,9 +36,12 @@ export class NodeContentViewSyncer {
     // }
     for ( let entry of this.mapColumnToComponent.entries() ) {
       const col = entry[0], component = entry[1]
-      if ( this.treeNode.canApplyDataToViewGivenColumnLocalEdits(col) ) {
-        const fieldVal = col.getValueFromItemData(this.treeNode.itemData)
-        component.setInputValue(fieldVal)
+      if ( force || this.treeNode.canApplyDataToViewGivenColumnLocalEdits(col) ) {
+        const newVal = col.getValueFromItemData(this.treeNode.itemData)
+        const origValue = component.getInputValue()
+        if ( origValue !== newVal ) { /* TODO later consider non-primitive data types (objects) */
+          component.setInputValue(newVal)
+        }
       } else {
         // TODO: schedule for applying to view later, unless user has edited locally again
       }
