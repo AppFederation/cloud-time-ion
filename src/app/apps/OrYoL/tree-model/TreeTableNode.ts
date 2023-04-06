@@ -4,7 +4,7 @@ import {throttleTime} from 'rxjs/operators'
 import {debugLog} from '../utils/log'
 import {OryTreeNode, TreeModel} from './TreeModel'
 import {ColumnCell} from '../tree-shared/node-content/Cells'
-// import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
+import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {Columns} from '../tree-shared/node-content/Columns'
 import {NodeContentComponent} from '../tree-shared/node-content/node-content.component'
 import {NodeInclusion} from './TreeListener'
@@ -25,7 +25,7 @@ export class TreeTableNode extends OryTreeNode {
   columns: Columns = NodeContentComponent.columnsStatic
 
   // isApplyingFromDbNow = false   /** TODO: to NodeContentViewSyncer */
-  // protected syncStatusService = this.injector.get(SyncStatusService)
+  protected syncStatusService = this.injector.get(SyncStatusService)
   private unsavedChangesPromiseResolveFunc: ( () => void ) | undefined
 
 
@@ -50,13 +50,13 @@ export class TreeTableNode extends OryTreeNode {
   }
 
   constructor(
-    // public injector: Injector,
+    public injector: Injector,
     public nodeInclusion: NodeInclusion | undefined | null,
     public itemId: string,
     public treeModel: TreeModel,
     public itemData: any,
   ) {
-    super(/*injector, */nodeInclusion, itemId, treeModel, itemData)
+    super(injector, nodeInclusion, itemId, treeModel, itemData)
     this.subscribeDebouncedOnChangePerColumns()
   }
 
@@ -118,7 +118,7 @@ export class TreeTableNode extends OryTreeNode {
         if (!this.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
           const ret = this.patchItemData(this.pendingThrottledItemDataPatch) // patching here
-          // this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote /* title: Saving to remote */)
+          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote /* title: Saving to remote */)
           this.unsavedChangesPromiseResolveFunc!.call(undefined)
           this.unsavedChangesPromiseResolveFunc = undefined
           this.pendingThrottledItemDataPatch = {}
@@ -136,7 +136,7 @@ export class TreeTableNode extends OryTreeNode {
         this.unsavedChangesPromiseResolveFunc = resolve
         console.log('this.unsavedChangesPromiseResolveFunc = resolve', resolve)
       })
-      // this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
+      this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
     this.getEventEmitterOnChangePerColumn(column).emit(column)
     // this.editedHere.set(column, true)

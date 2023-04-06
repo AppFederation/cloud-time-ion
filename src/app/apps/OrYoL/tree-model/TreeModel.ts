@@ -212,7 +212,7 @@ export class OryTreeNode<
   }
 
   constructor(
-    // public injector: Injector,
+    public injector: Injector,
     public nodeInclusion: NodeInclusion | undefined | null,
     public itemId: string,
     public treeModel: TreeModel,
@@ -389,7 +389,7 @@ export class OryTreeNode<
   }
 
   private createChildNode(): TChildNode {
-    return new TreeTableNode(/*this.injector, */undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
+    return new TreeTableNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
         // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
 
@@ -860,7 +860,7 @@ export class TreeModel<
   dataItemsService = this.injector.get(DataItemsService)
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
-  root: TRootNode = new TreeTableNode(/*this.injector, */undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null) as any as TRootNode
+  root: TRootNode = new TreeTableNode(this.injector, undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null) as any as TRootNode
 
   constructor(
     public injector: Injector,
@@ -918,7 +918,7 @@ export class TreeModel<
             for (const parentNode of parentNodes) {
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
 
-              const newTreeNode = new OryTreeNode(/*this.injector, */event.nodeInclusion, event.itemId, this, event.itemData)
+              const newTreeNode = new OryTreeNode(this.injector, event.nodeInclusion, event.itemId, this, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
               // console.log('onItemWithDataAdded$.next(newTreeNode)')
