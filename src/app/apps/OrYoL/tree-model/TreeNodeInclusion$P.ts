@@ -16,7 +16,7 @@ export class TreeNodeInclusion$P<
   /** Has patch that has not yet had a call to backend DB API (as opposed to not having been synchronized via network) */
   hasPendingPatch = false
 
-  public localUserSavesToThrottle$ : CachedSubject<TInclusion>
+  public localUserSavesToThrottle$ : CachedSubject<TInclusion> = new CachedSubject<TInclusion>(/* it's important it's undefined here; otherwise it would send writes to db on load */)
 
   constructor(
     protected injector: Injector,
@@ -24,9 +24,8 @@ export class TreeNodeInclusion$P<
     public currentVal: TInclusion,
     public itemId: ItemId,
   ) {
-    this.localUserSavesToThrottle$ = new CachedSubject<TInclusion>(currentVal)
     this.localUserSavesToThrottle$.pipe(
-      throttleTimeWithLeadingTrailing(1500 /*TreeTableNode.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB*/) // this is really debounce now
+      throttleTimeWithLeadingTrailing(2000 /*TreeTableNode.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB*/) // this is really debounce now
     ).subscribe(((patch: TMemPatch) => {
       /* why this works only once?
        * Causes saveNowToDb to receive old value
@@ -52,7 +51,7 @@ export class TreeNodeInclusion$P<
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
-
+    // TODO: handle "unsaved" promise
   }
 
 
