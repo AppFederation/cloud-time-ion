@@ -269,7 +269,7 @@ export class TimeTrackingService {
     // pause tracking of items which are done:
     this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData, any]) => {
       if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
-        console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
+        // console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
         this.pauseOrNoop(event[0])
       }
     })
@@ -280,7 +280,7 @@ export class TimeTrackingService {
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
       if ( ttData && ttData.nowTrackingSince &&
           (ttData.whenFirstStarted as any).toDate /* FIX for a string */ ) {
-        console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
+        // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
         const timeTrackedEntry = this.obtainEntryForItem(dataItem)
         this.emitTimeTrackedEntry(timeTrackedEntry)
       }
@@ -292,7 +292,7 @@ export class TimeTrackingService {
   // }
 
   emitTimeTrackedEntry(entry: TimeTrackedEntry) {
-    console.log('emitTimeTrackedEntry', entry)
+    // console.log('emitTimeTrackedEntry', entry)
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
     this.timeTrackedEntries$.nextWithCache([entry] /* hack to emulate multi-tracking */)
   }

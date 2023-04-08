@@ -54,7 +54,7 @@ export function setCaretPositionInContentEditable(el: any, caretPos: any) {
 
 
 export function setCaretOnContentEditable(target: any, isStart: any) {
-  debugLog('setCaretOnContentEditable', arguments)
+  // debugLog('setCaretOnContentEditable', arguments)
 
   // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
   const range = document.createRange();

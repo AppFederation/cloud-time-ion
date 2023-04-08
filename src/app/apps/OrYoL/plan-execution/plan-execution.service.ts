@@ -24,11 +24,11 @@ export class PlanExecutionService {
   ) {
     this.configService.config$.subscribe(config => {
       this.notificationsEnabled = config.planExecutionNotificationsEnabled
-      console.log(`PlanExecutionService config$`, config)
+      // console.log(`PlanExecutionService config$`, config)
       this.reset()
     })
     this.timeTrackingService.timeTrackedEntries$.subscribe((newTtEntries: TimeTrackedEntry[]) => {
-      console.log(`PlanExecutionService timeTrackedEntries$`, newTtEntries)
+      // console.log(`PlanExecutionService timeTrackedEntries$`, newTtEntries)
       this.onEntriesChanged(newTtEntries)
     })
   }

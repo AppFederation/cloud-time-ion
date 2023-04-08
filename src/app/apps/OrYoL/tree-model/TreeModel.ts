@@ -149,13 +149,13 @@ export class OryTreeNode<
         ret = this.treeNode.treeModel.isRootShown
       } else {
         const ancestorsPathArrayExcludingVirtualRoot = this.treeNode.getAncestorsPathArrayExcludingVirtualRoot()
-        console.log(`ancestorsPathArrayExcludingVirtualRoot for node [${this.treeNode.itemData?.title}]`,
-          ancestorsPathArrayExcludingVirtualRoot.map(node => `> ${node.title}`))
+        // console.log(`ancestorsPathArrayExcludingVirtualRoot for node [${this.treeNode.itemData?.title}]`,
+        //   ancestorsPathArrayExcludingVirtualRoot.map(node => `> ${node.title}`))
         ret = ancestorsPathArrayExcludingVirtualRoot.every(node => {
           return node.expanded
         })
       }
-      console.log('areParentsExpandedToMakeThisNodeVisible ret', ret, this.treeNode.itemData?.title)
+      // console.log('areParentsExpandedToMakeThisNodeVisible ret', ret, this.treeNode.itemData?.title)
       return ret
       // return false
     }
@@ -255,7 +255,7 @@ export class OryTreeNode<
     const index = this.getIndexInParent()
     // console.log('getNodeBelow index', index, 'count', this.parent2.children.length)
     const childAtIndexOrNull = this.parent2 ?. getChildAtIndexOrUndefined(index + 1)
-    debugLog('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
+    // debugLog('getNodeBelow childAtIndexOrNull', childAtIndexOrNull)
     return childAtIndexOrNull as any as TBaseNonRootNode | undefined
   }
 
@@ -835,7 +835,7 @@ export class TreeModel<
       // this.treeModel.focus.lastFocusedCell.node.
       // this.treeModel.focus.setFocused(node, )
       // TODO: set focused
-      console.log('this.visualRoot$.next(this.visualRoot!)', this.visualRoot)
+      // console.log('this.visualRoot$.next(this.visualRoot!)', this.visualRoot)
       this.visualRoot$.next(this.visualRoot!)
     }
 

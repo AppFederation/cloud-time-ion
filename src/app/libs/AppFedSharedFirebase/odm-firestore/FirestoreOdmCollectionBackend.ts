@@ -85,7 +85,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       if ( ! userId ) {
         errorAlert(`FirestoreOdmCollectionBackend before query - no userId`)
       }
-      console.log('FirestoreOdmCollectionBackend setListener')
+      // console.log('FirestoreOdmCollectionBackend setListener')
       // nDaysOldModified = 15
       // getDocs
       // .where('whenArchived', '==', null)
