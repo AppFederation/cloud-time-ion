@@ -444,6 +444,7 @@ export class OryTreeNode<
         nodeBefore = this.lastChildNode
       }
       const inclusionToModify = childNodeToAssociate.nodeInclusion !
+      inclusionToModify.parentItemId = this.itemId
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
           inclusionBefore: nodeBefore?.nodeInclusion,
@@ -459,13 +460,13 @@ export class OryTreeNode<
   }
 
   private patchChildInclusionData(inclusionToModify: NodeInclusion, childNodeToAssociate: TChildNode) {
-    this.treeModel.treeService.patchChildInclusionData(
-      /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
-      inclusionToModify.nodeInclusionId,
-      inclusionToModify,
-      childNodeToAssociate.itemId,
-    )
-    // childNodeToAssociate.nodeInclusion$.patchThrottled(inclusionToModify)
+    // this.treeModel.treeService.patchChildInclusionData(
+    //   /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
+    //   inclusionToModify.nodeInclusionId,
+    //   inclusionToModify,
+    //   childNodeToAssociate.itemId,
+    // )
+    childNodeToAssociate.nodeInclusion$.patchThrottled(inclusionToModify)
   }
 
   deleteWithoutConfirmation() {
@@ -527,9 +528,7 @@ export class OryTreeNode<
       // TODO: duplicate with onNodeInclusionModified - extract applyParentAndOrder or smth
     }
 
-    // this.patchChildInclusionData()
-    // TODO throttle
-    // TODO util func/obj to throttle smth e.g. incremental path
+    // TODO util func/obj to throttle smth e.g. incremental patch
     this.nodeInclusion$.patchThrottled(inclusion)
   }
 
