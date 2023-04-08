@@ -36,7 +36,7 @@ export class SyncStatusService extends BaseService {
   }
 
   /** crude placeholder to distinguish "Unsaved" From "Saving..." */
-  handleUnsavedPromise(promise: SyncTask) {
+  handleUnsavedPromise(promise: SyncTask, titleOfChange?: string) {
     this.handleSavingPromise(promise)
   }
 

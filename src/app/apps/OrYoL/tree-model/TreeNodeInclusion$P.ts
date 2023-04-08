@@ -5,6 +5,7 @@ import {TreeTableNode} from './TreeTableNode'
 import {DbTreeService} from './db-tree-service'
 import {ItemId} from '../db/DbItem'
 import {NodeInclusion} from './TreeListener'
+import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 
 type TMemPatch = NodeInclusion
 
@@ -17,6 +18,13 @@ export class TreeNodeInclusion$P<
   hasPendingPatch = false
 
   public localUserSavesToThrottle$ : CachedSubject<TInclusion> = new CachedSubject<TInclusion>(/* it's important it's undefined here; otherwise it would send writes to db on load */)
+
+  private unsavedChangesPromiseResolveFunc: ( () => void ) | undefined
+
+  /** dummy not yet used */
+  locallyVisibleChanges$: CachedSubject<TInclusion> = new CachedSubject<TInclusion>()
+
+  syncStatusService = this.injector.get(SyncStatusService)
 
   constructor(
     protected injector: Injector,
@@ -34,24 +42,32 @@ export class TreeNodeInclusion$P<
       */
       // // FIXME: incremental patching
       // this.odmService.saveNowToDb(this)
-      // this.hasPendingPatch = false
       // this.resolveFuncPendingThrottledIfNecessary()
       /////
       this.sendPatchToDb(patch)
+      this.unsavedChangesPromiseResolveFunc!.call(undefined)
+      this.unsavedChangesPromiseResolveFunc = undefined
+      // TODO this.pendingThrottledItemDataPatch = {}
+
+      this.hasPendingPatch = false
     }) as any /* TODO investigate after strict */)
   }
-
-  /** dummy not yet used */
-  locallyVisibleChanges$: CachedSubject<TInclusion> = new CachedSubject<TInclusion>()
 
   patchThrottled(patch: TMemPatch): void {
     Object.assign(this.currentVal, patch) // patching the value locally, but current impl saves whole object to firestore
     this.hasPendingPatch = true
+    // TODO incrementally set patch; and reset it to empty after sendToDb()
 
     // this.localUserSavesToThrottle$.next(this.asT) // other code listens to this and throttles - saves
     this.localUserSavesToThrottle$.next(this.currentVal) // other code listens to this and throttles - saves
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
-    // TODO: handle "unsaved" promise
+    if ( ! this.unsavedChangesPromiseResolveFunc ) {
+      const unsavedPromise = new Promise<void>((resolve) => {
+        this.unsavedChangesPromiseResolveFunc = resolve
+        console.log('this.unsavedChangesPromiseResolveFunc = resolve', resolve)
+      })
+      this.syncStatusService.handleUnsavedPromise(unsavedPromise, 'tree node move' /* TODO unify with saving in progress (code, message, handling of unsaved -> saving progression */) // using the crude placeholder func to piggy-back on the promise-based approach
+    }
   }
 
 
