@@ -35,6 +35,7 @@ import {Firestore} from '@angular/fire/firestore'
 import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
+import {ItemId} from '../db/DbItem'
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -72,10 +73,10 @@ console.log('firebase1', firebase1)
 
 export interface FirestoreNodeInclusion {
   childNode: DocumentReference,
-  // orderNum: number,
+  orderNum: number,
   nodeInclusionId: string
   /** only in AllItemsSyncer; should really be called parentItem ? */
-  parentNode?: DocumentReference,
+  parentNode: DocumentReference,
 }
 
 
@@ -131,7 +132,7 @@ export class FirestoreTreeService extends DbTreeService {
   private processNodeEvents(nestLevel: number, childrenChangesEvent: ChildrenChangesEvent, parents: DocumentReference[], listener: DbTreeListener) {
     const serviceThis = this
     childrenChangesEvent.inclusionsAdded.forEach(inclusionAdded => {
-      console.log(`FirestoreTreeService childrenChangesEvent.inclusionsAdded`, inclusionAdded)
+      // console.log(`FirestoreTreeService childrenChangesEvent.inclusionsAdded`, inclusionAdded)
 
       // debugLog('docChanges change.type', change.type);
 
@@ -149,7 +150,7 @@ export class FirestoreTreeService extends DbTreeService {
           serviceThis.pendingListeners --
           // const nodeInclusionId = change.doc.id FIXME()
           // console.log('nodeInclusionId', nodeInclusionId)
-          const nodeInclusion = new NodeInclusion(nodeInclusionId)
+          const nodeInclusion = new NodeInclusion(nodeInclusionId, nodeInclusionData.parentNode.id, nodeInclusionData.orderNum)
           Object.assign(nodeInclusion, nodeInclusionData) // NOTE: this should assign orderNum
           // console.log('includedItemDoc', includedItemDoc)
           const itemData = includedItemDoc.exists ? includedItemDoc.data() : null
@@ -217,20 +218,25 @@ export class FirestoreTreeService extends DbTreeService {
   private addNodeInclusionToParent(parentId: string, nodeInclusion: NodeInclusion /*{ node: firebase.firestore.DocumentReference }*/,
                                    childItemDocRef: DocumentReference
   ) {
-    const nodeInclusionFirebaseObject = this.buildNodeInclusionFirebaseObject(childItemDocRef, nodeInclusion)
+    const nodeInclusionFirebaseObject: Omit<FirestoreNodeInclusion, 'parentNode'> = this.buildNodeInclusionFirebaseObject(childItemDocRef, nodeInclusion)
+    debugLog('FirestoreTreeService nodeInclusionFirebaseObject', nodeInclusionFirebaseObject)
     // this.subNodesCollectionForItem(parentId).add(nodeInclusionFirebaseObject)
     // this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion.nodeInclusionId, parentId, nodeInclusionFirebaseObject)
-    this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion, parentId, this.itemDocById(parentId), nodeInclusionFirebaseObject)
+    const promise = this.dbInclusionsSyncer.addNodeInclusionToParent(nodeInclusion, parentId, this.itemDocById(parentId), nodeInclusionFirebaseObject)
+    return promise
   }
 
   private buildNodeInclusionFirebaseObject(childItemDocRef: DocumentReference, nodeInclusion: NodeInclusion) {
-    const nodeInclusionFirebasePart: FirestoreNodeInclusion = {
+    const nodeInclusionFirebasePart: Omit<FirestoreNodeInclusion, 'parentNode' /* FIXME parentNode is filled in addNodeInclusionToParent */> = {
       // childNode: this.itemDocById(childNode.dbId),
       childNode: childItemDocRef,
+      orderNum: nodeInclusion.orderNum ! /* FIXME make this non-optional */,
       // orderNum: nodeInclusion.orderNum,
       nodeInclusionId: nodeInclusion.nodeInclusionId, /* this can be removed later before serializing, to save space; this can be inferred from firestore document id; it's a bit like $key */
     }
     const nodeInclusionFirebaseObject = Object.assign({}, nodeInclusion, nodeInclusionFirebasePart) // note: this will set orderNum
+    // delete parentId, as it is stored in Firestore as `parentNode: (doc ref)` :
+    delete (nodeInclusionFirebaseObject as { parentItemId?: ItemId }).parentItemId
     return nodeInclusionFirebaseObject
   }
 
@@ -299,7 +305,7 @@ export class FirestoreTreeService extends DbTreeService {
     return { onPatchSentToRemote: promise }
   }
 
-  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any, childItemId: string) {
+  patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: NodeInclusion, childItemId: string) {
     // FIXME: this should build the whole inclusion object and use .set() instead of .update()
     debugLog('patchChildInclusionData', arguments)
     // in order to work around the "no document to update" issue, we use the same function as for adding new inclusions:

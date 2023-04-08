@@ -7,7 +7,7 @@ import {defined, nullOrUndef} from '../../../libs/AppFedShared/utils/utils-from-
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 
 
-export const ORDER_STEP = 1 * 1000 * 1000
+export const ORDER_STEP = 1000 * 1000
 
 interface NodeInclusionWithOrderNum extends NodeInclusion {
   orderNum: number

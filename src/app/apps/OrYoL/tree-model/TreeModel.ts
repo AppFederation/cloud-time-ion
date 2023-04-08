@@ -44,6 +44,7 @@ import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeTableNode} from './TreeTableNode'
+import {TreeNodeInclusion$P} from './TreeNodeInclusion$P'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**
@@ -219,10 +220,19 @@ export class OryTreeNode<
     return ! (this.parent2 ?. parent2) // top-level node (our parent is the virtual root)
   }
 
+  /** TODO this should not be present in RootNode class;
+   * as well as: reorder, indent, outdent */
+  nodeInclusion$ = new TreeNodeInclusion$P(
+    this.injector,
+    this.treeModel.treeService,
+    this.nodeInclusion ! /* FIXME handle root */,
+    this.itemId,
+  )
+
   constructor(
     public injector: Injector,
     public nodeInclusion: NodeInclusion | undefined | null,
-    public itemId: string,
+    public itemId: ItemId,
     public treeModel: TreeModel,
     public itemData: TData | null,
     // public item$: TItem$,
@@ -378,7 +388,8 @@ export class OryTreeNode<
 
     const nodeBelow = afterExistingNode?.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
-    const nodeInclusion: NodeInclusion = newNode.nodeInclusion || new NodeInclusion(generateNewInclusionId())
+    const nodeInclusion: NodeInclusion = newNode.nodeInclusion || new NodeInclusion(generateNewInclusionId(), this.itemId,
+      /* FIXME order is added in addOrderMetadataToInclusion */ )
 
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
       {
@@ -408,7 +419,7 @@ export class OryTreeNode<
     // FIXME: use beforeNode
     FIXME('addAssociationsHere not impl')
     for ( const nodeToAssociate of nodes ) {
-      const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId())
+      const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId(), this.itemId)
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
           inclusionBefore: this.lastChildNode ?. nodeInclusion,
@@ -454,6 +465,7 @@ export class OryTreeNode<
       inclusionToModify,
       childNodeToAssociate.itemId,
     )
+    // childNodeToAssociate.nodeInclusion$.patchThrottled(inclusionToModify)
   }
 
   deleteWithoutConfirmation() {
@@ -516,12 +528,9 @@ export class OryTreeNode<
     }
 
     // this.patchChildInclusionData()
-    this.treeModel.treeService.patchChildInclusionData(
-      this.parent2!.itemId,
-      this.nodeInclusion!.nodeInclusionId,
-      inclusion,
-      this.itemId
-    )
+    // TODO throttle
+    // TODO util func/obj to throttle smth e.g. incremental path
+    this.nodeInclusion$.patchThrottled(inclusion)
   }
 
   // ======================================================

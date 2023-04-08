@@ -42,7 +42,7 @@ export class TreeTableNode extends OryTreeNode<
    where they contrasted the latency with Firebase Realtime DB.
    At 500ms Firefox seems to be lagging behind like even up to 3 seconds after finishing typing.
    2018-11-27 23:14 Increased from 1000 to 4000ms after problem with cursor position reset returned */
-  private readonly DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB = 3000
+  public static readonly DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB = 3000
 
   private readonly DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB = 7000
 
@@ -78,8 +78,15 @@ export class TreeTableNode extends OryTreeNode<
     return eventEmitter
   }
 
+  /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
+   * use-case for this: reordering & indent/outdent, where the protected component will be different from the component
+   * in which the original edit was done.
+   * */
   public canApplyDataToViewGivenColumnLocalEdits(column: OryColumn) {
-    return this.canApplyDataToViewGivenColumnLastLocalEdit(column)
+    const ret = this.canApplyDataToViewGivenColumnLastLocalEdit(column)
+    debugLog(`canApplyDataToViewGivenColumnLocalEdits`, ret, column)
+    // return true;
+    return ret
     /* &&!this.editedHere.get(column)*/
   }
 
@@ -118,7 +125,7 @@ export class TreeTableNode extends OryTreeNode<
       const scheduler = undefined
       this.getEventEmitterOnChangePerColumn(column).pipe(
         throttleTime(
-          this.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
+          TreeTableNode.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
           // keep in mind that this might have something to do with the update events coming with delay (e.g. reorders)
         )
       ).subscribe((changeEvent) => {

@@ -48,6 +48,9 @@ export class FirestoreAllInclusionsSyncer {
 
   startQuery() {
     this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot<any>) => {
+      // debugLog('FirestoreAllInclusionsSyncer onSnapshot snapshot', snapshot, snapshot.metadata)
+      debugLog('FirestoreAllInclusionsSyncer onSnapshot snapshot hasPendingWrites', snapshot, snapshot.metadata, snapshot.metadata.hasPendingWrites)
+
       // TODO: check again regarding offline/metadata: https://firebase.google.com/docs/firestore/query-data/listen
       const mapParentIdToDocsModified = new MultiMap<string, DocumentSnapshot>()
       const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
@@ -94,10 +97,11 @@ export class FirestoreAllInclusionsSyncer {
       nodeInclusion: NodeInclusion,
       parentId: string,
       parentDoc: DocumentReference,
-      nodeInclusionFirebaseObject: FirestoreNodeInclusion
+      nodeInclusionFirebaseObject: Omit<FirestoreNodeInclusion, 'parentNode'>
   ) {
-    nodeInclusionFirebaseObject.parentNode = parentDoc
-    this.docByInclusionId(nodeInclusion.nodeInclusionId).set(nodeInclusionFirebaseObject)
+    ;(nodeInclusionFirebaseObject as FirestoreNodeInclusion).parentNode = parentDoc
+    const promise = this.docByInclusionId(nodeInclusion.nodeInclusionId).set(nodeInclusionFirebaseObject)
+    return promise
   }
 
 
