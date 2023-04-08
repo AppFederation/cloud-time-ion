@@ -85,7 +85,7 @@ export class OdmItem$2<
 
   public locallyVisibleChanges$ = new CachedSubject<TInMemData | nullish>()
   public locallyVisibleChangesThrottled$ = new CachedSubject<TInMemData | nullish>()
-  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>()
+  public localUserSavesToThrottle$ = new CachedSubject<TInMemData | nullish>(/* it's important it's undefined here; otherwise it would send writes to db on load */)
   // TODO: distinguish between own-data changes (e.g. just name surname) and nested collections data change; or nested collections should only be obtained by service directly, via another observable
 
   /** FIXME: encapsulate into OdmCollection<TSelf>, and unify with all-items-list?

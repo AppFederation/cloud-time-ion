@@ -337,9 +337,9 @@ export class OryTreeNode<
     return lastItemOrUndefined(this.children)
   }
 
-  _appendChildAndSetThisAsParent(nodeToAppend?: TChildNode, insertBeforeIndex?: number) {
+  _appendChildAndSetThisAsParent(nodeToAppend: TChildNode, insertBeforeIndex?: number) {
     // TODO: consider reacting to multi-node changes here for all nodes with the same
-    nodeToAppend ??= this.createChildNode()
+    // nodeToAppend ??= this.createChildNode()
     const afterNode = this.lastChildNode
 
     if ( nullOrUndef(insertBeforeIndex) ) {
@@ -384,11 +384,10 @@ export class OryTreeNode<
     }
 
     // console.log('addChild, afterExistingNode', afterExistingNode)
-    newNode = newNode ?? this.createChildNode()
 
     const nodeBelow = afterExistingNode?.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
-    const nodeInclusion: NodeInclusion = newNode.nodeInclusion || new NodeInclusion(generateNewInclusionId(), this.itemId,
+    const nodeInclusion: NodeInclusion = newNode?.nodeInclusion || new NodeInclusion(generateNewInclusionId(), this.itemId,
       /* FIXME order is added in addOrderMetadataToInclusion */ )
 
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
@@ -398,7 +397,8 @@ export class OryTreeNode<
       },
       nodeInclusion,
     )
-    newNode.nodeInclusion = nodeInclusion
+    newNode = newNode ?? this.createChildNode(nodeInclusion)
+    // newNode.nodeInclusion = nodeInclusion
 
     this.treeModel.permissionsManager.onAfterCreated(newNode)
 
@@ -410,8 +410,8 @@ export class OryTreeNode<
     return newNode
   }
 
-  protected createChildNode(): TChildNode {
-    return new OryTreeNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
+  protected createChildNode(nodeInclusion: NodeInclusion): TChildNode {
+    return new OryTreeNode(this.injector, nodeInclusion, 'item_' + uuidv4(), this.treeModel, this.newItemData()) as any as TChildNode
         // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
 
@@ -428,7 +428,7 @@ export class OryTreeNode<
         newInclusion,
       )
 
-      const newNode = this.createChildNode()
+      const newNode = this.createChildNode(newInclusion)
       this.treeModel.treeService.addAssociateSiblingAfterNode(this, newNode, this.lastChildNode)
     }
   }

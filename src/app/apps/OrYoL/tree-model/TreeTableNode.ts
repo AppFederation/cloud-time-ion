@@ -25,8 +25,8 @@ export class TreeTableNode extends OryTreeNode<
   TreeTableNode
 > {
 
-  protected override createChildNode(): TreeTableNode {
-    return new TreeTableNode(this.injector, undefined, 'item_' + uuidv4(), this.treeModel, this.newItemData())
+  protected override createChildNode(nodeInclusion: NodeInclusion): TreeTableNode {
+    return new TreeTableNode(this.injector, nodeInclusion, 'item_' + uuidv4(), this.treeModel, this.newItemData())
     // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
 
@@ -34,6 +34,7 @@ export class TreeTableNode extends OryTreeNode<
 
   // isApplyingFromDbNow = false   /** TODO: to NodeContentViewSyncer */
   protected syncStatusService = this.injector.get(SyncStatusService)
+
   private unsavedChangesPromiseResolveFunc: ( () => void ) | undefined
 
 
@@ -142,6 +143,7 @@ export class TreeTableNode extends OryTreeNode<
     }
   }
 
+  /** related to patchThrottled() */
   onInputChangedByUser(cell: ColumnCell, inputNewValue: any) {
     const column = cell.column
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
