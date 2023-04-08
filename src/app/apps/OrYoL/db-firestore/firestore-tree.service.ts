@@ -309,7 +309,10 @@ export class FirestoreTreeService extends DbTreeService {
     // FIXME: this should build the whole inclusion object and use .set() instead of .update()
     debugLog('patchChildInclusionData', arguments)
     // in order to work around the "no document to update" issue, we use the same function as for adding new inclusions:
-    this.addNodeInclusionToParent(parentItemId, itemInclusionData, this.itemDocById(childItemId))
+    this.syncStatusService.handleSavingPromise(
+      this.addNodeInclusionToParent(parentItemId, itemInclusionData, this.itemDocById(childItemId)),
+      'moving tree node',
+    )
     // const inclusionRawObject = {} as any // Firestore wants object, does not accept instance of NodeInclusion
     // Object.assign(inclusionRawObject, itemInclusionData)
     // inclusionRawObject.parentNode = this.itemDocById(parentItemId)

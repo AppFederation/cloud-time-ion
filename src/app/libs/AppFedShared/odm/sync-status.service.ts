@@ -10,6 +10,7 @@ export class SyncStatus {
   isAllSynced ! : boolean
 }
 
+/** consider putting 'titleOfChange' here */
 type SyncTask = Promise<any> | {then: any}
 
 @Injectable({
@@ -40,7 +41,7 @@ export class SyncStatusService extends BaseService {
   }
 
 
-  handleSavingPromise(promise: SyncTask) {
+  handleSavingPromise(promise: SyncTask, titleOfChange?: string) {
     this.pendingPromises.add(promise)
     this.emitSyncStatus()
     promise.then(() => {
