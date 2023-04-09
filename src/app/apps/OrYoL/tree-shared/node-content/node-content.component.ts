@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import {
   NodeFocusOptions,
-  OryTreeNode,
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { OryColumn } from '../OryColumn'
@@ -45,7 +44,7 @@ import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-import {TreeTableNode} from '../../tree-model/TreeTableNode'
+import {RootTreeNode} from '../../tree-model/RootTreeNode'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -81,7 +80,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   nodeContentViewSyncer!: NodeContentViewSyncer
 
-  @Input() treeNode!: TreeTableNode
+  @Input() treeNode!: RootTreeNode
 
   @Input() treeHost!: TreeHostComponent
 
@@ -122,8 +121,8 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   ngOnInit() {
     this.cells = this.columns.createColumnCells(this.treeNode) // consider rolling cells into OdmItem$. But prolly not, coz OdmItem$ is not thinking in terms of columns/table/treetable
-    debugLog('ngOnInit', this.treeNode.nodeInclusion)
-    debugLog('ngOnInit NodeContentComponent', this.treeNode)
+    // debugLog('ngOnInit', this.treeNode.nodeInclusion)
+    // debugLog('ngOnInit NodeContentComponent', this.treeNode)
     this.treeHost.registerNodeComponent(this)
 
     // here also react to child nodes to recalculate sum
@@ -209,8 +208,9 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
     // TODO: move to global command handler? but under new name not toggleDone
     if ( timeTrackedEntry.isTrackingNow ) {
-      this.setDone(true)
       timeTrackedEntry.pauseOrNoop()
+      this.setDone(true) // FIXME this is prolly patching second time
+      // timeTrackedEntry.pauseOrNoop()
       this.focusNodeBelow(event)
     } else {
       if ( this.isDone ) {
@@ -229,6 +229,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   public setDone(newDone: boolean) {
     this.isDone = newDone ? (this.isDone || new Date()) : false // TODO: test for done timestamp
     this.onInputChanged(null, this.cells.mapColumnToCell.get(this.columnDefs.isDone) !, this.isDone, null)
+    this.changeDetectorRef.detectChanges()
   }
 
   addNodeAfterThis() {
@@ -260,7 +261,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // }
   }
 
-  focusOtherNode(nodeToFocus: TreeTableNode | undefined) {
+  focusOtherNode(nodeToFocus: RootTreeNode | undefined) {
     debugLog('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
@@ -288,7 +289,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
     // here start moving responsibilities from component viewSyncer to
-    this.treeNode.onInputChangedByUser(cell, inputNewValue)
+    this.treeNode.content.onInputChangedByUser(cell, inputNewValue)
     column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()

@@ -1,10 +1,10 @@
 import { OryColumn } from '../OryColumn'
-import { OryTreeNode } from '../../tree-model/TreeModel'
+import {RootTreeNode} from '../../tree-model/RootTreeNode'
 
 export class ColumnCell<
   TVal = any,
   TColumn extends OryColumn<TVal> = OryColumn<TVal>,
-  TNode extends OryTreeNode<any, any, any, any, any> = OryTreeNode<any, any, any, any, any>
+  TNode extends RootTreeNode = RootTreeNode
 > {
   constructor(
     public column: TColumn,

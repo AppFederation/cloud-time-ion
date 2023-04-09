@@ -1,4 +1,4 @@
-export function lastItemOrUndefined<T>(arr: T[] | undefined) {
+export function getLastItemOrUndefined<T>(arr: T[] | undefined) {
   if ( ! arr ) {
     return undefined
   }

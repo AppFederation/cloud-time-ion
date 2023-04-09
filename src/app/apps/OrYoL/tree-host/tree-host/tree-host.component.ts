@@ -6,7 +6,6 @@ import { TreeDragDropService } from 'primeng/api'
 import { TreeService } from '../../tree-model/tree.service'
 import {
   NodeFocusOptions,
-  OryTreeNode,
   TreeCell,
   TreeModel,
 } from '../../tree-model/TreeModel'
@@ -19,6 +18,8 @@ import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
 import {TreeTableModel} from '../../tree-model/TreeTableModel'
 import {TreeTableNode} from '../../tree-model/TreeTableNode'
+import {RootTreeNode} from '../../tree-model/RootTreeNode'
+import {OryTreeNode} from '../../tree-model/TreeNode'
 
 
 @Component({
@@ -34,7 +35,7 @@ export class TreeHostComponent implements OnInit {
 
   pendingListeners = 0
 
-  mapNodeToComponent = new Map<OryTreeNode, NodeContentComponent>()
+  mapNodeToComponent = new Map<RootTreeNode, NodeContentComponent>()
 
   useNestedTree = true
 
@@ -57,17 +58,17 @@ export class TreeHostComponent implements OnInit {
     })
 
     commandsService.commands$.subscribe((command: Command) => {
-      const lastFocusedNode = this.treeModel.focus.lastFocusedNode
+      const lastFocusedNode = this.treeModel.focus.lastFocusedNode as OryTreeNode // (RootTreeNode | OryTreeNode)
       /*  */ if ( command === 'reorderUp' ) {
-        lastFocusedNode ?. reorderUp()
+        lastFocusedNode ?. reorderUp ?. ()
       } else if ( command === 'reorderDown' ) {
-        lastFocusedNode ?. reorderDown()
+        lastFocusedNode ?. reorderDown ?. ()
       } else if ( command === 'toggleDone' ) {
-        lastFocusedNode ?. toggleDone()
+        lastFocusedNode ?. content.toggleDone ?. ()
       } else if ( command === 'indentLeft' ) {
-        lastFocusedNode ?. indentDecrease()
+        lastFocusedNode ?. indentDecrease ?. ()
       } else if ( command === 'indentRight' ) {
-        lastFocusedNode ?. indentIncrease()
+        lastFocusedNode ?. indentIncrease ?. ()
       }
     })
     treeDragDropService.dragStop$.subscribe((...args: any[]) => {

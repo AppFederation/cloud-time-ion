@@ -10,7 +10,6 @@ import {
 import { CellComponent } from '../CellComponent'
 import {
   NodeFocusOptions,
-  OryTreeNode,
 } from '../../../tree-model/TreeModel'
 import {Config, ConfigService} from '../../../core/config.service'
 import {setCaretPosition} from '../../../../../libs/AppFedShared/utils/utils-from-oryol'
@@ -33,7 +32,7 @@ export class NumericCellComponent extends CellComponent implements OnInit, CellC
 
   // @Input()
   isDanger() {
-    return this.treeNode.isChildrenEstimationExceedingOwn(this.column)
+    return this.treeNode.content.isChildrenEstimationExceedingOwn(this.column)
   }
 
   @ViewChild('cellInput', {static: true})

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { OryTreeNode } from '../tree-model/TreeModel'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {RootTreeNode} from '../tree-model/RootTreeNode'
 
 /* Distinguish between navigation and focus?*/
 @Injectable({
@@ -13,7 +13,7 @@ export class NavigationService {
 
   constructor() { }
 
-  navigateToNodeLastChild(node: OryTreeNode) {
+  navigateToNodeLastChild(node: RootTreeNode) {
     this.navigation$.next(node.itemId)
   }
 }
