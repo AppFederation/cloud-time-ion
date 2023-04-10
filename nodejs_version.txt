@@ -1,5 +1,8 @@
 # my own file to make sure I keep track of which version of node & npm I'm using
 
+try .nvmrc
+
+
 ! works: v16.17.1
 ~/.nvm/versions/node/v16.17.1/bin/node
 
