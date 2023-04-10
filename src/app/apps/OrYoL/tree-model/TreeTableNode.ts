@@ -72,7 +72,7 @@ export class TreeTableNode extends OryTreeNode<
 
 
   /** ignoring column */
-  private getEventEmitterOnChangePerColumn(column?: OryColumn) {
+  private getEventEmitterOnChangePerColumn(/*column?: OryColumn*/) {
     return this.eventEmitterOnChange // now all columns have same emitter
     // this should be via OdmItem$ anyway
 
@@ -122,7 +122,7 @@ export class TreeTableNode extends OryTreeNode<
   * @deprecated
   *  */
   private subscribeDebouncedOnChangePerColumns() {
-    for ( const column of this.columns.allColumns ) {
+    // for ( const column of this.columns.allColumns ) {
       const throttleTimeConfig = {
         leading: false /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
         /* think about false; usually single character; but what if someone pastes something, then it will be fast;
@@ -131,7 +131,7 @@ export class TreeTableNode extends OryTreeNode<
           http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
       }
       const scheduler = undefined
-      this.getEventEmitterOnChangePerColumn(column).pipe(
+      this.getEventEmitterOnChangePerColumn().pipe(
         // why is this like that; what if I want to patch more than 1 field/column at once?
         // cumulative patch approach better?
         // e.g. for time-tracking
@@ -144,13 +144,26 @@ export class TreeTableNode extends OryTreeNode<
         if (!this.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
           const ret = this.patchItemData(this.pendingThrottledItemDataPatch) // patching here
-          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote /* title: Saving to remote */)
+          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote, 'saving item to server')
           this.unsavedChangesPromiseResolveFunc!.call(undefined)
+          // FIXME:
+          // only first edit; and error occurs 4 TIMES
+          // FIXME: ERROR TypeError: Cannot read properties of undefined (reading 'call')
+          //     at SafeSubscriber._next (TreeTableNode.ts:148:50)
+          //     at SafeSubscriber.__tryOrUnsub (Subscriber.js:183:16)
+          //     at SafeSubscriber.next (Subscriber.js:122:22)
+          //     at Subscriber._next (Subscriber.js:72:26)
+          //     at Subscriber.next (Subscriber.js:49:18)
+          //     at ThrottleTimeSubscriber.clearThrottle (throttleTime.js:59:34)
+          //     at AsyncAction.dispatchNext (throttleTime.js:71:16)
+          //     at AsyncAction._execute (AsyncAction.js:51:18)
+          //     at AsyncAction.execute (AsyncAction.js:39:28)
+          //     at AsyncScheduler.flush (AsyncScheduler.js:33:32)
           this.unsavedChangesPromiseResolveFunc = undefined
           this.pendingThrottledItemDataPatch = {}
         } // else: no need to react, since it is being applied from Db
       })
-    }
+    // }
   }
 
   toggleDone() {
@@ -167,7 +180,7 @@ export class TreeTableNode extends OryTreeNode<
     const column = cell.column
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
     this.patchThrottled(this.pendingThrottledItemDataPatch)
-    this.getEventEmitterOnChangePerColumn(column).emit(column) // FIXME make this cumulative patch, not per-column
+    this.getEventEmitterOnChangePerColumn().emit(column) // FIXME make this cumulative patch, not per-column
     // this.editedHere.set(column, true)
     this.whenLastEditedLocallyByColumn.set(column, new Date())
 
@@ -179,11 +192,13 @@ export class TreeTableNode extends OryTreeNode<
       ... this.pendingThrottledItemDataPatch,
       ... patch,
     }
+    console.log(`patchThrottled`, patch, `this.unsavedChangesPromiseResolveFunc`, this.unsavedChangesPromiseResolveFunc)
     if ( ! this.unsavedChangesPromiseResolveFunc ) {
       const unsavedPromise = new Promise<void>((resolve) => {
         this.unsavedChangesPromiseResolveFunc = resolve
-        console.log('this.unsavedChangesPromiseResolveFunc = resolve', resolve)
+        // console.log('in promise this.unsavedChangesPromiseResolveFunc = resolve', resolve)
       })
+      console.log('outside of promise this.unsavedChangesPromiseResolveFunc = resolve', this.unsavedChangesPromiseResolveFunc)
       this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
     this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
