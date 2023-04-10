@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
-import { HasItemData } from '../tree-model/has-item-data'
+import {HasItemData, HasPatchThrottled} from '../tree-model/has-item-data'
 import { DataItemsService } from '../core/data-items.service'
 import {
   TimeTrackingPeriod,
@@ -10,7 +10,7 @@ import {
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {TimeoutHandle} from '../../../libs/AppFedShared/scheduler/scheduler.service'
 
-export type TimeTrackable = HasItemData
+export type TimeTrackable = HasPatchThrottled
 
 export function date(obj: any) {
   if ( ! obj ) {
@@ -202,7 +202,8 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   private patchItemTimeTrackingData(dataItemPatch: TTPatch) {
     // debugLog('patchItemTimeTrackingData', dataItemPatch)
-    this.timeTrackable.patchItemData({
+    // here it creates conflict with throttled setting of done
+    this.timeTrackable.patchThrottled({
       /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
       timeTrack: {
         ... dataItemPatch,
@@ -270,7 +271,8 @@ export class TimeTrackingService {
     this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData, any]) => {
       if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
         // console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
-        this.pauseOrNoop(event[0])
+        const eventElement: HasItemData = event[0]
+        this.pauseOrNoop(eventElement as TimeTrackable /* HACK */)
       }
     })
 
@@ -281,7 +283,7 @@ export class TimeTrackingService {
       if ( ttData && ttData.nowTrackingSince &&
           (ttData.whenFirstStarted as any).toDate /* FIX for a string */ ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
-        const timeTrackedEntry = this.obtainEntryForItem(dataItem)
+        const timeTrackedEntry = this.obtainEntryForItem(dataItem as TimeTrackable /* HACK */)
         this.emitTimeTrackedEntry(timeTrackedEntry)
       }
     })
@@ -301,7 +303,7 @@ export class TimeTrackingService {
     return this.timeService.now()
   }
 
-  public obtainEntryForItem(timeTrackedItem: TimeTrackable) {
+  public obtainEntryForItem(timeTrackedItem: TimeTrackable): TimeTrackedEntry {
     let entry = this.mapItemToEntry.get(timeTrackedItem)
     if ( ! entry ) {
       entry = new TimeTrackedEntry(this, this.timeTrackingPeriodsService, timeTrackedItem)

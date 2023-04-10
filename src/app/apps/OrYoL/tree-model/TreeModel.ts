@@ -474,12 +474,13 @@ export class OryTreeNode<
     this.parent2!._removeChild(this)
   }
 
+  /** NOTE this is raw, not throttled; only use in specific case */
   patchItemData(itemDataPatch: any /* TData */) {
     // TODO this should use odmitem$
     Object.assign(this.itemData, itemDataPatch)
     let ret = this.treeModel.treeService.patchItemData(this.itemId, itemDataPatch)
     // TODO: fireOnChangeItemDataOfChildOnParents ?
-    this.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
+    this.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this as any as TreeTableNode /* HACK */, itemDataPatch])
     this.dbItem.data$.next(this.itemData)
     return ret
     // this.itemData$.next()
@@ -702,15 +703,6 @@ export class OryTreeNode<
   getAncestorsPathArrayExcludingVirtualRoot() {
     const ancestorsPathArray = this.getAncestorsPathArray()
     return ancestorsPathArray.slice(1, ancestorsPathArray.length)
-  }
-
-  toggleDone() {
-    let ret = this.patchItemData({
-      isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
-    })
-    // FIXME: fireOnChangeItemDataOfChildOnParents and on this
-
-    // TODO: focus node below, but too tied to UI; has to know about column too
   }
 
   fireOnChangeItemDataOfChildOnParents() {
@@ -949,7 +941,7 @@ export class TreeModel<
 
               const newTreeNode = this.createTreeNode(event.nodeInclusion, event.itemId, event.itemData)
               parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
-              this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
+              this.dataItemsService.onItemWithDataAdded$.next(newTreeNode as any as TreeTableNode /* HACK */)
               // console.log('onItemWithDataAdded$.next(newTreeNode)')
             }
           }

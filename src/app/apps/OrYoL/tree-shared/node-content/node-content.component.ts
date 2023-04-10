@@ -209,6 +209,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
     // TODO: move to global command handler? but under new name not toggleDone
     if ( timeTrackedEntry.isTrackingNow ) {
+      // FIXME here collision between
       this.setDone(true)
       timeTrackedEntry.pauseOrNoop()
       this.focusNodeBelow(event)

@@ -35,11 +35,16 @@ export class SyncStatusService extends BaseService {
     console.log('SyncStatusService ctor')
   }
 
-  /** crude placeholder to distinguish "Unsaved" From "Saving..." */
+  /** crude placeholder to distinguish "Unsaved" From "Saving...";
+   * later unify unsaved -> saving; and even provide link to item/node in question, and original and new value; and cells/columns names
+   *
+   * it can contain multiple changes;
+   * multiple batches could be pending "on" same object, if slow internet;
+   * if offline, they can prolly keep accumulating; maybe they should overwrite previous ones
+   * */
   handleUnsavedPromise(promise: SyncTask, titleOfChange?: string) {
     this.handleSavingPromise(promise)
   }
-
 
   handleSavingPromise(promise: SyncTask, titleOfChange?: string) {
     this.pendingPromises.add(promise)

@@ -50,7 +50,8 @@ export class TreeTableNode extends OryTreeNode<
 
   whenLastEditedLocallyByColumn = new Map<OryColumn, Date>()
 
-  private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
+  // private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
+  protected eventEmitterOnChange = new EventEmitter<any>()
 
   private pendingThrottledItemDataPatch = {}
 
@@ -70,13 +71,17 @@ export class TreeTableNode extends OryTreeNode<
   }
 
 
-  private getEventEmitterOnChangePerColumn(column: OryColumn) {
-    let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
-    if ( ! eventEmitter ) {
-      eventEmitter = new EventEmitter()
-      this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
-    }
-    return eventEmitter
+  /** ignoring column */
+  private getEventEmitterOnChangePerColumn(column?: OryColumn) {
+    return this.eventEmitterOnChange // now all columns have same emitter
+    // this should be via OdmItem$ anyway
+
+    // let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
+    // if ( ! eventEmitter ) {
+    //   eventEmitter = new EventEmitter()
+    //   this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
+    // }
+    // return eventEmitter
   }
 
   /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
@@ -113,6 +118,8 @@ export class TreeTableNode extends OryTreeNode<
   * When indenting, it's new UI component.
   *
   * Maybe indenting could force committing the delayed (throttled) change.
+  *
+  * @deprecated
   *  */
   private subscribeDebouncedOnChangePerColumns() {
     for ( const column of this.columns.allColumns ) {
@@ -125,11 +132,14 @@ export class TreeTableNode extends OryTreeNode<
       }
       const scheduler = undefined
       this.getEventEmitterOnChangePerColumn(column).pipe(
+        // why is this like that; what if I want to patch more than 1 field/column at once?
+        // cumulative patch approach better?
+        // e.g. for time-tracking
         throttleTime(
           TreeTableNode.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
           // keep in mind that this might have something to do with the update events coming with delay (e.g. reorders)
         )
-      ).subscribe((changeEvent) => {
+      ).subscribe(() => {
         debugLog('onInputChanged; isApplyingFromDbNow', this.treeModel.isApplyingFromDbNow)
         if (!this.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
@@ -143,11 +153,30 @@ export class TreeTableNode extends OryTreeNode<
     }
   }
 
+  toggleDone() {
+    this.patchThrottled({
+      isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
+    })
+    // FIXME: fireOnChangeItemDataOfChildOnParents and on this
+
+    // TODO: focus node below, but too tied to UI; has to know about column too
+  }
+
   /** related to patchThrottled() */
   onInputChangedByUser(cell: ColumnCell, inputNewValue: any) {
     const column = cell.column
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
-    // TODO this should already mark as unsaved in SyncStatus
+    this.patchThrottled(this.pendingThrottledItemDataPatch)
+    this.getEventEmitterOnChangePerColumn(column).emit(column) // FIXME make this cumulative patch, not per-column
+    // this.editedHere.set(column, true)
+    this.whenLastEditedLocallyByColumn.set(column, new Date())
+  }
+
+  patchThrottled(patch: any) {
+    this.pendingThrottledItemDataPatch = {
+      ... this.pendingThrottledItemDataPatch,
+      ... patch,
+    }
     if ( ! this.unsavedChangesPromiseResolveFunc ) {
       const unsavedPromise = new Promise<void>((resolve) => {
         this.unsavedChangesPromiseResolveFunc = resolve
@@ -155,9 +184,7 @@ export class TreeTableNode extends OryTreeNode<
       })
       this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
-    this.getEventEmitterOnChangePerColumn(column).emit(column)
-    // this.editedHere.set(column, true)
-    this.whenLastEditedLocallyByColumn.set(column, new Date())
+    this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
   }
 
 }

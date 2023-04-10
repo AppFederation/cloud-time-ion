@@ -8,6 +8,7 @@ import { columnDefs } from '../tree-shared/node-content/Columns'
 import { Subscription } from 'rxjs'
 import { minutesToString } from '../utils/time-utils'
 import { ConfigService } from '../core/config.service'
+import {TreeTableNode} from '../tree-model/TreeTableNode'
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class PlanExecutionService {
     if ( ! ttEntry.isTrackingNow ) {
       return
     }
-    const node = ttEntry.timeTrackable as OryTreeNode
+    const node = ttEntry.timeTrackable as TreeTableNode
     const dbItem = node.dbItem
     // TODO: listen to changes of title?
     this.dbItemDataSubscriptions.push(dbItem.data$.subscribe(data => {
