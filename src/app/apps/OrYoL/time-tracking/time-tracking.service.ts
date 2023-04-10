@@ -59,6 +59,29 @@ export class TTPausePatch implements TTPatch {
   whenCurrentPauseStarted ! : Date
 }
 
+/* This + TimeTrackable could use the same mechanism as dynamically getting class
+ * (items can change class at runtime for user editing convenience and flexibility -- user can change their mind which item type it is, even after entering info)
+ * e.g.
+ * item$.getClassInstance(Task) // or Milestone, Note, JournalEntry, etc.
+ * item$.getClassInstance(TimeTrackable)
+ * item$.hasClass(Task)
+ *
+ *
+ * TimeTrackable being a sort of mixin which would work same as classes like Task, etc.
+ * Probably most items (classes) would include the TimeTrackable mixin.
+ *
+ * Other mixins:
+ * - Doable / Executable (`done`) -- TimeTrackable inherits from this
+ * - Estimable / Estimatable
+ * - ? Archivable ? (prolly built-in)
+ * - Rateable (rating 5 stars etc; just an example)
+ *
+ * I can implement this gradually - gradually moving stuff from common classes like TreeTableNode / TreeTableContent, to specific mixins.
+ *
+ * A danger: having to re-implement object-oriented system, with inheritance, etc.
+ * but maybe I can just swap normal js objects at runtime...
+ *
+ */
 export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   public currentPeriod ? : TimeTrackingPeriod
