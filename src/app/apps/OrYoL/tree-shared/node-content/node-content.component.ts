@@ -284,13 +284,18 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }
 
-  /* TODO: rename reactToInputChangedAndSave */
+  /* TODO: rename reactToInputChangedAndSave
+  *
+  * FIXME this can probably completely be moved to TreeTableNode
+  * only view-related thing is `event
+  *
+  * */
   onInputChanged(event: any, cell: ColumnCell, inputNewValue: any, component: CellComponent | null) {
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
     // here start moving responsibilities from component viewSyncer to
     this.treeNode.onInputChangedByUser(cell, inputNewValue)
-    column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
+    // column.setValueOnItemData(this.treeNode.itemData, inputNewValue) --- moved to TreeTableNode
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()
     this.treeNode.onChangeItemData.emit()

@@ -170,6 +170,8 @@ export class TreeTableNode extends OryTreeNode<
     this.getEventEmitterOnChangePerColumn(column).emit(column) // FIXME make this cumulative patch, not per-column
     // this.editedHere.set(column, true)
     this.whenLastEditedLocallyByColumn.set(column, new Date())
+
+    column.setValueOnItemData(this.itemData, inputNewValue) // NOTE this was moved from NodeContentComponent::onInputChanged
   }
 
   patchThrottled(patch: any) {
