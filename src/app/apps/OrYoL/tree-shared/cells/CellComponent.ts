@@ -11,7 +11,6 @@ import { ColumnCell } from '../node-content/Cells'
 import { NodeContentComponent } from '../node-content/node-content.component'
 import {
   NodeFocusOptions,
-  OryTreeNode,
 } from '../../tree-model/TreeModel'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 

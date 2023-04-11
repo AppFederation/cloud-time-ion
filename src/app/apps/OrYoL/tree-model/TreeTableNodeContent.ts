@@ -32,7 +32,10 @@ import {DbItem} from '../db/DbItem'
  *
  * */
 export class TreeTableNodeContent <
-  TItemData,
+  TItemData extends { /* FIXME prolly only TNodeContent should care about TData ( TItemData ) - orthogonal concern */
+    title: string,
+    isDone?: boolean,
+  } = any,
   TTreeNode extends RootTreeNode<any> = RootTreeNode<any, any>,
 > implements HasItemData
 {
@@ -62,7 +65,8 @@ export class TreeTableNodeContent <
 
   whenLastEditedLocallyByColumn = new Map<OryColumn, Date>()
 
-  private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
+  // private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
+  protected eventEmitterOnChange = new EventEmitter<any>()
 
   private pendingThrottledItemDataPatch = {}
 
@@ -70,15 +74,15 @@ export class TreeTableNodeContent <
   //   return this.children as TreeTableNode[]
   // }
 
+  public treeNode!: TTreeNode
+
   /** FIXME: not yet fully used because we are still using itemData */
   dbItem: DbItem<TItemData> = this.treeNode.treeModel.obtainItemById(this.getId()) // new DbItem(this.itemId)
 
   // TODO item$ here from ODM
 
-
   constructor(
     public injector: Injector,
-    public treeNode: TTreeNode,
     // nodeInclusion: NodeInclusion | undefined | null,
     itemId: string,
     // treeModel: TreeModel,
@@ -94,13 +98,17 @@ export class TreeTableNodeContent <
     return this.itemData
   }
 
-  private getEventEmitterOnChangePerColumn(column: OryColumn) {
-    let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
-    if ( ! eventEmitter ) {
-      eventEmitter = new EventEmitter()
-      this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
-    }
-    return eventEmitter
+  /** ignoring column */
+  private getEventEmitterOnChangePerColumn(/*column?: OryColumn*/) {
+    return this.eventEmitterOnChange // now all columns have same emitter
+    // this should be via OdmItem$ anyway
+
+    // let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
+    // if ( ! eventEmitter ) {
+    //   eventEmitter = new EventEmitter()
+    //   this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
+    // }
+    // return eventEmitter
   }
 
   /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
@@ -137,9 +145,11 @@ export class TreeTableNodeContent <
   * When indenting, it's new UI component.
   *
   * Maybe indenting could force committing the delayed (throttled) change.
+  *
+  * @deprecated
   *  */
   private subscribeDebouncedOnChangePerColumns() {
-    for ( const column of this.columns.allColumns ) {
+    // for ( const column of this.columns.allColumns ) {
       const throttleTimeConfig = {
         leading: false /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
         /* think about false; usually single character; but what if someone pastes something, then it will be fast;
@@ -148,7 +158,10 @@ export class TreeTableNodeContent <
           http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
       }
       const scheduler = undefined
-      this.getEventEmitterOnChangePerColumn(column).pipe(
+      this.getEventEmitterOnChangePerColumn().pipe(
+        // why is this like that; what if I want to patch more than 1 field/column at once?
+        // cumulative patch approach better?
+        // e.g. for time-tracking
         throttleTime(
           TreeTableNodeContent.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
           // keep in mind that this might have something to do with the update events coming with delay (e.g. reorders)
@@ -158,30 +171,64 @@ export class TreeTableNodeContent <
         if (!this.treeNode.treeModel.isApplyingFromDbNow) {
           // const itemData = this.buildItemDataFromUi()
           const ret = this.patchItemData(this.pendingThrottledItemDataPatch) // patching here
-          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote /* title: Saving to remote */)
+          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote, 'saving item to server')
           this.unsavedChangesPromiseResolveFunc!.call(undefined)
+          // FIXME:
+          // only first edit; and error occurs 4 TIMES
+          // FIXME: ERROR TypeError: Cannot read properties of undefined (reading 'call')
+          //     at SafeSubscriber._next (TreeTableNode.ts:148:50)
+          //     at SafeSubscriber.__tryOrUnsub (Subscriber.js:183:16)
+          //     at SafeSubscriber.next (Subscriber.js:122:22)
+          //     at Subscriber._next (Subscriber.js:72:26)
+          //     at Subscriber.next (Subscriber.js:49:18)
+          //     at ThrottleTimeSubscriber.clearThrottle (throttleTime.js:59:34)
+          //     at AsyncAction.dispatchNext (throttleTime.js:71:16)
+          //     at AsyncAction._execute (AsyncAction.js:51:18)
+          //     at AsyncAction.execute (AsyncAction.js:39:28)
+          //     at AsyncScheduler.flush (AsyncScheduler.js:33:32)
           this.unsavedChangesPromiseResolveFunc = undefined
           this.pendingThrottledItemDataPatch = {}
         } // else: no need to react, since it is being applied from Db
       })
-    }
+    // }
+  }
+
+  toggleDone() {
+    this.patchThrottled({
+      isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
+    })
+    // FIXME: fireOnChangeItemDataOfChildOnParents and on this
+
+    // TODO: focus node below, but too tied to UI; has to know about column too
   }
 
   /** related to patchThrottled() */
   onInputChangedByUser(cell: ColumnCell, inputNewValue: any) {
     const column = cell.column
     column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
-    // TODO this should already mark as unsaved in SyncStatus
+    this.patchThrottled(this.pendingThrottledItemDataPatch)
+    this.getEventEmitterOnChangePerColumn().emit(column) // FIXME make this cumulative patch, not per-column
+    // this.editedHere.set(column, true)
+    this.whenLastEditedLocallyByColumn.set(column, new Date())
+
+    column.setValueOnItemData(this.itemData, inputNewValue) // NOTE this was moved from NodeContentComponent::onInputChanged
+  }
+
+  patchThrottled(patch: any) {
+    this.pendingThrottledItemDataPatch = {
+      ... this.pendingThrottledItemDataPatch,
+      ... patch,
+    }
+    console.log(`patchThrottled`, patch, `this.unsavedChangesPromiseResolveFunc`, this.unsavedChangesPromiseResolveFunc)
     if ( ! this.unsavedChangesPromiseResolveFunc ) {
       const unsavedPromise = new Promise<void>((resolve) => {
         this.unsavedChangesPromiseResolveFunc = resolve
-        // console.log('this.unsavedChangesPromiseResolveFunc = resolve', resolve)
+        // console.log('in promise executor func this.unsavedChangesPromiseResolveFunc = resolve', resolve)
       })
+      console.log('outside of promise this.unsavedChangesPromiseResolveFunc = resolve', this.unsavedChangesPromiseResolveFunc)
       this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
-    this.getEventEmitterOnChangePerColumn(column).emit(column)
-    // this.editedHere.set(column, true)
-    this.whenLastEditedLocallyByColumn.set(column, new Date())
+    this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
   }
 
   /***   moved from OryTreeNode: */
@@ -189,27 +236,6 @@ export class TreeTableNodeContent <
   hasField(attribute: OryColumn) {
     // return this.dbItem.hasField
     return true // HACK FIXME
-  }
-
-  /** TODO: move to NumericCell */
-  timeLeftSumText(column: OryColumn) {
-    const minutesTotalLeft = this.valueLeftSum(column)
-    return minutesToString(minutesTotalLeft)
-  }
-
-  /** TODO: move to NumericCell */
-  valueLeftSum(column: OryColumn): number {
-    const columnVal = column.getValueFromItemData(this.itemData)
-    const selfTimeLeft = ( columnVal && parseTimeToMinutes(columnVal)) || 0
-    // TODO: use AggregateValue class
-    const childrenTimeLeftSum = this.getChildrenTimeLeftSum(column)
-    return Math.max(selfTimeLeft, childrenTimeLeftSum)
-  }
-
-  getChildrenTimeLeftSum(column: OryColumn): number {
-    return sumBy(this.treeNode.children, childNode => {
-      return childNode.effectiveValueLeft(column)
-    })
   }
 
   hasMissingVal(column: OryColumn) {
@@ -241,7 +267,7 @@ export class TreeTableNodeContent <
     let ret = this.treeNode.treeModel.treeService.patchItemData(this.treeNode.itemId, itemDataPatch)
     // TODO: fireOnChangeItemDataOfChildOnParents ?
     this.treeNode.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
-    this.dbItem.data$.next(this.itemData) // FIXME this should be replaced with OdmItemData
+    this.dbItem.data$.next(this.itemData !) // FIXME this should be replaced with OdmItemData
     return ret
     // this.itemData$.next()
   }

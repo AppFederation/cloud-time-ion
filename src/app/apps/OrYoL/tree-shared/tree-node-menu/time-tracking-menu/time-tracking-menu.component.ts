@@ -8,6 +8,7 @@ import {
   TimeTrackingService,
 } from '../../../time-tracking/time-tracking.service'
 import { OryTreeNode } from '../../../tree-model/TreeModel'
+import {TreeTableNode} from '../../../tree-model/TreeTableNode'
 
 function timeTrackedMsFunc ( node: OryTreeNode ) {
   return ((node.itemData && node.itemData.timeTrack && node.itemData.timeTrack.previousTrackingsMs) || 0) +
@@ -23,7 +24,7 @@ function timeTrackedMsFunc ( node: OryTreeNode ) {
 })
 export class TimeTrackingMenuComponent implements OnInit {
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: TreeTableNode
 
   timeTrackedMsFunc = timeTrackedMsFunc
 

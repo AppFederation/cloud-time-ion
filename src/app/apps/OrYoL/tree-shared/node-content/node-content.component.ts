@@ -45,6 +45,7 @@ import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {RootTreeNode} from '../../tree-model/RootTreeNode'
+import {OryTreeNode} from '../../tree-model/TreeNode'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -80,7 +81,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   nodeContentViewSyncer!: NodeContentViewSyncer
 
-  @Input() treeNode!: RootTreeNode
+  @Input() treeNode!: OryTreeNode
 
   @Input() treeHost!: TreeHostComponent
 
@@ -148,7 +149,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     this.nodeDebug.countApplyItemDataValuesToViews ++
     debugLog('applyItemDataValuesToViews this.treeNode', this.treeNode)
 
-    this.isDone = this.treeNode.itemData.isDone // TODO: remove redundant field in favor of single source of truth
+    this.isDone = this.treeNode.content.itemData.isDone // TODO: remove redundant field in favor of single source of truth
     if (isNullish(this.isDone)) {
       this.isDone = null; // TODO: test for done timestamp
     }
@@ -176,7 +177,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     this.focusNewlyCreatedNode(newTreeNode)
   }
 
-  private focusNewlyCreatedNode(newTreeNode: TreeTableNode) {
+  private focusNewlyCreatedNode(newTreeNode: OryTreeNode) {
     setTimeout(() => {
       this.treeHost.focusNode(newTreeNode)
     })
@@ -198,7 +199,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
    *  */
   keyPressMetaEnter(event: any) {
     // debugLog('keyPressMetaEnter')
-    const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
+    const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content)
 
     // fresh
     // -> (1) being tracked
@@ -284,13 +285,23 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     this.treeHost.treeModel.focus.ensureNodeVisibleAndFocusIt(this.treeNode, column)
   }
 
-  /* TODO: rename reactToInputChangedAndSave */
+  /* TODO: rename reactToInputChangedAndSave
+  *
+  * FIXME this can probably completely be moved to TreeTableNode
+  * only view-related thing is `event
+  *
+  * */
   onInputChanged(event: any, cell: ColumnCell, inputNewValue: any, component: CellComponent | null) {
     debugLog('onInputChanged, cell', cell, event, component)
     const column = cell.column
     // here start moving responsibilities from component viewSyncer to
+// <<<<<<< HEAD
     this.treeNode.content.onInputChangedByUser(cell, inputNewValue)
     column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
+// =======
+//     this.treeNode.onInputChangedByUser(cell, inputNewValue)
+//     // column.setValueOnItemData(this.treeNode.itemData, inputNewValue) --- moved to TreeTableNode
+// >>>>>>> develop
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()
     this.treeNode.onChangeItemData.emit()
@@ -314,7 +325,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   /* TODO: move to end-time cell (only on day-plans) */
   formatEndTime(column: OryColumn) {
-    const date = this.treeNode.endTime(column)
+    const date = this.treeNode.content.endTime(column)
     return '' + date.getHours() + ':' + padStart('' + date.getMinutes(), 2, '0')
   }
 
@@ -338,7 +349,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   onKeyDownBackspaceOnEstimatedTime() {
     if ( getActiveElementCaretPos() === 0
-      && this.treeNode.itemData.estimatedTime === ''
+      && this.treeNode.content.itemData.estimatedTime === ''
     ) {
       this.openDeleteDialog()
     }

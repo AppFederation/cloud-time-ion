@@ -44,8 +44,9 @@ import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeNodeInclusion$P} from './TreeNodeInclusion$P'
-import {RootTreeNode} from './RootTreeNode'
+import {BaseTreeNode, RootTreeNode} from './RootTreeNode'
 import {OryTreeNode} from './TreeNode'
+import {TreeTableNodeContent} from './TreeTableNodeContent'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**
@@ -72,7 +73,7 @@ export abstract class OryTreeListener {
 /** rename to TreeTableCell, as this deals with columns already */
 export class TreeCell {
   constructor(
-    public node?: RootTreeNode,
+    public node?: BaseTreeNode,
     public column?: OryColumn,
   ) {}
 }
@@ -98,10 +99,10 @@ export class NodeFocusOptions {
  */
 @Injectable()
 export class TreeModel<
+  TNodeContent extends TreeTableNodeContent<any>,
   TBaseNode extends RootTreeNode<any> = RootTreeNode<any>,
   TRootNode extends TBaseNode = TBaseNode,
   TNonRootNode extends TBaseNode = TBaseNode,
-  TItemData = any,
 >
 {
 
@@ -125,7 +126,7 @@ export class TreeModel<
         return // Prevent navigation if currently navigated-to (visual root) node is the same
       }
       if ( typeof node === 'string' ) {
-        node = this.treeModel.getNodesByItemId(node)[0]
+        node = this.treeModel.getNodesByItemId(node)[0] as TBaseNode
         if ( ! node ) {
           errorAlert('navigateInto: unable to find node with id ', node)
           return
@@ -142,12 +143,12 @@ export class TreeModel<
     }
 
     navigateToParent() {
-      const node = this.visualRoot?.parent2
+      const node = this.visualRoot?.parent2 as TBaseNode
       this.navigateInto(node)
     }
 
     navigateToRoot() {
-      this.navigateInto(this.treeModel.root)
+      this.navigateInto(this.treeModel.root as TBaseNode)
     }
 
   }(this)
@@ -191,7 +192,11 @@ export class TreeModel<
   dataItemsService = this.injector.get(DataItemsService)
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
-  root: TRootNode = new RootTreeNode(this.injector, undefined, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, this, null) as any as TRootNode
+  root: TRootNode = new RootTreeNode(this.injector, this, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID,
+    new TreeTableNodeContent<any, TBaseNode>(this.injector, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, {title: ''} as any
+
+    ) as any as TNodeContent
+  ) as any as TRootNode
 
   constructor(
     public injector: Injector,
@@ -200,6 +205,7 @@ export class TreeModel<
     public authService: AuthService,
     public treeListener: OryTreeListener,
   ) {
+    this.root.content.treeNode = this.root
     this.addNodeToMapByItemId(this.root)
     this.permissionsManager = new PermissionsManager(this.authService.userId!)
     this.navigation.navigateToRoot()
@@ -229,8 +235,8 @@ export class TreeModel<
           // setTimeout(() => {
           //   setTimeout(() => {
           // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
-          existingNode.itemData = event.itemData
-          traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.itemData)
+          existingNode.content.itemData = event.itemData
+          traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.content.itemData)
 
           existingNode.onChangeItemData.emit(event.itemData)
           existingNode.fireOnChangeItemDataOfChildOnParents()
@@ -247,11 +253,12 @@ export class TreeModel<
             console.log('onNodeAdded: no parent', event.directParentItemId)
           } else {
             for (const parentNode of parentNodes) {
+              // TODO prolly move this into tree node class
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
 
-              const newTreeNode = this.createTreeNode(event.nodeInclusion, event.itemId, event.itemData)
-              parentNode._appendChildAndSetThisAsParent(newTreeNode, insertBeforeIndex)
-              this.dataItemsService.onItemWithDataAdded$.next(newTreeNode)
+              const newTreeNode: TNonRootNode = parentNode.createChildNode(event.nodeInclusion, event.itemId, event.itemData) as any as TNonRootNode
+              parentNode._appendChildAndSetThisAsParent(newTreeNode as any, insertBeforeIndex)
+              this.dataItemsService.onItemWithDataAdded$.next(newTreeNode.content) //newTreeNode as any as TreeTableNode /* HACK */)
               // console.log('onItemWithDataAdded$.next(newTreeNode)')
             }
           }
@@ -262,9 +269,9 @@ export class TreeModel<
     }
   }
 
-  protected createTreeNode(nodeInclusion: NodeInclusion, itemId: ItemId, itemData: TItemData): TBaseNode {
-    return new OryTreeNode(this.injector, nodeInclusion, itemId, this, itemData as any) as TBaseNode
-  }
+  // protected createTreeNode(nodeInclusion: NodeInclusion, itemId: ItemId, itemData: TItemData): TNonRootNode {
+  //   return new OryTreeNode(this.injector, nodeInclusion, itemId, this, itemData as any) as TNonRootNode
+  // }
 
   /* Can unify this with moveInclusionsHere() */
   onNodeInclusionModified(nodeInclusionId: NodeInclusionId, nodeInclusionData: any, newParentItemId: ItemId) {

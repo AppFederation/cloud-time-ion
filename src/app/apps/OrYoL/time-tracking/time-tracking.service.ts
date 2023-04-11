@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
-import { HasItemData } from '../tree-model/has-item-data'
+import {HasItemData, HasPatchThrottled} from '../tree-model/has-item-data'
 import { DataItemsService } from '../core/data-items.service'
 import {
   TimeTrackingPeriod,
@@ -10,7 +10,7 @@ import {
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {TimeoutHandle} from '../../../libs/AppFedShared/scheduler/scheduler.service'
 
-export type TimeTrackable = HasItemData
+export type TimeTrackable = HasPatchThrottled
 
 export function date(obj: any) {
   if ( ! obj ) {
@@ -59,6 +59,29 @@ export class TTPausePatch implements TTPatch {
   whenCurrentPauseStarted ! : Date
 }
 
+/* This + TimeTrackable could use the same mechanism as dynamically getting class
+ * (items can change class at runtime for user editing convenience and flexibility -- user can change their mind which item type it is, even after entering info)
+ * e.g.
+ * item$.getClassInstance(Task) // or Milestone, Note, JournalEntry, etc.
+ * item$.getClassInstance(TimeTrackable)
+ * item$.hasClass(Task)
+ *
+ *
+ * TimeTrackable being a sort of mixin which would work same as classes like Task, etc.
+ * Probably most items (classes) would include the TimeTrackable mixin.
+ *
+ * Other mixins:
+ * - Doable / Executable (`done`) -- TimeTrackable inherits from this
+ * - Estimable / Estimatable
+ * - ? Archivable ? (prolly built-in)
+ * - Rateable (rating 5 stars etc; just an example)
+ *
+ * I can implement this gradually - gradually moving stuff from common classes like TreeTableNode / TreeTableContent, to specific mixins.
+ *
+ * A danger: having to re-implement object-oriented system, with inheritance, etc.
+ * but maybe I can just swap normal js objects at runtime...
+ *
+ */
 export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   public currentPeriod ? : TimeTrackingPeriod
@@ -202,7 +225,8 @@ export class TimeTrackedEntry implements TimeTrackingPersistentData {
 
   private patchItemTimeTrackingData(dataItemPatch: TTPatch) {
     // debugLog('patchItemTimeTrackingData', dataItemPatch)
-    this.timeTrackable.patchItemData({
+    // here it creates conflict with throttled setting of done
+    this.timeTrackable.patchThrottled({
       /* NOTE: this is not per-user, but per-user could be emulated by adding a child node and tracking on it */
       timeTrack: {
         ... dataItemPatch,
@@ -270,7 +294,8 @@ export class TimeTrackingService {
     this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData, any]) => {
       if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
         // console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
-        this.pauseOrNoop(event[0])
+        const eventElement: HasItemData = event[0]
+        this.pauseOrNoop(eventElement as TimeTrackable /* HACK */)
       }
     })
 
@@ -281,7 +306,7 @@ export class TimeTrackingService {
       if ( ttData && ttData.nowTrackingSince &&
           (ttData.whenFirstStarted as any).toDate /* FIX for a string */ ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
-        const timeTrackedEntry = this.obtainEntryForItem(dataItem)
+        const timeTrackedEntry = this.obtainEntryForItem(dataItem as TimeTrackable /* HACK */)
         this.emitTimeTrackedEntry(timeTrackedEntry)
       }
     })
@@ -301,7 +326,7 @@ export class TimeTrackingService {
     return this.timeService.now()
   }
 
-  public obtainEntryForItem(timeTrackedItem: TimeTrackable) {
+  public obtainEntryForItem(timeTrackedItem: TimeTrackable): TimeTrackedEntry {
     let entry = this.mapItemToEntry.get(timeTrackedItem)
     if ( ! entry ) {
       entry = new TimeTrackedEntry(this, this.timeTrackingPeriodsService, timeTrackedItem)

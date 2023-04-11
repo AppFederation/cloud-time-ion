@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OryTreeNode } from '../tree-model/TreeModel'
+import {OryTreeNode} from '../tree-model/TreeNode'
 
 @Injectable({providedIn: 'root'})
 export class ClipboardService {

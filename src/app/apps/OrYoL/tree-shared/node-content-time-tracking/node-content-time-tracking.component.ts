@@ -8,6 +8,7 @@ import {
   TimeTrackingService,
 } from '../../time-tracking/time-tracking.service'
 import { OryTreeNode } from '../../tree-model/TreeModel'
+import {TreeTableNode} from '../../tree-model/TreeTableNode'
 
 @Component({
   selector: 'app-node-content-time-tracking',
@@ -16,7 +17,7 @@ import { OryTreeNode } from '../../tree-model/TreeModel'
 })
 export class NodeContentTimeTrackingComponent implements OnInit {
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: TreeTableNode
 
   timeTrackedEntry!: TimeTrackedEntry
 
