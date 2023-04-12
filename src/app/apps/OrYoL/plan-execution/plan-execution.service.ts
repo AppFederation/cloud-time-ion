@@ -5,11 +5,12 @@ import {
 } from '../time-tracking/time-tracking.service'
 import { columnDefs } from '../tree-shared/node-content/Columns'
 import { Subscription } from 'rxjs'
-import { minutesToString } from '../utils/time-utils'
+import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import { ConfigService } from '../core/config.service'
 
 import {OryBaseTreeNode} from '../tree-model/TreeModel'
 import {TreeTableNodeContent} from '../tree-model/TreeTableNodeContent'
+import {OryItem$} from '../db/OryItem$'
 
 @Injectable({
   providedIn: 'root'
@@ -68,24 +69,26 @@ export class PlanExecutionService {
     if ( ! ttEntry.isTrackingNow ) {
       return
     }
-    const node = (ttEntry.timeTrackable as TreeTableNodeContent).treeNode
-    console.log(`subscribeForTtEntry node`, node)
-    const dbItem = node.content.dbItem
+    // const node = (ttEntry.timeTrackable as TreeTableNodeContent).treeNode
+    console.log(`subscribeForTtEntry`, `ttEntry`, ttEntry)
+    // const dbItem = node.content.dbItem
+    const dbItem = ttEntry.timeTrackable as OryItem$
     // TODO: listen to changes of title?
     this.dbItemDataSubscriptions.push(dbItem.data$.subscribe((data: any) => {
-      this.onItemDataChanged(data, node, ttEntry)
+      this.onItemDataChanged(data, dbItem, ttEntry)
     }))
   }
 
-  private onItemDataChanged(data: any, node: OryBaseTreeNode, ttEntry: TimeTrackedEntry) {
+  private onItemDataChanged(data: any, item$: OryItem$, ttEntry: TimeTrackedEntry) {
     if ( ttEntry.isTrackingNow ) {
-      this.subscribeTimeoutsForPercentages(node, ttEntry)
+      this.subscribeTimeoutsForPercentages(item$, ttEntry)
     }
   }
 
-  private subscribeTimeoutsForPercentages(node: OryBaseTreeNode, ttEntry: TimeTrackedEntry) {
+  private subscribeTimeoutsForPercentages(item$: OryItem$, ttEntry: TimeTrackedEntry) {
     // columnDefs.estimatedTime.getValueFromItemData(data)
-    const minutesEstimated = node.content.getMinutes(columnDefs.estimatedTime)
+    // const minutesEstimated = node.content.getMinutes(columnDefs.estimatedTime)
+    const minutesEstimated = parseTimeToMinutes(item$.data$.lastVal.estimatedTime) || 0
     const percentages = [
       50, /* `Middle`, { persistent: false } */
       75, /* `Time to start wrapping-up!` */
@@ -121,8 +124,8 @@ export class PlanExecutionService {
             https://www.chromestatus.com/feature/5133150283890688
             and/or via Capacitor and/or my own service
           */
-          const notificationTitle = '' + percent + `% | ${minutesLefToNotifyString} ${leftOrOvertime} - ` + node.content.getValueForColumn(columnDefs.title)
-          console.log('notifyTrackedMsElapsed', node.content.getValueForColumn(columnDefs.title))
+          const notificationTitle = '' + percent + `% | ${minutesLefToNotifyString} ${leftOrOvertime} - ` + item$.data$.lastVal.title
+          console.log('notifyTrackedMsElapsed', item$.data$.lastVal.title)
           const notification = new Notification(notificationTitle, {
             body: `Time to start wrapping-up!`,
             requireInteraction: true,

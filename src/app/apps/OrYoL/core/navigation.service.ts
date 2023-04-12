@@ -3,6 +3,7 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 
 
 import {RootTreeNode} from '../tree-model/TreeNode'
+import {OryBaseTreeNode} from '../tree-model/TreeModel'
 
 /* Distinguish between navigation and focus?*/
 @Injectable({
@@ -15,7 +16,11 @@ export class NavigationService {
 
   constructor() { }
 
-  navigateToNodeLastChild(node: RootTreeNode) {
-    this.navigation$.next(node.itemId)
+  navigateToNodeLastChild(node: OryBaseTreeNode) {
+    this.navigateToNodeByItemId(node.itemId)
+  }
+
+  public navigateToNodeByItemId(itemId: string) {
+    this.navigation$.next(itemId)
   }
 }

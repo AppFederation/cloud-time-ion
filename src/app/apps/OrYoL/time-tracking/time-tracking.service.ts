@@ -300,7 +300,8 @@ export class TimeTrackingService {
     })
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
-    this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem: HasItemData) => {
+    this.dataItemsService.onItemAddedOrModified$.subscribe((dataItem: HasItemData) => {
+      console.log('dataItemsService.onItemAddedOrModified$.subscribe', dataItem)
       // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
       const itemData = dataItem.getItemData()
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack

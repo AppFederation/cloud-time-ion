@@ -52,6 +52,8 @@ export class TreeHostComponent implements OnInit {
       // this.treeModel.navigation.navigateInto(nodeId)
       // TODO: reFocusLastFocused()?
       const node = this.treeModel.getNodesByItemId(nodeId)[0]
+      // node.expansion.setExpanded(true, {recursive: false})
+
       this.focusNode(node)
     })
 
