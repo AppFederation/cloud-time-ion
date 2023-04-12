@@ -5,8 +5,8 @@ import {
 } from '@angular/core';
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
-import {ApfBaseTreeNode, ApfNonRootTreeNode, OryBaseTreeNode, OryNonRootTreeNode} from '../../tree-model/TreeModel'
-import {RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfBaseTreeNode, OryBaseTreeNode, OryNonRootTreeNode} from '../../tree-model/TreeModel'
+import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-nested-tree-node',

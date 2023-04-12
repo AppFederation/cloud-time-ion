@@ -1,10 +1,10 @@
-import {NodeAddEvent, NodeInclusion} from './TreeListener'
+import {NodeAddEvent} from './TreeListener'
 import {debugLog, errorAlert, traceLog} from '../utils/log'
 import {DbTreeService} from './db-tree-service'
 import {EventEmitter, Injectable, Injector} from '@angular/core'
 import {OryColumn} from '../tree-shared/OryColumn'
 import {MultiMap} from '../utils/multi-map'
-import {NodeOrderer, NodeOrderInfo} from './node-orderer'
+import {NodeOrderer} from './node-orderer'
 import {PermissionsManager} from './PermissionsManager'
 import {DbItem, ItemId, NodeInclusionId} from '../db/DbItem'
 import {DataItemsService} from '../core/data-items.service'
@@ -14,8 +14,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeTableNodeContent} from './TreeTableNodeContent'
 import {OryTreeTableNodeContent} from './OryTreeTableNodeContent'
-import {TreeNodeInclusion$P} from './TreeNodeInclusion$P'
-import {RootTreeNode} from './RootTreeNode'
+import {ApfNonRootTreeNode, RootTreeNode} from './RootTreeNode'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**
@@ -41,123 +40,6 @@ export abstract class OryTreeListener {
 
 
 export type ApfBaseTreeNode = RootTreeNode<any>
-
-/** ======================================================================================= */
-export class ApfNonRootTreeNode<
-  TNodeContent extends TreeTableNodeContent = TreeTableNodeContent,
-  /** lowest-common type of nodes (can include root) */
-  TBaseNode extends RootTreeNode<TNodeContent> = RootTreeNode<TNodeContent>,
-  TBaseNonRootNode extends TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode> = TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode, any>, /* maybe this should be right after TBaseNode */
-  TSiblingNode extends TBaseNonRootNode = TBaseNonRootNode,
-  TAncestorNode extends TBaseNode = TBaseNode,
-  // TParentNode extends TAncestorNode & OryTreeNode<TBaseNode, TBaseNonRootNode, TBaseNode, TBaseNode, TAncestorNode> = TAncestorNode,
-  TParentNode extends TAncestorNode = TAncestorNode,
-  TChildNode extends TBaseNonRootNode = TBaseNonRootNode,
-> extends RootTreeNode<
-  TNodeContent,
-  TBaseNode,
-  TBaseNonRootNode,
-  TChildNode
-> {
-
-  /** TODO this should not be present in RootNode class;
-   * as well as: reorder, indent, outdent */
-  nodeInclusion$ = new TreeNodeInclusion$P(
-    this.injector,
-    this.treeModel.treeService,
-    this.nodeInclusion ! /* FIXME handle root */,
-    this.itemId,
-  )
-
-  constructor(
-    injector: Injector,
-    content: TNodeContent,
-    public nodeInclusion: NodeInclusion | undefined | null,
-    itemId: ItemId,
-    treeModel: TreeModel<TNodeContent, TBaseNode, any, TBaseNonRootNode>,
-    // itemData: TData | null,
-    // public item$: TItem$,
-  ) {
-    super(injector, treeModel, itemId, content)
-  }
-
-  /** TODO: addSiblingOrChild (for enter press on root / visual root) */
-  addSiblingAfterThis(newNode?: TBaseNonRootNode): TBaseNonRootNode {
-    return this.parent2!.addChild(this, newNode) as TBaseNonRootNode
-  }
-
-  reorderUp() {
-    // TODO: if topmost, reorder to last item in this plan or to previous plan
-    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
-    const order = siblingNodeAboveThis ? {
-      inclusionBefore:
-      siblingNodeAboveThis?.getSiblingNodeAboveThis()?.nodeInclusion,
-      inclusionAfter:
-      siblingNodeAboveThis?.nodeInclusion,
-    } : { // wrap-around to last
-      inclusionBefore: this.parent2!.lastChildNode?.nodeInclusion,
-      inclusionAfter: undefined,
-    }
-    this.reorder(order)
-  }
-
-  reorderDown() {
-    const siblingNodeBelowThis = this.getSiblingNodeBelowThis()
-    const order = siblingNodeBelowThis ? {
-      inclusionBefore:
-      siblingNodeBelowThis?.nodeInclusion,
-      inclusionAfter:
-      siblingNodeBelowThis?.getSiblingNodeBelowThis()?.nodeInclusion,
-    } : { // wrap-around to first
-      inclusionBefore: undefined,
-      inclusionAfter: this.parent2!.children[0]!.nodeInclusion,
-    }
-    this.reorder(order)
-  }
-
-  reorder(order: NodeOrderInfo) {
-    debugLog('reorder order, this.parent2', order, this.parent2)
-    // TODO: replace patch with set due to problems with "no document to update" after quickly reordering/indenting after creating
-    const inclusion = this.nodeInclusion !
-    this.treeModel.nodeOrderer.addOrderMetadataToInclusion(order, inclusion)
-
-    { // reorder locally to avoid UI lag, e.g. when quickly reordering up/down and perhaps will remove keyboard appearing/disappearing on android
-      this.parent2!._removeChild(this)
-      const insertionIndex = this.parent2!.findInsertionIndexForNewInclusion(inclusion)
-      this.parent2!._appendChildAndSetThisAsParent(this, insertionIndex)
-      this.treeModel.treeListener.onAfterNodeMoved() // fixes focus being lost after reorder
-      // TODO: duplicate with onNodeInclusionModified - extract applyParentAndOrder or smth
-    }
-
-    // TODO util func/obj to throttle smth e.g. incremental patch
-    this.nodeInclusion$.patchThrottled(inclusion)
-  }
-
-  // ======================================================
-  // TODO: extract classes like TaskNodeContent, DayPlanNodeContent
-  // since nodes are to allow changing their type, we would just swap an instance of the class mentioned above
-  // the separation first would be mainly to separate generic node-logic from time-planning specific, etc.
-
-  indentDecrease() {
-    if (this.parent2?.isVisualRoot) {
-      debugLog(`cannot indentDecrease more - this node is child of visualRoot`, this)
-      return
-    }
-    const newParent = this.parent2?.parent2
-    if (newParent) {
-      newParent.moveInclusionsHere([this], {beforeNode: this.parent2?.getSiblingNodeBelowThis()})
-    }
-  }
-
-  indentIncrease() {
-    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
-    if (siblingNodeAboveThis) {
-      siblingNodeAboveThis.moveInclusionsHere([this], {beforeNode: undefined})
-    }
-  }
-
-
-}
 
 export type OryBaseTreeNode = RootTreeNode<OryTreeTableNodeContent, ApfNonRootTreeNode<OryTreeTableNodeContent>, OryNonRootTreeNode, OryNonRootTreeNode>
 export type OryNonRootTreeNode = ApfNonRootTreeNode<OryTreeTableNodeContent, ApfNonRootTreeNode<OryTreeTableNodeContent>>

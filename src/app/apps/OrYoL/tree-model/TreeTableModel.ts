@@ -1,8 +1,8 @@
 import {NodeInclusion} from './TreeListener'
 import {Injectable} from '@angular/core'
 import {ItemId} from '../db/DbItem'
-import {ApfNonRootTreeNode, TreeModel} from './TreeModel'
-import {RootTreeNode} from './RootTreeNode'
+import {TreeModel} from './TreeModel'
+import {ApfNonRootTreeNode, RootTreeNode} from './RootTreeNode'
 //
 // /**
 //  * Created by kd on 2017-10-27.

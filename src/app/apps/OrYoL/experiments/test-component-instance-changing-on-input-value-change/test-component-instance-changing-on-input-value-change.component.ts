@@ -3,7 +3,9 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ApfNonRootTreeNode } from '../../tree-model/TreeModel'
+
+
+import {ApfNonRootTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-test-component-instance-changing-on-input-value-change',

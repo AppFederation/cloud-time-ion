@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-  ApfNonRootTreeNode,
   TreeModel,
 } from './TreeModel'
 import { DbTreeService } from './db-tree-service'
@@ -13,6 +12,8 @@ import { TreeService } from './tree.service'
 import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 import { DbTreeServiceMock } from './DbTree.service.mock'
+
+import {ApfNonRootTreeNode} from './RootTreeNode'
 
 
 ///////

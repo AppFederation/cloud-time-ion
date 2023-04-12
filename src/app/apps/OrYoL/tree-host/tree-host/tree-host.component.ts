@@ -5,8 +5,7 @@ import {
 import { TreeDragDropService } from 'primeng/api'
 import { TreeService } from '../../tree-model/tree.service'
 import {
-  ApfBaseTreeNode, ApfNonRootTreeNode,
-  NodeFocusOptions, TreeCell,
+  ApfBaseTreeNode, NodeFocusOptions, TreeCell,
   TreeModel,
 } from '../../tree-model/TreeModel'
 import { NodeContentComponent } from '../../tree-shared/node-content/node-content.component'
@@ -17,7 +16,7 @@ import { DebugService } from '../../core/debug.service'
 import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
-import {RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
 
 
 @Component({
