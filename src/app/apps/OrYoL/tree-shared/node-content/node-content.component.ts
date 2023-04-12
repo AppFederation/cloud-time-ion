@@ -46,7 +46,7 @@ import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
-import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state

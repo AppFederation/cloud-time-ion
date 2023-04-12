@@ -6,7 +6,6 @@ import {
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
 import {ApfBaseTreeNode, OryBaseTreeNode, OryNonRootTreeNode} from '../../tree-model/TreeModel'
-import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-nested-tree-node',

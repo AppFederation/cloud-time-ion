@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ApfBaseTreeNode, OryBaseTreeNode} from '../tree-model/TreeModel'
 
-import {ApfNonRootTreeNode} from '../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../tree-model/TreeNode'
 
 @Injectable({providedIn: 'root'})
 export class ClipboardService {

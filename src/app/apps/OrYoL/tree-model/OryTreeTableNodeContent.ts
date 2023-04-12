@@ -4,7 +4,7 @@ import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {sumBy} from 'lodash-es'
 
-import {RootTreeNode} from './RootTreeNode'
+import {RootTreeNode} from './TreeNode'
 
 /** Has domain-specific stuff like estimations */
 export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{

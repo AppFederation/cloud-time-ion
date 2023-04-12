@@ -16,7 +16,7 @@ import { DebugService } from '../../core/debug.service'
 import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
-import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode, RootTreeNode} from '../../tree-model/TreeNode'
 
 
 @Component({

@@ -14,7 +14,7 @@ import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeTableNodeContent} from './TreeTableNodeContent'
 import {OryTreeTableNodeContent} from './OryTreeTableNodeContent'
-import {ApfNonRootTreeNode, RootTreeNode} from './RootTreeNode'
+import {ApfNonRootTreeNode, RootTreeNode} from './TreeNode'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**

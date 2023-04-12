@@ -19,7 +19,6 @@ import {INodeContentComponent} from '../node-content/INodeContentComponent'
 
 import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
-import {ApfNonRootTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-tree-node-menu',

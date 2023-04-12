@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 
-import {ApfNonRootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 
 @Component({
   selector: 'app-test-component-instance-changing-on-input-value-change',

@@ -14,7 +14,7 @@ import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {HasItemData} from './has-item-data'
 import {DbItem} from '../db/DbItem'
-import {RootTreeNode} from './RootTreeNode'
+import {RootTreeNode} from './TreeNode'
 
 /**
  *

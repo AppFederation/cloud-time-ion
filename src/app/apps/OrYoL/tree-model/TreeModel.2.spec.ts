@@ -13,7 +13,7 @@ import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 import { DbTreeServiceMock } from './DbTree.service.mock'
 
-import {ApfNonRootTreeNode} from './RootTreeNode'
+import {ApfNonRootTreeNode} from './TreeNode'
 
 
 ///////
