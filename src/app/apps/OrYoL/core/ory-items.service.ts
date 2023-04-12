@@ -8,9 +8,15 @@ import { Subject } from 'rxjs'
 @Injectable({
   providedIn: 'root'
 })
-export class DataItemsService {
+export class OryItemsService {
+
+  isApplyingFromDbNow = false
 
   public readonly onItemWithDataAdded$ = new Subject<HasItemData>()
+
+  /* FIXME impl */
+  // public readonly onItemWithDataModified = new Subject<HasItemData>()
+  public readonly onItemAddedOrModified$ = new Subject<HasItemData>()
 
   public readonly onItemWithDataPatchedByUserLocally$ = new Subject<[HasItemData, any]>()
 

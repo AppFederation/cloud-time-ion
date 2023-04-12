@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreeService } from '../tree-model/tree.service'
-import { ItemId } from '../db/DbItem'
+import { ItemId } from '../db/OryItem$'
 import { Observable } from 'rxjs'
 
 export type DurationMs = number

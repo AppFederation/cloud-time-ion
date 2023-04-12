@@ -2,7 +2,7 @@ import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from '.
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {Injector} from '@angular/core'
 import {DbTreeService} from './db-tree-service'
-import {ItemId} from '../db/DbItem'
+import {ItemId} from '../db/OryItem$'
 import {NodeInclusion} from './TreeListener'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 

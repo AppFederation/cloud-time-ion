@@ -34,7 +34,7 @@ import {Firestore} from '@angular/fire/firestore'
 import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
-import {ItemId} from '../db/DbItem'
+import {ItemId} from '../db/OryItem$'
 import {OryBaseTreeNode, OryNonRootTreeNode} from '../tree-model/TreeModel'
 
 // Initialize Firebase

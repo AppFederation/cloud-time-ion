@@ -1,6 +1,6 @@
 import {NodeInclusion} from './TreeListener'
 import {Injectable} from '@angular/core'
-import {ItemId} from '../db/DbItem'
+import {ItemId} from '../db/OryItem$'
 import {TreeModel} from './TreeModel'
 import {ApfNonRootTreeNode, RootTreeNode} from './TreeNode'
 //

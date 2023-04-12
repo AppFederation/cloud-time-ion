@@ -13,7 +13,7 @@ import {sumBy} from 'lodash-es'
 import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {HasItemData} from './has-item-data'
-import {DbItem} from '../db/DbItem'
+import {OryItem$} from '../db/OryItem$'
 import {RootTreeNode} from './TreeNode'
 
 /**
@@ -46,11 +46,6 @@ export class TreeTableNodeContent <
 
   columns: Columns = NodeContentComponent.columnsStatic
 
-  // isApplyingFromDbNow = false   /** TODO: to NodeContentViewSyncer */
-  protected syncStatusService = this.injector.get(SyncStatusService)
-
-  private unsavedChangesPromiseResolveFunc: (() => void) | undefined
-
 
   /** 500ms almost real-time feeling without overwhelming firestore.
    Perhaps Firestore has "SLA" of around 1second latency anyway (I recall reading something like that,
@@ -64,11 +59,6 @@ export class TreeTableNodeContent <
 
   whenLastEditedLocallyByColumn = new Map<OryColumn, Date>()
 
-  // private mapColumnToEventEmitterOnChange = new Map<OryColumn, EventEmitter<any>>()
-  protected eventEmitterOnChange = new EventEmitter<any>()
-
-  private pendingThrottledItemDataPatch = {}
-
   // get childrenTreeTableNodes() {
   //   return this.children as TreeTableNode[]
   // }
@@ -76,7 +66,7 @@ export class TreeTableNodeContent <
   public treeNode!: TTreeNode
 
   /** FIXME: not yet fully used because we are still using itemData */
-  dbItem!: DbItem<TItemData>  // new DbItem(this.itemId)
+  dbItem!: OryItem$<TItemData>  // new DbItem(this.itemId)
 
   // TODO item$ here from ODM
 
@@ -89,7 +79,6 @@ export class TreeTableNodeContent <
     public itemData: TItemData | null,
   ) {
     // super(injector, nodeInclusion, itemId, treeModel, itemData)
-    this.subscribeDebouncedOnChangePerColumns()
   }
 
   setTreeNodeAndInit(treeNode: TTreeNode) {
@@ -100,19 +89,6 @@ export class TreeTableNodeContent <
   getItemData() {
     // console.log('getItemData', this.itemData)
     return this.itemData
-  }
-
-  /** ignoring column */
-  private getEventEmitterOnChangePerColumn(/*column?: OryColumn*/) {
-    return this.eventEmitterOnChange // now all columns have same emitter
-    // this should be via OdmItem$ anyway
-
-    // let eventEmitter = this.mapColumnToEventEmitterOnChange.get(column)
-    // if ( ! eventEmitter ) {
-    //   eventEmitter = new EventEmitter()
-    //   this.mapColumnToEventEmitterOnChange.set(column, eventEmitter)
-    // }
-    // return eventEmitter
   }
 
   /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
@@ -144,58 +120,6 @@ export class TreeTableNodeContent <
   }
 
 
-  /* TODO move the throttling to Item$
-  * Here tackling bug with losing part of title when editing-then-indent.
-  * When indenting, it's new UI component.
-  *
-  * Maybe indenting could force committing the delayed (throttled) change.
-  *
-  * @deprecated
-  *  */
-  private subscribeDebouncedOnChangePerColumns() {
-    // for ( const column of this.columns.allColumns ) {
-      const throttleTimeConfig = {
-        leading: false /* probably thanks to this, the first change, of a series, is immediate (observed experimentally) */,
-        /* think about false; usually single character; but what if someone pastes something, then it will be fast;
-        plus a single character can give good indication that someone started writing */
-        trailing: true /* ensures last value is not lost;
-          http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-throttleTime */
-      }
-      const scheduler = undefined
-      this.getEventEmitterOnChangePerColumn().pipe(
-        // why is this like that; what if I want to patch more than 1 field/column at once?
-        // cumulative patch approach better?
-        // e.g. for time-tracking
-        throttleTime(
-          TreeTableNodeContent.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB , scheduler, throttleTimeConfig
-          // keep in mind that this might have something to do with the update events coming with delay (e.g. reorders)
-        )
-      ).subscribe((changeEvent) => {
-        // debugLog('onInputChanged; isApplyingFromDbNow', this.treeModel.isApplyingFromDbNow)
-        if (!this.treeNode.treeModel.isApplyingFromDbNow) {
-          // const itemData = this.buildItemDataFromUi()
-          const ret = this.patchItemData(this.pendingThrottledItemDataPatch) // patching here
-          this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote, 'saving item to server')
-          this.unsavedChangesPromiseResolveFunc!.call(undefined)
-          // FIXME:
-          // only first edit; and error occurs 4 TIMES
-          // FIXME: ERROR TypeError: Cannot read properties of undefined (reading 'call')
-          //     at SafeSubscriber._next (TreeTableNode.ts:148:50)
-          //     at SafeSubscriber.__tryOrUnsub (Subscriber.js:183:16)
-          //     at SafeSubscriber.next (Subscriber.js:122:22)
-          //     at Subscriber._next (Subscriber.js:72:26)
-          //     at Subscriber.next (Subscriber.js:49:18)
-          //     at ThrottleTimeSubscriber.clearThrottle (throttleTime.js:59:34)
-          //     at AsyncAction.dispatchNext (throttleTime.js:71:16)
-          //     at AsyncAction._execute (AsyncAction.js:51:18)
-          //     at AsyncAction.execute (AsyncAction.js:39:28)
-          //     at AsyncScheduler.flush (AsyncScheduler.js:33:32)
-          this.unsavedChangesPromiseResolveFunc = undefined
-          this.pendingThrottledItemDataPatch = {}
-        } // else: no need to react, since it is being applied from Db
-      })
-    // }
-  }
 
   toggleDone() {
     this.patchThrottled({
@@ -209,9 +133,10 @@ export class TreeTableNodeContent <
   /** related to patchThrottled() */
   onInputChangedByUser(cell: ColumnCell, inputNewValue: any) {
     const column = cell.column
-    column.setValueOnItemData(this.pendingThrottledItemDataPatch, inputNewValue)
-    this.patchThrottled(this.pendingThrottledItemDataPatch)
-    this.getEventEmitterOnChangePerColumn().emit(column) // FIXME make this cumulative patch, not per-column
+    const patch = {}
+    column.setValueOnItemData(patch, inputNewValue)
+    this.patchThrottled(patch)
+    // this.getEventEmitterOnChangePerColumn().emit(column) // FIXME make this cumulative patch, not per-column
     // this.editedHere.set(column, true)
     this.whenLastEditedLocallyByColumn.set(column, new Date())
 
@@ -219,20 +144,7 @@ export class TreeTableNodeContent <
   }
 
   patchThrottled(patch: any) {
-    this.pendingThrottledItemDataPatch = {
-      ... this.pendingThrottledItemDataPatch,
-      ... patch,
-    }
-    console.log(`patchThrottled`, patch, `this.unsavedChangesPromiseResolveFunc`, this.unsavedChangesPromiseResolveFunc)
-    if ( ! this.unsavedChangesPromiseResolveFunc ) {
-      const unsavedPromise = new Promise<void>((resolve) => {
-        this.unsavedChangesPromiseResolveFunc = resolve
-        // console.log('in promise executor func this.unsavedChangesPromiseResolveFunc = resolve', resolve)
-      })
-      console.log('outside of promise this.unsavedChangesPromiseResolveFunc = resolve', this.unsavedChangesPromiseResolveFunc)
-      this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
-    }
-    this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
+    this.dbItem.patchThrottled(patch)
   }
 
   /***   moved from OryTreeNode: */
@@ -258,23 +170,6 @@ export class TreeTableNodeContent <
     return column.getValueFromItemData(this.itemData)
   }
 
-  /**
-   * ============== THIS is the main thing to replace
-   * - has `any` item-data type
-   * - not throttled
-   * - will be replaced by OdmItem$::patchThrottled
-   *
-   * Note this is not throttled and bypasses incoming self-change protection */
-  patchItemData(itemDataPatch: any /* TData */): { onPatchSentToRemote: Promise<void> } {
-    // TODO this should use odmitem$
-    Object.assign(this.itemData, itemDataPatch)
-    let ret = this.treeNode.treeModel.treeService.patchItemData(this.treeNode.itemId, itemDataPatch)
-    // TODO: fireOnChangeItemDataOfChildOnParents ?
-    this.treeNode.treeModel.dataItemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch])
-    this.dbItem.data$.next(this.itemData !) // FIXME this should be replaced with OdmItemData
-    return ret
-    // this.itemData$.next()
-  }
 
   getId() {
     return this.itemId

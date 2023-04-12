@@ -4,7 +4,7 @@
 import {
   ItemId,
   NodeInclusionId,
-} from '../db/DbItem'
+} from '../db/OryItem$'
 
 /** Idea: inclusion could be treated similarly to OdmItem$; in simplest case, object's inclusion object would be itself (.patch({order... parent})}
  * this would ensure protection from delayed updates coming from firestore, etc.

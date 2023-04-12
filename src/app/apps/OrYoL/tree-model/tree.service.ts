@@ -31,7 +31,7 @@ export class TreeService {
     this.dbTreeService.loadNodesTree(/* TODO: specify root node(s) ID(s) */{
       onNodeAddedOrModified(event: NodeAddEvent) {
         debugLog('loadNodesTree onNodeAddedOrModified', event)
-        treeModel.onNodeAdded(event)
+        treeModel.onNodeAddedOrModified(event) // TODO around here I should handle incoming changes for reacting to TimeTracking change from remote
       },
       onNodeInclusionModified(nodeInclusionId, nodeInclusionData, newParentItemId: string) {
         // TODO: entry point for moving node to different parent?

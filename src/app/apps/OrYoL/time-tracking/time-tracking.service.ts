@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { debugLog } from '../utils/log'
 import { TimeService } from '../core/time.service'
 import {HasItemData, HasPatchThrottled} from '../tree-model/has-item-data'
-import { DataItemsService } from '../core/data-items.service'
+import { OryItemsService } from '../core/ory-items.service'
 import {
   TimeTrackingPeriod,
   TimeTrackingPeriodsService,
@@ -275,7 +275,7 @@ export class TimeTrackingService {
 
   constructor(
     public timeService: TimeService,
-    public dataItemsService: DataItemsService,
+    public dataItemsService: OryItemsService,
     private timeTrackingPeriodsService: TimeTrackingPeriodsService,
   ) {
     this.timeTrackingPeriodsService.activePeriods$.subscribe((periods: TimeTrackingPeriod[] | null | undefined) => {
@@ -301,6 +301,7 @@ export class TimeTrackingService {
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
     this.dataItemsService.onItemWithDataAdded$.subscribe((dataItem: HasItemData) => {
+      // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
       const itemData = dataItem.getItemData()
       const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
       if ( ttData && ttData.nowTrackingSince &&

@@ -6,8 +6,8 @@ import {OryColumn} from '../tree-shared/OryColumn'
 import {MultiMap} from '../utils/multi-map'
 import {NodeOrderer} from './node-orderer'
 import {PermissionsManager} from './PermissionsManager'
-import {DbItem, ItemId, NodeInclusionId} from '../db/DbItem'
-import {DataItemsService} from '../core/data-items.service'
+import {OryItem$, ItemId, NodeInclusionId} from '../db/OryItem$'
+import {OryItemsService} from '../core/ory-items.service'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -132,9 +132,8 @@ export class TreeModel<
 
   mapItemIdToNodes = new MultiMap<ItemId, TBaseNode>()
 
-  private mapItemById = new Map<ItemId, DbItem>()
+  private mapItemById = new Map<ItemId, OryItem$>()
 
-  isApplyingFromDbNow = false
 
   focus = new class Focus {
 
@@ -164,7 +163,7 @@ export class TreeModel<
 
   permissionsManager: PermissionsManager
 
-  dataItemsService = this.injector.get(DataItemsService)
+  dataItemsService = this.injector.get(OryItemsService)
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
   root: TRootNode = new RootTreeNode(this.injector, this, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID,
@@ -189,21 +188,21 @@ export class TreeModel<
   /* TODO: unify onNodeAdded, onNodeInclusionModified; from OryTreeNode: moveInclusionsHere, addAssociationsHere, addChild, _appendChildAndSetThisAsParent,
    * reorder(). In general unify reordering with moving/copying inclusions and adding nodes */
 
-  obtainItemById(itemId: ItemId): DbItem {
+  obtainItemById(itemId: ItemId): OryItem$ {
     let item = this.mapItemById.get(itemId)
     if ( ! item ) {
-      item = new DbItem(itemId)
+      item = new OryItem$(this.injector, itemId)
       this.mapItemById.set(itemId, item)
     }
     return item
   }
 
-  onNodeAdded(event: NodeAddEvent) {
-    debugLog('onNodeAdded NodeAddEvent', event)
+  onNodeAddedOrModified(event: NodeAddEvent) {
+    debugLog('onNodeAddedOrModified NodeAddEvent', event)
     const nodeInclusionId = event.nodeInclusion.nodeInclusionId
     const existingNodes = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     try {
-      this.isApplyingFromDbNow = true
+      this.dataItemsService.isApplyingFromDbNow = true
       if ( existingNodes ?. length > 0 ) {
         traceLog('node(s) for inclusion already exist(s): ', nodeInclusionId)
         for ( const existingNode of existingNodes ) {
@@ -213,7 +212,7 @@ export class TreeModel<
           existingNode.content.itemData = event.itemData
           traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.content.itemData)
 
-          existingNode.onChangeItemData.emit(event.itemData)
+          existingNode.onChangeItemData.emit(event.itemData) // FIXME fire new DataItemsService onItemAddedOrModified$, outside fo the if statement
           existingNode.fireOnChangeItemDataOfChildOnParents()
           // TODO: unify with the else branch and emit onChangeItemData* stars there too
           // })
@@ -236,13 +235,13 @@ export class TreeModel<
                 ) as any as TNonRootNode
               parentNode._appendChildAndSetThisAsParent(newTreeNode as any, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode.content) //newTreeNode as any as TreeTableNode /* HACK */)
-              // console.log('onItemWithDataAdded$.next(newTreeNode)')
+              console.log('onItemWithDataAdded$.next(newTreeNode)', event)
             }
           }
         }
       }
     } finally {
-      this.isApplyingFromDbNow = false
+      this.dataItemsService.isApplyingFromDbNow = false
     }
   }
 

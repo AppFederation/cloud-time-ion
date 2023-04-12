@@ -120,7 +120,7 @@ describe('OryTreeModel', () => {
 
       let childItemId = 'childItemId'
       if (viaExternalEvent) {
-        treeModel.onNodeAdded(new NodeAddEvent(
+        treeModel.onNodeAddedOrModified(new NodeAddEvent(
           null, 'parentItemId', {}, childItemId, 0,
           new NodeInclusion('incChild', 0),
         ))
@@ -134,7 +134,7 @@ describe('OryTreeModel', () => {
       // ======= Level 2:
       let childItemLv2Id = 'childItemLv2Id'
       if (viaExternalEvent) {
-        treeModel.onNodeAdded(new NodeAddEvent(
+        treeModel.onNodeAddedOrModified(new NodeAddEvent(
           null, childItemId, {}, childItemLv2Id, 0,
           new NodeInclusion('incChildLv2', 0),
         ))

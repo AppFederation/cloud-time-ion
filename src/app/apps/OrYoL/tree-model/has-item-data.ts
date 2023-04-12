@@ -1,4 +1,4 @@
-import {ItemId} from '../db/DbItem'
+import {ItemId} from '../db/OryItem$'
 
 export type ItemData = any /* FIXME unify with ODM */
 

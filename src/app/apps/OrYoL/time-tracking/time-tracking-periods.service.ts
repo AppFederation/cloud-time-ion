@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import { TimeTrackedEntry } from './time-tracking.service'
 // import Timestamp = firebase.firestore.Timestamp
-import { ItemId } from '../db/DbItem'
+import { ItemId } from '../db/OryItem$'
 import { errorAlert } from '../utils/log'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {uuidv4} from '../../../libs/AppFedShared/utils/utils-from-oryol'

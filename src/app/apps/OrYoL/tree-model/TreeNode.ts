@@ -1,7 +1,7 @@
 import {TreeTableNodeContent} from './TreeTableNodeContent'
 import {TreeNode} from 'primeng/api'
 import {EventEmitter, Injector} from '@angular/core'
-import {ItemId} from '../db/DbItem'
+import {ItemId} from '../db/OryItem$'
 import {debugLog, FIXME} from '../utils/log'
 import {NodeInclusion} from './TreeListener'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'

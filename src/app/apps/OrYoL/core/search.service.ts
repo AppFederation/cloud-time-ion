@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataItemsService } from './data-items.service'
+import { OryItemsService } from './ory-items.service'
 import {
   Observable,
   of,
@@ -13,7 +13,7 @@ export class SearchService {
   allItems: any[] = []
 
   constructor(
-    private dataItemsService: DataItemsService
+    private dataItemsService: OryItemsService
   ) {
     this.dataItemsService.onItemWithDataAdded$.subscribe((item: any) => {
       this.allItems.push(item)
