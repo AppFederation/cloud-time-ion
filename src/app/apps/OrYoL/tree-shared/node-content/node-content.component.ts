@@ -200,7 +200,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
    *  */
   keyPressMetaEnter(event: any) {
     // debugLog('keyPressMetaEnter')
-    const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content)
+    const timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content.dbItem)
 
     // fresh
     // -> (1) being tracked
@@ -210,7 +210,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
     // TODO: move to global command handler? but under new name not toggleDone
     if ( timeTrackedEntry.isTrackingNow ) {
-      timeTrackedEntry.pauseOrNoop()
+      timeTrackedEntry.pauseOrNoop() // -- this is automatically executed at TT service level, but TT UI reacts with delay
       this.setDone(true) // FIXME this is prolly patching second time
       // timeTrackedEntry.pauseOrNoop()
       this.focusNodeBelow(event)

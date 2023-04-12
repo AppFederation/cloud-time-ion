@@ -26,7 +26,7 @@ export class NodeContentTimeTrackingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content)
+    this.timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content.dbItem)
   }
 
 }
