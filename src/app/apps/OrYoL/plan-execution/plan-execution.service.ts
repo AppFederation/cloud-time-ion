@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  TimeTrackedEntry,
   TimeTrackingService,
 } from '../time-tracking/time-tracking.service'
 import { columnDefs } from '../tree-shared/node-content/Columns'
@@ -11,6 +10,7 @@ import { ConfigService } from '../core/config.service'
 import {OryBaseTreeNode} from '../tree-model/TreeModel'
 import {TreeTableNodeContent} from '../tree-model/TreeTableNodeContent'
 import {OryItem$} from '../db/OryItem$'
+import {TimeTrackedEntry} from '../time-tracking/TimeTrackedEntry'
 
 @Injectable({
   providedIn: 'root'

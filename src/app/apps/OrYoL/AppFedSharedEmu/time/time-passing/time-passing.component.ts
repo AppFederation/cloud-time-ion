@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { TimeTrackedEntry } from '../../../time-tracking/time-tracking.service'
 import { TimeService } from '../../../core/time.service'
+import {TimeTrackedEntry} from '../../../time-tracking/TimeTrackedEntry'
 
 @Component({
   selector: 'app-time-passing',

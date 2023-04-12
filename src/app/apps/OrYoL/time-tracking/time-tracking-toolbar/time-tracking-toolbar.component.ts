@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  TimeTrackedEntry,
   TimeTrackingService,
 } from '../time-tracking.service'
 import { NavigationService } from '../../core/navigation.service'
@@ -8,6 +7,7 @@ import { PlanExecutionService } from '../../plan-execution/plan-execution.servic
 import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
 
 import {DbTreeService} from '../../tree-model/db-tree-service'
+import {TimeTrackedEntry} from '../TimeTrackedEntry'
 
 @Component({
   selector: 'app-time-tracking-toolbar',

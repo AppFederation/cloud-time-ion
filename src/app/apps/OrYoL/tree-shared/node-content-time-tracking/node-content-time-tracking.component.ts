@@ -4,11 +4,11 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  TimeTrackedEntry,
   TimeTrackingService,
 } from '../../time-tracking/time-tracking.service'
 
 import {OryBaseTreeNode} from '../../tree-model/TreeModel'
+import {TimeTrackedEntry} from '../../time-tracking/TimeTrackedEntry'
 
 @Component({
   selector: 'app-node-content-time-tracking',

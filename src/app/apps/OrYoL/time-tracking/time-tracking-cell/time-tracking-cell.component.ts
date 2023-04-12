@@ -4,12 +4,12 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  TimeTrackedEntry,
   TimeTrackingService,
 } from '../time-tracking.service'
 import { DebugService } from '../../core/debug.service'
 import { ConfigService } from '../../core/config.service'
 import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
+import {TimeTrackedEntry} from '../TimeTrackedEntry'
 
 @Component({
   selector: 'app-time-tracking-cell',

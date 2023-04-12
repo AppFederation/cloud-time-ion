@@ -1,5 +1,4 @@
 import {Injectable, Injector} from '@angular/core';
-import { TimeTrackedEntry } from './time-tracking.service'
 // import Timestamp = firebase.firestore.Timestamp
 import { ItemId } from '../db/OryItem$'
 import { errorAlert } from '../utils/log'
@@ -11,6 +10,7 @@ import firebase from 'firebase/compat/app'
 import Timestamp = firebase.firestore.Timestamp
 import firestore from 'firebase/compat/app'
 import {AngularFirestore, Query} from '@angular/fire/compat/firestore'
+import {TimeTrackedEntry} from './TimeTrackedEntry'
 
 // https://lifesuite.innotopic.com/learn/item/lmm0ETQ1dvl9x6mJnNs5
 
