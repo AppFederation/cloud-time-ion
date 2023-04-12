@@ -209,7 +209,7 @@ export class TreeModel<
           // setTimeout(() => {
           //   setTimeout(() => {
           // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
-          existingNode.content.itemData = event.itemData
+          existingNode.content.dbItem.onDataArrivedFromRemote(event.itemData)
           traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.content.itemData)
 
           existingNode.onChangeItemData.emit(event.itemData) // FIXME fire new DataItemsService onItemAddedOrModified$, outside fo the if statement

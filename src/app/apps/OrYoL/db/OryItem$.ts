@@ -44,6 +44,7 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
   constructor(
     public injector: Injector,
     public id: ItemId,
+    public itemData?: TData
   ) {
     this.subscribeDebouncedOnChangePerColumns()
   }
@@ -51,7 +52,6 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
   data$ = new CachedSubject<TData>()
 
   itemClass?: DbItemClass
-  itemData?: TData
 
   hasField(field: DbItemField) {
     return !!this.itemClass?.hasField?.(field)
@@ -167,4 +167,10 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
     return this.id
   }
 
+  onDataArrivedFromRemote(itemData: TData | undefined) {
+    this.itemData = itemData
+    if ( itemData ) {
+      this.data$.nextWithCache(itemData)
+    }
+  }
 }

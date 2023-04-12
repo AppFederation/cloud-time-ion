@@ -9,6 +9,7 @@ import { minutesToString } from '../utils/time-utils'
 import { ConfigService } from '../core/config.service'
 
 import {OryBaseTreeNode} from '../tree-model/TreeModel'
+import {TreeTableNodeContent} from '../tree-model/TreeTableNodeContent'
 
 @Injectable({
   providedIn: 'root'
@@ -67,10 +68,11 @@ export class PlanExecutionService {
     if ( ! ttEntry.isTrackingNow ) {
       return
     }
-    const node = ttEntry.timeTrackable as any as OryBaseTreeNode
+    const node = (ttEntry.timeTrackable as TreeTableNodeContent).treeNode
+    console.log(`subscribeForTtEntry node`, node)
     const dbItem = node.content.dbItem
     // TODO: listen to changes of title?
-    this.dbItemDataSubscriptions.push(dbItem.data$.subscribe(data => {
+    this.dbItemDataSubscriptions.push(dbItem.data$.subscribe((data: any) => {
       this.onItemDataChanged(data, node, ttEntry)
     }))
   }

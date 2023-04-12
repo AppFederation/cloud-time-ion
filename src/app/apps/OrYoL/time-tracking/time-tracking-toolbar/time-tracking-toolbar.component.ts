@@ -8,6 +8,7 @@ import { PlanExecutionService } from '../../plan-execution/plan-execution.servic
 import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
 
 import {OryBaseTreeNode} from '../../tree-model/TreeModel'
+import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
 
 @Component({
   selector: 'app-time-tracking-toolbar',
@@ -27,7 +28,7 @@ export class TimeTrackingToolbarComponent implements OnInit {
   }
 
   navigateTo(entry: TimeTrackedEntry) {
-    const node = entry.timeTrackable as any as OryBaseTreeNode
+    const node = (entry.timeTrackable as any as OryTreeTableNodeContent).treeNode
     node.navigateInto()
     this.navigationService.navigateToNodeLastChild(node)
     node.expansion.setExpanded(true, {recursive: false})

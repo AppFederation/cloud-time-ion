@@ -76,19 +76,26 @@ export class TreeTableNodeContent <
     public itemId: string,
     // treeModel: TreeModel,
     // itemData: any,
-    public itemData: TItemData | null,
+    protected initialItemData: TItemData | undefined,
   ) {
     // super(injector, nodeInclusion, itemId, treeModel, itemData)
   }
 
   setTreeNodeAndInit(treeNode: TTreeNode) {
     this.treeNode = treeNode
+    /** FIXME this should be obtained from ItemsService */
     this.dbItem = this.treeNode.treeModel.obtainItemById(this.getId())
+    // this.dbItem.itemData = this.itemData
+    this.dbItem.onDataArrivedFromRemote(this.initialItemData)
   }
 
   getItemData() {
     // console.log('getItemData', this.itemData)
-    return this.itemData
+    return this.dbItem.itemData
+  }
+
+  get itemData() {
+    return this.getItemData()
   }
 
   /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
@@ -118,7 +125,6 @@ export class TreeTableNodeContent <
     /* idea for storing previous locally user-entered vals,
      * to ensure they don't "come back from the grave" if long delay of coming from DB */
   }
-
 
 
   toggleDone() {
