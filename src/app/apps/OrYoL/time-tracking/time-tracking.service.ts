@@ -106,13 +106,13 @@ export class TimeTrackingService {
       console.log('dataItemsService.onItemAddedOrModified$.subscribe', dataItem)
       // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
       const itemData = dataItem.getItemData()
-      const ttData: TimeTrackingPersistentData = itemData && itemData.timeTrack && itemData.timeTrack
-      if ( ttData && ttData.nowTrackingSince &&
-          (ttData.whenFirstStarted as any).toDate /* FIX for a string */ ) {
+      const ttData: TimeTrackingPersistentData | undefined = itemData?.timeTrack
+      if ( ttData?.nowTrackingSince &&
+          (ttData?.whenFirstStarted as any).toDate /* FIX for a string */ ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
         const timeTrackedEntry = this.obtainEntryForItem(dataItem as TimeTrackable /* HACK */)
         this.emitTimeTrackedEntry(timeTrackedEntry)
-      }
+      } // TODO: else check if it was previously tracked, and remove from current entries
     })
   }
 
