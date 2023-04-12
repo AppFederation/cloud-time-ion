@@ -379,7 +379,7 @@ export class RootTreeNode<
   /** FIXME should be protected */
   public createChildNode(nodeInclusion: NodeInclusion, content: TNodeContent): TChildNode {
     const newNode = new ApfNonRootTreeNode(this.injector, content, nodeInclusion, content.getId(), this.treeModel as TreeModel<any>)
-    content.treeNode = newNode
+    content.setTreeNodeAndInit(newNode)
     return newNode as any as TChildNode
     // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
@@ -768,7 +768,7 @@ export class TreeModel<
     public authService: AuthService,
     public treeListener: OryTreeListener,
   ) {
-    this.root.content.treeNode = this.root
+    this.root.content.setTreeNodeAndInit(this.root)
     this.addNodeToMapByItemId(this.root)
     this.permissionsManager = new PermissionsManager(this.authService.userId!)
     this.navigation.navigateToRoot()

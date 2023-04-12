@@ -36,8 +36,7 @@ export class TreeTableNodeContent <
     isDone?: boolean,
   } = any,
   TTreeNode extends RootTreeNode<any> = RootTreeNode<any, any>,
-> implements HasItemData
-{
+> implements HasItemData {
 
   // protected override createChildNode(nodeInclusion: NodeInclusion): TreeTableNode {
   //   return new TreeTableNode(this.injector, nodeInclusion, 'item_' + uuidv4(), this.treeModel, this.newItemData())
@@ -49,7 +48,7 @@ export class TreeTableNodeContent <
   // isApplyingFromDbNow = false   /** TODO: to NodeContentViewSyncer */
   protected syncStatusService = this.injector.get(SyncStatusService)
 
-  private unsavedChangesPromiseResolveFunc: ( () => void ) | undefined
+  private unsavedChangesPromiseResolveFunc: (() => void) | undefined
 
 
   /** 500ms almost real-time feeling without overwhelming firestore.
@@ -76,7 +75,7 @@ export class TreeTableNodeContent <
   public treeNode!: TTreeNode
 
   /** FIXME: not yet fully used because we are still using itemData */
-  dbItem: DbItem<TItemData> = this.treeNode.treeModel.obtainItemById(this.getId()) // new DbItem(this.itemId)
+  dbItem!: DbItem<TItemData>  // new DbItem(this.itemId)
 
   // TODO item$ here from ODM
 
@@ -90,6 +89,11 @@ export class TreeTableNodeContent <
   ) {
     // super(injector, nodeInclusion, itemId, treeModel, itemData)
     this.subscribeDebouncedOnChangePerColumns()
+  }
+
+  setTreeNodeAndInit(treeNode: TTreeNode) {
+    this.treeNode = treeNode
+    this.dbItem = this.treeNode.treeModel.obtainItemById(this.getId())
   }
 
   getItemData() {
