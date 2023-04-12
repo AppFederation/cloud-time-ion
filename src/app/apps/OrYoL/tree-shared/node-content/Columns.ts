@@ -4,7 +4,8 @@ import {
   ColumnCell,
 } from './Cells'
 import {ignoreUnused} from '../../../../libs/AppFedShared/utils/utils-from-oryol'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 export class ColumnDefs {
   title = new OryColumn('title')

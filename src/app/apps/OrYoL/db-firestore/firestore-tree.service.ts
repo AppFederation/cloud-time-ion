@@ -35,7 +35,7 @@ import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {ItemId} from '../db/DbItem'
-import {OryBaseTreeNode, OryNonRootTreeNode} from '../tree-model/RootTreeNode'
+import {OryBaseTreeNode, OryNonRootTreeNode} from '../tree-model/TreeModel'
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

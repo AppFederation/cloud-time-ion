@@ -7,7 +7,8 @@ import {
   TimeTrackedEntry,
   TimeTrackingService,
 } from '../../time-tracking/time-tracking.service'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-node-content-time-tracking',

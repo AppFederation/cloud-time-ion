@@ -16,8 +16,8 @@ import { Router } from '@angular/router'
 import { ClipboardService } from '../../core/clipboard.service'
 import {PopoverController} from '@ionic/angular'
 import {INodeContentComponent} from '../node-content/INodeContentComponent'
-import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
+
+import {ApfNonRootTreeNode, OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-tree-node-menu',

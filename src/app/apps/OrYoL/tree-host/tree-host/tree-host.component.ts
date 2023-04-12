@@ -5,7 +5,8 @@ import {
 import { TreeDragDropService } from 'primeng/api'
 import { TreeService } from '../../tree-model/tree.service'
 import {
-  NodeFocusOptions,
+  ApfBaseTreeNode, ApfNonRootTreeNode,
+  NodeFocusOptions, RootTreeNode,
   TreeCell,
   TreeModel,
 } from '../../tree-model/TreeModel'
@@ -16,8 +17,6 @@ import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
-import {ApfBaseTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
-import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
 
 

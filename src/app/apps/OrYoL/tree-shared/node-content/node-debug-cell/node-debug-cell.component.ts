@@ -3,8 +3,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {ApfNonRootTreeNode} from '../../../tree-model/TreeNode'
-import {OryBaseTreeNode} from '../../../tree-model/RootTreeNode'
+
+import {ApfNonRootTreeNode, OryBaseTreeNode} from '../../../tree-model/TreeModel'
 
 export class NodeDebug {
   countApplyItemDataValuesToViews = 0

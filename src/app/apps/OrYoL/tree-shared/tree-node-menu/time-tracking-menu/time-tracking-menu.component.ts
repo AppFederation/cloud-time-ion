@@ -7,7 +7,7 @@ import {
   date,
   TimeTrackingService,
 } from '../../../time-tracking/time-tracking.service'
-import {ApfBaseTreeNode, OryBaseTreeNode} from '../../../tree-model/RootTreeNode'
+import {ApfBaseTreeNode, OryBaseTreeNode} from '../../../tree-model/TreeModel'
 
 function timeTrackedMsFunc ( node: ApfBaseTreeNode ) {
   const itemData = node.content.itemData

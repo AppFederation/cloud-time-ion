@@ -3,7 +3,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {OryBaseTreeNode} from '../../../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-node-class-icon',

@@ -1,5 +1,5 @@
 import { OryColumn } from '../OryColumn'
-import {OryBaseTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {OryBaseTreeNode, RootTreeNode} from '../../tree-model/TreeModel'
 
 export class ColumnCell<
   TVal = any,

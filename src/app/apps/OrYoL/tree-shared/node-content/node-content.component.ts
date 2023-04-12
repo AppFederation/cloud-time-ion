@@ -9,7 +9,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {
-  NodeFocusOptions,
+  ApfBaseTreeNode, ApfNonRootTreeNode,
+  NodeFocusOptions, OryBaseTreeNode, RootTreeNode,
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { OryColumn } from '../OryColumn'
@@ -44,8 +45,6 @@ import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-import {ApfBaseTreeNode, OryBaseTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
-import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
 

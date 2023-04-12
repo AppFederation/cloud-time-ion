@@ -1,5 +1,6 @@
 import {UserId} from '../../../auth/auth.service'
-import {OryBaseTreeNode} from './RootTreeNode'
+
+import {OryBaseTreeNode} from './TreeModel'
 
 export class PermissionsManager {
 

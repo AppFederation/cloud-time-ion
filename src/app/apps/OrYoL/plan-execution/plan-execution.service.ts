@@ -7,7 +7,8 @@ import { columnDefs } from '../tree-shared/node-content/Columns'
 import { Subscription } from 'rxjs'
 import { minutesToString } from '../utils/time-utils'
 import { ConfigService } from '../core/config.service'
-import {OryBaseTreeNode} from '../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../tree-model/TreeModel'
 
 @Injectable({
   providedIn: 'root'

@@ -4,10 +4,10 @@ import {
   OnInit,
 } from '@angular/core';
 import {
+  OryBaseTreeNode,
   TreeModel,
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-nested-tree',

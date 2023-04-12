@@ -1,6 +1,7 @@
 import {DbTreeListener} from './TreeListener'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {OryBaseTreeNode} from './RootTreeNode'
+
+import {OryBaseTreeNode} from './TreeModel'
 
 /* TODO: write new db code in such a way to not depend on tree-model stuff (e.g. pass ItemId (==string) instead of OryTreeNode) */
 /* TODO: use ItemData and ItemInclusionData (== any) placeholder types instead of `any` */

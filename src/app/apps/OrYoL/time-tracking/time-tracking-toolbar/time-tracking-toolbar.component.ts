@@ -6,7 +6,8 @@ import {
 import { NavigationService } from '../../core/navigation.service'
 import { PlanExecutionService } from '../../plan-execution/plan-execution.service'
 import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-time-tracking-toolbar',

@@ -6,7 +6,8 @@ import { ColumnCell } from './Cells'
 import { Columns } from './Columns'
 import {throttleTime} from 'rxjs/operators'
 import {SyncStatusService} from '../../../../libs/AppFedShared/odm/sync-status.service'
-import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
+
+import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 /** other names: CellsViewSyncer
  *

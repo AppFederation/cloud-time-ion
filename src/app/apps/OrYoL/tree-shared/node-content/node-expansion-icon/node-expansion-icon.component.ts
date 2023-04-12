@@ -4,7 +4,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { debugLog } from '../../../utils/log'
-import {ApfBaseTreeNode, RootTreeNode} from '../../../tree-model/RootTreeNode'
+import {ApfBaseTreeNode, RootTreeNode} from '../../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-node-expansion-icon',
