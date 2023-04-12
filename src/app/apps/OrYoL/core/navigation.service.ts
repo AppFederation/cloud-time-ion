@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
-import {RootTreeNode} from '../tree-model/TreeModel'
+
+import {RootTreeNode} from '../tree-model/RootTreeNode'
 
 /* Distinguish between navigation and focus?*/
 @Injectable({

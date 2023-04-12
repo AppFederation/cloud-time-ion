@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {
   ApfBaseTreeNode, ApfNonRootTreeNode,
-  NodeFocusOptions, OryBaseTreeNode, RootTreeNode,
+  NodeFocusOptions, OryBaseTreeNode,
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { OryColumn } from '../OryColumn'
@@ -47,6 +47,7 @@ import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
 import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
+import {RootTreeNode} from '../../tree-model/RootTreeNode'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state

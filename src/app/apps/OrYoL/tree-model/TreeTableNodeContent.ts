@@ -2,7 +2,7 @@ import {OryColumn} from '../tree-shared/OryColumn'
 import {EventEmitter, Injector} from '@angular/core'
 import {throttleTime} from 'rxjs/operators'
 import {debugLog} from '../utils/log'
-import {RootTreeNode, TreeModel} from './TreeModel'
+import {TreeModel} from './TreeModel'
 import {ColumnCell} from '../tree-shared/node-content/Cells'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {Columns} from '../tree-shared/node-content/Columns'
@@ -14,6 +14,7 @@ import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {HasItemData} from './has-item-data'
 import {DbItem} from '../db/DbItem'
+import {RootTreeNode} from './RootTreeNode'
 
 /**
  *
