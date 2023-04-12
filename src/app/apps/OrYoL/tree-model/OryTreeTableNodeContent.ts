@@ -77,7 +77,7 @@ export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
 
   getChildrenTimeLeftSum(column: OryColumn): number {
     return sumBy(this.treeNode.children, childNode => {
-      return childNode.effectiveValueLeft(column)
+      return childNode.content.effectiveValueLeft(column)
     })
   }
 

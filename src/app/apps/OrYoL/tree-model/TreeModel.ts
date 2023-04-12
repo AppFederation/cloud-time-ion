@@ -373,12 +373,12 @@ export class RootTreeNode<
   }
 
   public createNodeContent(newItemId: string, itemData: { title: string }): TNodeContent {
-    return new TreeTableNodeContent(this.injector, newItemId, itemData) as any as TNodeContent
+    return new OryTreeTableNodeContent(this.injector, newItemId, itemData) as any as TNodeContent
   }
 
   /** FIXME should be protected */
   public createChildNode(nodeInclusion: NodeInclusion, content: TNodeContent): TChildNode {
-    const newNode = new ApfNonRootTreeNode(this.injector, content, nodeInclusion, content.getId(), this.treeModel as TreeModel<any>)
+    const newNode = new ApfNonRootTreeNode(this.injector, content, nodeInclusion, content.getId() /* FIXME */, this.treeModel as TreeModel<any>)
     content.setTreeNodeAndInit(newNode)
     return newNode as any as TChildNode
     // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
@@ -756,7 +756,7 @@ export class TreeModel<
 
   /** Init last, because OryTreeNode depends on stuff from TreeModel */
   root: TRootNode = new RootTreeNode(this.injector, this, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID,
-    new TreeTableNodeContent<any, TBaseNode>(this.injector, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, {title: ''} as any
+    new OryTreeTableNodeContent(this.injector, this.treeService.HARDCODED_ROOT_NODE_ITEM_ID, {title: ''} as any
 
     ) as any as TNodeContent
   ) as any as TRootNode

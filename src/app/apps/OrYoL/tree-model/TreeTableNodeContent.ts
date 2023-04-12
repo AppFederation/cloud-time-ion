@@ -82,7 +82,7 @@ export class TreeTableNodeContent <
   constructor(
     public injector: Injector,
     // nodeInclusion: NodeInclusion | undefined | null,
-    itemId: string,
+    public itemId: string,
     // treeModel: TreeModel,
     // itemData: any,
     public itemData: TItemData | null,
@@ -276,7 +276,7 @@ export class TreeTableNodeContent <
   }
 
   getId() {
-    return this.treeNode.itemId
+    return this.itemId
   }
 
 }
