@@ -7,8 +7,7 @@ import {
   TimeTrackedEntry,
   TimeTrackingService,
 } from '../../time-tracking/time-tracking.service'
-import { OryTreeNode } from '../../tree-model/TreeModel'
-import {TreeTableNode} from '../../tree-model/TreeTableNode'
+import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-node-content-time-tracking',
@@ -17,7 +16,7 @@ import {TreeTableNode} from '../../tree-model/TreeTableNode'
 })
 export class NodeContentTimeTrackingComponent implements OnInit {
 
-  @Input() treeNode!: TreeTableNode
+  @Input() treeNode!: OryBaseTreeNode
 
   timeTrackedEntry!: TimeTrackedEntry
 
@@ -26,7 +25,7 @@ export class NodeContentTimeTrackingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode)
+    this.timeTrackedEntry = this.timeTrackingService.obtainEntryForItem(this.treeNode.content)
   }
 
 }

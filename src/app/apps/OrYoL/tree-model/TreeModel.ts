@@ -44,9 +44,10 @@ import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {AuthService} from '../../../auth/auth.service'
 import {TreeNodeInclusion$P} from './TreeNodeInclusion$P'
-import {BaseTreeNode, RootTreeNode} from './RootTreeNode'
-import {OryTreeNode} from './TreeNode'
+import {ApfBaseTreeNode, RootTreeNode} from './RootTreeNode'
+import {ApfNonRootTreeNode} from './TreeNode'
 import {TreeTableNodeContent} from './TreeTableNodeContent'
+import {OryTreeTableNodeContent} from './OryTreeTableNodeContent'
 // import {TreeTableNode} from './TreeTableNode'
 
 /**
@@ -73,7 +74,7 @@ export abstract class OryTreeListener {
 /** rename to TreeTableCell, as this deals with columns already */
 export class TreeCell {
   constructor(
-    public node?: BaseTreeNode,
+    public node?: ApfBaseTreeNode,
     public column?: OryColumn,
   ) {}
 }
@@ -102,7 +103,7 @@ export class TreeModel<
   TNodeContent extends TreeTableNodeContent<any>,
   TBaseNode extends RootTreeNode<any> = RootTreeNode<any>,
   TRootNode extends TBaseNode = TBaseNode,
-  TNonRootNode extends TBaseNode = TBaseNode,
+  TNonRootNode extends TBaseNode & ApfNonRootTreeNode<TNodeContent> = TBaseNode & ApfNonRootTreeNode<TNodeContent>,
 >
 {
 
@@ -153,7 +154,7 @@ export class TreeModel<
 
   }(this)
 
-  mapNodeInclusionIdToNodes = new MultiMap<NodeInclusionId, TBaseNode>()
+  mapNodeInclusionIdToNodes = new MultiMap<NodeInclusionId, TNonRootNode>()
 
   mapItemIdToNodes = new MultiMap<ItemId, TBaseNode>()
 
@@ -256,7 +257,9 @@ export class TreeModel<
               // TODO prolly move this into tree node class
               let insertBeforeIndex = parentNode.findInsertionIndexForNewInclusion(event.nodeInclusion)
 
-              const newTreeNode: TNonRootNode = parentNode.createChildNode(event.nodeInclusion, event.itemId, event.itemData) as any as TNonRootNode
+              const newTreeNode: TNonRootNode = parentNode.createChildNode(event.nodeInclusion,
+                parentNode.createNodeContent(event.itemId, event.itemData)
+                ) as any as TNonRootNode
               parentNode._appendChildAndSetThisAsParent(newTreeNode as any, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode.content) //newTreeNode as any as TreeTableNode /* HACK */)
               // console.log('onItemWithDataAdded$.next(newTreeNode)')
@@ -277,7 +280,7 @@ export class TreeModel<
   onNodeInclusionModified(nodeInclusionId: NodeInclusionId, nodeInclusionData: any, newParentItemId: ItemId) {
     // TODO: ensure this same code is executed locally immediately after reorder/move, without waiting for DB
     // if ( nodeInclusionData.parentNode)
-    const nodes: TBaseNode[] | undefined = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
+    const nodes: TNonRootNode[] | undefined = this.mapNodeInclusionIdToNodes.get(nodeInclusionId)
     for (const node of nodes) {
       // if ( node.parent2.itemId !== newParentItemId ) {
       // change parent
@@ -292,7 +295,7 @@ export class TreeModel<
       for ( const newParent of newParents ) {
         const insertionIndex = newParent.findInsertionIndexForNewInclusion(nodeInclusionData)
 
-        newParent._appendChildAndSetThisAsParent(node, insertionIndex)
+        newParent._appendChildAndSetThisAsParent(node as any/* as TNonRootNode*/, insertionIndex)
       }
       node.nodeInclusion = nodeInclusionData
     }
@@ -306,7 +309,7 @@ export class TreeModel<
     // }
   }
 
-  registerNode(nodeToRegister: TBaseNode) {
+  registerNode(nodeToRegister: TNonRootNode) {
     this.mapNodeInclusionIdToNodes.add(nodeToRegister.nodeInclusion!.nodeInclusionId, nodeToRegister)
     this.addNodeToMapByItemId(nodeToRegister)
   }

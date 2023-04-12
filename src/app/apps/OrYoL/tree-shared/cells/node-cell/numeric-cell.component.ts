@@ -25,10 +25,10 @@ import {CachedSubject} from '../../../../../libs/AppFedShared/utils/cachedSubjec
 export class NumericCellComponent extends CellComponent implements OnInit, CellComponent {
 
   // @Input()
-  get showCalculatedValue() { return this.treeNode.showEffectiveValue(this.column) }
+  get showCalculatedValue() { return this.treeNode.content.showEffectiveValue(this.column) }
 
   // @Input()
-  get calculatedValue() { return this.treeNode.effectiveDurationText(this.column) }
+  get calculatedValue() { return this.treeNode.content.effectiveDurationText(this.column) }
 
   // @Input()
   isDanger() {

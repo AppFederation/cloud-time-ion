@@ -55,7 +55,7 @@
     (click)="onClickClassIcon($event)"
   ></app-node-class-icon>
 
-  <ng-container *ngIf="treeNode.itemData?.deleted">
+  <ng-container *ngIf="treeNode.content.itemData?.deleted">
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
 
@@ -88,7 +88,7 @@
     style="margin-left: 0.5em; vertical-align: middle; align-self: center"
   ></app-node-content-time-tracking>
 
-  <div *ngIf="treeNode.isDayPlan"
+  <div *ngIf="treeNode.content.isDayPlan"
        style="margin-left: 4px; margin-right: 2px; user-select: none; vertical-align: middle; display: table-cell; align-self: center"
   >
     <span class="faded">End {{formatEndTime(columnDefs.estimatedTime)}}</span>

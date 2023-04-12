@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import {OryTreeNode} from '../tree-model/TreeNode'
+import {ApfNonRootTreeNode} from '../tree-model/TreeNode'
+import {ApfBaseTreeNode, OryBaseTreeNode} from '../tree-model/RootTreeNode'
 
 @Injectable({providedIn: 'root'})
 export class ClipboardService {
 
-  private _nodesInClipboard: OryTreeNode[] = []
+  private _nodesInClipboard: OryBaseTreeNode[] = []
 
   constructor() { }
 
-  setNodesInClipboard(nodesInClipboard: OryTreeNode[]) {
+  setNodesInClipboard(nodesInClipboard: OryBaseTreeNode[]) {
     this._nodesInClipboard = nodesInClipboard
   }
 

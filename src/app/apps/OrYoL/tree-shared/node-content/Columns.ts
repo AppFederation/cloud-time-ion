@@ -1,10 +1,10 @@
 import { OryColumn } from '../OryColumn'
-import { OryTreeNode } from '../../tree-model/TreeModel'
 import {
   Cells,
   ColumnCell,
 } from './Cells'
 import {ignoreUnused} from '../../../../libs/AppFedShared/utils/utils-from-oryol'
+import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 export class ColumnDefs {
   title = new OryColumn('title')
@@ -47,7 +47,7 @@ export class Columns {
 
   lastColumn = columnDefs.title // will need allVisibleColumns.findLast
 
-  createColumnCells(treeNode: OryTreeNode) {
+  createColumnCells(treeNode: OryBaseTreeNode) {
     const cells = new Cells()
     this.allColumns.forEach(column => {
       ignoreUnused(new ColumnCell(column, cells, treeNode))

@@ -3,11 +3,10 @@ import { CellComponent } from '../cells/CellComponent'
 import {EventEmitter, Injector} from '@angular/core'
 import { debugLog } from '../../utils/log'
 import { ColumnCell } from './Cells'
-import { OryTreeNode } from '../../tree-model/TreeModel'
 import { Columns } from './Columns'
 import {throttleTime} from 'rxjs/operators'
 import {SyncStatusService} from '../../../../libs/AppFedShared/odm/sync-status.service'
-import {TreeTableNode} from '../../tree-model/TreeTableNode'
+import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 /** other names: CellsViewSyncer
  *
@@ -22,7 +21,7 @@ export class NodeContentViewSyncer {
 
   constructor(
     protected injector: Injector,
-    private treeNode: TreeTableNode,
+    private treeNode: OryBaseTreeNode,
     private columns: Columns,
     private mapColumnToComponent: Map<OryColumn, CellComponent>,
 ) {
@@ -36,8 +35,8 @@ export class NodeContentViewSyncer {
     // }
     for ( let entry of this.mapColumnToComponent.entries() ) {
       const col = entry[0], component = entry[1]
-      if ( force || this.treeNode.canApplyDataToViewGivenColumnLocalEdits(col) ) {
-        const newVal = col.getValueFromItemData(this.treeNode.itemData)
+      if ( force || this.treeNode.content.canApplyDataToViewGivenColumnLocalEdits(col) ) {
+        const newVal = col.getValueFromItemData(this.treeNode.content.itemData)
         const origValue = component.getInputValue()
         if ( origValue !== newVal ) { /* TODO later consider non-primitive data types (objects) */
           component.setInputValue(newVal)

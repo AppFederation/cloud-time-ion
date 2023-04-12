@@ -1,12 +1,14 @@
 import {TreeTableNodeContent} from './TreeTableNodeContent'
 import {OryColumn} from '../tree-shared/OryColumn'
-import {parseTimeToMinutes} from '../utils/time-utils'
+import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {RootTreeNode} from './RootTreeNode'
+import {sumBy} from 'lodash-es'
 
 /** Has domain-specific stuff like estimations */
 export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
 
+  startTime = new Date()
 
   /** TODO: move to NumericCell */
   effectiveTimeLeft(column: OryColumn) {
@@ -29,32 +31,35 @@ export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
   /** conceptual differences between note and journal entry: note is more pertaining to the topic,
    * whereas journal entry is more about the User's state in a given moment, useful for retrospective, tracking mood, etc. */
   get isJournalEntry() {
-    return this.parent2 ?. itemId === 'item_50872811-928d-4878-94c0-0df36667be0e'
+    return this.treeNode.parent2 ?. itemId === 'item_50872811-928d-4878-94c0-0df36667be0e'
   }
 
   get isMilestone() {
     const milestonesNodeId = 'item_28cca5d5-6935-4fb1-907a-44f1f1898851'
     // return //this.parent2 && this.parent2.itemId === milestonesNodeId ||
-    return this.parent2 ?. parent2 ?. itemId === milestonesNodeId
+    return this.treeNode.parent2 ?. parent2 ?. itemId === milestonesNodeId
   }
 
   get isTask() {
-    return this.parent2 ?. isMilestone || this.parent2 ?. isDayPlan
+    return this.treeNode.parent2 ?. isMilestone || this.treeNode.parent2 ?. isDayPlan
   }
 
   /** 2020-02-02 Decided that done/cancelled should be a core concept to tree node,
    * as it will simplify a lot of methods, at minimal cost in this file. Also, where else to put it... */
   public get isDoneOrCancelled() { return this.itemData?.isDone /* TODO: cancelled */ }
 
-  /** FIXME unify impl with NodeContentComponent */
-  toggleDone() {
-    let ret = this.patchItemData({
-      isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
-    })
-    // FIXME: fireOnChangeItemDataOfChildOnParents and on this
-
-    // TODO: focus node below, but too tied to UI; has to know about column too
-  }
+  // /** FIXME unify impl with NodeContentComponent
+  //  *
+  //  * FIXME
+  //  * */
+  // toggleDone() {
+  //   let ret = this.patchItemData({
+  //     isDone: this.itemData?.isDone ? null : new Date() /* TODO: `this.setDoneNow(! this.isDone)` */ ,
+  //   })
+  //   // FIXME: fireOnChangeItemDataOfChildOnParents and on this
+  //
+  //   // TODO: focus node below, but too tied to UI; has to know about column too
+  // }
 
   /** TODO: move to NumericCell */
   effectiveValueLeft(column: OryColumn): number {
@@ -70,6 +75,12 @@ export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
     }
   }
 
+  getChildrenTimeLeftSum(column: OryColumn): number {
+    return sumBy(this.treeNode.children, childNode => {
+      return childNode.effectiveValueLeft(column)
+    })
+  }
+
   public getMinutes(column: OryColumn) {
     const columnValue = this.getValueForColumn(column)
     return parseTimeToMinutes(columnValue) || 0
@@ -77,7 +88,8 @@ export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
 
   getChildrenMissingValsCount(column: OryColumn) {
     const hasMissingValFunc = (node: RootTreeNode) => {
-      return ! node.content.isDoneOrCancelled && node.content.hasMissingVal(column) // TODO: ignore done ones
+      const content = node.content as OryTreeTableNodeContent
+      return ! content.isDoneOrCancelled && content.hasMissingVal(column) // TODO: ignore done ones
     }
 
     const missingValsCountFunc = (node: RootTreeNode) => {
@@ -113,6 +125,21 @@ export class OryTreeTableNodeContent extends TreeTableNodeContent<any>{
     return ! isEmpty(colVal) &&
       this.valueLeftSum(column) >
       (( colVal && parseTimeToMinutes(colVal)) || 0) /* FIXME: there was "object is potentially null" so I added parenthesis 2022-06-18 */
+  }
+
+  /** TODO: move to NumericCell */
+  timeLeftSumText(column: OryColumn) {
+    const minutesTotalLeft = this.valueLeftSum(column)
+    return minutesToString(minutesTotalLeft)
+  }
+
+  /** TODO: move to NumericCell */
+  valueLeftSum(column: OryColumn): number {
+    const columnVal = column.getValueFromItemData(this.itemData)
+    const selfTimeLeft = ( columnVal && parseTimeToMinutes(columnVal)) || 0
+    // TODO: use AggregateValue class
+    const childrenTimeLeftSum = this.getChildrenTimeLeftSum(column)
+    return Math.max(selfTimeLeft, childrenTimeLeftSum)
   }
 
 

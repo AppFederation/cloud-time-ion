@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-  OryTreeNode,
+  ApfNonRootTreeNode,
   TreeModel,
 } from './TreeModel'
 import { DbTreeService } from './db-tree-service'

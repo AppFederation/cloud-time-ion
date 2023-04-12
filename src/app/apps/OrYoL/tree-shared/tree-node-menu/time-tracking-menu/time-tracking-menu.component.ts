@@ -7,13 +7,13 @@ import {
   date,
   TimeTrackingService,
 } from '../../../time-tracking/time-tracking.service'
-import { OryTreeNode } from '../../../tree-model/TreeModel'
-import {TreeTableNode} from '../../../tree-model/TreeTableNode'
+import {ApfBaseTreeNode, OryBaseTreeNode} from '../../../tree-model/RootTreeNode'
 
-function timeTrackedMsFunc ( node: OryTreeNode ) {
-  return ((node.itemData && node.itemData.timeTrack && node.itemData.timeTrack.previousTrackingsMs) || 0) +
-    ((node.itemData && node.itemData.timeTrack && node.itemData.timeTrack.nowTrackingSince) ? (
-    Date.now() - date(node.itemData.timeTrack.nowTrackingSince).getTime()
+function timeTrackedMsFunc ( node: ApfBaseTreeNode ) {
+  const itemData = node.content.itemData
+  return ((itemData && itemData.timeTrack && itemData.timeTrack.previousTrackingsMs) || 0) +
+    ((itemData && itemData.timeTrack && itemData.timeTrack.nowTrackingSince) ? (
+    Date.now() - date(itemData.timeTrack.nowTrackingSince).getTime()
   ) : 0)
 }
 
@@ -24,7 +24,7 @@ function timeTrackedMsFunc ( node: OryTreeNode ) {
 })
 export class TimeTrackingMenuComponent implements OnInit {
 
-  @Input() treeNode!: TreeTableNode
+  @Input() treeNode!: OryBaseTreeNode
 
   timeTrackedMsFunc = timeTrackedMsFunc
 

@@ -3,12 +3,11 @@ import {
   TimeTrackedEntry,
   TimeTrackingService,
 } from '../time-tracking/time-tracking.service'
-import { OryTreeNode } from '../tree-model/TreeModel'
 import { columnDefs } from '../tree-shared/node-content/Columns'
 import { Subscription } from 'rxjs'
 import { minutesToString } from '../utils/time-utils'
 import { ConfigService } from '../core/config.service'
-import {TreeTableNode} from '../tree-model/TreeTableNode'
+import {OryBaseTreeNode} from '../tree-model/RootTreeNode'
 
 @Injectable({
   providedIn: 'root'
@@ -67,23 +66,23 @@ export class PlanExecutionService {
     if ( ! ttEntry.isTrackingNow ) {
       return
     }
-    const node = ttEntry.timeTrackable as TreeTableNode
-    const dbItem = node.dbItem
+    const node = ttEntry.timeTrackable as any as OryBaseTreeNode
+    const dbItem = node.content.dbItem
     // TODO: listen to changes of title?
     this.dbItemDataSubscriptions.push(dbItem.data$.subscribe(data => {
       this.onItemDataChanged(data, node, ttEntry)
     }))
   }
 
-  private onItemDataChanged(data: any, node: OryTreeNode, ttEntry: TimeTrackedEntry) {
+  private onItemDataChanged(data: any, node: OryBaseTreeNode, ttEntry: TimeTrackedEntry) {
     if ( ttEntry.isTrackingNow ) {
       this.subscribeTimeoutsForPercentages(node, ttEntry)
     }
   }
 
-  private subscribeTimeoutsForPercentages(node: OryTreeNode, ttEntry: TimeTrackedEntry) {
+  private subscribeTimeoutsForPercentages(node: OryBaseTreeNode, ttEntry: TimeTrackedEntry) {
     // columnDefs.estimatedTime.getValueFromItemData(data)
-    const minutesEstimated = node.getMinutes(columnDefs.estimatedTime)
+    const minutesEstimated = node.content.getMinutes(columnDefs.estimatedTime)
     const percentages = [
       50, /* `Middle`, { persistent: false } */
       75, /* `Time to start wrapping-up!` */
@@ -119,8 +118,8 @@ export class PlanExecutionService {
             https://www.chromestatus.com/feature/5133150283890688
             and/or via Capacitor and/or my own service
           */
-          const notificationTitle = '' + percent + `% | ${minutesLefToNotifyString} ${leftOrOvertime} - ` + node.getValueForColumn(columnDefs.title)
-          console.log('notifyTrackedMsElapsed', node.getValueForColumn(columnDefs.title))
+          const notificationTitle = '' + percent + `% | ${minutesLefToNotifyString} ${leftOrOvertime} - ` + node.content.getValueForColumn(columnDefs.title)
+          console.log('notifyTrackedMsElapsed', node.content.getValueForColumn(columnDefs.title))
           const notification = new Notification(notificationTitle, {
             body: `Time to start wrapping-up!`,
             requireInteraction: true,

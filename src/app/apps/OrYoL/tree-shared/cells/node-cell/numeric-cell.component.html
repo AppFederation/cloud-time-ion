@@ -31,13 +31,13 @@
     "
     [ngClass]="{'danger' : isDanger()}"
   >
-  <ng-container *ngIf="(config$|async)?.showAggregateValues && (showCalculatedValue || treeNode.getChildrenMissingValsCount(column))"> <!-- note: double calculation of getChildrenMissingValsCount -->
+  <ng-container *ngIf="(config$|async)?.showAggregateValues && (showCalculatedValue || treeNode.content.getChildrenMissingValsCount(column))"> <!-- note: double calculation of getChildrenMissingValsCount -->
     <span
       *ngIf="showCalculatedValue"
       style="color: gray">&nbsp;{{calculatedValue}}</span>&nbsp;
 
     <ng-container *ngIf="(config$ | async)?.showMissingValuesCount">
-      <span *ngIf='treeNode.getChildrenMissingValsCount(column); let missingValsCount'
+      <span *ngIf='treeNode.content.getChildrenMissingValsCount(column); let missingValsCount'
             style="color: red">
         &nbsp;{{missingValsCount}}
       </span>&nbsp;

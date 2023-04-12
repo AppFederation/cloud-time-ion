@@ -4,10 +4,10 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  OryTreeNode,
   TreeModel,
 } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
+import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-nested-tree',
@@ -17,12 +17,12 @@ import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component
 export class NestedTreeComponent implements OnInit {
 
   @Input()
-  treeModel!: TreeModel
+  treeModel!: TreeModel<any>
 
   @Input()
   treeHost!: TreeHostComponent
 
-  wrapperHackArrayWasForNode!: OryTreeNode
+  wrapperHackArrayWasForNode!: OryBaseTreeNode
   /* For forcing new component instance every time visualRoot changes */
   wrapperHackArray!: any
 

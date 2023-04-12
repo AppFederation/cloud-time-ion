@@ -1,6 +1,6 @@
-import {OryTreeNode} from './TreeModel'
 import {DbTreeListener} from './TreeListener'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
+import {OryBaseTreeNode} from './RootTreeNode'
 
 /* TODO: write new db code in such a way to not depend on tree-model stuff (e.g. pass ItemId (==string) instead of OryTreeNode) */
 /* TODO: use ItemData and ItemInclusionData (== any) placeholder types instead of `any` */
@@ -12,12 +12,12 @@ export abstract class DbTreeService {
   HARDCODED_ROOT_NODE_ITEM_ID = 'item_5026a2c6-948c-4875-8ff4-762ca845ae93'
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  abstract addChildNode(parentNode: OryTreeNode, newNode: OryTreeNode): void
+  abstract addChildNode(parentNode: OryBaseTreeNode, newNode: OryBaseTreeNode): void
 
   abstract addAssociateSiblingAfterNode(
-    parentNode: OryTreeNode,
-    nodeToAssociate: OryTreeNode,
-    associateAfterNode: OryTreeNode | nullish
+    parentNode: OryBaseTreeNode,
+    nodeToAssociate: OryBaseTreeNode,
+    associateAfterNode: OryBaseTreeNode | nullish
   ): void
 
   abstract loadNodesTree(listener: DbTreeListener): void

@@ -1,5 +1,5 @@
-import { OryTreeNode } from './TreeModel'
 import {UserId} from '../../../auth/auth.service'
+import {OryBaseTreeNode} from './RootTreeNode'
 
 export class PermissionsManager {
 
@@ -14,10 +14,10 @@ export class PermissionsManager {
   }
 
 
-  onAfterCreated(newNode: OryTreeNode) {
+  onAfterCreated(newNode: OryBaseTreeNode) {
     const readPerms = {} as any
     readPerms[this.userId] = new Date()
-    newNode.itemData.perms = {
+    newNode.content.itemData.perms = {
       read: readPerms
     }
   }

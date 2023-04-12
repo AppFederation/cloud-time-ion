@@ -16,10 +16,9 @@ import { ActivatedRoute } from '@angular/router'
 import { DebugService } from '../../core/debug.service'
 import {Command, CommandsService} from '../../core/commands.service'
 import { NavigationService } from '../../core/navigation.service'
-import {TreeTableModel} from '../../tree-model/TreeTableModel'
-import {TreeTableNode} from '../../tree-model/TreeTableNode'
-import {RootTreeNode} from '../../tree-model/RootTreeNode'
-import {OryTreeNode} from '../../tree-model/TreeNode'
+import {ApfBaseTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
+import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
 
 
 @Component({
@@ -29,7 +28,7 @@ import {OryTreeNode} from '../../tree-model/TreeNode'
 })
 export class TreeHostComponent implements OnInit {
 
-  treeModel: TreeTableModel// = new TreeModel(this.treeService2)
+  treeModel: TreeModel<TreeTableNodeContent>// = new TreeModel(this.treeService2)
 
   showTree = false
 
@@ -54,11 +53,12 @@ export class TreeHostComponent implements OnInit {
     this.navigationService.navigation$.subscribe((nodeId: string) => {
       // this.treeModel.navigation.navigateInto(nodeId)
       // TODO: reFocusLastFocused()?
-      this.focusNode(this.treeModel.getNodesByItemId(nodeId)[0])
+      const node = this.treeModel.getNodesByItemId(nodeId)[0]
+      this.focusNode(node)
     })
 
     commandsService.commands$.subscribe((command: Command) => {
-      const lastFocusedNode = this.treeModel.focus.lastFocusedNode as OryTreeNode // (RootTreeNode | OryTreeNode)
+      const lastFocusedNode = this.treeModel.focus.lastFocusedNode as ApfNonRootTreeNode // (RootTreeNode | OryTreeNode)
       /*  */ if ( command === 'reorderUp' ) {
         lastFocusedNode ?. reorderUp ?. ()
       } else if ( command === 'reorderDown' ) {
@@ -129,11 +129,11 @@ export class TreeHostComponent implements OnInit {
     this.mapNodeToComponent.delete(nodeContentComponent.treeNode)
   }
 
-  getComponentForNode(node: OryTreeNode) {
+  getComponentForNode(node: ApfBaseTreeNode) {
     return this.mapNodeToComponent.get(node)
   }
 
-  focusNode(node: TreeTableNode | null | undefined, column?: OryColumn | null, options?: NodeFocusOptions) {
+  focusNode(node: ApfBaseTreeNode | null | undefined, column?: OryColumn | null, options?: NodeFocusOptions) {
     debugLog('focusNode', arguments)
     if ( ! node ) {
       return
@@ -214,6 +214,6 @@ export class TreeHostComponent implements OnInit {
   }
 
   public focus(cell: TreeCell) {
-    this.focusNode(cell.node as TreeTableNode, cell.column)
+    this.focusNode(cell.node, cell.column)
   }
 }

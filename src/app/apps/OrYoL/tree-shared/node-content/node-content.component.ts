@@ -44,8 +44,10 @@ import {PopoverController} from '@ionic/angular'
 import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
-import {RootTreeNode} from '../../tree-model/RootTreeNode'
-import {OryTreeNode} from '../../tree-model/TreeNode'
+import {ApfBaseTreeNode, OryBaseTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
+import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
+import {TreeTableNodeContent} from '../../tree-model/TreeTableNodeContent'
 
 /* ==== Note there are those sources of truth kind-of (for justified reasons) :
 * - UI state
@@ -81,7 +83,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   nodeContentViewSyncer!: NodeContentViewSyncer
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: OryBaseTreeNode
 
   @Input() treeHost!: TreeHostComponent
 
@@ -172,12 +174,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   }
 
   addChild() {
-    const newTreeNode = this.treeNode.addChild()
+    const newTreeNode = this.treeNode.addChild() as any as ApfBaseTreeNode
     this.treeNode.expanded = true
     this.focusNewlyCreatedNode(newTreeNode)
   }
 
-  private focusNewlyCreatedNode(newTreeNode: OryTreeNode) {
+  private focusNewlyCreatedNode(newTreeNode: ApfBaseTreeNode) {
     setTimeout(() => {
       this.treeHost.focusNode(newTreeNode)
     })
@@ -188,7 +190,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
       this.addChild()
     } else {
       debugLog('key press enter; node: ', this.treeNode)
-      const newTreeNode = this.addNodeAfterThis()
+      const newTreeNode = this.addNodeAfterThis() as any as ApfBaseTreeNode
       this.focusNewlyCreatedNode(newTreeNode)
     }
     event.preventDefault()
@@ -234,35 +236,35 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   }
 
   addNodeAfterThis() {
-    return this.treeNode.addSiblingAfterThis()
+    return (this.treeNode as any as ApfNonRootTreeNode).addSiblingAfterThis()
   }
 
   focusNodeAboveAtEnd() {
-    const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
+    const nodeToFocus: ApfBaseTreeNode | undefined = this.treeNode.getNodeVisuallyAboveThis() as ApfBaseTreeNode | undefined
     this.treeHost.focusNode(nodeToFocus, this.columns.lastColumn, {cursorPosition: -1})
   }
 
   focusNodeBelowAtBeginningOfLine() {
-    const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
+    const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis() as ApfBaseTreeNode | undefined
     this.treeHost.focusNode(nodeToFocus, this.columns.leftMostColumn, {cursorPosition: 0})
   }
 
   /** TODO: rename to focusCellAbove */
   public focusNodeAbove($event: any) {
     // if ( getSelectionCursorState().atStart ) {
-      const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis()
+      const nodeToFocus = this.treeNode.getNodeVisuallyAboveThis() as ApfBaseTreeNode | undefined
       this.focusOtherNode(nodeToFocus)
     // }
   }
 
   public focusNodeBelow($event: any) {
     // if ( getSelectionCursorState().atEnd ) {
-      const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis()
+      const nodeToFocus = this.treeNode.getNodeVisuallyBelowThis() as ApfBaseTreeNode | undefined
       this.focusOtherNode(nodeToFocus)
     // }
   }
 
-  focusOtherNode(nodeToFocus: RootTreeNode | undefined) {
+  focusOtherNode(nodeToFocus: ApfBaseTreeNode | undefined) {
     debugLog('focusOtherNode this.focusedColumn', this.focusedColumn)
     this.treeHost.focusNode(nodeToFocus, this.focusedColumn)
   }
@@ -297,7 +299,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // here start moving responsibilities from component viewSyncer to
 // <<<<<<< HEAD
     this.treeNode.content.onInputChangedByUser(cell, inputNewValue)
-    column.setValueOnItemData(this.treeNode.itemData, inputNewValue)
+    column.setValueOnItemData(this.treeNode.content.itemData, inputNewValue) /* FIXME this was changed on `develop`; + patchThrottled considerations */
 // =======
 //     this.treeNode.onInputChangedByUser(cell, inputNewValue)
 //     // column.setValueOnItemData(this.treeNode.itemData, inputNewValue) --- moved to TreeTableNode
@@ -310,12 +312,12 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   reorderUp(event: any) {
     event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
-    this.treeNode.reorderUp()
+    ;(this.treeNode as any as ApfNonRootTreeNode).reorderUp()
   }
 
   reorderDown(event: any) {
     event.preventDefault() // for Firefox causing page up/down; same for Safari and TextEdit, so looks like Chrome is lacking this shortcut
-    this.treeNode.reorderDown()
+    ;(this.treeNode as any as ApfNonRootTreeNode).reorderDown()
   }
 
   ngOnDestroy(): void {
@@ -331,14 +333,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   indentDecrease($event: Event) {
     $event.preventDefault()
-    this.treeNode.indentDecrease()
-    this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
+    ;(this.treeNode as any as ApfNonRootTreeNode).indentDecrease()
+    this.focusNewlyCreatedNode(this.treeNode as any as ApfBaseTreeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 
   indentIncrease($event: Event) {
     $event.preventDefault()
-    this.treeNode.indentIncrease()
-    this.focusNewlyCreatedNode(this.treeNode) // FIXME this will not work correctly when multi-parents get fully implemented
+    ;(this.treeNode as any as ApfNonRootTreeNode).indentIncrease()
+    this.focusNewlyCreatedNode(this.treeNode as any as ApfBaseTreeNode) // FIXME this will not work correctly when multi-parents get fully implemented
   }
 
   onArrowRightOnRightMostCell() {

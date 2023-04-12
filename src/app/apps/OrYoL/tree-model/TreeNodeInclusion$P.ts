@@ -1,7 +1,6 @@
 import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from '../../../libs/AppFedShared/utils/rxUtils'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {Injector} from '@angular/core'
-import {TreeTableNode} from './TreeTableNode'
 import {DbTreeService} from './db-tree-service'
 import {ItemId} from '../db/DbItem'
 import {NodeInclusion} from './TreeListener'

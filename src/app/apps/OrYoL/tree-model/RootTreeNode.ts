@@ -1,6 +1,5 @@
-import {OryTreeNode} from './TreeNode'
+import {ApfNonRootTreeNode} from './TreeNode'
 import {TreeNode} from 'primeng/api'
-import {HasItemData} from './has-item-data'
 import {TreeTableNodeContent} from './TreeTableNodeContent'
 import {generateNewInclusionId, TreeModel} from './TreeModel'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
@@ -11,19 +10,20 @@ import {NodeInclusion} from './TreeListener'
 import {ItemId} from '../db/DbItem'
 import {EventEmitter, Injector} from '@angular/core'
 import {sumRecursivelyIncludingRoot, sumRecursivelyJustChildren} from '../utils/collection-utils'
+import {OryTreeTableNodeContent} from './OryTreeTableNodeContent'
 
+
+export type ApfBaseTreeNode = RootTreeNode<any>
+export type OryBaseTreeNode = RootTreeNode<OryTreeTableNodeContent, ApfNonRootTreeNode<OryTreeTableNodeContent>, OryNonRootTreeNode, OryNonRootTreeNode>
+export type OryNonRootTreeNode = ApfNonRootTreeNode<OryTreeTableNodeContent, ApfNonRootTreeNode<OryTreeTableNodeContent>>
 export class RootTreeNode<
-  TData extends {
-    title: string,
-    isDone?: boolean,
-  } = any,
-  TNodeContent extends TreeTableNodeContent<TData> = TreeTableNodeContent<TData>,
+  TNodeContent extends TreeTableNodeContent = TreeTableNodeContent,
 
 /** lowest-common type of nodes (can include root) */
-  TBaseNode extends OryTreeNode = OryTreeNode<any>,
-  TBaseNonRootNode extends TBaseNode = TBaseNode, /* maybe this should be right after TBaseNode */
+  TBaseNode extends RootTreeNode<TNodeContent> = RootTreeNode<TNodeContent, any>,// OryTreeNode = OryTreeNode<any>,
+  TBaseNonRootNode extends TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode> = TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode, any>, /* maybe this should be right after TBaseNode */
   // TParentNode extends TAncestorNode & OryTreeNode<TBaseNode, TBaseNonRootNode, TBaseNode, TBaseNode, TAncestorNode> = TAncestorNode,
-  TChildNode extends TBaseNonRootNode = TBaseNonRootNode,
+  TChildNode extends TBaseNonRootNode & TBaseNode= TBaseNonRootNode & TBaseNode,
 >
 
   implements TreeNode // , HasItemData
@@ -35,7 +35,7 @@ export class RootTreeNode<
   icon?: any;
   expandedIcon?: any;
   collapsedIcon?: any;
-  children: TChildNode[] = [];
+  children: TBaseNonRootNode/*TChildNode*/[] = [];
   leaf?: boolean;
   expanded?: boolean;
   type?: string;
@@ -56,18 +56,16 @@ export class RootTreeNode<
   onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
 
-  startTime = new Date()
-
   static INITIAL_TITLE = ''
 
 
   get title() {
-    return this.itemData ?. title
+    return this.content.itemData ?. title
   }
 
   constructor(
     public injector: Injector,
-    public treeModel: TreeModel,
+    public treeModel: TreeModel<TNodeContent, TBaseNode, TBaseNode>,
     public itemId: ItemId,
     public content: TNodeContent,
   ) {
@@ -89,9 +87,13 @@ export class RootTreeNode<
   }
 
   findInsertionIndexForNewInclusion(newInclusion: NodeInclusion): number {
-    return this.treeModel.nodeOrderer.findInsertionIndexForNewInclusion<TChildNode>(this.children, newInclusion, (node: TChildNode) => {
-      return node.nodeInclusion !
-    })
+    return this.treeModel.nodeOrderer.findInsertionIndexForNewInclusion<TBaseNonRootNode/*TChildNode*/>(
+      this.children,
+      newInclusion,
+      (node: TBaseNonRootNode/*TChildNode*/) => {
+        return node.nodeInclusion !
+      }
+    )
   }
 
 
@@ -156,14 +158,14 @@ export class RootTreeNode<
   }
 
   get isRoot(): boolean {
-    return this.treeModel.root === this;
+    return this.treeModel.root === this as any as TBaseNode
   }
 
   get isVisualRoot(): boolean {
     return this === this.treeModel.navigation.visualRoot
   }
 
-  get lastChildNode(): TChildNode | undefined {
+  get lastChildNode(): TBaseNonRootNode/*TChildNode*/ | undefined {
     return this.getChildAtIndexOrUndefined(this.children ?. length - 1)
   }
 
@@ -180,7 +182,7 @@ export class RootTreeNode<
 
     isAncestorOfFocusedNode(): boolean {
       return !!(
-        this.treeNode.treeModel.focus.lastFocusedNode?.getParentsPathArray().some((ancestorOfFocused: TBaseNode) => {
+        this.treeNode.treeModel.focus.lastFocusedNode?.getParentsPathArray().some((ancestorOfFocused) => {
           return this.treeNode === ancestorOfFocused
         })
       )
@@ -233,7 +235,7 @@ export class RootTreeNode<
       let parent: TBaseNode | undefined = this.parent2
       while (parent && ! parent.isVisualRoot) {
         if ( parent.getSiblingNodeBelowThis() ) {
-          ret =  parent.getSiblingNodeBelowThis() as TBaseNode
+          ret =  parent.getSiblingNodeBelowThis() as any as TBaseNode
           break
         }
         parent = parent.parent2 as TBaseNode
@@ -262,11 +264,11 @@ export class RootTreeNode<
     }
   }
 
-  public getLastDirectChild(): TChildNode | undefined {
+  public getLastDirectChild(): TBaseNonRootNode/*TChildNode*/ | undefined {
     return getLastItemOrUndefined(this.children)
   }
 
-  _appendChildAndSetThisAsParent(nodeToAppend: TChildNode, insertBeforeIndex?: number) {
+  _appendChildAndSetThisAsParent(nodeToAppend: TBaseNonRootNode/*TChildNode*/, insertBeforeIndex?: number) {
     // TODO: consider reacting to multi-node changes here for all nodes with the same
     // nodeToAppend ??= this.createChildNode()
     const afterNode = this.lastChildNode
@@ -289,10 +291,10 @@ export class RootTreeNode<
   }
 
   protected newItemData() {
-    return {title: OryTreeNode.INITIAL_TITLE}
+    return {title: ApfNonRootTreeNode.INITIAL_TITLE}
   }
 
-  getChildAtIndexOrUndefined(index: number): TChildNode | undefined {
+  getChildAtIndexOrUndefined(index: number): TBaseNonRootNode/*TChildNode*/ | undefined {
     if ( this.isIndexPresent(index) ) {
       return this.children[index]
     } else {
@@ -307,7 +309,7 @@ export class RootTreeNode<
   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  addChild(afterExistingNode?: TChildNode, newNode?: TChildNode): TChildNode {
+  addChild(afterExistingNode?: TBaseNonRootNode/*TChildNode*/, newNode?: TBaseNonRootNode/*TChildNode*/): TBaseNonRootNode/*TChildNode*/ {
     if ( ! afterExistingNode && this.children.length > 0 ) {
       afterExistingNode = this.lastChildNode
     }
@@ -316,7 +318,7 @@ export class RootTreeNode<
 
     const nodeBelow = afterExistingNode?.getSiblingNodeBelowThis()
     // console.log('addChild: nodeBelow', nodeBelow)
-    const nodeInclusion: NodeInclusion = newNode?.nodeInclusion || new NodeInclusion(generateNewInclusionId(), this.itemId,
+    const nodeInclusion: NodeInclusion = newNode?.nodeInclusion || new NodeInclusion(generateNewInclusionId(), /*parentItemId: */ this.itemId,
       /* FIXME order is added in addOrderMetadataToInclusion */ )
 
     this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
@@ -326,14 +328,16 @@ export class RootTreeNode<
       },
       nodeInclusion,
     )
-    newNode = newNode ?? this.createChildNode(nodeInclusion,
-      new TreeTableNodeContent(this.injector, this, this.itemId, )
-    )
+    const itemData = this.newItemData()
+    const newItemId = this.generateItemId()
+    const nodeContent = this.createNodeContent(newItemId, itemData)
+    newNode = newNode ?? this.createChildNode(nodeInclusion, nodeContent)
+
     // newNode.nodeInclusion = nodeInclusion
 
-    this.treeModel.permissionsManager.onAfterCreated(newNode)
+    this.treeModel.permissionsManager.onAfterCreated(newNode as any as OryBaseTreeNode)
 
-    this.treeModel.treeService.addChildNode(this, newNode)
+    this.treeModel.treeService.addChildNode(this as any as OryBaseTreeNode, newNode as any as OryBaseTreeNode)
 
     const newNodeIndex = afterExistingNode ? (afterExistingNode.getIndexInParent() + 1) : 0
     this._appendChildAndSetThisAsParent(newNode, newNodeIndex) // this is to avoid delay caused by Firestore; for UX
@@ -341,8 +345,15 @@ export class RootTreeNode<
     return newNode
   }
 
-  protected createChildNode(nodeInclusion: NodeInclusion, content: TreeTableNodeContent<TData>): TChildNode {
-    return new OryTreeNode(this.injector, content, nodeInclusion, this.generateItemId(), this.treeModel, this.newItemData()) as any as TChildNode
+  public createNodeContent(newItemId: string, itemData: { title: string }): TNodeContent {
+    return new TreeTableNodeContent(this.injector, newItemId, itemData) as any as TNodeContent
+  }
+
+  /** FIXME should be protected */
+  public createChildNode(nodeInclusion: NodeInclusion, content: TNodeContent): TChildNode {
+    const newNode = new ApfNonRootTreeNode(this.injector, content, nodeInclusion, content.getId(), this.treeModel as TreeModel<any>)
+    content.treeNode = newNode
+    return newNode as any as TChildNode
     // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
 
@@ -350,7 +361,7 @@ export class RootTreeNode<
     return 'item_' + uuidv4()
   }
 
-  addAssociationsHere(nodes: TChildNode[], beforeNode: TChildNode | undefined) {
+  addAssociationsHere(nodes: TBaseNonRootNode/*TChildNode*/[], beforeNode: TBaseNonRootNode/*TChildNode*/ | undefined) {
     // FIXME: use beforeNode
     FIXME('addAssociationsHere not impl')
     for ( const nodeToAssociate of nodes ) {
@@ -364,12 +375,16 @@ export class RootTreeNode<
       )
 
       const newNode = this.createChildNode(newInclusion, nodeToAssociate.content as TNodeContent)
-      this.treeModel.treeService.addAssociateSiblingAfterNode(this, newNode, this.lastChildNode)
+      this.treeModel.treeService.addAssociateSiblingAfterNode(
+        this as any as OryBaseTreeNode,
+        newNode as any as OryBaseTreeNode,
+        this.lastChildNode as any as OryBaseTreeNode,
+      )
     }
   }
 
   /* This could/should probably be unified with reorder code */
-  moveInclusionsHere(nodes: TChildNode[], beforeNode: { beforeNode: TChildNode | undefined }) {
+  moveInclusionsHere(nodes: TBaseNonRootNode[], beforeNode: { beforeNode: TBaseNonRootNode/*TChildNode*/ | undefined }) {
     // FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
     for ( const childNodeToAssociate of nodes ) {
       const nodeAfter = beforeNode?.beforeNode
@@ -394,7 +409,7 @@ export class RootTreeNode<
     }
   }
 
-  private patchChildInclusionData(inclusionToModify: NodeInclusion, childNodeToAssociate: TChildNode) {
+  private patchChildInclusionData(inclusionToModify: NodeInclusion, childNodeToAssociate: TBaseNonRootNode/*TChildNode*/) {
     // this.treeModel.treeService.patchChildInclusionData(
     //   /*nodeToAssociate.itemId*/ this.itemId /* parent*/,
     //   inclusionToModify.nodeInclusionId,
@@ -406,7 +421,7 @@ export class RootTreeNode<
 
   deleteWithoutConfirmation() {
     this.treeModel.treeService.deleteWithoutConfirmation(this.itemId)
-    this.parent2!._removeChild(this as any as TBaseNode)
+    this.parent2!._removeChild(this as any as TBaseNonRootNode)
   }
 
   public getSumRecursivelyJustChildren(sumValueFunc: any): number {
@@ -422,12 +437,12 @@ export class RootTreeNode<
   }
 
   public getIndexInParent(): number {
-    return this.parent2?.children?.indexOf(this as any as TBaseNode) ?? 0
+    return this.parent2?.children?.indexOf(this as any as TBaseNonRootNode) ?? 0
   }
 
-  getSiblingNodeAboveThis(): TBaseNode | undefined {
+  getSiblingNodeAboveThis(): TBaseNonRootNode | undefined {
     const index = this.getIndexInParent()
-    return this.parent2?.getChildAtIndexOrUndefined(index - 1) as TBaseNode | undefined
+    return this.parent2?.getChildAtIndexOrUndefined(index - 1) as TBaseNonRootNode | undefined
   }
 
   getSiblingNodeBelowThis(): TBaseNonRootNode | undefined  {
@@ -444,14 +459,14 @@ export class RootTreeNode<
       return this.treeModel.navigation.visualRoot.getLastMostNestedVisibleNodeRecursively()
     }
     let ret: TBaseNode | undefined
-    const siblingNodeAboveThis = this.getSiblingNodeAboveThis()
+    const siblingNodeAboveThis: TBaseNode | undefined = this.getSiblingNodeAboveThis()
     if ( siblingNodeAboveThis ) {
       const lastMostNestedNodeRecursively = siblingNodeAboveThis.getLastMostNestedVisibleNodeRecursively()
       ret =  lastMostNestedNodeRecursively as TBaseNode
     } else {
       ret = siblingNodeAboveThis ||
         this.parent2 || /* note this IS parent2 - should go to the root of all (if it is shown...) */
-        this.treeModel.root.getLastMostNestedVisibleNodeRecursively() // not found -- wrap around to bottom-most
+        this.treeModel.root.getLastMostNestedVisibleNodeRecursively() as TBaseNode | undefined // not found -- wrap around to bottom-most
     }
     if ( ret!.expansion.areParentsExpandedToMakeThisNodeVisible()
       /* TODO: might need smth like && isVisible to handle the isRootVisible case. Later also think about filtering */

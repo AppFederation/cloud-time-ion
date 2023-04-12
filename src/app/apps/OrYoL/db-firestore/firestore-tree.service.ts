@@ -4,7 +4,6 @@ import {
   NodeAddEvent,
   NodeInclusion,
 } from '../tree-model/TreeListener'
-import { OryTreeNode } from '../tree-model/TreeModel'
 import {
   debugLog, errorAlert,
 } from '../utils/log'
@@ -36,6 +35,7 @@ import firebase from 'firebase/compat/app'
 import CollectionReference = firebase.firestore.CollectionReference
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 import {ItemId} from '../db/DbItem'
+import {OryBaseTreeNode, OryNonRootTreeNode} from '../tree-model/RootTreeNode'
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -248,7 +248,7 @@ export class FirestoreTreeService extends DbTreeService {
 //   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  addChildNode(parentNode: OryTreeNode, newNode: OryTreeNode) {
+  addChildNode(parentNode: OryBaseTreeNode, newNode: OryNonRootTreeNode) {
     debugLog('addSiblingAfterNode', newNode)
     // let parentId = afterExistingNode.parent2.dbId // will not work yet; "imaginary root"
     // let parentId = this.HARDCODED_ROOT_NODE // HACK to simplify for now
@@ -260,8 +260,8 @@ export class FirestoreTreeService extends DbTreeService {
     //   title: OryTreeNode.INITIAL_TITLE
     // }
     // newNode.itemData = newItem // this was added while adding timestamps; FIXME: overwriting whatever might be there
-    this.timeStamper.onAfterCreated(newNode.itemData)
-    this.itemsCollection().doc(newNode.itemId).set(newNode.itemData).then(() => {
+    this.timeStamper.onAfterCreated(newNode.content.itemData)
+    this.itemsCollection().doc(newNode.itemId).set(newNode.content.itemData).then(() => {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)
       // newNode.itemId = itemDocRef.id // NOTE: initially it is UUID, overwritten here /* Perhaps this indirectly causes ExpressionChangedAfterItHasBeenCheckedError */
@@ -288,7 +288,7 @@ export class FirestoreTreeService extends DbTreeService {
     // TODO: return nodeInclusion? (could be useful if it was not provided as an argument)
   }
 
-  addAssociateSiblingAfterNode(parentNode: OryTreeNode, nodeToAssociate: OryTreeNode, associateAfterNode: OryTreeNode | nullish) {
+  addAssociateSiblingAfterNode(parentNode: OryBaseTreeNode, nodeToAssociate: OryNonRootTreeNode, associateAfterNode: OryNonRootTreeNode | nullish) {
     const itemDocRef = this.itemDocById(nodeToAssociate.itemId)
     this.addNodeInclusionToParent(parentNode.itemId, nodeToAssociate.nodeInclusion !, itemDocRef)
   }
@@ -301,6 +301,7 @@ export class FirestoreTreeService extends DbTreeService {
      * @return
      A Promise resolved once the data has been successfully written to the backend
      (Note that it won't resolve while you're offline). */
+    console.log('FirestoreTreeService extends DbTreeService: patchItemData', itemData)
     let promise = this.itemDocById(itemId).update(itemData)
     return { onPatchSentToRemote: promise }
   }

@@ -9,7 +9,6 @@ import { debugLog } from '../utils/log'
 // import { AuthService } from '../core/auth.service'
 import { TimeTrackingService } from '../time-tracking/time-tracking.service'
 import {AuthService} from '../../../auth/auth.service'
-import {TreeTableModel} from './TreeTableModel'
 
 
 @Injectable({providedIn: 'root'})
@@ -22,9 +21,9 @@ export class TreeService {
     public timeTrackingService: TimeTrackingService /* just to ensure it subscribes for events before loadNodesTree */,
   ) { }
 
-  getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeTableModel {
+  getRootTreeModel(/* TODO: specify root node(s) ID(s) */): TreeModel<any> {
     // const componentThis = this
-    const treeModel = new TreeTableModel(this.injector, this.dbTreeService, this.authService, {
+    const treeModel = new TreeModel(this.injector, this.dbTreeService, this.authService, {
       onAfterNodeMoved() {
 
       }

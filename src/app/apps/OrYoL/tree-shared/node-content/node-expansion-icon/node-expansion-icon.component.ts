@@ -3,8 +3,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../../../tree-model/TreeModel'
 import { debugLog } from '../../../utils/log'
+import {ApfBaseTreeNode, RootTreeNode} from '../../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-node-expansion-icon',
@@ -13,7 +13,7 @@ import { debugLog } from '../../../utils/log'
 })
 export class NodeExpansionIconComponent implements OnInit {
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: RootTreeNode<any>
 
   constructor() { }
 

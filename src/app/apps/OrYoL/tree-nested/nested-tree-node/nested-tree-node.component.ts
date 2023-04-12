@@ -5,8 +5,8 @@ import {
 } from '@angular/core';
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { debugLog } from '../../utils/log'
-import {TreeTableModel} from '../../tree-model/TreeTableModel'
-import {RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfBaseTreeNode, OryBaseTreeNode, OryNonRootTreeNode, RootTreeNode} from '../../tree-model/RootTreeNode'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 
 @Component({
   selector: 'app-nested-tree-node',
@@ -20,11 +20,11 @@ export class NestedTreeNodeComponent implements OnInit {
   isVisualRoot: boolean = false
 
   @Input()
-  treeNode!: RootTreeNode
+  treeNode!: OryBaseTreeNode
 
   /* Hack to force new instance of component for input changes*/
   @Input()
-  treeNodeWrapperHack!: {wrapperHack: RootTreeNode}
+  treeNodeWrapperHack!: {wrapperHack: OryBaseTreeNode}
 
 
   @Input()
@@ -84,9 +84,9 @@ export class NestedTreeNodeComponent implements OnInit {
       this.isDragOver = false
       console.log('onDragDrop drop worked', draggedItemId !== this.itemId)
       $event.stopImmediatePropagation()
-      const droppedNodes = (this.treeNode.treeModel as TreeTableModel).getNodesByItemId(draggedItemId)
+      const droppedNodes: ApfBaseTreeNode[] = this.treeNode.treeModel.getNodesByItemId(draggedItemId)
       // const nodes = this.clipboardService.nodesInClipboard
-      this.treeNode.moveInclusionsHere(droppedNodes, {beforeNode: undefined}) // TODO: order
+      this.treeNode.moveInclusionsHere(droppedNodes as OryNonRootTreeNode[], {beforeNode: undefined}) // TODO: order
       // console.log(`droppedNode`, droppedNode)
     }
 

@@ -10,7 +10,7 @@ import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
 export class PrimeNgTreeComponent implements OnInit {
 
   @Input()
-  treeModel!: TreeModel
+  treeModel!: TreeModel<any>
 
   @Input()
   treeHost!: TreeHostComponent

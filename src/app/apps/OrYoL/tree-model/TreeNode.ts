@@ -1,5 +1,3 @@
-import {TreeNode} from 'primeng/api'
-import {HasItemData} from './has-item-data'
 import {TreeNodeInclusion$P} from './TreeNodeInclusion$P'
 import {EventEmitter, Injector} from '@angular/core'
 import {NodeInclusion} from './TreeListener'
@@ -12,26 +10,21 @@ import {NodeOrderInfo} from './node-orderer'
 import {sumRecursivelyIncludingRoot, sumRecursivelyJustChildren} from '../utils/collection-utils'
 
 /** ======================================================================================= */
-export class OryTreeNode<
-  TData extends {
-    title: string,
-    isDone?: boolean,
-  } = any,
-  TNodeContent extends TreeTableNodeContent<TData> = TreeTableNodeContent<any>,
+export class ApfNonRootTreeNode<
+  TNodeContent extends TreeTableNodeContent = TreeTableNodeContent,
   /** lowest-common type of nodes (can include root) */
-  TBaseNode extends OryTreeNode<any> = OryTreeNode<any>,
-  TBaseNonRootNode extends TBaseNode = TBaseNode, /* maybe this should be right after TBaseNode */
+  TBaseNode extends RootTreeNode<TNodeContent> = RootTreeNode<TNodeContent>,
+  TBaseNonRootNode extends TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode> = TBaseNode & ApfNonRootTreeNode<TNodeContent, TBaseNode, any>, /* maybe this should be right after TBaseNode */
   TSiblingNode extends TBaseNonRootNode = TBaseNonRootNode,
   TAncestorNode extends TBaseNode = TBaseNode,
   // TParentNode extends TAncestorNode & OryTreeNode<TBaseNode, TBaseNonRootNode, TBaseNode, TBaseNode, TAncestorNode> = TAncestorNode,
   TParentNode extends TAncestorNode = TAncestorNode,
   TChildNode extends TBaseNonRootNode = TBaseNonRootNode,
 > extends RootTreeNode<
+  TNodeContent,
   TBaseNode,
   TBaseNonRootNode,
-  TChildNode,
-  TData,
-  TNodeContent
+  TChildNode
 >
 {
 
@@ -49,16 +42,16 @@ export class OryTreeNode<
     content: TNodeContent,
     public nodeInclusion: NodeInclusion | undefined | null,
     itemId: ItemId,
-    treeModel: TreeModel,
-    itemData: TData | null,
+    treeModel: TreeModel<TNodeContent, TBaseNode, any, TBaseNonRootNode>,
+    // itemData: TData | null,
     // public item$: TItem$,
   ) {
-    super(injector, treeModel, itemId, itemData)
+    super(injector, treeModel, itemId, content)
   }
 
   /** TODO: addSiblingOrChild (for enter press on root / visual root) */
-  addSiblingAfterThis(newNode?: TBaseNonRootNode) {
-    return this.parent2!.addChild(this, newNode)
+  addSiblingAfterThis(newNode?: TBaseNonRootNode): TBaseNonRootNode {
+    return this.parent2!.addChild(this, newNode) as TBaseNonRootNode
   }
 
   reorderUp() {

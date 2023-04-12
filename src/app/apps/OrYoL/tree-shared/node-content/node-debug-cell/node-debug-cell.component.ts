@@ -3,7 +3,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../../../tree-model/TreeModel'
+import {ApfNonRootTreeNode} from '../../../tree-model/TreeNode'
+import {OryBaseTreeNode} from '../../../tree-model/RootTreeNode'
 
 export class NodeDebug {
   countApplyItemDataValuesToViews = 0
@@ -16,7 +17,11 @@ export class NodeDebug {
 })
 export class NodeDebugCellComponent implements OnInit {
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: OryBaseTreeNode
+
+  get treeNodeNonRoot() {
+    return this.treeNode as any as ApfNonRootTreeNode
+  }
 
   @Input() nodeDebug!: NodeDebug
 

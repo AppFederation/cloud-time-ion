@@ -3,7 +3,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { OryTreeNode } from '../../tree-model/TreeModel'
 import { TreeHostComponent } from '../../tree-host/tree-host/tree-host.component'
 import { DialogService } from '../../core/dialog.service'
 import { DbTreeService } from '../../tree-model/db-tree-service'
@@ -17,6 +16,8 @@ import { Router } from '@angular/router'
 import { ClipboardService } from '../../core/clipboard.service'
 import {PopoverController} from '@ionic/angular'
 import {INodeContentComponent} from '../node-content/INodeContentComponent'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
+import {OryBaseTreeNode} from '../../tree-model/RootTreeNode'
 
 @Component({
   selector: 'app-tree-node-menu',
@@ -25,7 +26,7 @@ import {INodeContentComponent} from '../node-content/INodeContentComponent'
 })
 export class TreeNodeMenuComponent implements OnInit {
 
-  @Input() treeNode!: OryTreeNode
+  @Input() treeNode!: OryBaseTreeNode
 
   @Input() treeHost!: TreeHostComponent
 
@@ -78,15 +79,15 @@ export class TreeNodeMenuComponent implements OnInit {
   }
 
   pasteCopyHereFromClipboard() {
-    this.treeNode.addAssociationsHere(this.clipboardService.nodesInClipboard, undefined)
+    this.treeNode.addAssociationsHere(this.clipboardService.nodesInClipboard as any, undefined)
   }
 
   pasteMoveHereFromClipboard() {
-    this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard, {beforeNode: undefined})
+    this.treeNode.moveInclusionsHere(this.clipboardService.nodesInClipboard as any, {beforeNode: undefined})
   }
 
   getWhenCreated() {
-    let whenCreated = this.treeNode.itemData.whenCreated
+    let whenCreated = this.treeNode.content.itemData.whenCreated
     if ( whenCreated ) {
       whenCreated = whenCreated.toDate() // TODO: move this to FirestoreTimeStamper::onAfterLoadFromDb
     }
