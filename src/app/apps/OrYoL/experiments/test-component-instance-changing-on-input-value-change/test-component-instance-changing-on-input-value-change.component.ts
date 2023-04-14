@@ -6,6 +6,7 @@ import {
 
 
 import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
+import {OryBaseTreeNode} from '../../tree-model/TreeModel'
 
 @Component({
   selector: 'app-test-component-instance-changing-on-input-value-change',
@@ -14,7 +15,7 @@ import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 })
 export class TestComponentInstanceChangingOnInputValueChangeComponent implements OnInit {
 
-  @Input() readonly treeNode: OryTreeNode
+  @Input() readonly treeNode: OryBaseTreeNode
 
   whenCreated = new Date()
 

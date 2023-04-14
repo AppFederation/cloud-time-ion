@@ -154,11 +154,13 @@ export class TimeTrackedEntry /* extends OverlayOdmItem$ */ {
     // this.ttData = ttData
   }
 
-  startOrResumeTrackingIfNeeded() {
+  startOrResumeTrackingIfNeeded(opts?: { inParallel: boolean}) {
     if (this.val?.isTrackingNow) {
       return
     }
-    this.timeTrackingService.pauseCurrentOrNoop()
+    if ( ! opts?.inParallel ) {
+      this.timeTrackingService.pauseCurrentOrNoop()
+    }
     // this.ttData.nowTrackingSince = this.now() // FIXME this.ttData might be undefined; ??= {} ?
     const dataItemPatch: TTPatch = {
       nowTrackingSince: this.now(), // FIXME duplicate with above ttdata.
@@ -179,7 +181,7 @@ export class TimeTrackedEntry /* extends OverlayOdmItem$ */ {
     }
     // this.ttData.whenCurrentPauseStarted = null as any as undefined /* FIXME */
     this.patchItemTimeTrackingData(dataItemPatch)
-    this.timeTrackingService.emitTimeTrackedEntry(this)
+    this.timeTrackingService.emitTimeTrackedEntry(this) // this should not be needed anymore - source of truth is the obs$
     this.currentPeriod = this.timeTrackingPeriodsService.onPeriodStart(this)
   }
 
@@ -212,7 +214,7 @@ export class TimeTrackedEntry /* extends OverlayOdmItem$ */ {
     }
     this.patchItemTimeTrackingData(dataItemPatch)
     this.clearTimeouts()
-    this.timeTrackingService.emitTimeTrackedEntry(this)
+    this.timeTrackingService.emitTimeTrackedEntry(this) // this should not be needed - source of truth should be obs$
     this.timeTrackingPeriodsService.onPeriodEnd(this)
     this.currentPeriod = undefined
   }

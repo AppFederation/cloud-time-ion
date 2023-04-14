@@ -68,7 +68,8 @@ export class TimeTrackingService {
 
   timeTrackedEntries$ = new CachedSubject<TimeTrackedEntry[]>()
 
-  get currentEntry() { return this.timeTrackedEntries$.lastVal }
+  /** undefined would mean in the future that no value has arrived yet */
+  get currentEntries(): TimeTrackedEntry[] | undefined { return this.timeTrackedEntries$.lastVal }
 
   // TODO: currentlyTrackingEntries$
   // TODO: currentlyTrackingAndMruEntries$
@@ -102,22 +103,23 @@ export class TimeTrackingService {
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
     this.dataItemsService.onItemAddedOrModified$.subscribe((addedOrModifiedDataItem: HasItemData<TimeTrackableItemData>) => {
-      console.log('dataItemsService.onItemAddedOrModified$.subscribe', addedOrModifiedDataItem)
       // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
       const itemData = addedOrModifiedDataItem.getItemData()
       const ttData: TimeTrackingPersistentData | undefined = itemData?.timeTrack
       if ( ttData?.nowTrackingSince &&
-          (ttData?.whenFirstStarted as any)?.toDate /* FIX for a string */ ) {
+          (ttData?.whenFirstStarted as any)?.toDate /* FIX for a string */
+      ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
         const timeTrackedEntry = this.obtainEntryForItem(addedOrModifiedDataItem as TimeTrackable /* HACK */)
+        console.log('dataItemsService.onItemAddedOrModified$.subscribe has nowTrackingSince', addedOrModifiedDataItem, ttData, timeTrackedEntry)
         timeTrackedEntry.updateFromTimeTrackData(ttData) // TODO check if this is needed
         this.emitTimeTrackedEntry(timeTrackedEntry)
       } else {
-        if ( this.currentEntry?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
+        if ( this.currentEntries?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
           console.log(`onItemAddedOrModified$.subscribe item was on list of time tracked entries`, addedOrModifiedDataItem)
           // this.currentEntry[0].
-          this.timeTrackedEntries$.nextWithCache(this.currentEntry) // keep in mind that Object.assign there
-          this.currentEntry.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
+          this.timeTrackedEntries$.nextWithCache(this.currentEntries) // keep in mind that Object.assign there
+          this.currentEntries.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
             ?.updateFromTimeTrackData?.(addedOrModifiedDataItem.getItemData().timeTrack)
           // this.timeTrackedEntries$.nextWithCache(this.currentEntry?.filter(entry =>
           //   entry.timeTrackable.getId() !== addedOrModifiedDataItem.getId())
@@ -133,9 +135,14 @@ export class TimeTrackingService {
   // }
 
   emitTimeTrackedEntry(entry: TimeTrackedEntry) {
+    let array = this.currentEntries || []
     console.log('emitTimeTrackedEntry', entry)
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
-    this.timeTrackedEntries$.nextWithCache([entry] /* hack to emulate multi-tracking */)
+    if ( ! this.currentEntries?.includes(entry) ) {
+      array = [...array, entry]
+    }
+    // this.timeTrackedEntries$.nextWithCache([entry] /* hack to emulate multi-tracking */)
+    this.timeTrackedEntries$.nextWithCache(array)
   }
 
   now() {
@@ -153,8 +160,8 @@ export class TimeTrackingService {
   }
 
   pauseCurrentOrNoop() {
-    if ( this.currentEntry /* FIxME this is array so will always be non-nullish, e.g. []; also could contain MRU items; mruAndCurrentlyTrackingEntries */ ) {
-      for ( let entryToPause of this.currentEntry ) {
+    if ( this.currentEntries /* FIxME this is array so will always be non-nullish, e.g. []; also could contain MRU items; mruAndCurrentlyTrackingEntries */ ) {
+      for ( let entryToPause of this.currentEntries ) {
         entryToPause.pauseOrNoop()
       }
     }

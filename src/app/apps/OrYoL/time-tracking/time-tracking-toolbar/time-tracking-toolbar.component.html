@@ -6,6 +6,7 @@
 <!--</ng-container>-->
 
 <app-time-tracking-cell
+  style="display: inline-flex"
   *ngFor="let entry of (timeTrackingService.timeTrackedEntries$ | async)"
   (click)="navigateTo(entry)"
   [timeTrackedEntry]="entry"

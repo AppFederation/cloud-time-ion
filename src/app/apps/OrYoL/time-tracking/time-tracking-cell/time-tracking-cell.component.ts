@@ -39,17 +39,29 @@ export class TimeTrackingCellComponent implements OnInit {
     // })
   }
 
+  // idea: long-press on pause would stop (and set done)
+
   onStopClicked() {
     // this.timeTrackingService.stopTimeTrackingOf()
   }
 
-  onPlayClicked($event: MouseEvent) {
+  onPlayClicked($event1: MouseEvent | Event, opts?: {inParallel: boolean}) {
+    const $event = $event1 as MouseEvent | { srcEvent: MouseEvent }
+    console.log(`onPlayClicked $event`, $event)
     Notification.requestPermission().then(ret => {
       console.log(`Notification.requestPermission .then`, ret)
     })
-    this.timeTrackedEntry.startOrResumeTrackingIfNeeded() // could be first start or unpause
-    $event.stopPropagation()
-    // this.timeTrackingService.resume()
+    this.timeTrackedEntry.startOrResumeTrackingIfNeeded(opts) // could be first start or unpause
+    if ( 'stopPropagation' in $event) {
+      $event.stopPropagation()
+    } else {
+      $event.srcEvent.stopPropagation()
+    }
+    if ( 'preventDefault' in $event ) {
+      $event.preventDefault()
+    } else {
+      $event.srcEvent.preventDefault()
+    }
   }
 
   onPauseClicked($event: MouseEvent) {
