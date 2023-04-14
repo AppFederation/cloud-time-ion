@@ -6,8 +6,8 @@
 <!--</ng-container>-->
 
 <app-time-tracking-cell
-  style="display: inline-flex"
-  *ngFor="let entry of (timeTrackingService.timeTrackedEntries$ | async)"
+  *ngFor="let entry of (timeTrackedEntries$ | async)"
+  [ngStyle]="{'display': 'inline-flex', 'opacity': entry.timeTrackable.itemData.isDone ? '50%' : '100%' }"
   (click)="navigateTo(entry)"
   [timeTrackedEntry]="entry"
   [toolBarMode]="true"

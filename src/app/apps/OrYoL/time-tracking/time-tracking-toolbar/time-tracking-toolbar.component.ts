@@ -8,6 +8,7 @@ import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
 
 import {DbTreeService} from '../../tree-model/db-tree-service'
 import {TimeTrackedEntry} from '../TimeTrackedEntry'
+import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 @Component({
   selector: 'app-time-tracking-toolbar',
@@ -15,6 +16,8 @@ import {TimeTrackedEntry} from '../TimeTrackedEntry'
   styleUrls: ['./time-tracking-toolbar.component.sass']
 })
 export class TimeTrackingToolbarComponent implements OnInit {
+
+  timeTrackedEntries$: CachedSubject<TimeTrackedEntry[]> = this.timeTrackingService.timeTrackedEntries$
 
   constructor(
     public timeTrackingService: TimeTrackingService,
