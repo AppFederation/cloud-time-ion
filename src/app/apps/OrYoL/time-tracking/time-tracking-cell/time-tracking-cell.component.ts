@@ -34,9 +34,9 @@ export class TimeTrackingCellComponent implements OnInit {
 
   ngOnInit() {
     this.timeTrackVal$ = this.timeTrackedEntry.timeTrackVal$
-    this.timeTrackVal$.subscribe(val => {
-      console.log(`this.timeTrackVal$.subscribe val`, val)
-    })
+    // this.timeTrackVal$.subscribe(val => {
+      // console.log(`this.timeTrackVal$.subscribe val`, val)
+    // })
   }
 
   onStopClicked() {

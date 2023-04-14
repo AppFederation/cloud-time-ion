@@ -1,1 +1,1 @@
-export type TimeDuration = number // FIXME
+export type TimeMsDuration = number // FIXME

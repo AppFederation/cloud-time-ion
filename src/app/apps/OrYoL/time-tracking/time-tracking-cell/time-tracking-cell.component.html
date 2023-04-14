@@ -42,6 +42,10 @@
     [isCountDown]="false"
   ></app-time-passing>
 
+  <span style="margin-left: 0.5em; margin-right: 4px" *ngIf="toolBarMode">
+    {{(timeTrackedEntry.timeTrackable.data$ | async) ?. title?.substring(0, 20)}}
+  </span>
+
   <ng-container
     *ngIf="debugService.isDebug$.lastVal"
   >
