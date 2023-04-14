@@ -114,19 +114,26 @@ export class TimeTrackingService {
         console.log('dataItemsService.onItemAddedOrModified$.subscribe has nowTrackingSince', addedOrModifiedDataItem, ttData, timeTrackedEntry)
         timeTrackedEntry.updateFromTimeTrackData(ttData) // TODO check if this is needed
         this.emitTimeTrackedEntry(timeTrackedEntry)
+
       } else {
-        if ( this.currentEntries?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
+        // if ( this.currentEntries?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
+        const timeTrackedEntry = this.currentEntries?.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
+        if ( timeTrackedEntry) {
           console.log(`onItemAddedOrModified$.subscribe item was on list of time tracked entries`, addedOrModifiedDataItem)
           // this.currentEntry[0].
-          this.timeTrackedEntries$.nextWithCache(this.currentEntries) // keep in mind that Object.assign there
-          this.currentEntries.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
-            ?.updateFromTimeTrackData?.(addedOrModifiedDataItem.getItemData().timeTrack)
+          // this.timeTrackedEntries$.nextWithCache(this.currentEntries) // keep in mind that Object.assign there
+            if ( ttData ) {
+              timeTrackedEntry.updateFromTimeTrackData(ttData) // TODO check if this is needed
+            }
+            // timeTrackedEntry.updateFromTimeTrackData?.(addedOrModifiedDataItem.getItemData().timeTrack)
+            this.emitTimeTrackedEntry(timeTrackedEntry)
+          // }
           // this.timeTrackedEntries$.nextWithCache(this.currentEntry?.filter(entry =>
           //   entry.timeTrackable.getId() !== addedOrModifiedDataItem.getId())
           // ) // TODO maybe do not remove, coz might be paused and useful to still see previous item
         }
-
       }// TODO: else check if it was previously tracked, and remove from current entries
+
     })
   }
 
@@ -135,14 +142,36 @@ export class TimeTrackingService {
   // }
 
   emitTimeTrackedEntry(entry: TimeTrackedEntry) {
-    let array = this.currentEntries || []
-    console.log('emitTimeTrackedEntry', entry)
+    let newEntriesArr = this.currentEntries || []
     // this.timeTrackingOf$.next(entry && entry.timeTrackable)
     if ( ! this.currentEntries?.includes(entry) ) {
-      array = [...array, entry]
+      newEntriesArr = [...newEntriesArr, entry]
     }
+
+    // if (
+    //   && isDone
+    //   && newEntriesArr.length > 1
+    // ) {
+    //   console.log('removing tt entry from array')
+    // }
+
+    if ( newEntriesArr.length > 1 ) {
+      newEntriesArr = newEntriesArr.filter(e => {
+        const isDone = e.timeTrackable.data$.lastVal?.isDone
+        return e.val?.isTrackingNow || ! isDone
+        // TODO: could make it so that all paused not-done items would still stay here
+        /*
+          if not tracking, and is done, we can remove it.
+          in the future, I could leave the last such item for MRU sake
+          or better, MRU should be a drop-down of history of tracked items
+        */
+      })
+    }
+    // console.log('emitTimeTrackedEntry', entry, newEntriesArr, `isDone`, isDone)
+
     // this.timeTrackedEntries$.nextWithCache([entry] /* hack to emulate multi-tracking */)
-    this.timeTrackedEntries$.nextWithCache(array)
+    // FIXME: ensure ALWAYS (not just for just-modified item) max 1 done not-currently-tracking item; sort by whenLastTouched
+    this.timeTrackedEntries$.nextWithCache(newEntriesArr)
   }
 
   now() {
