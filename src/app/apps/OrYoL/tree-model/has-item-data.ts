@@ -2,15 +2,16 @@ import {ItemId} from '../db/OryItem$'
 
 export type ItemData = any /* FIXME unify with ODM */
 
-export interface HasItemData {
+export interface HasItemData<TJsVal> {
 
   getItemData(): ItemData | undefined
 
   getId(): ItemId
 }
 
-export interface HasPatchThrottled extends HasItemData {
+/** This is super close to be OdmItem$ */
+export interface HasPatchThrottled<TJsVal> extends HasItemData<TJsVal> {
 
-  patchThrottled(patch: ItemData): void
+  patchThrottled(patch: Partial<ItemData>): void
 
 }

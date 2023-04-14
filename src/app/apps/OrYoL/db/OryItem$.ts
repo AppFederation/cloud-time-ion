@@ -15,6 +15,13 @@ export type ItemId = string //& { type: 'ItemId' }
 
 export type NodeInclusionId = string //& { type: 'NodeInclusionId' }
 
+export type DomainItem$ = any
+
+export type DomainItemCtor = new (
+  injector: Injector,
+  item$: OryItem$,
+) => DomainItem$
+
 /** NOTE: this is probably similar to OdmItem$ (or its "can-change-type-at-runtime" variant GenericItem$)
  * thus candidate for merging
  *
@@ -34,12 +41,14 @@ export type NodeInclusionId = string //& { type: 'NodeInclusionId' }
  * - - in that sense TreeTableContent could become also to mean children (vertically) as content (not just cells - horizontally)
  *
  * */
-export class OryItem$<TData = any> implements HasPatchThrottled {
+export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
 
   itemsService = this.injector.get(OryItemsService)
 
   /** FIXME this is only needed for patchItemData; should be moved */
   treeService = this.injector.get(FirestoreTreeService)
+
+  private mapCtorToDomainItem = new Map<DomainItemCtor, DomainItem$>()
 
   constructor(
     public injector: Injector,
@@ -131,11 +140,8 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
    * Note this is not throttled and bypasses incoming self-change protection */
   patchItemDataUnthrottled(itemDataPatch: any /* TData */): { onPatchSentToRemote: Promise<void> } {
     // TODO this should use odmitem$
-    Object.assign(this.itemData, itemDataPatch)
     let ret = this.treeService.patchItemData(this.id, itemDataPatch)
     // TODO: fireOnChangeItemDataOfChildOnParents ?
-    this.itemsService.onItemWithDataPatchedByUserLocally$.next([this, itemDataPatch]) // NOTE this is throttled
-    this.data$.next(this.itemData !) // FIXME this should be replaced with OdmItemData
     return ret
     // this.itemData$.next()
   }
@@ -143,6 +149,8 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
 
 
   patchThrottled(patch: any) {
+    Object.assign(this.itemData, patch)
+
     this.pendingThrottledItemDataPatch = {
       ... this.pendingThrottledItemDataPatch,
       ... patch,
@@ -156,6 +164,9 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
       // console.log('outside of promise this.unsavedChangesPromiseResolveFunc = resolve', this.unsavedChangesPromiseResolveFunc)
       this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
+    this.itemsService.onItemWithDataPatchedByUserLocally$.next([this, patch]) // NOTE this is throttled
+    this.data$.next(this.itemData !) // FIXME this should be replaced with OdmItemData
+
     this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
   }
 
@@ -172,5 +183,15 @@ export class OryItem$<TData = any> implements HasPatchThrottled {
     if ( itemData ) {
       this.data$.nextWithCache(itemData)
     }
+  }
+
+  /** type MyClassInstance = InstanceType<typeof MyClass>; */
+  obtainDomainItem<TCtor extends DomainItemCtor>(ctor: TCtor): InstanceType<TCtor> {
+    let ret = this.mapCtorToDomainItem.get(ctor)
+    if ( !ret ) {
+      ret = new ctor(this.injector, this)
+      this.mapCtorToDomainItem.set(ctor, ret)
+    }
+    return ret
   }
 }

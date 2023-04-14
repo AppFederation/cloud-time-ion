@@ -209,12 +209,13 @@ export class TreeModel<
           // setTimeout(() => {
           //   setTimeout(() => {
           // setTimeout to avoid "ExpressionChangedAfterItHasBeenCheckedError" in NodeContentComponent.html
-          existingNode.content.dbItem.onDataArrivedFromRemote(event.itemData)
+          const dbItem = existingNode.content.dbItem
+          dbItem.onDataArrivedFromRemote(event.itemData)
           traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.content.itemData)
 
           existingNode.onChangeItemData.emit(event.itemData) // FIXME fire new DataItemsService onItemAddedOrModified$, outside of the if statement
           existingNode.fireOnChangeItemDataOfChildOnParents()
-          this.dataItemsService.onItemAddedOrModified$.next(existingNode.content.dbItem)
+          this.dataItemsService.onItemAddedOrModified$.next(dbItem)
           // TODO: unify with the else branch and emit onChangeItemData* stars there too
           // })
           // }, 0)
@@ -237,7 +238,7 @@ export class TreeModel<
               parentNode._appendChildAndSetThisAsParent(newTreeNode as any, insertBeforeIndex)
               this.dataItemsService.onItemWithDataAdded$.next(newTreeNode.content.dbItem) //newTreeNode as any as TreeTableNode /* HACK */)
               this.dataItemsService.onItemAddedOrModified$.next(newTreeNode.content.dbItem)
-              console.log('onItemWithDataAdded$.next(newTreeNode)', event)
+              // console.log('onItemWithDataAdded$.next(newTreeNode)', event)
             }
           }
         }

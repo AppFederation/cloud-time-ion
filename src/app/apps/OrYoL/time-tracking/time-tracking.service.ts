@@ -1,12 +1,19 @@
 import {Injectable} from '@angular/core';
 import {TimeService} from '../core/time.service'
-import {HasItemData, HasPatchThrottled} from '../tree-model/has-item-data'
+import {HasItemData} from '../tree-model/has-item-data'
 import {OryItemsService} from '../core/ory-items.service'
 import {TimeTrackingPeriod, TimeTrackingPeriodsService} from './time-tracking-periods.service'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {TimeTrackedEntry} from './TimeTrackedEntry'
+import {OryItem$} from '../db/OryItem$'
+import {TimeTrackingPersistentData} from './TimeTrackingPersistentData'
 
-export type TimeTrackable = HasPatchThrottled
+
+export interface TimeTrackableItemData {
+  timeTrack?: TimeTrackingPersistentData
+}
+
+export type TimeTrackable = OryItem$ //= HasPatchThrottled<TimeTrackableItemData>
 
 export function date(obj: any) {
   if ( ! obj ) {
@@ -18,22 +25,10 @@ export function date(obj: any) {
   return obj
 }
 
-export class TimeTrackingPersistentData {
-  whenFirstStarted?: Date
-
-  // ==== tracking periods:
-  previousTrackingsMs? : number
-
-  nowTrackingSince: Date | null = null
-
-  // ==== tracking pause periods:
-  previousPausesMs? : number
-
-  /* could rename to nowPausedSince for consistency and much shorter */
-  whenCurrentPauseStarted?: Date
+export type TTPatch = Partial<TimeTrackingPersistentData> & {
+  // /** whenLastTouched is mandatory for all operations */
+  // whenLastTouched: Date | null
 }
-
-export type TTPatch = Partial<TimeTrackingPersistentData>
 
 export class TTFirstStartPatch implements TTPatch {
   nowTrackingSince = this.whenFirstStarted
@@ -51,8 +46,8 @@ export class TTResumePatch implements TTPatch {
 export class TTPausePatch implements TTPatch {
   previousTrackingsMs! : number
   /** TODO: rename to whenCurrentTrackingStarted ? */
-  nowTrackingSince = null as any as undefined /* FIXME */
-  whenCurrentPauseStarted ! : Date
+  nowTrackingSince = null // as any as undefined /* FIXME */
+  whenCurrentPauseStarted ! : Date // TODO use this to still show it on toolbar
 }
 
 /** ================================================================================================ */
@@ -61,7 +56,7 @@ export class TimeTrackingService {
 
   private static _the: TimeTrackingService
 
-  private mapItemToEntry = new Map<TimeTrackable, TimeTrackedEntry>()
+  // private mapItemToEntry = new Map<TimeTrackable, TimeTrackedEntry>()
 
   // static get the() {
   //   // console.log('TimeTrackingService the()')
@@ -74,6 +69,9 @@ export class TimeTrackingService {
   timeTrackedEntries$ = new CachedSubject<TimeTrackedEntry[]>()
 
   get currentEntry() { return this.timeTrackedEntries$.lastVal }
+
+  // TODO: currentlyTrackingEntries$
+  // TODO: currentlyTrackingAndMruEntries$
 
   constructor(
     public timeService: TimeService,
@@ -93,26 +91,40 @@ export class TimeTrackingService {
     }
 
     // pause tracking of items which are done:
-    this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData, any]) => {
-      if ( event[1].isDone /* truthy is enough; because it could be also timestamp */ ) {
+    this.dataItemsService.onItemWithDataPatchedByUserLocally$.subscribe((event: [HasItemData<TimeTrackableItemData>, any]) => {
+      const patch = event[1]
+      if ( patch.isDone /* truthy is enough; because it could be also timestamp */ ) {
         // console.log('TimeTrackingService onItemWithDataPatchedByUserLocally$', event[1].isDone)
-        const eventElement: HasItemData = event[0]
+        const eventElement: HasItemData<TimeTrackableItemData> = event[0]
         this.pauseOrNoop(eventElement as TimeTrackable /* HACK */)
       }
     })
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
-    this.dataItemsService.onItemAddedOrModified$.subscribe((dataItem: HasItemData) => {
-      console.log('dataItemsService.onItemAddedOrModified$.subscribe', dataItem)
+    this.dataItemsService.onItemAddedOrModified$.subscribe((addedOrModifiedDataItem: HasItemData<TimeTrackableItemData>) => {
+      console.log('dataItemsService.onItemAddedOrModified$.subscribe', addedOrModifiedDataItem)
       // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
-      const itemData = dataItem.getItemData()
+      const itemData = addedOrModifiedDataItem.getItemData()
       const ttData: TimeTrackingPersistentData | undefined = itemData?.timeTrack
       if ( ttData?.nowTrackingSince &&
-          (ttData?.whenFirstStarted as any).toDate /* FIX for a string */ ) {
+          (ttData?.whenFirstStarted as any)?.toDate /* FIX for a string */ ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
-        const timeTrackedEntry = this.obtainEntryForItem(dataItem as TimeTrackable /* HACK */)
+        const timeTrackedEntry = this.obtainEntryForItem(addedOrModifiedDataItem as TimeTrackable /* HACK */)
+        timeTrackedEntry.updateFromTimeTrackData(ttData) // TODO check if this is needed
         this.emitTimeTrackedEntry(timeTrackedEntry)
-      } // TODO: else check if it was previously tracked, and remove from current entries
+      } else {
+        if ( this.currentEntry?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
+          console.log(`onItemAddedOrModified$.subscribe item was on list of time tracked entries`, addedOrModifiedDataItem)
+          // this.currentEntry[0].
+          this.timeTrackedEntries$.nextWithCache(this.currentEntry) // keep in mind that Object.assign there
+          this.currentEntry.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
+            ?.updateFromTimeTrackData?.(addedOrModifiedDataItem.getItemData().timeTrack)
+          // this.timeTrackedEntries$.nextWithCache(this.currentEntry?.filter(entry =>
+          //   entry.timeTrackable.getId() !== addedOrModifiedDataItem.getId())
+          // ) // TODO maybe do not remove, coz might be paused and useful to still see previous item
+        }
+
+      }// TODO: else check if it was previously tracked, and remove from current entries
     })
   }
 
@@ -131,16 +143,17 @@ export class TimeTrackingService {
   }
 
   public obtainEntryForItem(timeTrackedItem: TimeTrackable): TimeTrackedEntry {
-    let entry = this.mapItemToEntry.get(timeTrackedItem)
-    if ( ! entry ) {
-      entry = new TimeTrackedEntry(this, this.timeTrackingPeriodsService, timeTrackedItem)
-      this.mapItemToEntry.set(timeTrackedItem, entry)
-    }
-    return entry
+    return timeTrackedItem.obtainDomainItem(TimeTrackedEntry)
+    // let entry = this.mapItemToEntry.get(timeTrackedItem)
+    // if ( ! entry ) {
+    //   entry = new TimeTrackedEntry(this., timeTrackedItem)
+    //   this.mapItemToEntry.set(timeTrackedItem, entry)
+    // }
+    // return entry
   }
 
   pauseCurrentOrNoop() {
-    if ( this.currentEntry ) {
+    if ( this.currentEntry /* FIxME this is array so will always be non-nullish, e.g. []; also could contain MRU items; mruAndCurrentlyTrackingEntries */ ) {
       for ( let entryToPause of this.currentEntry ) {
         entryToPause.pauseOrNoop()
       }

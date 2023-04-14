@@ -1,9 +1,11 @@
 <div
   style="display: flex; align-items: center; cursor: pointer; border-radius: 3px; padding: 1px; margin-right: 2px;"
-  [ngClass]="{timeTrackingNow: timeTrackedEntry.isTrackingNow}"
+  [ngClass]="{timeTrackingNow: (timeTrackVal$ | async)?.isTrackingNow}"
 >
 
-  <i *ngIf="timeTrackedEntry.isTrackingNow"
+  <!--  val json: {{(timeTrackVal$ | async) | json}}-->
+
+  <i *ngIf="(timeTrackVal$ | async)?.isTrackingNow"
      style="vertical-align: middle; color: var(--ion-color-primary-contrast)"
      class="material-icons actionable startPauseIcon"
      (click)="onPauseClicked($event)"
@@ -11,7 +13,7 @@
     pause
   </i>
 
-  <i *ngIf="! timeTrackedEntry.isTrackingNow"
+  <i *ngIf="! (timeTrackVal$ | async)?.isTrackingNow"
      style="vertical-align: middle"
      class="material-icons actionable"
      (click)="onPlayClicked($event)"
@@ -31,8 +33,11 @@
 
   <app-time-passing
     style="margin-left: 4px; margin-right: -2px"
-    *ngIf="(((config$ | async)?.showTimeTrackedValue || toolBarMode ) && timeTrackedEntry.wasTracked) || timeTrackedEntry.isTrackingNow"
-    [referenceTime]="timeTrackedEntry.whenFirstStarted"
+    *ngIf="
+        (((config$ | async)?.showTimeTrackedValue || toolBarMode )
+        && (timeTrackVal$ | async)?.wasTracked)
+        || (timeTrackVal$ | async)?.isTrackingNow"
+    [referenceTime]="(timeTrackVal$ | async)?.whenFirstStarted"
     [pausableEntry]="timeTrackedEntry"
     [isCountDown]="false"
   ></app-time-passing>
@@ -40,9 +45,9 @@
   <ng-container
     *ngIf="debugService.isDebug$.lastVal"
   >
-    tt entry: {{timeTrackedEntry.isTrackingNow | json}}
-    tt start: {{timeTrackedEntry.whenFirstStarted | json}}
-    tt: {{timeTrackedEntry.timeTrackable.getItemData()?.timeTrack | json}}
+    tt entry: {{(timeTrackVal$ | async)?.isTrackingNow | json}}
+    tt start: {{(timeTrackVal$ | async)?.whenFirstStarted | json}}
+    tt json: {{(timeTrackVal$ | async) | json}}
   </ng-container>
 
 </div>

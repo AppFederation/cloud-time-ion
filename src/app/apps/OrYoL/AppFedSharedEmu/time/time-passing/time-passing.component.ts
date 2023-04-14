@@ -32,6 +32,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
   }
 
   private update() {
+    // console.log(`time-passing update`, this)
     if ( ! this.referenceTime ) {
       return
     }
@@ -43,6 +44,7 @@ export class TimePassingComponent implements OnInit, OnDestroy {
     }
     if ( this.pausableEntry ) {
       this.msDiff = this.pausableEntry.totalMsExcludingPauses
+      // console.log(`this.msDiff`, this.msDiff, this.pausableEntry)
     }
     // this.changeDetectorRef.detectChanges()
     this.changeDetectorRef.markForCheck()

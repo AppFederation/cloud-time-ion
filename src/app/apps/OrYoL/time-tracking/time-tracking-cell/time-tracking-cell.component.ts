@@ -3,13 +3,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {
-  TimeTrackingService,
-} from '../time-tracking.service'
 import { DebugService } from '../../core/debug.service'
-import { ConfigService } from '../../core/config.service'
-import { TimeTrackingPeriodsService } from '../time-tracking-periods.service'
-import {TimeTrackedEntry} from '../TimeTrackedEntry'
+import {Config, ConfigService} from '../../core/config.service'
+import {TimeTrackedEntry, TimeTrackingJsObjVal} from '../TimeTrackedEntry'
+import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 
 @Component({
   selector: 'app-time-tracking-cell',
@@ -24,15 +21,22 @@ export class TimeTrackingCellComponent implements OnInit {
 
   @Input() toolBarMode!: boolean
 
-  config$ = this.configService.config$
+  config$: CachedSubject<Config> = this.configService.config$
+
+  public timeTrackVal$!: CachedSubject<TimeTrackingJsObjVal | undefined>
 
   constructor(
     public configService: ConfigService,
-    public timeTrackingServiceOff: TimeTrackingService,
     public debugService: DebugService,
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
+    this.timeTrackVal$ = this.timeTrackedEntry.timeTrackVal$
+    this.timeTrackVal$.subscribe(val => {
+      console.log(`this.timeTrackVal$.subscribe val`, val)
+    })
   }
 
   onStopClicked() {

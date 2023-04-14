@@ -12,6 +12,7 @@ import {TreeTableNodeContent} from '../tree-model/TreeTableNodeContent'
 import {OryItem$} from '../db/OryItem$'
 import {TimeTrackedEntry} from '../time-tracking/TimeTrackedEntry'
 
+/** Tracking progress in the plan, and notifying user about exceeding / approaching estimated/allocated time amounts of tasks. */
 @Injectable({
   providedIn: 'root'
 })

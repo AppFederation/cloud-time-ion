@@ -77,7 +77,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   cells!: Cells
 
-  /* TODO: remove */
+  /* TODO: remove or getter redirect to val */
   isDone: Date | boolean /* for backwards compatibility */ | null = null
 
   nodeContentViewSyncer!: NodeContentViewSyncer
@@ -209,13 +209,13 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // -> (1 back) being tracked, not done
 
     // TODO: move to global command handler? but under new name not toggleDone
-    if ( timeTrackedEntry.isTrackingNow ) {
+    if ( timeTrackedEntry.val?.isTrackingNow ) {
       timeTrackedEntry.pauseOrNoop() // -- this is automatically executed at TT service level, but TT UI reacts with delay
       this.setDone(true) // FIXME this is prolly patching second time
       // timeTrackedEntry.pauseOrNoop()
       this.focusNodeBelow(event)
     } else {
-      if ( this.isDone ) {
+      if ( this.isDone /* FIXME remove / getter redirect */ ) {
         this.setDone(false)
       } else {
         timeTrackedEntry.startOrResumeTrackingIfNeeded()

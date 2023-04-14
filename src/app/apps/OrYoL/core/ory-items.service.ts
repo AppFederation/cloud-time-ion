@@ -19,7 +19,7 @@ export class OryItemsService {
   // public readonly onItemWithDataModified = new Subject<HasItemData>()
   public readonly onItemAddedOrModified$ = new Subject<OryItem$>()
 
-  public readonly onItemWithDataPatchedByUserLocally$ = new Subject<[OryItem$, any]>()
+  public readonly onItemWithDataPatchedByUserLocally$ = new Subject<[OryItem$, any /* FIXME specify if this is patch or end value */]>()
 
   constructor() { }
 }

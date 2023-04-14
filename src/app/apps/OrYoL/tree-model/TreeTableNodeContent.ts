@@ -37,7 +37,7 @@ export class TreeTableNodeContent <
     isDone?: boolean,
   } = any,
   TTreeNode extends RootTreeNode<any> = RootTreeNode<any, any>,
-> implements HasItemData {
+> {
 
   // protected override createChildNode(nodeInclusion: NodeInclusion): TreeTableNode {
   //   return new TreeTableNode(this.injector, nodeInclusion, 'item_' + uuidv4(), this.treeModel, this.newItemData())
