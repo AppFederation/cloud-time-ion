@@ -213,7 +213,7 @@ export class TreeModel<
           dbItem.onDataArrivedFromRemote(event.itemData)
           traceLog('existingNode.onChangeItemData.emit(event.itemData)', existingNode, existingNode.content.itemData)
 
-          existingNode.onChangeItemData.emit(event.itemData) // FIXME fire new DataItemsService onItemAddedOrModified$, outside of the if statement
+          // existingNode.onChangeItemData.emit(event.itemData) // FIXME fire new DataItemsService onItemAddedOrModified$, outside of the if statement
           existingNode.fireOnChangeItemDataOfChildOnParents()
           this.dataItemsService.onItemAddedOrModified$.next(dbItem)
           // TODO: unify with the else branch and emit onChangeItemData* stars there too

@@ -123,6 +123,14 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   ngOnInit() {
     this.cells = this.columns.createColumnCells(this.treeNode) // consider rolling cells into OdmItem$. But prolly not, coz OdmItem$ is not thinking in terms of columns/table/treetable
+
+    this.nodeContentViewSyncer = new NodeContentViewSyncer(
+      this.injector,
+      this.treeNode,
+      this.columns,
+      this.mapColumnToComponent,
+    )
+
     // debugLog('ngOnInit', this.treeNode.nodeInclusion)
     // debugLog('ngOnInit NodeContentComponent', this.treeNode)
     this.treeHost.registerNodeComponent(this)
@@ -130,12 +138,17 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
       debugLog('onChangeItemDataOrChildHandler')
+      console.log('onChangeItemDataOrChildHandler')
       if ( ! this.isDestroyed ) {
         this.applyItemDataValuesToViews(false)
       }
     }
-    this.treeNode.onChangeItemData.subscribe(onChangeItemDataOrChildHandler)
-    this.treeNode.onChangeItemDataOfChild.subscribe(onChangeItemDataOrChildHandler)
+    this.treeNode.content.dbItem.data$.subscribe(onChangeItemDataOrChildHandler)
+    this.treeNode.onChangeItemDataOfChild.subscribe(() => {
+      if ( ! this.isDestroyed ) {
+        this.changeDetectorRef.detectChanges()
+      }
+    })
 
     this.treeNode.treeModel.focus.focus$.subscribe(() => {
       if (!this.isDestroyed) {
@@ -160,12 +173,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
   }
 
   ngAfterViewInit(): void {
-    this.nodeContentViewSyncer = new NodeContentViewSyncer(
-      this.injector,
-      this.treeNode,
-      this.columns,
-      this.mapColumnToComponent,
-    )
     this.applyItemDataValuesToViews(true /* force = true */)
 
     // focus if expecting to focus
@@ -180,6 +187,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   private focusNewlyCreatedNode(newTreeNode: ApfBaseTreeNode) {
     setTimeout(() => {
+      console.log(`focusNewlyCreatedNode`)
       this.treeHost.focusNode(newTreeNode)
     })
   }
@@ -305,7 +313,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 // >>>>>>> develop
     // note: the applying from UI to model&events could be throttleTime()-d to e.g. 100-200ms to not overwhelm when typing fast
     this.treeNode.fireOnChangeItemDataOfChildOnParents()
-    this.treeNode.onChangeItemData.emit()
+    // this.treeNode.onChangeItemData.emit()
     // TODO: investigating time recalculation
   }
 
@@ -387,7 +395,6 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
         this.onArrowRightOnRightMostCell()
       } else {
         this.focusColumnToTheRight()
-
       }
     }
   }

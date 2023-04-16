@@ -54,7 +54,6 @@ export class TreeTableNodeContent <
    2018-11-27 23:14 Increased from 1000 to 4000ms after problem with cursor position reset returned */
   public static readonly DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB = 3000
 
-  private readonly DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB = 7000
 
 
   whenLastEditedLocallyByColumn = new Map<OryColumn, Date>()
@@ -86,7 +85,7 @@ export class TreeTableNodeContent <
     /** FIXME this should be obtained from ItemsService */
     this.dbItem = this.treeNode.treeModel.obtainItemById(this.getId())
     // this.dbItem.itemData = this.itemData
-    this.dbItem.onDataArrivedFromRemote(this.initialItemData)
+    this.dbItem.onDataArrivedFromRemote(this.initialItemData) // FIXME this is wrong - does not have to be from remote - could be just node moved (reorder/indent)
   }
 
   getItemData() {
@@ -110,6 +109,7 @@ export class TreeTableNodeContent <
     /* &&!this.editedHere.get(column)*/
   }
 
+  /** FIXME move this into item$ */
   private canApplyDataToViewGivenColumnLastLocalEdit(column: OryColumn) {
     /* note, this should also take focus into account
      --> evolved to the when-last-edited idea */
@@ -120,7 +120,7 @@ export class TreeTableNodeContent <
       const timeNow = new Date().getTime() /* milliseconds since 1970/01/01 */ /* TODO should this use monotonic clock? https://caniuse.com/?search=performance.now */
       // can only apply incoming changes to view if at least N seconds passed since last local edit
       const msPassedSinceLastEditPerCol = timeNow - lastEditedByColumn.getTime()
-      return msPassedSinceLastEditPerCol > this.DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB
+      return msPassedSinceLastEditPerCol > OryItem$.DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB
     }
     /* idea for storing previous locally user-entered vals,
      * to ensure they don't "come back from the grave" if long delay of coming from DB */

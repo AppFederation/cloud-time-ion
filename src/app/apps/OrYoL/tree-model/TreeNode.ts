@@ -49,7 +49,7 @@ export class RootTreeNode<
 
   /** TODO: rename to itemData$ and use CachedSubject to get initial val too;
    * TODO: unify with DbItem.data$ */
-  onChangeItemData = new EventEmitter()
+  // onChangeItemData = new EventEmitter()
   onChangeItemDataOfChild = new EventEmitter()
 
   static INITIAL_TITLE = ''

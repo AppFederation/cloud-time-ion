@@ -43,12 +43,17 @@ export type DomainItemCtor = new (
  * */
 export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
 
+  public static readonly DELAY_MS_BETWEEN_LOCAL_EDIT_AND_APPLYING_FROM_DB = 7000
+
+
   itemsService = this.injector.get(OryItemsService)
 
   /** FIXME this is only needed for patchItemData; should be moved */
   treeService = this.injector.get(FirestoreTreeService)
 
   private mapCtorToDomainItem = new Map<DomainItemCtor, DomainItem$>()
+
+  private whenLastModifiedLocallyByUser?: Date
 
   constructor(
     public injector: Injector,
@@ -121,7 +126,7 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
       // debugLog('onInputChanged; isApplyingFromDbNow', this.treeModel.isApplyingFromDbNow)
       if (!this.itemsService.isApplyingFromDbNow) {
         // const itemData = this.buildItemDataFromUi()
-        const ret = this.patchItemDataUnthrottled(this.pendingThrottledItemDataPatch) // patching here
+        const ret = this.patchItemDataNonThrottled(this.pendingThrottledItemDataPatch) // patching here
         this.syncStatusService.handleSavingPromise(ret.onPatchSentToRemote, 'saving item to server')
         this.unsavedChangesPromiseResolveFunc!.call(undefined)
         this.unsavedChangesPromiseResolveFunc = undefined
@@ -138,7 +143,7 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
    * - will be replaced by OdmItem$::patchThrottled
    *
    * Note this is not throttled and bypasses incoming self-change protection */
-  patchItemDataUnthrottled(itemDataPatch: any /* TData */): { onPatchSentToRemote: Promise<void> } {
+  patchItemDataNonThrottled(itemDataPatch: any /* TData */): { onPatchSentToRemote: Promise<void> } {
     // TODO this should use odmitem$
     let ret = this.treeService.patchItemData(this.id, itemDataPatch)
     // TODO: fireOnChangeItemDataOfChildOnParents ?
@@ -149,6 +154,7 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
 
 
   patchThrottled(patch: any) {
+    this.whenLastModifiedLocallyByUser = new Date()
     Object.assign(this.itemData, patch)
 
     this.pendingThrottledItemDataPatch = {
@@ -181,7 +187,10 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
 
   onDataArrivedFromRemote(itemData: TData | undefined) {
     this.itemData = itemData
-    if ( itemData ) {
+    const lastLocMod = this.whenLastModifiedLocallyByUser?.getTime() ?? 0
+    const lastLocModMsAgo = Date.now() - lastLocMod // might wanna use monotonic clock
+    // console.log(`lastLocModMsAgo`, lastLocModMsAgo)
+    if ( itemData && lastLocModMsAgo > TreeTableNodeContent.DELAY_MS_THROTTLE_EDIT_PATCHES_TO_DB ) {
       this.data$.nextWithCache(itemData)
     }
   }

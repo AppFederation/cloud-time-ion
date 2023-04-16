@@ -29,7 +29,10 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
 
   @ViewChild('contentEditableEl', {static: true}) contentEditableEl!: ElementRef
 
+  public lastSetInputValue!: string
+
   constructor() {
+    console.log('ContenteditableCellComponent ctor')
     super()
   }
 
@@ -43,21 +46,32 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   }
 
   getInputValue(): string {
-    return this.contentEditableEl.nativeElement.innerHTML
+    const innerHTML = this.contentEditableEl.nativeElement.innerHTML
+    console.log(`ContenteditableCellComponent getInputValue: [[[${innerHTML}]]]`, `lastSetInputValue: [${this.lastSetInputValue}]`)
+    // return this.lastSetInputValue // FIXME this causes value to not get applied to contentEditable; hypothesis: maybe it gets applied before the HTML element is initialized?
+    return innerHTML
   }
 
   setInputValue(newValue: string) {
-    debugLog('contenteditable setInputValue', newValue)
+    this.lastSetInputValue = newValue
+    // debugLog('contenteditable setInputValue', newValue)
+    debugLog('ContenteditableCellComponent setInputValue', newValue)
+    console.log('ContenteditableCellComponent setInputValue', newValue)
     this.contentEditableEl.nativeElement.innerHTML = newValue
   }
 
   focus(options?: NodeFocusOptions | nullish) {
-    // console.log('ContenteditableCellComponent focus', options)
+    // const err = new Error();
+    // console.log('ContenteditableCellComponent focus', options, err.stack)
     setTimeout(() => {
-      this.contentEditableEl.nativeElement.focus()
-      setCaretOnContentEditable(
-        this.contentEditableEl.nativeElement, (options?.cursorPosition ?? -1) >= 0 /* simplification of start vs end*/
-      )
+      const nativeElement = this.contentEditableEl.nativeElement
+      if ( window.document.activeElement !== nativeElement ) {
+        // ^ check if it had focus, to prevent ruining text caret position
+        nativeElement.focus()
+        setCaretOnContentEditable(
+          nativeElement, (options?.cursorPosition ?? -1) >= 0 /* simplification of start vs end*/
+        )
+      }
     })
     // this.contentEditableEl.nativeElement.scrollIntoView()
   }

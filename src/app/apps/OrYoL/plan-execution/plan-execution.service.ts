@@ -71,7 +71,7 @@ export class PlanExecutionService {
       return
     }
     // const node = (ttEntry.timeTrackable as TreeTableNodeContent).treeNode
-    console.log(`subscribeForTtEntry`, `ttEntry`, ttEntry)
+    // console.log(`subscribeForTtEntry`, `ttEntry`, ttEntry)
     // const dbItem = node.content.dbItem
     const dbItem = ttEntry.timeTrackable as OryItem$
     // TODO: listen to changes of title?
