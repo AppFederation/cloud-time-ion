@@ -164,10 +164,11 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
       // console.log('outside of promise this.unsavedChangesPromiseResolveFunc = resolve', this.unsavedChangesPromiseResolveFunc)
       this.syncStatusService.handleUnsavedPromise(unsavedPromise) // using the crude placeholder func to piggy-back on the promise-based approach
     }
-    this.itemsService.onItemWithDataPatchedByUserLocally$.next([this, patch]) // NOTE this is throttled
     this.data$.next(this.itemData !) // FIXME this should be replaced with OdmItemData
 
     this.getEventEmitterOnChangePerColumn().emit('something') // FIXME make this cumulative patch, not per-column
+    this.itemsService.onItemWithDataPatchedByUserLocally$.next([this, patch]) // NOTE this is throttled
+    this.itemsService.onItemAddedOrModified$.next(this) // NOTE this is throttled
   }
 
   getItemData(): ItemData | undefined {
