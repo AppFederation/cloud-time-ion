@@ -138,7 +138,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
     // here also react to child nodes to recalculate sum
     const onChangeItemDataOrChildHandler = () => {
       debugLog('onChangeItemDataOrChildHandler')
-      console.log('onChangeItemDataOrChildHandler')
+      // console.log('onChangeItemDataOrChildHandler')
       if ( ! this.isDestroyed ) {
         this.applyItemDataValuesToViews(false)
       }

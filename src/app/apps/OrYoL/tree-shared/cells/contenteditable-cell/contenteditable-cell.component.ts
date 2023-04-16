@@ -32,7 +32,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
   public lastSetInputValue!: string
 
   constructor() {
-    console.log('ContenteditableCellComponent ctor')
+    // console.log('ContenteditableCellComponent ctor')
     super()
   }
 
@@ -47,7 +47,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
 
   getInputValue(): string {
     const innerHTML = this.contentEditableEl.nativeElement.innerHTML
-    console.log(`ContenteditableCellComponent getInputValue: [[[${innerHTML}]]]`, `lastSetInputValue: [${this.lastSetInputValue}]`)
+    // console.log(`ContenteditableCellComponent getInputValue: [[[${innerHTML}]]]`, `lastSetInputValue: [${this.lastSetInputValue}]`)
     // return this.lastSetInputValue // FIXME this causes value to not get applied to contentEditable; hypothesis: maybe it gets applied before the HTML element is initialized?
     return innerHTML
   }
@@ -56,7 +56,7 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
     this.lastSetInputValue = newValue
     // debugLog('contenteditable setInputValue', newValue)
     debugLog('ContenteditableCellComponent setInputValue', newValue)
-    console.log('ContenteditableCellComponent setInputValue', newValue)
+    // console.log('ContenteditableCellComponent setInputValue', newValue)
     this.contentEditableEl.nativeElement.innerHTML = newValue
   }
 

@@ -42,8 +42,8 @@ export class NodeContentViewSyncer {
         const origValue = component.getInputValue()
         if ( origValue !== newVal ) { /* TODO later consider non-primitive data types (objects) */
           if ( component instanceof ContenteditableCellComponent ) {
-            console.log(`ContenteditableCellComponent applyItemDataValuesToViews origValue !== newVal`,
-              `origValue:`, origValue, `newVal:`, newVal)
+            // console.log(`ContenteditableCellComponent applyItemDataValuesToViews origValue !== newVal`,
+            //   `origValue:`, origValue, `newVal:`, newVal)
           }
           component.setInputValue(newVal)
         }
