@@ -7,6 +7,7 @@ import { DebugService } from '../../core/debug.service'
 import {Config, ConfigService} from '../../core/config.service'
 import {TimeTrackedEntry, TimeTrackingJsObjVal} from '../TimeTrackedEntry'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
+import {stripHtml} from '../../../../libs/AppFedShared/utils/html-utils'
 
 @Component({
   selector: 'app-time-tracking-cell',
@@ -20,6 +21,12 @@ export class TimeTrackingCellComponent implements OnInit {
   @Input() timeTrackedEntry!: TimeTrackedEntry //  = new TimeTrackedEntry(this.timeTrackingServiceOff, null)
 
   @Input() toolBarMode!: boolean
+
+  getDisplayTitle(data: any) {
+    return stripHtml(
+      data?. title
+    )?. substring(0, 20)
+  }
 
   config$: CachedSubject<Config> = this.configService.config$
 
