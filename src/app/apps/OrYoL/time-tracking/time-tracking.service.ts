@@ -7,6 +7,8 @@ import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/Cac
 import {TimeTrackedEntry} from './TimeTrackedEntry'
 import {OryItem$} from '../db/OryItem$'
 import {TimeTrackingPersistentData} from './TimeTrackingPersistentData'
+import {map} from 'rxjs/operators'
+import {maxBy} from 'lodash-es'
 
 
 export interface TimeTrackableItemData {
@@ -15,7 +17,7 @@ export interface TimeTrackableItemData {
 
 export type TimeTrackable = OryItem$ //= HasPatchThrottled<TimeTrackableItemData>
 
-export function date(obj: any) {
+export function date(obj: any): Date | null {
   if ( ! obj ) {
     return null
   }
@@ -68,6 +70,34 @@ export class TimeTrackingService {
 
   timeTrackedEntries$ = new CachedSubject<TimeTrackedEntry[]>()
 
+  toolbarEntries$ = this.timeTrackedEntries$.pipe(
+    map((entries: TimeTrackedEntry[]) => {
+      // console.log('toolbarEntries$ entries', entries)
+
+      const opts = {
+        showLastPausedItemIfNoItemCurrentlyTracking: true
+      }
+
+      // TODO if not more than 1 item nowTrackingSince  :
+      // 1 MRU paused
+      // --- if not more than 1 item:
+      // 1 MRU DONE item
+      const retEntries = entries.filter(entry => !! entry.nowTrackingSince)
+
+      // console.log(`toolbarEntries$ lastPaused`, lastPaused)
+      if ( retEntries.length < 1 ) {
+        if ( opts.showLastPausedItemIfNoItemCurrentlyTracking ) {
+          const lastPaused = maxBy(entries, (e: TimeTrackedEntry) => date(e.whenCurrentPauseStarted)?.getTime())
+          if ( lastPaused ) {
+            retEntries.push(lastPaused)
+          }
+        }
+      }
+
+      return retEntries
+    })
+  )
+
   /** undefined would mean in the future that no value has arrived yet */
   get currentEntries(): TimeTrackedEntry[] | undefined { return this.timeTrackedEntries$.lastVal }
 
@@ -103,21 +133,27 @@ export class TimeTrackingService {
 
     // detect item being tracked when loading from DB: (probably this is not needed anymore since we query periods)
     this.dataItemsService.onItemAddedOrModified$.subscribe((addedOrModifiedDataItem: HasItemData<TimeTrackableItemData>) => {
-      // FIXME this only handles items added (when loading). Need smth like onItemWithDataModified, to handle time-tracking changes from remote
       const itemData = addedOrModifiedDataItem.getItemData()
       const ttData: TimeTrackingPersistentData | undefined = itemData?.timeTrack
-      if ( ttData?.nowTrackingSince &&
-          (ttData?.whenFirstStarted as any)?.toDate /* FIX for a string */
+      if ( ttData?.nowTrackingSince || /* tracking now OR was ever tracked before */
+        ttData?.whenFirstStarted/* as any)?.toDate*/ /* FIX for a string */
+        /* FIXME looks like this condition sometimes prevents items, which were previously paused, to be shown on
+          tt toolbar after resumed (both local user action as well as from remote; but way more often from remote).
+          possible explanation: item data now has nowTrackingSince = false, AND is not on the list of currently tracked items; so will not get tracked at all
+          TODO: should keep this.timeTrackedEntries$ as full as possible (even no problem in including done ones, for data handling, and introduce a new filtered mapped list$ limiting showing old done/paused stuff
+          + dropdown with all (first paused unfinished, then maybe finished)
+        **/
       ) {
         // console.log('onItemWithDataAdded$.subscribe ttData.nowTrackingSince', ttData.nowTrackingSince, ttData)
         const timeTrackedEntry = this.obtainEntryForItem(addedOrModifiedDataItem as TimeTrackable /* HACK */)
-        console.log('dataItemsService.onItemAddedOrModified$.subscribe has nowTrackingSince', addedOrModifiedDataItem, ttData, timeTrackedEntry)
+        // console.log('dataItemsService.onItemAddedOrModified$.subscribe has nowTrackingSince', addedOrModifiedDataItem, ttData, timeTrackedEntry)
         timeTrackedEntry.updateFromTimeTrackData(ttData) // TODO check if this is needed
         this.emitTimeTrackedEntry(timeTrackedEntry)
 
       } else {
         // if ( this.currentEntries?.some(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId()) ) {
         const timeTrackedEntry = this.currentEntries?.find(entry => entry.timeTrackable.getId() === addedOrModifiedDataItem.getId() )
+        // we don't obtain() to not generate lots of unnecessary domain objects.
         if ( timeTrackedEntry) {
           console.log(`onItemAddedOrModified$.subscribe item was on list of time tracked entries`, addedOrModifiedDataItem)
           // this.currentEntry[0].
