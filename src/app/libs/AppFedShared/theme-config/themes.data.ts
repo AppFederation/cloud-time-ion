@@ -35,6 +35,12 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     primary: '#c72323',
     secondary: '#b68001',
   },
+  'Yellow Blue': {
+    comment: 'Blue Yellow',
+    background: '#000000',
+    primary: '#ffb307',
+    secondary: '#413cff',
+  },
   'Dark Blue Bg, Agrest': {
     comment: 'Jellies',
     background: '#000080',
