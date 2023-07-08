@@ -14,7 +14,7 @@ import {minutesToString, parseTimeToMinutes} from '../utils/time-utils'
 import {isEmpty} from '../../../libs/AppFedShared/utils/utils-from-oryol'
 import {HasItemData} from './has-item-data'
 import {OryItem$} from '../db/OryItem$'
-import {RootTreeNode} from './TreeNode'
+import {ApfNonRootTreeNode, RootTreeNode} from './TreeNode'
 
 /**
  *
@@ -35,6 +35,8 @@ export class TreeTableNodeContent <
   TItemData extends { /* FIXME prolly only TNodeContent should care about TData ( TItemData ) - orthogonal concern */
     title: string,
     isDone?: boolean,
+    isArchivedWhen?: Date,
+    isArchived: boolean,
   } = any,
   TTreeNode extends RootTreeNode<any> = RootTreeNode<any, any>,
 > {
@@ -86,6 +88,16 @@ export class TreeTableNodeContent <
     this.dbItem = this.treeNode.treeModel.obtainItemById(this.getId())
     // this.dbItem.itemData = this.itemData
     this.dbItem.onDataArrivedFromRemote(this.initialItemData) // FIXME this is wrong - does not have to be from remote - could be just node moved (reorder/indent)
+
+    // TODO maybe would set isArchived: false / null here.
+    // this.patchThrottled({
+    //   isArchived: false,
+    // })
+
+    // ;(this.treeNode as any as ApfNonRootTreeNode).nodeInclusion$?.patchThrottled({
+    //     isArchived: false,
+    // })
+    // TODO: also patch inclusion
   }
 
   getItemData() {

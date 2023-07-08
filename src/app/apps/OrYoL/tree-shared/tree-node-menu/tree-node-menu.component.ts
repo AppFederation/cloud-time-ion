@@ -14,10 +14,11 @@ import { ConfirmDeleteTreeNodeComponent } from '../confirm-delete-tree-node/conf
 import { NodeContentComponent } from '../node-content/node-content.component'
 import { Router } from '@angular/router'
 import { ClipboardService } from '../../core/clipboard.service'
-import {PopoverController} from '@ionic/angular'
+import {AlertController, PopoverController} from '@ionic/angular'
 import {INodeContentComponent} from '../node-content/INodeContentComponent'
 
-import {OryBaseTreeNode} from '../../tree-model/TreeModel'
+import {OryBaseTreeNode, OryNonRootTreeNode} from '../../tree-model/TreeModel'
+import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 
 
 @Component({
@@ -42,6 +43,7 @@ export class TreeNodeMenuComponent implements OnInit {
     public router: Router,
     public clipboardService: ClipboardService,
     public popoverController: PopoverController,
+    public alertController: AlertController,
   ) { }
 
   ngOnInit() {
@@ -93,6 +95,48 @@ export class TreeNodeMenuComponent implements OnInit {
       whenCreated = whenCreated.toDate() // TODO: move this to FirestoreTimeStamper::onAfterLoadFromDb
     }
     return whenCreated
+  }
+
+
+  async askArchiveItems() {
+    // TODO what sub-items are not yet loaded (could archive parent without children)
+    const count = this.treeNode.countSubItemsIncludingThis()
+    // const count = this.treeNode.treeModel.root.countSubItemsIncludingThis()
+    console.log('count to archive', count)
+
+    const alert = await this.alertController.create({
+      header: `Archive ${count} item(s)?`,
+      // message: 'Delete <strong>' + this.item$ ?. currentVal ?. joinedSides ?. () + '</strong>!!!?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'ARCHIVE',
+          handler: async () => {
+            this.treeNode.callRecursivelyIncludingThisNode((node: OryNonRootTreeNode) => {
+              node.content.patchThrottled({
+                isArchived: true,
+                isArchivedWhen: new Date(),
+              })
+              node.nodeInclusion$?.patchThrottled({
+                isArchived: true,
+                isArchivedWhen: new Date(),
+              })
+
+            }) /* TODO depth-first calling, to preserve invariant that parents always exist */
+            // this.doc.update({
+            //   whenDeleted: new Date(),
+            // })
+            // await this.doc.delete() // TODO: listen to promise for sync status
+            // await this.angularFirestore.collection(`LearnDoAudio`).doc(this.id).delete() // TODO: listen to promise for sync status
+            // ignorePromise(this.router.navigate([`/learn`]))
+          }
+        }
+      ]
+    })
+    await alert.present()
   }
 
 }

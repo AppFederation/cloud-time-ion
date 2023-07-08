@@ -11,7 +11,7 @@ import { DbTreeService } from '../tree-model/db-tree-service'
 import { FirestoreAllItemsLoader } from './firestore-all-items-loader'
 
 import { FIXME } from '../utils/log'
-import { FirestoreAllInclusionsSyncer } from './FirestoreAllInclusionsSyncer'
+import {FirestoreAllInclusionsSyncer, loadArchivedItems} from './FirestoreAllInclusionsSyncer'
 import { ChildrenChangesEvent } from '../tree-model/children-changes-event'
 import { NodeOrderer } from '../tree-model/node-orderer'
 import { TimeStamper } from '../tree-model/TimeStamper'
@@ -21,7 +21,7 @@ import firestore from 'firebase/compat/app'
 import * as firebase1 from 'firebase/app'
 import 'firebase/compat/firestore';
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
-import {AngularFirestore, DocumentReference, DocumentSnapshot} from '@angular/fire/compat/firestore'
+import {AngularFirestore, DocumentReference, DocumentSnapshot, Query} from '@angular/fire/compat/firestore'
 // Required for side-effects
 // require('firebase/firestore');
 
@@ -106,7 +106,7 @@ export class FirestoreTreeService extends DbTreeService {
     super()
     // this.db.enablePersistence().then(() => {
     //   // window.alert('persistence enabled')
-      this.dbItemsLoader.startQuery(this.itemsCollection())
+      this.dbItemsLoader.startQuery(this.itemsQuery())
       this.dbInclusionsSyncer.startQuery()
     // }).catch((caught: any) => {
     //   errorAlert('enablePersistence error', caught)
@@ -211,6 +211,14 @@ export class FirestoreTreeService extends DbTreeService {
     return this.db.collection(this.ITEMS_COLLECTION)
   }
 
+  private itemsQuery(): Query {
+    let ret: Query = this.itemsCollection()
+    if ( ! loadArchivedItems ) {
+      ret = ret.where('isArchived', '==', false)
+    }
+    return ret
+  }
+
   private itemDocById(dbId: string): DocumentReference {
     return this.itemsCollection().doc(dbId)
   }
@@ -261,6 +269,7 @@ export class FirestoreTreeService extends DbTreeService {
     // }
     // newNode.itemData = newItem // this was added while adding timestamps; FIXME: overwriting whatever might be there
     this.timeStamper.onAfterCreated(newNode.content.itemData)
+    newNode.content.itemData.isArchived = false // TODO isArchivedWhen
     this.itemsCollection().doc(newNode.itemId).set(newNode.content.itemData).then(() => {
       const itemDocRef = this.itemDocById(newNode.itemId)
       // console.log('itemDocRef', itemDocRef)

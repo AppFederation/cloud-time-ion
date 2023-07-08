@@ -347,13 +347,24 @@ export class RootTreeNode<
     return new OryTreeTableNodeContent(this.injector, newItemId, itemData) as any as TNodeContent
   }
 
-  /** FIXME should be protected */
+
+  /** FIXME should be protected;  */
   public createChildNode(nodeInclusion: NodeInclusion, content: TNodeContent): TChildNode {
+    // idea how to conveniently handle default impl vs override for generic classes like this (or OdmService - createOdmItem$)
+    // this should be abstract in base class. Concrete subclass can call this.createDefaultChildNode
+    // if the type matches - no need for `as` cast
+    return this.createDefaultChildNode(nodeInclusion, content) as any as TChildNode
+  }
+
+  /** default impl that can be used by overriding class if it uses the same type of node */
+  protected createDefaultChildNode(nodeInclusion: NodeInclusion, content: TNodeContent):
+      ApfNonRootTreeNode<any, RootTreeNode<any>, RootTreeNode<any> & ApfNonRootTreeNode<any>, RootTreeNode<any> & ApfNonRootTreeNode<any>, RootTreeNode<any>, RootTreeNode<any>, RootTreeNode<any> & ApfNonRootTreeNode<any>> {
     const newNode = new ApfNonRootTreeNode(this.injector, content, nodeInclusion, content.getId() /* FIXME */, this.treeModel as TreeModel<any>)
     content.setTreeNodeAndInit(newNode)
-    return newNode as any as TChildNode
+    return newNode
     // new TreeTableNode(newInclusion, nodeToAssociate.itemId, this.treeModel, nodeToAssociate.itemData) as TChildNode
   }
+
 
   protected generateItemId() {
     return 'item_' + uuidv4()
@@ -434,6 +445,10 @@ export class RootTreeNode<
       node => node.children as TChildNode[], sumValueFunc)
   }
 
+  public callRecursivelyIncludingThisNode(func: any): number {
+    return this.getSumRecursivelyIncludingThisNode(func) //
+  }
+
   public getIndexInParent(): number {
     return this.parent2?.children?.indexOf(this as any as TBaseNonRootNode) ?? 0
   }
@@ -478,6 +493,9 @@ export class RootTreeNode<
     }
   }
 
+  countSubItemsIncludingThis() {
+    return this.getSumRecursivelyIncludingThisNode(() => 1)
+  }
 }
 
 

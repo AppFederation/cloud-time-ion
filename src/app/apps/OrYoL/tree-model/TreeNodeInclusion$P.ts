@@ -6,7 +6,7 @@ import {ItemId} from '../db/OryItem$'
 import {NodeInclusion} from './TreeListener'
 import {SyncStatusService} from '../../../libs/AppFedShared/odm/sync-status.service'
 
-type TMemPatch = NodeInclusion
+type TMemPatch = Partial<NodeInclusion>
 
 export class TreeNodeInclusion$P<
   TInclusion extends NodeInclusion,
@@ -73,8 +73,8 @@ export class TreeNodeInclusion$P<
   protected sendPatchToDb(patch: TMemPatch) {
     this.treeService.patchChildInclusionData(
       // this.parent2!.itemId,
-      patch.parentItemId,
-      patch!.nodeInclusionId,
+      patch.parentItemId ?? this.currentVal.parentItemId,
+      patch.nodeInclusionId ?? this.currentVal.nodeInclusionId,
       patch /* the patch */,
       this.itemId
     )

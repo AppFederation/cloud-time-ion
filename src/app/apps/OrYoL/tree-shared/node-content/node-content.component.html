@@ -59,6 +59,10 @@
     Deleted <!--{{treeNode.itemData?.deleted}}-->
   </ng-container>
 
+  <ng-container *ngIf="treeNode.content.itemData?.isArchived">
+    Archived <!--{{treeNode.content.itemData?.isArchivedWhen}}-->
+  </ng-container>
+
 
   <!-- ======= new cells approach: -->
 

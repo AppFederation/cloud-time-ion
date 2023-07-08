@@ -6,7 +6,15 @@ import {
   FIXME,
 } from '../utils/log'
 import { PermissionsManager } from '../tree-model/PermissionsManager'
-import {CollectionReference, DocumentChange, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot} from '@angular/fire/compat/firestore'
+import {
+  CollectionReference,
+  DocumentChange,
+  DocumentReference,
+  DocumentSnapshot,
+  Query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+} from '@angular/fire/compat/firestore'
 
 export class ItemValueAndCallbacks {
   constructor(
@@ -29,12 +37,13 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
 
   startQuery(
     /* this will have to be filtered to only what the user has read permission for */
-    itemsCollection: CollectionReference
+    itemsCollection: Query
   ) {
     itemsCollection
       // .where('perms.read.' + this.permissionsManager.userId, '>', new Date(0))
       .onSnapshot((snapshot: QuerySnapshot<any>) =>
     {
+      console.log(`FirestoreAllItemsLoader snapshot.docChanges().length`, snapshot.docChanges().length)
       snapshot.docChanges().forEach((change: DocumentChange<any>) => {
         const docSnapshot: QueryDocumentSnapshot<any> = change.doc
         const docId = change.doc.id
@@ -50,8 +59,6 @@ export class FirestoreAllItemsLoader extends FirestoreItemsLoader {
             window.alert(`OrYoL some other owner!! ` + `docId:` + docId + ` owner: ` + owner)
           }
         }
-
-
 
         debugLog('FirestoreAllItemsLoader onSnapshot id', docId, 'DocumentChange', change)
         if (change.type === 'added' || change.type === 'modified') {

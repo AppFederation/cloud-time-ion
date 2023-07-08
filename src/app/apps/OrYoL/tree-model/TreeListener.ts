@@ -13,6 +13,8 @@ import {
  * Third case would be someone including someone else's item into their item (no permission to modify the included obj).
  * */
 export class NodeInclusion {
+  public isArchived = false
+  public isArchivedWhen: Date | null = null
   constructor(
     // public orderThisBeforeId,
     // public orderThisAfterId,

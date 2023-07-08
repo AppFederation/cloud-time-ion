@@ -16,7 +16,7 @@ import {
 } from 'rxjs'
 import { MultiMap } from '../utils/multi-map'
 import {Firestore} from '@angular/fire/firestore'
-import {CollectionReference, DocumentChange, DocumentReference, QuerySnapshot} from '@angular/fire/compat/firestore'
+import {CollectionReference, DocumentChange, DocumentReference, Query, QuerySnapshot} from '@angular/fire/compat/firestore'
 import firebase from 'firebase/compat/app'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import "firebase/firestore";
@@ -29,11 +29,15 @@ class InclusionsValueAndCallbacks {
 
 const EMPTY_MAP = new Map<any, any>()
 
+export const loadArchivedItems = false
+
+
 export class FirestoreAllInclusionsSyncer {
 
   mapParentIdToChildInclusions = new Map<string, InclusionsValueAndCallbacks>()
 
   private INCLUSIONS_COLLECTION = this.dbPrefix + '_inclusions'
+  private onSnapshotCount = 0
 
   constructor(
     private db: any,
@@ -46,8 +50,18 @@ export class FirestoreAllInclusionsSyncer {
     return this.db.collection(this.INCLUSIONS_COLLECTION)
   }
 
+  private inclusionsQuery(): Query {
+    let ret: Query = this.inclusionsCollection()
+    if ( ! loadArchivedItems ) {
+      ret = ret.where('isArchived', '==', false)
+    }
+    return ret
+  }
+
   startQuery() {
-    this.inclusionsCollection().onSnapshot((snapshot: QuerySnapshot<any>) => {
+    this.inclusionsQuery().onSnapshot((snapshot: QuerySnapshot<any>) => {
+      this.onSnapshotCount ++
+      console.log('inclusionsQuery().onSnapshot onSnapshotCount', this.onSnapshotCount)
       // debugLog('FirestoreAllInclusionsSyncer onSnapshot snapshot', snapshot, snapshot.metadata)
       debugLog('FirestoreAllInclusionsSyncer onSnapshot snapshot hasPendingWrites', snapshot, snapshot.metadata, snapshot.metadata.hasPendingWrites)
 
@@ -55,6 +69,7 @@ export class FirestoreAllInclusionsSyncer {
       const mapParentIdToDocsModified = new MultiMap<string, DocumentSnapshot>()
       const mapParentIdToDocsAdded = new MultiMap<string, DocumentSnapshot>()
       // NOTE: for now treating adding and modifying as same event (as in tree event add-or-modify)
+      console.log(`inclusions snapshot.docChanges().length`, snapshot.docChanges().length)
       snapshot.docChanges().forEach((change: DocumentChange<any>) => {
         const docSnapshot = change.doc
         const docData = docSnapshot.data() as FirestoreNodeInclusion

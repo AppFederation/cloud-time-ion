@@ -25,7 +25,12 @@ export abstract class DbTreeService {
 
   abstract patchItemData(itemId: string, itemData: any): { onPatchSentToRemote: Promise<void> }
 
-  abstract patchChildInclusionData(parentItemId: string, itemInclusionId: string, itemInclusionData: any, childItemId: string): void
+  abstract patchChildInclusionData(
+    parentItemId: string,
+    itemInclusionId: string,
+    itemInclusionData: any,
+    childItemId: string
+  ): void
 
   // abstract patchChildInclusionDataWithNewParent(nodeInclusionId: string, newParentNode: OryTreeNode): void
 
