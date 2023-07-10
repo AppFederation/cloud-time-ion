@@ -255,6 +255,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
   }
 
   addToLearn(navInto?: boolean) {
+    console.log('addToLearn')
     // this.lingueeService.doIt(this.search).then()
     // this.merriamWebsterDictService.doIt(this.search)
 

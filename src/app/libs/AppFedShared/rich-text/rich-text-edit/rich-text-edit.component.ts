@@ -37,6 +37,9 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   @Input() showClearButton: boolean = false
 
+  /** Used in search-or-add (because enter creates a new item). */
+  @Input() enterKeyOnlyWithShift: boolean = false
+
   private _editorViewChild: EditorComponent | undefined
 
   /* TODO rename editorWasOrIsOpened */
@@ -204,6 +207,29 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
         [contenteditable] a { color: #98aed9 }
         */,
       setup: (editor: any) => {
+        console.log('setup')
+        editor.on('keydown', (event: any) => {
+          if ( this.enterKeyOnlyWithShift ) {
+            if (event.keyCode == 13) {
+              if ( ! event.shiftKey ) {
+                // NOTE - this is what prevented alt+enter?
+                // .shiftKey .metaKey .altKey .ctrlKey
+                // console.log(`Enter key`, event)
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+              }
+            }
+          }
+          /// ==== new:
+          // /* prevent alt+enter */
+          // if (event.altKey && event.keyCode == 13) {
+          //   console.log(`editor.on('keydown'`)
+          //   event.stopPropagation();
+          //   event.preventDefault();
+          //   // You can add any additional code here to handle the Alt+Enter event
+          // }
+        });
         editor.addShortcut(
           'meta+e', 'Add yellow highlight to selected text.', () => {
             // https://www.tiny.cloud/docs/advanced/keyboard-shortcuts/

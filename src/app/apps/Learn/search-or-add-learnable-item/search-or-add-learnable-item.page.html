@@ -58,7 +58,7 @@
   >
     <div style="flex-grow: 1; color: white">
       <div
-        (keyup.shift.enter)="addTask(); $event.stopPropagation(); $event.preventDefault()"
+        (keyup.enter)="addTask(); $event.stopPropagation(); $event.preventDefault()"
         (keyup.meta.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
         (keyup.alt.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
         (keyup.control.enter)="addToLearn(); $event.stopPropagation(); $event.preventDefault()"
