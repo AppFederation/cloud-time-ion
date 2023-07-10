@@ -39,8 +39,20 @@ export class ThemeCalculator {
     const itemAndTextBg = shadeColor(background, themeOptions.brightnessPercent / 85)
     // console.log(`itemAndTextBg`, itemAndTextBg)
     root.style.setProperty(`--ion-item-background`, itemAndTextBg);
+
+    // consider --afed- prefix more pronounceable and unique
+
+    /* could have a general -clickable- or -editable- (interactive tangible click/edit area) color, more general and precise than item or text color
+      - e.g. for sliders interactive area; yes, I'm kinda creating my own design system, next to /
+     */
     root.style.setProperty(`--apf-text-edit-background`, 'var(--ion-item-background)');
+    /** This could be closer to black/white coz might have wider variety of colors going from rich text */
+    root.style.setProperty(`--apf-rich-text-edit-background`, 'var(--ion-item-background)');
     root.style.setProperty(`--apf-item-header-background`, 'var(--ion-item-background)');
+    root.style.setProperty(`--ion-item-border-color`, 'var(--ion-item-background)'); // prototype
+    root.style.setProperty(`--ion-border-color`, 'var(--ion-item-background)'); // prototype
+    // TODO: item-separator (for items list)
+    // TODO: item-shadow (for OrYoL if enabled)
 
 
     // console.log('root.style', root.style);
