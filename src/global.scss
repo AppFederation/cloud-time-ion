@@ -33,7 +33,7 @@
 
 //* :has(p[data-mce-bogus]) {
 .mce-content-body { /* FIXME: this is not encapsulated to component */
-  background-color: var(--apf-text-edit-background);
+  background-color: var(--apf-rich-text-edit-background);
   padding: 10px; // FIXME setting this to non-zero causes too big padding;
   //padding: 0px;
   p {
@@ -55,7 +55,7 @@
   //background-color: white;
   color: var(--ion-text-color) !important; //rgba(118, 118, 118, 1);
   opacity: 0.5;
-  padding-left: 0.42em;
+  padding-left: 0.55em; /* this can cause misalignment between blinking cursor and placeholder first letter */
 }
 
 
