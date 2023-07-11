@@ -2,8 +2,15 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/learn',
+    pathMatch: 'full'
+  },
+
   { path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule) },
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
 
   { path: 'journal/write',
     loadChildren: () => import('./apps/Journal/journal-write-page/journal-write.page.module').then(m => m.JournalWritePageModule) },
@@ -52,11 +59,6 @@ const routes: Routes = [
     loadChildren: () => import('./apps/sleep/sleep.module').then( m => m.SleepPageModule)
   },
   {
-    path: '',
-    redirectTo: '/learn',
-    pathMatch: 'full'
-  },
-  {
     path: 'categories',
     loadChildren: () => import('./apps/Common/categories/categories.module').then( m => m.CategoriesPageModule)
   },
@@ -79,6 +81,19 @@ const routes: Routes = [
   {
     path: 'categories-stats',
     loadChildren: () => import('./libs/AppFedShared/categories-stats-page/categories-stats-page.module').then( m => m.CategoriesStatsPagePageModule)
+  },
+
+  {
+    path: 'lifedvisor',
+    loadChildren: () => import('./apps/Lifedvisor/lifedvisor/lifedvisor.module').then(m => m.LifedvisorPageModule)
+  },
+  {
+    path: 'ask',
+    loadChildren: () => import('./apps/Lifedvisor/ask/ask.module').then(m => m.AskPageModule)
+  },
+  {
+    path: 'life-overviews',
+    loadChildren: () => import('./apps/Lifedvisor/life-overviews/life-overviews.module').then(m => m.LifeOverviewsPageModule)
   },
 
   { path: '**', redirectTo: '' },

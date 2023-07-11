@@ -1,0 +1,25 @@
+
+@keyframes bg_anim {
+  //from {fill: #007000;}
+  //to {fill: #00A000;}
+  0% {
+    fill: #007000;
+  }
+
+  50% {
+    fill: #004000;
+  }
+
+  100% {
+    fill: #007000;
+  }
+}
+
+
+#radical_candor_bg {
+  //fill: black  ;
+  //animation-name: bg_anim;
+  //animation: normal 100ms ease infinite;
+  animation: bg_anim 2s linear infinite;
+  //animation-duration: 4s;
+}

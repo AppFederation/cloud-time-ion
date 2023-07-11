@@ -50,6 +50,9 @@
       <!-- would display personal mission statement; with templates like personal, safety, relationships; maslow -->
     </ion-button>
 
+    <ion-button *ngIf="feat.tutorial.unpolished" [routerLink]="'/lifedvisor'">Lifedvisor</ion-button>
+    <ion-button [routerLink]="'/ask'">Lifedvisor</ion-button>
+
 
     <div
       style="border: 4px solid green; border-radius: 7px; display: inline-block"
@@ -108,7 +111,7 @@
     </ion-button>
     <ion-button [routerLink]="'/exponential-improvement'">
       <ion-icon name="trending-up-outline" slot="start"></ion-icon>
-      Exponential Improvement <span *ngIf="feat.showUgly">Calc</span>
+      Exponential Improvement<span *ngIf="feat.showUgly">&nbsp;Calc</span>
     </ion-button>
     <ion-button *ngIf="g.feat.showExperimental" [routerLink]="['/learn/stats']">
       <ion-icon name="bar-chart-outline" slot="start"></ion-icon>

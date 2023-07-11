@@ -1,0 +1,15 @@
+/*.onlyVisibleToShowChild {*/
+/*  opacity: 30%;*/
+/*}*/
+
+.matchesFilter {
+  background-color: darkolivegreen;
+}
+
+.hint-children {
+  /*margin-left: 9.5rem;*/
+}
+
+.currentHint {
+  border: darkorange 2px solid;
+}

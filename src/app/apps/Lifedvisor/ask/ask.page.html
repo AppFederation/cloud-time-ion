@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
+      <app-app-logo></app-app-logo>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+    <ion-buttons slot="end">
+      <odm-sync-status-icon></odm-sync-status-icon>
+    </ion-buttons>
+
+  </ion-toolbar>
+
+<!--  <label for="askText">Describe your problem or wish, to get hints:</label>-->
+  <ion-item>
+    <!--  <ion-label>Search problems/qualities/hints</ion-label>-->
+    <!-- TODO maybe search icon - - - ion-searchbar
+    -->
+    <ion-input
+        [autofocus]="true"
+        (change)="onChangeFilterText($event)"
+        [(ngModel)]="textFieldDummy"
+        (ngModelChange)="onChangeFilterText($event)"
+        id="askText"
+        [placeholder]="'Search problems/qualities/hints/questions'"
+        [clearInput]="true"
+    ></ion-input>
+  </ion-item>
+
+
+  <ion-item lines="none">
+    <ion-label>Expand All</ion-label>
+    <ion-checkbox
+        id="expandAllButton"
+        slot="start"
+        [(ngModel)]="isExpandAll"
+    ></ion-checkbox>
+  </ion-item>
+
+</ion-header>
+
+<ion-content
+    [fullscreen]="true"
+>
+
+  <ng-container *ngFor="let problem of rootHint.ifYesSortedByScoreFiltered">
+
+    <app-hint
+        *ngIf="isVisibleViaFilter(problem)"
+        [hidden]="! isVisibleViaFilter(problem)"
+        [ngClass]="{ hintVisible: isVisibleViaFilter(problem) }"
+        [filter]="filter"
+        [wish]="problem"
+        [isExpandedManually]="isExpandAll"
+        [isExpandedRecursively]="isExpandAll"
+    ></app-hint>
+
+  </ng-container>
+
+</ion-content>
+

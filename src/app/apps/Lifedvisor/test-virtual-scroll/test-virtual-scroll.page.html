@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>TestVirtualScroll</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-virtual-scroll
+    [items]="items"
+  >
+<!--    <div-->
+<!--      *virtualItem="let item;"-->
+<!--    >-->
+      <app-test-item
+        *virtualItem="let item;"
+        [itemInput]="item"
+      ></app-test-item>
+<!--      {{item}}-->
+
+<!--    </div>-->
+  </ion-virtual-scroll>
+
+</ion-content>

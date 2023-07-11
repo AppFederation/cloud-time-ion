@@ -1,0 +1,137 @@
+<ion-card
+  color="{{matchesFilter() ? 'dark-highlight' : 'light'}}"
+  style="margin-left: 3px; margin-right: 3px"
+  [ngClass]="{currentHint: isExpandedManually || isCurrentHint}"
+  (click)="isCurrentHint = ! isCurrentHint; $event.stopPropagation()"
+>
+  <ion-card-header
+    style="margin-left: -10px; margin-right: -10px;"
+  >
+<!--    Score: {{wish.getScoreForFilter(filter).score.toFixed(8)}}-->
+    <ion-card-title color="primary" style="font-size: 17px;">
+      <span
+        style="cursor: pointer; user-select: none"
+        (click)="isCollapsed = ! isCollapsed; $event.stopPropagation()">&gt; &nbsp;
+      </span>
+      <!-- TODO: consider expand/collapse icon like OrYoL here -->
+<!--      <ion-text ></ion-text>-->
+      {{wish.effectiveTitle || wish}}
+      <sup *ngIf="wish.titleSuffix; let suffix">
+        {{suffix}}
+      </sup>
+<!--      <ion-note *ngIf="debug ?. showComponentName">HintComp</ion-note>-->
+    </ion-card-title>
+    <ion-card-subtitle *ngIf="! isCollapsed && wish.subTitle; let subTitle">
+      {{subTitle}}
+    </ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content
+    *ngIf="! isCollapsed"
+    style="margin-left: -10px; margin-right: -10px;"
+  >
+    <ion-text *ngIf="wish.textBody">
+      {{wish.textBody}}
+    </ion-text>
+
+<!--<div "-->
+<!--     style="padding: 5px; margin: 5px"-->
+<!--&gt;-->
+  <div
+    [ngClass]="{'onlyVisibleToShowChild': isOnlyVisibleToShowChild }"
+  >
+    <p *ngIf="wish.example">
+      Example: {{wish.example}}
+    </p>
+
+    <ng-container *ngIf="wish.benefits; let benefits">
+      Benefits:
+      <ol>
+        <li *ngFor="let benefit of benefits">
+          {{benefit}}
+        </li>
+      </ol>
+    </ng-container>
+
+
+    <ng-container *ngIf="wish.exceptions; let exceptions">
+      Exceptions:
+      <ol>
+        <li *ngFor="let exception of exceptions">
+          {{exception}}
+        </li>
+      </ol>
+    </ng-container>
+    <ng-container *ngIf="wish.warnings; let warnings">
+      Warnings:
+      <ol>
+        <li *ngFor="let warning of warnings">
+          {{warning}}
+        </li>
+      </ol>
+    </ng-container>
+
+    <!--  <app-hint-benefits-->
+    <!--    -->
+    <!--  ></app-hint-benefits>-->
+
+    <p *ngIf="wish.comments">
+      <!--Comments: -->{{wish.comments}}
+    </p>
+
+    <div
+      *ngIf="wish.source; let source"
+    >
+      Source: {{source}}
+    </div>
+    <div *ngIf="wish.sources; let sources">
+      Sources:
+      <ul>
+        <li *ngFor="let source of sources">
+          {{source.title || source.id }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <ion-item *ngIf="wish.ifYesSortedByScoreFiltered ?. length" id="howToImproveCheckbox"
+            class="howToImproveCheckbox"
+            lines="none"
+  >
+    <ion-label>How to improve?</ion-label>
+    <ion-checkbox
+      slot="start"
+      [(ngModel)]="isExpandedManually"
+    ></ion-checkbox>
+  </ion-item>
+
+  <div
+    *ngIf="wish.ifYesSortedByScoreFiltered ?. length"
+  >
+    <div
+      *ngIf="isThisLevelExpandedFullyEffectively || isAnyChildVisible"
+    >
+      <p style="margin-top: 10px;">
+        This will help You:
+      </p>
+      <div
+        class="hint-children"
+        *ngFor="let childWish of childrenToShow"
+      >
+        <app-hint
+            *ngIf="isThisLevelExpandedFullyEffectively || (((! childWish.isAtRoot) || isExpandedManually ) && ( isChildVisible(childWish) || isExpandedRecursively ))"
+            [hidden]="! ( isChildVisible(childWish) || isExpandedRecursively || isThisLevelExpandedFullyEffectively )"
+            [ngClass]="{ hintVisible: isChildVisible(childWish) }"
+            [wish]="childWish"
+            [ancestorMatchesFilter]="matchesFilter() || ancestorMatchesFilter"
+            [filter]="filter"
+            [isExpandedRecursively]="isExpandedRecursively"
+        > <!-- TODO unhide if hasADescendantThatMatchesFilter -->
+          <!-- [isExpanded]="isExpanded" -->
+        </app-hint>
+      </div>
+    </div>
+  </div>
+
+  </ion-card-content>
+</ion-card>
