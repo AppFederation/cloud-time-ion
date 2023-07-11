@@ -82,3 +82,25 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+
+// ============ From Lifedvisor:
+
+:root {
+  --ion-color-dark-highlight: #394201;
+  --ion-color-dark-highlight-rgb: 57,66,1;
+  --ion-color-dark-highlight-contrast: #ffffff;
+  --ion-color-dark-highlight-contrast-rgb: 255,255,255;
+  --ion-color-dark-highlight-shade: #323a01;
+  --ion-color-dark-highlight-tint: #4d551a;
+}
+
+.ion-color-dark-highlight {
+  --ion-color-base: var(--ion-color-dark-highlight);
+  --ion-color-base-rgb: var(--ion-color-dark-highlight-rgb);
+  --ion-color-contrast: var(--ion-color-dark-highlight-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-dark-highlight-contrast-rgb);
+  --ion-color-shade: var(--ion-color-dark-highlight-shade);
+  --ion-color-tint: var(--ion-color-dark-highlight-tint);
+}
+// ============ END from Lifedvisor

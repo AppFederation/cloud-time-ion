@@ -1,5 +1,5 @@
 <ion-card
-  color="{{matchesFilter() ? 'dark-highlight' : 'light'}}"
+  color="{{matchesFilter() ? 'dark-highlight' : 'secondary'}}"
   style="margin-left: 3px; margin-right: 3px"
   [ngClass]="{currentHint: isExpandedManually || isCurrentHint}"
   (click)="isCurrentHint = ! isCurrentHint; $event.stopPropagation()"
