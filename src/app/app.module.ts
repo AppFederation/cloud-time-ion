@@ -68,7 +68,7 @@ console.log(`service worker swOpts`, swOpts)
             // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
         }),
         EffectsModule.forRoot([QuizEffects]),
-        ServiceWorkerModule.register('ngsw-worker.js', swOpts),
+        // ServiceWorkerModule.register('ngsw-worker.js', swOpts),
     ],
     exports: [
         CoreModule,
