@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class ExponentialImprovementPage implements OnInit {
 
   periods = ['1 month', '1 year', '2 years', '3 years', '4 years', '5 years', '10 years', '100 years']
-  periodsDays = [1, 7, 15, 30, 60, 90, 180, 365, 365 * 2, 365 * 3, 365 * 4, 365 * 5, 365 * 10/*, 365 * 100*/]
+  periodsDays = [1, 7, 12 /* months in a year */, 15, 30, 50/* ~nb weeks in year*/,
+    60, 90, 180, 365, 365 * 2, 365 * 3, 365 * 4, 365 * 5, 365 * 10/*, 365 * 100*/]
 
   incrementFraction = 0.02
 
