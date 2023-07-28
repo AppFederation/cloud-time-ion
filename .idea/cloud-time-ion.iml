@@ -18,6 +18,8 @@
       <excludeFolder url="file://$MODULE_DIR$/node_modules_before_sass_1.57" />
       <excludeFolder url="file://$MODULE_DIR$/www" />
       <excludeFolder url="file://$MODULE_DIR$/.angular/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/.firebase" />
+      <excludeFolder url="file://$MODULE_DIR$/plugins" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
