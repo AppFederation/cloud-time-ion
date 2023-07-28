@@ -1,2 +1,18 @@
 \:host
   display: flex
+  --app-logo-gradient-start-color: var(--ion-color-primary-tint)
+  --app-logo-gradient-end-color: var(--ion-color-secondary-tint)
+  //transition: all 10.3s ease-in-out
+
+  &:hover
+    --app-logo-gradient-start-color: var(--ion-color-secondary-tint)
+    --app-logo-gradient-end-color: var(--ion-color-primary-tint)
+
+*
+  //transition: all 0.5s ease-in-out
+  //transition: all 0.5s easeInOutBack
+  //transition: all 1.5s cubic-bezier(0.68, -0.6, 0.32, 1.6)
+  transition: all 1.5s cubic-bezier(.87,1.86,.81,1.66)
+
+  //transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+  //transition: all 0.5s cubic-bezier(0.64, 0.57, 0.67, 1.53);
