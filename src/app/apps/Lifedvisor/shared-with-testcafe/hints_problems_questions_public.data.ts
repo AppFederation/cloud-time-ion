@@ -43,6 +43,18 @@
  * - - - spend quality time with people whom You like and trust
  */
 
+/* TODO-s:
+* Means vs ends when searching:
+* - make sure hints don't come up as problems/wishes when searching
+* - ignore search terms in hints
+* - hints should not appear at top level (even though they are declared at top level, for reuse)
+*
+* Consistency, wording, clarity:
+* - unify style "I am irritable" or "Irritability"
+*
+*
+* */
+
 import {
   hint,
   hintBridge,
@@ -105,7 +117,7 @@ export class Questions {
 
   'Learning and remembering things' = wish({
     subTitle: `(studying)`,
-    searchTerms: [`study`, `student`, `examination`, `prepare for exam`],
+    searchTerms: [`study`, `student`, `examination`, `prepare for exam`, 'learn faster'],
     ifYes: [
       hint(`Use spaced repetition`),
       hint(`"Put it in front of the door" technique`),
@@ -143,7 +155,11 @@ export class Questions {
     ]
   })
 
-  'Use Ikigai' = hint()
+  'Use Ikigai' = hint({
+    embedMedia: {
+      graphicComponents: ['ikigai'],
+    }
+  })
 
   'Success / achievement' = wish({
     ifYes: [
@@ -166,13 +182,19 @@ export class Questions {
   /* cross-cutting concern? But can describe in general too */
   'Progress' = hint({
     problemText: 'Feel stuck (no progress)',
+    searchTerms: ['too slow progress', 'progressing too slowly'],
     ifYes: [
       this['Utilize and build virtuous circles (and avoid VICIOUS circles, no X -> no Y -> etc)'],
-      hint({title: 'Determine where Your bottleneck(s) are.',
+      hint({title: 'Determine where Your bottleneck(s) (biggest constraints) are.' /* !!!!!!!!! THIS IS THE TOP PRIO NOW */,
         subTitle: `Is it time, money, skills, maybe motivation? Determine which ones are the biggest limiting factors, and keep improving it to get to the next level.`
       }),
     ],
     text: 'Make a little progress to boost confidence',
+  })
+
+  'Manage Anger' = wish({
+    /* TODO primal scream theraphy */
+    /* TODO sport to work out the anger  */
   })
 
   'Confidence' = hint({
@@ -191,15 +213,34 @@ export class Questions {
   })
 
   'Mood' /* TODO unite with happy/unhappy */ = hint({
+    searchTerms: ['I want to be happy', 'feeling sad', 'feeling depressed', 'happiness'],
     ifYes: [
       hint('Smile (part of body language) and it will affect mood'),
       hint(`In life, have a bias towards optimism and excitement (while still steering away from problems) - it creates a kind of positive mood shield "bubble".`),
+      hint(`social validation TODO`),
+      hint({
+        title: `Just relax and enjoy (the show / what you are doing)`,
+        ifYes: [
+          hint(`Enjoy the little puzzles and the satisfaction of pondering/solving them`),
+          hint(`Enjoy the learning process`),
+          hint(`Enjoy the journey`),
+        ]
+      }),
+    ]
+  })
+
+  'Be punctual' = wish() // leave a reserve of time; if u come early you can do smth else like reply emails
+
+  'Reduce stress' = wish({
+    ifYes: [
+      this['Be punctual']
     ]
   })
 
   'Self-Esteem' = hint({
     when: '2018-10-02 22:09',
     ifYes: [
+      /* TODO: 12 rules for life, stand up straight with shoulders; crabs etc. */
       this['Utilize and build virtuous circles (and avoid VICIOUS circles, no X -> no Y -> etc)'],
       hint({
         text: 'Make sure to not make too long breaks between working (and progress, even if small progress) on mayor goals and using major skills, to keep self-esteem up',
@@ -218,12 +259,19 @@ export class Questions {
         when: '2019-07-26, 15:01',
         text: 'Think what I\'m going to achieve when I continue on the right path (on which I mostly am). Freedom of space and time. Satisfaction, self-esteem.',
       }),
+      wish({
+        text: 'Make people respect you more',
+        ifYes: [
+          this['Be punctual'],
+          // keep your word -> avoid promising too much
+        ]
+      }),
     ]
   })
 
   'Motivation' = hint({
     titleSuffix: IN_GENERAL,
-    searchTerms: [`Why bother feeling`, `unmotivated`, `motivate more`, `motivated`, `motivating`, `futility feeling`,  `feeling futile`],
+    searchTerms: [`Why bother feeling`, `unmotivated`, `motivate more`, `motivated`, `motivating`, `futility feeling`,  `feeling futile`, 'i po co to wszystko?', `what's the point of all this?`],
     // negative/problem version for text search: "I don't feel like ..."
     // symptoms:
     // es: no tengo ganas; pereza
@@ -291,9 +339,26 @@ export class Questions {
             subTitle: `(as opposed to obsessing about useless/unimportant things)`,
           })
         ]
+      }),
+      hint({title: `Get Inspired`,
+        searchTerms: ['inspiration'],
+        ifYes: [
+          hint({title: `Watch/read/listen inspiring stuff that is close to your values/personality/dreams/situation`,
+          })
+        ]
       })
     ]
   })
+
+  'Clear thinking' = hint({
+    ifYes: [
+      hint({
+        text: 'Critical thinking',
+      }),
+      hint('Avoid logical fallacies') // TODO: https://yourlogicalfallacyis.com/ ; + proving a negative ; + unknown unknowns
+    ]
+  })
+
 
   'Motivation for projects' = hint({
     ifYes: [
@@ -302,7 +367,8 @@ export class Questions {
         sources: [
           new HintSource('https://charlesduhigg.com/books/smarter-faster-better/'),
         ]
-      })
+      }),
+      hint('Make your work environment pleasant')
     ]
   })
 
@@ -313,7 +379,11 @@ export class Questions {
       hint(`Visualise the positive/negative consequences of doing / not doing the things You should do.`),
       hint(`Have a long time perspective`),
       hint({ text: `*Delaying* and *Dosage* of gratification, instead of *denying* of gratification`,
-        comments: `Distinguish between "No" and "Yes/Maybe but later". A "No" is negative/inhibitive thought which can lower Your dopamine level.`}),
+        comments: `Distinguish between "No" and "Yes/Maybe but later". A "No" is negative/inhibitive thought which can lower Your dopamine level.`,
+        ifYes: [
+          hint('Long-time perspective'),
+        ]
+      }),
       this['Utilize and build virtuous circles (and avoid VICIOUS circles, no X -> no Y -> etc)'],
       this['Motivation'] /* Does discipline require motivation ? */,
       hint(`In order to have discipline, You need motivation`) /* example of inclusion / connector hint/text */,
@@ -364,9 +434,13 @@ export class Questions {
           hint(`Have the list always open and visible (e.g. on a separate monitor or under a shortcut key).`),
         ]
       }),
-      hint(`Use ear-plugs`),
+      hint(`Consider using ear-plugs`) /* TODO amazonProducts 3m earplugs */,
       hint(`Consider noise-cancelling or noise-isolating headphones`),
-      hint(`Get into the state of Flow, to get less prone to distractions`),
+      hint({
+        title: `Get into the state of Flow, to get less prone to distractions`,
+        searchTerms: [`FlowState`, `XYZZZ`],
+        embedMedia: {graphicComponents: ['flow']}
+      }),
       hint({ text: `Minimize context switching. Write things down instead of acting on them immediately.`,
         comments: `Example: write ideas in source code of another project, instead of acting on them immediately.`
       }),
@@ -408,7 +482,7 @@ export class Questions {
         ifYes: [
           hint(`If necessary, go to your family/coworkers/flatmates and ask them if they need anything and tell them that You are going to have a big block of focused time now.`),
           hint({
-            title: `Prepare your work area before starting a big chunk of uninterrupted time`,
+            title: `Prepare your work area and materials before starting a big chunk of uninterrupted time`,
             ifYes: [
               hint({title: `Prepare water in a non-spill bottle`,
                 subTitle: `(or even multiple bottles)`,
@@ -425,6 +499,12 @@ export class Questions {
 
   'Go to sleep at the right time' = hint({
     ifYes: [
+      question({
+        text: 'Do You have resistance / aversion to going to sleep?',
+        ifYes: [
+          hint('Make the sleeping area, bed and surroundings nice, neat, clean and comfortable.')
+        ]
+      }),
       hint({ text: 'Build a #habit of going to sleep at the right time'
       }),
       hint({ text: 'Do you turn off and put away (hide) your electronics and other temptations, including computer, mobile phones. ' +
@@ -582,6 +662,7 @@ export class Questions {
     titleSuffix: IN_GENERAL,
     searchTerms: [`prioritize`, `prioritise`, `prioritising`, `set priorities`, `what to do first`, `priority`],
     /* cross-cutting concern */
+    // TODO split into prioritizing in a day, life, job, etc.
     ifYes: [
       hint(`Prioritize according to goals and values`),
       hint('Prioritize prioritizing itself'),
@@ -621,6 +702,7 @@ export class Questions {
       hint('ABCDE method'),
     ]
   })
+  // discouragement; TODO hero's journey embedMedia.graphicComponents
 
   'Planning (in general)' = hint({
     searchTerms: [`plan`, `make a plan`],
@@ -659,6 +741,7 @@ export class Questions {
   'Effectiveness' = hint({
     subTitle: `Doing the right things and doing them efficiently`,
     ifYes: [
+      hint('Distinguish between efficiency and effectiveness'),
       hint({
         title: `Efficiency / optimizations`,
         ifYes: [
@@ -680,7 +763,8 @@ export class Questions {
       }),
       hint({
         title: `Choosing which things to do`,
-        subTitle: `TODO: Planning, prioritization, values, ikigai, decisions, etc`
+        subTitle: `TODO: Planning, prioritization, values, Ikigai, decisions, etc`,
+        // TODO graphicComponents: important vs urgent quadrants
       })
     ]
   })
@@ -813,6 +897,7 @@ export class Questions {
   })
 
   'Solving problems' = hint({
+    /* This could also be a checklist / form template */
     searchTerms: [`solve problems`, `dealing with problems`, `i have a problem`, `troubleshooting`, `troubleshoot`, `problem with`],
     ifYes: [
       hint({title: `Look for different types of [what appears to be] the same problem`,
@@ -821,13 +906,37 @@ export class Questions {
       hint(`Thinking is a skill too`),
       hint('Use lateral thinking'),
       hint(`Take time to think!`),
+      hint(`Take time and energy to *formulate* the problem. Treat it like a task or even sub-project too.`),
       hint(`Thinking on paper`),
+      hint(`Iterate`),
+      hint(`Don't be afraid to be wrong (to not get paralyzed by fear or unnecessary constraints)`),
+      hint(`Consider pivoting`),
+      hint(`Thinking outside of the box (or find the box).`),
+      hint(`Brainstorming`),
+      hint(`Avoid analysis paralysis`),
+      hint(`Find the biggest constraints. Where is the heaviest lifting?`), /* TODO: jar with stones sands water embed video */
+      hint({
+        title: `Avoid getting stuck at a local maximum(minimum) - employ some randomness`,
+        embedMedia: {videos: [{url: 'https://www.youtube.com/embed/3fSB6ut-cT0?start=2098'}]}
+      }), /* TODO: jar with stones sands water embed video */
+      hint(`Explain the problem to someone (rubber-ducking`),
+      hint(`Write down the problem in as much detail as possible`),
+      hint({
+        title: `Keep in mind phases of creative thinking / problem-solving`,
+        subTitle: `Saturation, Incubation, Illumination, Verification`,
+        embedMedia: {videos: [{url: 'https://www.youtube.com/embed/3fSB6ut-cT0'}]} /* FIXME */,
+        ifYes: [
+          hint('use breaks for incubation'),
+        ]
+      }),
       hint({title: `Explain your problem to someone (or something, like a Rubber Duck Technique)`,
         subTitle: `By explaining it, You will understand it better and You will get new ideas and insights and sometimes even the solution pops right in your mind`,
       }),
       hint('Try to see the problem in a broader context (think holistically), avoid tunnel vision; perhaps the real/root problems are somewhere else and/or I\'m using incorrect reference point in judging the situation'),
       hint('Look for root-causes (root cause analysis); use the N-whys technique.'),
       hint('Watch out for false assumptions which make you miss the actual cause of the problem'),
+      hint(`Ask "Why not?"`),
+      hint(`Attack the problem from multiple problems / aspects`),
       hint({title: `Do You think You are the only person that has this problem?`,
         subTitle: `There is a big chance many other people had the same or similar problem (but sometimes our ego makes us think that we are the only person, special, who has this problem).`,
         textBody: `So search online, ask other people, etc, and the solution (or hints) might be right at hand.`,
@@ -941,7 +1050,7 @@ export class Questions {
   'Guilt-free entertainment (fun)' = hint({
     ifYes: [
       hint(`allocate time for entertainment`),
-      hint(`first do dinner before desert`),
+      hint(`first do dinner before dessert`),
       hint(`try przyjemne z pożytecznym so that You dont feel guilty`),
       hint(`do not sacrifice other things to do entertainment`),
       hint(`Maintain a list of fun-yet-useful activities You can do` /* e.g. my list-tree of such activities in OrYoL 2020-04-03, 05:59*/),
@@ -949,6 +1058,7 @@ export class Questions {
   })
 
   'Managing gratification' = hint({
+    searchTerms: [`satisfaction`, `dopamine`],
     ifYes: [
       hint('Take gratification from little things. E.g. nicely executing tasks (good effort but don not rely on good outcomes, which are often not under our control) or everyday things'),
       hint('Take gratification from self-improvement'),
@@ -981,6 +1091,7 @@ export class Questions {
         ifYes: [
           hint('For motivation about working on habits: treat habits (which can feel boring sometimes) as BUILDING BLOCKS to build bigger and more exciting things'),
           hint(`Don't worry about having "too many" habits. Once they settle as entrenched habits, They become automatic and thus don't require effort.`),
+          hint(`Habit stacking (chains) (atomic habits)`),
         ]
       }),
       hint({title: `Remember, that most things in life are experiments.`,
@@ -1010,8 +1121,10 @@ export class Questions {
       this['Prioritizing'],
       // Choosing / satisficer not maximizer
       this['Build Momentum'],
+      // TODO hint(`Use the N-minute rule`),
       hint('Split things into smaller parts. Tackle one thing at a time. Swiss cheesing'),
-      hint('Move things into buckets/inbox/todo (GTD)'),
+      hint('Move things into buckets/inbox/todo (GTD)'), /* diagram: https://www.zenflowchart.com/guides/gtd-flowchart */
+      /* TODO balance between P and PC - & balance between top-down and bottom-up approaches. */
       this['Use stepping stones'],
       hint({ text: `First apply quicker/cheaper workarounds`,
         comments: `Even if it costs money to apply the temporary workaround. \n` +
@@ -1173,7 +1286,7 @@ export class Questions {
           hint(`Re-kindle excitement for the thing that You are supposed to be doing right now.`),
           hint(`Re-kindle / revive things that were exciting to You in the past, e.g. old music / activities / games / friends / projects`),
           hint(`Have a bias towards excitement.`),
-          hint(`Keep in mind hype cycle`),
+          hint(`Keep in mind hype cycle`), // TODO embedMedia. graphicComponents hype cycle
         ]
       }),
     ]
@@ -1238,8 +1351,18 @@ export class Questions {
           }),
         ],
       }),
-      hint({ title: `Determination!`,
+      hint({ title: `Determination for your own business`,
         subTitle: `Without determination You will not go far - you will get stuck in a kind of middle-zone limbo.`,
+        ifYes: [
+          hint({
+            title: `Recognize the struggles and ups and downs of entrepreneurs, which are inherent, but often temporary`,
+            ifYes: [
+              hint(`TODO Chaos Monkeys Book`),
+              hint(`TODO Elon Musk 2 companies about to go bankrupt (video TODO)`),
+              hint(`Heroes journey (infographic)`),
+            ]
+          })
+        ]
       }),
       hint(`Get feedback from trusted people, early and often`),
       hint({text: `Decide what kind of business You want - big / VC-funded / lifestyle / bootstrapped`,
@@ -1258,6 +1381,7 @@ export class Questions {
               hint(`Remember that beginnings are often humble and crummy and with failure`),
             ]
           }),
+          hint(`Consider pivoting`) /* FIxme dup */,
           hint({ title: `Put your "entrepreneur hat and glasses" on`,
             textBody: `Think, act, and see the world as an entrepreneur. You might want the same things as other people, like peace, prosperity, health, but you might see it different about how they should be achieved. Inspired by "Zero to One" audiobook.`
           }),
@@ -1383,6 +1507,10 @@ export class Questions {
       hint(`Mindfulness (meditation) to increase self-control and prevent "headless chicken autopilot mode"`),
       this['Discipline'],
       hint(`TODO: unbalanced`),
+      hint({
+        title: `Avoid victim mentality`,
+        searchTerms: ['self-victimization'],
+      }),
     ]
   })
 
@@ -1567,6 +1695,7 @@ export class Questions {
           hint(`You can *learn* more to *earn* more`),
         ]
       }),
+      // TODO graphicComponents Rich Dad kiosaki quadrants
     ]
   })
 
@@ -1577,6 +1706,18 @@ export class Questions {
         searchTerms: [`Decide What should I do with my life`],
         ifYes: [
           this['Use Ikigai'],
+          hint({
+            title: 'Regret minimization (Jeff Bezos)',
+            embedMedia: {
+              videos: [{url: 'https://www.youtube.com/embed/jwG_qR6XmDQ?start=68'}]
+              // videos: [{url: 'https://www.youtube.com/embed/jwG_qR6XmDQ'}]
+            }
+          }),
+          // TOOD: Should i focus on one thing or do multiple --> in case you get bored, do multiple (elon musk). Reach milestones. It's best if the areas are related/synergistic/overlapping/pivot (e.g. elon musk sharing stuff between SpaceX & Tesla) or complementary
+          hint({
+           title: 'Use your natural strengths, predispositions, tendencies. Don\'t worry about too much about weaknesses. Unless they really get in the way',
+           examples: ['Michael Jordan didn\'t worry about getting better at golf.'],
+          }),
         ]
       })
     ]
@@ -1599,7 +1740,7 @@ export class Questions {
   'Computer slow / overheating' = wish({
     ifYes: [
       hint({
-        title: `Check Browser's task manager for CPU/memory usage`,
+        title: `Check Web Browser's task manager for CPU/memory usage`,
         subTitle: `Chrome: Window → Task Manager`
       }),
     ]
@@ -1637,6 +1778,80 @@ export class Questions {
     ifYes: [
       hint(`Use spaced repetition system to learn and entrench and (wpoić)` /* FIXME reword */),
       /* to prevent it from being boring, use different visual themes */
+    ]
+  })
+
+  'Save money for retirement' = wish() // TODO
+
+  'Breathe better' = wish() // relax and massage sinuses
+
+  'Make Work more attractive' = wish({
+    ifYes: [
+      hint('Treat it like a game'),
+      hint('Treat it like an adventure (instead of being judgemental or expecting certain outcomes)'),
+      hint('Treat it like an experiment (instead of being judgemental or expecting certain outcomes)'),
+      hint('Find little things you like '),
+      hint('Find little things that are valuable'),
+      hint('Music'),
+      hint('Change "I have to" to "I want to" and "I can".'),
+    ]
+  })
+
+  'Control emotions' = wish({
+    searchTerms: ['emotional control', 'control my emotions', 'control of emotions'],
+    ifYes: [
+      hint({
+        title: 'Labelling of emotions',
+        sources: [sources['Your Brain at Work']],
+      }),
+      hint({
+        title: 'Rewire negative emotions',
+      }),
+      hint({
+        title: 'Appreciation / gratefulness',
+      }),
+    ]
+  })
+
+  'Troubleshoot problems (in general)' = wish({
+    ifYes: [
+      hint('Try to analyze the problem in as much isolation as possible'), // binary search, bisect, reduce
+      hint('Increase the signal to noise ratio'), // binary search, bisect, reduce
+    ]
+
+  })
+
+  'Find the source of a software bug' = wish({
+    ifYes: [
+      this['Troubleshoot problems (in general)']
+    ]
+  })
+
+  'Feeling lonely' = problem({
+    ifYes: [
+      question(`Do You feel lonely in a crowd?`)
+      /* Find soulmate(s) */
+      /* Surround yourself with inspirational materials to connect with people who are inspiring. */
+    ]
+  })
+
+  'Fears of AI / AGI' = problem({ /* Am I gonna lose my job to AI */
+    ifYes: [
+      hint('Skills that are still gonna be required: critical thinking, prompting, comparing & combining data from different sources, ensuring alignment (alignment problem), specifying requirements, testing /  QA, human interface, training AI/models, specific domain knowledge') /* TODO*/
+    ]
+  })
+
+  'Work-life balance' = problem({ /* Am I gonna lose my job to AI */
+    ifYes: [
+      hint({
+        title: 'Consider work-life *harmony*',
+      }), /* TODO*/
+      hint({
+        title: 'Sustained long-term productivity and effectiveness',
+        ifYes: [
+          this['Being healthy at office job/computer work'],
+        ]
+      }), /* TODO*/
     ]
   })
 

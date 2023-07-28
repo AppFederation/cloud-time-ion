@@ -1,0 +1,29 @@
+<iframe
+  *ngFor="let video of hint.embedMedia?.videos"
+  width="560" height="315"
+  [src]="getVideoIframe(video.url)"
+  title="YouTube video player" frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+></iframe>
+<app-ikigai-diagram
+  style="width: 300px; height: 200px"
+  *ngIf="hint?.embedMedia?.graphicComponents?.includes('ikigai')"
+></app-ikigai-diagram>
+<app-flow-state
+  style="width: 300px; height: 200px"
+  *ngIf="hint?.embedMedia?.graphicComponents?.includes('flow')"
+></app-flow-state>
+
+<a href="https://www.amazon.com/dp/B01EXAMPLE" target="_blank">
+  <img src="https://m.media-amazon.com/images/I/51l3CHCSFFL.jpg" style="width: 150px; height: 150px;" alt="Book 2 Cover">
+</a>
+
+<!--    [src]="sanitizer.bypassSecurityTrustResourceUrl(video.url)"
+ -->
+<!--   src="https://www.youtube.com/embed/jwG_qR6XmDQ?start=68"
+ -->
+<!--src="https://www.youtube.com/embed/vdiYtiKD8eI"-->
+
+<!--   [src]="sanitizer.bypassSecurityTrustResourceUrl(video.url)"
+-->
+<!--  web-share -->

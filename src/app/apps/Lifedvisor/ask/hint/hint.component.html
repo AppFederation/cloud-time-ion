@@ -20,14 +20,20 @@
         {{suffix}}
       </sup>
 <!--      <ion-note *ngIf="debug ?. showComponentName">HintComp</ion-note>-->
+
     </ion-card-title>
+    <ion-buttons>
+      <ion-button>
+        <ion-icon slot="icon-only" name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-card-subtitle *ngIf="! isCollapsed && wish.subTitle; let subTitle">
       {{subTitle}}
     </ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content
-    *ngIf="! isCollapsed"
+    *ngIf="! isCollapsed && (wish.example || wish.benefits || wish.textBody || wish.embedMedia || wish.comments || wish.exceptions || wish.warnings || wish.ifYesSortedByScoreFiltered ?. length)"
     style="margin-left: -10px; margin-right: -10px;"
   >
     <ion-text *ngIf="wish.textBody">
@@ -94,7 +100,7 @@
     </div>
   </div>
 
-  <ion-item *ngIf="wish.ifYesSortedByScoreFiltered ?. length" id="howToImproveCheckbox"
+  <ion-item *ngIf="wish.ifYesSortedByScoreFiltered ?. length || wish.embedMedia" id="howToImproveCheckbox"
             class="howToImproveCheckbox"
             lines="none"
   >
@@ -105,7 +111,13 @@
     ></ion-checkbox>
   </ion-item>
 
-  <div
+  <app-hint-embed-media
+    *ngIf="wish.embedMedia"
+    [hint]="wish"
+  ></app-hint-embed-media>
+
+
+    <div
     *ngIf="wish.ifYesSortedByScoreFiltered ?. length"
   >
     <div

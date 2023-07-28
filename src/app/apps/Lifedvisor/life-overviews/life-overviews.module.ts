@@ -22,7 +22,8 @@ import {EnergyComponent} from './energy/energy.component';
     RationalePageModule
   ],
   exports: [
-    GrowthDiagramComponent
+    GrowthDiagramComponent,
+    IkigaiDiagramComponent,
   ],
   declarations: [
     LifeOverviewsPage,

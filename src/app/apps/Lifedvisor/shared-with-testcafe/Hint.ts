@@ -41,7 +41,7 @@ export class LiHint {
       * bodyText? */
     public text?: string,
     public subTitle?: string,
-    /** by default not searchable; but could search this optionally */
+    /** by default, not searchable; but could search this optionally */
     public textBody?: string,
     public exceptions?: string[],
     public warnings?: string[],
@@ -57,6 +57,13 @@ export class LiHint {
      * TODO: consider removing prepositions (for on of) and articles (an the)
      */
     public searchTerms?: string[],
+    public embedMedia?: {
+      videos?: {
+        url: string
+      }[],
+      graphicComponents?: string[],
+      amazonProducts?: string[],
+    }
   ) {
   }
 
@@ -79,6 +86,7 @@ export const hintBridge = hint
 export const problem = hint
 export const wish = hint
 export const question = hint
+// TODO value / quality
 
 
 
