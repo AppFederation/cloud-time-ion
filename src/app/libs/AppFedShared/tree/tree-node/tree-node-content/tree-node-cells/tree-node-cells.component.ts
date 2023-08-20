@@ -34,12 +34,14 @@ export class TreeNodeCellsComponent implements OnInit {
 
   columns = getDictionaryValuesAsArray(this.columnsDict)
 
-  cells = this.columns.map(cell => {
-    return new OdmCell(this.treeNode, cell)
-  })
+  cells!: OdmCell<any>[]
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.cells = this.columns.map(cell => {
+      return new OdmCell(this.treeNode, cell)
+    })
+  }
 
 }
