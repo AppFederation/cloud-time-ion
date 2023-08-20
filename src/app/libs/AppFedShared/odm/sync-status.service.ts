@@ -8,6 +8,7 @@ export class SyncStatus {
   pendingUploadsCount ? : number
   pendingDownloadsCount ? : number
   isAllSynced ! : boolean
+  pendingDownloads ! : Set<string>
 }
 
 /** consider putting 'titleOfChange' here */
@@ -62,6 +63,7 @@ export class SyncStatusService extends BaseService {
       pendingUploadsCount: this.pendingPromises.size,
       pendingDownloadsCount: this.pendingDownloads.size,
       isAllSynced: !this.pendingPromises.size && !this.pendingDownloads.size,
+      pendingDownloads: this.pendingDownloads
     }
     // if ( appGlobals.feat.showDebug ) {
     //   console.log(`emitSyncStatus`, val, this.pendingDownloads)
