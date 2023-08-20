@@ -3,6 +3,7 @@ import {TreeNode} from './TreeNode'
 import {OdmItem$2} from '../../odm/OdmItem$2'
 import {OdmService2} from '../../odm/OdmService2'
 import {AuthService} from '../../../../auth/auth.service'
+import {LearnItem} from '../../../../apps/Learn/models/LearnItem'
 
 @Component({
   selector: 'app-tree-node',
@@ -32,7 +33,7 @@ export class OdmTreeNodeComponent implements OnInit {
   addChild() {
     const item$ = this.treeNode.item$
     const odmService = item$.odmService as OdmService2<any, any, any, any>
-    const newItem = odmService.newItem(undefined, {}, [item$])
+    const newItem = odmService.newItem(undefined, new LearnItem(), [item$])
     newItem.saveNowToDb()
     console.log('newItem', newItem)
   }
