@@ -289,7 +289,7 @@ export class Questions {
       hint({title: `Sampling of future bigger pleasures.`,
         subTitle: `for balance between productivity and fun`,
       }),
-      hint({title: `Overcome doubts via thinking`}),
+      hint({title: `Overcome doubts via thinking`}), /* But don't overthink */
       hint(`Create positive associations with the things You would like be motivated towards.`),
       hint(`As Confucius said: "Choose a job you love, and you will never have to work a day in your life."`),
       hint('#Visualise the benefits, the desired state'),
@@ -308,7 +308,9 @@ export class Questions {
       hint('Do not "try" to "replace" actual living with writing down notes about living, like e.g. here. Treat the notes just as supplements and optimizations. They can can cause a kind of inner heaviness (e.g. worrying too much about doing everything right). However writing down notes about balance of fun, watching out for dangerous perfectionism, can help keep a proper balance.'),
       hint('Keep in mind, that the anticipation of something happening can be as powerful and pleasurable/dopamine-inducing (or even more) as the actual experience. And much cheaper to achieve. However requires a degree of belief in it, which might require some preparation/sampling.'),
       hint('When motivation comes, for a more "fragile-motivation" task, make sure to not waste it. E.g. for programming own apps. Put other things aside for a while to ride the wave of the more valuable motivation. Write down the other pending tasks, to clear my mind of them.'),
-      hint('Do not suppress things which I am aching to do, and are '),
+      hint('Do not suppress things which I am aching to do, and are ') /* FIXME */,
+      hint('In certain situation you can replace the need for motivation, with the power of habits'),
+      hint('Use Compulsion to Closure'),
       hint('Do not try to do (or get motivated for) too many things at the time. I get motivation for one thing, then if it makes any sense, do it. Otherwise it is jumping between tasks and diluting/depleting the motivation. Do not feel *guilty* of not doing some-other-task, while doing current task.' +
         'Even if the other task\'s priority might seem slightly higher, the importance of riding the wave of motivation and finishing the task at hand, is important. Unless the other task is really urgent.'),
       hint({title: 'Avoid self-oppression',
@@ -351,6 +353,7 @@ export class Questions {
   })
 
   'Clear thinking' = hint({
+    searchTerms: ['think better', 'be smarter', 'how to get smarter'],
     ifYes: [
       hint({
         text: 'Critical thinking',
@@ -373,11 +376,15 @@ export class Questions {
   })
 
   'Discipline' = hint({
+    searchTerms: ['self-control'], /* alternative terms for display. TODO: is self-control the same as self-discipline? Self-control more raw basic? */
     titleSuffix: IN_GENERAL,
     // negative/problem version for text search: "I don't feel like ..."
     ifYes: [
       hint(`Visualise the positive/negative consequences of doing / not doing the things You should do.`),
       hint(`Have a long time perspective`),
+      hint(`Mindfulness`),
+      hint(`Good breathing`),
+      hint(`Good`),
       hint({ text: `*Delaying* and *Dosage* of gratification, instead of *denying* of gratification`,
         comments: `Distinguish between "No" and "Yes/Maybe but later". A "No" is negative/inhibitive thought which can lower Your dopamine level.`,
         ifYes: [

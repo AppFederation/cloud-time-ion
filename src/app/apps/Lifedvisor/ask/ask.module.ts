@@ -10,6 +10,9 @@ import { AskPage } from './ask.page';
 import {HintComponent} from './hint/hint.component';
 import {SharedModule} from '../../../shared/shared.module'
 import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
+import {HintEmbedMediaComponent} from './hint/hint-embed-media/hint-embed-media.component'
+import {LifeOverviewsPageModule} from '../life-overviews/life-overviews.module'
+import {RationalePageModule} from '../rationale/rationale.module'
 
 @NgModule({
   imports: [
@@ -19,10 +22,13 @@ import {OdmModule} from '../../../libs/AppFedShared/odm/odm.module'
     AskPageRoutingModule,
     SharedModule,
     OdmModule,
+    LifeOverviewsPageModule,
+    RationalePageModule,
   ],
   declarations: [
     AskPage,
     HintComponent,
-  ]
+    HintEmbedMediaComponent,
+  ],
 })
 export class AskPageModule {}
