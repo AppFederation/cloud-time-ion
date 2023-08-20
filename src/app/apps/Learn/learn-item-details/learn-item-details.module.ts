@@ -57,7 +57,6 @@ const routes: Routes = [
         ItemClassEditComponent,
         ItemClassToLearnEditComponent,
         StatusesEditComponent,
-        ItemSubItemsComponent,
     ],
 })
 export class LearnItemDetailsPageModule {}

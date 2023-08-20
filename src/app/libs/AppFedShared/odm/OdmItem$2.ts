@@ -8,6 +8,7 @@ import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {nullish} from '../utils/type-utils'
 import {ItemId} from './OdmCollectionBackend'
 import {appGlobals} from '../g'
+import {OdmList$} from './odm-list$'
 
 export type UserId = string
 
@@ -63,6 +64,11 @@ export class OdmItem$2<
   TRawPatch extends /* TODO: maybe this does not have to be part of public interface */
     OdmPatch<TRawData> =
     OdmPatch<TRawData>,
+  TChild extends
+    // typeof this =
+    // typeof this
+    TSelf =
+    TSelf
 >
   implements PatchableObservable<TInMemData | nullish, TMemPatch>
 {
@@ -92,6 +98,9 @@ export class OdmItem$2<
    * This has `list` in name, so should only react to changes of the list itself (not object data contents
    * */
   public childrenList$ = new CachedSubject<TSelf[] | undefined>()
+
+  public children$: OdmList$<TChild>
+    = new OdmList$<TChild>()//new CachedSubject<TSelf[] | undefined>()
 
   public childrenListener?: any
 
@@ -376,7 +385,7 @@ export class OdmItem$2<
       return
     }
     /* FIXME: this is copy-paste from entire-collection loading */
-    /* TODO: encapsulate into OdmCollection object ?
+    /* TODO: encapsulate into OdmCollection object ? ...
       children$, allItems$
     *   */
     const service = this.odmService

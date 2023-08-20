@@ -149,8 +149,10 @@
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
     <app-item-sub-items
-      *ngIf="feat.itemsTree.mockups"
+      [item$]="item$"
     ></app-item-sub-items>
+    <!--       *ngIf="feat.itemsTree.mockups"
+    -->
 
     <app-item-side-editor
       *ngFor="let side of sidesDefsArray"

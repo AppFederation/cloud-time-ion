@@ -16,6 +16,9 @@ import {WhatNextButtonComponent} from './what-next-button/what-next-button.compo
 import {RouterModule} from '@angular/router'
 import {AppLogoComponent} from '../apps/Common/app-logo/app-logo.component'
 import {BreadcrumbsComponent} from '../libs/AppFedShared/breadcrumbs/breadcrumbs.component'
+import {ItemSubItemComponent} from '../apps/Learn/learn-item-details/item-sub-items/item-sub-item/item-sub-item.component'
+import {LearnItemDetailsPageModule} from '../apps/Learn/learn-item-details/learn-item-details.module'
+import {ItemSubItemsComponent} from '../apps/Learn/learn-item-details/item-sub-items/item-sub-items.component'
 
 let imports = [
   ReactiveFormsModule,
@@ -37,23 +40,27 @@ const exportedDeclarations = [
 ]
 
 @NgModule({
-    imports: [
-        CommonModule,
-        IonicModule,
-        ...imports,
-        EditorModule,
-        RouterModule,
-    ],
+  imports: [
+    CommonModule,
+    IonicModule,
+    ...imports,
+    EditorModule,
+    RouterModule,
+  ],
     exports: [
         ...imports,
         ...exportedDeclarations,
         BreadcrumbsComponent,
+        ItemSubItemComponent,
+        ItemSubItemsComponent,
     ],
     providers: [],
     declarations: [
         ...exportedDeclarations,
         BreadcrumbsComponent,
-    ]
+        ItemSubItemComponent,
+        ItemSubItemsComponent,
+    ],
 })
 export class SharedModule {
 }
