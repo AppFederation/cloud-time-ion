@@ -19,6 +19,7 @@ export class OdmInMemItemWriteOnce {
    * */
   public isDeleted?: OdmTimestamp
   public owner?: UserId
+  public parentIds?: string[]
 }
 
 export class OdmInMemItem extends OdmInMemItemWriteOnce {
@@ -114,6 +115,7 @@ export class OdmItem$2<
     initialInMemData?: TInMemData,
     public parents?: TSelf[]
   ) {
+    console.log('parents', parents)
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
       // TODO: this.hasPendingPatch = true ?
@@ -150,6 +152,11 @@ export class OdmItem$2<
   private setIdAndWhenCreatedIfNecessary() {
     this.currentVal ! . owner = this.odmService.authService.authUser$?.lastVal?.uid
     this.currentVal ! . whenCreated = this.currentVal ! . whenCreated || OdmBackend.nowTimestamp()
+    /* FIXME move to smth like setMetadata(): */
+    this.currentVal ! . parentIds = this.parents?.filter(
+      p => p.id /* FIXME this is a hack if parent was not saved yet (didn't get id yet) */
+    )?.map(p => p.id as string) ?? []
+
     if ( ! this.id ) {
       this.id = this.generateItemId()
       // this.currentVal.id = this.id
@@ -294,6 +301,7 @@ export class OdmItem$2<
   }
 
   public onChildrenAddedLocally(children: TSelf[]) {
+    console.log('onChildrenAddedLocally', children)
     this.childrenList$.nextWithCache([
       ... (this.childrenList$.lastVal ?? []),
       ... children,

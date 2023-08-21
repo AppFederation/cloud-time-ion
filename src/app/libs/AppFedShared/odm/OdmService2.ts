@@ -57,7 +57,8 @@ export abstract class OdmService2<
 
   odmBackendFactory = this.injector.get(OdmBackend)
 
-  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(this.injector, this.className)
+  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(this.injector,
+    this.className + '_DEBUG')
 
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
      And itemsJustList$ for just changes of list, without reporting changes of individual item data-s
@@ -65,7 +66,8 @@ export abstract class OdmService2<
   localItems$ = new CachedSubject<TOdmItem$[]>([] /* TODO: make undefined  initially to (force) distinguish loading (and null -> error) from empty list */
     // TODO: onSubscribe : set flag (in CachedSubject.subscribersCount, call setListener )
   ).onSubscribe(() => {
-    this.setBackendListener()
+    // this.setBackendListener()
+    // this.setBackendListener()
   })
 
   // get items(): TOdmItem$[]
@@ -95,6 +97,7 @@ export abstract class OdmService2<
     public className: string,
     public opts : OdmServiceOpts = new OdmServiceOpts(),
   ) {
+    this.className += '_DEBUG'
     this.setBackendListenerIfNecessary()
     // this.subscribeToBackendCollection();
   }
