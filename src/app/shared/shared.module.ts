@@ -19,6 +19,7 @@ import {BreadcrumbsComponent} from '../libs/AppFedShared/breadcrumbs/breadcrumbs
 import {ItemSubItemComponent} from '../apps/Learn/learn-item-details/item-sub-items/item-sub-item/item-sub-item.component'
 import {LearnItemDetailsPageModule} from '../apps/Learn/learn-item-details/learn-item-details.module'
 import {ItemSubItemsComponent} from '../apps/Learn/learn-item-details/item-sub-items/item-sub-items.component'
+import {OdmTreeModule} from '../libs/AppFedShared/tree/odm-tree.module'
 
 let imports = [
   ReactiveFormsModule,
@@ -46,6 +47,7 @@ const exportedDeclarations = [
     ...imports,
     EditorModule,
     RouterModule,
+    OdmTreeModule,
   ],
     exports: [
         ...imports,

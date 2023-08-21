@@ -7,10 +7,14 @@
   <!--    [cell]="titleCell"-->
   <!--  >-->
   <!--  </app-rich-text-edit-cell>-->
-  (public)
-  <ion-button size="small">Add to my categories
-    <!-- bookmark icon like in LinkedIn Learning -->
-  </ion-button>
+
+  <!--  (public)-->
+
+<!--  <ion-button size="small">Add to my categories-->
+<!--    &lt;!&ndash; bookmark icon like in LinkedIn Learning &ndash;&gt;-->
+<!--  </ion-button>-->
+
+  Title: {{(val$ | async)?.title}}
 
   <app-tree-node-cells
     [treeNode]="treeNode"
