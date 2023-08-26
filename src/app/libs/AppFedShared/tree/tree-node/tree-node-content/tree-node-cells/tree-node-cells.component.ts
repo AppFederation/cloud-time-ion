@@ -29,6 +29,10 @@ export class TreeNodeCellsComponent implements OnInit {
     title: column({
       type: 'richText',
       flexGrow: 1,
+    }),
+    answer: column({
+      type: 'richText',
+      flexGrow: 2,
     })
   })
 

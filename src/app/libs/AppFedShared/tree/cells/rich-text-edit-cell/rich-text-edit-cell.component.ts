@@ -9,6 +9,10 @@ import {CellNavigationService} from '../../../cell-navigation.service'
 })
 export class RichTextEditCellComponent implements OnInit {
 
+  /** TODO use RichTextEditComponent.
+   * Later the fancy component could be activated on-demand by some 3-dots menu button or edit icon
+   * Pass FormControl
+   * */
   @ViewChild('contentEditableEl', {static: true})
   contentEditableEl !: ElementRef
 

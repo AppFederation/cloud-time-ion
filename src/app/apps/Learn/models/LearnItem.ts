@@ -50,6 +50,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   id?: LearnItemId
   whenAdded ! : OdmTimestamp
   title?: string
+  answer?: string
   isTask?: boolean
   isToLearn?: boolean
 
