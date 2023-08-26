@@ -4,6 +4,7 @@ import {LearnItem, LearnItemId} from '../models/LearnItem'
 import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {LearnItem$} from '../models/LearnItem$'
+import {MigrateImgBase64Service} from './migrate-img-base64'
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,15 @@ export class LearnDoService extends OdmService2<
 
   constructor(
     injector: Injector,
+    public migrate: MigrateImgBase64Service,
   ) {
     super(
       injector,
       'LearnItem'
     )
+    // this.migrate.processLearnItems()
+
+
     // console.log(`this.odmCollectionBackend`, this.odmCollectionBackend)
     // this.localItems$.subscribe(items => {
     //   console.log(`LearnDoService items.length`, items.length)
