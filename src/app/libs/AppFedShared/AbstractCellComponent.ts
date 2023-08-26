@@ -7,7 +7,7 @@ import {BaseComponent} from './base/base.component'
 export abstract class AbstractCellComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input()
-  public cell: OdmCell = new OdmCell() /* FIXME: dummy */
+  public cell!: OdmCell // = new OdmCell() /* FIXME: dummy */
 
   public cellNavigationService = this.injector.get(CellNavigationService)
 

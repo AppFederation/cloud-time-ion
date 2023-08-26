@@ -19,13 +19,13 @@ export class TreeNodeCellsComponent implements OnInit {
   treeNode !: TreeNode
 
   columnsDict = setIdsFromKeys({
-    /** or durationEstimate */
-    estimatedTime: column({
-      type: 'minMidMax'
-    }),
-    timeTracking: column({
-      type: 'timeTracking'
-    }),
+    // /** or durationEstimate */
+    // estimatedTime: column({
+    //   type: 'minMidMax'
+    // }),
+    // timeTracking: column({
+    //   type: 'timeTracking'
+    // }),
     title: column({
       type: 'richText',
       flexGrow: 1,
@@ -39,8 +39,8 @@ export class TreeNodeCellsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.cells = this.columns.map(cell => {
-      return new OdmCell(this.treeNode, cell)
+    this.cells = this.columns.map(column => {
+      return new OdmCell(this.treeNode, column)
     })
   }
 

@@ -27,13 +27,23 @@ export function throttleTimeWithLeadingTrailing_ReallyThrottle<T>(timeMs: Durati
   )
 }
 
-/** also: interface Patchable<TInMemVal> */
+/** also: interface Patchable<TInMemVal>
+ *
+ * This a bit like Angular's FormControl, but smarter coz CachedSubject (later could be BehaviorSubject).
+ * And better generic types?
+ * Also, not depending on Angular.
+ * THOUGH no validation here...
+ * Though this could be partially taken from Angular FormControl
+ *
+ * Alternatively, I could make FormControl$ --- completely compatible with formControl but with val$ BehaviorSubject
+ *
+ * */
 export type DictPatch<TData> = Partial<TData>
 
-export interface PatchableObservable<TInMemData, TMemPatch = DictPatch<TInMemData>> {
+export interface PatchableObservable<TInMemData, TInMemPatch = DictPatch<TInMemData>> {
 
   locallyVisibleChanges$: CachedSubject<TInMemData>
 
-  patchThrottled(patch: TMemPatch): void
+  patchThrottled(patch: TInMemPatch): void
 
 }

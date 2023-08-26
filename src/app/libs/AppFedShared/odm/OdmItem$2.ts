@@ -9,6 +9,7 @@ import {nullish} from '../utils/type-utils'
 import {ItemId} from './OdmCollectionBackend'
 import {appGlobals} from '../g'
 import {OdmList$} from './odm-list$'
+import {tap} from 'rxjs/operators'
 
 export type UserId = string
 
@@ -429,7 +430,43 @@ export class OdmItem$2<
     return ancestorIds
   }
 
+  /** Todo rename to distinguish actual root from tree-starting-at-item or visual root */
   private isTreeRoot() {
     return this.id === this.odmService.treeRootItemId
   }
+
+  /** another name: selectField$P */
+  getObservablePatchableForField<TKey extends keyof TInMemData>(fieldName: TKey): PatchableObservable<TInMemData[TKey] | nullish, TMemPatch[TKey] | nullish> {
+    const odmItem$ = this
+    const mapFunc = (val: TInMemData| nullish): TInMemData[TKey] | undefined => {
+      // kinda like `select()` in ngrx
+      return val?.[fieldName]
+    }
+    const cachedSubject = new CachedSubject<TInMemData[TKey] | nullish>(mapFunc(odmItem$.currentVal))
+    this.val$.pipe(
+      tap((value) => {
+        console.log(`getObservablePatchableForField cachedSubject value`, value)
+        // Use the same mapping function to avoid duplicate code
+        const transformedValue = mapFunc(value);
+        console.log(`getObservablePatchableForField transformedValue`, transformedValue)
+        cachedSubject.next(transformedValue); // Update mappedSubject with the transformed value
+      })
+    ).subscribe();
+    // FIXME: cache this in a map per-field
+    const po: PatchableObservable<TInMemData[TKey] | nullish> = {
+
+      locallyVisibleChanges$: cachedSubject,
+
+      patchThrottled(patch: TInMemData[TKey]) {
+        console.log(`getObservablePatchableForField patchThrottled`, patch)
+        const patch1 = {
+          [fieldName]: patch
+        } as unknown as TMemPatch /* here need to cast coz not all fields are patchable (not all are `keyof TMemPatch)*/
+        odmItem$.patchThrottled(patch1)
+      }
+    }
+    return po
+
+  }
+
 }
