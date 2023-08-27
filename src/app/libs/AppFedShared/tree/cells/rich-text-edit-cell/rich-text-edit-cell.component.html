@@ -4,9 +4,16 @@ Rich text:
   #contentEditableEl
   contenteditable
 >
+
   <!--
      [ngClass]="{'done-title': isDone}"
   (keydown.backspace)="onKeyDownBackspaceOnTitle()"
    -->
 
 </div>
+
+RichTextComp:
+<app-rich-text-edit
+  [formControl1]="formControl"
+></app-rich-text-edit>
+

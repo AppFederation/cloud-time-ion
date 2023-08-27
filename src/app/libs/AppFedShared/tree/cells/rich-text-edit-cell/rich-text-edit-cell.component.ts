@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {OdmCell} from '../OdmCell'
 import {CellNavigationService} from '../../../cell-navigation.service'
+import {FormControl, UntypedFormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-rich-text-edit-cell',
@@ -19,6 +20,8 @@ export class RichTextEditCellComponent implements OnInit {
   @Input()
   cell !: OdmCell
 
+  formControl!: FormControl
+
   constructor(
     public cellNavigationService: CellNavigationService
   ) {
@@ -28,6 +31,12 @@ export class RichTextEditCellComponent implements OnInit {
   ngOnInit() {
     this.contentEditableEl
       .nativeElement.addEventListener('input', (event: any) => this.onInputChanged(event, this.getInputValue()))
+
+    this.formControl = new UntypedFormControl()
+
+    this.formControl.valueChanges.subscribe(val => {
+      this.cell.patchThrottled(val)
+    })
   }
 
   protected onInputChanged(event: any, newValue: any) {
