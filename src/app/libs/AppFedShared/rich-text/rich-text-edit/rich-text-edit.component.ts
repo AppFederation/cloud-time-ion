@@ -26,6 +26,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
 
   @Input() formControl1 ! : UntypedFormControl
 
+  /* TODO maybe put them in one @Input() config or options */
   @Input() placeholder = ''
 
   @Input() showToolbar = true

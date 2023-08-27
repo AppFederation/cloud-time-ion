@@ -7,6 +7,7 @@ import {TreeNodeContentComponent} from './tree-node/tree-node-content/tree-node-
 import {RichTextEditCellComponent} from './cells/rich-text-edit-cell/rich-text-edit-cell.component'
 import {TreeNodeCellsComponent} from './tree-node/tree-node-content/tree-node-cells/tree-node-cells.component'
 import {MinMidMaxCellComponent} from './cells/min-mid-max-cell/min-mid-max-cell.component'
+import {SharedModule} from '../../../shared/shared.module'
 
 const exportDeclarations = [
   MinMidMaxCellComponent,
@@ -18,10 +19,11 @@ const exportDeclarations = [
 ]
 
 @NgModule({
-  imports: [
-    CommonModule,
-    IonicModule,
-  ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        SharedModule,
+    ],
   declarations: [
     ...exportDeclarations,
   ],

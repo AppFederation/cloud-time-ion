@@ -40,6 +40,10 @@ const exportedDeclarations = [
   AppLogoComponent,
 ]
 
+/** TODO i prolly need a utils module with zero of my own deps (or at least no deps that have more of my own deps)
+ * or OdmShared
+ *
+ * */
 @NgModule({
   imports: [
     CommonModule,
@@ -47,21 +51,16 @@ const exportedDeclarations = [
     ...imports,
     EditorModule,
     RouterModule,
-    OdmTreeModule,
   ],
     exports: [
         ...imports,
         ...exportedDeclarations,
         BreadcrumbsComponent,
-        ItemSubItemComponent,
-        ItemSubItemsComponent,
     ],
     providers: [],
     declarations: [
         ...exportedDeclarations,
         BreadcrumbsComponent,
-        ItemSubItemComponent,
-        ItemSubItemsComponent,
     ],
 })
 export class SharedModule {

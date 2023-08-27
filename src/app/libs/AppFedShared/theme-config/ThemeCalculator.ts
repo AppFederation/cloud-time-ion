@@ -71,7 +71,7 @@ export class ThemeCalculator {
     // root.style.setProperty(`--ion-color-${colorName}-rgb`, colorVal);
     const centralColor = shadeColor(colorVal, centerVal)
     const luminance1 = luminance(getRgbColorFromHex(centralColor))
-    console.log('luminance1 ' + colorName + ` $centralColor`, luminance1)
+    // console.log('luminance1 ' + colorName + ` $centralColor`, luminance1)
     root.style.setProperty(`--ion-color-${colorName}-contrast`,
       luminance1 < themeOptions.contrastLuminanceThreshold ? 'white' : 'black');
     // root.style.setProperty(`--ion-color-${colorName}-muted`,

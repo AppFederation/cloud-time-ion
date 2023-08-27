@@ -22,6 +22,8 @@ import {PhysicalHealthImpactLevelEditComponent} from './physical-health-impact-l
 import {MentalHealthImpactLevelEditComponent} from './mental-health-impact-level-edit/mental-health-impact-level-edit.component'
 import {OdmUiModule} from '../../../libs/AppFedSharedIonic/odm-ui/odm-ui.module'
 import {ItemSubItemsComponent} from './item-sub-items/item-sub-items.component'
+import {ItemSubItemComponent} from './item-sub-items/item-sub-item/item-sub-item.component'
+import {OdmTreeModule} from '../../../libs/AppFedShared/tree/odm-tree.module'
 
 const routes: Routes = [
   {
@@ -45,6 +47,7 @@ const routes: Routes = [
         SharedModule,
         EditSharedModule,
         OdmUiModule,
+        OdmTreeModule,
     ],
     exports: [
     ],
@@ -57,6 +60,8 @@ const routes: Routes = [
         ItemClassEditComponent,
         ItemClassToLearnEditComponent,
         StatusesEditComponent,
+        ItemSubItemComponent,
+        ItemSubItemsComponent,
     ],
 })
 export class LearnItemDetailsPageModule {}

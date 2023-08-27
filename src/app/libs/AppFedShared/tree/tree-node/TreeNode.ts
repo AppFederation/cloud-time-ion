@@ -9,6 +9,7 @@ export class TreeNode<
     OdmItem$2<any, any, any, any>
   > {
 
+  /* TODO use OdmList$ */
   childNodesList$: Observable<TreeNode<TOdmItem$>[] | undefined> = this.item$.childrenList$.pipe(map((children: TOdmItem$[] | undefined) => {
     /* FIXME: do not create new TreeNode each time */
     return !children ? undefined : children.map((childItem: TOdmItem$) => {

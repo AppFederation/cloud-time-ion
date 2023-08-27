@@ -12,7 +12,7 @@ import {TreeNode} from '../tree-node/TreeNode'
  * The coordinates should be serializable (for URL / local storage / DB), e.g. for last cursor focus location.
  *
  * Cell should be the place where to handle protection from incoming changes from DB, which are really induced by local user edits.
- * Because it's view's-model (model but already backing a particular UI component)
+ * Because it's view's-model (model but already backing a particular UI component).
  *
  *
  * This could also handle stuff like aggregate values (as sub-cells?)
