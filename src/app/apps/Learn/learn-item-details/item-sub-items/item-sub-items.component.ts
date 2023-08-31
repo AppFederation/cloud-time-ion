@@ -12,7 +12,7 @@ export class ItemSubItemsComponent implements OnInit {
   /** maybe could strive to accept just OdmList$ */
   @Input() item$!: LearnItem$
 
-  list$!: BehaviorSubject<LearnItem$[]>
+  // list$!: BehaviorSubject<LearnItem$[]>
 
 
   /* might want an @Input with root-based tree class like in OrYoL for operations on entire tree like calculating, finding node below, etc.
@@ -22,10 +22,10 @@ export class ItemSubItemsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.list$ = this.item$.children$.list$
+    // this.list$ = this.item$.children$.list$
   }
 
   newItem() {
-    this.item$.children$.add(new LearnItem$(this.item$.odmService, undefined, { title: 'Test title ' + new Date() } as any))
+    // this.item$.children$.add(new LearnItem$(this.item$.odmService, undefined, { title: 'Test title ' + new Date() } as any))
   }
 }

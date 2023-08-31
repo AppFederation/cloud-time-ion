@@ -41,7 +41,7 @@ import {getActiveElementCaretPos, getSelectionCursorState} from '../../../../lib
 import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {PopoverController} from '@ionic/angular'
-import {TreeNodeMenuComponent} from '../tree-node-menu/tree-node-menu.component'
+import {TreeNodeMenuPopoverComponent} from '../tree-node-menu/tree-node-menu-popover.component'
 import {INodeContentComponent} from './INodeContentComponent'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {OryTreeTableNodeContent} from '../../tree-model/OryTreeTableNodeContent'
@@ -414,7 +414,7 @@ export class NodeContentComponent implements OnInit, AfterViewInit, OnDestroy, I
 
   async onClickClassIcon($event: MouseEvent) {
     const popover = await this.popoverController.create({
-      component: TreeNodeMenuComponent,
+      component: TreeNodeMenuPopoverComponent,
       componentProps: {
         treeNode: this.treeNode,
         treeHost: this.treeHost,

@@ -1,11 +1,11 @@
-import {OdmItem} from "../libs/AppFedShared/odm/OdmItem";
+import {OdmItem__OLD__} from "../libs/AppFedShared/odm/OdmItem__OLD__";
 import {TimersService} from "./timers.service";
 import {OdmItemId} from "../libs/AppFedShared/odm/OdmItemId";
 import {FIXME} from "../libs/AppFedShared/utils/log";
 
 export type TimerId = OdmItemId
 
-export class TimerItem extends OdmItem<TimerItem> {
+export class TimerItem extends OdmItem__OLD__<TimerItem> {
 
   get msLeft() {
     if ( ! this.endTime ) {

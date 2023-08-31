@@ -1,15 +1,14 @@
 /** Object-Document/Database Mapping item */
 import {DictPatch, PatchableObservable, throttleTimeWithLeadingTrailing} from "../utils/rxUtils";
 import {OdmItemId} from "./OdmItemId";
-import {debugLog, errorAlert} from "../utils/log";
 import {OdmService2} from './OdmService2'
 import {OdmBackend, OdmTimestamp} from './OdmBackend'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {nullish} from '../utils/type-utils'
-import {ItemId} from './OdmCollectionBackend'
 import {appGlobals} from '../g'
 import {OdmList$} from './odm-list$'
 import {tap} from 'rxjs/operators'
+import {getNowTimePointSuitableForId} from './utils'
 
 export type UserId = string
 
@@ -156,7 +155,7 @@ export class OdmItem$2<
     /* FIXME move to smth like setMetadata(): */
     this.currentVal ! . parentIds = this.parents?.filter(
       p => p.id /* FIXME this is a hack if parent was not saved yet (didn't get id yet) */
-    )?.map(p => p.id as string) ?? []
+    )?.map(p => p.id as string) ?? [] /* FIXME: on the loading/receiving side, the this.parents are not set in-mem? */
 
     if ( ! this.id ) {
       this.id = this.generateItemId()
@@ -165,9 +164,7 @@ export class OdmItem$2<
   }
 
   private generateItemId(): TItemId {
-    return ('' + this.odmService.className + "__" + new Date().toISOString()
-      .replace('T', '__')
-      .replace(/:/g, '.') + '_') as TItemId  // hack
+    return ('' + this.odmService.className + "__" + getNowTimePointSuitableForId() + '_') as TItemId  // hack
   }
 
   patchThrottled(patch: TMemPatch, modificationOpts?: ModificationOpts) {
@@ -264,8 +261,11 @@ export class OdmItem$2<
   }
 
   applyDataFromDbAndEmit(incomingConverted: TInMemData) {
+    console.error(`FIXME: applyDataFromDbAndEmit() - this should be really where canApplyDataToViewGivenColumnLocalEdits() protection stuff is done!! Though another protection is to prevent infinite loop in e.g. rich text edit -> FormControl -> (loop). But this could be a flag like \`isApplying = true\` or isCurrentlyPatchingFromLocalEdit, try-finally at UI COMPONENT level? And use monotonic clock?`)
     // Object.assign(this, incomingConverted) // TODO:
     this.emitNewVal(incomingConverted)
+    this.parents = incomingConverted?.parentIds?.map(id => this.odmService.obtainItem$ById(id))
+    console.error(`FIXME: set this.parents (otherwise they will be destroyed when patching). And this.parents$. Though, 2 sources of truth: inMemData and parents$. this.parents value: `, this.parents, this.getParentIds() )
   }
 
   private emitNewVal(newVal: TInMemData) {
@@ -444,6 +444,7 @@ export class OdmItem$2<
     }
     const cachedSubject = new CachedSubject<TInMemData[TKey] | nullish>(mapFunc(odmItem$.currentVal))
     this.val$.pipe(
+      /* .map here? */
       tap((value) => {
         console.log(`getObservablePatchableForField cachedSubject value`, value)
         // Use the same mapping function to avoid duplicate code
@@ -451,7 +452,8 @@ export class OdmItem$2<
         console.log(`getObservablePatchableForField transformedValue`, transformedValue)
         cachedSubject.next(transformedValue); // Update mappedSubject with the transformed value
       })
-    ).subscribe();
+    )/*.pipe()*/.subscribe();
+    // toCachedSubject()
     // FIXME: cache this in a map per-field
     const po: PatchableObservable<TInMemData[TKey] | nullish> = {
 

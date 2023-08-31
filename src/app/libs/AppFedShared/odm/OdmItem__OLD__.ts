@@ -25,7 +25,7 @@ export type OdmPatch<TData> = Partial<TData>
 /**
  * @deprecated
  */
-export class OdmItem<T extends OdmItem<T>, TData = T> {
+export class OdmItem__OLD__<T extends OdmItem__OLD__<T>, TData = T> {
 
   public locallyVisibleChanges$ = new CachedSubject<T>(this.asT)
   public locallyVisibleChangesThrottled$ = new CachedSubject<T>(this.asT)
@@ -107,7 +107,7 @@ export class OdmItem<T extends OdmItem<T>, TData = T> {
   }
 
   toDbFormat(): TData {
-    let dbFormat = Object.assign({}, this) as Partial<OdmItem<any>>;
+    let dbFormat = Object.assign({}, this) as Partial<OdmItem__OLD__<any>>;
     delete dbFormat.odmService
     delete dbFormat.locallyVisibleChanges$
     delete dbFormat.locallyVisibleChangesThrottled$

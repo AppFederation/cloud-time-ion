@@ -11,21 +11,23 @@
     and missing child values
 -->
 
-<ng-container
-  *ngFor="let cell of cells"
->
-  <!-- TODO: maybe separate cell type resolver component, to be reusable also in property sheets, options popups, etc -->
-  <ng-container *ngIf="cell.type === 'richText'">
 
-    <app-rich-text-edit-cell
-      [cell]="cell"
-    ></app-rich-text-edit-cell>
-  </ng-container>
 
-  <ng-container *ngIf="cell.type === 'minMidMax'">
-    <app-min-mid-max-cell
-      [cell]="cell"
-    ></app-min-mid-max-cell>
-  </ng-container>
+<!--<ng-container-->
+<!--  *ngFor="let cell of cells"-->
+<!--&gt;-->
+<!--  &lt;!&ndash; TODO: maybe separate cell type resolver component, to be reusable also in property sheets, options popups, etc &ndash;&gt;-->
+<!--  <ng-container *ngIf="cell.type === 'richText'">-->
 
-</ng-container>
+<!--    <app-rich-text-edit-cell-->
+<!--      [cell]="cell"-->
+<!--    ></app-rich-text-edit-cell>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container *ngIf="cell.type === 'minMidMax'">-->
+<!--    <app-min-mid-max-cell-->
+<!--      [cell]="cell"-->
+<!--    ></app-min-mid-max-cell>-->
+<!--  </ng-container>-->
+
+<!--</ng-container>-->

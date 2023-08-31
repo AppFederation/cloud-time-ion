@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  /*padding: 16px;*/
+  background-color: var(--ion-background-color);
+}
+
+:host:hover {
+  border-left: var(--ion-color-secondary-contrast-muted) 3px solid;
+  /*background-color: var(--ion-color-secondary-contrast-muted);*/
+}

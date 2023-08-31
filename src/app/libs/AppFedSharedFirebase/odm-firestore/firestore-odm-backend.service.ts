@@ -3,7 +3,7 @@ import {FirestoreOdmCollectionBackend} from "./FirestoreOdmCollectionBackend";
 import {Injectable, Injector} from "@angular/core";
 import {debugLog, errorAlert} from "../../AppFedShared/utils/log";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {OdmItem} from "../../AppFedShared/odm/OdmItem";
+import {OdmItem__OLD__} from "../../AppFedShared/odm/OdmItem__OLD__";
 
 /**
  *
@@ -31,7 +31,7 @@ export class FirestoreOdmBackend extends OdmBackend {
     this.initDb()
   }
 
-  createCollectionBackend<T extends OdmItem<T>>(injector: Injector, className: string)
+  createCollectionBackend<T extends OdmItem__OLD__<T>>(injector: Injector, className: string)
       : FirestoreOdmCollectionBackend<any /* hack after strict */>
   {
     return new FirestoreOdmCollectionBackend<T>(injector, className, this)

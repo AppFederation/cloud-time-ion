@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TreeNode} from './TreeNode'
+import {OdmTreeNode} from './OdmTreeNode'
 import {OdmItem$2} from '../../odm/OdmItem$2'
 import {OdmService2} from '../../odm/OdmService2'
 import {AuthService} from '../../../../auth/auth.service'
@@ -12,10 +12,8 @@ import {LearnItem} from '../../../../apps/Learn/models/LearnItem'
 })
 export class OdmTreeNodeComponent implements OnInit {
 
-  expanded = true
-
   @Input()
-  treeNode!: TreeNode<OdmItem$2<any, any, any, any>>
+  treeNode!: OdmTreeNode<OdmItem$2<any, any, any, any>>
 
   constructor(
     public authService: AuthService,
@@ -38,7 +36,7 @@ export class OdmTreeNodeComponent implements OnInit {
     console.log('newItem', newItem)
   }
 
-  trackById(index: number, node: TreeNode) {
+  trackById(index: number, node: OdmTreeNode) {
     return node.item$.id
   }
 }

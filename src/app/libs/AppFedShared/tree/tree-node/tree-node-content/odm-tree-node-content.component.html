@@ -1,0 +1,46 @@
+<div
+  style="display: flex; flex-direction: row; align-items: center"
+  (keydown.arrowleft)="onArrowLeft()"
+  (keydown.alt.arrowleft)="onArrowLeft()"
+  (keydown.meta.arrowleft)="onArrowLeft()"
+>
+  <i
+    style="color: var(--ion-color-secondary); vertical-align: middle; padding-top: 3px"
+    class="material-icons tappable-icon actionable"
+    (tap)="treeNode.isExpanded = ! treeNode.isExpanded"
+  >
+    <!--  {{ treeNode.hasChildren ? 'expand_more' : 'add_circle' }}-->
+    <!-- Idea: add_circle icon if no children (therefore no expand/collapse) and would create child node -->
+    expand_more
+  </i>
+
+  <i
+    style="vertical-align: middle"
+    class="material-icons tappable-icon actionable"
+    (click)="onClickClassIcon($event)"
+  >
+    question_mark
+  </i>
+  <!--  (public)-->
+
+  <app-rich-text-edit-cell
+    style="flex-grow: 1"
+    [cell]="mapColumnIdToCell.get('title')!"
+  ></app-rich-text-edit-cell>
+
+  <!--  <ion-button size="small">Add to my categories-->
+<!--    &lt;!&ndash; bookmark icon like in LinkedIn Learning &ndash;&gt;-->
+<!--  </ion-button>-->
+
+<!--  Title: {{(val$ | async)?.title}}-->
+<!--  Answer: {{(val$ | async)?.answer}}-->
+
+<!--  <app-tree-node-cells-->
+<!--    [treeNode]="treeNode"-->
+<!--  >-->
+<!--  </app-tree-node-cells>-->
+
+</div>
+
+
+

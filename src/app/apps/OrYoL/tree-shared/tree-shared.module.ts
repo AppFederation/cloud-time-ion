@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NodeContentComponent} from './node-content/node-content.component'
 import {NumericCellComponent} from './cells/node-cell/numeric-cell.component'
-import {TreeNodeMenuComponent} from './tree-node-menu/tree-node-menu.component'
+import {TreeNodeMenuPopoverComponent} from './tree-node-menu/tree-node-menu-popover.component'
 import {ItemClassIconComponent} from './item-class-icon/item-class-icon.component'
 import {ConfirmDeleteTreeNodeComponent} from './confirm-delete-tree-node/confirm-delete-tree-node.component'
 import { TimeTrackingMenuComponent } from './tree-node-menu/time-tracking-menu/time-tracking-menu.component';
@@ -29,7 +29,7 @@ import {IonicModule} from '@ionic/angular'
     declarations: [
         NodeContentComponent,
         NumericCellComponent,
-        TreeNodeMenuComponent,
+        TreeNodeMenuPopoverComponent,
         NodeContentComponent,
         ItemClassIconComponent,
         ConfirmDeleteTreeNodeComponent,

@@ -29,11 +29,12 @@ export class RichTextEditCellComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contentEditableEl
-      .nativeElement.addEventListener('input', (event: any) => this.onInputChanged(event, this.getInputValue()))
+    // this.contentEditableEl
+    //   .nativeElement.addEventListener('input', (event: any) => this.onInputChanged(event, this.getInputValue()))
 
     this.formControl = new UntypedFormControl()
-
+    this.formControl.setValue(this.cell.patchableObservable.locallyVisibleChanges$.lastVal)
+    console.error(`FIXME RichTextEditCellComponent should react to external changes from DB / UI`)
     this.formControl.valueChanges.subscribe(val => {
       this.cell.patchThrottled(val)
     })

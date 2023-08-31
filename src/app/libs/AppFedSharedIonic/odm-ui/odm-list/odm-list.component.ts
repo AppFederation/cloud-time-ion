@@ -1,9 +1,9 @@
 import {Component, ContentChild, Input, OnInit, TemplateRef} from '@angular/core';
 import {OdmService_OLD} from "../../../AppFedShared/odm/OdmService_OLD";
-import {OdmItem} from "../../../AppFedShared/odm/OdmItem";
+import {OdmItem__OLD__} from "../../../AppFedShared/odm/OdmItem__OLD__";
 import {OdmListItemDirective} from "./odm-list-item.directive";
 
-type TItem = OdmItem<any>
+type TItem = OdmItem__OLD__<any>
 
 @Component({
   selector: 'app-odm-list',

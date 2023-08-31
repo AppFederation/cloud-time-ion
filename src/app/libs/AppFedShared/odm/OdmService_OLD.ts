@@ -1,6 +1,6 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
-import {OdmItem} from "./OdmItem";
+import {OdmItem__OLD__} from "./OdmItem__OLD__";
 // import {CachedSubjectBugged} from "../utils/CachedSubjectBugged";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
@@ -9,7 +9,7 @@ import {Observable} from 'rxjs'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 
 export abstract class OdmService_OLD<
-  T extends OdmItem<T>,
+  T extends OdmItem__OLD__<T>,
   TRaw = T /* TODO: no longer = T */,
   // TOdmItem$ extends T /*OdmItem<T>*/ = T
   >

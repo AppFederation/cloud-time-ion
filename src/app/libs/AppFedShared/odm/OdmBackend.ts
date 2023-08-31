@@ -1,6 +1,5 @@
 import {Injector} from "@angular/core";
 import {OdmCollectionBackend} from "./OdmCollectionBackend";
-import {OdmItem} from "./OdmItem";
 // import {CachedSubject} from "../utils/CachedSubject2";
 
 

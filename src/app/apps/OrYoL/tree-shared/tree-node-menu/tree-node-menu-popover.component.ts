@@ -22,11 +22,11 @@ import {ApfNonRootTreeNode} from '../../tree-model/TreeNode'
 
 
 @Component({
-  selector: 'app-tree-node-menu',
-  templateUrl: './tree-node-menu.component.html',
-  styleUrls: ['./tree-node-menu.component.sass']
+  selector: 'app-tree-node-menu-popover',
+  templateUrl: './tree-node-menu-popover.component.html',
+  styleUrls: ['./tree-node-menu-popover.component.sass']
 })
-export class TreeNodeMenuComponent implements OnInit {
+export class TreeNodeMenuPopoverComponent implements OnInit {
 
   @Input() treeNode!: OryBaseTreeNode
 
@@ -70,7 +70,8 @@ export class TreeNodeMenuComponent implements OnInit {
 
   navigateInto() {
     console.log('navigateInto', this.treeNode)
-    // this.router.navigate(['/tree', this.treeNode!.nodeInclusion!.nodeInclusionId /* note: inclusion id, because give item can be in multiple places */]);
+    // this.router.navigate(['/tree', this.treeNode!.nodeInclusion!.nodeInclusionId
+    // /* note: inclusion id, because give item can be in multiple places */]);
     // FIXME: router.navigate might be causing problem with this sometimes working and sometimes not; maybe race condition?
     // maybe multiple instances of page component
     this.treeNode.navigateInto()

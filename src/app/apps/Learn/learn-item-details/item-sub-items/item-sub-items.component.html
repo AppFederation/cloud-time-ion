@@ -1,12 +1,16 @@
-<ion-button
-  (click)="newItem()"
->
-  Add sub-item xx
-</ion-button>
+<!--<ion-button-->
+<!--  (click)="newItem()"-->
+<!--&gt;-->
+<!--  Add sub-item xx-->
+<!--</ion-button>-->
 
-<app-item-sub-item
-  style="border-left: 10px blue solid; display: block"
-  *ngFor="let child$ of (list$ | async)"
-  [item$]="child$"
-></app-item-sub-item>
+<!--<app-item-sub-item-->
+<!--  style="border-left: 10px blue solid; display: block"-->
+<!--  *ngFor="let child$ of (list$ | async)"-->
+<!--  [item$]="child$"-->
+<!--&gt;</app-item-sub-item>-->
 
+Sub-items:
+<app-tree
+  [rootItem]="item$"
+></app-tree>

@@ -1,5 +1,5 @@
 import {OdmItem$2} from '../../odm/OdmItem$2'
-import {TreeNode} from '../tree-node/TreeNode'
+import {OdmTreeNode} from '../tree-node/OdmTreeNode'
 
 /**
  * What is a Cell: a particular location (coordinates) in UI (implying keyboard navigation, sometimes URL),
@@ -33,7 +33,7 @@ export class OdmCell<TValue = any> {
   type = this.column?.type
 
   constructor(
-    public readonly treeNode: TreeNode,
+    public readonly treeNode: OdmTreeNode,
     public readonly column: any,
     /* row / column for getCellAbove / Below / Left / Right */
   ) {

@@ -1,14 +1,18 @@
-<div style="border: 2px solid green">
+<div>
+  <!-- style="border: 2px solid var(--ion-item-background)" -->
 
-  <button (click)="expanded = ! expanded">Expand</button>
+<!--  <button (click)="expanded = ! expanded">Expand</button>-->
 
-  id ({{treeNode.item$.id}})
+<!--  (press)="onPress($event)"-->
+<!--  [ngClass]="{collapsedIcon: ! treeNode.expanded}"-->
+
+<!--  id ({{treeNode.item$.id}})-->
 
   <app-tree-node-content
     [treeNode]="treeNode"
   ></app-tree-node-content>
 
-  children: {{(treeNode.childNodesList$ | async) ?. length}}
+<!--  children: {{(treeNode.childNodesList$ | async) ?. length}}-->
 
   <ng-container
     *ngIf="!(treeNode.childNodesList$ | async)"
@@ -17,7 +21,7 @@
   </ng-container>
 
 
-  <div style="margin-left: 20px" *ngIf="expanded">
+  <div style="margin-left: 20px" *ngIf="treeNode.isExpanded">
     <div
       *ngIf="(treeNode.childNodesList$ | async) let childNodesList"
     >
@@ -44,9 +48,9 @@
   </div>
 
 
-  <button (click)="addChild()">
-    Add
-  </button>
+<!--  <button (click)="addChild()">-->
+<!--    Add-->
+<!--  </button>-->
 
 </div>
 

@@ -1,19 +1,22 @@
-Rich text:
-<div
-  style="background-color: var(--apf-rich-text-edit-background)"
-  #contentEditableEl
-  contenteditable
->
+<!--Rich text:-->
+<!--<div-->
+<!--  style="background-color: var(&#45;&#45;apf-rich-text-edit-background)"-->
+<!--  #contentEditableEl-->
+<!--  contenteditable-->
+<!--&gt;-->
 
-  <!--
-     [ngClass]="{'done-title': isDone}"
-  (keydown.backspace)="onKeyDownBackspaceOnTitle()"
-   -->
+<!--  &lt;!&ndash;-->
+<!--     [ngClass]="{'done-title': isDone}"-->
+<!--  (keydown.backspace)="onKeyDownBackspaceOnTitle()"-->
+<!--   &ndash;&gt;-->
 
-</div>
+<!--</div>-->
 
-RichTextComp:
+<!--RichTextComp:-->
 <app-rich-text-edit
+  style="flex-grow: 1"
   [formControl1]="formControl"
+  [showToolbar]="true"
+  [showMenuBar]="true"
 ></app-rich-text-edit>
 

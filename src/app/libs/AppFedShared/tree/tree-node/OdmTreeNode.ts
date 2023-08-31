@@ -3,23 +3,25 @@ import {CachedSubject} from '../../utils/cachedSubject2/CachedSubject2'
 import {map} from 'rxjs/operators'
 import {Observable} from 'rxjs/internal/Observable'
 
-export class TreeNode<
+export class OdmTreeNode<
   TOdmItem$ extends
     OdmItem$2<any, any, any, any> =
     OdmItem$2<any, any, any, any>
   > {
 
+  isExpanded = true
+
   /* TODO use OdmList$ */
-  childNodesList$: Observable<TreeNode<TOdmItem$>[] | undefined> = this.item$.childrenList$.pipe(map((children: TOdmItem$[] | undefined) => {
+  childNodesList$: Observable<OdmTreeNode<TOdmItem$>[] | undefined> = this.item$.childrenList$.pipe(map((children: TOdmItem$[] | undefined) => {
     /* FIXME: do not create new TreeNode each time */
     return !children ? undefined : children.map((childItem: TOdmItem$) => {
-      return new TreeNode(this, childItem)
+      return new OdmTreeNode(this, childItem)
     })
   }))// new CachedSubject<TreeNode[] | undefined>(undefined)
 
   constructor(
     /** an item can have multiple parents, but a node only has one parent (or no parent, for root node) */
-    public parentNode: TreeNode<any> | undefined,
+    public parentNode: OdmTreeNode<any> | undefined,
     public item$: TOdmItem$
   ) {
   }

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TreeNode} from '../tree-node/TreeNode'
+import {OdmTreeNode} from '../tree-node/OdmTreeNode'
 import {GenericItem$} from '../GenericItem$'
 import {GenericItemsService} from '../generic-items.service'
 import {LearnDoService} from '../../../../apps/Learn/core/learn-do.service'
@@ -19,7 +19,7 @@ export class OdmTreeComponent implements OnInit {
 
   // TODO: use TreeModel
 
-  rootNode!: TreeNode<LearnItem$>
+  rootNode!: OdmTreeNode<LearnItem$>
 
   constructor(
     // public itemsService: GenericItemsService
@@ -28,7 +28,7 @@ export class OdmTreeComponent implements OnInit {
 
   ngOnInit() {
     this.rootItem ??= this.itemsService.treeRootItem
-    this.rootNode = new TreeNode(undefined, this.rootItem /* hack */)
+    this.rootNode = new OdmTreeNode(undefined, this.rootItem /* hack */)
   }
 
 }
