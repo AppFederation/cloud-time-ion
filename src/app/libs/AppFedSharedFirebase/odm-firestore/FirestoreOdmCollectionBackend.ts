@@ -7,6 +7,7 @@ import {OdmBackend} from "../../AppFedShared/odm/OdmBackend";
 import {debugLog, errorAlert, errorAlertAndThrow} from "../../AppFedShared/utils/log";
 import {isNotNullish} from '../../AppFedShared/utils/utils'
 import {assertTruthy} from '../../AppFedShared/utils/assertUtils'
+import {dateToStringSuitableForId, getNowTimePointSuitableForId} from '../../AppFedShared/odm/utils'
 // import { firestore } from 'firebase';
 // import Timestamp = firestore.Timestamp
 
@@ -26,6 +27,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     super(injector, className, odmBackend)
   }
 
+  /** Could also add archive here; and mark as deleted / trash */
   deleteWithoutConfirmation(itemId: OdmItemId) {
     // DANGEROUS return  this. /* danger */ itemDoc(itemId) /* danger */  .delete()
     // const angularFirestoreDocument = this.itemDoc(itemId) // as AngularFirestoreDocument<TRaw & { whenDeleted: Date}>
@@ -39,10 +41,21 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     if ( ! isNotNullish(id) ) {
       errorAlert('id cannot be ' + id)
     }
+
+    this.saveToHistory(id, item, parentIds, ancestorIds) // NOTE: save to history FIRST, to prevent destroying the value
+    // no need to await promise; this can go in parallel
+    // FIXME though need to pass this promise to unsaved sync status pending
+
+    // FIXME: maybe we should save PREVIOUS value, but more  difficult to implement for now. Coz current value will be on the object itself,
+    // so no need to waste space duplicating. Though maybe it's good for
+
+
     // TODO: also store ancestorIds for loading entire subtree in 1 query (e.g. for faster searching)
     // debugLog('FirestoreOdmCollectionBackend saveNowToDb', item)
+
+    // FIXME: review this coz modified with sleep deprivation, while introducing saveToHistory()
     try {
-      const retPromise = this.itemDoc(id).set({
+      const dataToSave = {
         ... item,
         ... (parentIds ? {
           parentIds
@@ -50,7 +63,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         ... (ancestorIds ? {
           ancestorIds
         } : {}),
-      }/*.toDbFormat()*/)
+      }
+      const retPromise = this.itemDoc(id).set(dataToSave/*.toDbFormat()*/)
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise
     } catch (error: any) {
@@ -63,18 +77,59 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       You can use this property to determine the source of events received by your snapshot listener: */
   }
 
+  private saveToHistory(id: string, item: TRaw, parentIds: ItemId[] | undefined, ancestorIds: ItemId[] | undefined): Promise<void> {
+    try {
+      const nowDate = new Date
+      const dataToSave = {
+        /* FIXME refactor extract common part with saveNowToDb */
+        ...item,
+        ...(parentIds ? {
+          parentIds,
+        } : {}),
+        ...(ancestorIds ? {
+          ancestorIds,
+        } : {}),
+        itemId: id /* not calling it `id` coz the primary key is different */,
+        _historySnapshotTimestamp: nowDate /* FIXME find good name; `when` was too vague */,
+
+      }
+      const retPromise = this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(dataToSave/*.toDbFormat()*/)
+      /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
+      return retPromise // FIXME need to pass this promise to unsaved for pending status too
+    } catch (error: any) {
+      throw errorAlertAndThrow(`saveNowToDb saving history error: `, error, item, id)
+    }
+  }
+
+  /* FIXME cache this; maybe it causes excessive loads? Anyway it's good to cache externally obtained stuff coz we don't know their impl. */
   private collection() {
     return this.angularFirestore.collection<TRaw>(this.collectionName);
+  }
+
+  private historyCollection() {
+    return this.angularFirestore.collection<TRaw>(this.collectionName + '__History' /* double underscore coz it's very meta :) */);
   }
 
   private itemDoc(itemId: OdmItemId) {
     return this.collection().doc(itemId)
   }
 
+  private itemHistoryNewDocForNowTimePoint(date: Date, itemId: OdmItemId) {
+    const path = itemId + '_' /* just one _ to avoid triple _ coz of the stupid _ trailing */ + dateToStringSuitableForId(date)
+    return this.historyCollection().doc(path)
+  }
+
   /** IDEA: for more flexibility this could return an ARRAY of download DESCRIPTORS
    * { promise:, name: 'LearnItem - last 10 days - from local/server'}
    * */
-  override setListener(listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>, nDaysOldModified: number, callback: () => void/*, name: string*/): void {
+  override setListener(
+    listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>,
+    /** FIXME move this to opts, also for readability coz integer is hard to judge what it does */
+    nDaysOldModified: number,
+    callback: () => void/*, name: string*/
+  )
+    : void
+  {
     super.setListener(listener, nDaysOldModified, callback);
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
@@ -144,7 +199,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     const userId = this.authService.authUser$.lastVal?.uid
     console.info('loadChildrenOf', arguments)
     let query = this.angularFirestore.firestore.collection(this.collectionName)
-      .where('parentIds', 'array-contains', parentId)
+      .where('parentIds', 'array-contains', parentId) // child parent here
     if ( userId ) {
       query = query.where('owner', '==', userId)
     }
@@ -205,6 +260,5 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     }) as any /* workaround after strict settings */)
 
   }
-
 
 }
