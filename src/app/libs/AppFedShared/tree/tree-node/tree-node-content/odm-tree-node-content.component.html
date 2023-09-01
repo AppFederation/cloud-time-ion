@@ -5,7 +5,7 @@
   (keydown.meta.arrowleft)="onArrowLeft()"
 >
   <i
-    style="color: var(--ion-color-secondary); vertical-align: middle; padding-top: 3px"
+    style="color: var(--ion-color-secondary); vertical-align: middle; padding-top: 3px; aspect-ratio: 1 / 1;"
     class="material-icons tappable-icon actionable"
     (tap)="treeNode.isExpanded = ! treeNode.isExpanded"
   >
@@ -15,7 +15,7 @@
   </i>
 
   <i
-    style="vertical-align: middle"
+    style="vertical-align: middle; aspect-ratio: 1 / 1;"
     class="material-icons tappable-icon actionable"
     (click)="onClickClassIcon($event)"
   >
@@ -27,6 +27,14 @@
     style="flex-grow: 1"
     [cell]="mapColumnIdToCell.get('title')!"
   ></app-rich-text-edit-cell>
+
+  <i
+    style="vertical-align: middle; margin: 3px; aspect-ratio: 1 / 1;"
+    class="material-icons tappable-icon actionable"
+    (click)="showAnswer = !showAnswer"
+  >
+    question_answer
+  </i>
 
   <!--  <ion-button size="small">Add to my categories-->
 <!--    &lt;!&ndash; bookmark icon like in LinkedIn Learning &ndash;&gt;-->
@@ -41,6 +49,12 @@
 <!--  </app-tree-node-cells>-->
 
 </div>
+
+<app-rich-text-edit-cell
+  [hidden]="((! showAnswer) && !((val$ | async)?.answer)) || (!treeNode.isExpanded)"
+  style="flex-grow: 1; margin-left: 1.5rem"
+  [cell]="mapColumnIdToCell.get('answer')!"
+></app-rich-text-edit-cell>
 
 
 

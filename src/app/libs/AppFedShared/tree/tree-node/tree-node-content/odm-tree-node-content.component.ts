@@ -30,6 +30,8 @@ export class OdmTreeNodeContentComponent implements OnInit {
 
   mapColumnIdToCell!: Map<string, OdmCell>
 
+  showAnswer = false
+
   columnsDict = setIdsFromKeys({
     // /** or durationEstimate */
     // estimatedTime: column({
