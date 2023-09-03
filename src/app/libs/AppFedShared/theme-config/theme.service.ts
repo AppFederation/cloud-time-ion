@@ -2,6 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {Theme, ThemeId, themesArray, themesMapById} from './themes.data'
 import {ThemeCalculator, ThemeOptions} from './ThemeCalculator'
 import {BaseService} from '../base.service'
+import {environment} from '../../../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class ThemeService extends BaseService {
 
   public get themes() {
     return themesArray.filter(theme => {
-      if ( ! this.feat.showExperimental ) {
+      // const showExperimentalThemes = true; // this.feat.showExperimental
+      const showExperimentalThemes = environment.showExperimentalThemes; // this.feat.showExperimental
+      if ( ! showExperimentalThemes ) {
         return ! theme.experimental
       }
       return true
@@ -36,6 +39,7 @@ export class ThemeService extends BaseService {
   }
 
   setTheme(theme: Theme) {
+    console.log('setTheme', theme)
     this.theme = theme
     this.themeCalculator.updateColors(this.getThemeOptions())
   }
