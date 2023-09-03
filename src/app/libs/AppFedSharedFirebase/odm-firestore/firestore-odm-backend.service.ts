@@ -31,10 +31,14 @@ export class FirestoreOdmBackend extends OdmBackend {
     this.initDb()
   }
 
-  createCollectionBackend<T extends OdmItem__OLD__<T>>(injector: Injector, className: string)
+  createCollectionBackend<T extends OdmItem__OLD__<T>>(
+    injector: Injector,
+    className: string,
+    opts: {dontStoreVersionHistory: boolean}
+  )
       : FirestoreOdmCollectionBackend<any /* hack after strict */>
   {
-    return new FirestoreOdmCollectionBackend<T>(injector, className, this)
+    return new FirestoreOdmCollectionBackend<T>(injector, className, this, opts)
   }
 
   protected initDb() {

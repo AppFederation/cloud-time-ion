@@ -17,6 +17,7 @@ import {environment} from '../../../../environments/environment'
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
   dontStoreWhenModified = false
+  dontStoreVersionHistory = false
 }
 
 /* TODO rename to OdmItemsService / list service (but also tree) ?

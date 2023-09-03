@@ -21,6 +21,7 @@ export abstract class HistoryService<TInMem, TRaw = TInMem>
     super(injector, className, {
       dontLoadAllAutomatically: true,
       dontStoreWhenModified: true,
+      dontStoreVersionHistory: true,
     })
   }
 

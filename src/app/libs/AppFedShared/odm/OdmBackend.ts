@@ -24,7 +24,10 @@ export abstract class OdmBackend {
   ) {
   }
 
-  abstract createCollectionBackend<TRaw>(injector: Injector, className: string): OdmCollectionBackend<TRaw>
+  abstract createCollectionBackend<TRaw>(
+    injector: Injector, className: string,
+    opts: {dontStoreVersionHistory: boolean}
+  ): OdmCollectionBackend<TRaw>
 
   static nowTimestamp() {
     return Timestamp.now()

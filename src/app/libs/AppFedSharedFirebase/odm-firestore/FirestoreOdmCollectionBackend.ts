@@ -22,6 +22,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     injector: Injector,
     className: string,
     odmBackend: OdmBackend,
+    public readonly opts: { dontStoreVersionHistory: boolean }
     // listenToCollection = true,
   ) {
     super(injector, className, odmBackend)
@@ -42,7 +43,10 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       this.errorAlert('id cannot be ' + id)
     }
 
-    this.saveToHistory(id, item, parentIds, ancestorIds) // NOTE: save to history FIRST, to prevent destroying the value
+    if ( ! this.opts.dontStoreVersionHistory ) {
+      this.saveToHistory(id, item, parentIds, ancestorIds) // NOTE: save to history FIRST, to prevent destroying the value
+    }
+
     // no need to await promise; this can go in parallel
     // FIXME though need to pass this promise to unsaved sync status pending
 
