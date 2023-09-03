@@ -65,6 +65,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         } : {}),
       }
       const retPromise = this.itemDoc(id).set(dataToSave/*.toDbFormat()*/)
+      // FIXME retPromise.catch() (error)
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise
     } catch (error: any) {
@@ -152,7 +153,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           .orderBy("whenLastModified", 'desc')
           // .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
           .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
-          .get({source: 'cache'})
+          .get({source: 'cache'}) // this is just one-time get, not listening
         promise.then((data: any /* HACK after AngularFire update */) => {
             for ( let doc of data.docs ) {
               listener?.onAdded(doc.id, doc.data() as TRaw)
@@ -161,11 +162,18 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
             callback()
           }
         )
+        promise.catch((caught: any) => {
+          errorAlert('setListener', caught)
+        })
         // return promise
       } else {
+        const onError = (error: any) => {
+          errorAlert('setListener, onSnapshot onError', error)
+        }
+
         query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
-          // console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+          console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
           // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
           for ( let change of snapshot.docChanges() ) {
             const docId = change.doc.id
@@ -184,7 +192,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
           // FIXME: only emit after processing finished
 
-        }) as any /* workaround after strict settings */)
+        }) as any /* workaround after strict settings */, onError)
         return undefined
       }
 
@@ -202,6 +210,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       .where('parentIds', 'array-contains', parentId) // child parent here
     if ( userId ) {
       query = query.where('owner', '==', userId)
+    }
+    const onError = (error: any) => {
+      errorAlert('loadChildrenOf, onSnapshot onError', error)
     }
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
@@ -223,7 +234,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
         // FIXME: only emit after processing finished
 
-      }) as any /* workaround after strict settings */)
+      }) as any /* workaround after strict settings */, onError)
 
   }
 
@@ -236,6 +247,10 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     if ( userId ) {
       query = query.where('owner', '==', userId)
     }
+    const onError = (error: any) => {
+      errorAlert('loadTreeDescendantsOf, onSnapshot onError', error)
+    }
+
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
     {
       console.log(`loadTreeDescendantsOf results ${ancestorId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length',
@@ -257,7 +272,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
       // FIXME: only emit after processing finished
 
-    }) as any /* workaround after strict settings */)
+    }) as any /* workaround after strict settings */, onError)
 
   }
 
