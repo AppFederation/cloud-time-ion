@@ -5,6 +5,7 @@
 export const environment = {
   collectionNameSuffix: '',
   // collectionNameSuffix: '_DEBUG',
+  showExperimentalThemes: true,
   firebaseConfig: {
     projectId: 'cloudtime-app',
     apiKey: "AIzaSyD8hiBc7WoQQISCDpDLMtiaakyKvKZwdkw",
