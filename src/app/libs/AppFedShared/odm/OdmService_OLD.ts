@@ -20,7 +20,7 @@ export abstract class OdmService_OLD<
   throttleSaveToDbMs = 1000 /* NOTE: this does NOT apply to things like start/stop timer which bypass throttle */
 
   odmBackendFactory = this.injector.get(OdmBackend)
-  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRaw>(this.injector, this.className)
+  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRaw>(this.injector, this.className, {dontStoreVersionHistory: false})
 
   localItems$ = new CachedSubject<T[]>([])
 

@@ -61,7 +61,8 @@ export abstract class OdmService2<
 
   odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(
     this.injector,
-    this.className + environment.collectionNameSuffix
+    this.className + environment.collectionNameSuffix,
+    this.opts
   )
 
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
