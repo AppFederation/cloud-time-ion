@@ -65,6 +65,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
         } : {}),
       }
       const retPromise = this.itemDoc(id).set(dataToSave/*.toDbFormat()*/)
+      retPromise.catch(error => {
+        errorAlert('saveNowToDb this.itemDoc(id).set retPromise.catch', error)
+      })
       // FIXME retPromise.catch() (error)
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise
@@ -95,6 +98,10 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
       }
       const retPromise = this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(dataToSave/*.toDbFormat()*/)
+      retPromise.catch(error => {
+        errorAlert('saveToHistory this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(...) retPromise.catch', error)
+      })
+
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise // FIXME need to pass this promise to unsaved for pending status too
     } catch (error: any) {
@@ -163,7 +170,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           }
         )
         promise.catch((caught: any) => {
-          errorAlert('setListener', caught)
+          errorAlert('setListener promise.catch nDaysOldModified', nDaysOldModified, caught)
         })
         // return promise
       } else {
