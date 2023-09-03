@@ -166,7 +166,8 @@ export class LearnItem$
     }
     // FIXME: getEffectiveCategories -- as array / Set
     // const myCategories = (this.getFieldVal(sidesDefs.categories) as string ?? '') ?. toLowerCase()
-    const myCategories = this.getEffectiveCategories()
+    const myCategories = this.getEffectiveCategories()?.toLowerCase()
+    // console.log(`myCategories getEffectiveCategories()`, myCategories)
     return searchCategories.some(
       searchCategory => myCategories ?. includes(searchCategory)
     )
