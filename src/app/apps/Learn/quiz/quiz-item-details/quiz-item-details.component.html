@@ -9,6 +9,9 @@
     [item]="(itemVal$ | async) !"
     [itemId]="item$ . id"
   ></app-play-button>
+  <app-breadcrumbs
+    [item$]="item$"
+  ></app-breadcrumbs>
 
   <app-item-side-editor
     [item$]="item$ !"

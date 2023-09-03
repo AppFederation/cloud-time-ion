@@ -11,8 +11,11 @@
 <!--&gt;</app-item-sub-item>-->
 
 <!--Sub-items:-->
-<br>
-<br>
+<!--<br>-->
+<app-breadcrumbs
+  [item$]="item$"
+></app-breadcrumbs>
+<!--<br>-->
 <app-tree
   style="margin-top: 7.5rem"
   [rootItem]="item$"

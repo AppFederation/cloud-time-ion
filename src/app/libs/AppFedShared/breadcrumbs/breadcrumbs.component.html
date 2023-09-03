@@ -1,9 +1,18 @@
 <!--    <ion-breadcrumbs></ion-breadcrumbs>-->
 <!--<ion-breadcrumb></ion-breadcrumb>-->
-<div *ngIf="g.feat.mockups" style="margin: 5px; display: flex; align-items: center; gap: 0.2rem">
-  Software Development
+<!--<div *ngIf="g.feat.mockups" style="margin: 5px; display: flex; align-items: center; gap: 0.2rem">-->
+<!--  Software Development-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  Frontend-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  CSS-->
+<!--</div>-->
+
+
+<div *ngIf="item$.parents?.[0]" style="margin: 5px; display: flex; align-items: center; gap: 0.2rem">
+  {{ stripHtml(item$.parents?.[0]?.val?.title ?? item$.parents?.[0]?.val?.question) }}
   <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
-  Frontend
-  <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
-  CSS
+<!--  Frontend-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  CSS-->
 </div>
