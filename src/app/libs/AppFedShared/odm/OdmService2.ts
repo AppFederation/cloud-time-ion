@@ -12,6 +12,7 @@ import {OdmItemHistoryService} from './odm-item-history-service'
 import {DictPatch} from '../utils/rxUtils'
 import {isNotNullish} from '../utils/utils'
 import {ItemId} from './OdmCollectionBackend'
+import {environment} from '../../../../environments/environment'
 
 export class OdmServiceOpts {
   dontLoadAllAutomatically = false
@@ -57,9 +58,10 @@ export abstract class OdmService2<
 
   odmBackendFactory = this.injector.get(OdmBackend)
 
-  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(this.injector,
-    this.className + '_DEBUG')
-    // this.className /*+ '_DEBUG'*/)
+  odmCollectionBackend = this.odmBackendFactory.createCollectionBackend<TRawData>(
+    this.injector,
+    this.className + environment.collectionNameSuffix
+  )
 
   /** rename: item$s$ and consider items$ or itemVals$ for just values for perf.
      And itemsJustList$ for just changes of list, without reporting changes of individual item data-s

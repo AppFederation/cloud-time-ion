@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  collectionNameSuffix: '',
+  // collectionNameSuffix: '_DEBUG',
   firebaseConfig: {
     projectId: 'cloudtime-app',
     apiKey: "AIzaSyD8hiBc7WoQQISCDpDLMtiaakyKvKZwdkw",
