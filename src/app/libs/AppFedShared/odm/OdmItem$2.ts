@@ -261,11 +261,11 @@ export class OdmItem$2<
   }
 
   applyDataFromDbAndEmit(incomingConverted: TInMemData) {
-    console.error(`FIXME: applyDataFromDbAndEmit() - this should be really where canApplyDataToViewGivenColumnLocalEdits() protection stuff is done!! Though another protection is to prevent infinite loop in e.g. rich text edit -> FormControl -> (loop). But this could be a flag like \`isApplying = true\` or isCurrentlyPatchingFromLocalEdit, try-finally at UI COMPONENT level? And use monotonic clock?`)
+    // console.error(`FIXME: applyDataFromDbAndEmit() - this should be really where canApplyDataToViewGivenColumnLocalEdits() protection stuff is done!! Though another protection is to prevent infinite loop in e.g. rich text edit -> FormControl -> (loop). But this could be a flag like \`isApplying = true\` or isCurrentlyPatchingFromLocalEdit, try-finally at UI COMPONENT level? And use monotonic clock? Or setTimeOut()`)
     // Object.assign(this, incomingConverted) // TODO:
     this.emitNewVal(incomingConverted)
     this.parents = incomingConverted?.parentIds?.map(id => this.odmService.obtainItem$ById(id))
-    console.error(`FIXME: set this.parents (otherwise they will be destroyed when patching). And this.parents$. Though, 2 sources of truth: inMemData and parents$. this.parents value: `, this.parents, this.getParentIds() )
+    // console.error(`FIXME: set this.parents (otherwise they will be destroyed when patching). And this.parents$. Though, 2 sources of truth: inMemData and parents$. this.parents value: `, this.parents, this.getParentIds() )
   }
 
   private emitNewVal(newVal: TInMemData) {
@@ -449,7 +449,7 @@ export class OdmItem$2<
         console.log(`getObservablePatchableForField cachedSubject value`, value)
         // Use the same mapping function to avoid duplicate code
         const transformedValue = mapFunc(value);
-        console.log(`getObservablePatchableForField transformedValue`, transformedValue)
+        // console.log(`getObservablePatchableForField transformedValue`, transformedValue)
         cachedSubject.next(transformedValue); // Update mappedSubject with the transformed value
       })
     )/*.pipe()*/.subscribe();
