@@ -61,9 +61,19 @@ export class LearnItem$
 
   /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
   getEffectiveImportance(): ImportanceVal {
-    return this.val ?. importanceCurrent
-      ?? this.val ?. importance
-      ?? this.getImportanceFromCategories()
+    // TODO get it from parents
+    let item$: LearnItem$ | undefined = this
+    // while (true ) {
+    //   if ( ! item$.parents?.length || item$.val ) {
+    // TODO getEffectiveImportance() from parents
+    //     break
+    //   }
+    //   item$ = item$.parents?.[0]
+    //   // break if there is importance OR no parents
+    // }
+    return item$.val ?. importanceCurrent
+      ?? item$.val ?. importance
+      ?? item$.getImportanceFromCategories()
       ?? importanceDescriptors.undefined
   }
 
@@ -154,7 +164,9 @@ export class LearnItem$
     if ( ! searchCategories ?. length ) {
       return true
     }
-    const myCategories = (this.getFieldVal(sidesDefs.categories) as string ?? '') ?. toLowerCase()
+    // FIXME: getEffectiveCategories -- as array / Set
+    // const myCategories = (this.getFieldVal(sidesDefs.categories) as string ?? '') ?. toLowerCase()
+    const myCategories = this.getEffectiveCategories()
     return searchCategories.some(
       searchCategory => myCategories ?. includes(searchCategory)
     )
@@ -189,5 +201,22 @@ export class LearnItem$
 
   getEffectiveMentalHealthImpactNumeric(): number {
     return this.getEffectiveMentalHealthImpact() ?. numeric
+  }
+
+  public getEffectiveCategories(): string {
+    let item$: LearnItem$ | undefined = this
+    let retCategories = ''
+    while (true) {
+      const categories = item$?.val?.categories
+      if ( categories ) {
+        retCategories += ', ' + categories
+      }
+      if ( ! item$.parents?.length ) {
+        break
+      }
+      item$ = item$.parents?.[0]
+      // break if there is importance OR no parents
+    }
+    return retCategories
   }
 }

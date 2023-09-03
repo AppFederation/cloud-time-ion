@@ -147,6 +147,8 @@
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
+    {{item$.getEffectiveCategories()}}
+
     <app-item-sub-items
       [item$]="item$"
     ></app-item-sub-items>
