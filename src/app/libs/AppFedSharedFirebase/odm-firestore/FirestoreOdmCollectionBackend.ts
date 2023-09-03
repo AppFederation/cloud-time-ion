@@ -39,7 +39,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   saveNowToDb(item: TRaw, id: string, parentIds?: ItemId[], ancestorIds?: ItemId[]): Promise<any> {
     if ( ! isNotNullish(id) ) {
-      errorAlert('id cannot be ' + id)
+      this.errorAlert('id cannot be ' + id)
     }
 
     this.saveToHistory(id, item, parentIds, ancestorIds) // NOTE: save to history FIRST, to prevent destroying the value
@@ -66,13 +66,13 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       }
       const retPromise = this.itemDoc(id).set(dataToSave/*.toDbFormat()*/)
       retPromise.catch(error => {
-        errorAlert('saveNowToDb this.itemDoc(id).set retPromise.catch', error)
+        this.errorAlert('saveNowToDb this.itemDoc(id).set retPromise.catch', error)
       })
       // FIXME retPromise.catch() (error)
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise
     } catch (error: any) {
-      throw errorAlertAndThrow(`saveNowToDb error: `, error, item, id)
+      throw this.errorAlertAndThrow(`saveNowToDb error: `, error, item, id)
     }
     // FIXME: update() to patch
 
@@ -99,13 +99,13 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       }
       const retPromise = this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(dataToSave/*.toDbFormat()*/)
       retPromise.catch(error => {
-        errorAlert('saveToHistory this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(...) retPromise.catch', error)
+        this.errorAlert('saveToHistory this.itemHistoryNewDocForNowTimePoint(nowDate, id).set(...) retPromise.catch', error)
       })
 
       /* TODO: could store minLevelFromRoot number, for <= .where clause to limit number of levels */
       return retPromise // FIXME need to pass this promise to unsaved for pending status too
     } catch (error: any) {
-      throw errorAlertAndThrow(`saveNowToDb saving history error: `, error, item, id)
+      throw this.errorAlertAndThrow(`saveNowToDb saving history error: `, error, item, id)
     }
   }
 
@@ -146,7 +146,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       // This could cause the race condition of items uninitialized when going from another route
       const userId = this.authService.authUser$.lastVal!.uid
       if ( ! userId ) {
-        errorAlert(`FirestoreOdmCollectionBackend before query - no userId`)
+        this.errorAlert(`FirestoreOdmCollectionBackend before query - no userId`)
       }
       // console.log('FirestoreOdmCollectionBackend setListener')
       // nDaysOldModified = 15
@@ -170,12 +170,12 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           }
         )
         promise.catch((caught: any) => {
-          errorAlert('setListener promise.catch nDaysOldModified', nDaysOldModified, caught)
+          this.errorAlert('setListener promise.catch nDaysOldModified', nDaysOldModified, caught)
         })
         // return promise
       } else {
         const onError = (error: any) => {
-          errorAlert('setListener, onSnapshot onError', error)
+          this.errorAlert('setListener, onSnapshot onError', error)
         }
 
         query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
@@ -219,7 +219,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       query = query.where('owner', '==', userId)
     }
     const onError = (error: any) => {
-      errorAlert('loadChildrenOf, onSnapshot onError', error)
+      this.errorAlert('loadChildrenOf, onSnapshot onError', error)
     }
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
@@ -255,7 +255,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       query = query.where('owner', '==', userId)
     }
     const onError = (error: any) => {
-      errorAlert('loadTreeDescendantsOf, onSnapshot onError', error)
+      this.errorAlert('loadTreeDescendantsOf, onSnapshot onError', error)
     }
 
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
@@ -283,4 +283,11 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   }
 
+  private errorAlert(...args: any[]) {
+    errorAlert('collectionName', this.collectionName, ...args)
+  }
+
+  private errorAlertAndThrow(...args: any[]) {
+    return errorAlertAndThrow('collectionName', this.collectionName, ...args)
+  }
 }
