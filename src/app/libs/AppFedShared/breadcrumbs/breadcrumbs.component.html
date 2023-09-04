@@ -10,8 +10,16 @@
 
 
 <div *ngIf="item$.parents?.[0]" style="margin: 5px; display: flex; align-items: center; gap: 0.2rem">
-  {{ stripHtml(item$.parents?.[0]?.val?.title ?? item$.parents?.[0]?.val?.question) }}
-  <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
+  <ng-container *ngFor="let ancestor of (ancestorsPath$ | async)">
+    <a
+      [routerLink]="ancestor ?. getRouterLinkUrl()"
+    >
+      {{ stripHtml((ancestor?.getTitleOrQuestion$() | async)) }}
+<!--      {{ stripHtml((ancestor?.val?.title)) ?? 'unnamed' }}-->
+      <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
+    </a>
+
+  </ng-container>
 <!--  Frontend-->
 <!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
 <!--  CSS-->

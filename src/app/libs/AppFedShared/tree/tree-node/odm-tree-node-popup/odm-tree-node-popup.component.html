@@ -1,3 +1,12 @@
+<a
+  [routerLink]="item$ . getRouterLinkUrl()"
+>
+  Item: {{ stripHtml((item$ . getTitleOrQuestion$() | async)) }}
+  <!--      {{ stripHtml((ancestor?.val?.title)) ?? 'unnamed' }}-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+</a>
+
+
 <ion-button
   (click)="deleteWithConfirmation()"
 >Delete</ion-button>

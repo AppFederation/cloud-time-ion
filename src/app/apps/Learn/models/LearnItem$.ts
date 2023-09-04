@@ -14,6 +14,7 @@ import {mentalEffortLevels, mentalEffortLevelsDescriptors} from './fields/mental
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {SelfRating} from './fields/self-rating.model'
 import {Side, sidesDefs} from '../core/sidesDefs'
+import {map} from 'rxjs/operators'
 
 // export class Quiz {
 //   // status$: {
@@ -191,16 +192,16 @@ export class LearnItem$
     return this.val ?. physicalHealthImpact ?? funLevelsDescriptors.descriptors.undefined
   }
 
-  getEffectivePhysicalHealthImpactNumeric(): number {
+  public getEffectivePhysicalHealthImpactNumeric(): number {
     return this.getEffectivePhysicalHealthImpact() ?. numeric
   }
 
   /* TODO return descriptor always; take from ActionableItemComponent.getImportanceDescriptor */
-  getEffectiveMentalHealthImpact(): IntensityVal {
+  public getEffectiveMentalHealthImpact(): IntensityVal {
     return this.val ?. mentalHealthImpact ?? funLevelsDescriptors.descriptors.undefined
   }
 
-  getEffectiveMentalHealthImpactNumeric(): number {
+  public getEffectiveMentalHealthImpactNumeric(): number {
     return this.getEffectiveMentalHealthImpact() ?. numeric
   }
 
@@ -219,5 +220,15 @@ export class LearnItem$
       // break if there is importance OR no parents
     }
     return retCategories
+  }
+
+  public getTitleOrQuestion$() {
+    return this.val$.pipe(
+      map(val => val?.getQuestion())
+    )
+  }
+
+  public getRouterLinkUrl() {
+    return '/learn/item/' + this ?. id
   }
 }

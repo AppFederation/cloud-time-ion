@@ -13,7 +13,7 @@
 
   <ion-button
     class="stretch-btn"
-    [routerLink]="'/learn/item/' + item$ ?. id"
+    [routerLink]="item$ ?. getRouterLinkUrl()"
   >
     <ion-icon name="create-outline"></ion-icon>
   </ion-button>

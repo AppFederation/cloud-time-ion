@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LearnItem$} from '../../models/LearnItem$'
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject'
+import {BehaviorSubject} from 'rxjs'
 
 @Component({
   selector: 'app-item-sub-items',

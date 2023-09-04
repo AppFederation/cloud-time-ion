@@ -223,7 +223,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       query = query.where('owner', '==', userId)
     }
     const onError = (error: any) => {
-      this.errorAlert('loadChildrenOf, onSnapshot onError', error)
+      this.errorLog('loadChildrenOf, onSnapshot onError', error)
     }
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
@@ -259,7 +259,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       query = query.where('owner', '==', userId)
     }
     const onError = (error: any) => {
-      this.errorAlert('loadTreeDescendantsOf, onSnapshot onError', error)
+      this.errorLog('loadTreeDescendantsOf, onSnapshot onError', error)
     }
 
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
@@ -293,5 +293,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
   private errorAlertAndThrow(...args: any[]) {
     return errorAlertAndThrow('collectionName', this.collectionName, ...args)
+  }
+
+  private errorLog(...args: any[]) {
+    console.error('collectionName', this.collectionName, ...args)
   }
 }

@@ -5,7 +5,7 @@ import {CachedSubject} from './cachedSubject2/CachedSubject2'
 import {OdmPatch} from '../odm/OdmItem$2'
 import {DurationMs} from './type-utils'
 import {AbstractControl, FormControl} from '@angular/forms'
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject'
+import {BehaviorSubject} from 'rxjs'
 
 export function throttleTimeWithLeadingTrailing<T>(timeMs: DurationMs) {
   return debounceTime(timeMs)

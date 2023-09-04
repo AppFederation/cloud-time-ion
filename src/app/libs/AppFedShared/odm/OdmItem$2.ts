@@ -9,6 +9,7 @@ import {appGlobals} from '../g'
 import {OdmList$} from './odm-list$'
 import {tap} from 'rxjs/operators'
 import {getNowTimePointSuitableForId} from './utils'
+import {BehaviorSubject} from 'rxjs'
 
 export type UserId = string
 
@@ -69,6 +70,9 @@ export class OdmItem$2<
     // typeof this =
     // typeof this
     TSelf =
+    TSelf,
+  TParent extends
+    TSelf =
     TSelf
 >
   implements PatchableObservable<TInMemData | nullish, TMemPatch>
@@ -113,7 +117,7 @@ export class OdmItem$2<
     public odmService: TItemListService,
     public id?: TItemId,
     initialInMemData?: TInMemData,
-    public parents?: TSelf[]
+    public parents?: TParent[]
   ) {
     console.log('parents', parents)
     if ( initialInMemData !== undefined ) {
@@ -471,4 +475,19 @@ export class OdmItem$2<
 
   }
 
+  getAncestorsPath$(): BehaviorSubject<TParent[]> {
+    let item$: TSelf | undefined = this as any as TSelf
+    let retPath: TParent[] = []
+
+    while (true) {
+      // const categories = item$?.val?.categories
+      if ( ! item$?.parents?.length ) {
+        break
+      }
+      item$ = item$.parents?.[0] // FIXME: take multi-parent into account
+      retPath.push(item$ as TParent)
+      // break if there is importance OR no parents
+    }
+    return new BehaviorSubject(retPath.reverse()) // FIXME make it update as ancestors change
+  }
 }

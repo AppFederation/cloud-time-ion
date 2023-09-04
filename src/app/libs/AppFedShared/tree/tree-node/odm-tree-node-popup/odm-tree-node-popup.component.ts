@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {OdmTreeNode} from '../OdmTreeNode'
 import {OdmService2} from '../../../odm/OdmService2'
 import {LearnItem} from '../../../../../apps/Learn/models/LearnItem'
+import {LearnItem$} from '../../../../../apps/Learn/models/LearnItem$'
+import {stripHtml} from '../../../utils/html-utils'
 
 @Component({
   selector: 'app-odm-tree-node-popup',
@@ -10,8 +12,14 @@ import {LearnItem} from '../../../../../apps/Learn/models/LearnItem'
 })
 export class OdmTreeNodePopupComponent implements OnInit {
 
+  stripHtml = stripHtml
+
   @Input()
   treeNode ! : OdmTreeNode
+
+  get item$() {
+    return this.treeNode.item$ as LearnItem$
+  }
 
   constructor() { }
 

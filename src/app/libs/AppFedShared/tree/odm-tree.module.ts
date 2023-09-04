@@ -9,6 +9,7 @@ import {TreeNodeCellsComponent} from './tree-node/tree-node-content/tree-node-ce
 import {MinMidMaxCellComponent} from './cells/min-mid-max-cell/min-mid-max-cell.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {OdmTreeNodePopupComponent} from './tree-node/odm-tree-node-popup/odm-tree-node-popup.component'
+import {RouterLinkWithHref} from '@angular/router'
 
 const exportDeclarations = [
   MinMidMaxCellComponent,
@@ -21,11 +22,12 @@ const exportDeclarations = [
 ]
 
 @NgModule({
-    imports: [
-        CommonModule,
-        IonicModule,
-        SharedModule,
-    ],
+  imports: [
+    CommonModule,
+    IonicModule,
+    SharedModule,
+    RouterLinkWithHref,
+  ],
   declarations: [
     ...exportDeclarations,
   ],
