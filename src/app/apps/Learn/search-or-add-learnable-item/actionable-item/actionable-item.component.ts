@@ -87,11 +87,19 @@ export class ActionableItemComponent extends BaseComponent implements OnInit {
   }
 
   getPhysicalHealthImpactLevelDescriptor() {
-    const val = this.item$.getEffectivePhysicalHealthImpact()
-    if ( val ) {
-      return funLevelsDescriptors.descriptors[val.id]
+    if ( ! this.item$.getEffectivePhysicalHealthImpact ) {
+      console.log('this.item$.getEffectivePhysicalHealthImpact ...', this.item$)
+
     }
-    return undefined
+    try {
+      const val = this.item$.getEffectivePhysicalHealthImpact()
+      if ( val ) {
+        return funLevelsDescriptors.descriptors[val.id]
+      }
+      return undefined
+    } catch (e) {
+      console.log('    const val = this.item$.getEffectivePhysicalHealthImpact()\n', this.item$)
+    }
   }
 
   getMentalHealthImpactLevelDescriptor() {
