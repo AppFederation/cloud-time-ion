@@ -1,6 +1,11 @@
+<!-- Maybe I could use my side-editor's shared editor here (prolly no toolbar)
+  TODO make the toolbar appear on button press (e.g. three dots icon overlaid in top-right corner ( to not obstruct nor take space) )
+-->
+
 <div
   #contentEditableEl
   contenteditable
+  (keyup.backspace)="onKeyUpBackspace()"
 >
   <!--
      [ngClass]="{'done-title': isDone}"
