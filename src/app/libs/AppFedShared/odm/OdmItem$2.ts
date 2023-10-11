@@ -43,6 +43,8 @@ export function convertUndefinedFieldValsToNull(obj: any) {
   return obj
 }
 
+export type OdmItem$2CtorOpts = { createdLocally?: boolean }
+
 /** Maybe have another conversion like OdmItem$W - W meaning writable,
  * to not confuse with real observables; or another special char like EUR - editable, funny pun.
  * Need to have a pronounceable version, like is the case with $ -> Stream
@@ -102,7 +104,7 @@ export class OdmItem$2<
   /** FIXME: encapsulate into OdmCollection<TSelf>, and unify with all-items-list?
    * This has `list` in name, so should only react to changes of the list itself (not object data contents
    * */
-  public childrenList$ = new CachedSubject<TSelf[] | undefined>()
+  public childrenList$ = new CachedSubject<TSelf[] | undefined>(this.opts?.createdLocally ? [] : undefined)
 
   public children$: OdmList$<TChild>
     = new OdmList$<TChild>()//new CachedSubject<TSelf[] | undefined>()
@@ -117,9 +119,10 @@ export class OdmItem$2<
     public odmService: TItemListService,
     public id?: TItemId,
     initialInMemData?: TInMemData,
-    public parents?: TParent[]
+    public parents?: TParent[],
+    public readonly opts?: OdmItem$2CtorOpts,
   ) {
-    console.log('parents', parents)
+    console.log('parents', parents, 'constructor opts', opts)
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
       // TODO: this.hasPendingPatch = true ?
@@ -144,6 +147,10 @@ export class OdmItem$2<
     // this.onModified()
 
     // FIXME: weave parents into db data
+
+    // if ( opts?.createdLocally ) {
+    //   this.childrenList$.nextWithCache([])
+    // }
 
     if ( parents ) {
       for (let parent of parents) {
@@ -464,7 +471,7 @@ export class OdmItem$2<
       locallyVisibleChanges$: cachedSubject,
 
       patchThrottled(patch: TInMemData[TKey]) {
-        console.log(`getObservablePatchableForField patchThrottled`, patch)
+        // console.log(`getObservablePatchableForField patchThrottled`, patch)
         const patch1 = {
           [fieldName]: patch
         } as unknown as TMemPatch /* here need to cast coz not all fields are patchable (not all are `keyof TMemPatch)*/
