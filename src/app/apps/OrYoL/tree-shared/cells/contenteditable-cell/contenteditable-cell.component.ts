@@ -76,4 +76,10 @@ export class ContenteditableCellComponent extends CellComponent implements OnIni
     // this.contentEditableEl.nativeElement.scrollIntoView()
   }
 
+  onKeyUpBackspace() {
+    console.log('onKeyUpBackspace this.treeNode.content.dbItem.itemData', this.treeNode.content.dbItem.itemData)
+    if (  this.treeNode.content.dbItem.itemData.title === ''  ) {
+      console.log('will ask delete !!!')
+    }
+  }
 }
