@@ -14,9 +14,9 @@
     <a
       [routerLink]="ancestor ?. getRouterLinkUrl()"
     >
-      {{ stripHtml((ancestor?.getTitleOrQuestion$() | async)) }}
+      {{ stripHtml((ancestor?.getTitleOrQuestion$() | async)?.trim() || '(?)') }}<ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
 <!--      {{ stripHtml((ancestor?.val?.title)) ?? 'unnamed' }}-->
-      <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
+
     </a>
 
   </ng-container>
