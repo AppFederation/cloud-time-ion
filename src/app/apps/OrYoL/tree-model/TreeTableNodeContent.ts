@@ -18,6 +18,8 @@ import {ApfNonRootTreeNode, RootTreeNode} from './TreeNode'
 
 /**
  *
+ * TODO: read this for sub-items tree
+ *
  * Node content: in the horizontal sense (not sub-nodes). Possibly name: NodeOwnContent, NodeItemContent;
  *
  * Consider composition over `extends`; or still call it viewSyncer; or CellSyncer as a field on OryTreeNode
@@ -110,8 +112,28 @@ export class TreeTableNodeContent <
   }
 
   /** this protects ANY view that deals with this node; not only the view component that actually made the edit;
-   * use-case for this: reordering & indent/outdent, where the protected component will be different from the component
+   * use-case for this: OrYoL reordering & indent/outdent, where the protected component will be different from the component
    * in which the original edit was done.
+   *
+   * Extra use-case: editing in details page, and then in sub-items tree.
+   * Or switching between pages (coming back to details page to make another edit - might be another component instance)
+   *
+   * THOUGH, if user didn't edit in a given UI component at all recently, then, do we care about protecting that UI component?
+   * The moment we edit smth in new component, the protection should activate.
+   * THOUGH: we might still see flashes of older values coming one by one, without even editing.
+   * !!!!! And we might start editing just when the older value arrived, thus losing the latest content.
+   * !!!!! ------->>>>> THUS THE PROTECTION SHOULD PROLLY BE AT THE WHOLE OdmItem$, for safe editing (might get old values on some fields, new values on other)
+   * Though this would prevent updating visible value in other places in the app / page ---> NO coz the protection is JUST for changes incoming FROM **DB**.
+   * So this canApplyDataToViewGivenColumnLocalEdits() is bullshit coz it does not know if change is incoming from DB or not??
+   * At some point there could be a changes listener that would get source-of-change info (db/local-edit) ?
+   *
+   * Maybe it should depend on focus, instead of edited state? Coz having focus is when the risk of starting writing on old value occurs.
+   * Though blocking updaters on focused UI component, would cause changes from another machine to not come.
+   * But we can distinguish if edit happened locally by user recently or not.
+   *
+   *
+   * NOTE: this is now being shifted to OdmCell for Learn Sub-items (but components will still use the same OdmCell instance)
+   * TODO: re-read this to decide if this should be be at OdmCell level or OdmItem$ per-field "`select`-s" PatchableObservable-s
    * */
   public canApplyDataToViewGivenColumnLocalEdits(column: OryColumn) {
     const ret = this.canApplyDataToViewGivenColumnLastLocalEdit(column)
