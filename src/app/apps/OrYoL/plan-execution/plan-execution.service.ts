@@ -40,6 +40,7 @@ export class PlanExecutionService {
   private onEntriesChanged(newTtEntries: TimeTrackedEntry[]) {
     Notification.requestPermission(() => {
     }).then(() => {
+      // no-op
     })
     this.cancelAllNotifications()
     this.cancelDbItemDataSubscriptions()
