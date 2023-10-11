@@ -10,6 +10,7 @@ type HexColor = string
 // type HexColor = string & { length: 7 } & { [0]: '#' } & { [K in 1 | 2 | 3 | 4 | 5 | 6]: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' };
 
 export type Theme = {
+  id?: string
   comment?: string;
   background?: HexColor;
   experimental?: boolean;
@@ -46,12 +47,13 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     primary: '#c72323',
     secondary: '#b68001',
   }),
-  'Forest': theme({
-    comment: 'Greens and browns',
-    background: '#2a1e0e',
-    primary: '#6c6900',
-    secondary: '#00a001',
-  }),
+  // 'Forest': theme({
+  //   comment: 'Greens and browns',
+  //   background: '#2a1e0e',
+  //   primary: '#6c6900',
+  //   secondary: '#00a001',
+  // primary and secondary too similar
+  // }),
   'Forest and black': theme({
     comment: 'Greens and browns',
     background: '#543c1c',
@@ -66,13 +68,14 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     secondary: '#8d0000',
     experimental: true,
   }),
-  'Dark Gray and Dark Brown & Red': theme({
-    comment: '',
-    background: '#1a1a1a',
-    primary: '#ff0000',
-    secondary: '#8d0000',
-    experimental: true,
-  }),
+  // 'Dark Gray and Dark Brown & Red': theme({
+  //   comment: '',
+  //   background: '#1a1a1a',
+  //   primary: '#ff0000',
+  //   secondary: '#8d0000',
+  //   experimental: true,
+  // primary secondary too similar
+  // }),
   'Forest and river': theme({
     comment: 'Greens and browns and blue',
     background: '#2a1e0e',
@@ -95,7 +98,7 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     comment: 'Jellies',
     background: '#244d20',
     primary: '#326a2c',
-    secondary: '#b68001',
+    secondary: '#b680ff',
   }),
   'Dark purple and yellow': theme({
     comment: 'Jellies',
@@ -109,11 +112,11 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     primary: '#6e6e6e',
     secondary: '#007e00',
   }),
-  'Blue Orange': theme({
-    comment: 'Blueberries and orange',
-    primary: '#004cb7',
-    secondary: '#007e00',
-  }),
+  // 'Blue Orange': theme({
+  //   comment: 'Blueberries and orange',
+  //   primary: '#004cb7',
+  //   secondary: '#007e00',
+  // }),
   // 'Grays': {
   //   comment: 'Darker and ligter grays',
   //   primary: '#939393',
@@ -131,10 +134,11 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     secondary: '#940059',
   }),
   // https://www.w3schools.com/colors/color_tryit.asp?hex=BC8F8F
-  'Purple-Blue': theme({
-    primary: '#663399',
-    secondary: '#004cb7',
-  }),
+  // 'Purple-Blue': theme({
+  //   primary: '#663399',
+  //   secondary: '#004cb7',
+  // primary secondary too similar
+  // }),
   'Salmon-Green': theme({
     primary: '#FA8072',
     secondary: '#007e00',
@@ -143,10 +147,11 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     primary: '#BC8F8F' /* is this somehow wrong? Coz so bright. */,
     secondary: '#007e00',
   }),
-  'SaddleBrown-Green': theme({
-    primary: '#8B4513',
-    secondary: '#007e00',
-  }),
+  // 'SaddleBrown-Green': theme({
+  //   primary: '#8B4513',
+  //   secondary: '#007e00',
+  //  primary secondary too similar
+  // }),
   'Fire': theme({
     primary: '#800000',
     secondary: '#e1b74d',
