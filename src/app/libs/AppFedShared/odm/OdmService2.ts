@@ -3,7 +3,7 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2, OdmPatch, ModificationOpts} from './OdmItem$2'
+import {OdmItem$2, OdmPatch, ModificationOpts, OdmItem$2CtorOpts} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
@@ -266,9 +266,9 @@ export abstract class OdmService2<
   // }
 
   /** Can be overridden by subclasses to provide specific sub-type */
-  newItem(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[]): TOdmItem$ {
+  newItem(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[], opts?: OdmItem$2CtorOpts): TOdmItem$ {
 
-    const odmItem$ = this.createOdmItem$(id, inMemData, parents)
+    const odmItem$ = this.createOdmItem$(id, inMemData, parents, opts)
 
     return odmItem$
   }
@@ -320,7 +320,7 @@ export abstract class OdmService2<
   }
 
   /** this should be abstract but keeping default impl for compat; subclasses should override */
-  createOdmItem$(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[]): TOdmItem$ {
-    return new OdmItem$2(this as any, id, inMemData, parents) as any as TOdmItem$
+  createOdmItem$(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[], opts?: OdmItem$2CtorOpts): TOdmItem$ {
+    return new OdmItem$2(this as any, id, inMemData, parents, opts) as any as TOdmItem$
   }
 }
