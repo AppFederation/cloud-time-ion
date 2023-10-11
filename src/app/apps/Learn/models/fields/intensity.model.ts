@@ -63,7 +63,7 @@ export class IntensityDescriptors<TDescriptor> implements Dict<any> {
     = intensity({numeric: midIntensityNum, abbrev: `Md`, icons: `~`, id: `medium` /* hack */, shortId: `Med`}) // 1.5 // default when unspecified;  { should medium have a BTN? --> yes, coz we wanna be able to say that something was already manually deliberately prioritized; vs not prioritized yet (not prioritized could be also shown by "Process" btn maybe; or at least uncategorised ones)
   // somewhat / a bit high; darkened up-chevron; SHP
   somewhat_high
-    = intensity({numeric: 7, abbrev: `SH`, icons: `😊`, shortId: `SHi`})
+    = intensity({numeric: 7, abbrev: `SH`, icons: `😊`, shortId: `SHi`/*, shortName: 'a bit high'*/})
   high
     = intensity({numeric: 10, abbrev: `Hi`, icons: `😊😊`, shortId: `Hi`}) // 2   BTN
   very_high
