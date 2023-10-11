@@ -45,7 +45,6 @@ export class OdmCell<TValue = any> {
     // }
     // this.treeNode!.item$.patchThrottled(patch)
     this.patchableObservable.patchThrottled(newValue)
-    console.error('HACK patching hardcoded title')
   }
 
 }
