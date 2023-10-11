@@ -70,8 +70,17 @@ export class TimeTrackingService {
 
   timeTrackedEntries$ = new CachedSubject<TimeTrackedEntry[]>()
 
+  /* Here fix items duplicated on toolbar;
+   * could rename to runningOrRecentEntries$ */
   toolbarEntries$ = this.timeTrackedEntries$.pipe(
     map((entries: TimeTrackedEntry[]) => {
+      const debug_uniqEntries = [... new Set(entries)]
+      if ( debug_uniqEntries.length !== entries.length ) {
+        console.error(`time-tracking.service.ts - toolbarEntries$ = this.timeTrackedEntries$.pipe(`,
+          `debug_uniqEntries.length !== entries.length`,
+          entries, debug_uniqEntries
+        )
+      }
       // console.log('toolbarEntries$ entries', entries)
 
       const opts = {
@@ -87,19 +96,27 @@ export class TimeTrackingService {
       // console.log(`toolbarEntries$ lastPaused`, lastPaused)
       if ( retEntries.length < 1 ) {
         if ( opts.showLastPausedItemIfNoItemCurrentlyTracking ) {
-          const lastPaused = maxBy(entries, (e: TimeTrackedEntry) => date(e.whenCurrentPauseStarted)?.getTime())
+          const lastPaused = this.getLastPausedItem(entries)
           if ( lastPaused ) {
             retEntries.push(lastPaused)
           }
         }
       }
 
-      return retEntries
+      // return retEntries
+      return [... new Set(retEntries)] // remove duplicates - provisional fix for toolbar duplicate items
     })
   )
 
+  private getLastPausedItem(entries: TimeTrackedEntry[]) {
+    return maxBy(entries,
+      (e: TimeTrackedEntry) => date(e.whenCurrentPauseStarted)?.getTime())
+  }
+
   /** undefined would mean in the future that no value has arrived yet */
-  get currentEntries(): TimeTrackedEntry[] | undefined { return this.timeTrackedEntries$.lastVal }
+  get currentEntries(): TimeTrackedEntry[] | undefined {
+    return this.timeTrackedEntries$.lastVal
+  }
 
   // TODO: currentlyTrackingEntries$
   // TODO: currentlyTrackingAndMruEntries$
@@ -183,6 +200,7 @@ export class TimeTrackingService {
     if ( ! this.currentEntries?.includes(entry) ) {
       newEntriesArr = [...newEntriesArr, entry]
     }
+    // TODO: is this where the duplicate item shows on toolbar?
 
     // if (
     //   && isDone
