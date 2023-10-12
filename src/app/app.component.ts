@@ -25,7 +25,7 @@ export class AppComponent {
     private statusBar: StatusBar,
     private featureService /* force the service to run */: FeatureService,
     private ThemeService /* force the service to run */: ThemeService,
-    private timerNotificationService /* force the service to run */: TimerNotificationsService,
+    // private timerNotificationService /* force the service to run */: TimerNotificationsService,
     private authService  /* force the service to run */: AuthService,
     // private learnStatsService  /* force the service to run */: LearnStatsService,
     public syncStatusService: SyncStatusService,
