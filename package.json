@@ -9,6 +9,7 @@
     "startWithAutoReload": "ng serve --port 4207",
     "build": "ng build",
     "build:prod": "npx ionic build --prod --aot",
+    "build:origFromVercel": "`npm run build` or `ng build`",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

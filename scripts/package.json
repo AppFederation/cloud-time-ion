@@ -1,0 +1,17 @@
+{
+    "name": "typescript-file-finder",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "compile": "tsc find_usages.ts",
+      "start": "node find_usages.js",
+      "run": "npm run compile && npm run start"
+    },
+    "dependencies": {
+      "typescript": "^4.5.2"
+    },
+    "devDependencies": {
+      "@types/node": "^16.11.6"
+    }
+  }
+  
