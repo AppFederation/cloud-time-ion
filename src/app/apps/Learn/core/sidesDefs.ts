@@ -31,9 +31,7 @@ export class Side {
   ask?: boolean // = true
 
   constructor() {
-    if ( this.ask === undefined ) {
-      this.ask = true // use `??`
-    }
+    this.ask ??= true
   }
 
   init() {
