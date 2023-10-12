@@ -1,10 +1,10 @@
 <a
   [routerLink]="item$ . getRouterLinkUrl()"
 >
-  Item: {{ stripHtml((item$ . getTitleOrQuestion$() | async)) }}
+  Item: {{ stripHtml((item$ . getTitleOrQuestion$() | async)) }}</a>&nbsp;
   <!--      {{ stripHtml((ancestor?.val?.title)) ?? 'unnamed' }}-->
 <!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
-</a>
+
 
 
 <ion-button
@@ -13,6 +13,12 @@
 <ion-button
   (click)="addChild($event)"
 >Add Sub-Item</ion-button>
+<odm-checkbox
+  [fieldName]="'hideAncestorsInQuiz'"
+  [item$]="item$"
+>
+  HIDE ANCESTORS IN QUIZ
+</odm-checkbox>
 
 <ion-button
 >Add Item After</ion-button>
