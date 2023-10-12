@@ -157,3 +157,11 @@ ion-item {
   --ion-border-color: rgba(0,0,0,0); /* annoying underline next to checkbox; maybe this is meant for list items as separator; BUT on ionic page, for ios mode there is (white) underline too (seems pointless and ugly) */
 
 }
+
+@supports ((-webkit-margin-start: 0) or (margin-inline-start: 0)) or (-webkit-margin-start: 0) {
+  :host(.in-item[slot="start"]) {
+    margin-left: unset;
+    margin-right: unset;
+    margin-inline: 4px 136px;
+  }
+}
