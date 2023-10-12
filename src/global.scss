@@ -24,7 +24,7 @@
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: red !important;
+  //color: red !important; ;;; also check --placeholder-color
   opacity: 1; /* Firefox */
 }
 
@@ -286,3 +286,9 @@ body {
     display: none; // HACK for tinymce domain somehow not recognized (apiKey)
   }
 //}
+
+* {
+  //transition: all 1s ease-in-out;
+}
+
+
