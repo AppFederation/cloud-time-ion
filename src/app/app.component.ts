@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {TimerNotificationsService} from "./core/timer-notifications.service";
 import {SyncStatusService} from './libs/AppFedShared/odm/sync-status.service'
-import {LearnStatsService} from './apps/Learn/core/learn-stats.service'
+// import {LearnStatsService} from './apps/Learn/core/learn-stats.service'
 import {AuthService} from './auth/auth.service'
 import {OptionsService} from './apps/Learn/core/options.service'
 import {SyncPopoverComponent} from './libs/AppFedShared/odm/sync-status/sync-popover/sync-popover.component'
@@ -27,7 +27,7 @@ export class AppComponent {
     private ThemeService /* force the service to run */: ThemeService,
     private timerNotificationService /* force the service to run */: TimerNotificationsService,
     private authService  /* force the service to run */: AuthService,
-    private learnStatsService  /* force the service to run */: LearnStatsService,
+    // private learnStatsService  /* force the service to run */: LearnStatsService,
     public syncStatusService: SyncStatusService,
     public optionsService: OptionsService,
     public popoverController: PopoverController,

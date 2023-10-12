@@ -67,7 +67,7 @@ console.log(`service worker swOpts`, swOpts)
             // logOnly: environment.production, // Restrict extension to log-only mode
             // autoPause: true, // Pauses recording actions and state changes when the extension window is not open
         }),
-        EffectsModule.forRoot([QuizEffects]),
+        // EffectsModule.forRoot([QuizEffects]) /* FIXME this is causing LearnDoService to load */,
         // ServiceWorkerModule.register('ngsw-worker.js', swOpts),
     ],
     exports: [

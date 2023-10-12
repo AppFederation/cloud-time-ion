@@ -15,6 +15,7 @@ export class ItemProcessingService {
   constructor(
     private learnDoService: LearnDoService,
   ) {
+    console.log('ItemProcessingService service constructor')
   }
 
   nextItemToProcess$: Observable<LearnItem$ | undefined> = this.learnDoService.localItems$.pipe(

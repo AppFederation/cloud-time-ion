@@ -122,7 +122,7 @@ export class OdmItem$2<
     public parents?: TParent[],
     public readonly opts?: OdmItem$2CtorOpts,
   ) {
-    console.log('parents', parents, 'constructor opts', opts)
+    // console.log('OdmItem$2: parents', parents, 'constructor opts', opts)
     if ( initialInMemData !== undefined ) {
       this.emitNewVal(initialInMemData)
       // TODO: this.hasPendingPatch = true ?

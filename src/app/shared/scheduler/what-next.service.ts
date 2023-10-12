@@ -39,7 +39,9 @@ export class WhatNextService {
 
   constructor(
     private router: Router,
-  ) { }
+  ) {
+    console.log(`WhatNextService service constructor`)
+  }
 
   whatNext() {
     const intervalMs = minutesAsMs(20)

@@ -1,106 +1,35 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {LearnDoService} from '../learn-do.service'
-import {OdmTimestamp} from '../../../../libs/AppFedShared/odm/OdmBackend'
 
-import {countBy, groupBy, minBy, sumBy} from 'lodash-es'
+import {countBy} from 'lodash-es'
 // import * as _ from "lodash";
 // import {Observable} from 'rxjs'
-import {combineLatest} from 'rxjs'
-import {
-  FunLevelId, FunLevelId2,
-  ImportanceVal,
-  LearnItem,
-
-} from '../../models/LearnItem'
-
-import {Observable,of, from } from 'rxjs';
+import {combineLatest, Observable, timer} from 'rxjs'
+import {ImportanceVal} from '../../models/LearnItem'
 import {LearnItem$} from '../../models/LearnItem$'
 import {debugLog} from '../../../../libs/AppFedShared/utils/log'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {countBy2} from '../../../../libs/AppFedShared/utils/utils'
 import {hoursAsMs, isInFuture, secondsAsMs} from '../../../../libs/AppFedShared/utils/time/date-time-utils'
-import {debounceTime, filter, map, shareReplay, tap, withLatestFrom} from 'rxjs/operators'
-import {throttleTimeWithLeadingTrailing, throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
-import {interval} from 'rxjs'
-import {timer} from 'rxjs'
+import {debounceTime, filter, map, shareReplay, tap} from 'rxjs/operators'
+import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {LocalOptionsPatchableObservable, OptionsService} from '../options.service'
-import {Subject} from 'rxjs/internal/Subject'
 import {Rating} from '../../models/fields/self-rating.model'
-import {
-  ImportanceDescriptors,
-  importanceDescriptors,
-  importanceDescriptorsArray,
-  importanceDescriptorsArrayFromHighestNumeric,
-} from '../../models/fields/importance.model'
+import {ImportanceDescriptors} from '../../models/fields/importance.model'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
-import {MentalEffortLevelDescriptors, mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
-import {FunLevelDescriptors, funLevels, funLevelsDescriptors, FunLevelVal} from '../../models/fields/fun-level.model'
+import {mentalEffortLevels} from '../../models/fields/mental-effort-level.model'
+import {funLevels} from '../../models/fields/fun-level.model'
 import {QuizItemChooser} from './quiz-item-chooser'
+import {QuizStatus} from './QuizStatus'
+import {QuizOptions} from './QuizOptions'
 
 /* TODO units; rename to DurationMs or TimeDurationMs;
 *   !!! actually this is used as hours, confusingly! WARNING! */
 export type Duration = number
 
 
-/** FIXME: keep in mind that if options existed, they will not be overridden, and will be missing fields; so should {...defaultOptions, ...options}*/
-export class QuizOptions {
-  constructor(
-    public dePrioritizeNewMaterial: boolean,
-    public onlyWithQA: boolean,
-    public minFunLevel: FunLevelVal = funLevels.undefined,
-    public powBaseX100: number = 300,
-    public skipTasks: boolean = true,
-    public scaleIntervalsByImportance = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
-    public focusLevelProbabilities = 1, // 0 .. 1 (0 no scale, 1: current default: scale per importance multiplier. >1 scale even more)
-    public categories = '',
-    public textFilter = '',
-    // TODO: priorityByImportances: 0 .. 1 -- 0 - ignore importances, 1 - items of highest importance go first
-    // in-between - probabilities
-  ) {
-  }
-}
-
 export type CountsByImportance = { [key in keyof ImportanceDescriptors]: number}
-
-export class QuizStatus {
-
-  public itemsLeftByImportanceAtLeast: any = QuizStatus.countsAtLeastImportance(this.itemsLeftByImportance)
-  public itemsCountByImportanceAtLeast: any = QuizStatus.countsAtLeastImportance(this.itemsCountByImportance)
-
-  constructor(
-    public itemsLeft: number,
-    public nextItem$?: LearnItem$,
-    public itemsLeftToday?: number,
-    public isNextItemInFuture?: boolean,
-    public estimatedMsLeft?: DurationMs,
-    // public itemsLeftByImportance?: CountsByImportance,
-    public itemsLeftByImportance?: any,
-    /* TODO: undefined */
-    public itemsCountByImportance?: any,
-    public chooserParams?: any,
-  ) {}
-
-  private static countsAtLeastImportance(itemsLeftByImportance: any): CountsByImportance {
-    const ret = {} as any
-    let idx = 0
-    let previousFilledVal: number | undefined = undefined
-    for ( let imp of importanceDescriptorsArray ) {
-      let sum = 0
-      for ( let internalIdx = idx; internalIdx < importanceDescriptorsArray.length; internalIdx ++ ) {
-        const impInternal = importanceDescriptorsArray[internalIdx]
-        sum += itemsLeftByImportance[impInternal.id] ?? 0
-      }
-      // const previousIdx = idx - 1
-      if ( /*previousIdx < 0 || */ (previousFilledVal !== sum ) ) {
-        ret[imp.id] = sum
-        previousFilledVal = sum
-      }
-      idx++
-    }
-    return ret
-  }
-}
 
 
 @Injectable({
@@ -128,6 +57,8 @@ export class QuizService {
     private learnDoService: LearnDoService,
     private optionsService: OptionsService,
   ) {
+    console.log('QuizService service constructor')
+    // throw new Error(`QuizService service constructor`)
     this.nextItemRequests$.next()
   }
 

@@ -108,7 +108,7 @@ export class LearnStatsService {
     private learnDoService: LearnDoService,
     private statsHistoryService: StatsHistoryService,
   ) {
-    console.log('LearnStatsService ctor')
+    console.log('LearnStatsService service constructor')
     // debugLog(`statsToSave init`)
 
     /*const statsToSave$: Observable<StoredLearnStats> = */this.learnDoService.localItems$.pipe(

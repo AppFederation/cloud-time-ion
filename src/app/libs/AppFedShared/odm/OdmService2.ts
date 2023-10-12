@@ -102,6 +102,7 @@ export abstract class OdmService2<
     public className: string,
     public opts : OdmServiceOpts = new OdmServiceOpts(),
   ) {
+    console.log('OdmService2 service constructor for className: ', className)
     // this.className += '_DEBUG'
     this.setBackendListenerIfNecessary()
     // this.subscribeToBackendCollection();

@@ -8,7 +8,10 @@ import { Injectable } from '@angular/core';
 export class MigrateImgBase64Service {
   disableUpload: boolean = true;
 
-  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {}
 
   private getBase64Size(base64: string): number {
     const padding = (base64.match(/=/g) || []).length;

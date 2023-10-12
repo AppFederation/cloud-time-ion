@@ -33,7 +33,7 @@ export class SyncStatusService extends BaseService {
     injector: Injector,
   ) {
     super(injector)
-    console.log('SyncStatusService ctor')
+    console.log('SyncStatusService service constructor')
   }
 
   /** crude placeholder to distinguish "Unsaved" From "Saving...";

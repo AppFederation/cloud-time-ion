@@ -18,7 +18,7 @@ export class LearnDoService extends OdmService2<
 
   constructor(
     injector: Injector,
-    public migrate: MigrateImgBase64Service,
+    // public migrate: MigrateImgBase64Service,
   ) {
     super(
       injector,

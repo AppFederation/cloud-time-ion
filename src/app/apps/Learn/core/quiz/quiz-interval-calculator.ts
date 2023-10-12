@@ -1,9 +1,10 @@
 import {Rating, SelfRating} from '../../models/fields/self-rating.model'
-import {Duration, QuizOptions} from './quiz.service'
+import {Duration} from './quiz.service'
 import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {importanceDescriptors} from '../../models/fields/importance.model'
 import {hoursAsMs} from '../../../../libs/AppFedShared/utils/time/date-time-utils'
 import {ImportanceVal} from '../../models/LearnItem'
+import {QuizOptions} from './QuizOptions'
 
 export class QuizIntervalCalculator {
 

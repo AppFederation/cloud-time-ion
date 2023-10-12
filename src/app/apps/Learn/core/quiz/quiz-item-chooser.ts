@@ -2,9 +2,9 @@ import {LearnItem$} from '../../models/LearnItem$'
 import {ImportanceDescriptor, importanceDescriptorsArrayFromHighestNumeric} from '../../models/fields/importance.model'
 import {countBy, minBy, sumBy} from 'lodash-es'
 import {TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
-import {QuizOptions} from './quiz.service'
 import {countBy2, isNotNullish, minsGroupBy} from '../../../../libs/AppFedShared/utils/utils'
 import {pickRandomWeighted} from '../../../../libs/AppFedShared/utils/randomUtils'
+import {QuizOptions} from './QuizOptions'
 
 
 /**

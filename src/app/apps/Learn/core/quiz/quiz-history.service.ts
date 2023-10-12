@@ -4,8 +4,8 @@ import {StoredLearnStats} from '../learn-stats.service'
 import {LearnItemId} from '../../models/LearnItem'
 import {OdmInMemItem, OdmInMemItemWriteOnce} from '../../../../libs/AppFedShared/odm/OdmItem$2'
 import {Rating} from '../../models/fields/self-rating.model'
-import {QuizOptions} from './quiz.service'
 import {DurationMs} from '../../../../libs/AppFedShared/utils/type-utils'
+import {QuizOptions} from './QuizOptions'
 
 export class QuizAnswerForHistory extends OdmInMemItemWriteOnce {
 

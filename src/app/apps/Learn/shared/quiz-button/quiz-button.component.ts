@@ -10,7 +10,7 @@ import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
 export class QuizButtonComponent extends BaseComponent implements OnInit {
 
   constructor(
-    public quizService: QuizService,
+    // public quizService: QuizService,
     injector: Injector,
   ) {
     super(injector)

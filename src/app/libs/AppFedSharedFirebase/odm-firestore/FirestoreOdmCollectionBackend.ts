@@ -184,7 +184,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
 
         query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
         {
-          console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length', snapshot.docChanges().length)
+          console.log('firestore.collection(this.collectionName).onSnapshot', 'snapshot.docChanges().length',
+            this.collectionName, snapshot.docChanges().length)
           // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
           for ( let change of snapshot.docChanges() ) {
             const docId = change.doc.id
@@ -227,7 +228,8 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     }
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
       {
-        console.log(`loadChildrenOf ${parentId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length', snapshot.docChanges().length)
+        console.log(`loadChildrenOf ${parentId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length',
+          this.collectionName, snapshot.docChanges().length)
         // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
         for ( let change of snapshot.docChanges() ) {
           const docId = change.doc.id
@@ -265,6 +267,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     query.onSnapshot(((snapshot: QuerySnapshot<TRaw>) =>
     {
       console.log(`loadTreeDescendantsOf results ${ancestorId} firestore.collection(this.collectionName).onSnapshot`, 'snapshot.docChanges().length',
+        this.collectionName,
         snapshot.docChanges().length)
       // FIXME: let the service process in batch, for performance --> is this done now, thanks to onFinishedProcessing() ?
       for ( let change of snapshot.docChanges() ) {

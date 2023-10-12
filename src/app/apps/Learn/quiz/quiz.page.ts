@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Injector, OnInit} from '@angular/core';
-import {QuizService, QuizStatus} from '../core/quiz/quiz.service'
+import {QuizService} from '../core/quiz/quiz.service'
 import {Observable} from 'rxjs'
 import {PopoverController} from '@ionic/angular'
 import {QuizTimerPopoverComponent} from './quiz-timer-popover/quiz-timer-popover.component'
@@ -11,6 +11,7 @@ import {EditorService} from '../../../libs/AppFedShared/rich-text/rich-text-edit
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
 import {isNullish} from '../../../libs/AppFedShared/utils/utils'
 import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
+import {QuizStatus} from '../core/quiz/QuizStatus'
 
 
 @Component({

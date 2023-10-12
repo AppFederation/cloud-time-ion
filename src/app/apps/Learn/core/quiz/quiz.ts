@@ -1,9 +1,9 @@
 import {OdmTimestamp} from '../../../../libs/AppFedShared/odm/OdmBackend'
 import {Rating} from '../../models/fields/self-rating.model'
 import {ImportanceVal, PositiveInt, PositiveIntOrZero} from '../../models/LearnItem'
-import {QuizOptions} from './quiz.service'
 import {DurationMs, nullish, TimeMsEpoch} from '../../../../libs/AppFedShared/utils/type-utils'
 import {QuizIntervalCalculator} from './quiz-interval-calculator'
+import {QuizOptions} from './QuizOptions'
 
 (Date.prototype as any).toMillis = function() {
   return this.getTime()

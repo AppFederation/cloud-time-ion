@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Form, UntypedFormControl, UntypedFormGroup} from '@angular/forms'
-import {QuizOptions, QuizService} from '../../core/quiz/quiz.service'
+import {QuizService} from '../../core/quiz/quiz.service'
 import {ViewSyncer} from '../../../../libs/AppFedShared/odm/ui/ViewSyncer'
 import {OptionsService} from '../../core/options.service'
 import {throttleTimeWithLeadingTrailing_ReallyThrottle} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {buttonsDesc} from '../../../../libs/LifeSuiteShared/edit-shared/fun-level-edit/fun-level-edit.component'
+import {QuizOptions} from '../../core/quiz/QuizOptions'
 
 @Component({
   selector: 'app-quiz-options',
