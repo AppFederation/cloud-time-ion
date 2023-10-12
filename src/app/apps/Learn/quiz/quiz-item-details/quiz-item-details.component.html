@@ -10,6 +10,7 @@
     [itemId]="item$ . id"
   ></app-play-button>
   <app-breadcrumbs
+    *ngIf="! (itemVal$ | async)?.hideAncestorsInQuiz"
     [item$]="item$"
   ></app-breadcrumbs>
 
