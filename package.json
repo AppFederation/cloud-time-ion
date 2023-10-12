@@ -8,7 +8,7 @@
     "start": "ng serve --port 4207 --live-reload false",
     "startWithAutoReload": "ng serve --port 4207",
     "build": "ng build",
-    "build:prod": "ionic build --prod --aot",
+    "build:prod": "npx ionic build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
