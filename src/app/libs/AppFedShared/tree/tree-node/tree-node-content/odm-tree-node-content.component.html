@@ -3,6 +3,7 @@
   (keydown.arrowleft)="onArrowLeft()"
   (keydown.alt.arrowleft)="onArrowLeft()"
   (keydown.meta.arrowleft)="onArrowLeft()"
+  (keydown.control.a)="this.toggleShowAnswer()"
 >
   <i
     style="color: var(--ion-color-secondary); vertical-align: middle; padding-top: 3px; aspect-ratio: 1 / 1;"
@@ -25,7 +26,7 @@
   <i
     style="vertical-align: middle; margin: 3px; aspect-ratio: 1 / 1;"
     class="material-icons tappable-icon actionable"
-    (click)="showAnswer = !showAnswer"
+    (click)="toggleShowAnswer()"
   >
     question_answer
   </i>
@@ -51,6 +52,7 @@
 </div>
 
 <app-rich-text-edit-cell
+  #answerCell
   [hidden]="((! showAnswer) && !((val$ | async)?.answer)) || (!treeNode.isExpanded)"
   style="flex-grow: 1; margin-left: 1.5rem"
   [cell]="mapColumnIdToCell.get('answer')!"
