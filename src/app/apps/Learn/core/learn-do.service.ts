@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {OdmService2} from '../../../libs/AppFedShared/odm/OdmService2'
 import {LearnItem, LearnItemId} from '../models/LearnItem'
-import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
+import {OdmItem$2, OdmItem$2CtorOpts} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {OdmItemId} from '../../../libs/AppFedShared/odm/OdmItemId'
 import {LearnItem$} from '../models/LearnItem$'
 import {MigrateImgBase64Service} from './migrate-img-base64'
@@ -47,8 +47,8 @@ export class LearnDoService extends OdmService2<
     return learnItem$
   }
 
-  override createOdmItem$(id?: LearnItemId, inMemData?: LearnItem, parents?: LearnItem$[]) {
-    return new LearnItem$(this, id, inMemData, parents)
+  override createOdmItem$(id?: LearnItemId, inMemData?: LearnItem, parents?: LearnItem$[], opts?: OdmItem$2CtorOpts) {
+    return new LearnItem$(this, id, inMemData, parents, opts)
   }
 
 }
