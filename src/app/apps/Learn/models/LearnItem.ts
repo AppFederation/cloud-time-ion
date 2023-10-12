@@ -54,6 +54,8 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
   isTask?: boolean
   isToLearn?: boolean
 
+  hideAncestorsInQuiz?: boolean
+
   status: string | nullish
 
   hasAudio?: true | null
@@ -174,6 +176,7 @@ export class LearnItem extends OdmInMemItem implements QuizzableData {
     if ( question ) {
       return question
     }
+    // TODO return title or smth?
     // second attempt, without `ask` requirement
   }
 
