@@ -16,7 +16,7 @@ export class QuizIntervalsComponent implements OnInit {
 
   hiLightCell = {
     importance: importanceDescriptors.medium,
-    selfRating: 2
+    selfRating: 1
   }
 
   constructor(
