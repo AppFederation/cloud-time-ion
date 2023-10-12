@@ -11,7 +11,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "debug.android": "ionic cordova run android  -l --debug --"
+    "debug.android": "ionic cordova run android  -l --debug --",
+    "compodoc": "npx compodoc -p tsconfig.doc.json"
   },
   "private": true,
   "dependencies": {

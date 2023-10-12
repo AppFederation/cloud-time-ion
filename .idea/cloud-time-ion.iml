@@ -20,6 +20,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.angular/cache" />
       <excludeFolder url="file://$MODULE_DIR$/.firebase" />
       <excludeFolder url="file://$MODULE_DIR$/plugins" />
+      <excludeFolder url="file://$MODULE_DIR$/documentation" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
