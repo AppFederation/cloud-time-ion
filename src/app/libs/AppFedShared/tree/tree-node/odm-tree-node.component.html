@@ -1,4 +1,8 @@
-<div>
+<div
+  (keydown.control.s)="this.addChild()"
+  (keydown.alt.enter)="this.addChild()"
+  (keydown.control.enter)="this.addChild()"
+>
   <!-- style="border: 2px solid var(--ion-item-background)" -->
 
 <!--  <button (click)="expanded = ! expanded">Expand</button>-->
@@ -13,6 +17,8 @@
   ></app-tree-node-content>
 
 <!--  children: {{(treeNode.childNodesList$ | async) ?. length}}-->
+<!--  childNodesList$: {{(treeNode.childNodesList$ | async) }}-->
+<!--  opts: {{(treeNode.item$.opts | json) }}-->
 
   <ng-container
     *ngIf="!(treeNode.childNodesList$ | async)"
