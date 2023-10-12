@@ -31,7 +31,7 @@ export class OdmTreeNodeComponent implements OnInit {
   addChild() {
     const item$ = this.treeNode.item$
     const odmService = item$.odmService as OdmService2<any, any, any, any>
-    const newItem = odmService.newItem(undefined, new LearnItem(), [item$])
+    const newItem = odmService.newItem(undefined, new LearnItem(), [item$], {createdLocally: true})
     newItem.saveNowToDb()
     console.log('newItem', newItem)
   }
