@@ -23,6 +23,7 @@ import {LearnItem$} from '../models/LearnItem$'
 import {SelectionManager} from './SelectionManager'
 import {ListProcessing} from './list-processing'
 import {BaseComponent} from '../../../libs/AppFedShared/base/base.component'
+import {LearnStatsService} from '../core/learn-stats.service'
 
 /** TODO: rename to smth simpler more standard like LearnDoItemsPage (search-or-add is kinda implied, especially search) */
 @Component({
@@ -49,6 +50,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
 
   constructor(
     public learnDoService: LearnItemItemsService,
+    private learnStatsService  /* force the service to run */: LearnStatsService,
     // public journalEntriesService: JournalEntryItemsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
