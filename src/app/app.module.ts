@@ -22,7 +22,7 @@ import {EffectsModule} from '@ngrx/effects'
 import {QuizEffects} from './apps/Learn/core/quiz/quiz.effects'
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
-import { ServiceWorkerModule } from '@angular/service-worker';
+// import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment'
 
 // custom configuration Hammerjs
