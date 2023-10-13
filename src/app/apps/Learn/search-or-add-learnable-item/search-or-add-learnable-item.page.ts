@@ -13,7 +13,7 @@ import {MerriamWebsterDictService} from '../natural-langs/merriam-webster-dict.s
 import {PopoverController} from '@ionic/angular'
 import {ListOptionsComponent} from './list-options/list-options.component'
 import {ListOptions, ListOptionsData} from './list-options'
-import {JournalEntryService} from '../../Journal/core/journal-entries.service'
+import {JournalEntryItemsService} from '../../Journal/core/journal-entries.service'
 import {LocalOptionsPatchableObservable} from '../core/options.service'
 import {isNullishOrEmptyOrBlank} from '../../../libs/AppFedShared/utils/utils'
 import {Router} from '@angular/router'
@@ -49,7 +49,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
 
   constructor(
     public learnDoService: LearnDoService,
-    public journalEntriesService: JournalEntryService,
+    public journalEntriesService: JournalEntryItemsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,

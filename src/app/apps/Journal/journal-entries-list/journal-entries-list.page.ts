@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {JournalEntryService} from '../core/journal-entries.service'
+import {JournalEntryItemsService} from '../core/journal-entries.service'
 import {JournalEntry$} from '../models/JournalEntry$'
 import {CachedSubject} from '../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
 import {of} from 'rxjs'
@@ -50,7 +50,7 @@ export class JournalEntriesListPage extends BaseComponent implements OnInit {
     })
 
   constructor(
-    public journalEntriesService: JournalEntryService,
+    public journalEntriesService: JournalEntryItemsService,
     public popoverController: PopoverController,
     injector: Injector,
   ) {

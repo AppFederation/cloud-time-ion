@@ -1,6 +1,6 @@
 import {OdmItem$2, OdmPatch} from '../../../libs/AppFedShared/odm/OdmItem$2'
 import {JournalEntry} from './JournalEntry'
-import {JournalEntryService} from '../core/journal-entries.service'
+import {JournalEntryItemsService} from '../core/journal-entries.service'
 import {errorAlert, errorAlertAndThrow} from '../../../libs/AppFedShared/utils/log'
 import {OdmTimestamp} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {Observable} from 'rxjs'
@@ -10,7 +10,7 @@ export class JournalEntry$ extends OdmItem$2<
   JournalEntry$,
   JournalEntry,
   JournalEntry,
-  JournalEntryService
+  JournalEntryItemsService
   >
 {
   val$WithWhenCreated: Observable<(JournalEntry & { whenCreated: OdmTimestamp }) | undefined | null> | undefined

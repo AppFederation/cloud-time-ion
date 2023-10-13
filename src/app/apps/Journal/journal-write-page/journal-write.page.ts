@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {JournalEntryService} from "../core/journal-entries.service";
+import {JournalEntryItemsService} from "../core/journal-entries.service";
 import {JournalEntry, JournalEntryId} from "../models/JournalEntry";
 import {debugLog} from "../../../libs/AppFedShared/utils/log";
 import {ApfGeoLocationService} from "../../../libs/AppFedShared/geo-location/apf-geo-location.service";
@@ -28,7 +28,7 @@ export class JournalWritePage extends BaseComponent implements OnInit {
   item$FakeArray ! : Array<JournalEntry$>
 
   constructor(
-    public journalEntriesService: JournalEntryService,
+    public journalEntriesService: JournalEntryItemsService,
     public geoLocationService: ApfGeoLocationService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
