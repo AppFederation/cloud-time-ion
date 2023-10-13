@@ -15,7 +15,7 @@ export class SyncPopoverComponent extends BaseComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public syncStatusService: SyncStatusService,
-    public learnStatsService: LearnStatsService,
+    // public learnStatsService: LearnStatsService,
     public optionsService: OptionsService,
     injector: Injector,
   ) {
