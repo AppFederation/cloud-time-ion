@@ -3,7 +3,7 @@ import {countBy, flatten, isEqual} from 'lodash-es'
 import {LearnItem} from '../models/LearnItem'
 import {countBy2, countNotNullishBy} from '../../../libs/AppFedShared/utils/utils'
 import {Dictionary, mapEntriesToArray} from '../../../libs/AppFedShared/utils/dictionary-utils'
-import {LearnDoService} from './learn-do.service'
+import {LearnItemItemsService} from './learn-item-items.service'
 import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators'
 import {Observable} from 'rxjs'
 import {nullish} from '../../../libs/AppFedShared/utils/type-utils'
@@ -105,7 +105,7 @@ export class LearnStatsService {
   }
 
   constructor(
-    private learnDoService: LearnDoService,
+    private learnDoService: LearnItemItemsService,
     private statsHistoryService: StatsHistoryService,
   ) {
     console.log('LearnStatsService service constructor')

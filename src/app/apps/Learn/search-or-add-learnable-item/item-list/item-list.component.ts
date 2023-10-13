@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LearnDoService} from '../../core/learn-do.service'
+import {LearnItemItemsService} from '../../core/learn-item-items.service'
 import {LearnItem} from '../../models/LearnItem'
 import {ListProcessing} from '../list-processing'
 import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.decorator'
@@ -21,7 +21,7 @@ export class ItemListComponent implements OnInit {
 
 
   constructor(
-    public learnDoService: LearnDoService,
+    public learnDoService: LearnItemItemsService,
   ) { }
 
   ngOnInit() {}

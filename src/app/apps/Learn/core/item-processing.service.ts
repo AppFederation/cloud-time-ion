@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {LearnDoService} from './learn-do.service'
+import {LearnItemItemsService} from './learn-item-items.service'
 import {LearnItem$} from '../models/LearnItem$'
 import {map, shareReplay} from 'rxjs/operators'
 import {Observable} from 'rxjs'
@@ -13,7 +13,7 @@ import {LearnItem} from '../models/LearnItem'
 export class ItemProcessingService {
 
   constructor(
-    private learnDoService: LearnDoService,
+    private learnDoService: LearnItemItemsService,
   ) {
     console.log('ItemProcessingService service constructor')
   }

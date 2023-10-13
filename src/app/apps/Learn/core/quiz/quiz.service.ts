@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {LearnDoService} from '../learn-do.service'
+import {LearnItemItemsService} from '../learn-item-items.service'
 
 import {countBy} from 'lodash-es'
 // import * as _ from "lodash";
@@ -54,7 +54,7 @@ export class QuizService {
   showHint$ = new CachedSubject<boolean>(false)
 
   constructor(
-    private learnDoService: LearnDoService,
+    private learnDoService: LearnItemItemsService,
     private optionsService: OptionsService,
   ) {
     console.log('QuizService service constructor')

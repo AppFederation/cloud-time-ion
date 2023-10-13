@@ -9,8 +9,8 @@ import {MigrateImgBase64Service} from './migrate-img-base64'
 @Injectable({
   providedIn: 'root'
 })
-export class LearnDoService extends OdmService2<
-    LearnDoService,
+export class LearnItemItemsService extends OdmService2<
+    LearnItemItemsService,
     LearnItem,
     LearnItem,
     LearnItem$

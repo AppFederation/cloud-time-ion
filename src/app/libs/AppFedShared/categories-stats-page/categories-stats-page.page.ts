@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {LearnItem$} from '../../../apps/Learn/models/LearnItem$'
 import {HtmlString} from '../../../apps/Learn/models/LearnItem'
 import {stripHtml} from '../utils/html-utils'
-import {LearnDoService} from '../../../apps/Learn/core/learn-do.service'
+import {LearnItemItemsService} from '../../../apps/Learn/core/learn-item-items.service'
 
 @Component({
   selector: 'app-categories-stats-page',
@@ -15,7 +15,7 @@ export class CategoriesStatsPagePage implements OnInit {
   count = 0
 
   constructor(
-    public learnDoService: LearnDoService,
+    public learnDoService: LearnItemItemsService,
   ) {
     this.learnDoService.localItems$.subscribe((item$s: LearnItem$[]) => {
       this.analyzeCategories(item$s)

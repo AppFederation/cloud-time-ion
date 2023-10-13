@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../core/upload.service'
-import {LearnDoService} from '../../core/learn-do.service'
+import {LearnItemItemsService} from '../../core/learn-item-items.service'
 import {OdmBackend} from '../../../../libs/AppFedShared/odm/OdmBackend'
 import {LearnItem} from '../../models/LearnItem'
 
@@ -22,7 +22,7 @@ export class MicComponent implements OnInit {
 
   constructor(
     public uploadService: UploadService,
-    public learnDoService: LearnDoService,
+    public learnDoService: LearnItemItemsService,
   ) { }
 
   ngOnInit() {}

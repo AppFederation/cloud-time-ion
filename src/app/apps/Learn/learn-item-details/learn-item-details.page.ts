@@ -1,7 +1,7 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {sidesDefsArray} from '../core/sidesDefs'
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router'
-import {LearnDoService} from '../core/learn-do.service'
+import {LearnItemItemsService} from '../core/learn-item-items.service'
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/compat/firestore'
 import {AlertController} from '@ionic/angular'
 import {LearnItem, LearnItemId} from '../models/LearnItem'
@@ -34,7 +34,7 @@ export class LearnItemDetailsPage extends BaseComponent implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    public learnDoService: LearnDoService,
+    public learnDoService: LearnItemItemsService,
     public angularFirestore: AngularFirestore,
     public alertController: AlertController,
     public router: Router,

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {OdmTreeNode} from '../tree-node/OdmTreeNode'
 import {GenericItem$} from '../GenericItem$'
 import {GenericItemsService} from '../generic-items.service'
-import {LearnDoService} from '../../../../apps/Learn/core/learn-do.service'
+import {LearnItemItemsService} from '../../../../apps/Learn/core/learn-item-items.service'
 import {LearnItem$} from '../../../../apps/Learn/models/LearnItem$'
 
 @Component({
@@ -23,7 +23,7 @@ export class OdmTreeComponent implements OnInit {
 
   constructor(
     // public itemsService: GenericItemsService
-    public itemsService: LearnDoService
+    public itemsService: LearnItemItemsService
   ) { }
 
   ngOnInit() {

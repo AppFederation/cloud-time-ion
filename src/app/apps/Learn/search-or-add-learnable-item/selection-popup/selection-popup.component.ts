@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SelectionManager} from '../SelectionManager'
 import {ignorePromise} from '../../../../libs/AppFedShared/utils/promiseUtils'
 import {AlertController} from '@ionic/angular'
-import {LearnDoService} from '../../core/learn-do.service'
+import {LearnItemItemsService} from '../../core/learn-item-items.service'
 import {DictPatch, PatchableObservable} from '../../../../libs/AppFedShared/utils/rxUtils'
 import {LearnItem} from '../../models/LearnItem'
 import {CachedSubject} from '../../../../libs/AppFedShared/utils/cachedSubject2/CachedSubject2'
@@ -54,7 +54,7 @@ export class SelectionPopupComponent implements OnInit {
 
   constructor(
     public alertController: AlertController,
-    public itemsService: LearnDoService,
+    public itemsService: LearnItemItemsService,
   ) { }
 
   ngOnInit() {

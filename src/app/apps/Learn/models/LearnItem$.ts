@@ -1,5 +1,5 @@
 import {OdmItem$2} from '../../../libs/AppFedShared/odm/OdmItem$2'
-import {LearnDoService} from '../core/learn-do.service'
+import {LearnItemItemsService} from '../core/learn-item-items.service'
 import {NumericPickerVal} from '../../../libs/AppFedSharedIonic/ratings/numeric-picker/numeric-picker.component'
 import {OdmBackend} from '../../../libs/AppFedShared/odm/OdmBackend'
 import {ImportanceId, ImportanceVal, IntensityVal, LearnItem, MentalLevelVal, PositiveInt, PositiveIntOrZero} from './LearnItem'
@@ -30,7 +30,7 @@ export class LearnItem$
       LearnItem$,
       LearnItem,
       LearnItem,
-      LearnDoService>
+      LearnItemItemsService>
   implements Quizzable$
 {
   quiz = new Quiz(this) // medium-coupling?

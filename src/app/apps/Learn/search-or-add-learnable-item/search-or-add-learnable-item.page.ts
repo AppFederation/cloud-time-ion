@@ -1,6 +1,6 @@
 import {Component, HostListener, Injector, OnInit} from '@angular/core';
 import {sortBy} from 'lodash-es'
-import {LearnDoService} from '../core/learn-do.service'
+import {LearnItemItemsService} from '../core/learn-item-items.service'
 import {field, HtmlString, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
@@ -48,7 +48,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
   }
 
   constructor(
-    public learnDoService: LearnDoService,
+    public learnDoService: LearnItemItemsService,
     public journalEntriesService: JournalEntryItemsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
