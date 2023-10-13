@@ -1,7 +1,7 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {AuthService} from '../../../../../auth/auth.service'
 import {SyncStatusService} from '../../sync-status.service'
-import {LearnStatsService} from '../../../../../apps/Learn/core/learn-stats.service'
+// import {LearnStatsService} from '../../../../../apps/Learn/core/learn-stats.service'
 import {OptionsService} from '../../../../../apps/Learn/core/options.service'
 import {BaseComponent} from '../../../base/base.component'
 
