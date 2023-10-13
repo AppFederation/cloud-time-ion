@@ -4,7 +4,7 @@ import {LearnItemItemsService} from '../core/learn-item-items.service'
 import {field, HtmlString, LearnItem, LearnItemSidesVals} from '../models/LearnItem'
 import {splitAndTrim} from '../../../libs/AppFedShared/utils/stringUtils'
 import {AuthService} from '../../../auth/auth.service'
-import {debugLog} from '../../../libs/AppFedShared/utils/log'
+import {debugLog, errorAlert} from '../../../libs/AppFedShared/utils/log'
 import {UntypedFormControl} from '@angular/forms'
 import {htmlToId, stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
@@ -49,7 +49,7 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
 
   constructor(
     public learnDoService: LearnItemItemsService,
-    public journalEntriesService: JournalEntryItemsService,
+    // public journalEntriesService: JournalEntryItemsService,
     public authService: AuthService,
     public lingueeService: LingueeService,
     public merriamWebsterDictService: MerriamWebsterDictService,
@@ -288,8 +288,9 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
   }
 
   addToJournal() {
+    errorAlert('addToJournal disabled to not load all items in JournalEntryItemsService')
     // TODO: if empty, go to journal entry details page
-    this.journalEntriesService.add(this.getUserString())
+    // this.journalEntriesService.add(this.getUserString())
     this.clearInput()
   }
 
