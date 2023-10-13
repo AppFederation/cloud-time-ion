@@ -10,23 +10,23 @@ v. Friday, Friday, 13 October 2023 at 20:16:53 - disable learnStatsService
 <app-theme-config></app-theme-config>
 
 <p>
-  {{(authService.authUser$ | async)?.email}}
+  {{(authUser$ | async)?.email}}
 </p>
 
 <div
-  *ngIf="(authService.authUser$ | async) else notLoggedIn"
+  *ngIf="(authUser$ | async) else notLoggedIn"
 >
   <ng-container
-    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingUploadsCount let count; else allUploaded"
+    *ngIf="(syncStatus$ | async)?.pendingUploadsCount let count; else allUploaded"
   >
     TO UPLOAD: {{count}}
 
   </ng-container>
 
   <ng-container
-    *ngIf="(syncStatusService.syncStatus$ | async)?.pendingDownloadsCount let count; else allDownloaded"
+    *ngIf="(syncStatus$ | async)?.pendingDownloadsCount let count; else allDownloaded"
   >
-    DOWNLOADING: {{count}} collections: {{toArray((syncStatusService.syncStatus$ | async)?.pendingDownloads)}}
+    DOWNLOADING: {{count}} collections: {{toArray((syncStatus$ | async)?.pendingDownloads)}}
   </ng-container>
 
   <ng-template
