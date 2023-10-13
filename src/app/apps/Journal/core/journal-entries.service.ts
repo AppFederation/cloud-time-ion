@@ -7,8 +7,8 @@ import {stripHtml} from '../../../libs/AppFedShared/utils/html-utils'
 @Injectable({
   providedIn: 'root'
 })
-export class JournalEntriesService extends OdmService2<
-  JournalEntriesService,
+export class JournalEntryService extends OdmService2<
+  JournalEntryService,
   JournalEntry,
   JournalEntry,
   JournalEntry$,
