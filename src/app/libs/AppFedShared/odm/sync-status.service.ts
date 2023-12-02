@@ -23,7 +23,12 @@ export class SyncStatusService extends BaseService {
 
   pendingDownloads = new Set<string>()
 
-  public readonly syncStatus$ = new CachedSubject<SyncStatus>()
+  public readonly syncStatus$ = new CachedSubject<SyncStatus>(
+    {
+      isAllSynced: true /* fix for oryol page sync checkmark not showing */,
+      pendingDownloads: new Set(),
+    }
+  )
 
   get hasPendingUploads() {
     return this.syncStatus$.lastVal ?. pendingUploadsCount
