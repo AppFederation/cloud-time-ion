@@ -5,6 +5,7 @@ import {IonicModule} from '@ionic/angular'
 import {SyncPopoverComponent} from './sync-status/sync-popover/sync-popover.component'
 import {ThemeConfigComponent} from '../theme-config/theme-config.component'
 import {FeatureConfigComponent} from '../feature-config/feature-config.component'
+import {AboutAppComponent} from './sync-status/sync-popover/about-app/about-app.component'
 
 @NgModule({
     declarations: [
@@ -12,6 +13,7 @@ import {FeatureConfigComponent} from '../feature-config/feature-config.component
         SyncPopoverComponent,
         ThemeConfigComponent,
         FeatureConfigComponent,
+        AboutAppComponent,
     ],
     exports: [
         SyncStatusIconComponent,
