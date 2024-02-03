@@ -76,6 +76,11 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
   override ngOnInit() {
     super.ngOnInit()
     this.tinyMceInit = {
+      base_url: '/assets/tinymce', // Root for resources
+      suffix: '.min',        // Suffix to use when loading resources
+      /* https://www.tiny.cloud/docs/integrations/angular/ */
+
+
       // placeholder: "Search or add" /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */,
       placeholder: this.placeholder,
       height: 500,

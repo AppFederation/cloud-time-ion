@@ -24,6 +24,9 @@
                 "input": "src/assets",
                 "output": "assets"
               },
+              { "glob": "**/*", "input": "node_modules/tinymce", "output": "/assets/tinymce/"
+                /* https://www.tiny.cloud/docs/integrations/angular/ */
+              },
               {
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
@@ -39,7 +42,9 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/tinymce/tinymce.min.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -114,7 +119,9 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "styles": [],
-            "scripts": [],
+            "scripts": [
+              "src/assets/tinymce/tinymce.min.js"
+            ],
             "assets": [
               {
                 "glob": "favicon.ico",
