@@ -78,7 +78,16 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
     this.tinyMceInit = {
       base_url: '/assets/tinymce', // Root for resources
       suffix: '.min',        // Suffix to use when loading resources
-      /* https://www.tiny.cloud/docs/integrations/angular/ */
+      /* https://www.tiny.cloud/docs/integrations/angular/
+      * https://www.tiny.cloud/docs/tinymce/6/invalid-api-key/#what-will-happen-if-i-dont-provide-a-valid-api-key
+      * https://www.tiny.cloud/blog/get-started-with-tinymce-self-hosted/
+      * https://www.tiny.cloud/get-tiny/self-hosted/
+      * https://www.tiny.cloud/docs/general-configuration-guide/advanced-install/#packagemanagerinstalloptions
+      * https://chat.openai.com/c/4daefc17-f0da-40b8-bd25-a2f229081025 --> this gave the info that made it work: angular.json:
+      *     "scripts": [
+              "src/assets/tinymce/tinymce.min.js"
+            ],
+      *  */
 
 
       // placeholder: "Search or add" /* https://www.tiny.cloud/blog/tinymce-placeholder-text/ */,
@@ -112,6 +121,7 @@ export class RichTextEditComponent extends AbstractCellComponent implements OnIn
       // menubar: false,
       statusbar: false,
       plugins: [
+        // https://www.tiny.cloud/docs/plugins/opensource/
         'advlist autolink lists image charmap print preview anchor' /* link */,
         'searchreplace visualblocks code fullscreen',
         'insertdatetime media table paste code help wordcount hr'
