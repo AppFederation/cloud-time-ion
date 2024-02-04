@@ -143,6 +143,7 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
     : void
   {
     super.setListener(listener, queryOpts, callback);
+    console.log('setListener', this.collectionName, queryOpts)
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
       // debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)

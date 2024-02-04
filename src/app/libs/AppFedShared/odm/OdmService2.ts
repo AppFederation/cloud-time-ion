@@ -236,7 +236,9 @@ export abstract class OdmService2<
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onRemoved(removedItemId: TItemId) {
-        service.localItems$.lastVal = service.localItems$ !.lastVal !.filter(item => item.id !== removedItemId)
+        console.log('onRemoved; ignoring because of `limit` trickery to save firestore reads cost', removedItemId)
+        // service.localItems$.lastVal = service.localItems$ !.lastVal !.filter(item => item.id !== removedItemId)
+
         // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
@@ -246,18 +248,19 @@ export abstract class OdmService2<
     }
 
     // const nDaysOldModified = 1
+    // const opts1_pre: QueryOpts = {
+    //   limit: 270, // limit
+    //   fromLocalCache: false,
+    //   oneTimeGet: true,
+    // }
     const opts1: QueryOpts = {
-      limit: 370, // limit
-      fromLocalCache: false,
-      oneTimeGet: true,
-    }
-    const opts2: QueryOpts = {
+      // all from local cache, one-time get
       limit: undefined,
       fromLocalCache: true,
       oneTimeGet: true,
     }
     const opts2Parallel: QueryOpts = {
-      limit: 100,
+      limit: 270,
       fromLocalCache: false /* So make sure that this has priority -> when data arrives from here, it should override opts2 */,
       oneTimeGet: false /* NOTE: if this is false, might collide with `nLastModified: undefined` from server */,
     }
