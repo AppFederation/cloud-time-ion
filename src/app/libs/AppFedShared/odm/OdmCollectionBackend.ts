@@ -7,6 +7,12 @@ import {AuthService} from '../../../auth/auth.service'
 /* FIXME: unify with OdmItemId */
 export type ItemId = string & { type: 'ItemId' }
 
+export type QueryOpts = {
+  limit?: number,
+  fromLocalCache?: boolean,
+  oneTimeGet: boolean,
+}
+
 export abstract class OdmCollectionBackendListener<
   TRaw,
   TItemId extends OdmItemId<TRaw> = OdmItemId<TRaw>
@@ -48,7 +54,7 @@ export abstract class OdmCollectionBackend<
 
   abstract deleteWithoutConfirmation(itemId: OdmItemId): Promise<any>
 
-  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>, nDaysOldModified: number, callback: () => void): void
+  public setListener(listener: OdmCollectionBackendListener<TRaw, TItemId>, queryOpts: QueryOpts, callback: () => void): void
     /*: Promise<any> | undefined*/ {
     this.listener = listener
   }

@@ -1,4 +1,4 @@
-import {ItemId, OdmCollectionBackend, OdmCollectionBackendListener} from "../../AppFedShared/odm/OdmCollectionBackend";
+import {ItemId, OdmCollectionBackend, OdmCollectionBackendListener, QueryOpts} from "../../AppFedShared/odm/OdmCollectionBackend";
 import {Injector} from "@angular/core";
 import {AngularFirestore, AngularFirestoreDocument, DocumentChange, QuerySnapshot} from "@angular/fire/compat/firestore";
 import {OdmItemId} from "../../AppFedShared/odm/OdmItemId";
@@ -137,12 +137,12 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
   override setListener(
     listener: OdmCollectionBackendListener<TRaw, OdmItemId<TRaw>>,
     /** FIXME move this to opts, also for readability coz integer is hard to judge what it does */
-    nDaysOldModified: number,
+    queryOpts: QueryOpts,
     callback: () => void/*, name: string*/
   )
     : void
   {
-    super.setListener(listener, nDaysOldModified, callback);
+    super.setListener(listener, queryOpts, callback);
     // debugLog(`BEFORE this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
     this.collectionBackendReady$.subscribe(() => {
       // debugLog(`IN this.collectionBackendReady$.subscribe(() => {`, this.collectionName)
@@ -157,14 +157,19 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
       // getDocs
       // .where('whenArchived', '==', null)
       // .where('whenDeleted', '==', null)
-      const query = this.angularFirestore.firestore.collection(this.collectionName)
-        .where('owner', '==', userId)
-      if ( nDaysOldModified ) {
+      let query = this.angularFirestore.firestore.collection(this.collectionName)
+        .where('owner', '==', userId) // TODO: use opts.limit / nLastModified
+      if ( queryOpts.limit ) {
+        query = query
+          .orderBy("whenLastModified", 'desc') // TODO: use this also for listening
+          .limit(queryOpts.limit) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
+      }
+      if ( queryOpts.oneTimeGet ) { // TODO FIX Hack to use opts.nLastModified
         const promise = query
-          .orderBy("whenLastModified", 'desc')
+          // .orderBy("whenLastModified", 'desc') // TODO: use this also for listening
           // .where('whenLastModified', '>=', new Timestamp(Date.now()/1000 - nDaysOldModified * 24*60*60, 0))
-          .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
-          .get({source: 'cache'}) // this is just one-time get, not listening
+          // .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
+          .get(queryOpts.fromLocalCache ? {source: 'cache'} : undefined) // this is just one-time get, not listening
         promise.then((data: any /* HACK after AngularFire update */) => {
             for ( let doc of data.docs ) {
               listener?.onAdded(doc.id, doc.data() as TRaw)
@@ -174,10 +179,13 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           }
         )
         promise.catch((caught: any) => {
-          this.errorAlert('setListener promise.catch nDaysOldModified', nDaysOldModified, caught)
+          this.errorAlert('setListener promise.catch; queryOpts', queryOpts, caught)
         })
         // return promise
       } else {
+        if ( queryOpts.fromLocalCache ) {
+          this.errorAlert(`Don't know how to do queryOpts.fromLocalCache for onSnapshot (normally it would be in .get()) `, queryOpts)
+        }
         const onError = (error: any) => {
           this.errorAlert('setListener, onSnapshot onError', error)
         }

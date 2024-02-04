@@ -3,16 +3,19 @@ import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {errorAlert} from '../utils/log'
 import {appGlobals} from '../g'
 import {BaseService} from '../base.service'
+import {QueryOpts} from './OdmCollectionBackend'
 
 export class SyncStatus {
   pendingUploadsCount ? : number
   pendingDownloadsCount ? : number
   isAllSynced ! : boolean
-  pendingDownloads ! : Set<string>
+  pendingDownloads ! : Set<PendingDownload>
 }
 
 /** consider putting 'titleOfChange' here */
 type SyncTask = Promise<any> | {then: any}
+
+export type PendingDownload = QueryOpts
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class SyncStatusService extends BaseService {
 
   pendingPromises = new Set<SyncTask>()
 
-  pendingDownloads = new Set<string>()
+  pendingDownloads = new Set<PendingDownload>()
 
   public readonly syncStatus$ = new CachedSubject<SyncStatus>(
     {
@@ -76,13 +79,13 @@ export class SyncStatusService extends BaseService {
     this.syncStatus$.next(val)
   }
 
-  addPendingDownload(dl: { name: string }) {
-    this.pendingDownloads.add(dl.name)
+  addPendingDownload(downloadInProgress: PendingDownload) {
+    this.pendingDownloads.add(downloadInProgress)
     this.emitSyncStatus()
   }
 
-  removePendingDownload(dl: { name: string }) {
-    this.pendingDownloads.delete(dl.name)
+  removePendingDownload(downloadInProgress: PendingDownload) {
+    this.pendingDownloads.delete(downloadInProgress)
     this.emitSyncStatus()
   }
 

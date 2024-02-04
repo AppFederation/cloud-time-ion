@@ -11,7 +11,7 @@ import {ApfGeoLocationService} from '../geo-location/apf-geo-location.service'
 import {OdmItemHistoryService} from './odm-item-history-service'
 import {DictPatch} from '../utils/rxUtils'
 import {isNotNullish} from '../utils/utils'
-import {ItemId} from './OdmCollectionBackend'
+import {ItemId, QueryOpts} from './OdmCollectionBackend'
 import {environment} from '../../../../environments/environment'
 
 export class OdmServiceOpts {
@@ -245,16 +245,38 @@ export abstract class OdmService2<
       },
     }
 
-    const nDaysOldModified = 1
-    const dl1 = {name: `${this.className} - last ${nDaysOldModified} days - local cache`}
-    const dl2 = {name: `${this.className} - all`}
+    // const nDaysOldModified = 1
+    const opts1: QueryOpts = {
+      limit: 370, // limit
+      fromLocalCache: false,
+      oneTimeGet: true,
+    }
+    const opts2: QueryOpts = {
+      limit: undefined,
+      fromLocalCache: true,
+      oneTimeGet: true,
+    }
+    const opts2Parallel: QueryOpts = {
+      limit: 100,
+      fromLocalCache: false /* So make sure that this has priority -> when data arrives from here, it should override opts2 */,
+      oneTimeGet: false /* NOTE: if this is false, might collide with `nLastModified: undefined` from server */,
+    }
+    const opts4OnClick: QueryOpts = {
+      // this is the expensive one; on button click on request only
+      limit: undefined,
+      fromLocalCache: false,
+      oneTimeGet: false,
+    }
+    // const dl1 = {name: `${this.className} - last ${nDaysOldModified} days - local cache`}
+    // // const dl2 = {name: `${this.className} - all`}
+    // const dl2 = {name: `${this.className} - all`}
 
-    this.syncStatusService.addPendingDownload(dl1)
-    this.odmCollectionBackend.setListener(listener, nDaysOldModified, () => {
-      this.syncStatusService.removePendingDownload(dl1)
-      this.syncStatusService.addPendingDownload(dl2)
-      this.odmCollectionBackend.setListener(listener, 0, () => {
-        this.syncStatusService.removePendingDownload(dl2)
+    this.syncStatusService.addPendingDownload(opts1)
+    this.odmCollectionBackend.setListener(listener, opts1, () => {
+      this.syncStatusService.removePendingDownload(opts1)
+      this.syncStatusService.addPendingDownload(opts2Parallel)
+      this.odmCollectionBackend.setListener(listener, opts2Parallel, () => {
+        this.syncStatusService.removePendingDownload(opts2Parallel)
       }) // this causes 2 refreshes (from-cache, from-server)
     }) // TODO: mark as isLoading for UI - return promise from setListener
     // NOTE: this causes 3 ui changes in total (of which 2 change the list causing blink), because of
