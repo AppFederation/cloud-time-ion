@@ -172,7 +172,9 @@ export class FirestoreOdmCollectionBackend<TRaw> extends OdmCollectionBackend<TR
           // .limit(50) // FIXME hack limit count instead of date (coz what if user doesn't use app for some days)
           .get(queryOpts.fromLocalCache ? {source: 'cache'} : undefined) // this is just one-time get, not listening
         promise.then((data: any /* HACK after AngularFire update */) => {
-            for ( let doc of data.docs ) {
+          const docs = data.docs
+          console.log('query.get() docs.length', docs.length, queryOpts)
+          for ( let doc of docs ) {
               listener?.onAdded(doc.id, doc.data() as TRaw)
             }
             listener?.onFinishedProcessingChangeSet()
