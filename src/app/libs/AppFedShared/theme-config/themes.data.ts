@@ -82,6 +82,18 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     primary: '#6c6900',
     secondary: '#008dfd',
   }),
+  'Forest, strawberries, lemons': theme({
+    // comment: 'Greens and browns and blue',
+    background: '#2a1e0e',
+    primary: '#ff161e',
+    secondary: '#6c6900',
+  }),
+  'Forest, strawberries, blueberries': theme({
+    // comment: 'Greens and browns and blue',
+    background: '#2a1e0e',
+    primary: '#ff161e',
+    secondary: '#0075c4',
+  }),
   // 'Yellow Blue': theme({
   //   comment: 'Blue Yellow',
   //   background: '#000000',
@@ -127,6 +139,11 @@ export const themesMapById: { [key: string]: Theme } = setIdsFromKeys({
     comment: '',
     primary: '#2f2f2f',
     secondary: '#65b600',
+  }),
+  'Dark Gray and blue': theme({
+    comment: '',
+    primary: '#2f2f2f',
+    secondary: '#006b8f',
   }),
   'Dark Gray and purplish': theme({
     comment: 'Beetroot',
