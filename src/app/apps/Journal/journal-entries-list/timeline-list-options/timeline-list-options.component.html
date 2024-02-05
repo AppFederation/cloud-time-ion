@@ -1,4 +1,11 @@
+<ion-button
+  [disabled]="itemsService.loadingAllItemsFromServerInitiated"
+  (press)="loadAll(true)"
+  (click)="loadAll(false)"
+><ion-icon slot=start name="download-outline"></ion-icon>Load all</ion-button>
+
 <ion-item>
+
 
   <ion-checkbox
     [formControl]="formControl"

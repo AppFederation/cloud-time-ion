@@ -1,6 +1,6 @@
 import {Injector} from "@angular/core";
 import {OdmBackend} from "./OdmBackend";
-import {debugLog} from "../utils/log";
+import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
 import {OdmItem$2, OdmPatch, ModificationOpts, OdmItem$2CtorOpts} from './OdmItem$2'
@@ -50,6 +50,17 @@ export abstract class OdmService2<
   >
 {
 
+  /** Note: things like loading deleted / archived items would also go here */
+  queriesOpts = {
+    loadAllItemsFromServer: {
+      comments: "This is the expensive query; on button click on request only",
+      limit: undefined,
+      fromLocalCache: false,
+      oneTimeGet: true, // TODO: later when setting it to listening; deactivate old partial listener (with `limit`)
+    }
+
+  }
+
   /* Unused?
   * TODO: more specific name, like throttle to db or ui */
   throttleIntervalMs = 500
@@ -80,6 +91,9 @@ export abstract class OdmService2<
   private backendListenerWasSet = false
 
   public itemsLoaded = false
+
+  /** TODO: this could map to this.queries ; like queriesStatuses ; finished, pending, initiated, etc. */
+  public loadingAllItemsFromServerInitiated = false
 
   get items$() { return this.localItems$ }
 
@@ -190,12 +204,50 @@ export abstract class OdmService2<
     if ( this.backendListenerWasSet ) {
       return
     }
-    const service = this /* MUST use instead of `this`; but could change it to object literal with arrow functions */
     // TODO: this should probably trigger collection listening in backend coll
 
     // !!!! FIXME: start listener when someone subscribes to items$, e.g. chart QuizHistory
 
-    const listener = {
+    const listener = this.createBackendListener()
+
+    // const nDaysOldModified = 1
+    // const opts1_pre: QueryOpts = {
+    //   limit: 270, // limit
+    //   fromLocalCache: false,
+    //   oneTimeGet: true,
+    // }
+    // FIXME: move the opts into this.queriesOpts
+    const opts1: QueryOpts = {
+      comments: "all from local cache, one-time get",
+      limit: undefined,
+      fromLocalCache: true,
+      oneTimeGet: true,
+    }
+    const opts2Parallel: QueryOpts = {
+      comments: "opts2Parallel",
+      limit: 270,
+      fromLocalCache: false /* So make sure that this has priority -> when data arrives from here, it should override opts2 */,
+      oneTimeGet: false /* NOTE: if this is false, might collide with `nLastModified: undefined` from server */,
+    }
+    // const dl1 = {name: `${this.className} - last ${nDaysOldModified} days - local cache`}
+    // // const dl2 = {name: `${this.className} - all`}
+    // const dl2 = {name: `${this.className} - all`}
+
+    this.syncStatusService.addPendingDownload(opts1)
+    this.odmCollectionBackend.setListener(listener, opts1, () => {
+      this.syncStatusService.removePendingDownload(opts1)
+      this.syncStatusService.addPendingDownload(opts2Parallel)
+      this.odmCollectionBackend.setListener(listener, opts2Parallel, () => {
+        this.syncStatusService.removePendingDownload(opts2Parallel)
+      }) // this causes 2 refreshes (from-cache, from-server)
+    }) // TODO: mark as isLoading for UI - return promise from setListener
+    // NOTE: this causes 3 ui changes in total (of which 2 change the list causing blink), because of
+    this.backendListenerWasSet = true
+  }
+
+  private createBackendListener() {
+    const service = this
+    return {
       onAdded(addedItemId: TItemId, addedItemRawData: TRawData) {
 
         let existingItem: TOdmItem$ | undefined = service.mapIdToItem$.get(addedItemId)
@@ -203,7 +255,7 @@ export abstract class OdmService2<
 
         // service.obtainOdmItem$(addedItemId) TODO
         // if ( ! existingItem ) {
-        if ( ! existingItem?.val$?.hasEmitted ) { /* FIXME: isn't this gonna cause it to never emit changes coming from another machine ? - prolly no, coz this is about ADDING, not modified */
+        if (!existingItem?.val$?.hasEmitted) { /* FIXME: isn't this gonna cause it to never emit changes coming from another machine ? - prolly no, coz this is about ADDING, not modified */
           // FIXME: this is is causing item to never load if subscribed via item details url early
 
           existingItem = service.obtainItem$ById(addedItemId)
@@ -236,7 +288,7 @@ export abstract class OdmService2<
         // service.emitLocalItems() -- now handled by onFinishedProcessingChangeSet
       },
       onRemoved(removedItemId: TItemId) {
-        console.log('onRemoved; ignoring because of `limit` trickery to save firestore reads cost', removedItemId)
+        console.log('onRemoved; ignoring because of `limit` trickery to save firestore reads cost. We could do this ignoring ONLY when there was a `limit` clause; could do the ignoring at FirestoreOdmCollectionBackend level.', removedItemId)
         // service.localItems$.lastVal = service.localItems$ !.lastVal !.filter(item => item.id !== removedItemId)
 
         // TODO: remove from map? but keep in mind this could be based on query result. Maybe better to have a weak map and do NOT remove manually
@@ -246,44 +298,6 @@ export abstract class OdmService2<
         service.emitLocalItems()
       },
     }
-
-    // const nDaysOldModified = 1
-    // const opts1_pre: QueryOpts = {
-    //   limit: 270, // limit
-    //   fromLocalCache: false,
-    //   oneTimeGet: true,
-    // }
-    const opts1: QueryOpts = {
-      // all from local cache, one-time get
-      limit: undefined,
-      fromLocalCache: true,
-      oneTimeGet: true,
-    }
-    const opts2Parallel: QueryOpts = {
-      limit: 270,
-      fromLocalCache: false /* So make sure that this has priority -> when data arrives from here, it should override opts2 */,
-      oneTimeGet: false /* NOTE: if this is false, might collide with `nLastModified: undefined` from server */,
-    }
-    const opts4OnClick: QueryOpts = {
-      // this is the expensive one; on button click on request only
-      limit: undefined,
-      fromLocalCache: false,
-      oneTimeGet: false,
-    }
-    // const dl1 = {name: `${this.className} - last ${nDaysOldModified} days - local cache`}
-    // // const dl2 = {name: `${this.className} - all`}
-    // const dl2 = {name: `${this.className} - all`}
-
-    this.syncStatusService.addPendingDownload(opts1)
-    this.odmCollectionBackend.setListener(listener, opts1, () => {
-      this.syncStatusService.removePendingDownload(opts1)
-      this.syncStatusService.addPendingDownload(opts2Parallel)
-      this.odmCollectionBackend.setListener(listener, opts2Parallel, () => {
-        this.syncStatusService.removePendingDownload(opts2Parallel)
-      }) // this causes 2 refreshes (from-cache, from-server)
-    }) // TODO: mark as isLoading for UI - return promise from setListener
-    // NOTE: this causes 3 ui changes in total (of which 2 change the list causing blink), because of
-    this.backendListenerWasSet = true
   }
 
   /** Can be overridden by subclasses to provide specific sub-type */
@@ -349,4 +363,23 @@ export abstract class OdmService2<
   createOdmItem$(id?: TItemId, inMemData?: TInMemData, parents?: TOdmItem$[], opts?: OdmItem$2CtorOpts): TOdmItem$ {
     return new OdmItem$2(this as any, id, inMemData, parents, opts) as any as TOdmItem$
   }
+
+  loadAllItemsFromServer() {
+    if ( this.loadingAllItemsFromServerInitiated) {
+      errorAlert('Already this.loadingAllInitiated. Not initiating again, to save firestore reads.' +
+        ' If You really want to initiate again, reload app.')
+      return
+    }
+    this.loadingAllItemsFromServerInitiated = true
+
+    const queryOpts = this.queriesOpts.loadAllItemsFromServer
+    const listener = this.createBackendListener()
+
+    this.syncStatusService.addPendingDownload(queryOpts)
+    this.odmCollectionBackend.setListener(listener, queryOpts, () => {
+      this.syncStatusService.removePendingDownload(queryOpts)
+    }) // TODO: mark as isLoading for UI - return promise from setListener
+    this.backendListenerWasSet = true
+  }
+
 }

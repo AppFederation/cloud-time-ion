@@ -5,6 +5,7 @@ import {Required} from '../../../../libs/AppFedShared/utils/angular/Required.dec
 import {UntypedFormControl} from '@angular/forms'
 import {FeatureService} from '../../../../libs/AppFedShared/feature.service'
 import {BaseComponent} from '../../../../libs/AppFedShared/base/base.component'
+import {OdmService2} from '../../../../libs/AppFedShared/odm/OdmService2'
 
 @Component({
   selector: 'app-list-options',
@@ -17,6 +18,9 @@ export class ListOptionsComponent extends BaseComponent implements OnInit {
   @Input()
   listOptions$P ! : PatchableObservable<ListOptionsData>
 
+  @Required()
+  @Input()
+  itemsService ! : OdmService2<any,unknown,unknown,any>
 
   formControls = {
     range: new UntypedFormControl(),
@@ -50,5 +54,9 @@ export class ListOptionsComponent extends BaseComponent implements OnInit {
     this.listOptions$P.patchThrottled({
       preset
     })
+  }
+
+  loadAll(b: boolean) {
+    this.itemsService.loadAllItemsFromServer()
   }
 }

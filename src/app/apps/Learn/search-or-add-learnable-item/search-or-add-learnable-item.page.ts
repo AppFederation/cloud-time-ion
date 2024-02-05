@@ -277,7 +277,8 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
     const popover = await this.popoverController.create({
       component: ListOptionsComponent,
       componentProps: {
-        listOptions$P: this.listModel.listOptions$P
+        listOptions$P: this.listModel.listOptions$P,
+        itemsService: this.learnDoService,
       },
       event: event,
       translucent: true,
@@ -299,4 +300,5 @@ export class SearchOrAddLearnableItemPageComponent extends BaseComponent impleme
   isTextEmpty() {
     return isNullishOrEmptyOrBlank(this.getUserString())
   }
+
 }

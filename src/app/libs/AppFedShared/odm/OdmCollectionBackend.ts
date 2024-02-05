@@ -8,6 +8,7 @@ import {AuthService} from '../../../auth/auth.service'
 export type ItemId = string & { type: 'ItemId' }
 
 export type QueryOpts = {
+  comments: string,
   limit?: number,
   fromLocalCache?: boolean,
   oneTimeGet: boolean,

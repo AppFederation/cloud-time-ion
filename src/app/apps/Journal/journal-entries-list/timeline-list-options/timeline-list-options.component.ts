@@ -5,6 +5,8 @@ import {createViewSyncerForField, ViewSyncer} from '../../../../libs/AppFedShare
 import {JournalEntry} from '../../models/JournalEntry'
 import {TimelineListOptionsData} from '../journal-entries-list.page'
 import {UntypedFormControl} from '@angular/forms'
+import {OdmService2} from '../../../../libs/AppFedShared/odm/OdmService2'
+import {errorAlert} from '../../../../libs/AppFedShared/utils/log'
 
 @Component({
   selector: 'app-timeline-list-options',
@@ -17,11 +19,18 @@ export class TimelineListOptionsComponent implements OnInit {
   @Input()
   listOptions$P ! : PatchableObservable<TimelineListOptionsData>
 
+  @Required()
+  @Input()
+  itemsService ! : OdmService2<any,unknown,unknown,any>
+
 
   formControl = new UntypedFormControl()
 
   viewSyncer ! : ViewSyncer
-  formControls = { range: new UntypedFormControl() }
+
+  formControls = {
+    range: new UntypedFormControl()
+  }
 
 
   constructor() { }
@@ -34,4 +43,7 @@ export class TimelineListOptionsComponent implements OnInit {
     })
   }
 
+  loadAll(b: boolean) {
+    this.itemsService.loadAllItemsFromServer()
+  }
 }

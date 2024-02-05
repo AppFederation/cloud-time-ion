@@ -76,7 +76,8 @@ export class JournalEntriesListPage extends BaseComponent implements OnInit {
     const popover = await this.popoverController.create({
       component: TimelineListOptionsComponent,
       componentProps: {
-        listOptions$P: this.listOptions$P
+        listOptions$P: this.listOptions$P,
+        itemsService: this.journalEntriesService,
       },
       event: event,
       translucent: true,

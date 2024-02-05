@@ -128,7 +128,7 @@ export abstract class OdmService_OLD<
       onFinishedProcessingChangeSet() {
         // nothing in v1
       }
-    }, {oneTimeGet: false}, () => {})
+    }, {oneTimeGet: false, comments: "legacy odm service old"}, () => {})
   }
 
   emitLocalItems() {
