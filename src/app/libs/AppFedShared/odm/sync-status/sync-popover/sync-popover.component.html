@@ -26,7 +26,7 @@
   <ng-container
     *ngIf="(syncStatus$ | async)?.pendingDownloadsCount let count; else allDownloaded"
   >
-    DOWNLOADING: {{count}} collections: {{toArray((syncStatus$ | async)?.pendingDownloads)}}
+    DOWNLOADING: {{count}} collections: {{toArray((syncStatus$ | async)?.pendingDownloads) | json}}
   </ng-container>
 
   <ng-template
