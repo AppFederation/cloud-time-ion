@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
+      <ion-back-button [defaultHref]="'/learn'" />
     </ion-buttons>
 <!--    <ion-title>-->
 <!--    </ion-title>-->
 
     <div style="display: flex; align-items: center">
-      <app-app-logo></app-app-logo>
+      <app-app-logo />
       <ion-title>
         <span style="flex-grow: 1">&nbsp;QUIZ&nbsp;&nbsp;</span>
       </ion-title>
@@ -22,14 +22,14 @@
           *ngIf="feat.userActivityTiming"
           style="font-size: 66%"
           [isCountDown]="false"
-        ></app-time-passing>
+         />
         <ion-buttons>
           <ion-icon
               *ngIf="feat.userActivityCountDownTimer"
               class="action-icon" slot="end" size="50"
                     (click)="onClickTimer($event)"
                     name="timer-outline"
-          ></ion-icon>
+           />
 
           <ion-button (click)="showOptions = ! showOptions" size="large">
 
@@ -41,7 +41,7 @@
 <!--          <ion-button>-->
 <!--            <ion-icon class="action-icon" slot="icon-only" name="bar-chart-outline" [routerLink]="['/learn/stats']" ></ion-icon>-->
 <!--          </ion-button>-->
-          <odm-sync-status-icon style="padding-right: 0.5rem"></odm-sync-status-icon>
+          <odm-sync-status-icon style="padding-right: 0.5rem" />
         </ion-buttons>
 
       </div>
@@ -69,11 +69,11 @@
           next repetition:
           <app-time-point
             [time]="newDate(quizService.calculateWhenNextRepetitionMsEpochOrNullish(quizStatus ?. nextItem$))"
-          ></app-time-point>
+           />
 
           <app-quiz-items-left
             [quizStatus]="quizStatus"
-          ></app-quiz-items-left>
+           />
 
         </div>
       </div>
@@ -81,7 +81,7 @@
 
     <div *ngIf="( status$ | async ) ?. isNextItemInFuture">
       <app-quiz-finished
-      ></app-quiz-finished>
+       />
     </div>
 
     <div>

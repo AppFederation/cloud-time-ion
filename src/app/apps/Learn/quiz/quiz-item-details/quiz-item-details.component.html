@@ -2,22 +2,22 @@
 <div *ngIf="item$ else noItem">
   <app-importance-banner
     [item$]="item$"
-  ></app-importance-banner>
+   />
 
 
   <app-play-button
     [item]="(itemVal$ | async) !"
     [itemId]="item$ . id"
-  ></app-play-button>
+   />
   <app-breadcrumbs
     *ngIf="! (itemVal$ | async)?.hideAncestorsInQuiz"
     [item$]="item$"
-  ></app-breadcrumbs>
+   />
 
   <app-item-side-editor
     [item$]="item$ !"
     [side]="(itemVal$ ! | async) ?. getSideWithQuestionOrFirstNonEmpty()"
-  ></app-item-side-editor>
+   />
 
   <div
     #answers
@@ -31,7 +31,7 @@
         *ngFor="let hintSide of (itemVal$ | async) ?. getSidesWithHints()"
         [item$]="item$ !"
         [side]="hintSide"
-      ></app-item-side-editor>
+       />
     </ng-container>
 
     <ng-container *ngFor="let answerSide of (itemVal$ | async) ?. getSidesWithAnswers()">
@@ -45,7 +45,7 @@
         [item$]="item$ !"
         [side]="answerSide"
         [showRevealButton]="! (showAnswer$ | async)"
-      ></app-item-side-editor>
+       />
 
     </ng-container>
   </div>

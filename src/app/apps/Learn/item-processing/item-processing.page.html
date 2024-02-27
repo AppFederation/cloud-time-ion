@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
-      <app-app-logo></app-app-logo>
+      <ion-back-button mode="md" [defaultHref]="'/'" />
+      <app-app-logo />
     </ion-buttons>
 
 
@@ -16,7 +16,7 @@
 <!--  <div *ngFor="let importance of importanceDescriptorsArray">{{importance.abbrev}}</div>-->
 
 <!--  <app-what-next-button></app-what-next-button>-->
-  <app-process-button></app-process-button>
+  <app-process-button />
 
   {{itemProcessingService.getCountsByImportance() | json}}
 

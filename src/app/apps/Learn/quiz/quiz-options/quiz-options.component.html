@@ -5,7 +5,7 @@
     [formControl]="controls.categories"
     [clearInput]="true"
     [debounce]="300"
-  ></ion-input>
+   />
 </ion-item>
 <ion-item>
   <ion-label>TEXT FILTER</ion-label>
@@ -13,7 +13,7 @@
     [formControl]="controls.textFilter"
     [clearInput]="true"
     [debounce]="300"
-  ></ion-input>
+   />
 </ion-item>
 
 <ion-item>
@@ -51,22 +51,22 @@
 <apf-numeric-picker
   [buttonDescriptors]="funButtonsDesc"
   [formControl]="controls.minFunLevel"
-></apf-numeric-picker>
+ />
 
 
 <app-quiz-intervals
-></app-quiz-intervals>
+ />
 
 <app-quiz-diligence-level
   style="margin-top: 10px"
   [control]="controls.powBaseX100"
-></app-quiz-diligence-level>
+ />
 
 <app-quiz-interval-importance-scaling
   [control]="controls.scaleIntervalsByImportance"
-></app-quiz-interval-importance-scaling>
+ />
 
 <app-quiz-focus-level
   [control]="controls.focusLevelProbabilities"
-></app-quiz-focus-level>
+ />
 

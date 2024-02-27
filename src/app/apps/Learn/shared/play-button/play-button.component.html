@@ -6,13 +6,13 @@
   <ion-icon
     *ngIf="!isPlaying else playing"
     icon="play"
-  ></ion-icon>
+   />
   <ng-template
     #playing
   >
     <ion-icon
       icon="stop"
-    ></ion-icon>
+     />
 
     <!-- TODO: can use  https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createAnalyser
       ( but in separate AudioPlayingComponent, to not overload this one )

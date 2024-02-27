@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button [defaultHref]="'/learn'"></ion-back-button>
-      <app-app-logo></app-app-logo>
+      <ion-back-button [defaultHref]="'/learn'" />
+      <app-app-logo />
       <ion-button (click)="navigationService.navigateToPrevious()">
-        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="chevron-back-outline" />
       </ion-button>
       <ion-button (click)="navigationService.navigateToNext()">
-        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="chevron-forward-outline" />
       </ion-button>
     </ion-buttons>
     <div style="display: inline-flex; align-items: center; width: 100%">
@@ -29,10 +29,10 @@
 
         style="font-size: 80%; margin-right: 3px"
         [isCountDown]="false"
-      ></app-time-passing>
+       />
 
 <!--      <app-process-button-->
-<!--      ></app-process-button>-->
+<!--       />
 
 <!--      <app-quiz-button-->
 <!--      ></app-quiz-button>-->
@@ -40,7 +40,7 @@
       {{ title }}
 
       <ion-buttons>
-        <odm-sync-status-icon style="padding-right: 4px"></odm-sync-status-icon>
+        <odm-sync-status-icon style="padding-right: 4px" />
       </ion-buttons>
 
     </div>

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button mode="md" [defaultHref]="'/'"></ion-back-button>
-      <app-app-logo></app-app-logo>
+      <ion-back-button mode="md" [defaultHref]="'/'" />
+      <app-app-logo />
     </ion-buttons>
 
 
@@ -21,7 +21,7 @@
   </p>
 
   Single attempt chance: {{(singleAttemptChance * 100).toFixed(1)}} % <ion-note>(use exponential & compounded improvements, to increase your chances)</ion-note>
-  <ion-range [step]="0.1" (ionChange)="onSliderChange($event)"></ion-range>
+  <ion-range [step]="0.1" (ionChange)="onSliderChange($event)" />
 
   <p></p>
   <table style="width: 100%">

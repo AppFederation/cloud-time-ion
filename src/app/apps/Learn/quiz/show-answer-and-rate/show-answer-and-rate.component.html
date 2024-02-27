@@ -15,14 +15,14 @@
     class="stretch-btn"
     [routerLink]="item$ ?. getRouterLinkUrl()"
   >
-    <ion-icon name="create-outline"></ion-icon>
+    <ion-icon name="create-outline" />
   </ion-button>
 
   <app-time-passing
     *ngIf="feat.userActivityTiming"
     style="font-size: 95%; color: white; margin-left: 3px; align-self: center"
     [isCountDown]="false"
-  ></app-time-passing>
+   />
   <div style="flex-grow: 1"></div>
 
   <ion-button *ngIf="feat.showUgly" (click)="toggleHide()">^</ion-button>
@@ -42,14 +42,14 @@
       [autoSave]="false"
       [item$]="(quizStatus$ | async) ?. nextItem$ !"
       (numericValue)="selfRating = $event; quizAnswersService.onSelfRate()"
-    ></app-self-rating>
+     />
 
     <ion-button
       (click)="applyAndNext()"
       style="width: 100%; height: 3rem"
     >
       APPLY & NEXT
-      <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
+      <ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline" />
 <!--      {{(quizSelector$ | async)}}-->
     </ion-button>
 

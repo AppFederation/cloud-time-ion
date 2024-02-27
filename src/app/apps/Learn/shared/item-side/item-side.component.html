@@ -7,7 +7,7 @@
 >
   <app-side-icon
     [side]="side"
-  ></app-side-icon>
+   />
   &nbsp;
 
   <!-- TODO: focus editor -->
@@ -30,7 +30,7 @@
   >
     <app-side-label
       [side]="side"
-    ></app-side-label>
+     />
     <!--    <ion-button size="small">Reveal</ion-button>-->
   </div>
 
@@ -43,13 +43,13 @@
     *ngIf="! showRevealButton"
     [viewSyncer]="viewSyncer"
     [formControl1]="formControl"
-  ></app-rich-text-edit>
+   />
   <!-- This will prolly be refactored to OdmCell? -->
 
   <app-quiz-answer-revealer
     *ngIf="showRevealButton"
     [formControl1]="formControl"
-  ></app-quiz-answer-revealer>
+   />
 
 </div>
 
