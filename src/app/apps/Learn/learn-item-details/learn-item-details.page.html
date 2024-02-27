@@ -31,11 +31,9 @@
         [isCountDown]="false"
        />
 
-<!--      <app-process-button-->
-<!--       />
+<!--      <app-process-button /> -->
 
-<!--      <app-quiz-button-->
-<!--      ></app-quiz-button>-->
+<!--      <app-quiz-button /> -->
 
       {{ title }}
 
@@ -60,27 +58,27 @@
     >
       <app-learn-item-details-hints
         [hidden]="itemVal ?. isTask"
-      ></app-learn-item-details-hints>
+      />
 
       CREATED <app-time-point
       [time]="itemVal?.whenCreated?.toDate()"
-    ></app-time-point>
+    />
       MODIFIED <app-time-point
       [time]="itemVal?.whenLastModified?.toDate()"
-    ></app-time-point>
+    />
 
-      <app-geo-loc [geoLoc]="itemVal?.whereCreated"></app-geo-loc>
+      <app-geo-loc [geoLoc]="itemVal?.whereCreated" />
     </ng-container>
 
     <div style="display: flex; flex-direction: row; width: 100%">
       <app-item-class-edit
         style="flex-grow: 1"
         [item$]="item$"
-      ></app-item-class-edit>
+      />
       <app-item-class-to-learn-edit
         style="flex-grow: 1"
         [item$]="item$"
-      ></app-item-class-to-learn-edit>
+      />
       <!-- TODO:
         - isPublic / isBuiltIn / isOfficial for Vianey for Ukrainian
         - and later draft/beta/published(release) status
@@ -101,7 +99,7 @@
 
     <app-importance-edit
       [item$]="item$"
-    ></app-importance-edit>
+    />
 
 
     <ion-grid>
@@ -109,22 +107,22 @@
         <ion-col size="12" size-md="6" size-xl=3>
           <app-fun-level-edit
             [item$]="item$"
-          ></app-fun-level-edit>
+          />
         </ion-col>
         <ion-col size="12" size-md="6" size-xl=3>
           <app-mental-effort-level-edit
             [item$]="item$"
-          ></app-mental-effort-level-edit>
+          />
         </ion-col>
         <ion-col size="12" size-md="6" size-xl=3>
           <app-physical-health-impact-level-edit
             [item$]="item$"
-          ></app-physical-health-impact-level-edit>
+          />
         </ion-col>
         <ion-col size="12" size-md="6" size-xl=3>
           <app-mental-health-impact-level-edit
             [item$]="item$"
-          ></app-mental-health-impact-level-edit>
+          />
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -132,18 +130,18 @@
     <app-statuses-edit
       *ngIf="feat.workflowStatuses"
       [item$]="item$"
-    ></app-statuses-edit>
+    />
 
     <app-self-rating
       *ngIf="feat.potentiallyDangerous"
       [hidden]="itemVal ?. isTask"
       [item$]="item$"
-    ></app-self-rating>
+    />
 
     <app-play-button
       [item]="itemVal"
       [itemId]="item$.id"
-    ></app-play-button>
+    />
 
     <ion-button (click)="askDelete()">DELETE</ion-button>
 
@@ -151,7 +149,7 @@
 
     <app-item-sub-items
       [item$]="item$"
-    ></app-item-sub-items>
+    />
     <!--       *ngIf="feat.itemsTree.mockups"
     -->
 
@@ -159,7 +157,7 @@
       *ngFor="let side of sidesDefsArray"
       [item$]="item$"
       [side]="side"
-    ></app-item-side-editor>
+    />
 
   </ng-container>
 
