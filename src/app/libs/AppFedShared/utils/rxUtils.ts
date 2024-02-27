@@ -30,6 +30,7 @@ export function throttleTimeWithLeadingTrailing_ReallyThrottle<T>(timeMs: Durati
 }
 
 export type DictPatch<TData> = Partial<TData>
+  & {} // for angular 15 upgrade
 
 
 /** also: interface Patchable<TInMemVal>

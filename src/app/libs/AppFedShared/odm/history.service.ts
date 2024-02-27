@@ -11,7 +11,7 @@ export class HistoryItem$ extends OdmItem$2<any, any, any, any> {
 
 /** TODO rename to ValueHistoryService?
  * To distinguish with incremental-changes ItemHistoryService ? */
-export abstract class HistoryService<TInMem, TRaw = TInMem>
+export abstract class HistoryService<TInMem extends {}, TRaw extends {} = TInMem>
   extends OdmService2<HistoryService<TInMem, TRaw>,TInMem, TRaw, any> /* TODO: compose, not inherit, to not expose tons of unneeded methods maybe */
 {
   constructor(

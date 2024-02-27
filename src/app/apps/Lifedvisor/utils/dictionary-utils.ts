@@ -16,7 +16,7 @@ export function getDictionaryValuesAsArray<TItem>(dictionary: Dict<TItem>): TIte
 }
 
 
-export function setIdsFromKeys<TItem, TItemWithId extends TItem & {id: string} = TItem & {id: string}>(
+export function setIdsFromKeys<TItem extends {}, TItemWithId extends TItem & {id: string} = TItem & {id: string}>(
   dictionary: Dict<TItem>,
   // idKeyName: string = 'id'
 ): Dict<TItemWithId> {
@@ -29,5 +29,5 @@ export function setIdsFromKeys<TItem, TItemWithId extends TItem & {id: string} =
     curExp.id = id;
     // console.log('setIdsFromKeys', id, curExp);
   }
-  return dictionary as Dict<TItemWithId>
+  return dictionary as unknown as Dict<TItemWithId> /* FIXME workaround upgrading to Angular 15*/
 }

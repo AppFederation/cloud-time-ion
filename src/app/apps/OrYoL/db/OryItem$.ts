@@ -153,9 +153,9 @@ export class OryItem$<TData = any> implements HasPatchThrottled<TData> {
 
 
 
-  patchThrottled(patch: any) {
+  patchThrottled(patch: any/*FIXME */) {
     this.whenLastModifiedLocallyByUser = new Date()
-    Object.assign(this.itemData, patch)
+    Object.assign(this.itemData as any /* FIXME workaround upgrading to Angular 15*/, patch)
 
     this.pendingThrottledItemDataPatch = {
       ... this.pendingThrottledItemDataPatch,

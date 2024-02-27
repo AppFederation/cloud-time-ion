@@ -3,7 +3,7 @@ import {OdmBackend} from "./OdmBackend";
 import {debugLog, errorAlert} from "../utils/log";
 import {OdmItemId} from "./OdmItemId";
 import {SyncStatusService} from './sync-status.service'
-import {OdmItem$2, OdmPatch, ModificationOpts, OdmItem$2CtorOpts} from './OdmItem$2'
+import {OdmItem$2, OdmPatch, ModificationOpts, OdmItem$2CtorOpts, OdmInMemItem, OdmRawItemData} from './OdmItem$2'
 import {assertTruthy} from '../utils/assertUtils'
 import {CachedSubject} from '../utils/cachedSubject2/CachedSubject2'
 import {AuthService} from '../../../auth/auth.service'
@@ -31,8 +31,8 @@ export class OdmServiceOpts {
 * */
 export abstract class OdmService2<
   TSelf extends OdmService2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
-  TInMemData,
-  TRawData, // = TInMemData,
+  TInMemData extends OdmInMemItem,
+  TRawData extends OdmRawItemData, // = TInMemData,
   TOdmItem$ extends
     OdmItem$2<TOdmItem$, TInMemData, TRawData, TSelf /* (was any -> ) workaround for (indirectly) TS2716: Type parameter 'TOdmItem$' has a circular default. */>, // =
     // OdmItem$2<TInMemData, TRawData>,

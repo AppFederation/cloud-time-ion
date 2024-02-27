@@ -20,7 +20,7 @@ export class ListOptionsComponent extends BaseComponent implements OnInit {
 
   @Required()
   @Input()
-  itemsService ! : OdmService2<any,unknown,unknown,any>
+  itemsService ! : OdmService2<any,any /* FIXME workaround upgrading to Angular 15*/, any /* FIXME workaround upgrading to Angular 15*/,any>
 
   formControls = {
     range: new UntypedFormControl(),

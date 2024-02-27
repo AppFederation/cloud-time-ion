@@ -23,10 +23,13 @@ export class OdmInMemItemWriteOnce {
   public parentIds?: string[]
 }
 
+/** FIXME: rename OdmInMemItemData */
 export class OdmInMemItem extends OdmInMemItemWriteOnce {
   public whenLastModified?: OdmTimestamp
   public whereCreated?: any
 }
+
+export type OdmRawItemData = OdmInMemItem // workaround
 
 export type OdmPatch<TData> = DictPatch<TData>
 
@@ -55,7 +58,7 @@ export type OdmItem$2CtorOpts = { createdLocally?: boolean }
 export class OdmItem$2<
   TSelf extends OdmItem$2<any, any, any, any> /* workaround coz I don't know how to get this in TS*/,
   TInMemData extends OdmInMemItem,
-  TRawData /* TODO: maybe this does not have to be part of public interface */ extends OdmInMemItem /* workaround */, // = TInMemData,
+  TRawData /* TODO: maybe this does not have to be part of public interface */ extends OdmRawItemData /* workaround */, // = TInMemData,
   TItemListService extends
     OdmService2<TItemListService, TInMemData, TRawData, any /* workaround */>, // =
     // OdmService2<TInMemData, TRawData>,
@@ -84,7 +87,7 @@ export class OdmItem$2<
    * or realizing we don't have access
    * or empty value arrived
    **/
-  currentVal: TInMemData | nullish = undefined
+  currentVal: TInMemData | nullish = undefined // TODO: could have an initial non-nullish value from func/ctor param, to avoid undefined checks
 
   /** Has patch that has not yet had a call to backend DB API (as opposed to not having been synchronized via network) */
   hasPendingPatch = false
@@ -221,10 +224,10 @@ export class OdmItem$2<
 
   // TODO: patchFieldsDeeplyLevel1 -- deeply LEVEL 1 -- for type safety
 
-  patchNow(patch: OdmPatch<TInMemData>, modificationOpts?: ModificationOpts) {
+  patchNow(patch: TMemPatch, modificationOpts?: ModificationOpts) {
     this.setIdAndWhenCreatedIfNecessary()
     this.setLastModifiedIfNecessary(modificationOpts)
-    Object.assign(this.currentVal, patch)
+    Object.assign(this.currentVal !, patch)
     this.odmService.saveNowToDb(this)
     this.resolveFuncPendingThrottledIfNecessary()
     this.locallyVisibleChanges$.next(this.currentVal) // other code listens to this and throttles - saves
@@ -478,7 +481,7 @@ export class OdmItem$2<
         odmItem$.patchThrottled(patch1)
       }
     }
-    return po
+    return po as PatchableObservable<nullish | TInMemData[TKey], nullish | TMemPatch[TKey]> // `as` - WORKAROUND after angular 15 update
 
   }
 

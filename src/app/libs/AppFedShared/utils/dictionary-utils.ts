@@ -71,7 +71,7 @@ export function mapFieldsToFormControls(srcObj: any) {
   })
 }
 
-export function patch<T>(objToPatch: T, patch: DictPatch<T>) {
+export function patch<T extends {}>(objToPatch: T, patch: DictPatch<T>) {
   return Object.assign(objToPatch, patch)
 }
 

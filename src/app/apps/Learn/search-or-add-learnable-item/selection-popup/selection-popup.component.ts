@@ -13,8 +13,9 @@ import {nullish} from '../../../../libs/AppFedShared/utils/type-utils'
 import {isNullish} from '../../../../libs/AppFedShared/utils/utils'
 import {ItemId} from '../../../../libs/AppFedShared/odm/OdmCollectionBackend'
 import {ValueDistribution} from '../../../../libs/AppFedShared/utils/time/parse-duration'
+import {OdmInMemItem} from '../../../../libs/AppFedShared/odm/OdmItem$2'
 
-export class MultiSelectItem$<TInMem> implements PatchableObservable<LearnItem | nullish> {
+export class MultiSelectItem$<TInMem extends OdmInMemItem> implements PatchableObservable<LearnItem | nullish> {
 
   constructor(
     public itemsService: OdmService2<any, TInMem, any, any>,

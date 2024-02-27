@@ -21,7 +21,7 @@ export class TimelineListOptionsComponent implements OnInit {
 
   @Required()
   @Input()
-  itemsService ! : OdmService2<any,unknown,unknown,any>
+  itemsService ! : OdmService2<any,any /* FIXME workaround upgrading to Angular 15*/,any /* FIXME workaround upgrading to Angular 15*/,any>
 
 
   formControl = new UntypedFormControl()

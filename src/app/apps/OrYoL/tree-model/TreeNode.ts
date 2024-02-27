@@ -31,7 +31,7 @@ export class RootTreeNode<
   icon?: any;
   expandedIcon?: any;
   collapsedIcon?: any;
-  children: TBaseNonRootNode/*TChildNode*/[] = [];
+  children: TChildNode[] = [];
   leaf?: boolean;
   expanded?: boolean;
   type?: string;
@@ -162,7 +162,7 @@ export class RootTreeNode<
     return this === this.treeModel.navigation.visualRoot
   }
 
-  get lastChildNode(): TBaseNonRootNode/*TChildNode*/ | undefined {
+  get lastChildNode(): TChildNode | undefined {
     return this.getChildAtIndexOrUndefined(this.children?.length - 1)
   }
 
@@ -266,7 +266,7 @@ export class RootTreeNode<
     return getLastItemOrUndefined(this.children)
   }
 
-  _appendChildAndSetThisAsParent(nodeToAppend: TBaseNonRootNode/*TChildNode*/, insertBeforeIndex?: number) {
+  _appendChildAndSetThisAsParent(nodeToAppend: TChildNode, insertBeforeIndex?: number) {
     // TODO: consider reacting to multi-node changes here for all nodes with the same
     // nodeToAppend ??= this.createChildNode()
     const afterNode = this.lastChildNode
@@ -292,7 +292,7 @@ export class RootTreeNode<
     return {title: ApfNonRootTreeNode.INITIAL_TITLE}
   }
 
-  getChildAtIndexOrUndefined(index: number): TBaseNonRootNode/*TChildNode*/ | undefined {
+  getChildAtIndexOrUndefined(index: number): TChildNode | undefined {
     if (this.isIndexPresent(index)) {
       return this.children[index]
     } else {
@@ -307,7 +307,9 @@ export class RootTreeNode<
   }
 
   /* TODO: should be called *create*, because it is a completely new node/item involving db, vs addChild just looks like tree-only operation */
-  addChild(afterExistingNode?: TBaseNonRootNode/*TChildNode*/, newNode?: TBaseNonRootNode/*TChildNode*/): TBaseNonRootNode/*TChildNode*/ {
+  addChild(
+     /* FIXME this should be in opts JSON {}, because it's not clear if it's before or after or what (code readability) */ afterExistingNode?: TChildNode,
+     newNode?: TChildNode): TChildNode {
     if (!afterExistingNode && this.children.length > 0) {
       afterExistingNode = this.lastChildNode
     }
@@ -370,10 +372,12 @@ export class RootTreeNode<
     return 'item_' + uuidv4()
   }
 
+  /** NOTE: this can convert to child nodes using toValidChildrenOrThrow() */
   addAssociationsHere(nodes: TBaseNonRootNode/*TChildNode*/[], beforeNode: TBaseNonRootNode/*TChildNode*/ | undefined) {
     // FIXME: use beforeNode
+    const childNodes = this.toValidChildrenOrThrow(nodes)
     FIXME('addAssociationsHere not impl')
-    for (const nodeToAssociate of nodes) {
+    for (const nodeToAssociate of childNodes) {
       const newInclusion = new NodeInclusion(/* FIXME handle order */generateNewInclusionId(), this.itemId)
       this.treeModel.nodeOrderer.addOrderMetadataToInclusion(
         {
@@ -392,10 +396,28 @@ export class RootTreeNode<
     }
   }
 
+  /**
+   * if type TBaseNonRootNode === type TChildNode (which normally is the case), then this default impl is fine;
+   *
+   * NOTE: this could also do domain validation (not just TS type-system type check), e.g. cannot put something like a project inside a milestone
+   * (though, OrYoL / Coviob 3 is flexible in that regard)
+   *
+   * TODO: might wanna leave this as abstract and require override, just to not hide this requirement
+   * FIXME: implement check/conversion to valid children or veto by throwing
+   * this change was triggerred by update to Angular 15 -> going to TBaseNonRootNode -> TChildNode
+   */
+  /* abstract protected */toValidChildrenOrThrow(nodes: TBaseNonRootNode[]) {
+
+    return nodes as any as TChildNode[] // workaround for angular 15; not sure if they really overlap enough or not
+  }
+
+
   /* This could/should probably be unified with reorder code */
-  moveInclusionsHere(nodes: TBaseNonRootNode[], beforeNode: { beforeNode: TBaseNonRootNode/*TChildNode*/ | undefined }) {
+  moveInclusionsHere(nodesToMove: TBaseNonRootNode[], beforeNode: { beforeNode: TBaseNonRootNode/*TChildNode*/ | undefined }) {
+
     // FIXME('moveInclusionsHere: need to calculate order numbers to be last children')
-    for (const childNodeToAssociate of nodes) {
+    const childNodes = this.toValidChildrenOrThrow(nodesToMove)
+    for (const childNodeToAssociate of childNodes) {
       const nodeAfter = beforeNode?.beforeNode
       let nodeBefore = nodeAfter?.getSiblingNodeAboveThis()
       if (!nodeAfter && !nodeBefore) {
