@@ -167,14 +167,14 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk-experimental@^14":
-  version "14.2.7"
-  resolved "https://registry.npmjs.org/@angular/cdk-experimental/-/cdk-experimental-14.2.7.tgz"
-  integrity sha512-SzdLiOW6hdtPfEPSgx8aKuX2xEf9w3uH9RlCaVXuj5cNDJCy50PiJhRIAoRrd6p3OhHexW4aBesdEQpyysRzkg==
+"@angular/cdk-experimental@^15.2.9":
+  version "15.2.9"
+  resolved "https://registry.npmjs.org/@angular/cdk-experimental/-/cdk-experimental-15.2.9.tgz"
+  integrity sha512-FuOc9W0Amlhihfgg/lCeSjsyUl9FOHdrQqIG/rvr7QRb7SJjFuzmSGLjwvrua15f8rClEMLVPKKeAefpR8yRgA==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@^15.2.9", "@angular/cdk@14.2.7", "@angular/cdk@15.2.9":
+"@angular/cdk@^15.2.9", "@angular/cdk@15.2.9":
   version "15.2.9"
   resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-15.2.9.tgz"
   integrity sha512-koaM07N1AIQ5oHU27l0/FoQSSoYAwlAYwVZ4Di3bYrJsTBNCN2Xsby7wI8gZxdepMnV4Fe9si382BDBov+oO4Q==
@@ -237,7 +237,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0", "@angular/core@^14.0.0", "@angular/core@^14.0.0 || ^15.0.0", "@angular/core@^15.0.0", "@angular/core@^15.0.0 || ^16.0.0", "@angular/core@^15.2.10", "@angular/core@>=12.0.0", "@angular/core@>=5.0.0", "@angular/core@>=9.0.0", "@angular/core@15.2.10":
+"@angular/core@^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0", "@angular/core@^14.0.0", "@angular/core@^15.0.0", "@angular/core@^15.0.0 || ^16.0.0", "@angular/core@^15.2.10", "@angular/core@>=12.0.0", "@angular/core@>=5.0.0", "@angular/core@>=9.0.0", "@angular/core@15.2.10":
   version "15.2.10"
   resolved "https://registry.npmjs.org/@angular/core/-/core-15.2.10.tgz"
   integrity sha512-meGGidnitQJGDxYd9/LrqYiVlId+vGaLoiLgJdKBz+o2ZO6OmXQGuNw2VBqf17/Cc0/UjzrOY7+kILNFKkk/WQ==
