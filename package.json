@@ -47,7 +47,7 @@
     "@ngrx/store": "^16.3.0",
     "@ngrx/store-devtools": "^16.3.0",
     "@schematics/angular": "^14.0.0",
-    "@tinymce/tinymce-angular": "^4.1.0",
+    "@tinymce/tinymce-angular": "^7.0.0",
     "@types/uuid": "^8.3.4",
     "@vercel/analytics": "^0.1.8",
     "bootstrap": "^4.5.0",
