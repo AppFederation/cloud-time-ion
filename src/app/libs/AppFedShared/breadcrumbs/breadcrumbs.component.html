@@ -2,9 +2,9 @@
 <!--<ion-breadcrumb></ion-breadcrumb>-->
 <!--<div *ngIf="g.feat.mockups" style="margin: 5px; display: flex; align-items: center; gap: 0.2rem">-->
 <!--  Software Development-->
-<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline" />-->
 <!--  Frontend-->
-<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline" />-->
 <!--  CSS-->
 <!--</div>-->
 
@@ -14,13 +14,13 @@
     <a
       [routerLink]="ancestor ?. getRouterLinkUrl()"
     >
-      {{ stripHtml((ancestor?.getTitleOrQuestion$() | async)?.trim() || '(?)') }}<ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline"></ion-icon>
+      {{ stripHtml((ancestor?.getTitleOrQuestion$() | async)?.trim() || '(?)') }}<ion-icon style="color: var(--ion-color-secondary)" name="chevron-forward-outline" />
 <!--      {{ stripHtml((ancestor?.val?.title)) ?? 'unnamed' }}-->
 
     </a>
 
   </ng-container>
 <!--  Frontend-->
-<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline"></ion-icon>-->
+<!--  <ion-icon style="color: var(&#45;&#45;ion-color-secondary)" name="chevron-forward-outline" />-->
 <!--  CSS-->
 </div>

@@ -7,9 +7,9 @@
 <!--    <ion-button color="primary" slot="end" routerLink="/journal/write/new">Journal</ion-button>-->
 <!--    <ion-button color="primary" slot="end" [routerLink]="['/auth']">Account</ion-button>-->
     <ion-buttons slot="end">
-      <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']"></ion-icon>
-      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
-<!--      <ion-icon class="action-icon" name="person" slot="end" [routerLink]="['/auth']"></ion-icon>-->
+      <ion-icon class="action-icon" name="pencil" slot="end" [routerLink]="['/journal/write/new']" />
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']" />
+<!--      <ion-icon class="action-icon" name="person" slot="end" [routerLink]="['/auth']" />-->
       <odm-sync-status-icon></odm-sync-status-icon>
     </ion-buttons>
   </ion-toolbar>
@@ -20,13 +20,13 @@
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
     <!--      +-->
-    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
+    <!--&lt;!&ndash;      <ion-icon name="add-circle" />&ndash;&gt;-->
     <!--    </ion-fab-button>-->
     <ion-fab-button id='fabAddTimer' (click)="onAddTimer()">
-      <ion-icon name="add-outline"></ion-icon>
+      <ion-icon name="add-outline" />
 <!--      <img src="assets/icon/CloudTime_Logo.svg" height="25rem">-->
       <!--      +-->
-      <!--      <ion-icon name="add-circle"></ion-icon>-->
+      <!--      <ion-icon name="add-circle" />-->
     </ion-fab-button>
   </ion-fab>
   <app-timers-list></app-timers-list>

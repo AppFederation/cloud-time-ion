@@ -26,13 +26,13 @@
               (click)="addToToday($event)"
   >
     <!-- should be dot dot dot menu anyway -->
-    <ion-icon slot="icon-only"name="today-outline"></ion-icon>
+    <ion-icon slot="icon-only"name="today-outline" />
      <!-- TODO: checkbox if already included -->
     <!-- TODO: later: this week / month / quarter / year -->
   </ion-button>
   <!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">LEARN</ion-note>-->
   <!--  <ion-note *ngIf="item.val?.isEffectivelyToLearn()">-->
-  <ion-icon style="margin-right: 7px; font-size: 25px" color="secondary" name="book-outline"></ion-icon>
+  <ion-icon style="margin-right: 7px; font-size: 25px" color="secondary" name="book-outline" />
 
   <ion-note *ngIf="item.val?.isTask">
     <span *ngIf="item.val?.isTask && item.val?.isEffectivelyToLearn()">, &nbsp;</span>
@@ -77,7 +77,7 @@
   &nbsp;<ion-icon
     *ngIf="feat.mockups"
     (click)="editEstimate();$event.stopPropagation()" class="action-icon" name="time"
-  ></ion-icon>
+   />
 
   &nbsp;
   <app-play-button

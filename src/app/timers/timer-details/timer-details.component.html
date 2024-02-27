@@ -19,20 +19,20 @@
   ></app-time-picker>
 
   <ion-button id="buttonDeleteTimer" (click)="confirmDelete()">
-    <ion-icon name="trash"></ion-icon>
+    <ion-icon name="trash" />
     &nbsp;Delete
   </ion-button>
 
   <ion-button *ngIf="! timer.isRunning" id="buttonStartTimer" (click)="timer.startTimer()">
-    <ion-icon name="play-circle"></ion-icon>
+    <ion-icon name="play-circle" />
     &nbsp;Start
   </ion-button>
   <ion-button *ngIf="timer.isRunning" id="buttonStopTimer" (click)="askStopTimer()">
-    <ion-icon name="square"></ion-icon>
+    <ion-icon name="square" />
     &nbsp;Stop
   </ion-button>
   <ion-button *ngIf="timer.isRunning" id="buttonPauseTimer" (click)="askPauseTimer()">
-    <ion-icon name="pause"></ion-icon>
+    <ion-icon name="pause" />
     &nbsp;Pause
   </ion-button>
 

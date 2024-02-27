@@ -8,7 +8,7 @@
         name="arrow-back-outline"
         class="action-icon"
         slot="start"
-      ></ion-icon>
+       />
       <app-app-logo></app-app-logo>
     </ion-buttons>
     <!-- TODO: this will go to previous journal entry to correct it if necessary -->
@@ -25,7 +25,7 @@
 
 
     <ion-buttons slot="end">
-      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']"></ion-icon>
+      <ion-icon style="margin-right: 7px;" class="action-icon" name="book-outline" slot="end" [routerLink]="['/learn']" />
       <odm-sync-status-icon></odm-sync-status-icon>
 
     </ion-buttons>
@@ -56,13 +56,13 @@
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <!--    <ion-fab-button id='fabAddTimer2' (click)="onAddTimer()">-->
     <!--      +-->
-    <!--&lt;!&ndash;      <ion-icon name="add-circle"></ion-icon>&ndash;&gt;-->
+    <!--&lt;!&ndash;      <ion-icon name="add-circle" />&ndash;&gt;-->
     <!--    </ion-fab-button>-->
     <ion-fab-button id='fabNewItem' (click)="newItem()">
-      <ion-icon name="add-outline"></ion-icon>
+      <ion-icon name="add-outline" />
       <!--      <img src="assets/icon/CloudTime_Logo.svg" height="25rem">-->
       <!--      +-->
-      <!--      <ion-icon name="add-circle"></ion-icon>-->
+      <!--      <ion-icon name="add-circle" />-->
     </ion-fab-button>
   </ion-fab>
 
