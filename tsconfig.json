@@ -21,6 +21,10 @@
       "es2018",
       "dom"
     ],
+    //    // ======= Strictness / checks:
+    //    "strictNullChecks": true,
+    //    "noImplicitAny" : true,
+    //    "strict": true,
     "useDefineForClassFields": false
   },
 
