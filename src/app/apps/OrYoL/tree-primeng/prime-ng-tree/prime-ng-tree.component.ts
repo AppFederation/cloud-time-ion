@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TreeModel} from '../../tree-model/TreeModel'
 import {TreeHostComponent} from '../../tree-host/tree-host/tree-host.component'
+import {TreeNodeDropEvent} from 'primeng/tree'
 
 @Component({
   selector: 'app-prime-ng-tree',
@@ -20,7 +21,7 @@ export class PrimeNgTreeComponent implements OnInit {
   ngOnInit() {
   }
 
-  nodeDrop(event: Event) {
+  nodeDrop(event: TreeNodeDropEvent) {
     console.log('nodeDrop', event)
     // this.dbService.moveNode(event.dragNode.dbId, event.dropNode.dbId) // FIXME
   }
