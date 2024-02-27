@@ -9,7 +9,7 @@ import {TreeNodeCellsComponent} from './tree-node/tree-node-content/tree-node-ce
 import {MinMidMaxCellComponent} from './cells/min-mid-max-cell/min-mid-max-cell.component'
 import {SharedModule} from '../../../shared/shared.module'
 import {OdmTreeNodePopupComponent} from './tree-node/odm-tree-node-popup/odm-tree-node-popup.component'
-import {RouterLinkWithHref} from '@angular/router'
+import {RouterLink} from '@angular/router'
 import {OdmUiModule} from '../../AppFedSharedIonic/odm-ui/odm-ui.module'
 
 const exportDeclarations = [
@@ -27,7 +27,7 @@ const exportDeclarations = [
     CommonModule,
     IonicModule,
     SharedModule,
-    RouterLinkWithHref,
+    RouterLink,
     OdmUiModule,
   ],
   declarations: [
