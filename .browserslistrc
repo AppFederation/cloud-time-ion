@@ -13,10 +13,11 @@ not IE 9-11 # For IE 9-11 support, remove 'not'.
 
 # { I added this manually after update to angular 15:
 
-# $ ng serve --port 4207 --live-reload false
-#  One or more browsers which are configured in the project's Browserslist configuration will be ignored as ES5 output is not supported by the Angular CLI.
-#  Ignored browsers: kaios 2.5, op_mini all
+  # $ ng serve --port 4207 --live-reload false
+  #  One or more browsers which are configured in the project's Browserslist configuration will be ignored as ES5 output is not supported by the Angular CLI.
+  #  Ignored browsers: kaios 2.5, op_mini all
 
-not op_mini all
-not kaios 2.5
+  not op_mini all
+  not kaios 2.5
+
 # }
